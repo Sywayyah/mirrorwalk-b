@@ -1,0 +1,29 @@
+<div class="columns">
+  <div class="column">
+    <mw-mw-unit-group-card
+        class="card"
+        *ngFor="let unitGroup of mainPlayerUnitGroups"
+        [playerInfo]="mainPlayerInfo"
+        [unitGroup]="unitGroup">
+    </mw-mw-unit-group-card>
+  </div>
+
+  <div class="column">
+    <mw-mw-unit-group-card
+        class="card"
+        *ngFor="let unitGroup of neutralPlayerGroups"
+        [playerInfo]="neutralPlayerInfo"
+        [unitGroup]="unitGroup">
+    </mw-mw-unit-group-card>
+  </div>
+</div>
+
+<div class="queue-panel">
+  <div 
+    *ngFor="let group of fightQueue"
+    [style.background]="group.ownerPlayerRef!.color"
+    class="queue-card">
+    <div>{{group.type.name}}</div>
+    <div>{{group.count}}</div>
+  </div>
+</div>
