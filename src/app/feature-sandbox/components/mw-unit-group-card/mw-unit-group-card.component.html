@@ -1,3 +1,18 @@
-<div [style.background]="playerInfo.color" class="card">
-    {{ unitGroup.type.name }} {{ unitGroup.count }}
+<div 
+    [style.background]="playerInfo.color"
+    [class.current-group]="mwBattleStateService.currentPlayer === playerInfo && attackingUnitGroup === unitGroup"
+    [class.hovered-enemy]="isCardHovered && isEnemyCard"
+    (mouseenter)="onCardHover(true)"
+    (mouseleave)="onCardHover(false)"
+    (click)="onGroupClick()"
+    class="card">
+    <div>
+        {{ unitGroup.type.name }}
+         ({{ unitGroup.count }})
+         <div *ngIf="isCardHovered && isEnemyCard" style="color: rgb(255, 196, 196)">
+            -{{ potentialUnitCountLoss }}
+        </div>
+    </div>
+    <div>Speed: {{ unitGroup.type.speed }}</div>
+    
 </div>

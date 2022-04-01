@@ -1,21 +1,67 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { PlayerModel, UnitGroupModel } from 'src/app/core/model/main.model';
+import { BattleStateService } from '../../services/mw-battle-state.service';
 
 @Component({
   selector: 'mw-mw-unit-group-card',
   templateUrl: './mw-unit-group-card.component.html',
   styleUrls: ['./mw-unit-group-card.component.scss']
 })
-export class MwUnitGroupCardComponent implements OnInit {
+export class MwUnitGroupCardComponent implements OnInit, OnDestroy {
 
   @Input()
   public unitGroup!: UnitGroupModel;
   @Input()
   public playerInfo!: PlayerModel;
 
-  constructor() { }
+  public isCardHovered: boolean = false;
+  public isEnemyCard!: boolean;
 
-  ngOnInit(): void {
+  public potentialUnitCountLoss: number = 0;
+  public attackingUnitGroup!: UnitGroupModel;
+
+  private destroy$: Subject<void> = new Subject();
+
+  constructor(
+    public mwBattleStateService: BattleStateService,
+  ) { }
+
+  public ngOnInit(): void {
+    this.isEnemyCard = this.mwBattleStateService.currentPlayer !== this.playerInfo;
+    this.mwBattleStateService.battleEvent
+      .pipe(
+        takeUntil(this.destroy$),
+      )
+      .subscribe(() => {
+        const currentUnitGroup = this.mwBattleStateService.currentUnitGroup;
+        this.attackingUnitGroup = currentUnitGroup;
+
+        if (this.isEnemyCard) {
+          const potentialTotalMaxDamage = this.mwBattleStateService.getUnitGroupTotalDamage(currentUnitGroup);
+
+          this.potentialUnitCountLoss = Math.floor(potentialTotalMaxDamage / this.unitGroup.type.health);
+          if (this.potentialUnitCountLoss > this.unitGroup.count) {
+            this.potentialUnitCountLoss = this.unitGroup.count;
+          }
+        }
+      });
+  }
+
+  public ngOnDestroy(): void {
+    this.destroy$.next();
+  }
+
+  public onCardHover(isHovered: boolean): void {
+    this.isCardHovered = isHovered;
+  }
+
+  public onGroupClick(): void {
+    if (this.isEnemyCard) {
+      this.mwBattleStateService.attackEnemyGroup(this.unitGroup);
+    }
   }
 
 }

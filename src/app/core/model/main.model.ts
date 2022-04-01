@@ -61,12 +61,28 @@ export interface UnitGroupModel {
     ownerPlayerRef?: PlayerModel;
 }
 
+export interface ResourcesModel {
+    gold: number;
+    
+    redCrystals: number;
+    gems: number;
+
+}
+
+
+export enum PlayerTypeEnum {
+    Player = 'player',
+    AI = 'ai',
+}
+
 /* todo: seems reasonable to have heroes and players models as well */
 export interface PlayerModel {
     color: string;
 
     /* resources can be stored separately in theory. */
-    resources?: {};
+    resources?: ResourcesModel;
+
+    type: PlayerTypeEnum;
 }
 
 export interface HeroModel {

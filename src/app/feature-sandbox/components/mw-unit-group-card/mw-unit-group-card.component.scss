@@ -1,9 +1,20 @@
 .card {
     display: block;
-    width: 100px;
-    height: 100px;
+    width: 115px;
+    height: 115px;
     border-radius: 6px;
     align-items: center;
+    box-sizing: border-box;
+    font-size: 13px;
     padding: 12px;
     color: white;
+    border: 3px solid transparent;
+}
+
+.card.current-group {
+    border: 3px solid gold;
+}
+
+.hovered-enemy {
+    border: 3px solid rgba(240, 113, 113, 0.906);
 }

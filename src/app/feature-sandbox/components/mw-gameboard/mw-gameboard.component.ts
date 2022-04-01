@@ -19,9 +19,9 @@ export class MwGameboardComponent implements OnInit {
   public fightQueue!: UnitGroupModel[];
 
   constructor(
-    private readonly mwPlayerState: MwPlayerStateService,
+    public readonly mwPlayerState: MwPlayerStateService,
     private readonly mwNeutralPlayer: MwNeutralPlayerService,
-    private readonly mwBattleState: MwBattleStateService
+    public readonly mwBattleState: MwBattleStateService
   ) {}
 
   ngOnInit(): void {
@@ -37,5 +37,11 @@ export class MwGameboardComponent implements OnInit {
     );
 
     this.fightQueue = this.mwBattleState.getFightQueue();
+
+    this.mwBattleState.battleEvent.subscribe(() => {
+      this.mainPlayerUnitGroups = this.mwBattleState.heroesUnitGroupsMap.get(this.mainPlayerInfo) as UnitGroupModel[] 
+      this.neutralPlayerGroups = this.mwBattleState.heroesUnitGroupsMap.get(this.neutralPlayerInfo) as UnitGroupModel[];
+      this.fightQueue = this.mwBattleState.getFightQueue();
+    });
   }
 }

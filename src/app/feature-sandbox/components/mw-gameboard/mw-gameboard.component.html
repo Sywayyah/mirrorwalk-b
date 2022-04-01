@@ -1,3 +1,23 @@
+<div class="resources-panel">
+  <div class="resource-info-row">
+    <div>Gold:</div>
+    <div>{{mainPlayerInfo.resources!.gold}}</div>
+  </div>
+  <div class="resource-info-row">
+    <div>Red Crystals:</div>
+    <div>{{mainPlayerInfo.resources!.redCrystals}}</div>
+  </div>
+  <div class="resource-info-row">
+    <div>Gems:</div>
+    <div>{{mainPlayerInfo.resources!.gems}}</div>
+  </div>
+
+  <div class="resource-info-row" style="margin-top: 16px;">
+    <div>Round:</div>
+    <div>{{mwBattleState.round}}</div>
+  </div>
+</div>
+
 <div class="columns">
   <div class="column">
     <mw-mw-unit-group-card
@@ -25,5 +45,23 @@
     class="queue-card">
     <div>{{group.type.name}}</div>
     <div>{{group.count}}</div>
+  </div>
+</div>
+
+<div class="history-log-panel">
+  History:
+  <div class="history-log" >
+    <div *ngFor="let historyEntry of mwBattleState.history"> 
+      {{historyEntry}}      
+    </div>
+  </div>
+</div>
+
+<div class="items-panel">
+  Items:
+  <div class="items-container">
+    <div class="player-item" *ngFor="let item of mwPlayerState.items">
+      {{item.name}}
+    </div>
   </div>
 </div>
