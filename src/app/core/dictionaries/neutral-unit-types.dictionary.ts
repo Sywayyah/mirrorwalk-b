@@ -7,18 +7,20 @@ export enum NEUTRAL_TYPES_ENUM {
 }
 
 export const NEUTRAL_FRACTION_UNIT_TYPES: Record<NEUTRAL_TYPES_ENUM, UnitTypeModel> = {
-    
-    [NEUTRAL_TYPES_ENUM.Gnolls]: {    
+
+    [NEUTRAL_TYPES_ENUM.Gnolls]: {
         mainPortraitUrl: '',
         name: 'Gnolls',
 
-        damageInfo: {
-            maxDamage: 2,
-            minDamage: 4,
+        baseStats: {
+            damageInfo: {
+                maxDamage: 2,
+                minDamage: 4,
+            },
+            defence: 1,
+            health: 10,
+            speed: 12,
         },
-        defence: 1,
-        health: 10,
-        speed: 12,
         minQuantityPerStack: 5,
         defaultTurnsPerRound: 1,
 
@@ -32,15 +34,17 @@ export const NEUTRAL_FRACTION_UNIT_TYPES: Record<NEUTRAL_TYPES_ENUM, UnitTypeMod
     [NEUTRAL_TYPES_ENUM.Thiefs]: {
         mainPortraitUrl: '',
         name: 'Thiefs',
-
-        damageInfo: {
-            maxDamage: 7,
-            minDamage: 3,
+        baseStats: {
+            damageInfo: {
+                maxDamage: 7,
+                minDamage: 3,
+            },
+            defence: 1,
+            health: 15,
+            speed: 17,
         },
-        defence: 1,
-        health: 15,
+        
         minQuantityPerStack: 4,
-        speed: 17,
         defaultTurnsPerRound: 2,
 
         baseRequirements: {},
@@ -49,14 +53,17 @@ export const NEUTRAL_FRACTION_UNIT_TYPES: Record<NEUTRAL_TYPES_ENUM, UnitTypeMod
         mainPortraitUrl: '',
         name: 'Forest Trolls',
 
-        damageInfo: {
-            maxDamage: 12,
-            minDamage: 7,
+        baseStats: {
+            damageInfo: {
+                maxDamage: 12,
+                minDamage: 7,
+            },
+            defence: 4,
+            health: 28,
+            speed: 10,
         },
-        defence: 4,
-        health: 28,
+
         minQuantityPerStack: 2,
-        speed: 10,
         defaultTurnsPerRound: 1,
 
         baseRequirements: {},

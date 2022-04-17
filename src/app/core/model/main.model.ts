@@ -16,12 +16,7 @@ interface UnitDamageModel {
     type?: UnitDamageTypesEnum;
 }
 
-export interface UnitTypeModel {
-    /* displayed name */
-    name: string;
-    /* main portrait for this unit (used during combat, hiring and so on) */
-    mainPortraitUrl?: string;
-
+export interface UnitTypeBaseStatsModel {
     /* base health of single unit of this type */
     health: number;
     /* base speed of this unit type. speed defines how early in the battle order can be placed */
@@ -31,16 +26,23 @@ export interface UnitTypeModel {
         paper-rock-scissors here  */
     defence: number;
 
-    /* it's probably going to be an object with more details (type of damage, etc.) */
     damageInfo: UnitDamageModel;
-    
+}
+
+export interface UnitTypeModel {
+    /* displayed name */
+    name: string;
+    /* main portrait for this unit (used during combat, hiring and so on) */
+    mainPortraitUrl?: string;
+
+    baseStats: UnitTypeBaseStatsModel;
 
     /* minimal amount of units that can stack can be hired, sold or split by */
     minQuantityPerStack: number;
 
     /* what does this unit type requires */
     baseRequirements: RequirementModel;
-    
+
     /* How many attacks unit can make by default */
     defaultTurnsPerRound: number;
 }
@@ -63,7 +65,7 @@ export interface UnitGroupModel {
 
 export interface ResourcesModel {
     gold: number;
-    
+
     redCrystals: number;
     gems: number;
 

@@ -48,7 +48,7 @@ export class BattleStateService {
       ...this.heroesUnitGroupsMap.get(this.players[0]) as UnitGroupModel[],
       ...this.heroesUnitGroupsMap.get(this.players[1]) as UnitGroupModel[],
     ].sort((a, b) => {
-      return b.type.speed - a.type.speed;
+      return b.type.baseStats.speed - a.type.baseStats.speed;
     });
 
     this.initNextTurn();
@@ -65,7 +65,7 @@ export class BattleStateService {
         ...this.heroesUnitGroupsMap.get(this.players[0]) as UnitGroupModel[],
         ...this.heroesUnitGroupsMap.get(this.players[1]) as UnitGroupModel[],
       ].sort((a, b) => {
-        return b.type.speed - a.type.speed;
+        return b.type.baseStats.speed - a.type.baseStats.speed;
       });
 
       this.round++;
@@ -106,12 +106,12 @@ export class BattleStateService {
     const currentGroupCount = this.currentUnitGroup.count;
     const currentGroupType = this.currentUnitGroup.type;
 
-    const minReceivedDamage = currentGroupCount * currentGroupType.damageInfo.minDamage;
-    const maxReceivedDamage = currentGroupCount * currentGroupType.damageInfo.maxDamage;
+    const minReceivedDamage = currentGroupCount * currentGroupType.baseStats.damageInfo.minDamage;
+    const maxReceivedDamage = currentGroupCount * currentGroupType.baseStats.damageInfo.maxDamage;
     const rolledDamage = Math.random() * (maxReceivedDamage - minReceivedDamage);
 
     const finalDamage = Math.round(minReceivedDamage + rolledDamage);
-    const totalUnitLoss = Math.floor(finalDamage / enemyGroup.type.health);
+    const totalUnitLoss = Math.floor(finalDamage / enemyGroup.type.baseStats.health);
 
     this.logHistory(`${this.currentPlayer.type}'s ${this.currentUnitGroup.type.name} attacks  ${enemyGroup.type.name} dealing ${finalDamage}, killing ${totalUnitLoss} units`);
     enemyGroup.count -= totalUnitLoss;
@@ -148,12 +148,12 @@ export class BattleStateService {
     const currentGroupCount = this.currentUnitGroup.count;
     const currentGroupType = this.currentUnitGroup.type;
 
-    const minReceivedDamage = currentGroupCount * currentGroupType.damageInfo.minDamage;
-    const maxReceivedDamage = currentGroupCount * currentGroupType.damageInfo.maxDamage;
+    const minReceivedDamage = currentGroupCount * currentGroupType.baseStats.damageInfo.minDamage;
+    const maxReceivedDamage = currentGroupCount * currentGroupType.baseStats.damageInfo.maxDamage;
     const rolledDamage = Math.random() * (maxReceivedDamage - minReceivedDamage);
 
-    let minUnitLossCount = Math.round(minReceivedDamage / enemyGroup.type.health);
-    let maxUnitLossCount = Math.floor(maxReceivedDamage / enemyGroup.type.health);
+    let minUnitLossCount = Math.round(minReceivedDamage / enemyGroup.type.baseStats.health);
+    let maxUnitLossCount = Math.floor(maxReceivedDamage / enemyGroup.type.baseStats.health);
 
     minUnitLossCount = enemyGroup.count <= minUnitLossCount ? enemyGroup.count : minUnitLossCount;
     maxUnitLossCount = enemyGroup.count <= maxUnitLossCount ? enemyGroup.count : maxUnitLossCount;
@@ -184,11 +184,11 @@ export class BattleStateService {
   }
 
   public getPotentialUnitLossCount(attackingGroup: UnitGroupModel, attackedGroup: UnitGroupModel): number {
-    return Math.floor(attackingGroup.count * attackingGroup.type.damageInfo.maxDamage / attackedGroup.type.health);
+    return Math.floor(attackingGroup.count * attackingGroup.type.baseStats.damageInfo.maxDamage / attackedGroup.type.baseStats.health);
   }
 
   public getUnitGroupTotalDamage(unitGroup: UnitGroupModel): number {
-    return unitGroup.count * unitGroup.type.damageInfo.maxDamage;
+    return unitGroup.count * unitGroup.type.baseStats.damageInfo.maxDamage;
   }
 
   private initPlayerUnitGroupsMap(unitGroups: UnitGroupModel[]): void {

@@ -14,13 +14,15 @@ export const HUMANS_FRACTION_UNIT_TYPES: Record<HF_TYPES_ENUM, UnitTypeModel> = 
         mainPortraitUrl: '',
         name: 'Pikemans',
 
-        damageInfo: {
-            maxDamage: 4,
-            minDamage: 2,
+        baseStats: {
+            damageInfo: {
+                maxDamage: 4,
+                minDamage: 2,
+            },
+            defence: 1,
+            health: 11,
+            speed: 13,
         },
-        defence: 1,
-        health: 11,
-        speed: 13,
         minQuantityPerStack: 5,
         defaultTurnsPerRound: 1,
 
@@ -36,14 +38,17 @@ export const HUMANS_FRACTION_UNIT_TYPES: Record<HF_TYPES_ENUM, UnitTypeModel> = 
         mainPortraitUrl: '',
         name: 'Archers',
 
-        damageInfo: {
-            maxDamage: 4,
-            minDamage: 2,
+        baseStats: {
+            damageInfo: {
+                maxDamage: 4,
+                minDamage: 2,
+            },
+            defence: 1,
+            health: 14,
+            speed: 21,
+            
         },
-        defence: 1,
-        health: 14,
         minQuantityPerStack: 12,
-        speed: 21,
         defaultTurnsPerRound: 2,
 
         baseRequirements: {},
@@ -52,14 +57,16 @@ export const HUMANS_FRACTION_UNIT_TYPES: Record<HF_TYPES_ENUM, UnitTypeModel> = 
         mainPortraitUrl: '',
         name: 'Knights',
 
-        damageInfo: {
-            maxDamage: 11,
-            minDamage: 7,
+        baseStats: {
+            damageInfo: {
+                maxDamage: 11,
+                minDamage: 7,
+            },
+            defence: 4,
+            health: 31,
+            speed: 6,    
         },
-        defence: 4,
-        health: 31,
         minQuantityPerStack: 2,
-        speed: 6,
         defaultTurnsPerRound: 1,
 
         baseRequirements: {},
@@ -67,15 +74,19 @@ export const HUMANS_FRACTION_UNIT_TYPES: Record<HF_TYPES_ENUM, UnitTypeModel> = 
     [HF_TYPES_ENUM.Cavalry]: {
         name: 'Cavalry',
         baseRequirements: {},
-        damageInfo: {
-            maxDamage: 24,
-            minDamage: 15,
+
+        baseStats: {
+            damageInfo: {
+                maxDamage: 24,
+                minDamage: 15,
+            },
+            health: 46,
+            defence: 4,
+            speed: 12,    
         },
+        
         defaultTurnsPerRound: 1,
-        defence: 4,
-        health: 46,
         minQuantityPerStack: 1,
-        speed: 12,
         mainPortraitUrl: ''
     }
 };
