@@ -26,6 +26,9 @@ export interface UnitTypeBaseStatsModel {
         paper-rock-scissors here  */
     defence: number;
 
+    /* Similar to Homm3 system, where each point of difference between attack/defence increases damage by 5 percent */
+    attackRating: number;
+    
     damageInfo: UnitDamageModel;
 }
 
