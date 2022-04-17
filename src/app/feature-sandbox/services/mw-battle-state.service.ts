@@ -19,6 +19,8 @@ export class BattleStateService {
 
   public history: string[] = [];
 
+  public hintMessage$: BehaviorSubject<string> = new BehaviorSubject('');
+
   private playersRivalryMap: Map<PlayerModel, PlayerModel> = new Map();
 
   private initialUnitGroups!: UnitGroupModel[];
@@ -67,7 +69,7 @@ export class BattleStateService {
       });
 
       this.round++;
-      this.history.push(`Round ${this.round} begins`);
+      this.logHistory(`Round ${this.round} begins`);
     }
 
     const firstUnitGroup = this.fightQueue[0];
@@ -75,7 +77,7 @@ export class BattleStateService {
     this.currentUnitGroup = firstUnitGroup;
     this.currentGroupTurnsLeft = this.currentUnitGroup.type.defaultTurnsPerRound;
     
-    this.history.push(`Player ${this.currentPlayer.type} starts his turn`);
+    this.logHistory(`Player ${this.currentPlayer.type} starts his turn`);
   }
 
   public getFightQueue(): UnitGroupModel[] {
@@ -99,13 +101,23 @@ export class BattleStateService {
   }
 
   public attackEnemyGroup(enemyGroup: UnitGroupModel): void {
-    const totalDamage = this.getPotentialUnitLossCount(this.currentUnitGroup, enemyGroup);
+    // const totalDamage = this.getPotentialUnitLossCount(this.currentUnitGroup, enemyGroup);
 
-    this.history.push(`${this.currentPlayer.type}'s ${this.currentUnitGroup.type.name} attacks  ${enemyGroup.type.name} dealing ${totalDamage}`);
-    enemyGroup.count -= totalDamage;
+    const currentGroupCount = this.currentUnitGroup.count;
+    const currentGroupType = this.currentUnitGroup.type;
+
+    const minReceivedDamage = currentGroupCount * currentGroupType.damageInfo.minDamage;
+    const maxReceivedDamage = currentGroupCount * currentGroupType.damageInfo.maxDamage;
+    const rolledDamage = Math.random() * (maxReceivedDamage - minReceivedDamage);
+
+    const finalDamage = Math.round(minReceivedDamage + rolledDamage);
+    const totalUnitLoss = Math.floor(finalDamage / enemyGroup.type.health);
+
+    this.logHistory(`${this.currentPlayer.type}'s ${this.currentUnitGroup.type.name} attacks  ${enemyGroup.type.name} dealing ${finalDamage}, killing ${totalUnitLoss} units`);
+    enemyGroup.count -= totalUnitLoss;
     if (enemyGroup.count <= 0) {
       this.removeEnemyPlayerUnitGroup(enemyGroup);
-      this.history.push(`Unit ${enemyGroup.type.name} dies, losing ${totalDamage} units`);
+      this.logHistory(`Unit ${enemyGroup.type.name} dies, losing ${totalUnitLoss} units`);
       this.battleEvent.next();
     }
 
@@ -115,10 +127,10 @@ export class BattleStateService {
       this.initNextTurn(true);
 
       if (!(this.heroesUnitGroupsMap.get(this.players[0]) as UnitGroupModel[]).length) {
-        this.history.push('You have been defeated!');
+        this.logHistory('You have been defeated!');
         return;
       } else if (!(this.heroesUnitGroupsMap.get(this.players[1]) as UnitGroupModel[]).length) {
-        this.history.push('You won!');
+        this.logHistory('You won!');
         return;
       }
 
@@ -130,6 +142,35 @@ export class BattleStateService {
         this.processAiPlayer();
       }
     }
+  }
+
+  public setHintAttackMessage(enemyGroup: UnitGroupModel): void {
+    const currentGroupCount = this.currentUnitGroup.count;
+    const currentGroupType = this.currentUnitGroup.type;
+
+    const minReceivedDamage = currentGroupCount * currentGroupType.damageInfo.minDamage;
+    const maxReceivedDamage = currentGroupCount * currentGroupType.damageInfo.maxDamage;
+    const rolledDamage = Math.random() * (maxReceivedDamage - minReceivedDamage);
+
+    let minUnitLossCount = Math.round(minReceivedDamage / enemyGroup.type.health);
+    let maxUnitLossCount = Math.floor(maxReceivedDamage / enemyGroup.type.health);
+
+    minUnitLossCount = enemyGroup.count <= minUnitLossCount ? enemyGroup.count : minUnitLossCount;
+    maxUnitLossCount = enemyGroup.count <= maxUnitLossCount ? enemyGroup.count : maxUnitLossCount;
+   
+    if (minUnitLossCount === maxUnitLossCount) {
+      this.hintMessage$.next(`Attack ${enemyGroup.type.name} dealing ${minReceivedDamage}-${maxReceivedDamage} damage, killing ${maxUnitLossCount} units`);
+    } else {
+      this.hintMessage$.next(`Attack ${enemyGroup.type.name} dealing ${minReceivedDamage}-${maxReceivedDamage} damage, killing ${minUnitLossCount}-${maxUnitLossCount} units`);
+    }
+  }
+
+  public clearHintMessage(): void {
+    this.hintMessage$.next('');
+  }
+
+  private logHistory(log: string): void {
+    this.history.push(log);
   }
 
   private processAiPlayer(): void {

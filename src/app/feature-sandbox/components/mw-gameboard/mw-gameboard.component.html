@@ -48,6 +48,10 @@
   </div>
 </div>
 
+<div *ngIf="(mwBattleState.hintMessage$ | async) as message" class="hint-panel">
+  {{message}}
+</div>
+
 <div class="history-log-panel">
   History:
   <div class="history-log" >

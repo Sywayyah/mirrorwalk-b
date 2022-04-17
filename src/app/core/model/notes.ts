@@ -1,4 +1,42 @@
 /* 
+    My game
+
+        I want to have ghosts, probably as basic neutral enemies. They may protect the location of crypt.
+         Once guard is defeated, a player can hire basic ghosts from the crypt.
+         They can only be upgraded at the city of this kind.
+
+        Units can be sold as well.
+
+        Cities may have many buildings. Upgrading them will allow player to hire and upgrade more units.
+
+        Also i feel like there can be done two things, the building can be upgraded with a camp,
+         so next time this city won't have upgrade, or can be upgraded completely so it will be always available.
+
+        Also. There could be an item which ensures that you'll have this kind of town in the next round, for a certain price.
+
+        Also. The amount of active groups might be limited, and some talents may increase this allowed group quantity.
+
+        Also. Locations at the start.
+        Resources. Mines. Artifact. Library. Hirelings.
+
+        A player may have 3-4 different locations and it will be up to him what he wants, resources, army,
+         spells, items, or income. And his amount of turns per location is limited.
+
+        And sometimes it will be open for a player which resource or item he is going to get.
+
+        Later more, like, foreseeing tower, etc.
+
+        And experience or glory will unlock more buildings
+
+        ==== 
+        
+        Might also be interesting.
+            Aside from these, there might be random thing locations. There might be random reward of given type and guard.
+            The thing is that random locations might have slightly bigger enemies, but also slightly better rewards.
+*/
+
+
+/* 
     # Artifacts, their active and passive abilities:
     
     What if, for example:

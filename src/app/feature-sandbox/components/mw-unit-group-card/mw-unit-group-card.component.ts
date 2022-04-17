@@ -47,6 +47,7 @@ export class MwUnitGroupCardComponent implements OnInit, OnDestroy {
             this.potentialUnitCountLoss = this.unitGroup.count;
           }
         }
+
       });
   }
 
@@ -56,6 +57,13 @@ export class MwUnitGroupCardComponent implements OnInit, OnDestroy {
 
   public onCardHover(isHovered: boolean): void {
     this.isCardHovered = isHovered;
+    if (this.isEnemyCard) {
+      if (isHovered) {
+        this.mwBattleStateService.setHintAttackMessage(this.unitGroup);
+      } else {
+        this.mwBattleStateService.clearHintMessage();
+      }
+    }
   }
 
   public onGroupClick(): void {

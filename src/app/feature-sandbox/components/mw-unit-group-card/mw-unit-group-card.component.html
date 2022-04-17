@@ -9,10 +9,11 @@
     <div>
         {{ unitGroup.type.name }}
          ({{ unitGroup.count }})
-         <div *ngIf="isCardHovered && isEnemyCard" style="color: rgb(255, 196, 196)">
+         <!-- <div *ngIf="isCardHovered && isEnemyCard" style="color: rgb(255, 196, 196)">
             -{{ potentialUnitCountLoss }}
-        </div>
+        </div> -->
     </div>
     <div>Speed: {{ unitGroup.type.speed }}</div>
-    
+    <div>Health: {{ unitGroup.type.health * unitGroup.count }}</div>
+    <div>Damage: {{ unitGroup.type.damageInfo.maxDamage * unitGroup.count }}</div>
 </div>

@@ -24,6 +24,7 @@
   left: 0;
 }
 
+
 .queue-card {
   height: 64px;
   width: 64px;
@@ -38,6 +39,19 @@
   margin: 8px;
 
 }
+
+.hint-panel {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+
+  position: absolute;
+  bottom: 81px;
+  left: 0;
+
+  font-size: 12px;
+}
+
 
 .resources-panel {
   position: fixed;
