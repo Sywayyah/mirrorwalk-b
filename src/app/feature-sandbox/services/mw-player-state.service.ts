@@ -5,6 +5,7 @@ import {
   HUMANS_FRACTION_UNIT_TYPES,
 } from 'src/app/core/dictionaries/unit-types.dictionary';
 import { PlayerModel, PlayerTypeEnum, UnitGroupModel } from 'src/app/core/model/main.model';
+import { RandomUtils } from 'src/app/core/utils/common.utils';
 
 @Injectable({
   providedIn: 'root',
@@ -25,7 +26,18 @@ export class MwPlayerStateService {
     type: PlayerTypeEnum.Player,
   };
 
-  private unitGroups: UnitGroupModel[] = [
+  private unitGroups: UnitGroupModel[] = RandomUtils.createRandomArmy({
+    fraction: HUMANS_FRACTION_UNIT_TYPES,
+    maxUnitGroups: 5,
+    minUnitGroups: 3,
+    units: [
+      [HF_TYPES_ENUM.Pikemans, 10, 60, 3],
+      [HF_TYPES_ENUM.Archers, 14, 36, 2],
+      [HF_TYPES_ENUM.Knights, 8, 17, 2],
+      [HF_TYPES_ENUM.Cavalry, 3, 7, 2],
+    ],
+  });
+  /* private unitGroups: UnitGroupModel[] = [
     {
       count: 35,
       type: HUMANS_FRACTION_UNIT_TYPES[HF_TYPES_ENUM.Pikemans],
@@ -42,7 +54,7 @@ export class MwPlayerStateService {
       count: 4,
       type: HUMANS_FRACTION_UNIT_TYPES[HF_TYPES_ENUM.Cavalry],
     },
-  ];
+  ]; */
 
   constructor() {}
 

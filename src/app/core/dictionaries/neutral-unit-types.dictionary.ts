@@ -20,7 +20,7 @@ export const NEUTRAL_FRACTION_UNIT_TYPES: Record<NEUTRAL_TYPES_ENUM, UnitTypeMod
             },
             attackRating: 1,
             defence: 1,
-            health: 7,
+            health: 5,
             speed: 8,
         },
         defaultTurnsPerRound: 1,
@@ -33,7 +33,7 @@ export const NEUTRAL_FRACTION_UNIT_TYPES: Record<NEUTRAL_TYPES_ENUM, UnitTypeMod
         baseStats: {
             damageInfo: {
                 maxDamage: 2,
-                minDamage: 4,
+                minDamage: 5,
             },
             attackRating: 1,
             defence: 1,
@@ -55,12 +55,12 @@ export const NEUTRAL_FRACTION_UNIT_TYPES: Record<NEUTRAL_TYPES_ENUM, UnitTypeMod
         name: 'Thiefs',
         baseStats: {
             damageInfo: {
-                maxDamage: 7,
-                minDamage: 3,
+                minDamage: 5,
+                maxDamage: 9,
             },
             attackRating: 2,
             defence: 1,
-            health: 15,
+            health: 8,
             speed: 17,
         },
 
@@ -75,12 +75,12 @@ export const NEUTRAL_FRACTION_UNIT_TYPES: Record<NEUTRAL_TYPES_ENUM, UnitTypeMod
 
         baseStats: {
             damageInfo: {
-                maxDamage: 12,
-                minDamage: 7,
+                maxDamage: 7,
+                minDamage: 5,
             },
             attackRating: 3,
             defence: 4,
-            health: 28,
+            health: 13,
             speed: 10,
         },
 

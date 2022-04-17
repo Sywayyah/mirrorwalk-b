@@ -76,7 +76,7 @@ export class BattleStateService {
     this.currentPlayer = firstUnitGroup.ownerPlayerRef as PlayerModel;
     this.currentUnitGroup = firstUnitGroup;
     this.currentGroupTurnsLeft = this.currentUnitGroup.type.defaultTurnsPerRound;
-    
+
     this.logHistory(`Player ${this.currentPlayer.type} starts his turn`);
   }
 
@@ -157,7 +157,7 @@ export class BattleStateService {
 
     minUnitLossCount = enemyGroup.count <= minUnitLossCount ? enemyGroup.count : minUnitLossCount;
     maxUnitLossCount = enemyGroup.count <= maxUnitLossCount ? enemyGroup.count : maxUnitLossCount;
-   
+
     if (minUnitLossCount === maxUnitLossCount) {
       this.hintMessage$.next(`Attack ${enemyGroup.type.name} dealing ${minReceivedDamage}-${maxReceivedDamage} damage, killing ${maxUnitLossCount} units`);
     } else {
