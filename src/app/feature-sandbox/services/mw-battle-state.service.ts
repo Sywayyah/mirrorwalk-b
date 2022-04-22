@@ -20,6 +20,7 @@ export class BattleStateService {
   public history: string[] = [];
 
   public hintMessage$: BehaviorSubject<string> = new BehaviorSubject('');
+  public historyEvent$: Subject<void> = new Subject();
 
   private playersRivalryMap: Map<PlayerModel, PlayerModel> = new Map();
 
@@ -171,6 +172,7 @@ export class BattleStateService {
 
   private logHistory(log: string): void {
     this.history.push(log);
+    this.historyEvent$.next();
   }
 
   private processAiPlayer(): void {

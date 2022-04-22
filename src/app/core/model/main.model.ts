@@ -88,6 +88,10 @@ export interface PlayerModel {
     resources?: ResourcesModel;
 
     type: PlayerTypeEnum;
+
+    hero: HeroModel;
+
+    unitGroups: UnitGroupModel[];
 }
 
 export interface HeroModel {

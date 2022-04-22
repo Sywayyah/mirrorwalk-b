@@ -32,8 +32,8 @@ export const NEUTRAL_FRACTION_UNIT_TYPES: Record<NEUTRAL_TYPES_ENUM, UnitTypeMod
 
         baseStats: {
             damageInfo: {
-                maxDamage: 2,
-                minDamage: 5,
+                minDamage: 3,
+                maxDamage: 4,
             },
             attackRating: 1,
             defence: 1,
@@ -55,7 +55,7 @@ export const NEUTRAL_FRACTION_UNIT_TYPES: Record<NEUTRAL_TYPES_ENUM, UnitTypeMod
         name: 'Thiefs',
         baseStats: {
             damageInfo: {
-                minDamage: 5,
+                minDamage: 7,
                 maxDamage: 9,
             },
             attackRating: 2,
@@ -71,12 +71,12 @@ export const NEUTRAL_FRACTION_UNIT_TYPES: Record<NEUTRAL_TYPES_ENUM, UnitTypeMod
     },
     [NEUTRAL_TYPES_ENUM.ForestTrolls]: {
         mainPortraitUrl: '',
-        name: 'Forest Trolls',
+        name: 'Trolls',
 
         baseStats: {
             damageInfo: {
-                maxDamage: 7,
                 minDamage: 5,
+                maxDamage: 7,
             },
             attackRating: 3,
             defence: 4,

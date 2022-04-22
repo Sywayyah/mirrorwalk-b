@@ -9,11 +9,6 @@ import { RandomUtils } from 'src/app/core/utils/common.utils';
 })
 export class MwNeutralPlayerService {
 
-  private neutralPlayer: PlayerModel = {
-    color: 'rgb(182, 182, 182)',
-    type: PlayerTypeEnum.AI,
-  };
-
   private unitGroups: UnitGroupModel[] = RandomUtils.createRandomArmy({
     fraction: NEUTRAL_FRACTION_UNIT_TYPES,
     maxUnitGroups: 5,
@@ -26,25 +21,14 @@ export class MwNeutralPlayerService {
       [NEUTRAL_TYPES_ENUM.Ghosts, 24, 42, 3],
     ],
   });
-  /* private unitGroups: UnitGroupModel[] = [
-    {
-      count: 21,
-      type: NEUTRAL_FRACTION_UNIT_TYPES[NEUTRAL_TYPES_ENUM.Gnolls],
-    },
-    {
-      count: 21,
-      type: NEUTRAL_FRACTION_UNIT_TYPES[NEUTRAL_TYPES_ENUM.Gnolls],
-    },
-    {
-      count: 7,
-      type: NEUTRAL_FRACTION_UNIT_TYPES[NEUTRAL_TYPES_ENUM.Thiefs],
-    },
-    {
-      count: 13,
-      type: NEUTRAL_FRACTION_UNIT_TYPES[NEUTRAL_TYPES_ENUM.ForestTrolls],
-    }
-  ]; */
 
+  private neutralPlayer: PlayerModel = {
+    color: 'rgb(182, 182, 182)',
+    type: PlayerTypeEnum.AI,
+    hero: {},
+    unitGroups: this.unitGroups,
+  };
+  
   constructor() { }
 
   public getPlayerInfo(): PlayerModel {

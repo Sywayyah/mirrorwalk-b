@@ -16,16 +16,6 @@ export class MwPlayerStateService {
     ItemDoomstring,
   ];
   
-  private mainPlayer: PlayerModel = {
-    color: 'rgb(255, 138, 138)',
-    resources: {
-      gems: 0,
-      gold: 12000,
-      redCrystals: 2,
-    },
-    type: PlayerTypeEnum.Player,
-  };
-
   private unitGroups: UnitGroupModel[] = RandomUtils.createRandomArmy({
     fraction: HUMANS_FRACTION_UNIT_TYPES,
     maxUnitGroups: 5,
@@ -37,24 +27,18 @@ export class MwPlayerStateService {
       [HF_TYPES_ENUM.Cavalry, 3, 7, 2],
     ],
   });
-  /* private unitGroups: UnitGroupModel[] = [
-    {
-      count: 35,
-      type: HUMANS_FRACTION_UNIT_TYPES[HF_TYPES_ENUM.Pikemans],
+
+  private mainPlayer: PlayerModel = {
+    color: 'rgb(255, 138, 138)',
+    resources: {
+      gems: 0,
+      gold: 12000,
+      redCrystals: 2,
     },
-    {
-      count: 21 ,
-      type: HUMANS_FRACTION_UNIT_TYPES[HF_TYPES_ENUM.Archers],
-    },
-    {
-      count: 6,
-      type: HUMANS_FRACTION_UNIT_TYPES[HF_TYPES_ENUM.Knights],
-    },
-    { 
-      count: 4,
-      type: HUMANS_FRACTION_UNIT_TYPES[HF_TYPES_ENUM.Cavalry],
-    },
-  ]; */
+    type: PlayerTypeEnum.Player,
+    hero: {},
+    unitGroups: this.unitGroups,
+  };
 
   constructor() {}
 

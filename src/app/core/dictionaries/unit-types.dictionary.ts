@@ -16,8 +16,8 @@ export const HUMANS_FRACTION_UNIT_TYPES: Record<HF_TYPES_ENUM, UnitTypeModel> = 
 
         baseStats: {
             damageInfo: {
-                maxDamage: 5,
-                minDamage: 2,
+                minDamage: 3,
+                maxDamage: 3,
             },
             attackRating: 1,
             defence: 1,
@@ -42,7 +42,7 @@ export const HUMANS_FRACTION_UNIT_TYPES: Record<HF_TYPES_ENUM, UnitTypeModel> = 
         baseStats: {
             damageInfo: {
                 minDamage: 4,
-                maxDamage: 6,
+                maxDamage: 5,
             },
             attackRating: 2,
             defence: 1,
@@ -60,8 +60,8 @@ export const HUMANS_FRACTION_UNIT_TYPES: Record<HF_TYPES_ENUM, UnitTypeModel> = 
 
         baseStats: {
             damageInfo: {
-                maxDamage: 11,
-                minDamage: 7,
+                minDamage: 6,
+                maxDamage: 9,
             },
             attackRating: 4,
             defence: 4,
@@ -79,8 +79,8 @@ export const HUMANS_FRACTION_UNIT_TYPES: Record<HF_TYPES_ENUM, UnitTypeModel> = 
 
         baseStats: {
             damageInfo: {
-                maxDamage: 17,
-                minDamage: 13,
+                minDamage: 12,
+                maxDamage: 15,
             },
             attackRating: 5,
             health: 31,
