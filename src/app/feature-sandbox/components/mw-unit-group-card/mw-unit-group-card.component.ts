@@ -1,4 +1,3 @@
-import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -71,6 +70,7 @@ export class MwUnitGroupCardComponent implements OnInit, OnDestroy {
   public onGroupClick(): void {
     if (this.isEnemyCard) {
       this.mwBattleStateService.attackEnemyGroup(this.unitGroup);
+      this.mwBattleStateService.setHintAttackMessage(this.unitGroup);
     }
   }
 

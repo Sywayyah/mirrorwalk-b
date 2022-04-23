@@ -44,12 +44,7 @@ export class BattleStateService {
 
     this.initPlayerUnitGroupsMap(unitGroups);
 
-    this.fightQueue = [
-      ...this.heroesUnitGroupsMap.get(this.players[0]) as UnitGroupModel[],
-      ...this.heroesUnitGroupsMap.get(this.players[1]) as UnitGroupModel[],
-    ].sort((a, b) => {
-      return b.type.baseStats.speed - a.type.baseStats.speed;
-    });
+    this.resetFightQueue();
 
     this.initNextTurn();
     this.battleEvent.next();
@@ -61,12 +56,8 @@ export class BattleStateService {
     }
 
     if (!this.fightQueue.length) {
-      this.fightQueue = [
-        ...this.heroesUnitGroupsMap.get(this.players[0]) as UnitGroupModel[],
-        ...this.heroesUnitGroupsMap.get(this.players[1]) as UnitGroupModel[],
-      ].sort((a, b) => {
-        return b.type.baseStats.speed - a.type.baseStats.speed;
-      });
+      this.resetFightQueue();
+      this.resetGroupsTurnsLeft();
 
       this.round++;
       this.battleLogService.logRoundInfoMessage(`Round ${this.round} begins`);
@@ -82,6 +73,7 @@ export class BattleStateService {
       this.battleLogService.logRoundInfoMessage(`Player ${this.currentPlayer.type} starts his turn`);
     }
   }
+
 
   public getFightQueue(): UnitGroupModel[] {
     return this.fightQueue;
@@ -133,6 +125,7 @@ export class BattleStateService {
     }
 
     this.currentGroupTurnsLeft--;
+    this.currentUnitGroup.turnsLeft--;
 
     if (!this.currentGroupTurnsLeft) {
       this.initNextTurn(true);
@@ -196,6 +189,19 @@ export class BattleStateService {
 
   public getUnitGroupTotalDamage(unitGroup: UnitGroupModel): number {
     return unitGroup.count * unitGroup.type.baseStats.damageInfo.maxDamage;
+  }
+
+  private resetGroupsTurnsLeft(): void {
+    this.fightQueue.forEach((unitGroup: UnitGroupModel) => unitGroup.turnsLeft = unitGroup.type.defaultTurnsPerRound);
+  }
+
+  private resetFightQueue() {
+    this.fightQueue = [
+      ...this.heroesUnitGroupsMap.get(this.players[0]) as UnitGroupModel[],
+      ...this.heroesUnitGroupsMap.get(this.players[1]) as UnitGroupModel[],
+    ].sort((a, b) => {
+      return b.type.baseStats.speed - a.type.baseStats.speed;
+    });
   }
 
   private initPlayerUnitGroupsMap(unitGroups: UnitGroupModel[]): void {

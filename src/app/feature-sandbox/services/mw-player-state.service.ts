@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { PLAYER_COLORS } from 'src/app/core/dictionaries/colors.const';
 import { ItemDoomstring, ItemModel } from 'src/app/core/dictionaries/items.dictionary';
 import {
   HF_TYPES_ENUM,
@@ -29,7 +30,7 @@ export class MwPlayerStateService {
   });
 
   private mainPlayer: PlayerModel = {
-    color: 'rgb(255, 138, 138)',
+    color: PLAYER_COLORS.BLUE,
     resources: {
       gems: 0,
       gold: 12000,

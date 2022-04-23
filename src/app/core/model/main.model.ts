@@ -64,6 +64,9 @@ export interface UnitGroupModel {
     count: number;
     type: UnitTypeModel;
     ownerPlayerRef?: PlayerModel;
+
+    /* how much turns left during round, not sure if it's best to have it there */
+    turnsLeft: number;
 }
 
 export interface ResourcesModel {

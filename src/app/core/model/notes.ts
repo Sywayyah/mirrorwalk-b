@@ -35,6 +35,24 @@
             The thing is that random locations might have slightly bigger enemies, but also slightly better rewards.
 */
 
+/* 
+    Unit types
+        
+        Player may prefer different units, depending on what he wants. He can get a cheap units, but
+        which are worse in a long run, having no significant upgrades or buffs, or vice versa.
+        (for now, I assume that upgraded units can be of bigger level than original unit type)
+
+        Also, there might be special treats. Some units can have faster speed, dealing first damage.
+        Some can attack twice, some has big roll on their damage. Some units may deal poison dmg, which
+        hits every round. 
+
+        Some might respond on attacks, some may avoid responding attacks. Some can deal increased damage
+        from response.
+
+        Maybe slowing down the enemies, meaning their turn will be delayed.
+
+*/
+
 
 /* 
     # Artifacts, their active and passive abilities:

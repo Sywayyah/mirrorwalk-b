@@ -49,9 +49,11 @@ export const RandomUtils = {
         for (let i = 0; i < groupsToGenerateCount; i++) {
             const randUnitDescr = CommonUtils.randItem(options.units);
             const unit = unitsMap.get(randUnitDescr);
+            const unitType = options.fraction[unit.unitType];
             const newUnitGroup: UnitGroupModel = {
                 count: CommonUtils.randIntInRange(unit.min, unit.max),
-                type: options.fraction[unit.unitType],
+                type: unitType,
+                turnsLeft: unitType.defaultTurnsPerRound,
             };
             generatedGroups.push(newUnitGroup);
 
