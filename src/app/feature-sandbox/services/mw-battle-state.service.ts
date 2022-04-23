@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { PlayerModel, PlayerTypeEnum, UnitGroupModel } from 'src/app/core/model/main.model';
+import { BattleEventsService, BattleEventTypeEnum } from './mw-battle-events.service';
 import { MwBattleLogService } from './mw-battle-log.service';
 
 @Injectable({
@@ -28,6 +29,7 @@ export class BattleStateService {
 
   constructor(
     private readonly battleLogService: MwBattleLogService,
+    private readonly battleEventsService: BattleEventsService,
   ) { }
 
   /* until turns are out. */
@@ -111,6 +113,13 @@ export class BattleStateService {
     const totalUnitLoss = Math.floor(finalDamage / enemyGroup.type.baseStats.health);
 
     const finalTotalUnitLoss = totalUnitLoss > enemyGroup.count ? enemyGroup.count : totalUnitLoss;
+
+    this.battleEventsService.dispatchEvent({
+      type: BattleEventTypeEnum.On_Group_Damaged,
+      attackedGroup: enemyGroup,
+      attackerGroup: this.currentUnitGroup,
+      loss: finalTotalUnitLoss,
+    });
 
     this.battleLogService.logDealtDamageMessage({
       attacker: this.currentUnitGroup.type,

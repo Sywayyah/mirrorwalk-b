@@ -1,12 +1,13 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { PlayerModel, UnitGroupModel } from 'src/app/core/model/main.model';
 import { MwPlayersService } from '../../services';
 import { BattleStateService } from '../../services/mw-battle-state.service';
+import { CardEffectsComponent } from '../mw-card-effects/card-effects.component';
 
 @Component({
-  selector: 'mw-mw-unit-group-card',
+  selector: 'mw-unit-group-card',
   templateUrl: './mw-unit-group-card.component.html',
   styleUrls: ['./mw-unit-group-card.component.scss']
 })
@@ -16,6 +17,13 @@ export class MwUnitGroupCardComponent implements OnInit, OnDestroy {
   public unitGroup!: UnitGroupModel;
   @Input()
   public playerInfo!: PlayerModel;
+
+  @Output()
+  public cardReady: EventEmitter<MwUnitGroupCardComponent> = new EventEmitter();
+  @Output()
+  public groupDies: EventEmitter<void> = new EventEmitter();
+
+  @ViewChild('effects', { static: true }) public effectsComponent!: CardEffectsComponent;
 
   public isCardHovered: boolean = false;
   public isEnemyCard!: boolean;
@@ -33,6 +41,7 @@ export class MwUnitGroupCardComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
     this.isEnemyCard = this.playersService.getCurrentPlayer() !== this.playerInfo;
+    this.cardReady.next(this);
     this.mwBattleStateService.battleEvent
       .pipe(
         takeUntil(this.destroy$),
@@ -58,6 +67,7 @@ export class MwUnitGroupCardComponent implements OnInit, OnDestroy {
     this.destroy$.next();
     this.destroy$.complete();
     this.mwBattleStateService.clearHintMessage();
+    this.groupDies.next();
   }
 
   public onCardHover(isHovered: boolean): void {

@@ -38,6 +38,8 @@ export interface UnitTypeModel {
     /* main portrait for this unit (used during combat, hiring and so on) */
     mainPortraitUrl?: string;
 
+    level: number;
+
     baseStats: UnitTypeBaseStatsModel;
 
     /* minimal amount of units that can stack can be hired, sold or split by */

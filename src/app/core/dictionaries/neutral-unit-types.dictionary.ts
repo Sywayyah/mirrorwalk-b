@@ -12,6 +12,7 @@ export const NEUTRAL_FRACTION_UNIT_TYPES: Record<NEUTRAL_TYPES_ENUM, UnitTypeMod
     [NEUTRAL_TYPES_ENUM.Ghosts]: {
         mainPortraitUrl: '',
         name: 'Ghosts',
+        level: 1,
         baseRequirements: {},
         baseStats: {
             damageInfo: {
@@ -30,7 +31,7 @@ export const NEUTRAL_FRACTION_UNIT_TYPES: Record<NEUTRAL_TYPES_ENUM, UnitTypeMod
     [NEUTRAL_TYPES_ENUM.Gnolls]: {
         mainPortraitUrl: '',
         name: 'Gnolls',
-
+        level: 2,
         baseStats: {
             damageInfo: {
                 minDamage: 3,
@@ -55,6 +56,7 @@ export const NEUTRAL_FRACTION_UNIT_TYPES: Record<NEUTRAL_TYPES_ENUM, UnitTypeMod
     [NEUTRAL_TYPES_ENUM.Thiefs]: {
         mainPortraitUrl: '',
         name: 'Thiefs',
+        level: 3,
         baseStats: {
             damageInfo: {
                 minDamage: 7,
@@ -71,10 +73,11 @@ export const NEUTRAL_FRACTION_UNIT_TYPES: Record<NEUTRAL_TYPES_ENUM, UnitTypeMod
 
         baseRequirements: {},
     },
-    
+
     [NEUTRAL_TYPES_ENUM.ForestTrolls]: {
         mainPortraitUrl: '',
         name: 'Trolls',
+        level: 4,
 
         baseStats: {
             damageInfo: {

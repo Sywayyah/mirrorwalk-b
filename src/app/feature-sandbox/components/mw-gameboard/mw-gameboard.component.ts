@@ -1,10 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { PlayerModel, UnitGroupModel } from 'src/app/core/model/main.model';
 import {
+  BattleEventsService,
+  BattleEventTypeEnum,
   BattleStateService as MwBattleStateService,
   MwNeutralPlayerService,
   MwPlayerStateService,
 } from '../../services';
+import { MwCardsMappingService } from '../../services/mw-cards-mapping.service';
+import { MwUnitGroupCardComponent } from '../mw-unit-group-card/mw-unit-group-card.component';
 
 @Component({
   selector: 'mw-mw-gameboard',
@@ -22,11 +26,13 @@ export class MwGameboardComponent implements OnInit {
 
   constructor(
     public readonly mwPlayerState: MwPlayerStateService,
+    public readonly mwBattleState: MwBattleStateService,
     private readonly mwNeutralPlayer: MwNeutralPlayerService,
-    public readonly mwBattleState: MwBattleStateService
+    private readonly cardsMapping: MwCardsMappingService,
+    private readonly battleEvents: BattleEventsService,
   ) { }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.mainPlayerUnitGroups = this.mwPlayerState.getUnitGroups();
     this.neutralPlayerGroups = this.mwNeutralPlayer.getUnitGroups();
 
@@ -45,5 +51,17 @@ export class MwGameboardComponent implements OnInit {
       this.neutralPlayerGroups = this.mwBattleState.heroesUnitGroupsMap.get(this.neutralPlayerInfo) as UnitGroupModel[];
       this.fightQueue = this.mwBattleState.getFightQueue();
     });
+
+    this.battleEvents.onEvent(BattleEventTypeEnum.On_Group_Damaged).subscribe((event) => {
+      this.cardsMapping.get(event.attackedGroup).effectsComponent.addLossEffect(event.loss);
+    });
+  }
+
+  public onCardReady(unitGroup: UnitGroupModel, cardRef: MwUnitGroupCardComponent): void {
+    this.cardsMapping.register(unitGroup, cardRef);
+  }
+  
+  public onGroupDies(unitGroup: UnitGroupModel): void {
+    this.cardsMapping.unregister(unitGroup);
   }
 }

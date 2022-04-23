@@ -6,6 +6,7 @@ import {
   MwGameboardComponent,
   MwUnitGroupCardComponent,
   MwHistoryLogComponent,
+  CardEffectsComponent,
 } from './feature-sandbox/components';
 
 @NgModule({
@@ -14,6 +15,7 @@ import {
     MwGameboardComponent,
     MwUnitGroupCardComponent,
     MwHistoryLogComponent,
+    CardEffectsComponent,
   ],
   imports: [
     BrowserModule

@@ -13,6 +13,7 @@ export const HUMANS_FRACTION_UNIT_TYPES: Record<HF_TYPES_ENUM, UnitTypeModel> = 
     [HF_TYPES_ENUM.Pikemans]: {    
         mainPortraitUrl: '',
         name: 'Pikemans',
+        level: 1,
 
         baseStats: {
             damageInfo: {
@@ -38,6 +39,7 @@ export const HUMANS_FRACTION_UNIT_TYPES: Record<HF_TYPES_ENUM, UnitTypeModel> = 
     [HF_TYPES_ENUM.Archers]: {
         mainPortraitUrl: '',
         name: 'Archers',
+        level: 2,
 
         baseStats: {
             damageInfo: {
@@ -57,6 +59,7 @@ export const HUMANS_FRACTION_UNIT_TYPES: Record<HF_TYPES_ENUM, UnitTypeModel> = 
     [HF_TYPES_ENUM.Knights]: {
         mainPortraitUrl: '',
         name: 'Knights',
+        level: 3,
 
         baseStats: {
             damageInfo: {
@@ -76,6 +79,7 @@ export const HUMANS_FRACTION_UNIT_TYPES: Record<HF_TYPES_ENUM, UnitTypeModel> = 
     [HF_TYPES_ENUM.Cavalry]: {
         name: 'Cavalry',
         baseRequirements: {},
+        level: 4,
 
         baseStats: {
             damageInfo: {
