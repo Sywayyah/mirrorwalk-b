@@ -60,7 +60,7 @@ export const NEUTRAL_FRACTION_UNIT_TYPES: Record<NEUTRAL_TYPES_ENUM, UnitTypeMod
             },
             attackRating: 2,
             defence: 1,
-            health: 8,
+            health: 9,
             speed: 17,
         },
 

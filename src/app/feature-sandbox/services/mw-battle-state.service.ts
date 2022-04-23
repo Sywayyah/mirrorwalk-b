@@ -73,11 +73,14 @@ export class BattleStateService {
     }
 
     const firstUnitGroup = this.fightQueue[0];
+    const previousPlayer = this.currentPlayer;
     this.currentPlayer = firstUnitGroup.ownerPlayerRef as PlayerModel;
     this.currentUnitGroup = firstUnitGroup;
     this.currentGroupTurnsLeft = this.currentUnitGroup.type.defaultTurnsPerRound;
 
-    this.battleLogService.logRoundInfoMessage(`Player ${this.currentPlayer.type} starts his turn`);
+    if (this.currentPlayer !== previousPlayer) {
+      this.battleLogService.logRoundInfoMessage(`Player ${this.currentPlayer.type} starts his turn`);
+    }
   }
 
   public getFightQueue(): UnitGroupModel[] {
@@ -111,11 +114,21 @@ export class BattleStateService {
     const finalDamage = Math.round(minReceivedDamage + rolledDamage);
     const totalUnitLoss = Math.floor(finalDamage / enemyGroup.type.baseStats.health);
 
-    this.battleLogService.logSimpleMessage(`${this.currentPlayer.type}'s ${this.currentUnitGroup.type.name} attacks  ${enemyGroup.type.name} dealing ${finalDamage}, killing ${totalUnitLoss} units`);
-    enemyGroup.count -= totalUnitLoss;
+    const finalTotalUnitLoss = totalUnitLoss > enemyGroup.count ? enemyGroup.count : totalUnitLoss;
+
+    this.battleLogService.logDealtDamageMessage({
+      attacker: this.currentUnitGroup.type,
+      attacked: enemyGroup.type,
+      attackingPlayer: this.currentUnitGroup.ownerPlayerRef as PlayerModel,
+      attackedPlayer: enemyGroup.ownerPlayerRef as PlayerModel,
+      damage: finalDamage,
+      losses: finalTotalUnitLoss,
+    });
+
+    enemyGroup.count -= finalTotalUnitLoss;
     if (enemyGroup.count <= 0) {
       this.removeEnemyPlayerUnitGroup(enemyGroup);
-      this.battleLogService.logSimpleMessage(`Unit ${enemyGroup.type.name} dies, losing ${totalUnitLoss} units`);
+      this.battleLogService.logSimpleMessage(`Group of ${enemyGroup.type.name} dies, losing ${finalTotalUnitLoss} units`);
       this.battleEvent.next();
     }
 
@@ -125,10 +138,10 @@ export class BattleStateService {
       this.initNextTurn(true);
 
       if (!(this.heroesUnitGroupsMap.get(this.players[0]) as UnitGroupModel[]).length) {
-        this.battleLogService.logRoundInfoMessage('You have been defeated!');
+        this.battleLogService.logRoundInfoMessage('Defeat!');
         return;
       } else if (!(this.heroesUnitGroupsMap.get(this.players[1]) as UnitGroupModel[]).length) {
-        this.battleLogService.logRoundInfoMessage('You won!');
+        this.battleLogService.logRoundInfoMessage('Win!');
         return;
       }
 
