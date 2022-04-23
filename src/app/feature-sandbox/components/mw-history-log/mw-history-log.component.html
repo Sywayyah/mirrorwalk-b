@@ -1,0 +1,23 @@
+History:
+<div class="history-log" #historyLog>
+    <div *ngFor="let historyEntry of battleLogService.history">
+        <ng-container [ngSwitch]="historyEntry.type">
+            <div *ngSwitchCase="types.SimpleMsg">
+                <ng-container *ngTemplateOutlet="simple; context: { log: historyEntry }"></ng-container>
+            </div>
+            <div *ngSwitchCase="types.RoundInfoMsg">
+                <ng-container *ngTemplateOutlet="roundInfoMsg; context: { log: historyEntry }"></ng-container>
+            </div>
+        </ng-container>
+    </div>
+</div>
+
+<ng-template #simple let-log="log">
+    {{log.message}}
+</ng-template>
+
+<ng-template #roundInfoMsg let-log="log">
+    <div style="padding: 8px; text-align: center;">
+        {{log.message}}
+    </div>
+</ng-template>

@@ -42,7 +42,7 @@ export class MwUnitGroupCardComponent implements OnInit, OnDestroy {
         if (this.isEnemyCard) {
           const potentialTotalMaxDamage = this.mwBattleStateService.getUnitGroupTotalDamage(currentUnitGroup);
 
-          this.potentialUnitCountLoss = Math.floor(potentialTotalMaxDamage / this.unitGroup.type.baseStats  .health);
+          this.potentialUnitCountLoss = Math.floor(potentialTotalMaxDamage / this.unitGroup.type.baseStats.health);
           if (this.potentialUnitCountLoss > this.unitGroup.count) {
             this.potentialUnitCountLoss = this.unitGroup.count;
           }
@@ -53,6 +53,8 @@ export class MwUnitGroupCardComponent implements OnInit, OnDestroy {
 
   public ngOnDestroy(): void {
     this.destroy$.next();
+    this.destroy$.complete();
+    this.mwBattleStateService.clearHintMessage();
   }
 
   public onCardHover(isHovered: boolean): void {

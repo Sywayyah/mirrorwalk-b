@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { PlayerModel, PlayerTypeEnum, UnitGroupModel } from 'src/app/core/model/main.model';
-
+import { MwBattleLogService } from './mw-battle-log.service';
 
 @Injectable({
   providedIn: 'root',
@@ -17,10 +17,7 @@ export class BattleStateService {
 
   public round: number = 1;
 
-  public history: string[] = [];
-
   public hintMessage$: BehaviorSubject<string> = new BehaviorSubject('');
-  public historyEvent$: Subject<void> = new Subject();
 
   private playersRivalryMap: Map<PlayerModel, PlayerModel> = new Map();
 
@@ -29,7 +26,9 @@ export class BattleStateService {
   private players!: PlayerModel[];
 
 
-  constructor() { }
+  constructor(
+    private readonly battleLogService: MwBattleLogService,
+  ) { }
 
   /* until turns are out. */
   public initBattle(
@@ -70,7 +69,7 @@ export class BattleStateService {
       });
 
       this.round++;
-      this.logHistory(`Round ${this.round} begins`);
+      this.battleLogService.logRoundInfoMessage(`Round ${this.round} begins`);
     }
 
     const firstUnitGroup = this.fightQueue[0];
@@ -78,7 +77,7 @@ export class BattleStateService {
     this.currentUnitGroup = firstUnitGroup;
     this.currentGroupTurnsLeft = this.currentUnitGroup.type.defaultTurnsPerRound;
 
-    this.logHistory(`Player ${this.currentPlayer.type} starts his turn`);
+    this.battleLogService.logRoundInfoMessage(`Player ${this.currentPlayer.type} starts his turn`);
   }
 
   public getFightQueue(): UnitGroupModel[] {
@@ -102,8 +101,6 @@ export class BattleStateService {
   }
 
   public attackEnemyGroup(enemyGroup: UnitGroupModel): void {
-    // const totalDamage = this.getPotentialUnitLossCount(this.currentUnitGroup, enemyGroup);
-
     const currentGroupCount = this.currentUnitGroup.count;
     const currentGroupType = this.currentUnitGroup.type;
 
@@ -114,11 +111,11 @@ export class BattleStateService {
     const finalDamage = Math.round(minReceivedDamage + rolledDamage);
     const totalUnitLoss = Math.floor(finalDamage / enemyGroup.type.baseStats.health);
 
-    this.logHistory(`${this.currentPlayer.type}'s ${this.currentUnitGroup.type.name} attacks  ${enemyGroup.type.name} dealing ${finalDamage}, killing ${totalUnitLoss} units`);
+    this.battleLogService.logSimpleMessage(`${this.currentPlayer.type}'s ${this.currentUnitGroup.type.name} attacks  ${enemyGroup.type.name} dealing ${finalDamage}, killing ${totalUnitLoss} units`);
     enemyGroup.count -= totalUnitLoss;
     if (enemyGroup.count <= 0) {
       this.removeEnemyPlayerUnitGroup(enemyGroup);
-      this.logHistory(`Unit ${enemyGroup.type.name} dies, losing ${totalUnitLoss} units`);
+      this.battleLogService.logSimpleMessage(`Unit ${enemyGroup.type.name} dies, losing ${totalUnitLoss} units`);
       this.battleEvent.next();
     }
 
@@ -128,10 +125,10 @@ export class BattleStateService {
       this.initNextTurn(true);
 
       if (!(this.heroesUnitGroupsMap.get(this.players[0]) as UnitGroupModel[]).length) {
-        this.logHistory('You have been defeated!');
+        this.battleLogService.logRoundInfoMessage('You have been defeated!');
         return;
       } else if (!(this.heroesUnitGroupsMap.get(this.players[1]) as UnitGroupModel[]).length) {
-        this.logHistory('You won!');
+        this.battleLogService.logRoundInfoMessage('You won!');
         return;
       }
 
@@ -168,11 +165,6 @@ export class BattleStateService {
 
   public clearHintMessage(): void {
     this.hintMessage$.next('');
-  }
-
-  private logHistory(log: string): void {
-    this.history.push(log);
-    this.historyEvent$.next();
   }
 
   private processAiPlayer(): void {

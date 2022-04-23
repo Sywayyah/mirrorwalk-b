@@ -1,8 +1,10 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { PlayerModel, UnitGroupModel } from 'src/app/core/model/main.model';
-import { BattleStateService as MwBattleStateService } from '../../services/mw-battle-state.service';
-import { MwNeutralPlayerService } from '../../services/mw-neutral-player.service';
-import { MwPlayerStateService } from '../../services/mw-player-state.service';
+import {
+  BattleStateService as MwBattleStateService,
+  MwNeutralPlayerService,
+  MwPlayerStateService,
+} from '../../services';
 
 @Component({
   selector: 'mw-mw-gameboard',
@@ -10,8 +12,6 @@ import { MwPlayerStateService } from '../../services/mw-player-state.service';
   styleUrls: ['./mw-gameboard.component.scss'],
 })
 export class MwGameboardComponent implements OnInit {
-  @ViewChild('historyLog', { static: true }) public historyLogElem!: ElementRef;
-
   public mainPlayerUnitGroups!: UnitGroupModel[];
   public neutralPlayerGroups!: UnitGroupModel[];
 
@@ -39,13 +39,6 @@ export class MwGameboardComponent implements OnInit {
     );
 
     this.fightQueue = this.mwBattleState.getFightQueue();
-
-    this.mwBattleState.historyEvent$.subscribe(() => {
-      const historyElem = this.historyLogElem.nativeElement;
-      setTimeout(() => {
-        historyElem.scrollTo({ top: historyElem.scrollHeight, behavior: 'smooth'});
-      }, 0);
-    });
 
     this.mwBattleState.battleEvent.subscribe(() => {
       this.mainPlayerUnitGroups = this.mwBattleState.heroesUnitGroupsMap.get(this.mainPlayerInfo) as UnitGroupModel[]
