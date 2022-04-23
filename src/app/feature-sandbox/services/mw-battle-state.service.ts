@@ -48,6 +48,10 @@ export class BattleStateService {
 
     this.initNextTurn();
     this.battleEvent.next();
+    
+    if (this.currentPlayer.type === PlayerTypeEnum.AI) {
+      this.processAiPlayer();
+    }
   }
 
   public initNextTurn(removeCurrentFromQueue: boolean = false): void {

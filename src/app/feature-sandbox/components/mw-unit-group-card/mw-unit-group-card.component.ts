@@ -2,6 +2,7 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { PlayerModel, UnitGroupModel } from 'src/app/core/model/main.model';
+import { MwPlayersService } from '../../services';
 import { BattleStateService } from '../../services/mw-battle-state.service';
 
 @Component({
@@ -22,14 +23,16 @@ export class MwUnitGroupCardComponent implements OnInit, OnDestroy {
   public potentialUnitCountLoss: number = 0;
   public attackingUnitGroup!: UnitGroupModel;
 
+  public canCurrentPlayerAttack: boolean = false;
   private destroy$: Subject<void> = new Subject();
 
   constructor(
     public mwBattleStateService: BattleStateService,
+    private playersService: MwPlayersService,
   ) { }
 
   public ngOnInit(): void {
-    this.isEnemyCard = this.mwBattleStateService.currentPlayer !== this.playerInfo;
+    this.isEnemyCard = this.playersService.getCurrentPlayer() !== this.playerInfo;
     this.mwBattleStateService.battleEvent
       .pipe(
         takeUntil(this.destroy$),
@@ -37,6 +40,7 @@ export class MwUnitGroupCardComponent implements OnInit, OnDestroy {
       .subscribe(() => {
         const currentUnitGroup = this.mwBattleStateService.currentUnitGroup;
         this.attackingUnitGroup = currentUnitGroup;
+        this.canCurrentPlayerAttack = this.mwBattleStateService.currentPlayer === this.playersService.getCurrentPlayer();
 
         if (this.isEnemyCard) {
           const potentialTotalMaxDamage = this.mwBattleStateService.getUnitGroupTotalDamage(currentUnitGroup);

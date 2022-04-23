@@ -1,7 +1,7 @@
 <div 
     [style.background]="playerInfo.color"
     [class.current-group]="mwBattleStateService.currentPlayer === playerInfo && attackingUnitGroup === unitGroup"
-    [class.hovered-enemy]="isCardHovered && isEnemyCard"
+    [class.hovered-enemy]="isCardHovered && isEnemyCard && canCurrentPlayerAttack"
     (mouseenter)="onCardHover(true)"
     (mouseleave)="onCardHover(false)"
     (click)="onGroupClick()"

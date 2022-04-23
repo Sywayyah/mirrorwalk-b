@@ -26,6 +26,7 @@ export const NEUTRAL_FRACTION_UNIT_TYPES: Record<NEUTRAL_TYPES_ENUM, UnitTypeMod
         defaultTurnsPerRound: 1,
         minQuantityPerStack: 1,
     },
+
     [NEUTRAL_TYPES_ENUM.Gnolls]: {
         mainPortraitUrl: '',
         name: 'Gnolls',
@@ -50,6 +51,7 @@ export const NEUTRAL_FRACTION_UNIT_TYPES: Record<NEUTRAL_TYPES_ENUM, UnitTypeMod
             playerHeroLevel: 1,
         }
     },
+
     [NEUTRAL_TYPES_ENUM.Thiefs]: {
         mainPortraitUrl: '',
         name: 'Thiefs',
@@ -69,6 +71,7 @@ export const NEUTRAL_FRACTION_UNIT_TYPES: Record<NEUTRAL_TYPES_ENUM, UnitTypeMod
 
         baseRequirements: {},
     },
+    
     [NEUTRAL_TYPES_ENUM.ForestTrolls]: {
         mainPortraitUrl: '',
         name: 'Trolls',
