@@ -3,6 +3,7 @@ import { BehaviorSubject, Subject } from 'rxjs';
 import { PlayerModel, PlayerTypeEnum, UnitGroupModel } from 'src/app/core/model/main.model';
 import { BattleEventsService, BattleEventTypeEnum } from './mw-battle-events.service';
 import { MwBattleLogService } from './mw-battle-log.service';
+import { MwPlayersService } from './mw-players.service';
 
 @Injectable({
   providedIn: 'root',
@@ -11,7 +12,7 @@ export class BattleStateService {
 
   public currentPlayer!: PlayerModel;
   public currentUnitGroup!: UnitGroupModel;
-  public battleEvent: Subject<void> = new BehaviorSubject<void>(undefined);
+  public battleEvent$: Subject<void> = new BehaviorSubject<void>(undefined);
 
   public heroesUnitGroupsMap: Map<PlayerModel, UnitGroupModel[]> = new Map();
   public currentGroupTurnsLeft: number = 0;
@@ -30,6 +31,7 @@ export class BattleStateService {
   constructor(
     private readonly battleLogService: MwBattleLogService,
     private readonly battleEventsService: BattleEventsService,
+    private readonly playersService: MwPlayersService,
   ) { }
 
   /* until turns are out. */
@@ -48,12 +50,87 @@ export class BattleStateService {
 
     this.resetFightQueue();
 
-    this.initNextTurn();
-    this.battleEvent.next();
-    
-    if (this.currentPlayer.type === PlayerTypeEnum.AI) {
-      this.processAiPlayer();
-    }
+    this.battleEventsService
+      .listenEventsOfTypes([
+        BattleEventTypeEnum.Fight_Next_Round_Starts,
+        BattleEventTypeEnum.Round_Player_Turn_Starts,
+        BattleEventTypeEnum.Round_Group_Spends_Turn,
+        BattleEventTypeEnum.Round_Group_Turn_Ends,
+        BattleEventTypeEnum.Round_Player_Continues_Attacking,
+
+        BattleEventTypeEnum.On_Group_Dies,
+
+        BattleEventTypeEnum.Fight_Starts,
+      ])
+      .pipe(
+        this.battleEventsService.untilEvent(BattleEventTypeEnum.On_Fight_Ends),
+      )
+      .subscribe((event) => {
+        switch (event.type) {
+          case BattleEventTypeEnum.Fight_Starts:
+            console.log('Battle starts');
+            this.initNextTurn();
+            break;
+
+          case BattleEventTypeEnum.Fight_Next_Round_Starts:
+            console.log('Next round');
+            this.initNextTurn();
+
+            break;
+
+          case BattleEventTypeEnum.Round_Player_Turn_Starts:
+            if (event.currentPlayer.type === PlayerTypeEnum.AI) {
+              console.log(`AI player's Turn`)
+              this.processAiPlayer();
+            }
+            break;
+
+          case BattleEventTypeEnum.Round_Player_Continues_Attacking:
+            if (this.currentPlayer.type === PlayerTypeEnum.AI) {
+              this.processAiPlayer();
+            }
+            break;
+          case BattleEventTypeEnum.Round_Group_Turn_Ends:
+            this.initNextTurn(true);
+            break;
+
+          case BattleEventTypeEnum.On_Group_Dies:
+
+            if (!(this.heroesUnitGroupsMap.get(this.players[0]) as UnitGroupModel[]).length) {
+              this.battleEventsService.dispatchEvent({
+                type: BattleEventTypeEnum.On_Fight_Ends,
+                win: false,
+              });
+            }
+
+            if (!(this.heroesUnitGroupsMap.get(this.players[1]) as UnitGroupModel[]).length) {
+              this.battleEventsService.dispatchEvent({
+                type: BattleEventTypeEnum.On_Fight_Ends,
+                win: true,
+              });
+            }
+
+            break;
+
+          case BattleEventTypeEnum.Round_Group_Spends_Turn:
+            console.log('spends a turn');
+            if (event.groupPlayer.type === PlayerTypeEnum.AI && event.groupHasMoreTurns) {
+              this.processAiPlayer();
+            }
+
+            if (!event.groupHasMoreTurns) {
+              this.battleEventsService.dispatchEvent({
+                type: BattleEventTypeEnum.Round_Group_Turn_Ends,
+                playerEndsTurn: event.groupPlayer,
+              });
+            }
+        }
+        this.battleEvent$.next();
+      });
+
+    this.battleEventsService.dispatchEvent({
+      type: BattleEventTypeEnum.Fight_Starts,
+    });
   }
 
   public initNextTurn(removeCurrentFromQueue: boolean = false): void {
@@ -66,7 +143,11 @@ export class BattleStateService {
       this.resetGroupsTurnsLeft();
 
       this.round++;
-      this.battleLogService.logRoundInfoMessage(`Round ${this.round} begins`);
+      this.battleEventsService.dispatchEvent({ 
+        type: BattleEventTypeEnum.Fight_Next_Round_Starts,
+        round: this.round,
+      });
+      return;
     }
 
     const firstUnitGroup = this.fightQueue[0];
@@ -76,7 +157,15 @@ export class BattleStateService {
     this.currentGroupTurnsLeft = this.currentUnitGroup.type.defaultTurnsPerRound;
 
     if (this.currentPlayer !== previousPlayer) {
-      this.battleLogService.logRoundInfoMessage(`Player ${this.currentPlayer.type} starts his turn`);
+      this.battleEventsService.dispatchEvent({
+        type: BattleEventTypeEnum.Round_Player_Turn_Starts,
+        currentPlayer: this.currentPlayer,
+        previousPlayer: previousPlayer,
+      });
+    } else {
+      this.battleEventsService.dispatchEvent({
+        type: BattleEventTypeEnum.Round_Player_Continues_Attacking,
+      });
     }
   }
 
@@ -102,7 +191,8 @@ export class BattleStateService {
   }
 
   public attackEnemyGroup(enemyGroup: UnitGroupModel): void {
-    const currentGroupCount = this.currentUnitGroup.count;
+    const attackingGroup = this.currentUnitGroup;
+    const currentGroupCount = attackingGroup.count;
     const currentGroupType = this.currentUnitGroup.type;
 
     const minReceivedDamage = currentGroupCount * currentGroupType.baseStats.damageInfo.minDamage;
@@ -119,46 +209,29 @@ export class BattleStateService {
       attackedGroup: enemyGroup,
       attackerGroup: this.currentUnitGroup,
       loss: finalTotalUnitLoss,
-    });
-
-    this.battleLogService.logDealtDamageMessage({
-      attacker: this.currentUnitGroup.type,
-      attacked: enemyGroup.type,
-      attackingPlayer: this.currentUnitGroup.ownerPlayerRef as PlayerModel,
-      attackedPlayer: enemyGroup.ownerPlayerRef as PlayerModel,
       damage: finalDamage,
-      losses: finalTotalUnitLoss,
     });
 
     enemyGroup.count -= finalTotalUnitLoss;
+
     if (enemyGroup.count <= 0) {
       this.removeEnemyPlayerUnitGroup(enemyGroup);
-      this.battleLogService.logSimpleMessage(`Group of ${enemyGroup.type.name} dies, losing ${finalTotalUnitLoss} units`);
-      this.battleEvent.next();
+      this.battleEventsService.dispatchEvent({
+        type: BattleEventTypeEnum.On_Group_Dies,
+        target: enemyGroup,
+        targetPlayer: enemyGroup.ownerPlayerRef as PlayerModel,
+        loss: finalTotalUnitLoss,
+      })
     }
 
     this.currentGroupTurnsLeft--;
     this.currentUnitGroup.turnsLeft--;
 
-    if (!this.currentGroupTurnsLeft) {
-      this.initNextTurn(true);
-
-      if (!(this.heroesUnitGroupsMap.get(this.players[0]) as UnitGroupModel[]).length) {
-        this.battleLogService.logRoundInfoMessage('Defeat!');
-        return;
-      } else if (!(this.heroesUnitGroupsMap.get(this.players[1]) as UnitGroupModel[]).length) {
-        this.battleLogService.logRoundInfoMessage('Win!');
-        return;
-      }
-
-      this.battleEvent.next();
-    }
-
-    if (this.currentGroupTurnsLeft) {
-      if (this.currentPlayer.type === PlayerTypeEnum.AI) {
-        this.processAiPlayer();
-      }
-    }
+    this.battleEventsService.dispatchEvent({
+      type: BattleEventTypeEnum.Round_Group_Spends_Turn,
+      groupPlayer: attackingGroup.ownerPlayerRef as PlayerModel,
+      groupHasMoreTurns: Boolean(attackingGroup.turnsLeft),
+    });
   }
 
   public setHintAttackMessage(enemyGroup: UnitGroupModel): void {

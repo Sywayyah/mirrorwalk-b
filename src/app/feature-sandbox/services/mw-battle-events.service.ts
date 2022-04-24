@@ -1,28 +1,79 @@
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
-import { filter } from 'rxjs/operators';
-import { UnitGroupModel } from 'src/app/core/model/main.model';
+import { filter, map, take, takeUntil } from 'rxjs/operators';
+import { PlayerModel, UnitGroupModel } from 'src/app/core/model/main.model';
 
 export enum BattleEventTypeEnum {
   On_Group_Damaged,
+  On_Group_Dies,
+  On_Fight_Ends,
+
+  Round_Group_Turn_Ends,
+  Round_Group_Spends_Turn,
+  Round_Player_Turn_Starts,
+  
+  Round_Player_Continues_Attacking,
+  
+  Fight_Starts,
+  Fight_Next_Round_Starts,
 }
 
-export interface BattleEventModel {
-  type: BattleEventTypeEnum;
+export interface BattleEventModel<T extends BattleEventTypeEnum = BattleEventTypeEnum> {
+  type: T;
 }
 
-export interface GroupDamagedEvent extends BattleEventModel {
-  type: BattleEventTypeEnum.On_Group_Damaged;
+export interface GroupDamagedEvent extends BattleEventModel<BattleEventTypeEnum.On_Group_Damaged> {
   attackerGroup: UnitGroupModel;
   attackedGroup: UnitGroupModel;
   loss: number;
+  damage: number;
 }
+
+export interface GroupDiesEvent extends BattleEventModel<BattleEventTypeEnum.On_Group_Dies> {
+  target: UnitGroupModel;
+  targetPlayer: PlayerModel;
+  loss: number;
+}
+
+export interface RoundEndsEvent extends BattleEventModel<BattleEventTypeEnum.On_Fight_Ends> {
+  win: boolean;
+}
+
+export interface RoundNextGroupTurnEvent extends BattleEventModel<BattleEventTypeEnum.Fight_Next_Round_Starts> {
+  round: number;
+};
+export type RountPlayerContinuesAttacking = BattleEventModel<BattleEventTypeEnum.Round_Player_Continues_Attacking>;
+export interface RoundGroupTurnEnds extends BattleEventModel<BattleEventTypeEnum.Round_Group_Turn_Ends> {
+  playerEndsTurn: PlayerModel;
+}
+export interface RoundGroupSpendsTurn extends BattleEventModel<BattleEventTypeEnum.Round_Group_Spends_Turn> {
+  groupPlayer: PlayerModel;
+  groupHasMoreTurns: boolean;
+}
+export interface RoundPlayerTurnStarts extends BattleEventModel<BattleEventTypeEnum.Round_Player_Turn_Starts> {
+  currentPlayer: PlayerModel;
+  previousPlayer: PlayerModel;
+}
+
+export type FightStartsEvent = BattleEventModel<BattleEventTypeEnum.Fight_Starts>;
 
 export interface EventByEnumMapping {
   [BattleEventTypeEnum.On_Group_Damaged]: GroupDamagedEvent;
+  [BattleEventTypeEnum.On_Group_Dies]: GroupDiesEvent;
+  [BattleEventTypeEnum.On_Fight_Ends]: RoundEndsEvent;
+
+  [BattleEventTypeEnum.Fight_Next_Round_Starts]: RoundNextGroupTurnEvent;
+  [BattleEventTypeEnum.Round_Group_Spends_Turn]: RoundGroupSpendsTurn;
+  [BattleEventTypeEnum.Round_Group_Turn_Ends]: RoundGroupTurnEnds;
+  [BattleEventTypeEnum.Round_Player_Turn_Starts]: RoundPlayerTurnStarts;
+
+  [BattleEventTypeEnum.Round_Player_Continues_Attacking]: RountPlayerContinuesAttacking;
+
+  [BattleEventTypeEnum.Fight_Starts]: FightStartsEvent;
 }
 
-type BattleEvents = EventByEnumMapping[keyof EventByEnumMapping];
+
+export type BattleEvents = EventByEnumMapping[keyof EventByEnumMapping];
 
 /*
   todo: I have a feeling that I want to have such events system.
@@ -53,15 +104,23 @@ export class BattleEventsService {
     this.battleEvents$.next(event);
   }
 
-  public listenEventsOfTypes(types: BattleEventTypeEnum[]): Observable<BattleEventModel> {
+  public listenEventsOfTypes(types: BattleEventTypeEnum[]): Observable<BattleEvents> {
     const typesSet = new Set(types);
 
-    return this.battleEvents$.pipe(filter((event: BattleEventModel) => typesSet.has(event.type)));
+    return this.battleEvents$.pipe(filter((event: BattleEvents) => typesSet.has(event.type)));
   }
 
   public onEvent<K extends keyof EventByEnumMapping>(type: K): Observable<EventByEnumMapping[K]> {
     return this.battleEvents$.pipe(
-      filter((event) => event.type === type)
+      filter((event) => event.type === type),
+      /* todo: workaround find out if there is better solution */
+      map((event) => event as EventByEnumMapping[K]),
+    );
+  }
+
+  public untilEvent<K extends keyof EventByEnumMapping, T>(type: K): (source: Observable<T>) => Observable<T> {
+    return (source$) => source$.pipe(
+      takeUntil(this.onEvent(type).pipe(take(1))),
     );
   }
 }
