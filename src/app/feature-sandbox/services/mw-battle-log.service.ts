@@ -22,40 +22,24 @@ export class MwBattleLogService {
   constructor(
     private readonly battleEvents: BattleEventsService,
   ) {
-    this.battleEvents.listenEventsOfTypes([
-      BattleEventTypeEnum.On_Group_Damaged,
-      BattleEventTypeEnum.On_Group_Dies,
-      BattleEventTypeEnum.Fight_Ends,
+    this.battleEvents.onEvents({
+      [BattleEventTypeEnum.On_Group_Damaged]: event => this.logDealtDamageMessage({
+        attacked: event.attackedGroup.type,
+        attackedPlayer: event.attackedGroup.ownerPlayerRef as PlayerModel,
+        attacker: event.attackerGroup.type,
+        attackingPlayer: event.attackerGroup.ownerPlayerRef as PlayerModel,
+        damage: event.damage,
+        losses: event.loss,
+      }),
+      [BattleEventTypeEnum.On_Group_Dies]: event => this.logSimpleMessage(`Group of ${event.target.type.name} dies, losing ${event.loss} units`),
 
-      BattleEventTypeEnum.Round_Player_Turn_Starts,
 
-      BattleEventTypeEnum.Fight_Next_Round_Starts,
-    ]).subscribe((event) => {
-      switch (event.type) {
-        case BattleEventTypeEnum.On_Group_Damaged:
-          this.logDealtDamageMessage({
-            attacked: event.attackedGroup.type,
-            attackedPlayer: event.attackedGroup.ownerPlayerRef as PlayerModel,
-            attacker: event.attackerGroup.type,
-            attackingPlayer: event.attackerGroup.ownerPlayerRef as PlayerModel,
-            damage: event.damage,
-            losses: event.loss,
-          });
-          break;
-        case BattleEventTypeEnum.On_Group_Dies:
-          this.logSimpleMessage(`Group of ${event.target.type.name} dies, losing ${event.loss} units`);
-          break;
-        case BattleEventTypeEnum.Fight_Ends:
-          this.logRoundInfoMessage(event.win ? 'Win!' : 'Defeat');
-          break;
-        case BattleEventTypeEnum.Round_Player_Turn_Starts:
-          this.logRoundInfoMessage(`Player ${event.currentPlayer.type} starts his turn`);
-          break;
-        case BattleEventTypeEnum.Fight_Next_Round_Starts:
-          this.logRoundInfoMessage(`Round ${event.round} starts`);
-          break;
-      }
-    });
+      [BattleEventTypeEnum.Round_Player_Turn_Starts]: event => this.logRoundInfoMessage(`Player ${event.currentPlayer.type} starts his turn`),
+
+      [BattleEventTypeEnum.Fight_Ends]: event => this.logRoundInfoMessage(event.win ? 'Win!' : 'Defeat'),
+      [BattleEventTypeEnum.Fight_Next_Round_Starts]: event => this.logRoundInfoMessage(`Round ${event.round} starts`),
+
+    }).subscribe();
   }
 
   public logSimpleMessage(log: string): void {

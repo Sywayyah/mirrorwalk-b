@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
-import { filter, map, take, takeUntil } from 'rxjs/operators';
+import { filter, map, take, takeUntil, tap } from 'rxjs/operators';
 import { BattleEvents, EventByEnumMapping, BattleEventTypeEnum } from './types';
 
 /*
@@ -41,6 +41,31 @@ export class BattleEventsService {
     const typesSet = new Set(types);
 
     return this.battleEvents$.pipe(filter((event: BattleEvents) => typesSet.has(event.type)));
+  }
+
+  /* todo: think about it, feels advanced */
+  public onEvents(
+    types: { [K1 in keyof EventByEnumMapping]?: (event: EventByEnumMapping[K1]) => void },
+  ): Observable<BattleEvents> {
+    /* todo: there might be better approach */
+    type TKeys = keyof typeof types;
+    type TValues = typeof types[TKeys];
+
+    return this.battleEvents$
+      .pipe(
+        filter((event: BattleEvents) => event.type in types),
+        tap((event: BattleEvents) => {
+          const eventType = event.type as TKeys;
+
+          if (eventType in types) {
+            const eventHandler = types[eventType];
+
+            if (eventHandler) {
+              (eventHandler as unknown as (arg: TValues) => void)(event as unknown as TValues);
+            }
+          }
+        })
+      );
   }
 
   public onEvent<K extends keyof EventByEnumMapping>(type: K): Observable<EventByEnumMapping[K]> {
