@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { PlayerModel, PlayerTypeEnum, UnitGroupModel } from 'src/app/core/model/main.model';
-import { BattleEventsService, BattleEventTypeEnum } from './mw-battle-events.service';
+import { BattleEventsService } from './mw-battle-events.service';
+import { BattleEventTypeEnum } from "./types";
 import { MwPlayersService } from './mw-players.service';
 
 @Injectable({
