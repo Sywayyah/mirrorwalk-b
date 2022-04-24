@@ -38,7 +38,6 @@ export class MwBattleLogService {
 
       [BattleEventTypeEnum.Fight_Ends]: event => this.logRoundInfoMessage(event.win ? 'Win!' : 'Defeat'),
       [BattleEventTypeEnum.Fight_Next_Round_Starts]: event => this.logRoundInfoMessage(`Round ${event.round} starts`),
-
     }).subscribe();
   }
 

@@ -49,19 +49,20 @@ export class BattleEventsService {
   ): Observable<BattleEvents> {
     /* todo: there might be better approach */
     type TKeys = keyof typeof types;
-    type TValues = typeof types[TKeys];
+
+    type ListenedEvents = EventByEnumMapping[TKeys];
 
     return this.battleEvents$
       .pipe(
         filter((event: BattleEvents) => event.type in types),
-        tap((event: BattleEvents) => {
+        tap((event: ListenedEvents) => {
           const eventType = event.type as TKeys;
 
           if (eventType in types) {
             const eventHandler = types[eventType];
 
             if (eventHandler) {
-              (eventHandler as unknown as (arg: TValues) => void)(event as unknown as TValues);
+              (eventHandler as (arg: EventByEnumMapping[typeof eventType]) => void)(event);
             }
           }
         })
