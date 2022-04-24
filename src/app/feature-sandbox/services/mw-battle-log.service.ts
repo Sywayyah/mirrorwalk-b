@@ -9,22 +9,19 @@ export enum HistoryLogTypesEnum {
   DealtDamageMsg = 'dealt-damage-msg',
 }
 
-export interface HistoryMessageModel {
-  type: HistoryLogTypesEnum;
+export interface HistoryMessageModel<T extends HistoryLogTypesEnum = HistoryLogTypesEnum> {
+  type: T;
 }
 
-export interface SimpleMessage extends HistoryMessageModel {
-  type: HistoryLogTypesEnum.SimpleMsg;
+export interface SimpleMessage extends HistoryMessageModel<HistoryLogTypesEnum.SimpleMsg> {
   message: string;
 }
 
-export interface RoundInfoMessage extends HistoryMessageModel {
-  type: HistoryLogTypesEnum.RoundInfoMsg;
+export interface RoundInfoMessage extends HistoryMessageModel<HistoryLogTypesEnum.RoundInfoMsg> {
   message: string;
 }
 
-export interface DealtDamageMessage extends HistoryMessageModel {
-  type: HistoryLogTypesEnum.DealtDamageMsg;
+export interface DealtDamageMessage extends HistoryMessageModel<HistoryLogTypesEnum.DealtDamageMsg> {
   attackingPlayer: PlayerModel;
   attackedPlayer: PlayerModel;
   attacker: UnitTypeModel;
@@ -48,8 +45,10 @@ export class MwBattleLogService {
     this.battleEvents.listenEventsOfTypes([
       BattleEventTypeEnum.On_Group_Damaged,
       BattleEventTypeEnum.On_Group_Dies,
-      BattleEventTypeEnum.On_Fight_Ends,
+      BattleEventTypeEnum.Fight_Ends,
+
       BattleEventTypeEnum.Round_Player_Turn_Starts,
+
       BattleEventTypeEnum.Fight_Next_Round_Starts,
     ]).subscribe((event) => {
       switch (event.type) {
@@ -66,7 +65,7 @@ export class MwBattleLogService {
         case BattleEventTypeEnum.On_Group_Dies:
           this.logSimpleMessage(`Group of ${event.target.type.name} dies, losing ${event.loss} units`);
           break;
-        case BattleEventTypeEnum.On_Fight_Ends:
+        case BattleEventTypeEnum.Fight_Ends:
           this.logRoundInfoMessage(event.win ? 'Win!' : 'Defeat');
           break;
         case BattleEventTypeEnum.Round_Player_Turn_Starts:

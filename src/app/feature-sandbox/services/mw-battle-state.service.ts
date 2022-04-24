@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { PlayerModel, PlayerTypeEnum, UnitGroupModel } from 'src/app/core/model/main.model';
 import { BattleEventsService, BattleEventTypeEnum } from './mw-battle-events.service';
-import { MwBattleLogService } from './mw-battle-log.service';
 import { MwPlayersService } from './mw-players.service';
 
 @Injectable({
@@ -29,7 +28,6 @@ export class BattleStateService {
 
 
   constructor(
-    private readonly battleLogService: MwBattleLogService,
     private readonly battleEventsService: BattleEventsService,
     private readonly playersService: MwPlayersService,
   ) { }
@@ -52,7 +50,6 @@ export class BattleStateService {
 
     this.battleEventsService
       .listenEventsOfTypes([
-        BattleEventTypeEnum.Fight_Next_Round_Starts,
         BattleEventTypeEnum.Round_Player_Turn_Starts,
         BattleEventTypeEnum.Round_Group_Spends_Turn,
         BattleEventTypeEnum.Round_Group_Turn_Ends,
@@ -61,20 +58,21 @@ export class BattleStateService {
         BattleEventTypeEnum.On_Group_Dies,
 
         BattleEventTypeEnum.Fight_Starts,
+        BattleEventTypeEnum.Fight_Next_Round_Starts,
       ])
       .pipe(
-        this.battleEventsService.untilEvent(BattleEventTypeEnum.On_Fight_Ends),
+        this.battleEventsService.untilEvent(BattleEventTypeEnum.Fight_Ends),
       )
       .subscribe((event) => {
         switch (event.type) {
           case BattleEventTypeEnum.Fight_Starts:
             console.log('Battle starts');
-            this.initNextTurn();
+            this.initNextTurnByQueue();
             break;
 
           case BattleEventTypeEnum.Fight_Next_Round_Starts:
             console.log('Next round');
-            this.initNextTurn();
+            this.initNextTurnByQueue();
 
             break;
 
@@ -91,21 +89,21 @@ export class BattleStateService {
             }
             break;
           case BattleEventTypeEnum.Round_Group_Turn_Ends:
-            this.initNextTurn(true);
+            this.initNextTurnByQueue(true);
             break;
 
           case BattleEventTypeEnum.On_Group_Dies:
 
             if (!(this.heroesUnitGroupsMap.get(this.players[0]) as UnitGroupModel[]).length) {
               this.battleEventsService.dispatchEvent({
-                type: BattleEventTypeEnum.On_Fight_Ends,
+                type: BattleEventTypeEnum.Fight_Ends,
                 win: false,
               });
             }
 
             if (!(this.heroesUnitGroupsMap.get(this.players[1]) as UnitGroupModel[]).length) {
               this.battleEventsService.dispatchEvent({
-                type: BattleEventTypeEnum.On_Fight_Ends,
+                type: BattleEventTypeEnum.Fight_Ends,
                 win: true,
               });
             }
@@ -133,8 +131,8 @@ export class BattleStateService {
     });
   }
 
-  public initNextTurn(removeCurrentFromQueue: boolean = false): void {
-    if (removeCurrentFromQueue) {
+  public initNextTurnByQueue(removeCurrentGroupFromQueue: boolean = false): void {
+    if (removeCurrentGroupFromQueue) {
       this.fightQueue.shift();
     }
 
@@ -143,7 +141,7 @@ export class BattleStateService {
       this.resetGroupsTurnsLeft();
 
       this.round++;
-      this.battleEventsService.dispatchEvent({ 
+      this.battleEventsService.dispatchEvent({
         type: BattleEventTypeEnum.Fight_Next_Round_Starts,
         round: this.round,
       });
@@ -225,7 +223,7 @@ export class BattleStateService {
     }
 
     this.currentGroupTurnsLeft--;
-    this.currentUnitGroup.turnsLeft--;
+    this.currentUnitGroup.turnsLeft = this.currentGroupTurnsLeft;
 
     this.battleEventsService.dispatchEvent({
       type: BattleEventTypeEnum.Round_Group_Spends_Turn,

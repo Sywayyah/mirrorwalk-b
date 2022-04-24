@@ -6,16 +6,16 @@ import { PlayerModel, UnitGroupModel } from 'src/app/core/model/main.model';
 export enum BattleEventTypeEnum {
   On_Group_Damaged,
   On_Group_Dies,
-  On_Fight_Ends,
-
-  Round_Group_Turn_Ends,
-  Round_Group_Spends_Turn,
-  Round_Player_Turn_Starts,
   
+  Round_Group_Spends_Turn,
+  Round_Group_Turn_Ends,
+
+  Round_Player_Turn_Starts,
   Round_Player_Continues_Attacking,
   
   Fight_Starts,
   Fight_Next_Round_Starts,
+  Fight_Ends,
 }
 
 export interface BattleEventModel<T extends BattleEventTypeEnum = BattleEventTypeEnum> {
@@ -35,7 +35,7 @@ export interface GroupDiesEvent extends BattleEventModel<BattleEventTypeEnum.On_
   loss: number;
 }
 
-export interface RoundEndsEvent extends BattleEventModel<BattleEventTypeEnum.On_Fight_Ends> {
+export interface RoundEndsEvent extends BattleEventModel<BattleEventTypeEnum.Fight_Ends> {
   win: boolean;
 }
 
@@ -60,16 +60,16 @@ export type FightStartsEvent = BattleEventModel<BattleEventTypeEnum.Fight_Starts
 export interface EventByEnumMapping {
   [BattleEventTypeEnum.On_Group_Damaged]: GroupDamagedEvent;
   [BattleEventTypeEnum.On_Group_Dies]: GroupDiesEvent;
-  [BattleEventTypeEnum.On_Fight_Ends]: RoundEndsEvent;
-
-  [BattleEventTypeEnum.Fight_Next_Round_Starts]: RoundNextGroupTurnEvent;
+  
   [BattleEventTypeEnum.Round_Group_Spends_Turn]: RoundGroupSpendsTurn;
   [BattleEventTypeEnum.Round_Group_Turn_Ends]: RoundGroupTurnEnds;
+  
   [BattleEventTypeEnum.Round_Player_Turn_Starts]: RoundPlayerTurnStarts;
-
   [BattleEventTypeEnum.Round_Player_Continues_Attacking]: RountPlayerContinuesAttacking;
-
+  
   [BattleEventTypeEnum.Fight_Starts]: FightStartsEvent;
+  [BattleEventTypeEnum.Fight_Next_Round_Starts]: RoundNextGroupTurnEvent;
+  [BattleEventTypeEnum.Fight_Ends]: RoundEndsEvent;
 }
 
 
@@ -87,8 +87,13 @@ export type BattleEvents = EventByEnumMapping[keyof EventByEnumMapping];
   Also an idea is to listenUntil some other event fires,
     so it would be a bit easier to manage subscriptions
 
-  I feel that I like the idea of having event systems, kind of
-    helps to distribute logic easier
+  Idea: event map objects. like
+    {
+      [ON_GROUP_DAMAGED]: (event) => ...,
+      [ON_FIGHT_ENDS]: (event) => ...,
+    }
+
+  Might be better than having all sorts of switches
 */
 
 @Injectable({
