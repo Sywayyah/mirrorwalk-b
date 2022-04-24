@@ -189,7 +189,9 @@ export class BattleStateService {
     this.heroesUnitGroupsMap.set(enemyPlayer, enemyPlayerGroups);
 
     const indexOfRemovedGroupInQueue = this.fightQueue.indexOf(unitGroup);
-    this.fightQueue.splice(indexOfRemovedGroupInQueue, 1);
+    if (indexOfRemovedGroupInQueue !== -1) {
+      this.fightQueue.splice(indexOfRemovedGroupInQueue, 1);
+    }
   }
 
   public getEnemyOfPlayer(player: PlayerModel): PlayerModel {
