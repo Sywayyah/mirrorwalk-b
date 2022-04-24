@@ -46,7 +46,7 @@ export class MwGameboardComponent implements OnInit {
 
     this.fightQueue = this.mwBattleState.getFightQueue();
 
-    this.mwBattleState.battleEvent.subscribe(() => {
+    this.mwBattleState.battleEvent$.subscribe(() => {
       this.mainPlayerUnitGroups = this.mwBattleState.heroesUnitGroupsMap.get(this.mainPlayerInfo) as UnitGroupModel[]
       this.neutralPlayerGroups = this.mwBattleState.heroesUnitGroupsMap.get(this.neutralPlayerInfo) as UnitGroupModel[];
       this.fightQueue = this.mwBattleState.getFightQueue();
