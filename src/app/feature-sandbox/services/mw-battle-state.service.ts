@@ -4,16 +4,7 @@ import { PlayerModel, PlayerTypeEnum, UnitGroupModel } from 'src/app/core/model/
 import { BattleEventsService } from './mw-battle-events.service';
 import { BattleEventTypeEnum } from "./types";
 import { MwPlayersService } from './mw-players.service';
-import { CommonUtils } from 'src/app/core/utils/common.utils';
 
-interface DamageInfo {
-  attacker: UnitGroupModel;
-  unitsCount: number;
-  minDamage: number;
-  maxDamage: number;
-  rolledDamage: number;
-  totalDamage: number;
-}
 
 @Injectable({
   providedIn: 'root',
@@ -59,90 +50,78 @@ export class BattleStateService {
 
     this.resetFightQueue();
 
-    this.battleEventsService
-      .listenEventsOfTypes([
-        BattleEventTypeEnum.UI_Player_Clicks_Enemy_Group,
+    this.battleEventsService.onEvents({
+      [BattleEventTypeEnum.Fight_Starts]: event => {
+        console.log('Battle starts');
+        this.initNextTurnByQueue();
+      },
+      [BattleEventTypeEnum.Fight_Next_Round_Starts]: event => {
+        console.log('Next round');
+        this.initNextTurnByQueue();
+      },
 
-        BattleEventTypeEnum.Round_Player_Turn_Starts,
-        BattleEventTypeEnum.Round_Group_Spends_Turn,
-        BattleEventTypeEnum.Round_Group_Turn_Ends,
-        BattleEventTypeEnum.Round_Player_Continues_Attacking,
-
-        BattleEventTypeEnum.On_Group_Dies,
-
-        BattleEventTypeEnum.Fight_Starts,
-        BattleEventTypeEnum.Fight_Next_Round_Starts,
-      ])
-      .pipe(
-        this.battleEventsService.untilEvent(BattleEventTypeEnum.Fight_Ends),
-      )
-      .subscribe((event) => {
-        switch (event.type) {
-          case BattleEventTypeEnum.Fight_Starts:
-            console.log('Battle starts');
-            this.initNextTurnByQueue();
-            break;
-
-          case BattleEventTypeEnum.Fight_Next_Round_Starts:
-            console.log('Next round');
-            this.initNextTurnByQueue();
-
-            break;
-
-          case BattleEventTypeEnum.Round_Player_Turn_Starts:
-            if (event.currentPlayer.type === PlayerTypeEnum.AI) {
-              console.log(`AI player's Turn`)
-              this.processAiPlayer();
-            }
-            break;
-
-          case BattleEventTypeEnum.Round_Player_Continues_Attacking:
-            if (this.currentPlayer.type === PlayerTypeEnum.AI) {
-              this.processAiPlayer();
-            }
-            break;
-          case BattleEventTypeEnum.Round_Group_Turn_Ends:
-            this.initNextTurnByQueue(true);
-            break;
-
-          case BattleEventTypeEnum.On_Group_Dies:
-
-            if (!(this.heroesUnitGroupsMap.get(this.players[0]) as UnitGroupModel[]).length) {
-              this.battleEventsService.dispatchEvent({
-                type: BattleEventTypeEnum.Fight_Ends,
-                win: false,
-              });
-            }
-
-            if (!(this.heroesUnitGroupsMap.get(this.players[1]) as UnitGroupModel[]).length) {
-              this.battleEventsService.dispatchEvent({
-                type: BattleEventTypeEnum.Fight_Ends,
-                win: true,
-              });
-            }
-
-            break;
-
-          case BattleEventTypeEnum.Round_Group_Spends_Turn:
-            console.log('spends a turn');
-            if (event.groupPlayer.type === PlayerTypeEnum.AI && event.groupHasMoreTurns) {
-              this.processAiPlayer();
-            }
-
-            if (!event.groupHasMoreTurns) {
-              this.battleEventsService.dispatchEvent({
-                type: BattleEventTypeEnum.Round_Group_Turn_Ends,
-                playerEndsTurn: event.groupPlayer,
-              });
-            }
-            break;
-
-          case BattleEventTypeEnum.UI_Player_Clicks_Enemy_Group:
-            this.attackEnemyGroup(event.attackedGroup);
-
+      [BattleEventTypeEnum.Round_Player_Turn_Starts]: event => {
+        if (event.currentPlayer.type === PlayerTypeEnum.AI) {
+          console.log(`AI player's Turn`)
+          this.processAiPlayer();
         }
-        this.battleEvent$.next();
-      });
+      },
+
+      [BattleEventTypeEnum.Round_Player_Continues_Attacking]: event => {
+        if (this.currentPlayer.type === PlayerTypeEnum.AI) {
+          this.processAiPlayer();
+        }
+      },
+
+      [BattleEventTypeEnum.Round_Group_Turn_Ends]: event => {
+        this.initNextTurnByQueue(true);
+      },
+
+      
+      [BattleEventTypeEnum.On_Group_Dies]: event => {
+
+        if (!(this.heroesUnitGroupsMap.get(this.players[0]) as UnitGroupModel[]).length) {
+          this.battleEventsService.dispatchEvent({
+            type: BattleEventTypeEnum.Fight_Ends,
+            win: false,
+          });
+        }
+
+        if (!(this.heroesUnitGroupsMap.get(this.players[1]) as UnitGroupModel[]).length) {
+          this.battleEventsService.dispatchEvent({
+            type: BattleEventTypeEnum.Fight_Ends,
+            win: true,
+          });
+        }
+
+      },
+
+      [BattleEventTypeEnum.Round_Group_Spends_Turn]: event => {
+        console.log('spends a turn');
+        if (event.groupPlayer.type === PlayerTypeEnum.AI && event.groupHasMoreTurns) {
+          this.processAiPlayer();
+        }
+
+        if (!event.groupHasMoreTurns) {
+          this.battleEventsService.dispatchEvent({
+            type: BattleEventTypeEnum.Round_Group_Turn_Ends,
+            playerEndsTurn: event.groupPlayer,
+          });
+        }
+      },
+
+      [BattleEventTypeEnum.UI_Player_Clicks_Enemy_Group]: event => {
+        this.battleEventsService.dispatchEvent({
+          type: BattleEventTypeEnum.Combat_Group_Attacked,
+          attackedGroup: event.attackedGroup,
+          attackerGroup: event.attackingGroup,
+        });
+      },
+      
+    }).subscribe(() => {
+      this.battleEvent$.next();
+    });
+    
 
     this.battleEventsService.dispatchEvent({
       type: BattleEventTypeEnum.Fight_Starts,
@@ -208,66 +187,6 @@ export class BattleStateService {
     return this.playersRivalryMap.get(player) as PlayerModel;
   }
 
-  public getUnitGroupDamage(unitGroup: UnitGroupModel): DamageInfo {
-    const groupBaseStats = unitGroup.type.baseStats;
-    const groupDamageInfo = groupBaseStats.damageInfo;
-    const unitsCount = unitGroup.count;
-
-    const minDamage = groupDamageInfo.minDamage * unitGroup.count;
-    const maxDamage = groupDamageInfo.maxDamage * unitGroup.count;
-
-    const rolledDamage = CommonUtils.randIntInRange(0, maxDamage - minDamage);
-
-    return {
-      attacker: unitGroup,
-      unitsCount: unitsCount,
-      minDamage: minDamage,
-      maxDamage: maxDamage,
-      rolledDamage: rolledDamage,
-      totalDamage: minDamage + rolledDamage,
-    };
-  }
-
-  public attackEnemyGroup(enemyGroup: UnitGroupModel): void {
-    const attackingGroup = this.currentUnitGroup;
-
-    const attackerDamageInfo = this.getUnitGroupDamage(attackingGroup);
-
-    const finalDamage = attackerDamageInfo.totalDamage;
-    const totalUnitLoss = Math.floor(finalDamage / enemyGroup.type.baseStats.health);
-
-    const finalTotalUnitLoss = totalUnitLoss > enemyGroup.count ? enemyGroup.count : totalUnitLoss;
-
-    this.battleEventsService.dispatchEvent({
-      type: BattleEventTypeEnum.On_Group_Damaged,
-      attackedGroup: enemyGroup,
-      attackerGroup: this.currentUnitGroup,
-      loss: finalTotalUnitLoss,
-      damage: finalDamage,
-    });
-
-    enemyGroup.count -= finalTotalUnitLoss;
-
-    if (enemyGroup.count <= 0) {
-      this.removeEnemyPlayerUnitGroup(enemyGroup);
-      this.battleEventsService.dispatchEvent({
-        type: BattleEventTypeEnum.On_Group_Dies,
-        target: enemyGroup,
-        targetPlayer: enemyGroup.ownerPlayerRef as PlayerModel,
-        loss: finalTotalUnitLoss,
-      })
-    }
-
-    this.currentGroupTurnsLeft--;
-    this.currentUnitGroup.turnsLeft = this.currentGroupTurnsLeft;
-
-    this.battleEventsService.dispatchEvent({
-      type: BattleEventTypeEnum.Round_Group_Spends_Turn,
-      groupPlayer: attackingGroup.ownerPlayerRef as PlayerModel,
-      groupHasMoreTurns: Boolean(attackingGroup.turnsLeft),
-    });
-  }
-
   public setHintAttackMessage(enemyGroup: UnitGroupModel): void {
     const currentGroupCount = this.currentUnitGroup.count;
     const currentGroupType = this.currentUnitGroup.type;
@@ -299,7 +218,12 @@ export class BattleStateService {
       const randomGroupIndex = Math.round(Math.random() * (enemyUnitGroups.length - 1));
       const targetGroup = enemyUnitGroups[randomGroupIndex];
 
-      this.attackEnemyGroup(targetGroup);
+      // this.attackEnemyGroup(targetGroup);
+      this.battleEventsService.dispatchEvent({
+        type: BattleEventTypeEnum.Combat_Group_Attacked,
+        attackedGroup: targetGroup,
+        attackerGroup: this.currentUnitGroup,
+      })
     }, 1000);
   }
 

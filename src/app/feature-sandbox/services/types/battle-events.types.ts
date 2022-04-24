@@ -7,6 +7,8 @@ export enum BattleEventTypeEnum {
   On_Group_Damaged,
   On_Group_Dies,
 
+  Combat_Group_Attacked,
+
   Round_Group_Spends_Turn,
   Round_Group_Turn_Ends,
 
@@ -66,10 +68,17 @@ export interface RoundPlayerTurnStarts extends BattleEventModel<BattleEventTypeE
   previousPlayer: PlayerModel;
 }
 
+export interface CombatGroupAttacked extends BattleEventModel<BattleEventTypeEnum.Combat_Group_Attacked> {
+  attackerGroup: UnitGroupModel;
+  attackedGroup: UnitGroupModel;
+}
+
 export type FightStartsEvent = BattleEventModel<BattleEventTypeEnum.Fight_Starts>;
 
 export interface EventByEnumMapping {
   [BattleEventTypeEnum.UI_Player_Clicks_Enemy_Group]: UIPlayerClicksEnemyGroup;
+
+  [BattleEventTypeEnum.Combat_Group_Attacked]: CombatGroupAttacked;
 
   [BattleEventTypeEnum.On_Group_Damaged]: GroupDamagedEvent;
   [BattleEventTypeEnum.On_Group_Dies]: GroupDiesEvent;
@@ -84,6 +93,5 @@ export interface EventByEnumMapping {
   [BattleEventTypeEnum.Fight_Next_Round_Starts]: RoundNextGroupTurnEvent;
   [BattleEventTypeEnum.Fight_Ends]: RoundEndsEvent;
 }
-
 
 export type BattleEvents = EventByEnumMapping[keyof EventByEnumMapping];

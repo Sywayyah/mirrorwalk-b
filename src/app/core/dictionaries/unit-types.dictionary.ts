@@ -1,4 +1,6 @@
+import { AbilityTypesEnum } from "../model/abilities.types";
 import { UnitTypeModel } from "../model/main.model";
+import { Abilities } from "./abilities.const";
 
 
 export enum HF_TYPES_ENUM {
@@ -25,6 +27,9 @@ export const HUMANS_FRACTION_UNIT_TYPES: Record<HF_TYPES_ENUM, UnitTypeModel> = 
             health: 6,
             speed: 13,
         },
+        baseAbilities: [
+            Abilities[AbilityTypesEnum.BaseCounterAttack],
+        ],
         minQuantityPerStack: 5,
         defaultTurnsPerRound: 1,
 

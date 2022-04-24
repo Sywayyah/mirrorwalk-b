@@ -1,4 +1,4 @@
-import { AbilityModel } from "./abilities";
+import { AbilityModel } from "./abilities.types";
 
 interface RequirementModel {
     playerHeroLevel?: number;

@@ -8,6 +8,7 @@ import {
   MwPlayerStateService,
 } from '../../services';
 import { MwCardsMappingService } from '../../services/mw-cards-mapping.service';
+import { CombatInteractorService } from '../../services/mw-combat-interactor.service';
 import { MwUnitGroupCardComponent } from '../mw-unit-group-card/mw-unit-group-card.component';
 
 @Component({
@@ -30,7 +31,10 @@ export class MwGameboardComponent implements OnInit {
     private readonly mwNeutralPlayer: MwNeutralPlayerService,
     private readonly cardsMapping: MwCardsMappingService,
     private readonly battleEvents: BattleEventsService,
-  ) { }
+    private readonly combatInteractor: CombatInteractorService,
+  ) {
+    this.combatInteractor;
+   }
 
   public ngOnInit(): void {
     this.mainPlayerUnitGroups = this.mwPlayerState.getUnitGroups();
