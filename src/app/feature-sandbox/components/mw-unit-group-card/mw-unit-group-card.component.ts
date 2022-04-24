@@ -2,8 +2,7 @@ import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } 
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { PlayerModel, UnitGroupModel } from 'src/app/core/model/main.model';
-import { MwPlayersService } from '../../services';
-import { BattleStateService } from '../../services/mw-battle-state.service';
+import { BattleEventsService, MwPlayersService, BattleStateService, BattleEventTypeEnum } from '../../services';
 import { CardEffectsComponent } from '../mw-card-effects/card-effects.component';
 
 @Component({
@@ -37,6 +36,7 @@ export class MwUnitGroupCardComponent implements OnInit, OnDestroy {
   constructor(
     public mwBattleStateService: BattleStateService,
     private playersService: MwPlayersService,
+    private readonly battleEvents: BattleEventsService,
   ) { }
 
   public ngOnInit(): void {
@@ -83,7 +83,12 @@ export class MwUnitGroupCardComponent implements OnInit, OnDestroy {
 
   public onGroupClick(): void {
     if (this.isEnemyCard) {
-      this.mwBattleStateService.attackEnemyGroup(this.unitGroup);
+      this.battleEvents.dispatchEvent({
+        type: BattleEventTypeEnum.UI_Player_Clicks_Enemy_Group,
+        attackedGroup: this.unitGroup,
+        attackingGroup: this.mwBattleStateService.currentUnitGroup,
+        attackingPlayer: this.mwBattleStateService.currentPlayer,     
+      });
       this.mwBattleStateService.setHintAttackMessage(this.unitGroup);
     }
   }

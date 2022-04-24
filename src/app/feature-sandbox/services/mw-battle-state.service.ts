@@ -33,7 +33,7 @@ export class BattleStateService {
     private readonly playersService: MwPlayersService,
   ) { }
 
-  /* until turns are out. */
+  /* maybe.. this bug happens when someone dies and other group starts its turn */
   public initBattle(
     unitGroups: UnitGroupModel[],
     players: PlayerModel[],
@@ -51,6 +51,8 @@ export class BattleStateService {
 
     this.battleEventsService
       .listenEventsOfTypes([
+        BattleEventTypeEnum.UI_Player_Clicks_Enemy_Group,
+
         BattleEventTypeEnum.Round_Player_Turn_Starts,
         BattleEventTypeEnum.Round_Group_Spends_Turn,
         BattleEventTypeEnum.Round_Group_Turn_Ends,
@@ -123,6 +125,11 @@ export class BattleStateService {
                 playerEndsTurn: event.groupPlayer,
               });
             }
+            break;
+
+          case BattleEventTypeEnum.UI_Player_Clicks_Enemy_Group:
+            this.attackEnemyGroup(event.attackedGroup);
+
         }
         this.battleEvent$.next();
       });

@@ -2,6 +2,8 @@ import { PlayerModel, UnitGroupModel } from 'src/app/core/model/main.model';
 
 
 export enum BattleEventTypeEnum {
+  UI_Player_Clicks_Enemy_Group,
+
   On_Group_Damaged,
   On_Group_Dies,
 
@@ -20,7 +22,11 @@ export interface BattleEventModel<T extends BattleEventTypeEnum = BattleEventTyp
   type: T;
 }
 
-
+export interface UIPlayerClicksEnemyGroup extends BattleEventModel<BattleEventTypeEnum.UI_Player_Clicks_Enemy_Group> {
+  attackingPlayer: PlayerModel;
+  attackingGroup: UnitGroupModel;
+  attackedGroup: UnitGroupModel;
+}
 
 export interface GroupDamagedEvent extends BattleEventModel<BattleEventTypeEnum.On_Group_Damaged> {
   attackerGroup: UnitGroupModel;
@@ -63,6 +69,8 @@ export interface RoundPlayerTurnStarts extends BattleEventModel<BattleEventTypeE
 export type FightStartsEvent = BattleEventModel<BattleEventTypeEnum.Fight_Starts>;
 
 export interface EventByEnumMapping {
+  [BattleEventTypeEnum.UI_Player_Clicks_Enemy_Group]: UIPlayerClicksEnemyGroup;
+
   [BattleEventTypeEnum.On_Group_Damaged]: GroupDamagedEvent;
   [BattleEventTypeEnum.On_Group_Dies]: GroupDiesEvent;
 
