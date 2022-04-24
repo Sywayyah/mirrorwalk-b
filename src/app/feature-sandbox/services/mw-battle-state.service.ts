@@ -4,6 +4,16 @@ import { PlayerModel, PlayerTypeEnum, UnitGroupModel } from 'src/app/core/model/
 import { BattleEventsService } from './mw-battle-events.service';
 import { BattleEventTypeEnum } from "./types";
 import { MwPlayersService } from './mw-players.service';
+import { CommonUtils } from 'src/app/core/utils/common.utils';
+
+interface DamageInfo {
+  attacker: UnitGroupModel;
+  unitsCount: number;
+  minDamage: number;
+  maxDamage: number;
+  rolledDamage: number;
+  totalDamage: number;
+}
 
 @Injectable({
   providedIn: 'root',
@@ -198,16 +208,32 @@ export class BattleStateService {
     return this.playersRivalryMap.get(player) as PlayerModel;
   }
 
+  public getUnitGroupDamage(unitGroup: UnitGroupModel): DamageInfo {
+    const groupBaseStats = unitGroup.type.baseStats;
+    const groupDamageInfo = groupBaseStats.damageInfo;
+    const unitsCount = unitGroup.count;
+
+    const minDamage = groupDamageInfo.minDamage * unitGroup.count;
+    const maxDamage = groupDamageInfo.maxDamage * unitGroup.count;
+
+    const rolledDamage = CommonUtils.randIntInRange(0, maxDamage - minDamage);
+
+    return {
+      attacker: unitGroup,
+      unitsCount: unitsCount,
+      minDamage: minDamage,
+      maxDamage: maxDamage,
+      rolledDamage: rolledDamage,
+      totalDamage: minDamage + rolledDamage,
+    };
+  }
+
   public attackEnemyGroup(enemyGroup: UnitGroupModel): void {
     const attackingGroup = this.currentUnitGroup;
-    const currentGroupCount = attackingGroup.count;
-    const currentGroupType = this.currentUnitGroup.type;
 
-    const minReceivedDamage = currentGroupCount * currentGroupType.baseStats.damageInfo.minDamage;
-    const maxReceivedDamage = currentGroupCount * currentGroupType.baseStats.damageInfo.maxDamage;
-    const rolledDamage = Math.random() * (maxReceivedDamage - minReceivedDamage);
+    const attackerDamageInfo = this.getUnitGroupDamage(attackingGroup);
 
-    const finalDamage = Math.round(minReceivedDamage + rolledDamage);
+    const finalDamage = attackerDamageInfo.totalDamage;
     const totalUnitLoss = Math.floor(finalDamage / enemyGroup.type.baseStats.health);
 
     const finalTotalUnitLoss = totalUnitLoss > enemyGroup.count ? enemyGroup.count : totalUnitLoss;
@@ -275,10 +301,6 @@ export class BattleStateService {
 
       this.attackEnemyGroup(targetGroup);
     }, 1000);
-  }
-
-  public getPotentialUnitLossCount(attackingGroup: UnitGroupModel, attackedGroup: UnitGroupModel): number {
-    return Math.floor(attackingGroup.count * attackingGroup.type.baseStats.damageInfo.maxDamage / attackedGroup.type.baseStats.health);
   }
 
   public getUnitGroupTotalDamage(unitGroup: UnitGroupModel): number {

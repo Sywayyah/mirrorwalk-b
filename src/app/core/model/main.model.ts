@@ -1,3 +1,4 @@
+import { AbilityModel } from "./abilities";
 
 interface RequirementModel {
     playerHeroLevel?: number;
@@ -28,7 +29,7 @@ export interface UnitTypeBaseStatsModel {
 
     /* Similar to Homm3 system, where each point of difference between attack/defence increases damage by 5 percent */
     attackRating: number;
-    
+
     damageInfo: UnitDamageModel;
 }
 
@@ -42,11 +43,13 @@ export interface UnitTypeModel {
 
     baseStats: UnitTypeBaseStatsModel;
 
-    /* minimal amount of units that can stack can be hired, sold or split by */
-    minQuantityPerStack: number;
-
     /* what does this unit type requires */
     baseRequirements: RequirementModel;
+
+    baseAbilities?: AbilityModel[];
+
+    /* minimal amount of units that can stack can be hired, sold or split by */
+    minQuantityPerStack: number;
 
     /* How many attacks unit can make by default */
     defaultTurnsPerRound: number;
