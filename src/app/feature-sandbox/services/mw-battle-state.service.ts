@@ -98,11 +98,11 @@ export class BattleStateService {
 
       [BattleEventTypeEnum.Round_Group_Spends_Turn]: event => {
         console.log('spends a turn');
-        if (event.groupPlayer.type === PlayerTypeEnum.AI && event.groupHasMoreTurns) {
+        if (event.groupPlayer.type === PlayerTypeEnum.AI && event.groupHasMoreTurns && event.groupStillAlive) {
           this.processAiPlayer();
         }
 
-        if (!event.groupHasMoreTurns) {
+        if (!event.groupHasMoreTurns || !event.groupStillAlive) {
           this.battleEventsService.dispatchEvent({
             type: BattleEventTypeEnum.Round_Group_Turn_Ends,
             playerEndsTurn: event.groupPlayer,
@@ -169,8 +169,8 @@ export class BattleStateService {
     return this.fightQueue;
   }
 
-  public removeEnemyPlayerUnitGroup(unitGroup: UnitGroupModel): void {
-    const enemyPlayer = this.getEnemyOfPlayer(this.currentPlayer);
+  public handleDefeatedUnitGroup(unitGroup: UnitGroupModel): void {
+    const enemyPlayer = unitGroup.ownerPlayerRef as PlayerModel;
     const enemyPlayerGroups = this.heroesUnitGroupsMap.get(enemyPlayer) as UnitGroupModel[];
     const indexOfUnitGroup = enemyPlayerGroups?.indexOf(unitGroup);
 

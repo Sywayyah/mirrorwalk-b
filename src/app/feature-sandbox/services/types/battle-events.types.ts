@@ -5,9 +5,12 @@ export enum BattleEventTypeEnum {
   UI_Player_Clicks_Enemy_Group,
 
   On_Group_Damaged,
+  /* todo: this event can be merged with On_Group_Damaged, introducing field isCounterattack */
+  On_Group_Counter_Attacked,
   On_Group_Dies,
 
   Combat_Group_Attacked,
+  Combat_Attack_Interaction,
 
   Round_Group_Spends_Turn,
   Round_Group_Turn_Ends,
@@ -37,6 +40,13 @@ export interface GroupDamagedEvent extends BattleEventModel<BattleEventTypeEnum.
   damage: number;
 }
 
+export interface OnGroupCounterAttacked extends BattleEventModel<BattleEventTypeEnum.On_Group_Counter_Attacked> {
+  attackerGroup: UnitGroupModel;
+  attackedGroup: UnitGroupModel;
+  loss: number;
+  damage: number;
+}
+
 export interface GroupDiesEvent extends BattleEventModel<BattleEventTypeEnum.On_Group_Dies> {
   target: UnitGroupModel;
   targetPlayer: PlayerModel;
@@ -60,6 +70,8 @@ export interface RoundGroupTurnEnds extends BattleEventModel<BattleEventTypeEnum
 
 export interface RoundGroupSpendsTurn extends BattleEventModel<BattleEventTypeEnum.Round_Group_Spends_Turn> {
   groupPlayer: PlayerModel;
+  group: UnitGroupModel;
+  groupStillAlive: boolean;
   groupHasMoreTurns: boolean;
 }
 
@@ -73,14 +85,28 @@ export interface CombatGroupAttacked extends BattleEventModel<BattleEventTypeEnu
   attackedGroup: UnitGroupModel;
 }
 
+export enum CombatInteractionEnum {
+  GroupAttacks = 'attacks',
+  GroupCounterattacks = 'counterattacks',
+  AttackInteractionCompleted = 'completed',
+}
+
+export interface CombatInteractionState extends BattleEventModel<BattleEventTypeEnum.Combat_Attack_Interaction> {
+  attackingGroup: UnitGroupModel;
+  attackedGroup: UnitGroupModel;
+  action: CombatInteractionEnum;
+}
+
 export type FightStartsEvent = BattleEventModel<BattleEventTypeEnum.Fight_Starts>;
 
 export interface EventByEnumMapping {
   [BattleEventTypeEnum.UI_Player_Clicks_Enemy_Group]: UIPlayerClicksEnemyGroup;
 
   [BattleEventTypeEnum.Combat_Group_Attacked]: CombatGroupAttacked;
+  [BattleEventTypeEnum.Combat_Attack_Interaction]: CombatInteractionState;
 
   [BattleEventTypeEnum.On_Group_Damaged]: GroupDamagedEvent;
+  [BattleEventTypeEnum.On_Group_Counter_Attacked]: OnGroupCounterAttacked;
   [BattleEventTypeEnum.On_Group_Dies]: GroupDiesEvent;
 
   [BattleEventTypeEnum.Round_Group_Spends_Turn]: RoundGroupSpendsTurn;

@@ -46,6 +46,8 @@ export interface UnitTypeModel {
     /* what does this unit type requires */
     baseRequirements: RequirementModel;
 
+    /* create a separate mapping, table UnitGroup->Abilities */
+    /*  Associative tables.. can be useful. Don't need to overgrow the model */
     baseAbilities?: AbilityModel[];
 
     /* minimal amount of units that can stack can be hired, sold or split by */
