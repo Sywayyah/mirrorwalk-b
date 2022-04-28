@@ -42,7 +42,7 @@ export enum PLAYER_IDS {
 export class MwPlayersService {
   public players: Map<string, PlayerModel> = new Map([
     [PLAYER_IDS.Main, {
-      color: PLAYER_COLORS.BLUE,
+      color: PLAYER_COLORS.GREEN,
       resources: {
         gems: 0,
         gold: 12000,

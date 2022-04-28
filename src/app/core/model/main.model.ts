@@ -86,8 +86,8 @@ export interface ResourcesModel {
 
 
 export enum PlayerTypeEnum {
-    Player = 'player',
-    AI = 'ai',
+    Player = 'Player',
+    AI = 'AI',
 }
 
 /* todo: seems reasonable to have heroes and players models as well */
