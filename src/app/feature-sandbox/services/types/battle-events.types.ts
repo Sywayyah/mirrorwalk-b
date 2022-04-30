@@ -3,6 +3,7 @@ import { PlayerModel, UnitGroupModel } from 'src/app/core/model/main.model';
 
 export enum BattleEventTypeEnum {
   UI_Player_Clicks_Enemy_Group,
+  UI_Player_Hovers_Group_Card,
 
   On_Group_Damaged,
   /* todo: this event can be merged with On_Group_Damaged, introducing field isCounterattack */
@@ -31,6 +32,18 @@ export interface UIPlayerClicksEnemyGroup extends BattleEventModel<BattleEventTy
   attackingPlayer: PlayerModel;
   attackingGroup: UnitGroupModel;
   attackedGroup: UnitGroupModel;
+}
+
+export enum HoverTypeEnum {
+  EnemyCard,
+  Unhover,
+}
+
+export interface UIPlayerHoversCard extends BattleEventModel<BattleEventTypeEnum.UI_Player_Hovers_Group_Card> {
+  // hovered: boolean;
+  hoverType: HoverTypeEnum;
+  currentCard?: UnitGroupModel;
+  hoveredCard?: UnitGroupModel;
 }
 
 export interface GroupDamagedEvent extends BattleEventModel<BattleEventTypeEnum.On_Group_Damaged> {
@@ -101,6 +114,7 @@ export type FightStartsEvent = BattleEventModel<BattleEventTypeEnum.Fight_Starts
 
 export interface EventByEnumMapping {
   [BattleEventTypeEnum.UI_Player_Clicks_Enemy_Group]: UIPlayerClicksEnemyGroup;
+  [BattleEventTypeEnum.UI_Player_Hovers_Group_Card]: UIPlayerHoversCard;
 
   [BattleEventTypeEnum.Combat_Group_Attacked]: CombatGroupAttacked;
   [BattleEventTypeEnum.Combat_Attack_Interaction]: CombatInteractionState;

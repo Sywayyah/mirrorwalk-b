@@ -57,9 +57,7 @@
   </div>
 </div>
 
-<div *ngIf="(mwBattleState.hintMessage$ | async) as message" class="hint-panel">
-  {{message}}
-</div>
+<mw-action-hint class="hint-panel"></mw-action-hint>
 
 <div class="history-log-panel">
   <mw-history-log></mw-history-log>

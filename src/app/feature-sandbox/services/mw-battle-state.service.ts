@@ -4,6 +4,7 @@ import { PlayerModel, PlayerTypeEnum, UnitGroupModel } from 'src/app/core/model/
 import { BattleEventsService } from './mw-battle-events.service';
 import { BattleEventTypeEnum } from "./types";
 import { MwPlayersService } from './mw-players.service';
+import { ActionHintModel } from './types/action-hint.types';
 
 
 @Injectable({
@@ -20,7 +21,7 @@ export class BattleStateService {
 
   public round: number = 1;
 
-  public hintMessage$: BehaviorSubject<string> = new BehaviorSubject('');
+  public hintMessage$: BehaviorSubject<ActionHintModel | null> = new BehaviorSubject<ActionHintModel | null>(null);
 
   private playersRivalryMap: Map<PlayerModel, PlayerModel> = new Map();
 
@@ -164,7 +165,6 @@ export class BattleStateService {
     }
   }
 
-
   public getFightQueue(): UnitGroupModel[] {
     return this.fightQueue;
   }
@@ -187,38 +187,12 @@ export class BattleStateService {
     return this.playersRivalryMap.get(player) as PlayerModel;
   }
 
-  public setHintAttackMessage(enemyGroup: UnitGroupModel): void {
-    const currentGroupCount = this.currentUnitGroup.count;
-    const currentGroupType = this.currentUnitGroup.type;
-
-    const minReceivedDamage = currentGroupCount * currentGroupType.baseStats.damageInfo.minDamage;
-    const maxReceivedDamage = currentGroupCount * currentGroupType.baseStats.damageInfo.maxDamage;
-    const rolledDamage = Math.random() * (maxReceivedDamage - minReceivedDamage);
-
-    let minUnitLossCount = Math.round(minReceivedDamage / enemyGroup.type.baseStats.health);
-    let maxUnitLossCount = Math.floor(maxReceivedDamage / enemyGroup.type.baseStats.health);
-
-    minUnitLossCount = enemyGroup.count <= minUnitLossCount ? enemyGroup.count : minUnitLossCount;
-    maxUnitLossCount = enemyGroup.count <= maxUnitLossCount ? enemyGroup.count : maxUnitLossCount;
-
-    if (minUnitLossCount === maxUnitLossCount) {
-      this.hintMessage$.next(`Attack ${enemyGroup.type.name} dealing ${minReceivedDamage}-${maxReceivedDamage} damage, killing ${maxUnitLossCount} units`);
-    } else {
-      this.hintMessage$.next(`Attack ${enemyGroup.type.name} dealing ${minReceivedDamage}-${maxReceivedDamage} damage, killing ${minUnitLossCount}-${maxUnitLossCount} units`);
-    }
-  }
-
-  public clearHintMessage(): void {
-    this.hintMessage$.next('');
-  }
-
   private processAiPlayer(): void {
     setTimeout(() => {
       const enemyUnitGroups = this.heroesUnitGroupsMap.get(this.getEnemyOfPlayer(this.currentPlayer)) as UnitGroupModel[];
       const randomGroupIndex = Math.round(Math.random() * (enemyUnitGroups.length - 1));
       const targetGroup = enemyUnitGroups[randomGroupIndex];
 
-      // this.attackEnemyGroup(targetGroup);
       this.battleEventsService.dispatchEvent({
         type: BattleEventTypeEnum.Combat_Group_Attacked,
         attackedGroup: targetGroup,

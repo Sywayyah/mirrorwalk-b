@@ -8,6 +8,7 @@ import {
   MwHistoryLogComponent,
   CardEffectsComponent,
 } from './feature-sandbox/components';
+import { MwActionHintComponent } from './feature-sandbox/components/mw-action-hint/mw-action-hint.component';
 
 @NgModule({
   declarations: [
@@ -15,6 +16,7 @@ import {
     MwGameboardComponent,
     MwUnitGroupCardComponent,
     MwHistoryLogComponent,
+    MwActionHintComponent,
     CardEffectsComponent,
   ],
   imports: [
