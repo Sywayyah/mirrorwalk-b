@@ -31,7 +31,7 @@ export class MwBattleLogService {
         damage: event.damage,
         losses: event.loss,
       }),
-      [BattleEventTypeEnum.On_Group_Counter_Attacked]: event => this.logSimpleMessage(`${event.attackerGroup.type.name} counterattacks, dealing ${event.damage} damage, killing ${event.loss} units`),
+      [BattleEventTypeEnum.On_Group_Counter_Attacked]: event => this.logSimpleMessage(`${event.attackerGroup.type.name} (${event.attackerGroup.count}) counterattacks, dealing ${event.damage} damage, killing ${event.loss} units`),
       [BattleEventTypeEnum.On_Group_Dies]: event => this.logSimpleMessage(`Group of ${event.target.type.name} dies, losing ${event.loss} units`),
 
 
