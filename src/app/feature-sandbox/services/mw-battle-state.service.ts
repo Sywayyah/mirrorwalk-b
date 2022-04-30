@@ -35,7 +35,6 @@ export class BattleStateService {
     private readonly playersService: MwPlayersService,
   ) { }
 
-  /* maybe.. this bug happens when someone dies and other group starts its turn */
   public initBattle(
     unitGroups: UnitGroupModel[],
     players: PlayerModel[],
@@ -62,6 +61,7 @@ export class BattleStateService {
       },
 
       [BattleEventTypeEnum.Round_Player_Turn_Starts]: event => {
+        console.log('Player starts turn');
         if (event.currentPlayer.type === PlayerTypeEnum.AI) {
           console.log(`AI player's Turn`)
           this.processAiPlayer();

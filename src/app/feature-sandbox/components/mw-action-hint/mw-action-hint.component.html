@@ -1,4 +1,4 @@
-<div *ngIf="(mwBattleState.hintMessage$ | async) as actionHint">
+<div *ngIf="(hint$ | async) as actionHint">
   <ng-container [ngSwitch]="actionHint.type">
     <ng-container *ngSwitchCase="hintActionTypes.OnHoverEnemyCard">
       <ng-container *ngTemplateOutlet="simple; context: { hint: actionHint }"></ng-container>
