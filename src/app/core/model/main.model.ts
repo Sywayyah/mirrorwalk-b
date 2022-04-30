@@ -78,9 +78,11 @@ export interface UnitGroupModel {
 
 export interface ResourcesModel {
     gold: number;
+    wood: number;
 
     redCrystals: number;
     gems: number;
+
 
 }
 

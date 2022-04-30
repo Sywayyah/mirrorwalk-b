@@ -17,7 +17,7 @@
         Also. The amount of active groups might be limited, and some talents may increase this allowed group quantity.
 
         Also. Locations at the start.
-        Resources. Mines. Artifact. Library. Hirelings.
+        Resources. Mines. Artifact. Library. Hirelings. Taverns. Unknown locations.
 
         A player may have 3-4 different locations and it will be up to him what he wants, resources, army,
          spells, items, or income. And his amount of turns per location is limited.

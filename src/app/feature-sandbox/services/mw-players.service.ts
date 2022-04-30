@@ -45,6 +45,7 @@ export class MwPlayersService {
       color: PLAYER_COLORS.BLUE,
       resources: {
         gems: 0,
+        wood: 0,
         gold: 12000,
         redCrystals: 2,
       },
