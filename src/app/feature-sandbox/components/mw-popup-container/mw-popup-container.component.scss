@@ -1,0 +1,43 @@
+@keyframes overlay-appear {
+    0% {
+        background-color: rgba(0, 0, 0, 0);
+    }
+
+    100% {
+        background-color: rgba(0, 0, 0, 0.655);
+    }
+}
+
+.popups-container {
+    left: 0;
+    top: 0;
+    position: fixed;
+    height: 100%;
+    width: 100%;
+}
+
+.overlay {
+    left: 0;
+    top: 0;
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0);
+    animation: overlay-appear 1s;
+    animation-fill-mode: forwards;
+}
+
+.popup {
+    position: absolute;
+    height: 240px;
+    width: 400px;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+}
+
+.header {
+    text-align: center;
+    padding: 16px;
+}

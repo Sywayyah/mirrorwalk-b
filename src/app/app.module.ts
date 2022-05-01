@@ -9,6 +9,7 @@ import {
   CardEffectsComponent,
 } from './feature-sandbox/components';
 import { MwActionHintComponent } from './feature-sandbox/components/mw-action-hint/mw-action-hint.component';
+import { MwPopupContainerComponent } from './feature-sandbox/components/mw-popup-container/mw-popup-container.component';
 
 @NgModule({
   declarations: [
@@ -18,6 +19,7 @@ import { MwActionHintComponent } from './feature-sandbox/components/mw-action-hi
     MwHistoryLogComponent,
     MwActionHintComponent,
     CardEffectsComponent,
+    MwPopupContainerComponent,
   ],
   imports: [
     BrowserModule

@@ -1,0 +1,7 @@
+<div *ngIf="popups.length" class="overlay"></div>
+
+<div *ngIf="popups.length" class="popups-container">
+    <div class="popup">
+        <div class="header">{{popups[0].isWin ? 'Win!' : 'Defeat'}}</div>
+    </div>
+</div>

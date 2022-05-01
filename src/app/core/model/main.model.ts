@@ -110,3 +110,8 @@ export interface HeroModel {
 
 }
 
+export interface Structure {
+    type: string;
+    guard: object[];
+    reward?: object;
+}

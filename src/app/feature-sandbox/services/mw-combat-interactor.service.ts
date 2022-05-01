@@ -83,6 +83,7 @@ export class CombatInteractorService {
     }).subscribe();
   }
 
+  /* when group counterattacks and defeats enemy group, both are gone from queue */
   public handleAttackInteraction(attackActionState: CombatInteractionState) {
     const {
       attackingGroup,
