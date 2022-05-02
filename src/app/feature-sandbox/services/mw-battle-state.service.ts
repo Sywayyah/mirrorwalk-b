@@ -85,6 +85,9 @@ export class BattleStateService {
       },
 
       [BattleEventTypeEnum.On_Group_Damaged]: event => {
+        if (!event.loss) {
+          return;
+        }
         const playersLossesMap = this.playerLosses[event.attackedGroup.ownerPlayerRef.id];
         const attackedGroupUnitType = event.attackedGroup.type;
         const typeLossCount = playersLossesMap.get(attackedGroupUnitType);
@@ -93,7 +96,6 @@ export class BattleStateService {
         } else {
           playersLossesMap.set(attackedGroupUnitType, event.loss);
         }
-        
       },
 
       [BattleEventTypeEnum.On_Group_Dies]: event => {
