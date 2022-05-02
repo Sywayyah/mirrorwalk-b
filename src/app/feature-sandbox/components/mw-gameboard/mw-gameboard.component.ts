@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { PlayerModel, UnitGroupModel } from 'src/app/core/model/main.model';
+import { PlayerInstanceModel, UnitGroupInstModel } from 'src/app/core/model/main.model';
 import {
   BattleEventsService,
   BattleEventTypeEnum,
   BattleStateService as MwBattleStateService,
   MwNeutralPlayerService,
-  MwPlayerStateService,
+  MwPlayerStateService
 } from '../../services';
 import { MwCardsMappingService } from '../../services/mw-cards-mapping.service';
 import { CombatInteractorService } from '../../services/mw-combat-interactor.service';
@@ -17,13 +17,13 @@ import { MwUnitGroupCardComponent } from '../mw-unit-group-card/mw-unit-group-ca
   styleUrls: ['./mw-gameboard.component.scss'],
 })
 export class MwGameboardComponent implements OnInit {
-  public mainPlayerUnitGroups!: UnitGroupModel[];
-  public neutralPlayerGroups!: UnitGroupModel[];
+  public mainPlayerUnitGroups!: UnitGroupInstModel[];
+  public neutralPlayerGroups!: UnitGroupInstModel[];
 
-  public mainPlayerInfo!: PlayerModel;
-  public neutralPlayerInfo!: PlayerModel;
+  public mainPlayerInfo!: PlayerInstanceModel;
+  public neutralPlayerInfo!: PlayerInstanceModel;
 
-  public fightQueue!: UnitGroupModel[];
+  public fightQueue!: UnitGroupInstModel[];
 
   constructor(
     public readonly mwPlayerState: MwPlayerStateService,
@@ -34,7 +34,7 @@ export class MwGameboardComponent implements OnInit {
     private readonly combatInteractor: CombatInteractorService,
   ) {
     this.combatInteractor;
-   }
+  }
 
   public ngOnInit(): void {
     this.mainPlayerUnitGroups = this.mwPlayerState.getUnitGroups();
@@ -51,8 +51,8 @@ export class MwGameboardComponent implements OnInit {
     this.fightQueue = this.mwBattleState.getFightQueue();
 
     this.mwBattleState.battleEvent$.subscribe(() => {
-      this.mainPlayerUnitGroups = this.mwBattleState.heroesUnitGroupsMap.get(this.mainPlayerInfo) as UnitGroupModel[]
-      this.neutralPlayerGroups = this.mwBattleState.heroesUnitGroupsMap.get(this.neutralPlayerInfo) as UnitGroupModel[];
+      this.mainPlayerUnitGroups = this.mwBattleState.heroesUnitGroupsMap.get(this.mainPlayerInfo) as UnitGroupInstModel[]
+      this.neutralPlayerGroups = this.mwBattleState.heroesUnitGroupsMap.get(this.neutralPlayerInfo) as UnitGroupInstModel[];
       this.fightQueue = this.mwBattleState.getFightQueue();
     });
 
@@ -61,11 +61,11 @@ export class MwGameboardComponent implements OnInit {
     });
   }
 
-  public onCardReady(unitGroup: UnitGroupModel, cardRef: MwUnitGroupCardComponent): void {
+  public onCardReady(unitGroup: UnitGroupInstModel, cardRef: MwUnitGroupCardComponent): void {
     this.cardsMapping.register(unitGroup, cardRef);
   }
-  
-  public onGroupDies(unitGroup: UnitGroupModel): void {
+
+  public onGroupDies(unitGroup: UnitGroupInstModel): void {
     this.cardsMapping.unregister(unitGroup);
   }
 }

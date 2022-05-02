@@ -1,4 +1,4 @@
-import { PlayerModel, UnitGroupModel } from 'src/app/core/model/main.model';
+import { PlayerModel, UnitGroupInstModel } from 'src/app/core/model/main.model';
 
 
 export enum BattleEventTypeEnum {
@@ -30,8 +30,8 @@ export interface BattleEventModel<T extends BattleEventTypeEnum = BattleEventTyp
 
 export interface UIPlayerClicksEnemyGroup extends BattleEventModel<BattleEventTypeEnum.UI_Player_Clicks_Enemy_Group> {
   attackingPlayer: PlayerModel;
-  attackingGroup: UnitGroupModel;
-  attackedGroup: UnitGroupModel;
+  attackingGroup: UnitGroupInstModel;
+  attackedGroup: UnitGroupInstModel;
 }
 
 export enum HoverTypeEnum {
@@ -42,26 +42,26 @@ export enum HoverTypeEnum {
 export interface UIPlayerHoversCard extends BattleEventModel<BattleEventTypeEnum.UI_Player_Hovers_Group_Card> {
   // hovered: boolean;
   hoverType: HoverTypeEnum;
-  currentCard?: UnitGroupModel;
-  hoveredCard?: UnitGroupModel;
+  currentCard?: UnitGroupInstModel;
+  hoveredCard?: UnitGroupInstModel;
 }
 
 export interface GroupDamagedEvent extends BattleEventModel<BattleEventTypeEnum.On_Group_Damaged> {
-  attackerGroup: UnitGroupModel;
-  attackedGroup: UnitGroupModel;
+  attackerGroup: UnitGroupInstModel;
+  attackedGroup: UnitGroupInstModel;
   loss: number;
   damage: number;
 }
 
 export interface OnGroupCounterAttacked extends BattleEventModel<BattleEventTypeEnum.On_Group_Counter_Attacked> {
-  attackerGroup: UnitGroupModel;
-  attackedGroup: UnitGroupModel;
+  attackerGroup: UnitGroupInstModel;
+  attackedGroup: UnitGroupInstModel;
   loss: number;
   damage: number;
 }
 
 export interface GroupDiesEvent extends BattleEventModel<BattleEventTypeEnum.On_Group_Dies> {
-  target: UnitGroupModel;
+  target: UnitGroupInstModel;
   targetPlayer: PlayerModel;
   loss: number;
 }
@@ -83,7 +83,7 @@ export interface RoundGroupTurnEnds extends BattleEventModel<BattleEventTypeEnum
 
 export interface RoundGroupSpendsTurn extends BattleEventModel<BattleEventTypeEnum.Round_Group_Spends_Turn> {
   groupPlayer: PlayerModel;
-  group: UnitGroupModel;
+  group: UnitGroupInstModel;
   groupStillAlive: boolean;
   groupHasMoreTurns: boolean;
 }
@@ -94,8 +94,8 @@ export interface RoundPlayerTurnStarts extends BattleEventModel<BattleEventTypeE
 }
 
 export interface CombatGroupAttacked extends BattleEventModel<BattleEventTypeEnum.Combat_Group_Attacked> {
-  attackerGroup: UnitGroupModel;
-  attackedGroup: UnitGroupModel;
+  attackerGroup: UnitGroupInstModel;
+  attackedGroup: UnitGroupInstModel;
 }
 
 export enum CombatInteractionEnum {
@@ -105,8 +105,8 @@ export enum CombatInteractionEnum {
 }
 
 export interface CombatInteractionState extends BattleEventModel<BattleEventTypeEnum.Combat_Attack_Interaction> {
-  attackingGroup: UnitGroupModel;
-  attackedGroup: UnitGroupModel;
+  attackingGroup: UnitGroupInstModel;
+  attackedGroup: UnitGroupInstModel;
   action: CombatInteractionEnum;
 }
 

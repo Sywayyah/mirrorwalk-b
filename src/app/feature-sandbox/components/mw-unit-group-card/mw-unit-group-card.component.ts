@@ -1,8 +1,8 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { PlayerModel, UnitGroupModel } from 'src/app/core/model/main.model';
-import { BattleEventsService, MwPlayersService, BattleStateService, BattleEventTypeEnum, HoverTypeEnum } from '../../services';
+import { PlayerModel, UnitGroupInstModel } from 'src/app/core/model/main.model';
+import { BattleEventsService, BattleEventTypeEnum, BattleStateService, HoverTypeEnum, MwPlayersService } from '../../services';
 import { CardEffectsComponent } from '../mw-card-effects/card-effects.component';
 
 @Component({
@@ -13,7 +13,7 @@ import { CardEffectsComponent } from '../mw-card-effects/card-effects.component'
 export class MwUnitGroupCardComponent implements OnInit, OnDestroy {
 
   @Input()
-  public unitGroup!: UnitGroupModel;
+  public unitGroup!: UnitGroupInstModel;
   @Input()
   public playerInfo!: PlayerModel;
 
@@ -28,7 +28,7 @@ export class MwUnitGroupCardComponent implements OnInit, OnDestroy {
   public isEnemyCard!: boolean;
 
   public potentialUnitCountLoss: number = 0;
-  public attackingUnitGroup!: UnitGroupModel;
+  public attackingUnitGroup!: UnitGroupInstModel;
 
   public canCurrentPlayerAttack: boolean = false;
   private destroy$: Subject<void> = new Subject();

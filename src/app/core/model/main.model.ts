@@ -70,10 +70,14 @@ interface ItemTypeModel {
 export interface UnitGroupModel {
     count: number;
     type: UnitTypeModel;
-    ownerPlayerRef?: PlayerModel;
+    ownerPlayerRef?: PlayerInstanceModel;
 
     /* how much turns left during round, not sure if it's best to have it there */
     turnsLeft: number;
+}
+
+export interface UnitGroupInstModel extends UnitGroupModel {
+    ownerPlayerRef: PlayerInstanceModel;
 }
 
 export interface ResourcesModel {
@@ -104,6 +108,10 @@ export interface PlayerModel {
     hero: HeroModel;
 
     unitGroups: UnitGroupModel[];
+}
+
+export interface PlayerInstanceModel extends PlayerModel {
+    id: string;
 }
 
 export interface HeroModel {

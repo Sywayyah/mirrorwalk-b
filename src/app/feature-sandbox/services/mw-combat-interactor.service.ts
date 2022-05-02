@@ -6,7 +6,7 @@ import { CommonUtils } from 'src/app/core/utils/common.utils';
 import { BattleEventsService } from './mw-battle-events.service';
 import { BattleStateService } from './mw-battle-state.service';
 import { BattleEventTypeEnum, CombatGroupAttacked, CombatInteractionEnum, CombatInteractionState, HoverTypeEnum, UIPlayerHoversCard } from './types';
-import { ActionHintModel, ActionHintTypeEnum, AttackActionHint } from './types/action-hint.types';
+import { ActionHintTypeEnum, AttackActionHint } from './types/action-hint.types';
 
 export interface DamageInfo {
   attacker: UnitGroupModel;
@@ -84,7 +84,7 @@ export class CombatInteractorService {
   }
 
   /* when group counterattacks and defeats enemy group, both are gone from queue */
-  public handleAttackInteraction(attackActionState: CombatInteractionState) {
+  public handleAttackInteraction(attackActionState: CombatInteractionState): void {
     const {
       attackingGroup,
       attackedGroup,

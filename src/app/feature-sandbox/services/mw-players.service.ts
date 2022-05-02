@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { PLAYER_COLORS } from 'src/app/core/dictionaries/colors.const';
 import { NEUTRAL_FRACTION_UNIT_TYPES, NEUTRAL_TYPES_ENUM } from 'src/app/core/dictionaries/neutral-unit-types.dictionary';
 import { HF_TYPES_ENUM, HUMANS_FRACTION_UNIT_TYPES } from 'src/app/core/dictionaries/unit-types.dictionary';
-import { PlayerModel, PlayerTypeEnum, UnitGroupModel } from 'src/app/core/model/main.model';
+import { PlayerInstanceModel, PlayerModel, PlayerTypeEnum, UnitGroupInstModel, UnitGroupModel } from 'src/app/core/model/main.model';
 import { RandomUtils } from 'src/app/core/utils/common.utils';
 
 
@@ -40,8 +40,8 @@ export enum PLAYER_IDS {
   providedIn: 'root'
 })
 export class MwPlayersService {
-  public players: Map<string, PlayerModel> = new Map([
-    [PLAYER_IDS.Main, {
+  public players: Map<string, PlayerInstanceModel> = new Map([
+    this.createPlayerEntry(PLAYER_IDS.Main, {
       color: PLAYER_COLORS.BLUE,
       resources: {
         gems: 0,
@@ -52,32 +52,49 @@ export class MwPlayersService {
       type: PlayerTypeEnum.Player,
       hero: {},
       unitGroups: mainPlayerGroups,
-    }],
-    [PLAYER_IDS.Neutral, {
+    }),
+    this.createPlayerEntry(PLAYER_IDS.Neutral, {
       color: PLAYER_COLORS.GRAY,
       type: PlayerTypeEnum.AI,
       hero: {},
       unitGroups: neutralGroups,
-    }]
+    }),
   ]);
 
-  private currentPlayer: string = PLAYER_IDS.Main;
+  private currentPlayerId: string = PLAYER_IDS.Main;
 
   constructor() { }
 
-  public getCurrentPlayer(): PlayerModel {
-    return this.players.get(this.currentPlayer) as PlayerModel;
+  public getCurrentPlayer(): PlayerInstanceModel {
+    return this.players.get(this.currentPlayerId) as PlayerInstanceModel;
   }
 
-  public getEnemyPlayer(): PlayerModel {
-    return this.players.get(PLAYER_IDS.Neutral) as PlayerModel;
+  public getCurrentPlayerId(): string {
+    return this.currentPlayerId;
   }
 
-  public getUnitGroupsOfPlayer(playerId: string): UnitGroupModel[] {
-    const player = this.players.get(playerId) as PlayerModel;
+  public getEnemyPlayer(): PlayerInstanceModel {
+    return this.players.get(PLAYER_IDS.Neutral) as PlayerInstanceModel;
+  }
+
+  public getUnitGroupsOfPlayer(playerId: string): UnitGroupInstModel[] {
+    const player = this.players.get(playerId) as PlayerInstanceModel;
     return player.unitGroups.map((unitGroup: UnitGroupModel) => {
       unitGroup.ownerPlayerRef = player;
-      return unitGroup;
+      return unitGroup as UnitGroupInstModel;
     })
+  }
+
+  private createPlayer(id: string, playerInfo: PlayerModel): PlayerInstanceModel {
+    const player: PlayerInstanceModel = {
+      id,
+      ...playerInfo,
+    }
+
+    return player;
+  }
+
+  private createPlayerEntry(id: string, playerInfo: PlayerModel): [string, PlayerInstanceModel] {
+    return [id, this.createPlayer(id, playerInfo)];
   }
 }

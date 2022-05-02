@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Subject } from 'rxjs';
-import { PlayerModel, PlayerTypeEnum, UnitGroupModel } from 'src/app/core/model/main.model';
+import { PlayerInstanceModel, PlayerModel, PlayerTypeEnum, UnitGroupInstModel, UnitGroupModel, UnitTypeModel } from 'src/app/core/model/main.model';
 import { BattleEventsService } from './mw-battle-events.service';
 import { BattleEventTypeEnum } from "./types";
 import { MwPlayersService } from './mw-players.service';
@@ -13,21 +13,23 @@ import { ActionHintModel } from './types/action-hint.types';
 export class BattleStateService {
 
   public currentPlayer!: PlayerModel;
-  public currentUnitGroup!: UnitGroupModel;
+  public currentUnitGroup!: UnitGroupInstModel;
   public battleEvent$: Subject<void> = new BehaviorSubject<void>(undefined);
 
-  public heroesUnitGroupsMap: Map<PlayerModel, UnitGroupModel[]> = new Map();
+  public heroesUnitGroupsMap: Map<PlayerModel, UnitGroupInstModel[]> = new Map();
   public currentGroupTurnsLeft: number = 0;
 
   public round: number = 1;
 
   public hintMessage$: BehaviorSubject<ActionHintModel | null> = new BehaviorSubject<ActionHintModel | null>(null);
 
+  public playerLosses: Record<string, Map<UnitTypeModel, number>> = {};
+
   private playersRivalryMap: Map<PlayerModel, PlayerModel> = new Map();
 
-  private initialUnitGroups!: UnitGroupModel[];
-  private fightQueue!: UnitGroupModel[];
-  private players!: PlayerModel[];
+  private initialUnitGroups!: UnitGroupInstModel[];
+  private fightQueue!: UnitGroupInstModel[];
+  private players!: PlayerInstanceModel[];
 
 
   constructor(
@@ -36,8 +38,8 @@ export class BattleStateService {
   ) { }
 
   public initBattle(
-    unitGroups: UnitGroupModel[],
-    players: PlayerModel[],
+    unitGroups: UnitGroupInstModel[],
+    players: PlayerInstanceModel[],
   ): void {
     this.initialUnitGroups = unitGroups;
 
@@ -45,6 +47,10 @@ export class BattleStateService {
 
     this.playersRivalryMap.set(players[0], players[1]);
     this.playersRivalryMap.set(players[1], players[0]);
+
+    this.players.forEach(player => {
+      this.playerLosses[player.id] = new Map();
+    });
 
     this.initPlayerUnitGroupsMap(unitGroups);
 
@@ -78,7 +84,18 @@ export class BattleStateService {
         this.initNextTurnByQueue(true);
       },
 
-      
+      [BattleEventTypeEnum.On_Group_Damaged]: event => {
+        const playersLossesMap = this.playerLosses[event.attackedGroup.ownerPlayerRef.id];
+        const attackedGroupUnitType = event.attackedGroup.type;
+        const typeLossCount = playersLossesMap.get(attackedGroupUnitType);
+        if (typeLossCount) {
+          playersLossesMap.set(attackedGroupUnitType, typeLossCount + event.loss);
+        } else {
+          playersLossesMap.set(attackedGroupUnitType, event.loss);
+        }
+        
+      },
+
       [BattleEventTypeEnum.On_Group_Dies]: event => {
 
         if (!(this.heroesUnitGroupsMap.get(this.players[0]) as UnitGroupModel[]).length) {
@@ -118,11 +135,11 @@ export class BattleStateService {
           attackerGroup: event.attackingGroup,
         });
       },
-      
+
     }).subscribe(() => {
       this.battleEvent$.next();
     });
-    
+
 
     this.battleEventsService.dispatchEvent({
       type: BattleEventTypeEnum.Fight_Starts,
@@ -165,13 +182,13 @@ export class BattleStateService {
     }
   }
 
-  public getFightQueue(): UnitGroupModel[] {
+  public getFightQueue(): UnitGroupInstModel[] {
     return this.fightQueue;
   }
 
-  public handleDefeatedUnitGroup(unitGroup: UnitGroupModel): void {
+  public handleDefeatedUnitGroup(unitGroup: UnitGroupInstModel): void {
     const enemyPlayer = unitGroup.ownerPlayerRef as PlayerModel;
-    const enemyPlayerGroups = this.heroesUnitGroupsMap.get(enemyPlayer) as UnitGroupModel[];
+    const enemyPlayerGroups = this.heroesUnitGroupsMap.get(enemyPlayer) as UnitGroupInstModel[];
     const indexOfUnitGroup = enemyPlayerGroups?.indexOf(unitGroup);
 
     enemyPlayerGroups.splice(indexOfUnitGroup, 1);
@@ -189,7 +206,7 @@ export class BattleStateService {
 
   private processAiPlayer(): void {
     setTimeout(() => {
-      const enemyUnitGroups = this.heroesUnitGroupsMap.get(this.getEnemyOfPlayer(this.currentPlayer)) as UnitGroupModel[];
+      const enemyUnitGroups = this.heroesUnitGroupsMap.get(this.getEnemyOfPlayer(this.currentPlayer)) as UnitGroupInstModel[];
       const randomGroupIndex = Math.round(Math.random() * (enemyUnitGroups.length - 1));
       const targetGroup = enemyUnitGroups[randomGroupIndex];
 
@@ -211,14 +228,14 @@ export class BattleStateService {
 
   private resetFightQueue() {
     this.fightQueue = [
-      ...this.heroesUnitGroupsMap.get(this.players[0]) as UnitGroupModel[],
-      ...this.heroesUnitGroupsMap.get(this.players[1]) as UnitGroupModel[],
+      ...this.heroesUnitGroupsMap.get(this.players[0]) as UnitGroupInstModel[],
+      ...this.heroesUnitGroupsMap.get(this.players[1]) as UnitGroupInstModel[],
     ].sort((a, b) => {
       return b.type.baseStats.speed - a.type.baseStats.speed;
     });
   }
 
-  private initPlayerUnitGroupsMap(unitGroups: UnitGroupModel[]): void {
+  private initPlayerUnitGroupsMap(unitGroups: UnitGroupInstModel[]): void {
     unitGroups.forEach(unitGroup => {
       const unitGroupPlayer = unitGroup.ownerPlayerRef as PlayerModel;
       const playerGroups = this.heroesUnitGroupsMap.get(unitGroupPlayer);
