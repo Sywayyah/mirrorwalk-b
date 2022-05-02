@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { takeUntil } from 'rxjs/operators';
 import { AbilitiesTable } from 'src/app/core/dictionaries/abilities.const';
 import { AbilityTypesEnum } from 'src/app/core/model/abilities.types';
 import { PlayerModel, UnitGroupModel } from 'src/app/core/model/main.model';
@@ -80,7 +81,9 @@ export class CombatInteractorService {
             this.battleState.hintMessage$.next(null);
         }
       },
-    }).subscribe();
+    }).pipe(
+      takeUntil(battleEvents.onEvent(BattleEventTypeEnum.Fight_Ends)),
+    ).subscribe();
   }
 
   /* when group counterattacks and defeats enemy group, both are gone from queue */

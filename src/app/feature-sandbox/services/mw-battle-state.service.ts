@@ -5,6 +5,7 @@ import { BattleEventsService } from './mw-battle-events.service';
 import { BattleEventTypeEnum } from "./types";
 import { MwPlayersService } from './mw-players.service';
 import { ActionHintModel } from './types/action-hint.types';
+import { takeUntil } from 'rxjs/operators';
 
 
 @Injectable({
@@ -138,7 +139,9 @@ export class BattleStateService {
         });
       },
 
-    }).subscribe(() => {
+    }).pipe(
+      takeUntil(this.battleEventsService.onEvent(BattleEventTypeEnum.Fight_Ends)),
+    ).subscribe(() => {
       this.battleEvent$.next();
     });
 
