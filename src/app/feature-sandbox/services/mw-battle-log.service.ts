@@ -1,33 +1,31 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
-import { PlayerModel } from 'src/app/core/model/main.model';
-import {
-  HistoryMessageModel,
-  SimpleMessage,
-  HistoryLogTypesEnum,
-  RoundInfoMessage,
-  DealtDamageMessage,
-  BattleEventTypeEnum,
-} from './types';
 import { BattleEventsService } from './mw-battle-events.service';
+import {
+  BattleEventTypeEnum, DealtDamageMessage, HistoryLogTypesEnum, HistoryLogModel, RoundInfoMessage, SimpleMessage
+} from './types';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MwBattleLogService {
 
-  public history: HistoryMessageModel[] = [];
+  public history: HistoryLogModel[] = [];
   public historyEvent$: Subject<void> = new Subject();
 
   constructor(
     private readonly battleEvents: BattleEventsService,
   ) {
     this.battleEvents.onEvents({
+      [BattleEventTypeEnum.Fight_Starts]: () => {
+        this.history = [];
+      },
+
       [BattleEventTypeEnum.On_Group_Damaged]: event => this.logDealtDamageMessage({
         attacked: event.attackedGroup.type,
-        attackedPlayer: event.attackedGroup.ownerPlayerRef as PlayerModel,
+        attackedPlayer: event.attackedGroup.ownerPlayerRef,
         attacker: event.attackerGroup.type,
-        attackingPlayer: event.attackerGroup.ownerPlayerRef as PlayerModel,
+        attackingPlayer: event.attackerGroup.ownerPlayerRef,
         damage: event.damage,
         losses: event.loss,
       }),
@@ -61,7 +59,7 @@ export class MwBattleLogService {
     this.pushMessage(dealtDamageLog);
   }
 
-  public pushMessage(message: HistoryMessageModel): void {
+  public pushMessage(message: HistoryLogModel): void {
     this.history.push(message);
     this.historyEvent$.next();
   }

@@ -2,3 +2,8 @@ export * from './mw-gameboard/mw-gameboard.component';
 export * from './mw-history-log/mw-history-log.component';
 export * from './mw-unit-group-card/mw-unit-group-card.component';
 export * from './mw-card-effects/card-effects.component';
+export * from './mw-action-hint/mw-action-hint.component';
+export * from './mw-player-resources/mw-player-resources.component';
+export * from './mw-view-control/mw-view-control.component';
+export * from './mw-structures-view/mw-structures-view.component';
+export * from './mw-popup-container';

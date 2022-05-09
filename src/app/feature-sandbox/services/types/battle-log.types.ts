@@ -7,19 +7,19 @@ export enum HistoryLogTypesEnum {
   DealtDamageMsg = 'dealt-damage-msg'
 }
 
-export interface HistoryMessageModel<T extends HistoryLogTypesEnum = HistoryLogTypesEnum> {
+export interface HistoryLogModel<T extends HistoryLogTypesEnum = HistoryLogTypesEnum> {
   type: T;
 }
 
-export interface SimpleMessage extends HistoryMessageModel<HistoryLogTypesEnum.SimpleMsg> {
+export interface SimpleMessage extends HistoryLogModel<HistoryLogTypesEnum.SimpleMsg> {
   message: string;
 }
 
-export interface RoundInfoMessage extends HistoryMessageModel<HistoryLogTypesEnum.RoundInfoMsg> {
+export interface RoundInfoMessage extends HistoryLogModel<HistoryLogTypesEnum.RoundInfoMsg> {
   message: string;
 }
 
-export interface DealtDamageMessage extends HistoryMessageModel<HistoryLogTypesEnum.DealtDamageMsg> {
+export interface DealtDamageMessage extends HistoryLogModel<HistoryLogTypesEnum.DealtDamageMsg> {
   attackingPlayer: PlayerModel;
   attackedPlayer: PlayerModel;
   attacker: UnitTypeModel;

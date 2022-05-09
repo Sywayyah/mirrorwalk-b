@@ -46,10 +46,8 @@ export const NEUTRAL_FRACTION_UNIT_TYPES: Record<NEUTRAL_TYPES_ENUM, UnitTypeMod
         defaultTurnsPerRound: 1,
 
         baseRequirements: {
-            playerGold: 100,
-            playerBloodCrystals: 0,
-            playerGloryLevel: 1,
-            playerHeroLevel: 1,
+            gold: 100,
+            redCrystals: 0,
         }
     },
 

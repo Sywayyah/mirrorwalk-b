@@ -1,0 +1,33 @@
+<div class="centered-panel">
+    <div>Structures:</div>
+    <div *ngFor="let structure of structures">
+        <ng-container [ngSwitch]="structure.type">
+            <ng-container *ngSwitchCase="structureTypes.NeutralCamp">
+                <ng-container *ngTemplateOutlet="neutralCamp; context: {structure: structure}"></ng-container>
+            </ng-container>
+        </ng-container>
+    </div>
+</div>
+
+
+<div class="player-info-panel">
+    Your units:
+    <div class="groups-container">
+        <div class="player-group-card" [style.background]="player.color" *ngFor="let group of player.unitGroups">
+            <div>{{group.type.name}}</div>
+            <div>{{group.count}}</div>
+        </div>
+    </div>
+</div>
+
+<ng-template #neutralCamp let-structure="structure">
+    <!-- todo: For the sake of better typization, these templates should be components -->
+    <div class="structure" (click)="onStructureSelected(structure)" [class.defeated]="structure.isDefeated">
+        {{structure.type}}
+        <div *ngIf="structure.reward" style="font-size: 12px;">Reward: {{structure.reward?.type}}</div>
+        <div *ngIf="structure.isDefeated">Defeated:</div>
+        <div class="guards" *ngFor="let guards of guardsMap[structure.id]">
+            {{guards.type.name}}: {{guards.count}}
+        </div>
+    </div>
+</ng-template>

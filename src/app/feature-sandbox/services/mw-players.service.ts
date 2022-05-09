@@ -3,6 +3,7 @@ import { PLAYER_COLORS } from 'src/app/core/dictionaries/colors.const';
 import { NEUTRAL_FRACTION_UNIT_TYPES, NEUTRAL_TYPES_ENUM } from 'src/app/core/dictionaries/neutral-unit-types.dictionary';
 import { HF_TYPES_ENUM, HUMANS_FRACTION_UNIT_TYPES } from 'src/app/core/dictionaries/unit-types.dictionary';
 import { PlayerInstanceModel, PlayerModel, PlayerTypeEnum, UnitGroupInstModel, UnitGroupModel } from 'src/app/core/model/main.model';
+import { ResourcesModel } from 'src/app/core/model/resources.types';
 import { RandomUtils } from 'src/app/core/utils/common.utils';
 
 
@@ -36,6 +37,13 @@ export enum PLAYER_IDS {
   Neutral = 'neutral',
 }
 
+const defaultResources: ResourcesModel = {
+  gems: 0,
+  gold: 0,
+  redCrystals: 0,
+  wood: 0,
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -44,9 +52,9 @@ export class MwPlayersService {
     this.createPlayerEntry(PLAYER_IDS.Main, {
       color: PLAYER_COLORS.BLUE,
       resources: {
-        gems: 0,
-        wood: 0,
-        gold: 12000,
+        ...defaultResources,
+        gold: 3000,
+        wood: 5,
         redCrystals: 2,
       },
       type: PlayerTypeEnum.Player,
@@ -58,6 +66,9 @@ export class MwPlayersService {
       type: PlayerTypeEnum.AI,
       hero: {},
       unitGroups: neutralGroups,
+      resources: {
+        ...defaultResources,
+      },
     }),
   ]);
 

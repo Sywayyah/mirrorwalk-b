@@ -12,7 +12,7 @@ const setHumanUnitGroupAbility = (unitGroupType: HF_TYPES_ENUM, abilityType: Abi
     return [HUMANS_FRACTION_UNIT_TYPES[unitGroupType], [Abilities[abilityType]]]
 }
 
-export const AbilitiesTable: Map<UnitTypeModel, AbilityModel[]> = new Map([
+export const BaseAbilitiesTable: Map<UnitTypeModel, AbilityModel[]> = new Map([
     setHumanUnitGroupAbility(HF_TYPES_ENUM.Pikemans, AbilityTypesEnum.BaseCounterAttack),
     // [HUMANS_FRACTION_UNIT_TYPES[HF_TYPES_ENUM.Pikemans], [Abilities[AbilityTypesEnum.BaseCounterAttack]]],
 ]);

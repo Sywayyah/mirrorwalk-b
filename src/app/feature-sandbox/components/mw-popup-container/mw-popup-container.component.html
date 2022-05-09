@@ -1,13 +1,43 @@
 <div *ngIf="popups.length" class="overlay"></div>
 
 <div *ngIf="popups.length" class="popups-container">
+    <ng-container *ngFor="let popup of popups">
+        <ng-container [ngSwitch]="popup.type">
+            <ng-container *ngSwitchCase="popupTypes.FightEnds">
+                <ng-container *ngTemplateOutlet="fightEndsPopup; context: {popup: popup}"></ng-container>
+            </ng-container>
+
+            <ng-container *ngSwitchCase="popupTypes.StructResourcesReward">
+                <ng-container *ngTemplateOutlet="resourcesReward; context: {popup: popup}"></ng-container>
+            </ng-container>
+
+            <ng-container *ngSwitchCase="popupTypes.HiringReward">
+                <ng-container *ngTemplateOutlet="hiringReward; context: {popup: popup}"></ng-container>
+            </ng-container>
+        </ng-container>
+    </ng-container>
+</div>
+
+<ng-template #resourcesReward let-popup="popup">
     <div class="popup">
-        <div class="header">{{popups[0].isWin ? 'Win!' : 'Defeat'}}</div>
+        <mw-resources-reward-popup [popup]="popup" (close)="removePopup(popup)"></mw-resources-reward-popup>
+    </div>
+</ng-template>
+
+<ng-template #hiringReward let-popup="popup">
+    <div class="popup">
+        <mw-hiring-reward-popup [popup]="popup" (close)="removePopup(popup)"></mw-hiring-reward-popup>
+    </div>
+</ng-template>
+
+<ng-template #fightEndsPopup let-popup="popup">
+    <div class="popup">
+        <div class="header">{{popup.isWin ? 'Win!' : 'Defeat'}}</div>
 
         <div>
             <div style="text-align: center;">Player's Losses</div>
             <div class="losses-container">
-                <div class="loss-card" *ngFor="let playerLoss of popups[0].playerLosses">
+                <div class="loss-card" *ngFor="let playerLoss of popup.playerLosses">
                     <span>{{ playerLoss.type.name }}</span>
                     <span>{{ playerLoss.count }}</span>
                 </div>
@@ -17,11 +47,15 @@
         <div>
             <div style="text-align: center;">Enemy's Losses</div>
             <div class="losses-container">
-                <div class="loss-card" *ngFor="let playerLoss of popups[0].enemyLosses">
+                <div class="loss-card" *ngFor="let playerLoss of popup.enemyLosses">
                     <span>{{ playerLoss.type.name }}</span>
                     <span>{{ playerLoss.count }}</span>
                 </div>
             </div>
         </div>
+
+        <div>
+            <button style="margin: auto; display: block;" (click)="onContinue(popup)">Continue</button>
+        </div>
     </div>
-</div>
+</ng-template>

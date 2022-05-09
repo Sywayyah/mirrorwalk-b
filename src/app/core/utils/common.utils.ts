@@ -1,5 +1,12 @@
-import { UnitGroupModel, UnitTypeModel } from "../model/main.model";
+import { PlayerInstanceModel, PlayerModel, UnitGroupInstModel, UnitGroupModel, UnitTypeModel } from "../model/main.model";
 
+export interface GenerationModel {
+    fraction: Record<string, UnitTypeModel>;
+    minUnitGroups: number;
+    maxUnitGroups: number;
+    /* unit type, min, max, maxGroupsOfThisType */
+    units: [string, number, number, number | void][];
+}
 
 export const CommonUtils = {
     randIndex<T>(array: Array<T>): number {
@@ -23,13 +30,7 @@ export const CommonUtils = {
 };
 
 export const RandomUtils = {
-    createRandomArmy(options: {
-        fraction: Record<string, UnitTypeModel>,
-        minUnitGroups: number,
-        maxUnitGroups: number,
-        /* unit type, min, max, maxGroupsOfThisType */
-        units: [string, number, number, number | void][],
-    }): UnitGroupModel[] {
+    createRandomArmy(options: GenerationModel): UnitGroupModel[] {
         const groupsToGenerateCount = CommonUtils.randIntInRange(options.minUnitGroups, options.maxUnitGroups);
         const generatedGroups = [];
 
@@ -69,4 +70,11 @@ export const RandomUtils = {
 
         return generatedGroups;
     },
+
+    createRandomArmyForPlayer(options: GenerationModel, player: PlayerInstanceModel): UnitGroupInstModel[] {
+        return this.createRandomArmy(options).map((unitGroup: UnitGroupModel) => {
+            unitGroup.ownerPlayerRef = player;
+            return unitGroup as UnitGroupInstModel;
+        });
+    }
 }

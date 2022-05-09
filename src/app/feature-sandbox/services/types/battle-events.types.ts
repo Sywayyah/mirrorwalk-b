@@ -1,9 +1,16 @@
 import { PlayerModel, UnitGroupInstModel } from 'src/app/core/model/main.model';
+import { NeutralCampStructure, StructureModel } from "src/app/core/model/structures.types";
 
 
 export enum BattleEventTypeEnum {
   UI_Player_Clicks_Enemy_Group,
   UI_Player_Hovers_Group_Card,
+
+  /* todo: it can be considered to split away these events */
+  Struct_Selected,
+  Struct_Completed,
+
+  Display_Reward_Popup,
 
   On_Group_Damaged,
   /* todo: this event can be merged with On_Group_Damaged, introducing field isCounterattack */
@@ -24,8 +31,21 @@ export enum BattleEventTypeEnum {
   Fight_Ends
 }
 
+
 export interface BattleEventModel<T extends BattleEventTypeEnum = BattleEventTypeEnum> {
   type: T;
+}
+
+export interface StructSelected extends BattleEventModel<BattleEventTypeEnum.Struct_Selected> {
+  struct: NeutralCampStructure;
+}
+
+export interface DisplayRewardPopup extends BattleEventModel<BattleEventTypeEnum.Display_Reward_Popup> {
+  struct: NeutralCampStructure;
+}
+
+export interface StructCompleted extends BattleEventModel<BattleEventTypeEnum.Struct_Completed> {
+  struct: NeutralCampStructure;
 }
 
 export interface UIPlayerClicksEnemyGroup extends BattleEventModel<BattleEventTypeEnum.UI_Player_Clicks_Enemy_Group> {
@@ -68,6 +88,7 @@ export interface GroupDiesEvent extends BattleEventModel<BattleEventTypeEnum.On_
 
 export interface RoundEndsEvent extends BattleEventModel<BattleEventTypeEnum.Fight_Ends> {
   win: boolean;
+  struct: StructureModel;
 }
 
 export interface RoundNextGroupTurnEvent extends BattleEventModel<BattleEventTypeEnum.Fight_Next_Round_Starts> {
@@ -113,6 +134,10 @@ export interface CombatInteractionState extends BattleEventModel<BattleEventType
 export type FightStartsEvent = BattleEventModel<BattleEventTypeEnum.Fight_Starts>;
 
 export interface EventByEnumMapping {
+  [BattleEventTypeEnum.Struct_Selected]: StructSelected;
+  [BattleEventTypeEnum.Struct_Completed]: StructCompleted;
+  [BattleEventTypeEnum.Display_Reward_Popup]: DisplayRewardPopup;
+
   [BattleEventTypeEnum.UI_Player_Clicks_Enemy_Group]: UIPlayerClicksEnemyGroup;
   [BattleEventTypeEnum.UI_Player_Hovers_Group_Card]: UIPlayerHoversCard;
 

@@ -33,7 +33,7 @@ export class MwGameboardComponent implements OnInit {
     private readonly battleEvents: BattleEventsService,
     private readonly combatInteractor: CombatInteractorService,
   ) {
-    this.combatInteractor;
+    this.combatInteractor.listenEvents();
   }
 
   public ngOnInit(): void {

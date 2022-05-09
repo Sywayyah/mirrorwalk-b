@@ -1,0 +1,24 @@
+.reources-rewards {
+    display: flex;
+    justify-content: center;
+    margin: 20px 10px;
+}
+
+.resource-column {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid gray;
+    margin: 0 20px;
+    cursor: pointer;
+    width: 120px;
+}
+
+.resource-column.selected {
+    border: 1px solid gold;
+    margin: 0 20px;
+}
+
+.resource-card {
+    text-align: center;
+    margin: 10px;
+}

@@ -1,0 +1,50 @@
+.centered-panel {
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    padding: 16px;
+}
+
+.structure {
+    width: 100px;
+    min-height: 64px;
+    margin: 10px;
+    border-radius: 6px;
+    background: gray;
+    color: white;
+    padding: 14px;
+    cursor: pointer;
+}
+
+.guards {
+    font-size: 13px;
+}
+
+.defeated {
+    opacity: 0.5;
+}
+
+.player-info-panel {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+}
+
+.groups-container {
+    display: flex;
+}
+
+.player-group-card {
+    height: 64px;
+    width: 64px;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    border-radius: 4px;
+    font-size: 13px;
+    margin: 3px;
+
+}

@@ -1,10 +1,12 @@
 import { AbilityModel } from "./abilities.types";
+import { ResourcesModel, ResourceType } from "./resources.types";
 
-interface RequirementModel {
-    playerHeroLevel?: number;
-    playerGold?: number;
-    playerBloodCrystals?: number;
-    playerGloryLevel?: number;
+interface RequirementModel extends Partial<ResourcesModel> {
+    /* heroLevel?: number;
+    gold?: number;
+    redCrystals?: number;
+    glory?: number;
+    gems?: number; */
 }
 
 enum UnitDamageTypesEnum {
@@ -80,15 +82,7 @@ export interface UnitGroupInstModel extends UnitGroupModel {
     ownerPlayerRef: PlayerInstanceModel;
 }
 
-export interface ResourcesModel {
-    gold: number;
-    wood: number;
 
-    redCrystals: number;
-    gems: number;
-
-
-}
 
 
 export enum PlayerTypeEnum {
@@ -101,7 +95,7 @@ export interface PlayerModel {
     color: string;
 
     /* resources can be stored separately in theory. */
-    resources?: ResourcesModel;
+    resources: ResourcesModel;
 
     type: PlayerTypeEnum;
 
@@ -118,8 +112,3 @@ export interface HeroModel {
 
 }
 
-export interface Structure {
-    type: string;
-    guard: object[];
-    reward?: object;
-}

@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
-import { AbilitiesTable } from 'src/app/core/dictionaries/abilities.const';
+import { BaseAbilitiesTable } from 'src/app/core/dictionaries/abilities.const';
 import { AbilityTypesEnum } from 'src/app/core/model/abilities.types';
-import { PlayerModel, UnitGroupModel } from 'src/app/core/model/main.model';
+import { UnitGroupModel } from 'src/app/core/model/main.model';
 import { CommonUtils } from 'src/app/core/utils/common.utils';
 import { BattleEventsService } from './mw-battle-events.service';
 import { BattleStateService } from './mw-battle-state.service';
@@ -42,6 +42,9 @@ export class CombatInteractorService {
     private readonly battleState: BattleStateService,
     private readonly battleEvents: BattleEventsService,
   ) {
+  }
+
+  public listenEvents(): void {
     this.battleEvents.onEvents({
       [BattleEventTypeEnum.Combat_Group_Attacked]: (event: CombatGroupAttacked) => {
         this.battleEvents.dispatchEvent({
@@ -64,7 +67,7 @@ export class CombatInteractorService {
             console.log('group completes attack');
             this.battleEvents.dispatchEvent({
               type: BattleEventTypeEnum.Round_Group_Spends_Turn,
-              groupPlayer: state.attackingGroup.ownerPlayerRef as PlayerModel,
+              groupPlayer: state.attackingGroup.ownerPlayerRef,
               group: state.attackingGroup,
               groupStillAlive: Boolean(state.attackingGroup.count),
               groupHasMoreTurns: Boolean(state.attackingGroup.turnsLeft),
@@ -82,7 +85,7 @@ export class CombatInteractorService {
         }
       },
     }).pipe(
-      takeUntil(battleEvents.onEvent(BattleEventTypeEnum.Fight_Ends)),
+      takeUntil(this.battleEvents.onEvent(BattleEventTypeEnum.Fight_Ends)),
     ).subscribe();
   }
 
@@ -132,7 +135,7 @@ export class CombatInteractorService {
       this.battleEvents.dispatchEvent({
         type: BattleEventTypeEnum.On_Group_Dies,
         target: attacked,
-        targetPlayer: attacked.ownerPlayerRef as PlayerModel,
+        targetPlayer: attacked.ownerPlayerRef,
         loss: realUnitLoss,
       });
       attackActionState.action = CombatInteractionEnum.AttackInteractionCompleted;
@@ -235,7 +238,7 @@ export class CombatInteractorService {
   }
 
   public canGroupCounterattack(group: UnitGroupModel): boolean {
-    return !!AbilitiesTable.get(group.type)?.some(ability => ability.type === AbilityTypesEnum.BaseCounterAttack);
+    return !!BaseAbilitiesTable.get(group.type)?.some(ability => ability.type === AbilityTypesEnum.BaseCounterAttack);
   }
 
   public rollDamage(damageDetailsInfo: DamageInfo): number {

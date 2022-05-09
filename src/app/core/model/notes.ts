@@ -1,3 +1,37 @@
+
+/* 
+    Update to what is below. Probably, if there are more unit types, races and abilities,
+      it will became more interesting by default. The current problems may seem strong
+      because there are not that much units, but diversity can make in better instantly.
+      Specialties, upgrades, abilities, interactions, locations, heroes..
+      Mechanics (experience, glory, hiring, mana, structures, etc.)
+*/
+
+/*  Also, game can be made a little more interesting by increasing amount of 
+      units to buy. The problem I'm trying to address is that I don't want make neutral stacks
+      way too easy, so every problem can be solved with simply buying archers, but on the other
+      hand, I don't want to make stack overpowered, so player is not going to lose 70% of his good
+      army, since he has to make some more moves in this location. The player should be able to carry
+      out some of the value into the next location. And he needs to see that his invested rare resources
+      actually do make difference. So, it wouldn't be great to be albe to buy 7 archers when entering the
+      town. Also, having bigger unit groups makes the fight outcome less obvious. 
+
+      I feel like, in the first location, player should be given at least 2 hiring structures. One
+      allows to hire units of his fraction, and another can offer some units of other fractions,
+      even neutral fractions sometimes.
+
+      So, player can prefer to get more firepower in this location. Or, he may collect resources
+      for even better firepower, but delaying it. He can be even forced to get them, if there is
+      some rare type of units, that can only be obtained from a structure. On the other side, there
+      can be some other structure, that can grab player's attention.
+
+      Once player takes the city by building the town hall, the player can later view this town, as
+      it starts to offer warriors at initially reduced amount (which can be increased later by upgradning
+      this town, this made to avoid having the full power of many headed towns, it is required to invest
+      into them to make them worthy).
+      
+*/
+
 /* 
     My game
 

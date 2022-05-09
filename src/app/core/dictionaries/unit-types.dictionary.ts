@@ -1,7 +1,4 @@
-import { AbilityTypesEnum } from "../model/abilities.types";
 import { UnitTypeModel } from "../model/main.model";
-import { Abilities } from "./abilities.const";
-
 
 export enum HF_TYPES_ENUM {
     Pikemans = 'Pikemans',
@@ -11,8 +8,8 @@ export enum HF_TYPES_ENUM {
 }
 
 export const HUMANS_FRACTION_UNIT_TYPES: Record<HF_TYPES_ENUM, UnitTypeModel> = {
-    
-    [HF_TYPES_ENUM.Pikemans]: {    
+
+    [HF_TYPES_ENUM.Pikemans]: {
         mainPortraitUrl: '',
         name: 'Pikemans',
         level: 1,
@@ -31,10 +28,8 @@ export const HUMANS_FRACTION_UNIT_TYPES: Record<HF_TYPES_ENUM, UnitTypeModel> = 
         defaultTurnsPerRound: 1,
 
         baseRequirements: {
-            playerGold: 100,
-            playerBloodCrystals: 0,
-            playerGloryLevel: 1,
-            playerHeroLevel: 1,
+            gold: 100,
+            redCrystals: 0,
         }
     },
 
@@ -45,18 +40,20 @@ export const HUMANS_FRACTION_UNIT_TYPES: Record<HF_TYPES_ENUM, UnitTypeModel> = 
 
         baseStats: {
             damageInfo: {
-                minDamage: 4,
-                maxDamage: 5,
+                minDamage: 3,
+                maxDamage: 4,
             },
-            attackRating: 2,
-            defence: 2,
-            health: 7,
+            attackRating: 3,
+            defence: 3,
+            health: 8,
             speed: 21,
         },
         minQuantityPerStack: 12,
         defaultTurnsPerRound: 2,
 
-        baseRequirements: {},
+        baseRequirements: {
+            gold: 95,
+        },
     },
     [HF_TYPES_ENUM.Knights]: {
         mainPortraitUrl: '',
@@ -71,7 +68,7 @@ export const HUMANS_FRACTION_UNIT_TYPES: Record<HF_TYPES_ENUM, UnitTypeModel> = 
             attackRating: 6,
             defence: 5,
             health: 17,
-            speed: 10,    
+            speed: 10,
         },
         minQuantityPerStack: 2,
         defaultTurnsPerRound: 1,
@@ -80,7 +77,7 @@ export const HUMANS_FRACTION_UNIT_TYPES: Record<HF_TYPES_ENUM, UnitTypeModel> = 
     },
     [HF_TYPES_ENUM.Cavalry]: {
         name: 'Cavalry',
-        baseRequirements: {},
+        
         level: 4,
 
         baseStats: {
@@ -91,9 +88,14 @@ export const HUMANS_FRACTION_UNIT_TYPES: Record<HF_TYPES_ENUM, UnitTypeModel> = 
             attackRating: 9,
             defence: 8,
             health: 31,
-            speed: 12,    
+            speed: 12,
         },
-        
+        baseRequirements: {
+            gold: 175,
+            wood: 0,
+            redCrystals: 1
+        },
+
         defaultTurnsPerRound: 1,
         minQuantityPerStack: 1,
         mainPortraitUrl: ''
