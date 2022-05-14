@@ -1,5 +1,6 @@
 import { PlayerModel, UnitGroupInstModel } from 'src/app/core/model/main.model';
 import { NeutralCampStructure, StructureModel } from "src/app/core/model/structures.types";
+import { PopupModel } from './popup.types';
 
 
 export enum BattleEventTypeEnum {
@@ -9,8 +10,10 @@ export enum BattleEventTypeEnum {
   /* todo: it can be considered to split away these events */
   Struct_Selected,
   Struct_Completed,
+  Struct_Fight_Confirmed,
 
   Display_Reward_Popup,
+  Display_Popup,
 
   On_Group_Damaged,
   /* todo: this event can be merged with On_Group_Damaged, introducing field isCounterattack */
@@ -45,6 +48,14 @@ export interface DisplayRewardPopup extends BattleEventModel<BattleEventTypeEnum
 }
 
 export interface StructCompleted extends BattleEventModel<BattleEventTypeEnum.Struct_Completed> {
+  struct: NeutralCampStructure;
+}
+
+export interface DisplayPopupEvent extends BattleEventModel<BattleEventTypeEnum.Display_Popup> {
+  popup: PopupModel;
+}
+
+export interface StructureFightConfirmed extends BattleEventModel<BattleEventTypeEnum.Struct_Fight_Confirmed> {
   struct: NeutralCampStructure;
 }
 
@@ -137,6 +148,9 @@ export interface EventByEnumMapping {
   [BattleEventTypeEnum.Struct_Selected]: StructSelected;
   [BattleEventTypeEnum.Struct_Completed]: StructCompleted;
   [BattleEventTypeEnum.Display_Reward_Popup]: DisplayRewardPopup;
+  [BattleEventTypeEnum.Struct_Fight_Confirmed]: StructureFightConfirmed;
+  [BattleEventTypeEnum.Display_Popup]: DisplayPopupEvent;
+  
 
   [BattleEventTypeEnum.UI_Player_Clicks_Enemy_Group]: UIPlayerClicksEnemyGroup;
   [BattleEventTypeEnum.UI_Player_Hovers_Group_Card]: UIPlayerHoversCard;

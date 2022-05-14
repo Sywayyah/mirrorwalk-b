@@ -10,6 +10,7 @@ export enum PopupTypesEnum {
   FightEnds,
   StructResourcesReward,
   HiringReward,
+  Prefight,
 }
 
 export interface PopupModel<T extends PopupTypesEnum = PopupTypesEnum> {
@@ -29,5 +30,9 @@ export interface StructRewardPopup extends PopupModel<PopupTypesEnum.StructResou
 }
 
 export interface StructHireRewardPopup extends PopupModel<PopupTypesEnum.HiringReward> {
+  struct: NeutralCampStructure;
+}
+
+export interface PrefightPopup extends PopupModel<PopupTypesEnum.Prefight> {
   struct: NeutralCampStructure;
 }

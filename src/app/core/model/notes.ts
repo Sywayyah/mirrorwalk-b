@@ -5,6 +5,8 @@
       because there are not that much units, but diversity can make in better instantly.
       Specialties, upgrades, abilities, interactions, locations, heroes..
       Mechanics (experience, glory, hiring, mana, structures, etc.)
+    
+    Also, need to add a pre-fight popup
 */
 
 /*  Also, game can be made a little more interesting by increasing amount of 

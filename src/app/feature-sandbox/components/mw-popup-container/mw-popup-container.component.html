@@ -14,9 +14,27 @@
             <ng-container *ngSwitchCase="popupTypes.HiringReward">
                 <ng-container *ngTemplateOutlet="hiringReward; context: {popup: popup}"></ng-container>
             </ng-container>
+
+            <ng-container *ngSwitchCase="popupTypes.Prefight">
+                <ng-container *ngTemplateOutlet="prefightPopup; context: {popup: popup}"></ng-container>
+            </ng-container>
+
         </ng-container>
     </ng-container>
 </div>
+
+
+<ng-template #prefightPopup let-popup="popup">
+    <div class="popup">
+        <mw-pre-fight-popup (close)="removePopup(popup)" [popup]="popup"></mw-pre-fight-popup>
+    </div>
+</ng-template>
+
+<ng-template #fightEndsPopup let-popup="popup">
+    <div class="popup">
+        <mw-post-fight-reward-popup [popup]="popup" (close)="removePopup(popup)"></mw-post-fight-reward-popup>
+    </div>
+</ng-template>
 
 <ng-template #resourcesReward let-popup="popup">
     <div class="popup">
@@ -27,35 +45,5 @@
 <ng-template #hiringReward let-popup="popup">
     <div class="popup">
         <mw-hiring-reward-popup [popup]="popup" (close)="removePopup(popup)"></mw-hiring-reward-popup>
-    </div>
-</ng-template>
-
-<ng-template #fightEndsPopup let-popup="popup">
-    <div class="popup">
-        <div class="header">{{popup.isWin ? 'Win!' : 'Defeat'}}</div>
-
-        <div>
-            <div style="text-align: center;">Player's Losses</div>
-            <div class="losses-container">
-                <div class="loss-card" *ngFor="let playerLoss of popup.playerLosses">
-                    <span>{{ playerLoss.type.name }}</span>
-                    <span>{{ playerLoss.count }}</span>
-                </div>
-            </div>
-        </div>
-
-        <div>
-            <div style="text-align: center;">Enemy's Losses</div>
-            <div class="losses-container">
-                <div class="loss-card" *ngFor="let playerLoss of popup.enemyLosses">
-                    <span>{{ playerLoss.type.name }}</span>
-                    <span>{{ playerLoss.count }}</span>
-                </div>
-            </div>
-        </div>
-
-        <div>
-            <button style="margin: auto; display: block;" (click)="onContinue(popup)">Continue</button>
-        </div>
     </div>
 </ng-template>

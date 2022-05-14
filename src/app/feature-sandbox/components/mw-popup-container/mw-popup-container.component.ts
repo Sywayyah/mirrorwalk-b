@@ -18,6 +18,11 @@ export class MwPopupContainerComponent implements OnInit {
     private readonly playersService: MwPlayersService,
   ) {
     this.battleEvents.onEvents({
+
+      [BattleEventTypeEnum.Display_Popup]: event => {
+        this.popups.push(event.popup);
+      },
+
       [BattleEventTypeEnum.Fight_Ends]: (event: RoundEndsEvent) => {
         const fightEndsPopup: FightEndsPopup = {
           type: PopupTypesEnum.FightEnds,
@@ -27,10 +32,9 @@ export class MwPopupContainerComponent implements OnInit {
           struct: event.struct as NeutralCampStructure,
         };
 
-        this.popups.push(
-          fightEndsPopup
-        );
+        this.battleEvents.dispatchEvent({ type: BattleEventTypeEnum.Display_Popup, popup: fightEndsPopup });
       },
+
       [BattleEventTypeEnum.Display_Reward_Popup]: event => {
         const struct = event.struct;
 
@@ -43,7 +47,7 @@ export class MwPopupContainerComponent implements OnInit {
                 struct: struct,
               };
 
-              this.popups.push(structRewardPopup);
+              this.battleEvents.dispatchEvent({ type: BattleEventTypeEnum.Display_Popup, popup: structRewardPopup });
               break;
 
             case NeutralRewardTypesEnum.UnitsHire:
@@ -52,17 +56,11 @@ export class MwPopupContainerComponent implements OnInit {
                 struct: struct,
               }
 
-              this.popups.push(structHirePopup);
+              this.battleEvents.dispatchEvent({ type: BattleEventTypeEnum.Display_Popup, popup: structHirePopup });
           }
         }
       },
     }).subscribe();
-  }
-
-  public onContinue(popup: FightEndsPopup): void {
-    this.removePopup(popup);
-
-    this.battleEvents.dispatchEvent({ type: BattleEventTypeEnum.Struct_Completed, struct: popup.struct });
   }
 
   public removePopup(popupToRemove: PopupModel): void {

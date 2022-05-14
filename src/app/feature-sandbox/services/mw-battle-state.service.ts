@@ -107,6 +107,7 @@ export class BattleStateService {
         const currentPlayerUnitGroups = this.heroesUnitGroupsMap.get(this.players[0]) as UnitGroupModel[];
 
         if (!(currentPlayerUnitGroups).length) {
+          this.playersService.getCurrentPlayer().unitGroups = currentPlayerUnitGroups;
 
           this.battleEventsService.dispatchEvent({
             type: BattleEventTypeEnum.Fight_Ends,

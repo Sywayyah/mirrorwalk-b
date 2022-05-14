@@ -1,0 +1,27 @@
+<div class="popup">
+    <div class="header">{{popup.isWin ? 'Win!' : 'Defeat'}}</div>
+
+    <div>
+        <div style="text-align: center;">Player's Losses</div>
+        <div class="losses-container">
+            <div class="loss-card" *ngFor="let playerLoss of popup.playerLosses">
+                <span>{{ playerLoss.type.name }}</span>
+                <span>{{ playerLoss.count }}</span>
+            </div>
+        </div>
+    </div>
+
+    <div>
+        <div style="text-align: center;">Enemy's Losses</div>
+        <div class="losses-container">
+            <div class="loss-card" *ngFor="let playerLoss of popup.enemyLosses">
+                <span>{{ playerLoss.type.name }}</span>
+                <span>{{ playerLoss.count }}</span>
+            </div>
+        </div>
+    </div>
+
+    <div>
+        <button style="margin: auto; display: block;" (click)="onContinue(popup)">Continue</button>
+    </div>
+</div>

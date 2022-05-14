@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { BattleEventsService, BattleEventTypeEnum } from '../../services';
+import { BattleEventsService, BattleEventTypeEnum, PopupTypesEnum, PrefightPopup, StructSelected } from '../../services';
 
 enum ViewsEnum {
   Structures = 'structures',
@@ -26,13 +26,21 @@ export class MwViewControlComponent implements OnInit {
     private readonly events: BattleEventsService,
   ) {
     this.events.onEvents({
-      [BattleEventTypeEnum.Struct_Selected]: event => {
+      [BattleEventTypeEnum.Struct_Selected]: (event: StructSelected) => {
+        const prefightPopup: PrefightPopup = {
+          type: PopupTypesEnum.Prefight,
+          struct: event.struct,
+        };
+
+        this.events.dispatchEvent({ type: BattleEventTypeEnum.Display_Popup, popup: prefightPopup });
+      },
+      [BattleEventTypeEnum.Struct_Fight_Confirmed]: event => {
         this.currentView = ViewsEnum.Battleground;
       },
       [BattleEventTypeEnum.Struct_Completed]: (event) => {
         event.struct.isDefeated = true;
         this.currentView = ViewsEnum.Structures;
-        this.events.dispatchEvent({type: BattleEventTypeEnum.Display_Reward_Popup, struct: event.struct });
+        this.events.dispatchEvent({ type: BattleEventTypeEnum.Display_Reward_Popup, struct: event.struct });
       },
     }).subscribe();
   }
