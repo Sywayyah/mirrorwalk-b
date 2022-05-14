@@ -8,15 +8,20 @@
         - Add structures chains.
         - Add specialties.
         - Add abilities.
+        - Add damaged unit group.
 
         Side notes: 
             Items may provide more turns per location (Boots, most likely)
+
+            Can be an interesting ability: Vengeful spirit. Unit always responds
+            with the damage that group has at the beginning of the fight.
 
     Major features;
         - Towns
         - New towns and unit types
         - Locations
         - Unit upgrades
+        - Limit hero's army, ability to split units
 */
 
 /* 
