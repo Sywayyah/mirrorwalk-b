@@ -48,6 +48,12 @@ export interface UnitTypeModel {
     /* what does this unit type requires */
     baseRequirements: RequirementModel;
 
+    /* base reward from neutral camps */
+    neutralReward: {
+        gold: number;
+        experience: number;
+    };
+    
     /* create a separate mapping, table UnitGroup->Abilities */
     /*  Associative tables.. can be useful. Don't need to overgrow the model */
     baseAbilities?: AbilityModel[];
@@ -109,6 +115,8 @@ export interface PlayerInstanceModel extends PlayerModel {
 }
 
 export interface HeroModel {
-
+    experience: number;
+    level: number;
+    freeSkillpoints: number;
 }
 

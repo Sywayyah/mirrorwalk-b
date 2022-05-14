@@ -12,6 +12,8 @@ export enum BattleEventTypeEnum {
   Struct_Completed,
   Struct_Fight_Confirmed,
 
+  Player_Gains_Level,
+
   Display_Reward_Popup,
   Display_Popup,
 
@@ -38,6 +40,8 @@ export enum BattleEventTypeEnum {
 export interface BattleEventModel<T extends BattleEventTypeEnum = BattleEventTypeEnum> {
   type: T;
 }
+
+export interface PlayerGainsLevel extends BattleEventModel<BattleEventTypeEnum.Player_Gains_Level> {}
 
 export interface StructSelected extends BattleEventModel<BattleEventTypeEnum.Struct_Selected> {
   struct: NeutralCampStructure;
@@ -151,6 +155,7 @@ export interface EventByEnumMapping {
   [BattleEventTypeEnum.Struct_Fight_Confirmed]: StructureFightConfirmed;
   [BattleEventTypeEnum.Display_Popup]: DisplayPopupEvent;
   
+  [BattleEventTypeEnum.Player_Gains_Level]: PlayerGainsLevel;
 
   [BattleEventTypeEnum.UI_Player_Clicks_Enemy_Group]: UIPlayerClicksEnemyGroup;
   [BattleEventTypeEnum.UI_Player_Hovers_Group_Card]: UIPlayerHoversCard;

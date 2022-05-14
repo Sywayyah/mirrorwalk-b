@@ -104,7 +104,7 @@ export class BattleStateService {
         const currentStructure = this.structuresService.currentStruct as NeutralCampStructure;
 
         /* Reflect dying groups on win. This logic may be revisited later */
-        const currentPlayerUnitGroups = this.heroesUnitGroupsMap.get(this.players[0]) as UnitGroupModel[];
+        const currentPlayerUnitGroups = this.heroesUnitGroupsMap.get(this.players[0]) as UnitGroupInstModel[];
 
         if (!(currentPlayerUnitGroups).length) {
           this.playersService.getCurrentPlayer().unitGroups = currentPlayerUnitGroups;

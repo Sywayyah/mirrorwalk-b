@@ -1,5 +1,25 @@
 
 /* 
+    Checklist:
+        - Think of more complete structure models (Graveyard, Archer Tower, etc.)
+        - Add camps with units of different towns.
+        - Add turns per location limit.
+        + Add hero levels and experience.
+        - Add structures chains.
+        - Add specialties.
+        - Add abilities.
+
+        Side notes: 
+            Items may provide more turns per location (Boots, most likely)
+
+    Major features;
+        - Towns
+        - New towns and unit types
+        - Locations
+        - Unit upgrades
+*/
+
+/* 
     Update to what is below. Probably, if there are more unit types, races and abilities,
       it will became more interesting by default. The current problems may seem strong
       because there are not that much units, but diversity can make in better instantly.

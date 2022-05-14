@@ -1,10 +1,13 @@
 import { Injectable } from '@angular/core';
 import { PLAYER_COLORS } from 'src/app/core/dictionaries/colors.const';
+import { LEVELS_BREAKPOINTS } from 'src/app/core/dictionaries/levels.const';
 import { NEUTRAL_FRACTION_UNIT_TYPES, NEUTRAL_TYPES_ENUM } from 'src/app/core/dictionaries/neutral-unit-types.dictionary';
 import { HF_TYPES_ENUM, HUMANS_FRACTION_UNIT_TYPES } from 'src/app/core/dictionaries/unit-types.dictionary';
 import { PlayerInstanceModel, PlayerModel, PlayerTypeEnum, UnitGroupInstModel, UnitGroupModel } from 'src/app/core/model/main.model';
 import { ResourcesModel } from 'src/app/core/model/resources.types';
 import { RandomUtils } from 'src/app/core/utils/common.utils';
+import { BattleEventsService } from './mw-battle-events.service';
+import { BattleEventTypeEnum } from './types';
 
 
 const mainPlayerGroups = RandomUtils.createRandomArmy({
@@ -58,13 +61,21 @@ export class MwPlayersService {
         redCrystals: 2,
       },
       type: PlayerTypeEnum.Player,
-      hero: {},
+      hero: {
+        experience: 0,
+        level: 1,
+        freeSkillpoints: 0,
+      },
       unitGroups: mainPlayerGroups,
     }),
     this.createPlayerEntry(PLAYER_IDS.Neutral, {
       color: PLAYER_COLORS.GRAY,
       type: PlayerTypeEnum.AI,
-      hero: {},
+      hero: {
+        experience: 0,
+        level: 0,
+        freeSkillpoints: 0,
+      },
       unitGroups: neutralGroups,
       resources: {
         ...defaultResources,
@@ -74,7 +85,9 @@ export class MwPlayersService {
 
   private currentPlayerId: string = PLAYER_IDS.Main;
 
-  constructor() { }
+  constructor(
+    private readonly events: BattleEventsService,
+  ) { }
 
   public getCurrentPlayer(): PlayerInstanceModel {
     return this.players.get(this.currentPlayerId) as PlayerInstanceModel;
@@ -82,6 +95,25 @@ export class MwPlayersService {
 
   public getCurrentPlayerId(): string {
     return this.currentPlayerId;
+  }
+
+  public addExperienceToPlayer(playerId: string, experience: number): void {
+    const player = this.getPlayerById(playerId);
+    const playerHero = player.hero;
+    playerHero.experience += experience;
+
+    const currentXpToNextLevel = LEVELS_BREAKPOINTS[playerHero.level + 1];
+
+    if (currentXpToNextLevel <= playerHero.experience) {
+      playerHero.level++;
+      playerHero.freeSkillpoints++;
+      playerHero.experience = playerHero.experience - currentXpToNextLevel;
+      this.events.dispatchEvent({ type: BattleEventTypeEnum.Player_Gains_Level });
+    }
+  }
+
+  public getPlayerById(playerId: string): PlayerInstanceModel {
+    return this.players.get(playerId) as PlayerInstanceModel;
   }
 
   public getEnemyPlayer(): PlayerInstanceModel {

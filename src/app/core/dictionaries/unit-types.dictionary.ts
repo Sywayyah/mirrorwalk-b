@@ -7,6 +7,11 @@ export enum HF_TYPES_ENUM {
     Cavalry = 'Cavalry',
 }
 
+const defaultRewards = {
+    experience: 0,
+    gold: 0,
+}
+
 export const HUMANS_FRACTION_UNIT_TYPES: Record<HF_TYPES_ENUM, UnitTypeModel> = {
 
     [HF_TYPES_ENUM.Pikemans]: {
@@ -30,7 +35,8 @@ export const HUMANS_FRACTION_UNIT_TYPES: Record<HF_TYPES_ENUM, UnitTypeModel> = 
         baseRequirements: {
             gold: 100,
             redCrystals: 0,
-        }
+        },
+        neutralReward: defaultRewards,
     },
 
     [HF_TYPES_ENUM.Archers]: {
@@ -54,6 +60,7 @@ export const HUMANS_FRACTION_UNIT_TYPES: Record<HF_TYPES_ENUM, UnitTypeModel> = 
         baseRequirements: {
             gold: 95,
         },
+        neutralReward: defaultRewards,
     },
     [HF_TYPES_ENUM.Knights]: {
         mainPortraitUrl: '',
@@ -74,6 +81,7 @@ export const HUMANS_FRACTION_UNIT_TYPES: Record<HF_TYPES_ENUM, UnitTypeModel> = 
         defaultTurnsPerRound: 1,
 
         baseRequirements: {},
+        neutralReward: defaultRewards,
     },
     [HF_TYPES_ENUM.Cavalry]: {
         name: 'Cavalry',
@@ -90,15 +98,17 @@ export const HUMANS_FRACTION_UNIT_TYPES: Record<HF_TYPES_ENUM, UnitTypeModel> = 
             health: 31,
             speed: 12,
         },
-        baseRequirements: {
-            gold: 175,
-            wood: 0,
-            redCrystals: 1
-        },
 
         defaultTurnsPerRound: 1,
         minQuantityPerStack: 1,
-        mainPortraitUrl: ''
+        mainPortraitUrl: '',
+        
+        baseRequirements: {
+            gold: 175,
+            wood: 1,
+            redCrystals: 1
+        },
+        neutralReward: defaultRewards,
     }
 };
 

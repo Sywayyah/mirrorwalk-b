@@ -7,3 +7,5 @@ export * from './mw-player-resources/mw-player-resources.component';
 export * from './mw-view-control/mw-view-control.component';
 export * from './mw-structures-view/mw-structures-view.component';
 export * from './mw-popup-container';
+export * from './mw-experience-bar/mw-experience-bar.component';
+export * from './mw-unit-groups-list/mw-unit-groups-list.component';

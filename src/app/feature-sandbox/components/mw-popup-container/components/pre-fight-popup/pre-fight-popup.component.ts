@@ -11,11 +11,18 @@ export class PreFightPopupComponent implements OnInit {
   @Input() public popup!: PrefightPopup;
   @Output() public close: EventEmitter<void> = new EventEmitter<void>();
 
+  public totalGoldReward: number = 0;
+  public totalExpReward: number = 0;
+
   constructor(
     private readonly events: BattleEventsService,
   ) { }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
+    this.popup.struct.guard.unitGroups.forEach((unitGroup) => {
+      this.totalExpReward += Math.round(unitGroup.count * unitGroup.type.neutralReward.experience);
+      this.totalGoldReward += Math.round(unitGroup.count * unitGroup.type.neutralReward.experience);
+    });
   }
 
   public closePopup(): void {

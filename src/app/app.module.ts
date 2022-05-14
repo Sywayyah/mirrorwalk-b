@@ -5,16 +5,19 @@ import {
   CardEffectsComponent,
   HiringRewardPopupComponent,
   MwActionHintComponent,
+  MwExperienceBarComponent,
   MwGameboardComponent,
   MwHistoryLogComponent,
   MwPlayerResourcesComponent,
   MwPopupContainerComponent,
   MwStructuresViewComponent,
   MwUnitGroupCardComponent,
+  MwUnitGroupsListComponent,
   MwViewControlComponent,
-  ResourcesRewardPopupComponent,
+  PostFightRewardPopupComponent,
+  PreFightPopupComponent,
+  ResourcesRewardPopupComponent
 } from './feature-sandbox/components';
-
 
 @NgModule({
   declarations: [
@@ -30,6 +33,10 @@ import {
     MwPlayerResourcesComponent,
     ResourcesRewardPopupComponent,
     HiringRewardPopupComponent,
+    PreFightPopupComponent,
+    PostFightRewardPopupComponent,
+    MwUnitGroupsListComponent,
+    MwExperienceBarComponent,
   ],
   imports: [
     BrowserModule

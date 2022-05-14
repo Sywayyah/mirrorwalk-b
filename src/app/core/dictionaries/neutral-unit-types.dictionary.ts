@@ -7,6 +7,11 @@ export enum NEUTRAL_TYPES_ENUM {
     Ghosts = 'Ghosts',
 }
 
+const defaultReward = {
+    gold: 0,
+    experience: 0,
+};
+
 export const NEUTRAL_FRACTION_UNIT_TYPES: Record<NEUTRAL_TYPES_ENUM, UnitTypeModel> = {
 
     [NEUTRAL_TYPES_ENUM.Ghosts]: {
@@ -26,6 +31,11 @@ export const NEUTRAL_FRACTION_UNIT_TYPES: Record<NEUTRAL_TYPES_ENUM, UnitTypeMod
         },
         defaultTurnsPerRound: 1,
         minQuantityPerStack: 1,
+
+        neutralReward: {
+            experience: 2.3,
+            gold: 2.4,
+        }
     },
 
     [NEUTRAL_TYPES_ENUM.Gnolls]: {
@@ -48,7 +58,12 @@ export const NEUTRAL_FRACTION_UNIT_TYPES: Record<NEUTRAL_TYPES_ENUM, UnitTypeMod
         baseRequirements: {
             gold: 100,
             redCrystals: 0,
-        }
+        },
+
+        neutralReward: {
+            experience: 3.3,
+            gold: 2.8
+        },
     },
 
     [NEUTRAL_TYPES_ENUM.Thiefs]: {
@@ -70,6 +85,10 @@ export const NEUTRAL_FRACTION_UNIT_TYPES: Record<NEUTRAL_TYPES_ENUM, UnitTypeMod
         defaultTurnsPerRound: 2,
 
         baseRequirements: {},
+        neutralReward: {
+            experience: 4.55,
+            gold: 3.9
+        }
     },
 
     [NEUTRAL_TYPES_ENUM.ForestTrolls]: {
@@ -92,5 +111,9 @@ export const NEUTRAL_FRACTION_UNIT_TYPES: Record<NEUTRAL_TYPES_ENUM, UnitTypeMod
         defaultTurnsPerRound: 1,
 
         baseRequirements: {},
+        neutralReward: {
+            experience: 4,
+            gold: 4.6,
+        }
     },
 };
