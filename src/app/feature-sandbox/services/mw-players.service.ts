@@ -66,6 +66,11 @@ export class MwPlayersService {
         experience: 0,
         level: 1,
         freeSkillpoints: 0,
+        abilities: [{
+          name: 'Rain of fire',
+          level: 1,
+          activationType: 'instant',
+        }],
       },
       unitGroups: mainPlayerGroups,
     }),
@@ -77,6 +82,7 @@ export class MwPlayersService {
         experience: 0,
         level: 0,
         freeSkillpoints: 0,
+        abilities: [],
       },
       unitGroups: neutralGroups,
       resources: {

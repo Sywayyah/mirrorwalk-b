@@ -53,7 +53,7 @@ export interface UnitTypeModel {
         gold: number;
         experience: number;
     };
-    
+
     /* create a separate mapping, table UnitGroup->Abilities */
     /*  Associative tables.. can be useful. Don't need to overgrow the model */
     baseAbilities?: AbilityModel[];
@@ -120,6 +120,11 @@ export interface HeroModel {
     level: number;
     freeSkillpoints: number;
     // abilities?: AbilityTypeModel[];
+    abilities: SkillModel[];
 }
 
-
+export interface SkillModel {
+    name: string;
+    level: number;
+    activationType: 'target' | 'instant' | 'passive';
+}
