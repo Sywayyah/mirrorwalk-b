@@ -115,8 +115,11 @@ export interface PlayerInstanceModel extends PlayerModel {
 }
 
 export interface HeroModel {
+    name: string | null;
     experience: number;
     level: number;
     freeSkillpoints: number;
+    // abilities?: AbilityTypeModel[];
 }
+
 

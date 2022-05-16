@@ -62,6 +62,7 @@ export class MwPlayersService {
       },
       type: PlayerTypeEnum.Player,
       hero: {
+        name: 'Taltir',
         experience: 0,
         level: 1,
         freeSkillpoints: 0,
@@ -72,6 +73,7 @@ export class MwPlayersService {
       color: PLAYER_COLORS.GRAY,
       type: PlayerTypeEnum.AI,
       hero: {
+        name: null,
         experience: 0,
         level: 0,
         freeSkillpoints: 0,
