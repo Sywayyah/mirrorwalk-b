@@ -4,6 +4,7 @@ import { takeUntil } from 'rxjs/operators';
 import { PlayerInstanceModel, PlayerModel, PlayerTypeEnum, UnitGroupInstModel, UnitGroupModel, UnitTypeModel } from 'src/app/core/model/main.model';
 import { NeutralCampStructure } from 'src/app/core/model/structures.types';
 import { BattleEventsService } from './mw-battle-events.service';
+import { MwCurrentPlayerStateService, PlayerState } from './mw-current-player-state.service';
 import { MwPlayersService } from './mw-players.service';
 import { MwStructuresService } from './mw-structures.service';
 import { BattleEventTypeEnum, ActionHintModel } from "./types";
@@ -38,6 +39,7 @@ export class BattleStateService {
     private readonly battleEventsService: BattleEventsService,
     private readonly playersService: MwPlayersService,
     private readonly structuresService: MwStructuresService,
+    private readonly curPlayerState: MwCurrentPlayerStateService,
   ) { }
 
   public initBattle(
@@ -146,11 +148,13 @@ export class BattleStateService {
 
       [BattleEventTypeEnum.UI_Player_Clicks_Enemy_Group]: event => {
         console.log('player clicks');
-        this.battleEventsService.dispatchEvent({
-          type: BattleEventTypeEnum.Combat_Group_Attacked,
-          attackedGroup: event.attackedGroup,
-          attackerGroup: event.attackingGroup,
-        });
+        if (this.curPlayerState.playerCurrentState === PlayerState.Normal) {
+          this.battleEventsService.dispatchEvent({
+            type: BattleEventTypeEnum.Combat_Group_Attacked,
+            attackedGroup: event.attackedGroup,
+            attackerGroup: event.attackingGroup,
+          });
+        }
       },
 
     }).pipe(

@@ -1,0 +1,17 @@
+.abilities-list {
+    display: flex;
+    flex-direction: column;
+}
+
+.ability {
+    width: 74px;
+    height: 42px;
+    border: 1px solid gray;
+    font-size: 13px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+    margin: 4px;
+    cursor: pointer;
+}

@@ -18,6 +18,7 @@ import {
   PreFightPopupComponent,
   ResourcesRewardPopupComponent
 } from './feature-sandbox/components';
+import { MwBattleHeroAbilitiesComponent } from './feature-sandbox/components/mw-battle-hero-abilities/mw-battle-hero-abilities.component';
 
 @NgModule({
   declarations: [
@@ -37,6 +38,7 @@ import {
     PostFightRewardPopupComponent,
     MwUnitGroupsListComponent,
     MwExperienceBarComponent,
+    MwBattleHeroAbilitiesComponent,
   ],
   imports: [
     BrowserModule

@@ -120,10 +120,10 @@ export interface HeroModel {
     level: number;
     freeSkillpoints: number;
     // abilities?: AbilityTypeModel[];
-    abilities: SkillModel[];
+    spells: SpellModel[];
 }
 
-export interface SkillModel {
+export interface SpellModel {
     name: string;
     level: number;
     activationType: 'target' | 'instant' | 'passive';
