@@ -33,7 +33,7 @@ export const HUMANS_FRACTION_UNIT_TYPES: Record<HF_TYPES_ENUM, UnitTypeModel> = 
         defaultTurnsPerRound: 1,
 
         baseRequirements: {
-            gold: 100,
+            gold: 60,
             redCrystals: 0,
         },
         neutralReward: defaultRewards,

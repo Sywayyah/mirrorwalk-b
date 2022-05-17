@@ -123,8 +123,14 @@ export interface HeroModel {
     spells: SpellModel[];
 }
 
+export enum SpellActivationType {
+    Target = 'target',
+    Instant = 'instant',
+    Passive = 'passive',
+}
+
 export interface SpellModel {
     name: string;
     level: number;
-    activationType: 'target' | 'instant' | 'passive';
+    activationType: SpellActivationType;
 }

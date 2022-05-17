@@ -1,7 +1,8 @@
-import { UnitGroupModel } from "src/app/core/model/main.model";
+import { SpellModel, UnitGroupInstModel, UnitGroupModel } from "src/app/core/model/main.model";
 
 export enum ActionHintTypeEnum {
-    OnHoverEnemyCard = 'on-hover-enemy-card'
+    OnHoverEnemyCard = 'on-hover-enemy-card',
+    OnTargetSpell = 'on-target-spell'
 }
 
 export interface ActionHintModel<T extends ActionHintTypeEnum = ActionHintTypeEnum> {
@@ -17,5 +18,10 @@ export interface AttackActionHint extends ActionHintModel<ActionHintTypeEnum.OnH
     noDamageSpread: boolean;
     noLossSpread: boolean;
     attackSuperiority: number;
+}
+
+export interface SpellTargetActionHint extends ActionHintModel<ActionHintTypeEnum.OnTargetSpell> {
+    spell: SpellModel;
+    target: UnitGroupInstModel;
 }
 

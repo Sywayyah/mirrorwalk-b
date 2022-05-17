@@ -1,13 +1,22 @@
 import { Injectable } from '@angular/core';
-import { PlayerInstanceModel, SpellModel } from 'src/app/core/model/main.model';
+import { PlayerInstanceModel, SpellActivationType, SpellModel } from 'src/app/core/model/main.model';
 import { MwPlayersService } from './mw-players.service';
 
 
 export enum PlayerState {
+  /* player makes his move */
   Normal = 'normal',
+  /* targets a spell */
   SpellTargeting = 'spell-targeting',
+  /* enemy now makes his turn */
+  WaitsForTurn = 'waits-for-turn',
 }
 
+export const NULL_SPELL: SpellModel = {
+  activationType: SpellActivationType.Instant,
+  level: 0,
+  name: '',
+}
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +25,7 @@ export class MwCurrentPlayerStateService {
 
   public readonly currentPlayer: PlayerInstanceModel = this.players.getCurrentPlayer();
 
-  public currentSpell!: SpellModel;
+  public currentSpell: SpellModel = NULL_SPELL;
 
   public playerCurrentState: PlayerState = PlayerState.Normal;
 
@@ -38,5 +47,9 @@ export class MwCurrentPlayerStateService {
       default:
         break;
     }
+  }
+
+  public resetCurrentSpell(): void {
+    this.currentSpell = NULL_SPELL;
   }
 }

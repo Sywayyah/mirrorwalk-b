@@ -15,7 +15,7 @@ import { BattleEventTypeEnum, ActionHintModel } from "./types";
 })
 export class BattleStateService {
 
-  public currentPlayer!: PlayerModel;
+  public currentPlayer!: PlayerInstanceModel;
   public currentUnitGroup!: UnitGroupInstModel;
   public battleEvent$: Subject<void> = new BehaviorSubject<void>(undefined);
 
@@ -62,7 +62,7 @@ export class BattleStateService {
     this.battleEventsService.onEvents({
       [BattleEventTypeEnum.Fight_Starts]: event => {
         console.log('Battle starts');
-        this.currentPlayer = null as unknown as PlayerModel;
+        this.currentPlayer = null as unknown as PlayerInstanceModel;
         this.initNextTurnByQueue();
       },
       [BattleEventTypeEnum.Fight_Next_Round_Starts]: event => {
@@ -74,7 +74,10 @@ export class BattleStateService {
         console.log('Player starts turn');
         if (event.currentPlayer.type === PlayerTypeEnum.AI) {
           console.log(`AI player's Turn`)
+          this.curPlayerState.playerCurrentState = PlayerState.WaitsForTurn;
           this.processAiPlayer();
+        } else {
+          this.curPlayerState.playerCurrentState = PlayerState.Normal;
         }
       },
 
@@ -153,6 +156,14 @@ export class BattleStateService {
             type: BattleEventTypeEnum.Combat_Group_Attacked,
             attackedGroup: event.attackedGroup,
             attackerGroup: event.attackingGroup,
+          });
+        }
+        if (this.curPlayerState.playerCurrentState === PlayerState.SpellTargeting) {
+          this.battleEventsService.dispatchEvent({
+            type: BattleEventTypeEnum.Player_Targets_Spell,
+            player: event.attackingPlayer,
+            spell: this.curPlayerState.currentSpell,
+            target: event.attackedGroup,
           });
         }
       },

@@ -3,7 +3,7 @@ import { PLAYER_COLORS } from 'src/app/core/dictionaries/colors.const';
 import { LEVELS_BREAKPOINTS } from 'src/app/core/dictionaries/levels.const';
 import { NEUTRAL_FRACTION_UNIT_TYPES, NEUTRAL_TYPES_ENUM } from 'src/app/core/dictionaries/neutral-unit-types.dictionary';
 import { HF_TYPES_ENUM, HUMANS_FRACTION_UNIT_TYPES } from 'src/app/core/dictionaries/unit-types.dictionary';
-import { PlayerInstanceModel, PlayerModel, PlayerTypeEnum, UnitGroupInstModel, UnitGroupModel } from 'src/app/core/model/main.model';
+import { PlayerInstanceModel, PlayerModel, PlayerTypeEnum, SpellActivationType, SpellModel, UnitGroupInstModel, UnitGroupModel } from 'src/app/core/model/main.model';
 import { ResourcesModel } from 'src/app/core/model/resources.types';
 import { RandomUtils } from 'src/app/core/utils/common.utils';
 import { BattleEventsService } from './mw-battle-events.service';
@@ -47,6 +47,26 @@ const defaultResources: ResourcesModel = {
   wood: 0,
 }
 
+/* try different types of spells. also, try applying buffs. */
+const RAIN_OF_FIRE_SPELL: SpellModel = {
+  name: 'Rain of Fire',
+  level: 1,
+  activationType: SpellActivationType.Target,
+};
+
+const BLINDNESS_SPELL: SpellModel = {
+  name: 'Blindness',
+  level: 1,
+  activationType: SpellActivationType.Instant,
+};
+
+const ENCHANT_SPELL: SpellModel = {
+  name: 'Enchant',
+  level: 1,
+  activationType: SpellActivationType.Passive,
+};
+
+
 @Injectable({
   providedIn: 'root'
 })
@@ -66,11 +86,11 @@ export class MwPlayersService {
         experience: 0,
         level: 1,
         freeSkillpoints: 0,
-        spells: [{
-          name: 'Rain of fire',
-          level: 1,
-          activationType: 'target',
-        }],
+        spells: [
+          RAIN_OF_FIRE_SPELL,
+          BLINDNESS_SPELL,
+          ENCHANT_SPELL,
+        ],
       },
       unitGroups: mainPlayerGroups,
     }),

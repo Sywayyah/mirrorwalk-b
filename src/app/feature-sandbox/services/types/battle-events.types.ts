@@ -1,4 +1,4 @@
-import { PlayerModel, UnitGroupInstModel } from 'src/app/core/model/main.model';
+import { PlayerInstanceModel, PlayerModel, SpellModel, UnitGroupInstModel } from 'src/app/core/model/main.model';
 import { NeutralCampStructure, StructureModel } from "src/app/core/model/structures.types";
 import { PopupModel } from './popup.types';
 
@@ -13,6 +13,7 @@ export enum BattleEventTypeEnum {
   Struct_Fight_Confirmed,
 
   Player_Gains_Level,
+  Player_Targets_Spell,
 
   Display_Reward_Popup,
   Display_Popup,
@@ -41,6 +42,12 @@ export interface BattleEventModel<T extends BattleEventTypeEnum = BattleEventTyp
   type: T;
 }
 
+export interface PlayerTargetsSpell extends BattleEventModel<BattleEventTypeEnum.Player_Targets_Spell> {
+  player: PlayerInstanceModel;
+  spell: SpellModel;
+  target: UnitGroupInstModel;
+}
+
 export interface PlayerGainsLevel extends BattleEventModel<BattleEventTypeEnum.Player_Gains_Level> {}
 
 export interface StructSelected extends BattleEventModel<BattleEventTypeEnum.Struct_Selected> {
@@ -64,7 +71,7 @@ export interface StructureFightConfirmed extends BattleEventModel<BattleEventTyp
 }
 
 export interface UIPlayerClicksEnemyGroup extends BattleEventModel<BattleEventTypeEnum.UI_Player_Clicks_Enemy_Group> {
-  attackingPlayer: PlayerModel;
+  attackingPlayer: PlayerInstanceModel;
   attackingGroup: UnitGroupInstModel;
   attackedGroup: UnitGroupInstModel;
 }
@@ -156,6 +163,7 @@ export interface EventByEnumMapping {
   [BattleEventTypeEnum.Display_Popup]: DisplayPopupEvent;
   
   [BattleEventTypeEnum.Player_Gains_Level]: PlayerGainsLevel;
+  [BattleEventTypeEnum.Player_Targets_Spell]: PlayerTargetsSpell;
 
   [BattleEventTypeEnum.UI_Player_Clicks_Enemy_Group]: UIPlayerClicksEnemyGroup;
   [BattleEventTypeEnum.UI_Player_Hovers_Group_Card]: UIPlayerHoversCard;

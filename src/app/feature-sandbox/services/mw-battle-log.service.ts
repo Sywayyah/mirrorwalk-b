@@ -32,6 +32,15 @@ export class MwBattleLogService {
       [BattleEventTypeEnum.On_Group_Counter_Attacked]: event => this.logSimpleMessage(`${event.attackerGroup.type.name} (${event.attackerGroup.count}) counterattacks, dealing ${event.damage} damage, ${event.loss} units perish`),
       [BattleEventTypeEnum.On_Group_Dies]: event => this.logSimpleMessage(`Group of ${event.target.type.name} dies, losing ${event.loss} units`),
 
+      /* todo: timely, logs will be controlled from spell's code */
+      [BattleEventTypeEnum.Player_Targets_Spell]: event => {
+        switch (event.spell.activationType) {
+          case 'target':
+            this.logSimpleMessage(`${event.player.hero.name} casts ${event.spell.name} against ${event.target.count} ${event.target.type.name}`);
+            break;
+        }
+        
+      },
 
       [BattleEventTypeEnum.Round_Player_Turn_Starts]: event => this.logRoundInfoMessage(`Player ${event.currentPlayer.type} starts his turn`),
 

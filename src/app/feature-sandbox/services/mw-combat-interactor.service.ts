@@ -2,12 +2,13 @@ import { Injectable } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 import { BaseAbilitiesTable } from 'src/app/core/dictionaries/abilities.const';
 import { AbilityTypesEnum } from 'src/app/core/model/abilities.types';
-import { UnitGroupModel } from 'src/app/core/model/main.model';
+import { UnitGroupInstModel, UnitGroupModel } from 'src/app/core/model/main.model';
 import { CommonUtils } from 'src/app/core/utils/common.utils';
 import { BattleEventsService } from './mw-battle-events.service';
 import { BattleStateService } from './mw-battle-state.service';
-import { BattleEventTypeEnum, CombatGroupAttacked, CombatInteractionEnum, CombatInteractionState, HoverTypeEnum, UIPlayerHoversCard } from './types';
-import { ActionHintTypeEnum, AttackActionHint } from './types/action-hint.types';
+import { MwCurrentPlayerStateService, PlayerState } from './mw-current-player-state.service';
+import { BattleEventTypeEnum, CombatGroupAttacked, CombatInteractionEnum, CombatInteractionState, HoverTypeEnum, PlayerTargetsSpell, UIPlayerHoversCard } from './types';
+import { ActionHintTypeEnum, AttackActionHint, SpellTargetActionHint } from './types/action-hint.types';
 
 export interface DamageInfo {
   attacker: UnitGroupModel;
@@ -32,6 +33,11 @@ export interface DetailedDamageInfo extends DamageInfo {
   maxUnitCountLoss: number;
 }
 
+export enum DamageType {
+  PhysicalAttack = 'physAttack',
+  Physical = 'physical',
+  Magic = 'magic',
+}
 
 @Injectable({
   providedIn: 'root'
@@ -41,6 +47,7 @@ export class CombatInteractorService {
   constructor(
     private readonly battleState: BattleStateService,
     private readonly battleEvents: BattleEventsService,
+    private readonly curPlayerState: MwCurrentPlayerStateService,
   ) {
   }
 
@@ -78,15 +85,57 @@ export class CombatInteractorService {
       [BattleEventTypeEnum.UI_Player_Hovers_Group_Card]: (event: UIPlayerHoversCard) => {
         switch (event.hoverType) {
           case HoverTypeEnum.EnemyCard:
-            this.setHintMessageOnHoverCard(event);
+            if (this.curPlayerState.playerCurrentState === PlayerState.Normal) {
+              this.setDamageHintMessageOnCardHover(event);
+            }
+            if (this.curPlayerState.playerCurrentState === PlayerState.SpellTargeting) {
+              const spellTargetHint: SpellTargetActionHint = {
+                type: ActionHintTypeEnum.OnTargetSpell,
+                spell: this.curPlayerState.currentSpell,
+                target: event.hoveredCard as UnitGroupInstModel,
+              };
+              this.battleState.hintMessage$.next(spellTargetHint);
+            }
             break;
           case HoverTypeEnum.Unhover:
             this.battleState.hintMessage$.next(null);
         }
       },
+
+      [BattleEventTypeEnum.Player_Targets_Spell]: (event: PlayerTargetsSpell) => {
+        this.dealDamageTo(event.target, 100, DamageType.Magic);
+        this.curPlayerState.playerCurrentState = PlayerState.Normal;
+        this.curPlayerState.resetCurrentSpell();
+      },
+
     }).pipe(
       takeUntil(this.battleEvents.onEvent(BattleEventTypeEnum.Fight_Ends)),
     ).subscribe();
+  }
+
+  public dealDamageTo(target: UnitGroupInstModel, damage: number, type: DamageType = DamageType.PhysicalAttack): void {
+    let totalUnitLoss = 0;
+
+    switch (type) {
+      case DamageType.Magic:
+        totalUnitLoss = this.calcUnitCountLoss(damage, target.type.baseStats.health, target.count);
+
+        break;
+      default:
+        totalUnitLoss = this.calcUnitCountLoss(damage, target.type.baseStats.health, target.count);
+    }
+
+    target.count -= totalUnitLoss;
+
+    if (target.count <= 0) {
+      this.battleState.handleDefeatedUnitGroup(target);
+      this.battleEvents.dispatchEvent({
+        type: BattleEventTypeEnum.On_Group_Dies,
+        target: target,
+        targetPlayer: target.ownerPlayerRef,
+        loss: totalUnitLoss,
+      });
+    }
   }
 
   /* when group counterattacks and defeats enemy group, both are gone from queue */
@@ -104,6 +153,8 @@ export class CombatInteractorService {
 
     const attackDetails = this.getDetailedAttackInfo(attacker, attacked);
 
+    /* todo: revisit this. total damage and realUnitLoss aren't related. */
+    /* todo: also, implement health tail */
     const totalDamage = this.rollDamage(attackDetails);
     const realUnitLoss = CommonUtils.randIntInRange(attackDetails.minUnitCountLoss, attackDetails.maxUnitCountLoss);
 
@@ -217,7 +268,7 @@ export class CombatInteractorService {
     return damageInfoDetails;
   }
 
-  public setHintMessageOnHoverCard(event: UIPlayerHoversCard): void {
+  public setDamageHintMessageOnCardHover(event: UIPlayerHoversCard): void {
     const attackDetails = this.getDetailedAttackInfo(this.battleState.currentUnitGroup, event.hoveredCard as UnitGroupModel);
 
     const actionHint: AttackActionHint = {

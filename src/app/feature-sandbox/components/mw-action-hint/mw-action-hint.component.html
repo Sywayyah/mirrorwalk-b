@@ -3,6 +3,10 @@
     <ng-container *ngSwitchCase="hintActionTypes.OnHoverEnemyCard">
       <ng-container *ngTemplateOutlet="simple; context: { hint: actionHint }"></ng-container>
     </ng-container>
+
+    <ng-container *ngSwitchCase="hintActionTypes.OnTargetSpell">
+      <ng-container *ngTemplateOutlet="onTargetSpell; context: { hint: actionHint }"></ng-container>
+    </ng-container>
   </ng-container>
 </div>
 
@@ -29,4 +33,21 @@
   <!-- <span *ngIf="hint.attackSuperiority">
     (superiority: {{hint.attackSuperiority}})
   </span> -->
+</ng-template>
+
+<ng-template #onTargetSpell let-hint="hint">
+  <div>
+    <span>
+      Cast
+    </span>
+    <span>
+      {{hint.spell.name}}
+    </span>
+    <span>
+      against
+    </span>
+    <span>
+      {{hint.target.type.name}}
+    </span>
+  </div>
 </ng-template>
