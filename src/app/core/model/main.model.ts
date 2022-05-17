@@ -183,6 +183,7 @@ export enum DamageType {
 export interface SpellCombatActionsRef {
     dealDamageTo: (target: UnitGroupInstModel, damage: number, damageType: DamageType) => void;
     addSpellToUnitGroup: (target: UnitGroupInstModel, spell: SpellModel, ownerPlayer: PlayerInstanceModel) => void;
+    historyLog: (plainMsg: string) => void;
 }
 
 export interface SpellCombatRefsModel {

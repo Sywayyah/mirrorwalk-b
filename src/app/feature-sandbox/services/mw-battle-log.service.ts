@@ -36,7 +36,7 @@ export class MwBattleLogService {
       [BattleEventTypeEnum.Player_Targets_Spell]: event => {
         switch (event.spell.activationType) {
           case 'target':
-            this.logSimpleMessage(`${event.player.hero.name} casts ${event.spell.name} against ${event.target.count} ${event.target.type.name}`);
+            // this.logSimpleMessage(`${event.player.hero.name} casts ${event.spell.name} against ${event.target.count} ${event.target.type.name}`);
             break;
         }
         

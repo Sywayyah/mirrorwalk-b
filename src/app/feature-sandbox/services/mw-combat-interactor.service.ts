@@ -5,6 +5,7 @@ import { AbilityTypesEnum } from 'src/app/core/model/abilities.types';
 import { DamageType, PlayerInstanceModel, SpellEventHandlers, SpellEventTypes, SpellModel, UnitGroupInstModel, UnitGroupModel } from 'src/app/core/model/main.model';
 import { CommonUtils } from 'src/app/core/utils/common.utils';
 import { BattleEventsService } from './mw-battle-events.service';
+import { MwBattleLogService } from './mw-battle-log.service';
 import { BattleStateService } from './mw-battle-state.service';
 import { MwCurrentPlayerStateService, PlayerState } from './mw-current-player-state.service';
 import { MwPlayersService } from './mw-players.service';
@@ -47,6 +48,7 @@ export class CombatInteractorService {
     private readonly battleEvents: BattleEventsService,
     private readonly curPlayerState: MwCurrentPlayerStateService,
     private readonly players: MwPlayersService,
+    private readonly battleLog: MwBattleLogService
   ) {
   }
 
@@ -329,6 +331,9 @@ export class CombatInteractorService {
         addSpellToUnitGroup: (target, spell, ownerPlayer) => {
           this.addSpellToUnitGroup(target, spell, ownerPlayer);
         },
+        historyLog: (plainMsg) => {
+          this.battleLog.logSimpleMessage(plainMsg);
+        }
       },
       events: {
         on: (handlers: SpellEventHandlers) => {

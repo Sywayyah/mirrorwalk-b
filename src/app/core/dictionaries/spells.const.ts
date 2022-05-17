@@ -14,7 +14,10 @@ export const RAIN_OF_FIRE_SPELL: SpellModel = {
 
                 events.on({
                     [SpellEventTypes.PlayerTargetsSpell]: (event) => {
-                        actions.dealDamageTo(event.target, 55 * ownerHero.level, DamageType.Magic);
+                        const damage = 65 * ownerHero.level;
+
+                        actions.historyLog(`${ownerHero.name} deals ${damage} damage to ${event.target.type.name} with ${thisSpell.name}`)
+                        actions.dealDamageTo(event.target, damage, DamageType.Magic);
                     }
                 });
 
@@ -26,19 +29,20 @@ export const RAIN_OF_FIRE_SPELL: SpellModel = {
 export const POISON_CLOUD_SPELL_EFFECT: SpellModel = {
     activationType: SpellActivationType.Debuff,
     level: 1,
-    name: '',
+    name: 'Poisoned',
     type: {
         spellInfo: {
             name: 'Poisoned'
         },
         spellConfig: {
-            init({ events, actions }) {
+            init({ events, actions, thisSpell }) {
                 events.on({
                     [SpellEventTypes.SpellPlacedOnUnitGroup]: ({ target }) => {
-
+                        actions.historyLog(`${target.type.name} gets negative effect "${thisSpell.name}"`);
                         events.on({
                             [SpellEventTypes.NewRoundBegins]: (event) => {
-                                console.log('deal poison damage to', target.type.name);
+                                actions.historyLog(`Poison deals ${65} damage to ${target.type.name}`);
+
                                 actions.dealDamageTo(target, 65, DamageType.Magic);
                             }
                         });
@@ -59,9 +63,10 @@ export const POISON_CLOUD_SPELL: SpellModel = {
             name: 'Poison Cloud',
         },
         spellConfig: {
-            init({ events, actions, ownerPlayer }) {
+            init({ events, actions, ownerPlayer, ownerHero, thisSpell }) {
                 events.on({
                     [SpellEventTypes.PlayerTargetsSpell]: event => {
+                        actions.historyLog(`${ownerHero.name} applies "${thisSpell.name}" against ${event.target.type.name}`);
                         actions.addSpellToUnitGroup(event.target, POISON_CLOUD_SPELL_EFFECT, ownerPlayer);
                     }
                 });
