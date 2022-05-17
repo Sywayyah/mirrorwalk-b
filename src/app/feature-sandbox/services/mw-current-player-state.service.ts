@@ -17,8 +17,10 @@ export const NULL_SPELL: SpellModel = {
   level: 0,
   name: '',
   type: {
-    spellConfig: {
+    spellInfo: {
       name: '',
+    },
+    spellConfig: {
       init: () => { },
     }
   }

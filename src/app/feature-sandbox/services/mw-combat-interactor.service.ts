@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 import { BaseAbilitiesTable } from 'src/app/core/dictionaries/abilities.const';
 import { AbilityTypesEnum } from 'src/app/core/model/abilities.types';
-import { DamageType, SpellEventsMapping, SpellEventTypes, SpellModel, UnitGroupInstModel, UnitGroupModel } from 'src/app/core/model/main.model';
+import { DamageType, PlayerInstanceModel, SpellEventHandlers, SpellEventTypes, SpellModel, UnitGroupInstModel, UnitGroupModel } from 'src/app/core/model/main.model';
 import { CommonUtils } from 'src/app/core/utils/common.utils';
 import { BattleEventsService } from './mw-battle-events.service';
 import { BattleStateService } from './mw-battle-state.service';
@@ -40,7 +40,7 @@ export interface DetailedDamageInfo extends DamageInfo {
 })
 export class CombatInteractorService {
 
-  private playerSpellsHandlersMap: Map<SpellModel, { [K in keyof SpellEventsMapping]?: (target: SpellEventsMapping[K]) => void }> = new Map();
+  private spellsHandlersMap: Map<SpellModel, SpellEventHandlers> = new Map();
 
   constructor(
     private readonly battleState: BattleStateService,
@@ -105,13 +105,18 @@ export class CombatInteractorService {
 
       [BattleEventTypeEnum.Player_Targets_Spell]: (event: PlayerTargetsSpell) => {
 
-        const spellHandlers = this.playerSpellsHandlersMap.get(event.spell);
-        spellHandlers?.[SpellEventTypes.TargetSelected]?.({ target: event.target });
+        const spellHandlers = this.spellsHandlersMap.get(event.spell);
+        spellHandlers?.[SpellEventTypes.PlayerTargetsSpell]?.({ target: event.target });
 
         this.curPlayerState.playerCurrentState = PlayerState.Normal;
         this.curPlayerState.resetCurrentSpell();
       },
 
+      [BattleEventTypeEnum.Fight_Next_Round_Starts]: (event) => {
+        this.spellsHandlersMap.forEach(spellHandlers => {
+          spellHandlers?.[SpellEventTypes.NewRoundBegins]?.({ round: event.round });
+        })
+      }
     }).pipe(
       takeUntil(this.battleEvents.onEvent(BattleEventTypeEnum.Fight_Ends)),
     ).subscribe();
@@ -305,36 +310,47 @@ export class CombatInteractorService {
     return unitCountLoss > groupCount ? groupCount : unitCountLoss;
   }
 
+  private addSpellToUnitGroup(target: UnitGroupInstModel, spell: SpellModel, ownerPlayer: PlayerInstanceModel): void {
+    const newSpellRef = { ...spell };
+    target.spells.push(newSpellRef);
+
+    this.initSpell(newSpellRef, ownerPlayer);
+    this.spellsHandlersMap.get(newSpellRef)?.[SpellEventTypes.SpellPlacedOnUnitGroup]?.({
+      target: target,
+    });
+  }
+
+  private initSpell(spell: SpellModel, player: PlayerInstanceModel): void {
+    spell.type.spellConfig.init({
+      actions: {
+        dealDamageTo: (target, damage, damageType) => {
+          this.dealDamageTo(target, damage, damageType);
+        },
+        addSpellToUnitGroup: (target, spell, ownerPlayer) => {
+          this.addSpellToUnitGroup(target, spell, ownerPlayer);
+        },
+      },
+      events: {
+        on: (handlers: SpellEventHandlers) => {
+          const spellHandlers = this.spellsHandlersMap.get(spell) ?? {};
+
+          this.spellsHandlersMap.set(spell, { ...spellHandlers, ...handlers });
+        },
+      },
+      thisSpell: spell,
+      ownerPlayer: player,
+      ownerHero: player.hero,
+    });
+  }
+
   private initPlayersSpells(): void {
     [
       this.players.getCurrentPlayer(),
       this.players.getEnemyPlayer(),
     ].forEach(player => {
-
       player.hero.spells.forEach(spell => {
-
-        spell.type.spellConfig.init({
-          actions: {
-            dealDamageTo: (target, damage, damageType) => {
-              this.dealDamageTo(target, damage, damageType);
-            },
-          },
-          events: {
-            on: <T extends keyof SpellEventsMapping>(eventType: T, handler: (target: SpellEventsMapping[T]) => void) => {
-              const spellHandlers = this.playerSpellsHandlersMap.get(spell) ?? {};
-
-              spellHandlers[eventType] = handler;
-
-              this.playerSpellsHandlersMap.set(spell, spellHandlers);
-            },
-          },
-          thisSpell: spell,
-          ownerPlayer: player,
-          ownerHero: player.hero,
-        });
+        this.initSpell(spell, player);
       });
     });
-
-    console.log('look at this: ', this.playerSpellsHandlersMap);
   }
 }

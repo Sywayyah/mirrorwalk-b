@@ -2,8 +2,9 @@ import { Injectable } from '@angular/core';
 import { PLAYER_COLORS } from 'src/app/core/dictionaries/colors.const';
 import { LEVELS_BREAKPOINTS } from 'src/app/core/dictionaries/levels.const';
 import { NEUTRAL_FRACTION_UNIT_TYPES, NEUTRAL_TYPES_ENUM } from 'src/app/core/dictionaries/neutral-unit-types.dictionary';
+import { BLINDNESS_SPELL, ENCHANT_SPELL, POISON_CLOUD_SPELL, RAIN_OF_FIRE_SPELL } from 'src/app/core/dictionaries/spells.const';
 import { HF_TYPES_ENUM, HUMANS_FRACTION_UNIT_TYPES } from 'src/app/core/dictionaries/unit-types.dictionary';
-import { DamageType, PlayerInstanceModel, PlayerModel, PlayerTypeEnum, SpellActivationType, SpellCombatRefsModel, SpellEventTypes, SpellModel, UnitGroupInstModel, UnitGroupModel } from 'src/app/core/model/main.model';
+import { PlayerInstanceModel, PlayerModel, PlayerTypeEnum, UnitGroupInstModel, UnitGroupModel } from 'src/app/core/model/main.model';
 import { ResourcesModel } from 'src/app/core/model/resources.types';
 import { RandomUtils } from 'src/app/core/utils/common.utils';
 import { BattleEventsService } from './mw-battle-events.service';
@@ -47,46 +48,6 @@ const defaultResources: ResourcesModel = {
   wood: 0,
 }
 
-/* try different types of spells. also, try applying buffs. */
-const RAIN_OF_FIRE_SPELL: SpellModel = {
-  name: 'Rain of Fire',
-  level: 1,
-  activationType: SpellActivationType.Target,
-  type: {
-    spellConfig: {
-      name: 'Rain of Fire',
-      init: ({ events, actions, thisSpell, ownerHero }) => {
-        events.on(SpellEventTypes.TargetSelected, (event) => {
-          actions.dealDamageTo(event.target, 55 * ownerHero.level, DamageType.Magic);
-        });
-      },
-    },
-  }
-};
-
-const BLINDNESS_SPELL: SpellModel = {
-  name: 'Blindness',
-  level: 1,
-  activationType: SpellActivationType.Instant,
-  type: {
-    spellConfig: {
-      name: 'blindness',
-      init: () => { },
-    },
-  }
-};
-
-const ENCHANT_SPELL: SpellModel = {
-  name: 'Enchant',
-  level: 1,
-  activationType: SpellActivationType.Passive,
-  type: {
-    spellConfig: {
-      name: 'enchant',
-      init: () => { },
-    },
-  },
-};
 
 
 @Injectable({
@@ -110,6 +71,7 @@ export class MwPlayersService {
         freeSkillpoints: 0,
         spells: [
           RAIN_OF_FIRE_SPELL,
+          POISON_CLOUD_SPELL,
           BLINDNESS_SPELL,
           ENCHANT_SPELL,
         ],
@@ -174,7 +136,12 @@ export class MwPlayersService {
     const player = this.players.get(playerId) as PlayerInstanceModel;
     return player.unitGroups.map((unitGroup: UnitGroupModel) => {
       unitGroup.ownerPlayerRef = player;
-      return unitGroup as UnitGroupInstModel;
+
+      const unitGroupInstance = unitGroup as UnitGroupInstModel;
+
+      unitGroupInstance.spells = unitGroupInstance.spells ?? [];
+
+      return unitGroupInstance;
     })
   }
 

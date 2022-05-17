@@ -1,5 +1,5 @@
 import { AbilityModel } from "./abilities.types";
-import { ResourcesModel, ResourceType } from "./resources.types";
+import { ResourcesModel } from "./resources.types";
 
 interface RequirementModel extends Partial<ResourcesModel> {
     /* heroLevel?: number;
@@ -86,6 +86,8 @@ export interface UnitGroupModel {
 
 export interface UnitGroupInstModel extends UnitGroupModel {
     ownerPlayerRef: PlayerInstanceModel;
+
+    spells: SpellModel[];
 }
 
 
@@ -114,6 +116,8 @@ export interface PlayerInstanceModel extends PlayerModel {
     id: string;
 }
 
+
+/* Hero model */
 export interface HeroModel {
     name: string | null;
     experience: number;
@@ -127,8 +131,10 @@ export enum SpellActivationType {
     Target = 'target',
     Instant = 'instant',
     Passive = 'passive',
+    Debuff = 'debuff',
 }
 
+/* Spell model */
 export interface SpellModel {
     name: string;
     level: number;
@@ -139,22 +145,33 @@ export interface SpellModel {
 
 export interface SpellTypeModel {
     spellConfig: SpellConfig;
+    spellInfo: { name: string; };
 }
 
 export enum SpellEventTypes {
-    TargetSelected,
+    PlayerTargetsSpell,
+    SpellPlacedOnUnitGroup,
+    NewRoundBegins,
 }
 
 export interface TargetSelected {
     target: UnitGroupInstModel;
 }
 
-export interface SpellEventsMapping {
-    [SpellEventTypes.TargetSelected]: TargetSelected;
+export interface NewRoundBegins {
+    round: number;
 }
 
+export interface SpellEventsMapping {
+    [SpellEventTypes.PlayerTargetsSpell]: TargetSelected;
+    [SpellEventTypes.SpellPlacedOnUnitGroup]: TargetSelected;
+    [SpellEventTypes.NewRoundBegins]: NewRoundBegins;
+}
+
+export type SpellEventHandlers = { [K in keyof SpellEventsMapping]?: (target: SpellEventsMapping[K]) => void };
+
 export interface SpellCombatEventsRef {
-    on: <T extends keyof SpellEventsMapping>(eventType: T, handler: (event: SpellEventsMapping[T]) => void) => void;
+    on: (handlers: SpellEventHandlers) => void;
 }
 
 export enum DamageType {
@@ -165,6 +182,7 @@ export enum DamageType {
 
 export interface SpellCombatActionsRef {
     dealDamageTo: (target: UnitGroupInstModel, damage: number, damageType: DamageType) => void;
+    addSpellToUnitGroup: (target: UnitGroupInstModel, spell: SpellModel, ownerPlayer: PlayerInstanceModel) => void;
 }
 
 export interface SpellCombatRefsModel {
@@ -176,6 +194,5 @@ export interface SpellCombatRefsModel {
 }
 
 export interface SpellConfig {
-    name: string;
     init: (combatRefs: SpellCombatRefsModel) => void;
 }
