@@ -16,6 +16,12 @@ export const NULL_SPELL: SpellModel = {
   activationType: SpellActivationType.Instant,
   level: 0,
   name: '',
+  type: {
+    spellConfig: {
+      name: '',
+      init: () => { },
+    }
+  }
 }
 
 @Injectable({

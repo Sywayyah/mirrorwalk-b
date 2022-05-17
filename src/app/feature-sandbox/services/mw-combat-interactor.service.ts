@@ -2,11 +2,12 @@ import { Injectable } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 import { BaseAbilitiesTable } from 'src/app/core/dictionaries/abilities.const';
 import { AbilityTypesEnum } from 'src/app/core/model/abilities.types';
-import { UnitGroupInstModel, UnitGroupModel } from 'src/app/core/model/main.model';
+import { DamageType, SpellEventsMapping, SpellEventTypes, SpellModel, UnitGroupInstModel, UnitGroupModel } from 'src/app/core/model/main.model';
 import { CommonUtils } from 'src/app/core/utils/common.utils';
 import { BattleEventsService } from './mw-battle-events.service';
 import { BattleStateService } from './mw-battle-state.service';
 import { MwCurrentPlayerStateService, PlayerState } from './mw-current-player-state.service';
+import { MwPlayersService } from './mw-players.service';
 import { BattleEventTypeEnum, CombatGroupAttacked, CombatInteractionEnum, CombatInteractionState, HoverTypeEnum, PlayerTargetsSpell, UIPlayerHoversCard } from './types';
 import { ActionHintTypeEnum, AttackActionHint, SpellTargetActionHint } from './types/action-hint.types';
 
@@ -33,25 +34,25 @@ export interface DetailedDamageInfo extends DamageInfo {
   maxUnitCountLoss: number;
 }
 
-export enum DamageType {
-  PhysicalAttack = 'physAttack',
-  Physical = 'physical',
-  Magic = 'magic',
-}
 
 @Injectable({
   providedIn: 'root'
 })
 export class CombatInteractorService {
 
+  private playerSpellsHandlersMap: Map<SpellModel, { [K in keyof SpellEventsMapping]?: (target: SpellEventsMapping[K]) => void }> = new Map();
+
   constructor(
     private readonly battleState: BattleStateService,
     private readonly battleEvents: BattleEventsService,
     private readonly curPlayerState: MwCurrentPlayerStateService,
+    private readonly players: MwPlayersService,
   ) {
   }
 
   public listenEvents(): void {
+    this.initPlayersSpells();
+
     this.battleEvents.onEvents({
       [BattleEventTypeEnum.Combat_Group_Attacked]: (event: CombatGroupAttacked) => {
         this.battleEvents.dispatchEvent({
@@ -103,7 +104,10 @@ export class CombatInteractorService {
       },
 
       [BattleEventTypeEnum.Player_Targets_Spell]: (event: PlayerTargetsSpell) => {
-        this.dealDamageTo(event.target, 100, DamageType.Magic);
+
+        const spellHandlers = this.playerSpellsHandlersMap.get(event.spell);
+        spellHandlers?.[SpellEventTypes.TargetSelected]?.({ target: event.target });
+
         this.curPlayerState.playerCurrentState = PlayerState.Normal;
         this.curPlayerState.resetCurrentSpell();
       },
@@ -299,5 +303,38 @@ export class CombatInteractorService {
   public calcUnitCountLoss(totalDamage: number, groupTypeHealth: number, groupCount: number): number {
     const unitCountLoss = Math.floor(totalDamage / groupTypeHealth);
     return unitCountLoss > groupCount ? groupCount : unitCountLoss;
+  }
+
+  private initPlayersSpells(): void {
+    [
+      this.players.getCurrentPlayer(),
+      this.players.getEnemyPlayer(),
+    ].forEach(player => {
+
+      player.hero.spells.forEach(spell => {
+
+        spell.type.spellConfig.init({
+          actions: {
+            dealDamageTo: (target, damage, damageType) => {
+              this.dealDamageTo(target, damage, damageType);
+            },
+          },
+          events: {
+            on: <T extends keyof SpellEventsMapping>(eventType: T, handler: (target: SpellEventsMapping[T]) => void) => {
+              const spellHandlers = this.playerSpellsHandlersMap.get(spell) ?? {};
+
+              spellHandlers[eventType] = handler;
+
+              this.playerSpellsHandlersMap.set(spell, spellHandlers);
+            },
+          },
+          thisSpell: spell,
+          ownerPlayer: player,
+          ownerHero: player.hero,
+        });
+      });
+    });
+
+    console.log('look at this: ', this.playerSpellsHandlersMap);
   }
 }

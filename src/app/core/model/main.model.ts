@@ -133,4 +133,49 @@ export interface SpellModel {
     name: string;
     level: number;
     activationType: SpellActivationType;
+
+    type: SpellTypeModel;
+}
+
+export interface SpellTypeModel {
+    spellConfig: SpellConfig;
+}
+
+export enum SpellEventTypes {
+    TargetSelected,
+}
+
+export interface TargetSelected {
+    target: UnitGroupInstModel;
+}
+
+export interface SpellEventsMapping {
+    [SpellEventTypes.TargetSelected]: TargetSelected;
+}
+
+export interface SpellCombatEventsRef {
+    on: <T extends keyof SpellEventsMapping>(eventType: T, handler: (event: SpellEventsMapping[T]) => void) => void;
+}
+
+export enum DamageType {
+    PhysicalAttack = 'physAttack',
+    Physical = 'physical',
+    Magic = 'magic',
+}
+
+export interface SpellCombatActionsRef {
+    dealDamageTo: (target: UnitGroupInstModel, damage: number, damageType: DamageType) => void;
+}
+
+export interface SpellCombatRefsModel {
+    events: SpellCombatEventsRef;
+    actions: SpellCombatActionsRef;
+    thisSpell: SpellModel;
+    ownerPlayer: PlayerInstanceModel;
+    ownerHero: HeroModel;
+}
+
+export interface SpellConfig {
+    name: string;
+    init: (combatRefs: SpellCombatRefsModel) => void;
 }

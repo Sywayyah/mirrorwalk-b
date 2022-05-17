@@ -59,6 +59,7 @@ export class BattleStateService {
 
     this.resetFightQueue();
 
+
     this.battleEventsService.onEvents({
       [BattleEventTypeEnum.Fight_Starts]: event => {
         console.log('Battle starts');
