@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 import { BaseAbilitiesTable } from 'src/app/core/dictionaries/abilities.const';
 import { AbilityTypesEnum } from 'src/app/core/model/abilities.types';
-import { DamageType, PlayerInstanceModel, SpellEventHandlers, SpellEventTypes, SpellModel, UnitGroupInstModel, UnitGroupModel } from 'src/app/core/model/main.model';
+import { DamageType, PlayerInstanceModel, SpellEventHandlers, SpellEventsMapping, SpellEventTypes, SpellModel, UnitGroupInstModel, UnitGroupModel } from 'src/app/core/model/main.model';
 import { CommonUtils } from 'src/app/core/utils/common.utils';
 import { BattleEventsService } from './mw-battle-events.service';
 import { MwBattleLogService } from './mw-battle-log.service';
@@ -106,18 +106,15 @@ export class CombatInteractorService {
       },
 
       [BattleEventTypeEnum.Player_Targets_Spell]: (event: PlayerTargetsSpell) => {
-
-        const spellHandlers = this.spellsHandlersMap.get(event.spell);
-        spellHandlers?.[SpellEventTypes.PlayerTargetsSpell]?.({ target: event.target });
-
+        // const spellHandlers = this.spellsHandlersMap.get(event.spell);
+        // spellHandlers?.[SpellEventTypes.PlayerTargetsSpell]?.({ target: event.target });
+        this.triggerEventForSpellHandler(event.spell, SpellEventTypes.PlayerTargetsSpell, { target: event.target });
         this.curPlayerState.playerCurrentState = PlayerState.Normal;
         this.curPlayerState.resetCurrentSpell();
       },
 
       [BattleEventTypeEnum.Fight_Next_Round_Starts]: (event) => {
-        this.spellsHandlersMap.forEach(spellHandlers => {
-          spellHandlers?.[SpellEventTypes.NewRoundBegins]?.({ round: event.round });
-        })
+        this.triggerEventForAllSpellsHandler(SpellEventTypes.NewRoundBegins, { round: event.round });
       }
     }).pipe(
       takeUntil(this.battleEvents.onEvent(BattleEventTypeEnum.Fight_Ends)),
@@ -317,9 +314,17 @@ export class CombatInteractorService {
     target.spells.push(newSpellRef);
 
     this.initSpell(newSpellRef, ownerPlayer);
-    this.spellsHandlersMap.get(newSpellRef)?.[SpellEventTypes.SpellPlacedOnUnitGroup]?.({
-      target: target,
+    this.triggerEventForSpellHandler(newSpellRef, SpellEventTypes.SpellPlacedOnUnitGroup, { target: target });
+  }
+
+  private triggerEventForAllSpellsHandler<T extends keyof SpellEventHandlers>(eventType: T, data: SpellEventsMapping[T]): void {
+    this.spellsHandlersMap.forEach(spellHandlers => {
+      (spellHandlers?.[eventType] as (arg: SpellEventsMapping[T]) => void)?.(data);
     });
+  }
+
+  private triggerEventForSpellHandler<T extends keyof SpellEventHandlers>(spell: SpellModel, eventType: T, data: SpellEventsMapping[T]): void {
+    (this.spellsHandlersMap.get(spell)?.[eventType] as (arg: SpellEventsMapping[T]) => void)?.(data);
   }
 
   private initSpell(spell: SpellModel, player: PlayerInstanceModel): void {
