@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { PlayerInstanceModel, SpellActivationType, SpellModel } from 'src/app/core/model/main.model';
+import { BattleEventsService } from './mw-battle-events.service';
 import { MwPlayersService } from './mw-players.service';
+import { BattleEventTypeEnum } from './types';
 
 
 export enum PlayerState {
@@ -39,6 +41,7 @@ export class MwCurrentPlayerStateService {
 
   constructor(
     private readonly players: MwPlayersService,
+    private readonly events: BattleEventsService,
   ) { }
 
   public onSpellClick(spell: SpellModel): void {
@@ -46,6 +49,11 @@ export class MwCurrentPlayerStateService {
 
     switch (spell.activationType) {
       case 'instant':
+        this.events.dispatchEvent({
+          type: BattleEventTypeEnum.Player_Casts_Instant_Spell,
+          player: this.currentPlayer,
+          spell: spell,
+        });
         break;
       case 'target':
         this.playerCurrentState = PlayerState.SpellTargeting;

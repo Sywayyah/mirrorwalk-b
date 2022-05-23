@@ -14,6 +14,7 @@ export enum BattleEventTypeEnum {
 
   Player_Gains_Level,
   Player_Targets_Spell,
+  Player_Casts_Instant_Spell,
 
   Display_Reward_Popup,
   Display_Popup,
@@ -46,6 +47,11 @@ export interface PlayerTargetsSpell extends BattleEventModel<BattleEventTypeEnum
   player: PlayerInstanceModel;
   spell: SpellModel;
   target: UnitGroupInstModel;
+}
+
+export interface PlayerCastsInstantSpell extends BattleEventModel<BattleEventTypeEnum.Player_Casts_Instant_Spell> {
+  player: PlayerInstanceModel;
+  spell: SpellModel;
 }
 
 export interface PlayerGainsLevel extends BattleEventModel<BattleEventTypeEnum.Player_Gains_Level> {}
@@ -164,6 +170,7 @@ export interface EventByEnumMapping {
   
   [BattleEventTypeEnum.Player_Gains_Level]: PlayerGainsLevel;
   [BattleEventTypeEnum.Player_Targets_Spell]: PlayerTargetsSpell;
+  [BattleEventTypeEnum.Player_Casts_Instant_Spell]: PlayerCastsInstantSpell;
 
   [BattleEventTypeEnum.UI_Player_Clicks_Enemy_Group]: UIPlayerClicksEnemyGroup;
   [BattleEventTypeEnum.UI_Player_Hovers_Group_Card]: UIPlayerHoversCard;

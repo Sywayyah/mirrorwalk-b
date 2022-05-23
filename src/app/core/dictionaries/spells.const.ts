@@ -67,6 +67,34 @@ export const POISON_CLOUD_SPELL_EFFECT: SpellModel<undefined | { debuffRoundsLef
     }
 };
 
+export const METEOR_SPELL: SpellModel = {
+    activationType: SpellActivationType.Instant,
+    level: 1,
+    name: 'Meteor',
+    type: {
+        spellInfo: {
+            name: 'Meteor',
+        },
+        spellConfig: {
+            init({ events, actions, thisSpell, ownerHero }) {
+                events.on({
+                    [SpellEventTypes.PlayerCastsInstantSpell]: event => {
+                        const randomEnemyGroup = actions.getRandomEnemyPlayerGroup();
+                        actions.dealDamageTo(
+                            randomEnemyGroup,
+                            70,
+                            DamageType.Magic,
+                            ({ unitLoss }) => {
+                                actions.historyLog(`${ownerHero.name} deals ${70} damage to ${randomEnemyGroup.count} ${randomEnemyGroup.type.name} with ${thisSpell.name}, ${unitLoss} units perish`);
+
+                            });
+                    }
+                })
+            }
+        }
+    }
+}
+
 export const POISON_CLOUD_SPELL: SpellModel = {
     activationType: SpellActivationType.Target,
     level: 1,

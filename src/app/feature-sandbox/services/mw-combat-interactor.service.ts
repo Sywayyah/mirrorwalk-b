@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 import { BaseAbilitiesTable } from 'src/app/core/dictionaries/abilities.const';
 import { AbilityTypesEnum } from 'src/app/core/model/abilities.types';
-import { DamageType, PlayerInstanceModel, SpellActivationType, SpellEventHandlers, SpellEventsMapping, SpellEventTypes, SpellModel, UnitGroupInstModel, UnitGroupModel } from 'src/app/core/model/main.model';
+import { DamageType, PlayerInstanceModel, PostDamageInfo, SpellActivationType, SpellEventHandlers, SpellEventsMapping, SpellEventTypes, SpellModel, UnitGroupInstModel, UnitGroupModel } from 'src/app/core/model/main.model';
 import { CommonUtils } from 'src/app/core/utils/common.utils';
 import { BattleEventsService } from './mw-battle-events.service';
 import { MwBattleLogService } from './mw-battle-log.service';
@@ -113,6 +113,13 @@ export class CombatInteractorService {
         this.curPlayerState.resetCurrentSpell();
       },
 
+      [BattleEventTypeEnum.Player_Casts_Instant_Spell]: (event) => {
+        this.triggerEventForSpellHandler(event.spell, SpellEventTypes.PlayerCastsInstantSpell, {
+          player: event.player,
+          spell: event.spell,
+        });
+      },
+
       [BattleEventTypeEnum.Fight_Next_Round_Starts]: (event) => {
         this.triggerEventForAllSpellsHandler(SpellEventTypes.NewRoundBegins, { round: event.round });
       },
@@ -129,7 +136,13 @@ export class CombatInteractorService {
     ).subscribe();
   }
 
-  public dealDamageTo(target: UnitGroupInstModel, damage: number, type: DamageType = DamageType.PhysicalAttack): void {
+  public dealDamageTo(
+    target: UnitGroupInstModel,
+    damage: number,
+    type: DamageType = DamageType.PhysicalAttack,
+    postActionFn?: (actionInfo: PostDamageInfo) => void,
+  ): void {
+    /* todo: OnGroupDamaged isn't dispatched, and reward isn't calculated because of that. */
     let totalUnitLoss = 0;
 
     switch (type) {
@@ -150,6 +163,12 @@ export class CombatInteractorService {
         target: target,
         targetPlayer: target.ownerPlayerRef,
         loss: totalUnitLoss,
+      });
+    }
+
+    if (postActionFn) {
+      postActionFn({
+        unitLoss: totalUnitLoss,
       });
     }
   }
@@ -343,11 +362,17 @@ export class CombatInteractorService {
     (this.spellsHandlersMap.get(spell)?.[eventType] as (arg: SpellEventsMapping[T]) => void)?.(data);
   }
 
+  private getRandomEnemyUnitGroup(): UnitGroupInstModel {
+    const enemyPlayer = this.players.getEnemyPlayer()
+    const enemyUnitGroups = this.battleState.heroesUnitGroupsMap.get(enemyPlayer) as UnitGroupInstModel[];
+    return CommonUtils.randItem(enemyUnitGroups);
+  }
+
   private initSpell(spell: SpellModel, player: PlayerInstanceModel): void {
     spell.type.spellConfig.init({
       actions: {
-        dealDamageTo: (target, damage, damageType) => {
-          this.dealDamageTo(target, damage, damageType);
+        dealDamageTo: (target, damage, damageType, postActionFn) => {
+          this.dealDamageTo(target, damage, damageType, postActionFn);
         },
         /* dark magic of types, just so it can work */
         addSpellToUnitGroup: <T>(target: UnitGroupInstModel, spell: SpellModel<T>, ownerPlayer: PlayerInstanceModel) => {
@@ -355,6 +380,9 @@ export class CombatInteractorService {
         },
         removeSpellFromUnitGroup: (target, spell) => {
           this.removeSpellFromUnitGroup(target, spell as SpellModel);
+        },
+        getRandomEnemyPlayerGroup: () => {
+          return this.getRandomEnemyUnitGroup();
         },
         historyLog: (plainMsg) => {
           this.battleLog.logSimpleMessage(plainMsg);
