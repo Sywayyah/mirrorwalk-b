@@ -131,20 +131,27 @@ export enum SpellActivationType {
     Target = 'target',
     Instant = 'instant',
     Passive = 'passive',
+
+    //  special type of ability, can be added to the unit group for some
+    // continuous effect. When unit group dies, debuff gets removed and unregistered. 
     Debuff = 'debuff',
 }
 
 /* Spell model */
-export interface SpellModel {
+
+export type DefaultSpellStateType = unknown;
+
+export interface SpellModel<SpellStateType = DefaultSpellStateType> {
     name: string;
     level: number;
     activationType: SpellActivationType;
 
-    type: SpellTypeModel;
+    type: SpellTypeModel<SpellStateType>;
+    instanceData?: SpellStateType;
 }
 
-export interface SpellTypeModel {
-    spellConfig: SpellConfig;
+export interface SpellTypeModel<SpellStateType> {
+    spellConfig: SpellConfig<SpellStateType>;
     spellInfo: { name: string; };
 }
 
@@ -182,18 +189,29 @@ export enum DamageType {
 
 export interface SpellCombatActionsRef {
     dealDamageTo: (target: UnitGroupInstModel, damage: number, damageType: DamageType) => void;
-    addSpellToUnitGroup: (target: UnitGroupInstModel, spell: SpellModel, ownerPlayer: PlayerInstanceModel) => void;
+    // Creates shallow clone of spell that is passed, registers it inside battle events system
+    //  adds it to the target group and returning the reference of the created spell.
+    addSpellToUnitGroup: <T = DefaultSpellStateType>(
+        target: UnitGroupInstModel,
+        spell: SpellModel<T>,
+        ownerPlayer: PlayerInstanceModel,
+    ) => SpellModel<T>;
+    // Removes spell instance from the target unit group and from battle events system.
+    removeSpellFromUnitGroup: <T = DefaultSpellStateType>(
+        target: UnitGroupInstModel,
+        spell: SpellModel<T>,
+    ) => void;
     historyLog: (plainMsg: string) => void;
 }
 
-export interface SpellCombatRefsModel {
+export interface SpellCombatRefsModel<SpellStateType> {
     events: SpellCombatEventsRef;
     actions: SpellCombatActionsRef;
-    thisSpell: SpellModel;
+    thisSpell: SpellModel<SpellStateType>;
     ownerPlayer: PlayerInstanceModel;
     ownerHero: HeroModel;
 }
 
-export interface SpellConfig {
-    init: (combatRefs: SpellCombatRefsModel) => void;
+export interface SpellConfig<SpellStateType> {
+    init: (combatRefs: SpellCombatRefsModel<SpellStateType>) => void;
 }

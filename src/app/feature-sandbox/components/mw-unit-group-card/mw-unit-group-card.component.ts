@@ -16,6 +16,8 @@ export class MwUnitGroupCardComponent implements OnInit, OnDestroy {
   public unitGroup!: UnitGroupInstModel;
   @Input()
   public playerInfo!: PlayerModel;
+  @Input()
+  public side: 'left' | 'right' = 'left';
 
   @Output()
   public cardReady: EventEmitter<MwUnitGroupCardComponent> = new EventEmitter();
@@ -42,7 +44,7 @@ export class MwUnitGroupCardComponent implements OnInit, OnDestroy {
   public ngOnInit(): void {
     this.isEnemyCard = this.playersService.getCurrentPlayer() !== this.playerInfo;
     this.cardReady.next(this);
-    
+
     this.mwBattleStateService.battleEvent$
       .pipe(
         takeUntil(this.destroy$),

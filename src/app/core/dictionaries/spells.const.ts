@@ -1,6 +1,7 @@
 import { DamageType, SpellActivationType, SpellEventTypes, SpellModel } from "../model/main.model";
 
 /* try different types of spells. also, try applying buffs. */
+/* note: SpellModel, mainly, gets spreaded into a new object, since each buff may have something own */
 export const RAIN_OF_FIRE_SPELL: SpellModel = {
     name: 'Rain of Fire',
     level: 1,
@@ -26,7 +27,7 @@ export const RAIN_OF_FIRE_SPELL: SpellModel = {
     }
 };
 
-export const POISON_CLOUD_SPELL_EFFECT: SpellModel = {
+export const POISON_CLOUD_SPELL_EFFECT: SpellModel<undefined | { debuffRoundsLeft: number }> = {
     activationType: SpellActivationType.Debuff,
     level: 1,
     name: 'Poisoned',
@@ -38,12 +39,24 @@ export const POISON_CLOUD_SPELL_EFFECT: SpellModel = {
             init({ events, actions, thisSpell }) {
                 events.on({
                     [SpellEventTypes.SpellPlacedOnUnitGroup]: ({ target }) => {
+                        const debuffData = {
+                            debuffRoundsLeft: 2,
+                        };
+
+                        thisSpell.instanceData = debuffData;
+
                         actions.historyLog(`${target.type.name} gets negative effect "${thisSpell.name}"`);
+
                         events.on({
                             [SpellEventTypes.NewRoundBegins]: (event) => {
                                 actions.historyLog(`Poison deals ${65} damage to ${target.type.name}`);
 
                                 actions.dealDamageTo(target, 65, DamageType.Magic);
+                                debuffData.debuffRoundsLeft--;
+
+                                if (!debuffData.debuffRoundsLeft) {
+                                    actions.removeSpellFromUnitGroup(target, thisSpell);
+                                }
                             }
                         });
 

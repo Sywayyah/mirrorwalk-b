@@ -1,3 +1,20 @@
+.card-wrapper {
+    position: relative;
+}
+
+.abilities {
+    position: absolute;
+    top: 0;
+}
+
+.abilities.left {
+    left: -100%;
+}
+
+.abilities.right {
+    right: -100%;
+}
+
 .card {
     display: block;
     width: 115px;

@@ -1,18 +1,22 @@
 <mw-card-effects #effects>
-    <div [style.background]="playerInfo.color"
-        [class.current-group]="mwBattleStateService.currentPlayer === playerInfo && attackingUnitGroup === unitGroup"
-        [class.hovered-enemy]="isCardHovered && isEnemyCard && canCurrentPlayerAttack" (mouseenter)="onCardHover(true)"
-        (mouseleave)="onCardHover(false)" (click)="onGroupClick()" class="card">
-        <div>
-            {{ unitGroup.type.name }}
-            ({{ unitGroup.count }})
-            <div>Turns: {{unitGroup.turnsLeft}}</div>
-            <!-- <div *ngIf="isCardHovered && isEnemyCard" style="color: rgb(255, 196, 196)">
-            -{{ potentialUnitCountLoss }}
-        </div> -->
+    <div class="card-wrapper">
+        <div [style.background]="playerInfo.color"
+            [class.current-group]="mwBattleStateService.currentPlayer === playerInfo && attackingUnitGroup === unitGroup"
+            [class.hovered-enemy]="isCardHovered && isEnemyCard && canCurrentPlayerAttack"
+            (mouseenter)="onCardHover(true)" (mouseleave)="onCardHover(false)" (click)="onGroupClick()" class="card">
+            <div>
+                {{ unitGroup.type.name }}
+                ({{ unitGroup.count }})
+                <div>Turns: {{unitGroup.turnsLeft}}</div>
+            </div>
+            <div>Speed: {{ unitGroup.type.baseStats.speed }}</div>
+            <div>Health: {{ unitGroup.type.baseStats.health * unitGroup.count }}</div>
+            <div>Damage: {{ unitGroup.type.baseStats.damageInfo.maxDamage * unitGroup.count }}</div>
         </div>
-        <div>Speed: {{ unitGroup.type.baseStats.speed }}</div>
-        <div>Health: {{ unitGroup.type.baseStats.health * unitGroup.count }}</div>
-        <div>Damage: {{ unitGroup.type.baseStats.damageInfo.maxDamage * unitGroup.count }}</div>
+        <div class="abilities" [ngClass]="side === 'left' ? 'left' : 'right'">
+            <div class="ability" *ngFor="let ability of unitGroup.spells">
+                {{ ability.name }}
+            </div>
+        </div>
     </div>
 </mw-card-effects>

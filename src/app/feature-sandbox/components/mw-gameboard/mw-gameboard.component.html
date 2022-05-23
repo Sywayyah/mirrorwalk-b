@@ -4,6 +4,7 @@
       <mw-unit-group-card
           class="card"
           *ngFor="let unitGroup of mainPlayerUnitGroups"
+          side="left"
           [playerInfo]="mainPlayerInfo"
           [unitGroup]="unitGroup"
           (cardReady)="onCardReady(unitGroup, $event)"
@@ -16,6 +17,7 @@
       <mw-unit-group-card
           class="card"
           *ngFor="let unitGroup of neutralPlayerGroups"
+          side="right"
           [playerInfo]="neutralPlayerInfo"
           [unitGroup]="unitGroup"
           (cardReady)="onCardReady(unitGroup, $event)"

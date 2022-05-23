@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 import { BaseAbilitiesTable } from 'src/app/core/dictionaries/abilities.const';
 import { AbilityTypesEnum } from 'src/app/core/model/abilities.types';
-import { DamageType, PlayerInstanceModel, SpellEventHandlers, SpellEventsMapping, SpellEventTypes, SpellModel, UnitGroupInstModel, UnitGroupModel } from 'src/app/core/model/main.model';
+import { DamageType, PlayerInstanceModel, SpellActivationType, SpellEventHandlers, SpellEventsMapping, SpellEventTypes, SpellModel, UnitGroupInstModel, UnitGroupModel } from 'src/app/core/model/main.model';
 import { CommonUtils } from 'src/app/core/utils/common.utils';
 import { BattleEventsService } from './mw-battle-events.service';
 import { MwBattleLogService } from './mw-battle-log.service';
@@ -115,6 +115,14 @@ export class CombatInteractorService {
 
       [BattleEventTypeEnum.Fight_Next_Round_Starts]: (event) => {
         this.triggerEventForAllSpellsHandler(SpellEventTypes.NewRoundBegins, { round: event.round });
+      },
+
+      [BattleEventTypeEnum.On_Group_Dies]: (event) => {
+        event.target.spells.forEach((spell) => {
+          if (spell.activationType === SpellActivationType.Debuff) {
+            this.removeSpellFromUnitGroup(event.target, spell);
+          }
+        })
       }
     }).pipe(
       takeUntil(this.battleEvents.onEvent(BattleEventTypeEnum.Fight_Ends)),
@@ -309,12 +317,20 @@ export class CombatInteractorService {
     return unitCountLoss > groupCount ? groupCount : unitCountLoss;
   }
 
-  private addSpellToUnitGroup(target: UnitGroupInstModel, spell: SpellModel, ownerPlayer: PlayerInstanceModel): void {
+  private addSpellToUnitGroup(target: UnitGroupInstModel, spell: SpellModel, ownerPlayer: PlayerInstanceModel): SpellModel {
     const newSpellRef = { ...spell };
     target.spells.push(newSpellRef);
 
     this.initSpell(newSpellRef, ownerPlayer);
     this.triggerEventForSpellHandler(newSpellRef, SpellEventTypes.SpellPlacedOnUnitGroup, { target: target });
+    return newSpellRef;
+  }
+
+  private removeSpellFromUnitGroup(target: UnitGroupInstModel, spell: SpellModel): void {
+    const spellIndex = target.spells.indexOf(spell);
+    target.spells.splice(spellIndex, 1);
+
+    this.spellsHandlersMap.delete(spell);
   }
 
   private triggerEventForAllSpellsHandler<T extends keyof SpellEventHandlers>(eventType: T, data: SpellEventsMapping[T]): void {
@@ -333,8 +349,12 @@ export class CombatInteractorService {
         dealDamageTo: (target, damage, damageType) => {
           this.dealDamageTo(target, damage, damageType);
         },
-        addSpellToUnitGroup: (target, spell, ownerPlayer) => {
-          this.addSpellToUnitGroup(target, spell, ownerPlayer);
+        /* dark magic of types, just so it can work */
+        addSpellToUnitGroup: <T>(target: UnitGroupInstModel, spell: SpellModel<T>, ownerPlayer: PlayerInstanceModel) => {
+          return this.addSpellToUnitGroup(target, spell as SpellModel, ownerPlayer) as SpellModel<T>;
+        },
+        removeSpellFromUnitGroup: (target, spell) => {
+          this.removeSpellFromUnitGroup(target, spell as SpellModel);
         },
         historyLog: (plainMsg) => {
           this.battleLog.logSimpleMessage(plainMsg);
