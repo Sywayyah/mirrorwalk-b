@@ -1,39 +1,34 @@
 import { Injectable } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
-import { BaseAbilitiesTable } from 'src/app/core/dictionaries/abilities.const';
-import { AbilityTypesEnum } from 'src/app/core/model/abilities.types';
-import { DamageType, PlayerInstanceModel, PostDamageInfo, SpellActivationType, SpellEventHandlers, SpellEventsMapping, SpellEventTypes, SpellModel, UnitGroupInstModel, UnitGroupModel } from 'src/app/core/model/main.model';
+import {
+  DamageType,
+  PlayerInstanceModel,
+  PostDamageInfo,
+  SpellActivationType,
+  SpellEventHandlers,
+  SpellEventsMapping,
+  SpellEventTypes,
+  SpellModel,
+  UnitGroupInstModel,
+  UnitGroupModel,
+} from 'src/app/core/model/main.model';
 import { CommonUtils } from 'src/app/core/utils/common.utils';
 import { BattleEventsService } from './mw-battle-events.service';
 import { MwBattleLogService } from './mw-battle-log.service';
 import { BattleStateService } from './mw-battle-state.service';
 import { MwCurrentPlayerStateService, PlayerState } from './mw-current-player-state.service';
 import { MwPlayersService } from './mw-players.service';
-import { BattleEventTypeEnum, CombatGroupAttacked, CombatInteractionEnum, CombatInteractionState, HoverTypeEnum, PlayerTargetsSpell, UIPlayerHoversCard } from './types';
+import { MwUnitGroupStateService } from './mw-unit-group-state.service';
+import {
+  BattleEventTypeEnum,
+  CombatGroupAttacked,
+  CombatInteractionEnum,
+  CombatInteractionState,
+  HoverTypeEnum,
+  PlayerTargetsSpell,
+  UIPlayerHoversCard,
+} from './types';
 import { ActionHintTypeEnum, AttackActionHint, SpellTargetActionHint } from './types/action-hint.types';
-
-export interface DamageInfo {
-  attacker: UnitGroupModel;
-
-  attackingUnitsCount: number;
-
-  minDamage: number;
-  maxDamage: number;
-
-  attackSuperiority: number;
-  damageMultiplier: number;
-
-  multipliedMinDamage: number;
-  multipliedMaxDamage: number;
-}
-
-export interface DetailedDamageInfo extends DamageInfo {
-  attacked: UnitGroupModel;
-
-  enemyCanCounterattack: boolean;
-  minUnitCountLoss: number;
-  maxUnitCountLoss: number;
-}
 
 
 @Injectable({
@@ -48,7 +43,8 @@ export class CombatInteractorService {
     private readonly battleEvents: BattleEventsService,
     private readonly curPlayerState: MwCurrentPlayerStateService,
     private readonly players: MwPlayersService,
-    private readonly battleLog: MwBattleLogService
+    private readonly battleLog: MwBattleLogService,
+    private readonly unitState: MwUnitGroupStateService,
   ) {
   }
 
@@ -143,32 +139,31 @@ export class CombatInteractorService {
     postActionFn?: (actionInfo: PostDamageInfo) => void,
   ): void {
     /* todo: OnGroupDamaged isn't dispatched, and reward isn't calculated because of that. */
-    let totalUnitLoss = 0;
+    let finalDamage = damage;
 
     switch (type) {
       case DamageType.Magic:
-        totalUnitLoss = this.calcUnitCountLoss(damage, target.type.baseStats.health, target.count);
-
+        finalDamage = damage;
         break;
       default:
-        totalUnitLoss = this.calcUnitCountLoss(damage, target.type.baseStats.health, target.count);
+        finalDamage = damage;
     }
 
-    target.count -= totalUnitLoss;
+    const finalDamageInfo = this.unitState.dealPureDamageToUnitGroup(target, finalDamage);
 
-    if (target.count <= 0) {
+    if (finalDamageInfo.isDamageFatal) {
       this.battleState.handleDefeatedUnitGroup(target);
       this.battleEvents.dispatchEvent({
         type: BattleEventTypeEnum.On_Group_Dies,
         target: target,
         targetPlayer: target.ownerPlayerRef,
-        loss: totalUnitLoss,
+        loss: finalDamageInfo.finalUnitLoss,
       });
     }
 
     if (postActionFn) {
       postActionFn({
-        unitLoss: totalUnitLoss,
+        unitLoss: finalDamageInfo.finalUnitLoss,
       });
     }
   }
@@ -186,14 +181,15 @@ export class CombatInteractorService {
     const attacker = !isCounterattack ? attackingGroup : attackedGroup;
     const attacked = !isCounterattack ? attackedGroup : attackingGroup;
 
-    const attackDetails = this.getDetailedAttackInfo(attacker, attacked);
+    const attackDetails = this.unitState.getDetailedAttackInfo(attacker, attacked);
 
     /* todo: revisit this. total damage and realUnitLoss aren't related. */
     /* todo: also, implement health tail */
-    const totalDamage = this.rollDamage(attackDetails);
-    const realUnitLoss = CommonUtils.randIntInRange(attackDetails.minUnitCountLoss, attackDetails.maxUnitCountLoss);
+    const damageInfo = this.unitState.getFinalDamageInfoFromDamageDetailedInfo(attackDetails);
+    // const totalDamage = this.rollDamage(attackDetails);
+    // const realUnitLoss = CommonUtils.randIntInRange(attackDetails.minUnitCountLoss, attackDetails.maxUnitCountLoss);
 
-    attacked.count -= realUnitLoss;
+    const finalDamageInfo = this.unitState.dealPureDamageToUnitGroup(attacked, damageInfo.finalDamage);
 
     if (!isCounterattack) {
       this.battleState.currentGroupTurnsLeft--;
@@ -203,26 +199,26 @@ export class CombatInteractorService {
         type: BattleEventTypeEnum.On_Group_Damaged,
         attackerGroup: attacker,
         attackedGroup: attacked,
-        loss: realUnitLoss,
-        damage: totalDamage,
+        loss: finalDamageInfo.finalUnitLoss,
+        damage: finalDamageInfo.finalDamage,
       });
     } else {
       this.battleEvents.dispatchEvent({
         type: BattleEventTypeEnum.On_Group_Counter_Attacked,
         attackerGroup: attacker,
         attackedGroup: attacked,
-        loss: realUnitLoss,
-        damage: totalDamage,
+        loss: finalDamageInfo.finalUnitLoss,
+        damage: finalDamageInfo.finalDamage,
       });
     }
 
-    if (attacked.count <= 0) {
+    if (finalDamageInfo.isDamageFatal) {
       this.battleState.handleDefeatedUnitGroup(attacked);
       this.battleEvents.dispatchEvent({
         type: BattleEventTypeEnum.On_Group_Dies,
         target: attacked,
         targetPlayer: attacked.ownerPlayerRef,
-        loss: realUnitLoss,
+        loss: finalDamageInfo.finalUnitLoss,
       });
       attackActionState.action = CombatInteractionEnum.AttackInteractionCompleted;
       this.battleEvents.dispatchEvent(attackActionState);
@@ -245,66 +241,8 @@ export class CombatInteractorService {
     this.battleEvents.dispatchEvent(attackActionState);
   }
 
-  public getUnitGroupDamage(unitGroup: UnitGroupModel, attackSuperiority: number = 0): DamageInfo {
-    const groupBaseStats = unitGroup.type.baseStats;
-    const groupDamageInfo = groupBaseStats.damageInfo;
-    const unitsCount = unitGroup.count;
-
-    const minDamage = groupDamageInfo.minDamage * unitGroup.count;
-    const maxDamage = groupDamageInfo.maxDamage * unitGroup.count;
-
-    /* influence of attack/defence difference on damage */
-    const damageMultiplier = attackSuperiority * (attackSuperiority >= 0 ? 0.05 : 0.035);
-
-    const multipliedMinDamage = minDamage + (minDamage * damageMultiplier);
-    const multipliedMaxDamage = maxDamage + (maxDamage * damageMultiplier);
-
-    return {
-      attacker: unitGroup,
-      attackingUnitsCount: unitsCount,
-
-      minDamage: minDamage,
-      maxDamage: maxDamage,
-
-      attackSuperiority: attackSuperiority,
-      damageMultiplier: damageMultiplier,
-
-      multipliedMinDamage: Math.round(multipliedMinDamage),
-      multipliedMaxDamage: Math.round(multipliedMaxDamage),
-    };
-  }
-
-  public getDetailedAttackInfo(attackingGroup: UnitGroupModel, attackedGroup: UnitGroupModel): DetailedDamageInfo {
-    const attackerUnitType = attackingGroup.type;
-    const attackedUnitType = attackedGroup.type;
-
-    const attackerBaseStats = attackerUnitType.baseStats;
-    const attackedBaseStats = attackedUnitType.baseStats;
-
-    const attackSupperiority = attackerBaseStats.attackRating - attackedBaseStats.defence;
-
-    const damageInfo = this.getUnitGroupDamage(attackingGroup, attackSupperiority);
-
-    const minUnitCountLoss = this.calcUnitCountLoss(damageInfo.multipliedMinDamage, attackedBaseStats.health, attackedGroup.count);
-    const maxUnitCountLoss = this.calcUnitCountLoss(damageInfo.multipliedMaxDamage, attackedBaseStats.health, attackedGroup.count);
-
-    const canAttackedCounterAttack = this.canGroupCounterattack(attackedGroup);
-
-    const damageInfoDetails: DetailedDamageInfo = {
-      ...damageInfo,
-      attacked: attackedGroup,
-
-      enemyCanCounterattack: canAttackedCounterAttack,
-
-      minUnitCountLoss: minUnitCountLoss,
-      maxUnitCountLoss: maxUnitCountLoss,
-    };
-
-    return damageInfoDetails;
-  }
-
   public setDamageHintMessageOnCardHover(event: UIPlayerHoversCard): void {
-    const attackDetails = this.getDetailedAttackInfo(this.battleState.currentUnitGroup, event.hoveredCard as UnitGroupModel);
+    const attackDetails = this.unitState.getDetailedAttackInfo(this.battleState.currentUnitGroup, event.hoveredCard as UnitGroupModel);
 
     const actionHint: AttackActionHint = {
       type: ActionHintTypeEnum.OnHoverEnemyCard,
@@ -321,19 +259,6 @@ export class CombatInteractorService {
     };
 
     this.battleState.hintMessage$.next(actionHint);
-  }
-
-  public canGroupCounterattack(group: UnitGroupModel): boolean {
-    return !!BaseAbilitiesTable.get(group.type)?.some(ability => ability.type === AbilityTypesEnum.BaseCounterAttack);
-  }
-
-  public rollDamage(damageDetailsInfo: DamageInfo): number {
-    return CommonUtils.randIntInRange(damageDetailsInfo.multipliedMinDamage, damageDetailsInfo.multipliedMaxDamage);
-  }
-
-  public calcUnitCountLoss(totalDamage: number, groupTypeHealth: number, groupCount: number): number {
-    const unitCountLoss = Math.floor(totalDamage / groupTypeHealth);
-    return unitCountLoss > groupCount ? groupCount : unitCountLoss;
   }
 
   private addSpellToUnitGroup(target: UnitGroupInstModel, spell: SpellModel, ownerPlayer: PlayerInstanceModel): SpellModel {

@@ -59,6 +59,8 @@ export class BattleStateService {
 
     this.resetFightQueue();
 
+    this.updateGroupsTailHp();
+
 
     this.battleEventsService.onEvents({
       [BattleEventTypeEnum.Fight_Starts]: event => {
@@ -287,6 +289,16 @@ export class BattleStateService {
       } else {
         this.heroesUnitGroupsMap.set(unitGroupPlayer, [unitGroup]);
       }
+    });
+  }
+
+  private updateGroupsTailHp(): void {
+    this.players.forEach((player) => {
+      player.unitGroups.forEach(unitGroup => {
+        if (!unitGroup.tailUnitHp) {
+          unitGroup.tailUnitHp = unitGroup.type.baseStats.health;
+        }
+      })
     });
   }
 

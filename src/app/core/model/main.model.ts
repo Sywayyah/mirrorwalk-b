@@ -82,6 +82,8 @@ export interface UnitGroupModel {
 
     /* how much turns left during round, not sure if it's best to have it there */
     turnsLeft: number;
+    /* the last unit hp tail. If undefined, the tail unit hp is full */
+    tailUnitHp?: number;
 }
 
 export interface UnitGroupInstModel extends UnitGroupModel {

@@ -10,7 +10,7 @@
                 <div>Turns: {{unitGroup.turnsLeft}}</div>
             </div>
             <div>Speed: {{ unitGroup.type.baseStats.speed }}</div>
-            <div>Health: {{ unitGroup.type.baseStats.health * unitGroup.count }}</div>
+            <div>Health: {{ unitGroup.type.baseStats.health * (unitGroup.count - 1) + (unitGroup.tailUnitHp ?? 0) }}</div>
             <div>Damage: {{ unitGroup.type.baseStats.damageInfo.maxDamage * unitGroup.count }}</div>
         </div>
         <div class="abilities" [ngClass]="side === 'left' ? 'left' : 'right'">
