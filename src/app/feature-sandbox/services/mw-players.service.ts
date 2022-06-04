@@ -146,8 +146,13 @@ export class MwPlayersService {
     })
   }
 
-  public addUnitGroupToPlayer(player: PlayerModel, unitGroup: UnitGroupModel): void {
-    player.unitGroups.push(unitGroup);
+  public addUnitGroupToTypeStack(player: PlayerModel, unitGroup: UnitGroupModel): void {
+    const sameTypeStack = player.unitGroups.find(group => group.type === unitGroup.type);
+    if (sameTypeStack) {
+      sameTypeStack.count += unitGroup.count;
+    } else {
+      player.unitGroups.push(unitGroup);
+    }
   }
 
   private createPlayer(id: string, playerInfo: PlayerModel): PlayerInstanceModel {
