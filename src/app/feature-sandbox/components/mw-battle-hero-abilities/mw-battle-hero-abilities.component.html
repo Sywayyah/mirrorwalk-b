@@ -10,11 +10,11 @@
                 {{ spell.name }}
             </div>
         </div>
+
+        <ng-template #hint>
+            <div style="width: 100px; font-size: 10px; max-width: 200px;">
+                {{spell.description}}
+            </div>
+        </ng-template>
     </mw-hover-hint>
 </div>
-
-<ng-template #hint>
-    <div style="width: 100px">
-        Spell description
-    </div>
-</ng-template>

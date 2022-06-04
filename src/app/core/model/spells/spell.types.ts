@@ -20,6 +20,8 @@ export interface SpellModel<SpellStateType = DefaultSpellStateType> {
     level: number;
     activationType: SpellActivationType;
 
+    description?: string;
+    
     type: SpellTypeModel<SpellStateType>;
     instanceData?: SpellStateType;
 }

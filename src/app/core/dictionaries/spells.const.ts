@@ -6,6 +6,7 @@ export const RAIN_OF_FIRE_SPELL: SpellModel = {
     name: 'Rain of Fire',
     level: 1,
     activationType: SpellActivationType.Target,
+    description: 'Deals average damage to the target',
     type: {
         spellInfo: {
             name: 'Rain of Fire',
@@ -73,6 +74,9 @@ export const METEOR_SPELL: SpellModel = {
     activationType: SpellActivationType.Instant,
     level: 1,
     name: 'Meteor',
+
+    description: 'Deals medium damage to random enemy group',
+
     type: {
         spellInfo: {
             name: 'Meteor',
@@ -101,6 +105,7 @@ export const POISON_CLOUD_SPELL: SpellModel = {
     activationType: SpellActivationType.Target,
     level: 1,
     name: 'Poison Cloud',
+    description: 'Poisons target, which takes damage at the beginning of each round. Lasts 2 rounds.',
     type: {
         spellInfo: {
             name: 'Poison Cloud',

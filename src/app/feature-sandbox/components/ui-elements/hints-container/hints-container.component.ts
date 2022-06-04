@@ -16,10 +16,7 @@ export interface ElementHint {
   styleUrls: ['./hints-container.component.scss']
 })
 export class HintsContainerComponent implements OnInit {
-
-
   public hints: ElementHint[] = [];
-
 
   constructor() { }
 
