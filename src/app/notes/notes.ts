@@ -5,10 +5,9 @@
         - Add camps with units of different towns.
         - Add turns per location limit.
         + Add hero levels and experience.
-        - Add structures chains.
+        + Add structures chains.
         - Add specialties.
-        - Add abilities.
-        - Add damaged unit group.
+        > Add damaged unit group.
 
         Side notes: 
             Items may provide more turns per location (Boots, most likely)
@@ -18,6 +17,7 @@
 
     Major features;
         - Towns
+        > Add abilities
         - New towns and unit types
         - Locations
         - Unit upgrades
@@ -31,7 +31,7 @@
       Specialties, upgrades, abilities, interactions, locations, heroes..
       Mechanics (experience, glory, hiring, mana, structures, etc.)
     
-    Also, need to add a pre-fight popup
+    Also, need to add a pre-fight popup (done)
 */
 
 /*  Also, game can be made a little more interesting by increasing amount of 
