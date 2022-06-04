@@ -1,4 +1,5 @@
-import { SpellModel, UnitGroupInstModel, UnitGroupModel } from "src/app/core/model/main.model";
+import { UnitGroupInstModel, UnitGroupModel } from "src/app/core/model/main.model";
+import { SpellModel } from "src/app/core/model/spells";
 
 export enum ActionHintTypeEnum {
     OnHoverEnemyCard = 'on-hover-enemy-card',

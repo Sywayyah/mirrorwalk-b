@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { PlayerInstanceModel, SpellActivationType, SpellModel } from 'src/app/core/model/main.model';
+import { PlayerInstanceModel } from 'src/app/core/model/main.model';
+import { SpellActivationType, SpellModel } from 'src/app/core/model/spells';
 import { BattleEventsService } from './mw-battle-events.service';
 import { MwPlayersService } from './mw-players.service';
 import { BattleEventTypeEnum } from './types';

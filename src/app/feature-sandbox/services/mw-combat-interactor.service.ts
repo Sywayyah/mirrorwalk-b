@@ -1,17 +1,19 @@
 import { Injectable } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 import {
-  DamageType,
   PlayerInstanceModel,
+  UnitGroupInstModel,
+  UnitGroupModel,
+} from 'src/app/core/model/main.model';
+import {
+  DamageType,
   PostDamageInfo,
   SpellActivationType,
   SpellEventHandlers,
   SpellEventsMapping,
   SpellEventTypes,
   SpellModel,
-  UnitGroupInstModel,
-  UnitGroupModel,
-} from 'src/app/core/model/main.model';
+} from 'src/app/core/model/spells';
 import { CommonUtils } from 'src/app/core/utils/common.utils';
 import { BattleEventsService } from './mw-battle-events.service';
 import { MwBattleLogService } from './mw-battle-log.service';

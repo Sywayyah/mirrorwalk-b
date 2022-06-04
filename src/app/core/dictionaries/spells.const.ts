@@ -1,4 +1,4 @@
-import { DamageType, SpellActivationType, SpellEventTypes, SpellModel } from "../model/main.model";
+import { DamageType, SpellActivationType, SpellEventTypes, SpellModel } from "../model/spells";
 
 /* try different types of spells. also, try applying buffs. */
 /* note: SpellModel, mainly, gets spreaded into a new object, since each buff may have something own */

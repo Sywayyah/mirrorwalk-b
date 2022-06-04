@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { SpellModel } from 'src/app/core/model/main.model';
+import { SpellModel } from 'src/app/core/model/spells';
 
 @Injectable({
   providedIn: 'root'

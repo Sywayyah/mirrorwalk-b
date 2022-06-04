@@ -1,4 +1,5 @@
-import { PlayerInstanceModel, PlayerModel, SpellModel, UnitGroupInstModel } from 'src/app/core/model/main.model';
+import { PlayerInstanceModel, PlayerModel, UnitGroupInstModel } from 'src/app/core/model/main.model';
+import { SpellModel } from 'src/app/core/model/spells';
 import { NeutralCampStructure, StructureModel } from "src/app/core/model/structures.types";
 import { PopupModel } from './popup.types';
 
