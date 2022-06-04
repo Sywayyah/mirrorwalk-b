@@ -12,10 +12,11 @@
         </div>
 
         <ng-template #hint>
-            <div>
+            <div style="padding: 4px;">
                 <div style="font-size: 13px;">{{spell.name}}</div>
-                <div style="font-size: 12px;">Level: {{spell.level}}</div>
+                <div style="font-size: 11px;">Level: {{spell.level}}</div>
             </div>
+            
             <div *ngIf="spell.description" style="width: 100px; font-size: 10px; max-width: 200px; padding: 4px;">
                 {{spell.description}}
             </div>

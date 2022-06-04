@@ -11,10 +11,15 @@ export class HoverHintComponent implements OnInit {
 
   @Input() public hintBody!: TemplateRef<ElementRef>;
 
-  @ViewChild('elem', {static: true }) public elem!: ElementRef;
-  @ViewChild('generalHint', {static: true }) public generalHint!: TemplateRef<ElementRef>;
+  @ViewChild('elem', { static: true }) public elem!: ElementRef;
+  @ViewChild('generalHint', { static: true }) public generalHint!: TemplateRef<ElementRef>;
 
   public displayHint: boolean = false;
+  public showHintAnimation: boolean = false;
+  public transition: number = 0.3;
+
+
+  private timeoutId: number | null = null;
 
   private ref!: ElementHint;
 
@@ -32,10 +37,25 @@ export class HoverHintComponent implements OnInit {
       this.generalHint,
       'after'
     );
+    this.timeoutId = window.setTimeout(() => {
+      this.clearTimeout();
+      this.showHintAnimation = true;
+    }, 100);
   }
 
   public onMouseLeave(): void {
+    this.clearTimeout();
     this.displayHint = false;
-    this.hintsService.containerRef.removeHint(this.ref);
+    this.showHintAnimation = false;
+    setTimeout(() => {
+      this.hintsService.containerRef.removeHint(this.ref);
+    }, this.transition * 1000);
+  }
+
+  private clearTimeout(): void {
+    if (this.timeoutId) {
+      window.clearTimeout(this.timeoutId);
+    }
+    this.timeoutId = null;
   }
 }
