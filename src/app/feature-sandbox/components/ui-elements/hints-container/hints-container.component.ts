@@ -25,8 +25,8 @@ export class HintsContainerComponent implements OnInit {
 
   public createHint(target: ElementRef, template: TemplateRef<ElementRef>, pos: HintAttachment): ElementHint {
     const elem = target.nativeElement as HTMLElement;
-    const { left, top, right } = elem.getBoundingClientRect();
-    console.log(left, top, right, window.innerWidth, elem.clientWidth);
+    const { left, top } = elem.getBoundingClientRect();
+    // console.log(left, top, right, window.innerWidth, elem.clientWidth);
 
     const hint: ElementHint = {
       targetElement: target,

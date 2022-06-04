@@ -14,12 +14,11 @@ export class HoverHintComponent implements OnInit {
   @ViewChild('elem', { static: true }) public elem!: ElementRef;
   @ViewChild('generalHint', { static: true }) public generalHint!: TemplateRef<ElementRef>;
 
-  public displayHint: boolean = false;
   public showHintAnimation: boolean = false;
   public transition: number = 0.3;
 
-
-  private timeoutId: number | null = null;
+  private showTimeoutId: number | null = null;
+  private hideTimeoutId: number | null = null;
 
   private ref!: ElementHint;
 
@@ -31,31 +30,33 @@ export class HoverHintComponent implements OnInit {
   }
 
   public onMouseEnter(): void {
-    this.displayHint = true;
     this.ref = this.hintsService.containerRef.createHint(
       this.elem,
       this.generalHint,
       'after'
     );
-    this.timeoutId = window.setTimeout(() => {
-      this.clearTimeout();
+
+    this.showTimeoutId = window.setTimeout(() => {
+      this.clearShowTimeout();
       this.showHintAnimation = true;
     }, 100);
   }
 
   public onMouseLeave(): void {
-    this.clearTimeout();
-    this.displayHint = false;
+    this.clearShowTimeout();
     this.showHintAnimation = false;
-    setTimeout(() => {
-      this.hintsService.containerRef.removeHint(this.ref);
+    const prevRef = this.ref;
+
+    this.hideTimeoutId = window.setTimeout(() => {
+      this.hintsService.containerRef.removeHint(prevRef);
     }, this.transition * 1000);
   }
 
-  private clearTimeout(): void {
-    if (this.timeoutId) {
-      window.clearTimeout(this.timeoutId);
+  private clearShowTimeout(): void {
+    if (this.showTimeoutId) {
+      window.clearTimeout(this.showTimeoutId);
     }
-    this.timeoutId = null;
+    this.showTimeoutId = null;
   }
+
 }
