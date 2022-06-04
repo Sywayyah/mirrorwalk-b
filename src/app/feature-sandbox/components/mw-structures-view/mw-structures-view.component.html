@@ -9,20 +9,7 @@
     </div>
 </div>
 
-
-<div class="player-info-panel">
-    <div>
-        {{player.hero.name}}, Level: {{player.hero.level}}
-        <mw-experience-bar style="width: 270px;"></mw-experience-bar>
-    </div>
-    Your units:
-    <div class="groups-container">
-        <div class="player-group-card" [style.background]="player.color" *ngFor="let group of player.unitGroups">
-            <div>{{group.type.name}}</div>
-            <div>{{group.count}}</div>
-        </div>
-    </div>
-</div>
+<mw-player-info-panel class="player-info-panel"></mw-player-info-panel>
 
 <ng-template #neutralCamp let-structure="structure">
     <!-- todo: For the sake of better typization, these templates should be components -->
