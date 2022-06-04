@@ -1,4 +1,4 @@
 <div class="hint" *ngFor="let hint of hints" [style.top.px]="hint.offsetTop" [style.right.px]="hint.offsetRight"
-    [style.left.px]="hint.offsetLeft">
+    [style.left.px]="hint.offsetLeft" style="transform: translateY(-50%);">
     <ng-container *ngTemplateOutlet="hint.template"></ng-container>
 </div>

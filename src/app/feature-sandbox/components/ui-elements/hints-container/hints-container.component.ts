@@ -32,7 +32,8 @@ export class HintsContainerComponent implements OnInit {
       targetElement: target,
       template,
       offsetLeft: pos === 'after' ? left + elem.clientWidth : null,
-      offsetTop: top,
+      /* temporary */
+      offsetTop: top + (elem.clientHeight / 2),
       offsetRight: pos === 'before' ? window.innerWidth - left : null,
     };
 

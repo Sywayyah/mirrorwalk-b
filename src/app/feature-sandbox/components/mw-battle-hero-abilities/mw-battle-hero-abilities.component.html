@@ -12,7 +12,7 @@
         </div>
 
         <ng-template #hint>
-            <div style="width: 100px; font-size: 10px; max-width: 200px;">
+            <div *ngIf="spell.description" style="width: 100px; font-size: 10px; max-width: 200px; padding: 4px;">
                 {{spell.description}}
             </div>
         </ng-template>
