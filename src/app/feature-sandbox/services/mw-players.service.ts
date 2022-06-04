@@ -146,6 +146,10 @@ export class MwPlayersService {
     })
   }
 
+  public addUnitGroupToPlayer(player: PlayerModel, unitGroup: UnitGroupModel): void {
+    player.unitGroups.push(unitGroup);
+  }
+
   private createPlayer(id: string, playerInfo: PlayerModel): PlayerInstanceModel {
     const player: PlayerInstanceModel = {
       id,

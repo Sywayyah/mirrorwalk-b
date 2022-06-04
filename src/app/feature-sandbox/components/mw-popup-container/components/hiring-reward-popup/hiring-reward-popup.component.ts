@@ -85,7 +85,7 @@ export class HiringRewardPopupComponent implements OnInit {
 
     this.hiredGroups.forEach(group => {
       if (group.count) {
-        currentPlayer.unitGroups.push({
+        this.playersService.addUnitGroupToPlayer(currentPlayer, {
           count: group.count,
           type: group.hire.unitType,
           ownerPlayerRef: currentPlayer,
