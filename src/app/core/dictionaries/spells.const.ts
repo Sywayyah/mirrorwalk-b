@@ -49,9 +49,11 @@ export const POISON_CLOUD_SPELL_EFFECT: SpellModel<undefined | { debuffRoundsLef
 
                         events.on({
                             [SpellEventTypes.NewRoundBegins]: (event) => {
-                                actions.historyLog(`Poison deals ${65} damage to ${target.type.name}`);
 
-                                actions.dealDamageTo(target, 65, DamageType.Magic);
+                                actions.dealDamageTo(target, 65, DamageType.Magic, (damageInfo) => {
+                                    actions.historyLog(`Poison deals ${damageInfo.finalDamage} damage to ${target.type.name}, ${damageInfo.unitLoss} units perish`);
+                                });
+
                                 debuffData.debuffRoundsLeft--;
 
                                 if (!debuffData.debuffRoundsLeft) {

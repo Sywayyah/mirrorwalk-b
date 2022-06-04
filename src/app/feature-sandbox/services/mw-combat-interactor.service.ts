@@ -151,6 +151,13 @@ export class CombatInteractorService {
 
     const finalDamageInfo = this.unitState.dealPureDamageToUnitGroup(target, finalDamage);
 
+    if (postActionFn) {
+      postActionFn({
+        unitLoss: finalDamageInfo.finalUnitLoss,
+        finalDamage: finalDamageInfo.finalDamage,
+      });
+    }
+
     if (finalDamageInfo.isDamageFatal) {
       this.battleState.handleDefeatedUnitGroup(target);
       this.battleEvents.dispatchEvent({
@@ -161,11 +168,7 @@ export class CombatInteractorService {
       });
     }
 
-    if (postActionFn) {
-      postActionFn({
-        unitLoss: finalDamageInfo.finalUnitLoss,
-      });
-    }
+
   }
 
   /* when group counterattacks and defeats enemy group, both are gone from queue */

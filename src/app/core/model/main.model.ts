@@ -186,7 +186,8 @@ export interface SpellCombatEventsRef {
 }
 
 export interface PostDamageInfo {
-    unitLoss: number
+    unitLoss: number;
+    finalDamage: number;
 }
 
 export enum DamageType {
