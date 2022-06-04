@@ -18,9 +18,8 @@ export class HoverHintComponent implements OnInit {
   public transition: number = 0.3;
 
   private showTimeoutId: number | null = null;
-  private hideTimeoutId: number | null = null;
 
-  private ref!: ElementHint;
+  private currentHintRef: ElementHint | null = null;
 
   constructor(
     private readonly hintsService: HintsService,
@@ -30,7 +29,7 @@ export class HoverHintComponent implements OnInit {
   }
 
   public onMouseEnter(): void {
-    this.ref = this.hintsService.containerRef.createHint(
+    this.currentHintRef = this.hintsService.containerRef.createHint(
       this.elem,
       this.generalHint,
       'after'
@@ -45,9 +44,10 @@ export class HoverHintComponent implements OnInit {
   public onMouseLeave(): void {
     this.clearShowTimeout();
     this.showHintAnimation = false;
-    const prevRef = this.ref;
+    const prevRef = this.currentHintRef as ElementHint;
+    this.currentHintRef = null;
 
-    this.hideTimeoutId = window.setTimeout(() => {
+    window.setTimeout(() => {
       this.hintsService.containerRef.removeHint(prevRef);
     }, this.transition * 1000);
   }
