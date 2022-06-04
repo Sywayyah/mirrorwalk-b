@@ -1,4 +1,4 @@
-import { UnitTypeModel } from "../model/main.model";
+import { UnitTypeModel } from "../../model/main.model";
 
 export enum HF_TYPES_ENUM {
     Pikemans = 'Pikemans',

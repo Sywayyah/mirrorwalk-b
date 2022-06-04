@@ -1,4 +1,4 @@
-import { UnitTypeModel } from "../model/main.model";
+import { UnitTypeModel } from "../../model/main.model";
 
 export enum NEUTRAL_TYPES_ENUM {
     Gnolls = 'Gnolls',
