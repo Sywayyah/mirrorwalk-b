@@ -98,13 +98,13 @@ export class BattleStateService {
         if (!event.loss) {
           return;
         }
-        const playersLossesMap = this.playerLosses[event.attackedGroup.ownerPlayerRef.id];
-        const attackedGroupUnitType = event.attackedGroup.type;
-        const typeLossCount = playersLossesMap.get(attackedGroupUnitType);
-        if (typeLossCount) {
-          playersLossesMap.set(attackedGroupUnitType, typeLossCount + event.loss);
-        } else {
-          playersLossesMap.set(attackedGroupUnitType, event.loss);
+
+        this.registerPlayerUnitLoss(event.attackedGroup, event.loss);
+      },
+
+      [BattleEventTypeEnum.On_Group_Takes_Damage]: event => {
+        if (event.registerLoss && event.unitLoss) {
+          this.registerPlayerUnitLoss(event.group, event.unitLoss);
         }
       },
 
@@ -302,4 +302,15 @@ export class BattleStateService {
     });
   }
 
+  private registerPlayerUnitLoss(attackedGroup: UnitGroupInstModel, unitLoss: number): void {
+    /* todo: Final reward seems to not match reward preview */
+    const playersLossesMap = this.playerLosses[attackedGroup.ownerPlayerRef.id];
+    const attackedGroupUnitType = attackedGroup.type;
+    const typeLossCount = playersLossesMap.get(attackedGroupUnitType);
+    if (typeLossCount) {
+      playersLossesMap.set(attackedGroupUnitType, typeLossCount + unitLoss);
+    } else {
+      playersLossesMap.set(attackedGroupUnitType, unitLoss);
+    }
+  }
 }

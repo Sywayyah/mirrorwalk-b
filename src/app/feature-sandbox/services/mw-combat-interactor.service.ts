@@ -168,7 +168,14 @@ export class CombatInteractorService {
       });
     }
 
-
+    if (finalDamageInfo.finalUnitLoss) {
+      this.battleEvents.dispatchEvent({
+        type: BattleEventTypeEnum.On_Group_Takes_Damage,
+        unitLoss: finalDamageInfo.finalUnitLoss,
+        registerLoss: true,
+        group: target,
+      });
+    }
   }
 
   /* when group counterattacks and defeats enemy group, both are gone from queue */
@@ -186,11 +193,7 @@ export class CombatInteractorService {
 
     const attackDetails = this.unitState.getDetailedAttackInfo(attacker, attacked);
 
-    /* todo: revisit this. total damage and realUnitLoss aren't related. */
-    /* todo: also, implement health tail */
     const damageInfo = this.unitState.getFinalDamageInfoFromDamageDetailedInfo(attackDetails);
-    // const totalDamage = this.rollDamage(attackDetails);
-    // const realUnitLoss = CommonUtils.randIntInRange(attackDetails.minUnitCountLoss, attackDetails.maxUnitCountLoss);
 
     const finalDamageInfo = this.unitState.dealPureDamageToUnitGroup(attacked, damageInfo.finalDamage);
 

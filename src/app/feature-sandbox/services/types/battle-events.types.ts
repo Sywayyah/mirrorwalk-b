@@ -20,6 +20,7 @@ export enum BattleEventTypeEnum {
   Display_Popup,
 
   On_Group_Damaged_By_Group,
+  On_Group_Takes_Damage,
   /* todo: this event can be merged with On_Group_Damaged, introducing field isCounterattack */
   On_Group_Counter_Attacked,
   On_Group_Dies,
@@ -94,11 +95,17 @@ export interface UIPlayerHoversCard extends BattleEventModel<BattleEventTypeEnum
   hoveredCard?: UnitGroupInstModel;
 }
 
-export interface GroupDamagedEvent extends BattleEventModel<BattleEventTypeEnum.On_Group_Damaged_By_Group> {
+export interface GroupDamagedByGroupEvent extends BattleEventModel<BattleEventTypeEnum.On_Group_Damaged_By_Group> {
   attackerGroup: UnitGroupInstModel;
   attackedGroup: UnitGroupInstModel;
   loss: number;
   damage: number;
+}
+
+export interface GroupTakesDamageEvent extends BattleEventModel<BattleEventTypeEnum.On_Group_Takes_Damage> {
+  group: UnitGroupInstModel;
+  registerLoss: boolean;
+  unitLoss: number;
 }
 
 export interface OnGroupCounterAttacked extends BattleEventModel<BattleEventTypeEnum.On_Group_Counter_Attacked> {
@@ -178,7 +185,8 @@ export interface EventByEnumMapping {
   [BattleEventTypeEnum.Combat_Group_Attacked]: CombatGroupAttacked;
   [BattleEventTypeEnum.Combat_Attack_Interaction]: CombatInteractionState;
 
-  [BattleEventTypeEnum.On_Group_Damaged_By_Group]: GroupDamagedEvent;
+  [BattleEventTypeEnum.On_Group_Damaged_By_Group]: GroupDamagedByGroupEvent;
+  [BattleEventTypeEnum.On_Group_Takes_Damage]: GroupTakesDamageEvent;
   [BattleEventTypeEnum.On_Group_Counter_Attacked]: OnGroupCounterAttacked;
   [BattleEventTypeEnum.On_Group_Dies]: GroupDiesEvent;
 
