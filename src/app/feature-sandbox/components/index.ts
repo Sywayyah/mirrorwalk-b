@@ -11,3 +11,4 @@ export * from './mw-experience-bar/mw-experience-bar.component';
 export * from './mw-unit-groups-list/mw-unit-groups-list.component';
 export * from './mw-player-info-panel/mw-player-info-panel.component';
 export * from './mw-battle-hero-abilities/mw-battle-hero-abilities.component';
+export * from './ui-elements';

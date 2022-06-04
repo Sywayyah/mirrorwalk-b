@@ -19,6 +19,8 @@ import {
   MwBattleHeroAbilitiesComponent,
   ResourcesRewardPopupComponent,
   MwPlayerInfoPanelComponent,
+  HintsContainerComponent,
+  HoverHintComponent,
 } from './feature-sandbox/components';
 
 @NgModule({
@@ -41,6 +43,8 @@ import {
     MwExperienceBarComponent,
     MwBattleHeroAbilitiesComponent,
     MwPlayerInfoPanelComponent,
+    HoverHintComponent,
+    HintsContainerComponent,
   ],
   imports: [
     BrowserModule

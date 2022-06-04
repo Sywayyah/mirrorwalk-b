@@ -3,10 +3,18 @@
 </div>
 
 <div class="abilities-list">
-    <div class="ability" *ngFor="let spell of currentPlayer.hero.spells" (click)="onAbilityClick(spell)" 
-    [class.current-ability]="curPlayerState.currentSpell === spell && spell.activationType === activationTypes.Target">
-        <div>
-            {{ spell.name }}
+    <mw-hover-hint [hintBody]="hint" *ngFor="let spell of currentPlayer.hero.spells">
+        <div class="ability" (click)="onAbilityClick(spell)"
+            [class.current-ability]="curPlayerState.currentSpell === spell && spell.activationType === activationTypes.Target">
+            <div>
+                {{ spell.name }}
+            </div>
         </div>
-    </div>
+    </mw-hover-hint>
 </div>
+
+<ng-template #hint>
+    <div style="width: 100px">
+        Spell description
+    </div>
+</ng-template>
