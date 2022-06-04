@@ -1,4 +1,7 @@
 <div>
+    <div class="skillpoints" *ngIf="player.hero.freeSkillpoints">
+        +{{player.hero.freeSkillpoints}} Skillpoints
+    </div>
     <div>
         {{player.hero.name}}, Level: {{player.hero.level}}
         <mw-experience-bar style="width: 270px;"></mw-experience-bar>
