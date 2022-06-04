@@ -94,7 +94,7 @@ export class BattleStateService {
         this.initNextTurnByQueue(true);
       },
 
-      [BattleEventTypeEnum.On_Group_Damaged]: event => {
+      [BattleEventTypeEnum.On_Group_Damaged_By_Group]: event => {
         if (!event.loss) {
           return;
         }

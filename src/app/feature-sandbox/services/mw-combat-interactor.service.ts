@@ -199,7 +199,7 @@ export class CombatInteractorService {
       attacker.turnsLeft = this.battleState.currentGroupTurnsLeft;
 
       this.battleEvents.dispatchEvent({
-        type: BattleEventTypeEnum.On_Group_Damaged,
+        type: BattleEventTypeEnum.On_Group_Damaged_By_Group,
         attackerGroup: attacker,
         attackedGroup: attacked,
         loss: finalDamageInfo.finalUnitLoss,

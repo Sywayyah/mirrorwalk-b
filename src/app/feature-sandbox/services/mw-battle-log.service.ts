@@ -21,7 +21,7 @@ export class MwBattleLogService {
         this.history = [];
       },
 
-      [BattleEventTypeEnum.On_Group_Damaged]: event => this.logDealtDamageMessage({
+      [BattleEventTypeEnum.On_Group_Damaged_By_Group]: event => this.logDealtDamageMessage({
         attacked: event.attackedGroup.type,
         attackedPlayer: event.attackedGroup.ownerPlayerRef,
         attacker: event.attackerGroup.type,

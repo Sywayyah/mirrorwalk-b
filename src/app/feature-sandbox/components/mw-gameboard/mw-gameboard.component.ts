@@ -56,7 +56,7 @@ export class MwGameboardComponent implements OnInit {
       this.fightQueue = this.mwBattleState.getFightQueue();
     });
 
-    this.battleEvents.onEvent(BattleEventTypeEnum.On_Group_Damaged).subscribe((event) => {
+    this.battleEvents.onEvent(BattleEventTypeEnum.On_Group_Damaged_By_Group).subscribe((event) => {
       this.cardsMapping.get(event.attackedGroup).effectsComponent.addLossEffect(event.loss);
     });
   }
