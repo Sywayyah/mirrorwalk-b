@@ -9,6 +9,7 @@ import { ResourcesModel } from 'src/app/core/model/resources.types';
 import { RandomUtils } from 'src/app/core/utils/common.utils';
 import { BattleEventsService } from './mw-battle-events.service';
 import { BattleEventTypeEnum } from './types';
+import { MwSpellsService } from './mw-spells.service';
 
 
 const mainPlayerGroups = RandomUtils.createRandomArmy({
@@ -70,11 +71,11 @@ export class MwPlayersService {
         level: 1,
         freeSkillpoints: 0,
         spells: [
-          RAIN_OF_FIRE_SPELL,
-          POISON_CLOUD_SPELL,
-          METEOR_SPELL,
-          BLINDNESS_SPELL,
-          ENCHANT_SPELL,
+          this.spellsService.createSpell(RAIN_OF_FIRE_SPELL),
+          this.spellsService.createSpell(POISON_CLOUD_SPELL),
+          this.spellsService.createSpell(METEOR_SPELL),
+          this.spellsService.createSpell(BLINDNESS_SPELL),
+          this.spellsService.createSpell(ENCHANT_SPELL),
         ],
       },
       unitGroups: mainPlayerGroups,
@@ -100,6 +101,7 @@ export class MwPlayersService {
 
   constructor(
     private readonly events: BattleEventsService,
+    private readonly spellsService: MwSpellsService,
   ) { }
 
   public getCurrentPlayer(): PlayerInstanceModel {
