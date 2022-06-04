@@ -1,6 +1,6 @@
 import { AbilityModel, AbilityTypesEnum } from "../model/abilities.types";
 import { UnitTypeModel } from "../model/main.model";
-import { HF_TYPES_ENUM, HUMANS_FRACTION_UNIT_TYPES } from "./unit-types.dictionary";
+import { HF_TYPES_ENUM, HUMANS_FRACTION_UNIT_TYPES } from "./unit-types/unit-types.dictionary";
 
 export const Abilities: Record<AbilityTypesEnum, AbilityModel> = {
     [AbilityTypesEnum.BaseCounterAttack]: {

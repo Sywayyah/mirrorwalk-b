@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { NEUTRAL_FRACTION_UNIT_TYPES, NEUTRAL_TYPES_ENUM } from 'src/app/core/dictionaries/neutral-unit-types.dictionary';
-import { HUMANS_FRACTION_UNIT_TYPES } from 'src/app/core/dictionaries/unit-types.dictionary';
+import { NEUTRAL_FRACTION_UNIT_TYPES, NEUTRAL_TYPES_ENUM } from 'src/app/core/dictionaries/unit-types/neutral-unit-types.dictionary';
+import { HUMANS_FRACTION_UNIT_TYPES } from 'src/app/core/dictionaries/unit-types/unit-types.dictionary';
 import { PlayerInstanceModel, UnitGroupInstModel } from 'src/app/core/model/main.model';
 import { ResourceType } from 'src/app/core/model/resources.types';
 import { HiringReward, NeutralCampStructure, NeutralRewardTypesEnum, ResourcesReward, StructureModel, StructureTypeEnum } from "src/app/core/model/structures.types";

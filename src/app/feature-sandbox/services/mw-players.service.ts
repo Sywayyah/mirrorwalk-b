@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { PLAYER_COLORS } from 'src/app/core/dictionaries/colors.const';
 import { LEVELS_BREAKPOINTS } from 'src/app/core/dictionaries/levels.const';
-import { NEUTRAL_FRACTION_UNIT_TYPES, NEUTRAL_TYPES_ENUM } from 'src/app/core/dictionaries/neutral-unit-types.dictionary';
+import { NEUTRAL_FRACTION_UNIT_TYPES, NEUTRAL_TYPES_ENUM } from 'src/app/core/dictionaries/unit-types/neutral-unit-types.dictionary';
 import { BLINDNESS_SPELL, ENCHANT_SPELL, METEOR_SPELL, POISON_CLOUD_SPELL, RAIN_OF_FIRE_SPELL } from 'src/app/core/dictionaries/spells.const';
-import { HF_TYPES_ENUM, HUMANS_FRACTION_UNIT_TYPES } from 'src/app/core/dictionaries/unit-types.dictionary';
+import { HF_TYPES_ENUM, HUMANS_FRACTION_UNIT_TYPES } from 'src/app/core/dictionaries/unit-types/unit-types.dictionary';
 import { PlayerInstanceModel, PlayerModel, PlayerTypeEnum, UnitGroupInstModel, UnitGroupModel } from 'src/app/core/model/main.model';
 import { ResourcesModel } from 'src/app/core/model/resources.types';
 import { RandomUtils } from 'src/app/core/utils/common.utils';
