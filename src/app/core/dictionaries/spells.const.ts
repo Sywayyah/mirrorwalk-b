@@ -96,8 +96,15 @@ export const METEOR_SPELL: SpellModel = {
             name: 'Meteor',
         },
         spellConfig: {
-            getManaCost(spellInst) {
-                return 0;
+            getManaCost: (spell) => {
+                const manaCosts: Record<number, number> = {
+                    1: 4,
+                    2: 4,
+                    3: 5,
+                    4: 5,
+                };
+
+                return manaCosts[spell.currentLevel];
             },
 
             init({ events, actions, thisSpell, ownerHero }) {
