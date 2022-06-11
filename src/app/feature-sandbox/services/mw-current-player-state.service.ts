@@ -62,6 +62,8 @@ export class MwCurrentPlayerStateService {
 
     switch (spell.type.activationType) {
       case 'instant':
+        this.onCurrentSpellCast();
+
         this.events.dispatchEvent({
           type: BattleEventTypeEnum.Player_Casts_Instant_Spell,
           player: this.currentPlayer,
@@ -80,5 +82,9 @@ export class MwCurrentPlayerStateService {
 
   public resetCurrentSpell(): void {
     this.currentSpell = NULL_SPELL_INSTANCE;
+  }
+
+  public onCurrentSpellCast(): void {
+    this.players.addManaToPlayer(this.currentPlayer, -this.currentSpell.currentManaCost);
   }
 }

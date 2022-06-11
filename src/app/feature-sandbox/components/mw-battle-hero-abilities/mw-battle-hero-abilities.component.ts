@@ -23,6 +23,10 @@ export class MwBattleHeroAbilitiesComponent implements OnInit {
   }
 
   public onAbilityClick(spell: SpellInstance) {
+    if (spell.currentManaCost > this.currentPlayer.hero.stats.currentMana) {
+      return;
+    }
+
     if (this.curPlayerState.playerCurrentState === PlayerState.WaitsForTurn) {
       return;
     }

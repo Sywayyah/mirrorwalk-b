@@ -70,8 +70,8 @@ export class MwPlayersService {
         experience: 0,
         level: 1,
         stats: {
-          maxMana: 10,
-          currentMana: 5,
+          maxMana: 25,
+          currentMana: 15,
         },
         freeSkillpoints: 0,
         spells: [
@@ -163,6 +163,10 @@ export class MwPlayersService {
     } else {
       player.unitGroups.push(unitGroup);
     }
+  }
+
+  public addManaToPlayer(player: PlayerInstanceModel, mana: number): void {
+    player.hero.stats.currentMana += mana;
   }
 
   private createPlayer(id: string, playerInfo: PlayerModel): PlayerInstanceModel {

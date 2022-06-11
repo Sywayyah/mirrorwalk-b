@@ -162,6 +162,7 @@ export class BattleStateService {
           });
         }
         if (this.curPlayerState.playerCurrentState === PlayerState.SpellTargeting) {
+          this.curPlayerState.onCurrentSpellCast();
           this.battleEventsService.dispatchEvent({
             type: BattleEventTypeEnum.Player_Targets_Spell,
             player: event.attackingPlayer,
