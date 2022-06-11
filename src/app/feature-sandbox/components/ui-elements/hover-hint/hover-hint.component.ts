@@ -10,12 +10,13 @@ import { ElementHint } from '../hints-container/hints-container.component';
 export class HoverHintComponent implements OnInit {
 
   @Input() public hintBody!: TemplateRef<ElementRef>;
+  /* todo: improve transition and overall logic of this component later */
+  @Input() public transition: number = 0.15;
 
   @ViewChild('elem', { static: true }) public elem!: ElementRef;
   @ViewChild('generalHint', { static: true }) public generalHint!: TemplateRef<ElementRef>;
 
   public showHintAnimation: boolean = false;
-  public transition: number = 0.3;
 
   private showTimeoutId: number | null = null;
 
@@ -38,7 +39,7 @@ export class HoverHintComponent implements OnInit {
     this.showTimeoutId = window.setTimeout(() => {
       this.clearShowTimeout();
       this.showHintAnimation = true;
-    }, 100);
+    }, 0);
   }
 
   public onMouseLeave(): void {
