@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { PlayerInstanceModel } from 'src/app/core/model/main.model';
-import { SpellActivationType, SpellModel } from 'src/app/core/model/spells';
+import { SpellActivationType, SpellInstance, SpellModel } from 'src/app/core/model/spells';
 import { BattleEventsService } from './mw-battle-events.service';
 import { MwPlayersService } from './mw-players.service';
 import { BattleEventTypeEnum } from './types';
@@ -27,6 +27,15 @@ export const NULL_SPELL: SpellModel = {
       init: () => { },
     }
   }
+};
+
+const NULL_SPELL_INSTANCE: SpellInstance = {
+  currentLevel: 0,
+  currentManaCost: 0,
+  description: '',
+  name: '',
+  state: null,
+  type: NULL_SPELL,
 }
 
 @Injectable({
@@ -36,7 +45,7 @@ export class MwCurrentPlayerStateService {
 
   public readonly currentPlayer: PlayerInstanceModel = this.players.getCurrentPlayer();
 
-  public currentSpell: SpellModel = NULL_SPELL;
+  public currentSpell: SpellInstance = NULL_SPELL_INSTANCE;
 
   public playerCurrentState: PlayerState = PlayerState.Normal;
 
@@ -45,10 +54,10 @@ export class MwCurrentPlayerStateService {
     private readonly events: BattleEventsService,
   ) { }
 
-  public onSpellClick(spell: SpellModel): void {
+  public onSpellClick(spell: SpellInstance): void {
     this.currentSpell = spell;
 
-    switch (spell.activationType) {
+    switch (spell.type.activationType) {
       case 'instant':
         this.events.dispatchEvent({
           type: BattleEventTypeEnum.Player_Casts_Instant_Spell,
@@ -67,6 +76,6 @@ export class MwCurrentPlayerStateService {
   }
 
   public resetCurrentSpell(): void {
-    this.currentSpell = NULL_SPELL;
+    this.currentSpell = NULL_SPELL_INSTANCE;
   }
 }

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { PlayerInstanceModel } from 'src/app/core/model/main.model';
-import { SpellActivationType, SpellModel } from 'src/app/core/model/spells';
+import { SpellActivationType, SpellInstance } from 'src/app/core/model/spells';
 import { MwPlayersService } from '../../services';
 import { MwCurrentPlayerStateService, PlayerState } from '../../services/mw-current-player-state.service';
 
@@ -22,7 +22,7 @@ export class MwBattleHeroAbilitiesComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  public onAbilityClick(spell: SpellModel) {
+  public onAbilityClick(spell: SpellInstance) {
     if (this.curPlayerState.playerCurrentState === PlayerState.WaitsForTurn) {
       return;
     }

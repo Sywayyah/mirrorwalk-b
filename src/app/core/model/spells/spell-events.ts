@@ -1,5 +1,6 @@
 import type { PlayerInstanceModel, UnitGroupInstModel } from "../main.model";
-import type { DefaultSpellStateType, SpellModel } from "./spell.types";
+import { Modifiers } from "./modifiers";
+import type { DefaultSpellStateType, SpellInstance, SpellModel } from "./spell.types";
 
 export enum SpellEventTypes {
     PlayerTargetsSpell,
@@ -20,7 +21,7 @@ export interface SpellEventsMapping {
     [SpellEventTypes.PlayerTargetsSpell]: TargetSelected;
     [SpellEventTypes.SpellPlacedOnUnitGroup]: TargetSelected;
     [SpellEventTypes.NewRoundBegins]: NewRoundBegins;
-    [SpellEventTypes.PlayerCastsInstantSpell]: { player: PlayerInstanceModel, spell: SpellModel };
+    [SpellEventTypes.PlayerCastsInstantSpell]: { player: PlayerInstanceModel, spell: SpellInstance };
 }
 
 export type SpellEventHandlers = { [K in keyof SpellEventsMapping]?: (target: SpellEventsMapping[K]) => void };
@@ -37,6 +38,11 @@ export enum DamageType {
     Magic = 'magic',
 }
 
+export interface SpellCreationOptions<T = DefaultSpellStateType> {
+    initialLevel?: number;
+    state?: T;
+}
+
 export interface SpellCombatActionsRef {
     dealDamageTo: (
         target: UnitGroupInstModel,
@@ -49,17 +55,21 @@ export interface SpellCombatActionsRef {
     //  adds it to the target group and returning the reference of the created spell.
     addSpellToUnitGroup: <T = DefaultSpellStateType>(
         target: UnitGroupInstModel,
-        spell: SpellModel<T>,
+        spell: SpellInstance<T>,
         ownerPlayer: PlayerInstanceModel,
-    ) => SpellModel<T>;
+    ) => void;
 
     // Removes spell instance from the target unit group and from battle events system.
     removeSpellFromUnitGroup: <T = DefaultSpellStateType>(
         target: UnitGroupInstModel,
-        spell: SpellModel<T>,
+        spell: SpellInstance<T>,
     ) => void;
 
     getRandomEnemyPlayerGroup: () => UnitGroupInstModel;
 
     historyLog: (plainMsg: string) => void;
+
+    createSpellInstance: <T>(spell: SpellModel<T>, options?: SpellCreationOptions<T>) => SpellInstance<T>;
+
+    addModifiersToUnitGroup: (target: UnitGroupInstModel, modifiers: Modifiers) => void;
 }

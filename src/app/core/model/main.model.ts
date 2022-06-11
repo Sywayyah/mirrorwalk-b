@@ -1,6 +1,6 @@
 import { AbilityModel } from "./abilities.types";
 import { ResourcesModel } from "./resources.types";
-import type { SpellModel } from "./spells/spell.types";
+import type { SpellInstance } from "./spells/spell.types";
 
 interface RequirementModel extends Partial<ResourcesModel> {
     /* heroLevel?: number;
@@ -90,7 +90,7 @@ export interface UnitGroupModel {
 export interface UnitGroupInstModel extends UnitGroupModel {
     ownerPlayerRef: PlayerInstanceModel;
 
-    spells: SpellModel[];
+    spells: SpellInstance[];
 }
 
 export enum PlayerTypeEnum {
@@ -116,12 +116,18 @@ export interface PlayerInstanceModel extends PlayerModel {
     id: string;
 }
 
+export interface HeroStatsModel {
+    maxMana: number;
+    currentMana: number;
+}
+
 /* Hero model */
 export interface HeroModel {
     name: string | null;
     experience: number;
     level: number;
     freeSkillpoints: number;
+    stats: HeroStatsModel;
     // abilities?: AbilityTypeModel[];
-    spells: SpellModel[];
+    spells: SpellInstance[];
 }

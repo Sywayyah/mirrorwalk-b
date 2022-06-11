@@ -9,9 +9,11 @@ import {
   DamageType,
   PostDamageInfo,
   SpellActivationType,
+  SpellCreationOptions,
   SpellEventHandlers,
   SpellEventsMapping,
   SpellEventTypes,
+  SpellInstance,
   SpellModel,
 } from 'src/app/core/model/spells';
 import { CommonUtils } from 'src/app/core/utils/common.utils';
@@ -20,6 +22,7 @@ import { MwBattleLogService } from './mw-battle-log.service';
 import { BattleStateService } from './mw-battle-state.service';
 import { MwCurrentPlayerStateService, PlayerState } from './mw-current-player-state.service';
 import { MwPlayersService } from './mw-players.service';
+import { MwSpellsService } from './mw-spells.service';
 import { MwUnitGroupStateService } from './mw-unit-group-state.service';
 import {
   BattleEventTypeEnum,
@@ -38,7 +41,7 @@ import { ActionHintTypeEnum, AttackActionHint, SpellTargetActionHint } from './t
 })
 export class CombatInteractorService {
 
-  private spellsHandlersMap: Map<SpellModel, SpellEventHandlers> = new Map();
+  private spellsHandlersMap: Map<SpellInstance, SpellEventHandlers> = new Map();
 
   constructor(
     private readonly battleState: BattleStateService,
@@ -47,6 +50,7 @@ export class CombatInteractorService {
     private readonly players: MwPlayersService,
     private readonly battleLog: MwBattleLogService,
     private readonly unitState: MwUnitGroupStateService,
+    private readonly spellsService: MwSpellsService,
   ) {
   }
 
@@ -104,8 +108,6 @@ export class CombatInteractorService {
       },
 
       [BattleEventTypeEnum.Player_Targets_Spell]: (event: PlayerTargetsSpell) => {
-        // const spellHandlers = this.spellsHandlersMap.get(event.spell);
-        // spellHandlers?.[SpellEventTypes.PlayerTargetsSpell]?.({ target: event.target });
         this.triggerEventForSpellHandler(event.spell, SpellEventTypes.PlayerTargetsSpell, { target: event.target });
         this.curPlayerState.playerCurrentState = PlayerState.Normal;
         this.curPlayerState.resetCurrentSpell();
@@ -124,7 +126,7 @@ export class CombatInteractorService {
 
       [BattleEventTypeEnum.On_Group_Dies]: (event) => {
         event.target.spells.forEach((spell) => {
-          if (spell.activationType === SpellActivationType.Debuff) {
+          if (spell.type.activationType === SpellActivationType.Debuff) {
             this.removeSpellFromUnitGroup(event.target, spell);
           }
         })
@@ -269,16 +271,15 @@ export class CombatInteractorService {
     this.battleState.hintMessage$.next(actionHint);
   }
 
-  private addSpellToUnitGroup(target: UnitGroupInstModel, spell: SpellModel, ownerPlayer: PlayerInstanceModel): SpellModel {
-    const newSpellRef = { ...spell };
-    target.spells.push(newSpellRef);
+  private addSpellToUnitGroup(target: UnitGroupInstModel, spell: SpellInstance, ownerPlayer: PlayerInstanceModel): void {
+    // const newSpellRef = this.spellsService.createSpell(spell);
+    target.spells.push(spell);
 
-    this.initSpell(newSpellRef, ownerPlayer);
-    this.triggerEventForSpellHandler(newSpellRef, SpellEventTypes.SpellPlacedOnUnitGroup, { target: target });
-    return newSpellRef;
+    this.initSpell(spell, ownerPlayer);
+    this.triggerEventForSpellHandler(spell, SpellEventTypes.SpellPlacedOnUnitGroup, { target: target });
   }
 
-  private removeSpellFromUnitGroup(target: UnitGroupInstModel, spell: SpellModel): void {
+  private removeSpellFromUnitGroup(target: UnitGroupInstModel, spell: SpellInstance): void {
     const spellIndex = target.spells.indexOf(spell);
     target.spells.splice(spellIndex, 1);
 
@@ -291,7 +292,7 @@ export class CombatInteractorService {
     });
   }
 
-  private triggerEventForSpellHandler<T extends keyof SpellEventHandlers>(spell: SpellModel, eventType: T, data: SpellEventsMapping[T]): void {
+  private triggerEventForSpellHandler<T extends keyof SpellEventHandlers>(spell: SpellInstance, eventType: T, data: SpellEventsMapping[T]): void {
     (this.spellsHandlersMap.get(spell)?.[eventType] as (arg: SpellEventsMapping[T]) => void)?.(data);
   }
 
@@ -301,18 +302,24 @@ export class CombatInteractorService {
     return CommonUtils.randItem(enemyUnitGroups);
   }
 
-  private initSpell(spell: SpellModel, player: PlayerInstanceModel): void {
-    spell.type.spellConfig.init({
+  private initSpell(spell: SpellInstance, player: PlayerInstanceModel): void {
+    spell.type.type.spellConfig.init({
       actions: {
         dealDamageTo: (target, damage, damageType, postActionFn) => {
           this.dealDamageTo(target, damage, damageType, postActionFn);
         },
+        createSpellInstance: <T>(spell: SpellModel<T>, options?: SpellCreationOptions<T>) => {
+          return this.spellsService.createSpellInstance(spell, options);
+        },
+        addModifiersToUnitGroup: (target, modifiers) => {
+          
+        },
         /* dark magic of types, just so it can work */
-        addSpellToUnitGroup: <T>(target: UnitGroupInstModel, spell: SpellModel<T>, ownerPlayer: PlayerInstanceModel) => {
-          return this.addSpellToUnitGroup(target, spell as SpellModel, ownerPlayer) as SpellModel<T>;
+        addSpellToUnitGroup: <T>(target: UnitGroupInstModel, spell: SpellInstance<T>, ownerPlayer: PlayerInstanceModel) => {
+          this.addSpellToUnitGroup(target, spell as SpellInstance, ownerPlayer);
         },
         removeSpellFromUnitGroup: (target, spell) => {
-          this.removeSpellFromUnitGroup(target, spell as SpellModel);
+          this.removeSpellFromUnitGroup(target, spell as SpellInstance);
         },
         getRandomEnemyPlayerGroup: () => {
           return this.getRandomEnemyUnitGroup();
@@ -328,8 +335,9 @@ export class CombatInteractorService {
           this.spellsHandlersMap.set(spell, { ...spellHandlers, ...handlers });
         },
       },
-      thisSpell: spell,
+      thisSpell: spell.type,
       ownerPlayer: player,
+      spellInstance: spell,
       ownerHero: player.hero,
     });
   }

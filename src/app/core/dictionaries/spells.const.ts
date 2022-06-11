@@ -37,14 +37,15 @@ export const POISON_CLOUD_SPELL_EFFECT: SpellModel<undefined | { debuffRoundsLef
             name: 'Poisoned'
         },
         spellConfig: {
-            init({ events, actions, thisSpell }) {
+            init({ events, actions, thisSpell, spellInstance }) {
                 events.on({
                     [SpellEventTypes.SpellPlacedOnUnitGroup]: ({ target }) => {
                         const debuffData = {
                             debuffRoundsLeft: 2,
                         };
 
-                        thisSpell.instanceData = debuffData;
+                        spellInstance.state = debuffData;
+
 
                         actions.historyLog(`${target.type.name} gets negative effect "${thisSpell.name}"`);
 
@@ -58,7 +59,7 @@ export const POISON_CLOUD_SPELL_EFFECT: SpellModel<undefined | { debuffRoundsLef
                                 debuffData.debuffRoundsLeft--;
 
                                 if (!debuffData.debuffRoundsLeft) {
-                                    actions.removeSpellFromUnitGroup(target, thisSpell);
+                                    actions.removeSpellFromUnitGroup(target, spellInstance);
                                 }
                             }
                         });
@@ -115,7 +116,10 @@ export const POISON_CLOUD_SPELL: SpellModel = {
                 events.on({
                     [SpellEventTypes.PlayerTargetsSpell]: event => {
                         actions.historyLog(`${ownerHero.name} applies "${thisSpell.name}" against ${event.target.type.name}`);
-                        actions.addSpellToUnitGroup(event.target, POISON_CLOUD_SPELL_EFFECT, ownerPlayer);
+
+                        const poisonDebuffInstance = actions.createSpellInstance(POISON_CLOUD_SPELL_EFFECT);
+
+                        actions.addSpellToUnitGroup(event.target, poisonDebuffInstance, ownerPlayer);
                     }
                 });
             }
@@ -137,16 +141,42 @@ export const BLINDNESS_SPELL: SpellModel = {
     }
 };
 
+
+export const ENCHANT_DEBUFF: SpellModel = {
+    name: 'Enchanted',
+    activationType: SpellActivationType.Debuff,
+    level: 1,
+    type: {
+        spellInfo: {
+            name: 'Enchanted',
+        },
+        spellConfig: {
+            init: ({events, actions, thisSpell}) => {
+
+                events.on({
+                    [SpellEventTypes.SpellPlacedOnUnitGroup]: (event) => {
+                        actions.addModifiersToUnitGroup(event.target, {
+                            amplifiedTakenMagicDamage: 0.05
+                        });
+                    }
+                })
+            }
+        }
+    },
+};
+
 export const ENCHANT_SPELL: SpellModel = {
     name: 'Enchant',
     level: 1,
-    activationType: SpellActivationType.Passive,
+    activationType: SpellActivationType.Target,
     type: {
         spellInfo: {
             name: 'enchant',
         },
         spellConfig: {
-            init: () => { },
+            init: () => {
+
+            },
         },
     },
 };

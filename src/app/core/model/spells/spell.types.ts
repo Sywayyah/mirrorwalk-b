@@ -23,7 +23,6 @@ export interface SpellModel<SpellStateType = DefaultSpellStateType> {
     description?: string;
     
     type: SpellTypeModel<SpellStateType>;
-    instanceData?: SpellStateType;
 }
 
 export interface SpellTypeModel<SpellStateType> {
@@ -39,10 +38,24 @@ export interface SpellCombatRefsModel<SpellStateType> {
     events: SpellCombatEventsRef;
     actions: SpellCombatActionsRef;
     thisSpell: SpellModel<SpellStateType>;
+    spellInstance: SpellInstance<SpellStateType>;
     ownerPlayer: PlayerInstanceModel;
     ownerHero: HeroModel;
 }
 
 export interface SpellConfig<SpellStateType> {
     init: (combatRefs: SpellCombatRefsModel<SpellStateType>) => void;
+}
+
+export interface SpellInstance<T = DefaultSpellStateType> {
+    name: string;
+    description: string;
+
+    state: T | null;
+    currentLevel: number;
+    currentManaCost: number;
+    // cooldown: number;
+
+
+    type: SpellModel<T>;
 }

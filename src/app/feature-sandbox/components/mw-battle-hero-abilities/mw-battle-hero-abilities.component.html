@@ -5,7 +5,7 @@
 <div class="abilities-list">
     <mw-hover-hint [hintBody]="hint" *ngFor="let spell of currentPlayer.hero.spells">
         <div class="ability" (click)="onAbilityClick(spell)"
-            [class.current-ability]="curPlayerState.currentSpell === spell && spell.activationType === activationTypes.Target">
+            [class.current-ability]="curPlayerState.currentSpell === spell && spell.type.activationType === activationTypes.Target">
             <div>
                 {{ spell.name }}
             </div>
@@ -15,7 +15,7 @@
             <div style="min-width: 170px; max-width: 200px;">
                 <div style="padding: 4px;">
                     <div style="font-size: 13px;">{{spell.name}}</div>
-                    <div style="font-size: 11px;">Level: {{spell.level}}</div>
+                    <div style="font-size: 11px;">Level: {{spell.currentLevel}}</div>
                 </div>
 
                 <div *ngIf="spell.description" style=" font-size: 10px; padding: 4px;">

@@ -15,7 +15,7 @@ export class MwPlayerInfoPanelComponent implements OnInit {
     private players: MwPlayersService,
   ) { }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
   }
 
 }

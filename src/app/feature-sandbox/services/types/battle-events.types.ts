@@ -1,5 +1,5 @@
 import { PlayerInstanceModel, PlayerModel, UnitGroupInstModel } from 'src/app/core/model/main.model';
-import { SpellModel } from 'src/app/core/model/spells';
+import { SpellInstance } from 'src/app/core/model/spells';
 import { NeutralCampStructure, StructureModel } from "src/app/core/model/structures.types";
 import { PopupModel } from './popup.types';
 
@@ -47,13 +47,13 @@ export interface BattleEventModel<T extends BattleEventTypeEnum = BattleEventTyp
 
 export interface PlayerTargetsSpell extends BattleEventModel<BattleEventTypeEnum.Player_Targets_Spell> {
   player: PlayerInstanceModel;
-  spell: SpellModel;
+  spell: SpellInstance;
   target: UnitGroupInstModel;
 }
 
 export interface PlayerCastsInstantSpell extends BattleEventModel<BattleEventTypeEnum.Player_Casts_Instant_Spell> {
   player: PlayerInstanceModel;
-  spell: SpellModel;
+  spell: SpellInstance;
 }
 
 export interface PlayerGainsLevel extends BattleEventModel<BattleEventTypeEnum.Player_Gains_Level> {}
