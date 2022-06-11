@@ -24,6 +24,9 @@ export const NULL_SPELL: SpellModel = {
       name: '',
     },
     spellConfig: {
+      getManaCost(spellInst) {
+        return 0;
+      },
       init: () => { },
     }
   }

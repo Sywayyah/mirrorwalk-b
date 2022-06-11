@@ -21,8 +21,21 @@ export interface SpellModel<SpellStateType = DefaultSpellStateType> {
     activationType: SpellActivationType;
 
     description?: string;
-    
+
     type: SpellTypeModel<SpellStateType>;
+}
+
+export interface SpellInstance<T = DefaultSpellStateType> {
+    name: string;
+    description: string;
+
+    state: T | null;
+    currentLevel: number;
+    currentManaCost: number;
+    // cooldown: number;
+
+
+    type: SpellModel<T>;
 }
 
 export interface SpellTypeModel<SpellStateType> {
@@ -45,17 +58,6 @@ export interface SpellCombatRefsModel<SpellStateType> {
 
 export interface SpellConfig<SpellStateType> {
     init: (combatRefs: SpellCombatRefsModel<SpellStateType>) => void;
+    getManaCost: (spellInst: SpellInstance<SpellStateType>) => number;
 }
 
-export interface SpellInstance<T = DefaultSpellStateType> {
-    name: string;
-    description: string;
-
-    state: T | null;
-    currentLevel: number;
-    currentManaCost: number;
-    // cooldown: number;
-
-
-    type: SpellModel<T>;
-}

@@ -24,6 +24,16 @@ export const RAIN_OF_FIRE_SPELL: SpellModel = {
                 });
 
             },
+            getManaCost: (spell) => {
+                const manaCosts: Record<number, number> = {
+                    1: 2,
+                    2: 2,
+                    3: 3,
+                    4: 3,
+                };
+
+                return manaCosts[spell.currentLevel];
+            },
         },
     }
 };
@@ -37,6 +47,9 @@ export const POISON_CLOUD_SPELL_EFFECT: SpellModel<undefined | { debuffRoundsLef
             name: 'Poisoned'
         },
         spellConfig: {
+            getManaCost(spellInst) {
+                return 0;
+            },
             init({ events, actions, thisSpell, spellInstance }) {
                 events.on({
                     [SpellEventTypes.SpellPlacedOnUnitGroup]: ({ target }) => {
@@ -83,6 +96,10 @@ export const METEOR_SPELL: SpellModel = {
             name: 'Meteor',
         },
         spellConfig: {
+            getManaCost(spellInst) {
+                return 0;
+            },
+
             init({ events, actions, thisSpell, ownerHero }) {
                 events.on({
                     [SpellEventTypes.PlayerCastsInstantSpell]: event => {
@@ -112,6 +129,10 @@ export const POISON_CLOUD_SPELL: SpellModel = {
             name: 'Poison Cloud',
         },
         spellConfig: {
+            getManaCost(spellInst) {
+                return 0;
+            },
+
             init({ events, actions, ownerPlayer, ownerHero, thisSpell }) {
                 events.on({
                     [SpellEventTypes.PlayerTargetsSpell]: event => {
@@ -136,6 +157,10 @@ export const BLINDNESS_SPELL: SpellModel = {
             name: 'blindness',
         },
         spellConfig: {
+            getManaCost(spellInst) {
+                return 0;
+            },
+
             init: () => { },
         },
     }
@@ -151,7 +176,11 @@ export const ENCHANT_DEBUFF: SpellModel = {
             name: 'Enchanted',
         },
         spellConfig: {
-            init: ({events, actions, thisSpell}) => {
+            getManaCost(spellInst) {
+                return 0;
+            },
+
+            init: ({ events, actions, thisSpell }) => {
 
                 events.on({
                     [SpellEventTypes.SpellPlacedOnUnitGroup]: (event) => {
@@ -174,6 +203,10 @@ export const ENCHANT_SPELL: SpellModel = {
             name: 'enchant',
         },
         spellConfig: {
+            getManaCost(spellInst) {
+                return 0;
+            },
+
             init: () => {
 
             },
