@@ -80,6 +80,10 @@ export class MwCurrentPlayerStateService {
     }
   }
 
+  public isSpellBeingCasted(): boolean {
+    return this.currentSpell !== NULL_SPELL_INSTANCE;
+  }
+
   public resetCurrentSpell(): void {
     this.currentSpell = NULL_SPELL_INSTANCE;
   }

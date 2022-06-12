@@ -22,6 +22,7 @@ import {
   HintsContainerComponent,
   HoverHintComponent,
 } from './feature-sandbox/components';
+import { MwSpellTargetDirective } from './feature-sandbox/directives/mw-spell-target.directive';
 
 @NgModule({
   declarations: [
@@ -45,6 +46,7 @@ import {
     MwPlayerInfoPanelComponent,
     HoverHintComponent,
     HintsContainerComponent,
+    MwSpellTargetDirective,
   ],
   imports: [
     BrowserModule

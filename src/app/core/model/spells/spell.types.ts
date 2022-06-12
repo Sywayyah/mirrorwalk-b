@@ -59,5 +59,11 @@ export interface SpellCombatRefsModel<SpellStateType> {
 export interface SpellConfig<SpellStateType> {
     init: (combatRefs: SpellCombatRefsModel<SpellStateType>) => void;
     getManaCost: (spellInst: SpellInstance<SpellStateType>) => number;
+    targetCastConfig?: {
+        canActivate?: (info: {
+            unitGroup: UnitGroupInstModel,
+            isEnemy: boolean,
+        }) => boolean,
+    };
 }
 

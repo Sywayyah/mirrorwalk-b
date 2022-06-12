@@ -4,6 +4,8 @@
       <mw-unit-group-card
           class="card"
           *ngFor="let unitGroup of mainPlayerUnitGroups"
+          mwSpellTarget
+          [spellTargetUnitGroup]="unitGroup"
           side="left"
           [playerInfo]="mainPlayerInfo"
           [unitGroup]="unitGroup"
@@ -17,6 +19,8 @@
       <mw-unit-group-card
           class="card"
           *ngFor="let unitGroup of neutralPlayerGroups"
+          mwSpellTarget
+          [spellTargetUnitGroup]="unitGroup"
           side="right"
           [playerInfo]="neutralPlayerInfo"
           [unitGroup]="unitGroup"

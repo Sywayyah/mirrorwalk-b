@@ -55,6 +55,7 @@ const defaultResources: ResourcesModel = {
   providedIn: 'root'
 })
 export class MwPlayersService {
+  
   public players: Map<string, PlayerInstanceModel> = new Map([
     this.createPlayerEntry(PLAYER_IDS.Main, {
       color: PLAYER_COLORS.BLUE,
@@ -118,6 +119,12 @@ export class MwPlayersService {
 
   public getCurrentPlayerId(): string {
     return this.currentPlayerId;
+  }
+
+  public isEnemyUnitGroup(unitGroup: UnitGroupInstModel): boolean {
+    console.log('123213');
+    console.log('1', this.getUnitGroupsOfPlayer(this.getEnemyPlayer().id), unitGroup);
+    return this.getUnitGroupsOfPlayer(this.getEnemyPlayer().id).includes(unitGroup);
   }
 
   public addExperienceToPlayer(playerId: string, experience: number): void {

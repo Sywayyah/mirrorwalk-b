@@ -3,3 +3,7 @@
 body {
     font-family: 'Segoe UI';
 }
+
+.cannot-target .card {
+    cursor: not-allowed !important;
+}
