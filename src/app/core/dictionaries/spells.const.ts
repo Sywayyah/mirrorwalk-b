@@ -219,7 +219,7 @@ export const ENCHANT_SPELL: SpellModel = {
     name: 'Enchant',
     level: 1,
     activationType: SpellActivationType.Target,
-    description: 'Enchants an enemy, increases incoming magic damage.',
+    description: 'Enchants an enemy, increases incoming magic damage by 12%.',
     type: {
         spellInfo: {
             name: 'Enchant',
