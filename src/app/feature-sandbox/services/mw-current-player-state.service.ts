@@ -88,6 +88,11 @@ export class MwCurrentPlayerStateService {
     this.currentSpell = NULL_SPELL_INSTANCE;
   }
 
+  public cancelCurrentSpell(): void {
+    this.resetCurrentSpell();
+    this.playerCurrentState = PlayerState.Normal;
+  }
+
   public onCurrentSpellCast(): void {
     this.players.addManaToPlayer(this.currentPlayer, -this.currentSpell.currentManaCost);
   }

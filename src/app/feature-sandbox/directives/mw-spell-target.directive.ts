@@ -17,9 +17,28 @@ export class MwSpellTargetDirective {
     private readonly renderer: Renderer2,
   ) { }
 
-  @HostListener('click')
-  public onClick(): void {
+  /* maybe create some other directive, which turns off default context menu */
+  @HostListener('contextmenu', ['$event'])
+  public onContextMenu(event: MouseEvent): boolean {
+    event.stopPropagation();
+    event.preventDefault();
+    return false;
+  }
 
+  @HostListener('mousedown', ['$event'])
+  public onMouseDown(event: MouseEvent): void {
+    if (event.button === 2) {
+      event.preventDefault();
+
+      this.curPlayerState.cancelCurrentSpell();
+    }
+  }
+
+  @HostListener('click', ['$event'])
+  public onClick(): void {
+    if (!this.canActivateCurrentSpell()) {
+      this.curPlayerState.cancelCurrentSpell();
+    }
   }
 
   @HostListener('mouseenter')
@@ -28,19 +47,8 @@ export class MwSpellTargetDirective {
       return;
     }
 
-    const spellConfig = this.curPlayerState.currentSpell.type.type.spellConfig;
-
-    const canActivateFn = spellConfig.targetCastConfig?.canActivate;
-
-    if (canActivateFn) {
-      const canActivate = canActivateFn({
-        unitGroup: this.spellTargetUnitGroup,
-        isEnemy: this.players.isEnemyUnitGroup(this.spellTargetUnitGroup),
-      });
-
-      if (!canActivate) {
-        this.renderer.addClass(this.elemRef.nativeElement, 'cannot-target');
-      }
+    if (!this.canActivateCurrentSpell()) {
+      this.renderer.addClass(this.elemRef.nativeElement, 'cannot-target');
     }
   }
 
@@ -53,4 +61,18 @@ export class MwSpellTargetDirective {
     this.renderer.removeClass(this.elemRef.nativeElement, 'cannot-target');
   }
 
+  private canActivateCurrentSpell(): boolean {
+    const spellConfig = this.curPlayerState.currentSpell.type.type.spellConfig;
+
+    const canActivateFn = spellConfig.targetCastConfig?.canActivate;
+
+    if (!canActivateFn) {
+      return true;
+    }
+
+    return canActivateFn({
+      unitGroup: this.spellTargetUnitGroup,
+      isEnemy: this.players.isEnemyUnitGroup(this.spellTargetUnitGroup),
+    });
+  }
 }

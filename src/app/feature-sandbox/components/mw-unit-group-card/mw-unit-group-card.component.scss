@@ -28,6 +28,7 @@
     color: white;
     border: 3px solid transparent;
     cursor: pointer;
+    user-select: none;
 }
 
 .card.current-group {
