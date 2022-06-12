@@ -18,8 +18,14 @@ export const RAIN_OF_FIRE_SPELL: SpellModel = {
                     [SpellEventTypes.PlayerTargetsSpell]: (event) => {
                         const damage = 65 * ownerHero.level;
 
-                        actions.historyLog(`${ownerHero.name} deals ${damage} damage to ${event.target.type.name} with ${thisSpell.name}`)
-                        actions.dealDamageTo(event.target, damage, DamageType.Magic);
+                        actions.dealDamageTo(
+                            event.target,
+                            damage,
+                            DamageType.Magic,
+                            (actionInfo) => {
+                                actions.historyLog(`${ownerHero.name} deals ${actionInfo.finalDamage} damage to ${event.target.type.name} with ${thisSpell.name}`)
+                            },
+                        );
                     }
                 });
 
@@ -115,8 +121,8 @@ export const METEOR_SPELL: SpellModel = {
                             randomEnemyGroup,
                             70,
                             DamageType.Magic,
-                            ({ unitLoss }) => {
-                                actions.historyLog(`${ownerHero.name} deals ${70} damage to ${randomEnemyGroup.count} ${randomEnemyGroup.type.name} with ${thisSpell.name}, ${unitLoss} units perish`);
+                            ({ unitLoss, finalDamage }) => {
+                                actions.historyLog(`${ownerHero.name} deals ${finalDamage} damage to ${randomEnemyGroup.count} ${randomEnemyGroup.type.name} with ${thisSpell.name}, ${unitLoss} units perish`);
 
                             });
                     }
@@ -137,7 +143,14 @@ export const POISON_CLOUD_SPELL: SpellModel = {
         },
         spellConfig: {
             getManaCost(spellInst) {
-                return 0;
+                const manaCosts: Record<number, number> = {
+                    1: 2,
+                    2: 2,
+                    3: 3,
+                    4: 3,
+                };
+
+                return manaCosts[spellInst.currentLevel];
             },
 
             init({ events, actions, ownerPlayer, ownerHero, thisSpell }) {
@@ -187,14 +200,15 @@ export const ENCHANT_DEBUFF: SpellModel = {
                 return 0;
             },
 
-            init: ({ events, actions, thisSpell }) => {
+            init: ({ events, actions }) => {
+                const mods = actions.createModifiers({
+                    amplifiedTakenMagicDamage: 0.12
+                });
 
                 events.on({
                     [SpellEventTypes.SpellPlacedOnUnitGroup]: (event) => {
-                        actions.addModifiersToUnitGroup(event.target, {
-                            amplifiedTakenMagicDamage: 0.05
-                        });
-                    }
+                        actions.addModifiersToUnitGroup(event.target, mods);
+                    },
                 })
             }
         }
@@ -205,17 +219,31 @@ export const ENCHANT_SPELL: SpellModel = {
     name: 'Enchant',
     level: 1,
     activationType: SpellActivationType.Target,
+    description: 'Enchants an enemy, increases incoming magic damage.',
     type: {
         spellInfo: {
-            name: 'enchant',
+            name: 'Enchant',
         },
         spellConfig: {
             getManaCost(spellInst) {
-                return 0;
+                const manaCosts: Record<number, number> = {
+                    1: 2,
+                    2: 2,
+                    3: 3,
+                    4: 3,
+                };
+
+                return manaCosts[spellInst.currentLevel];
             },
 
-            init: () => {
-
+            init: ({ events, actions, ownerPlayer }) => {
+                events.on({
+                    [SpellEventTypes.PlayerTargetsSpell]: (event) => {
+                        const enchantDebuff = actions.createSpellInstance(ENCHANT_DEBUFF);
+                        actions.addSpellToUnitGroup(event.target, enchantDebuff, ownerPlayer);
+                        actions.historyLog('Enemy is enchanted');
+                    },
+                });
             },
         },
     },

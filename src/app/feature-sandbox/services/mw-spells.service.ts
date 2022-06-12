@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { SpellCreationOptions, SpellInstance, SpellModel } from 'src/app/core/model/spells';
+import { Modifiers } from 'src/app/core/model/spells/modifiers';
 
 
 
@@ -25,5 +26,9 @@ export class MwSpellsService {
     spellInstance.currentManaCost = spell.type.spellConfig.getManaCost(spellInstance);
 
     return spellInstance;
+  }
+
+  public createModifiers(modifiers: Modifiers): Modifiers {
+    return modifiers;
   }
 }

@@ -71,5 +71,7 @@ export interface SpellCombatActionsRef {
 
     createSpellInstance: <T>(spell: SpellModel<T>, options?: SpellCreationOptions<T>) => SpellInstance<T>;
 
+    createModifiers: (modifiers: Modifiers) => Modifiers;
+
     addModifiersToUnitGroup: (target: UnitGroupInstModel, modifiers: Modifiers) => void;
 }

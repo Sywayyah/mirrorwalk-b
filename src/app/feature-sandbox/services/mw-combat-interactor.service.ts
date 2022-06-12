@@ -16,6 +16,7 @@ import {
   SpellInstance,
   SpellModel,
 } from 'src/app/core/model/spells';
+import { Modifiers } from 'src/app/core/model/spells/modifiers';
 import { CommonUtils } from 'src/app/core/utils/common.utils';
 import { BattleEventsService } from './mw-battle-events.service';
 import { MwBattleLogService } from './mw-battle-log.service';
@@ -42,6 +43,7 @@ import { ActionHintTypeEnum, AttackActionHint, SpellTargetActionHint } from './t
 export class CombatInteractorService {
 
   private spellsHandlersMap: Map<SpellInstance, SpellEventHandlers> = new Map();
+  private unitGroupModifiersMap: Map<UnitGroupInstModel, Modifiers[]> = new Map();
 
   constructor(
     private readonly battleState: BattleStateService,
@@ -125,11 +127,19 @@ export class CombatInteractorService {
       },
 
       [BattleEventTypeEnum.On_Group_Dies]: (event) => {
-        event.target.spells.forEach((spell) => {
+        const target = event.target;
+
+        target.spells.forEach((spell) => {
           if (spell.type.activationType === SpellActivationType.Debuff) {
             this.removeSpellFromUnitGroup(event.target, spell);
           }
-        })
+        });
+
+        const targetMods = this.unitGroupModifiersMap.get(target);
+        
+        if (targetMods) {
+          targetMods.length = 0;
+        }
       }
     }).pipe(
       takeUntil(this.battleEvents.onEvent(BattleEventTypeEnum.Fight_Ends)),
@@ -147,7 +157,19 @@ export class CombatInteractorService {
 
     switch (type) {
       case DamageType.Magic:
-        finalDamage = damage;
+        const targetGroupModifiers = this.unitGroupModifiersMap.get(target);
+
+        if (targetGroupModifiers) {
+          const amplifiedMagicDamageMods = targetGroupModifiers
+            .filter(mods => mods.amplifiedTakenMagicDamage);
+
+          amplifiedMagicDamageMods.forEach(mod => {
+            finalDamage += damage * (mod.amplifiedTakenMagicDamage as number);
+          });
+
+          finalDamage = Math.round(finalDamage);
+        }
+
         break;
       default:
         finalDamage = damage;
@@ -312,7 +334,16 @@ export class CombatInteractorService {
           return this.spellsService.createSpellInstance(spell, options);
         },
         addModifiersToUnitGroup: (target, modifiers) => {
-          
+          const groupModifiers = this.unitGroupModifiersMap.get(target);
+
+          if (groupModifiers) {
+            groupModifiers.push(modifiers);
+          } else {
+            this.unitGroupModifiersMap.set(target, [modifiers]);
+          }
+        },
+        createModifiers: (modifiers) => {
+          return this.spellsService.createModifiers(modifiers);
         },
         /* dark magic of types, just so it can work */
         addSpellToUnitGroup: <T>(target: UnitGroupInstModel, spell: SpellInstance<T>, ownerPlayer: PlayerInstanceModel) => {
