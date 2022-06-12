@@ -14,10 +14,10 @@ export const METEOR_SPELL: SpellModel = {
         spellConfig: {
             getManaCost: (spell) => {
                 const manaCosts: Record<number, number> = {
-                    1: 4,
-                    2: 4,
-                    3: 5,
-                    4: 5,
+                    1: 7,
+                    2: 8,
+                    3: 9,
+                    4: 10,
                 };
 
                 return manaCosts[spell.currentLevel];
@@ -29,15 +29,15 @@ export const METEOR_SPELL: SpellModel = {
                         const randomEnemyGroup = actions.getRandomEnemyPlayerGroup();
                         actions.dealDamageTo(
                             randomEnemyGroup,
-                            70,
+                            160,
                             DamageType.Magic,
                             ({ unitLoss, finalDamage }) => {
                                 actions.historyLog(`${ownerHero.name} deals ${finalDamage} damage to ${randomEnemyGroup.count} ${randomEnemyGroup.type.name} with ${thisSpell.name}, ${unitLoss} units perish`);
 
                             });
-                    }
-                })
-            }
+                    },
+                });
+            },
         }
     }
 }
