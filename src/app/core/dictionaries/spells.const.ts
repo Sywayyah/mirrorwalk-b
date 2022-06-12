@@ -202,7 +202,7 @@ export const ENCHANT_DEBUFF: SpellModel = {
 
             init: ({ events, actions }) => {
                 const mods = actions.createModifiers({
-                    amplifiedTakenMagicDamage: 0.12
+                    amplifiedTakenMagicDamage: 0.5
                 });
 
                 events.on({
@@ -219,7 +219,7 @@ export const ENCHANT_SPELL: SpellModel = {
     name: 'Enchant',
     level: 1,
     activationType: SpellActivationType.Target,
-    description: 'Enchants an enemy, increases incoming magic damage by 12%.',
+    description: 'Enchants an enemy, increases incoming magic damage by 50%.',
     type: {
         spellInfo: {
             name: 'Enchant',
