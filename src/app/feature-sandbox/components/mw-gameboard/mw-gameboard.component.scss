@@ -80,21 +80,6 @@
 
 .items-panel {
   position: absolute;
-  left: 0;
-  bottom: 0;
-}
-
-.items-container {
-  display: flex;
-  width: 120px;
-  font-size: 12px;
-}
-
-.player-item {
-  width: 64px;
-  height: 32px;
-  padding: 6px 0;
-  box-sizing: border-box;
-  border: 1px solid gray;
-  border-radius: 6px;
+  left: 16px;
+  bottom: 32px;
 }

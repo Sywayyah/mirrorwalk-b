@@ -20,4 +20,15 @@
         <div>Mana:</div>
         <div>{{currentPlayer.hero.stats.currentMana}}/{{currentPlayer.hero.stats.maxMana}}</div>
     </div>
+    
+    <div class="resource-info-row">
+        <div>Attack:</div>
+        <div>
+            {{currentPlayer.hero.stats.baseAttack}}
+            <span *ngIf="currentPlayer.hero.stats.bonusAttack">
+                <!-- pipe for pos/neg values, or directive with ::before -->
+                (+{{currentPlayer.hero.stats.bonusAttack}})
+            </span>
+        </div>
+    </div>
 </div>

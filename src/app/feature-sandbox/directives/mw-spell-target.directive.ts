@@ -87,7 +87,7 @@ export class MwSpellTargetDirective implements OnInit {
   }
 
   private canActivateCurrentSpell(): boolean {
-    const spellConfig = this.curPlayerState.currentSpell.type.type.spellConfig;
+    const spellConfig = this.curPlayerState.currentSpell.baseType.type.spellConfig;
 
     const canActivateFn = spellConfig.targetCastConfig?.canActivate;
 

@@ -5,6 +5,7 @@ import {
   BattleEventTypeEnum,
   BattleStateService as MwBattleStateService,
   MwNeutralPlayerService,
+  MwPlayersService,
   MwPlayerStateService
 } from '../../services';
 import { MwCardsMappingService } from '../../services/mw-cards-mapping.service';
@@ -24,6 +25,7 @@ export class MwGameboardComponent implements OnInit {
   public neutralPlayerInfo!: PlayerInstanceModel;
 
   public fightQueue!: UnitGroupInstModel[];
+
 
   constructor(
     public readonly mwPlayerState: MwPlayerStateService,

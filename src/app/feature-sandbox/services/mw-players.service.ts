@@ -6,10 +6,12 @@ import { BLINDNESS_SPELL, ENCHANT_SPELL, METEOR_SPELL, POISON_CLOUD_SPELL, RAIN_
 import { HF_TYPES_ENUM, HUMANS_FRACTION_UNIT_TYPES } from 'src/app/core/dictionaries/unit-types/unit-types.dictionary';
 import { PlayerInstanceModel, PlayerModel, PlayerTypeEnum, UnitGroupInstModel, UnitGroupModel } from 'src/app/core/model/main.model';
 import { ResourcesModel } from 'src/app/core/model/resources.types';
-import { RandomUtils } from 'src/app/core/utils/common.utils';
+import { CommonUtils, RandomUtils } from 'src/app/core/utils/common.utils';
 import { BattleEventsService } from './mw-battle-events.service';
 import { BattleEventTypeEnum } from './types';
 import { MwSpellsService } from './mw-spells.service';
+import { ItemInstanceModel } from 'src/app/core/model/items/items.types';
+import { MwItemsService } from './mw-items-service.service';
 
 
 const mainPlayerGroups = RandomUtils.createRandomArmy({
@@ -73,6 +75,8 @@ export class MwPlayersService {
         stats: {
           maxMana: 25,
           currentMana: 15,
+          baseAttack: 1,
+          bonusAttack: 0,
         },
         freeSkillpoints: 0,
         spells: [
@@ -82,6 +86,8 @@ export class MwPlayersService {
           this.spellsService.createSpellInstance(ENCHANT_SPELL),
           this.spellsService.createSpellInstance(BLINDNESS_SPELL),
         ],
+        mods: [],
+        items: [],
       },
       unitGroups: mainPlayerGroups,
     }),
@@ -95,9 +101,13 @@ export class MwPlayersService {
         stats: {
           maxMana: 5,
           currentMana: 1,
+          baseAttack: 0,
+          bonusAttack: 0,
         },
         freeSkillpoints: 0,
         spells: [],
+        mods: [],
+        items: [],
       },
       unitGroups: neutralGroups,
       resources: {
@@ -111,6 +121,7 @@ export class MwPlayersService {
   constructor(
     private readonly events: BattleEventsService,
     private readonly spellsService: MwSpellsService,
+    private readonly itemsService: MwItemsService,
   ) { }
 
   public getCurrentPlayer(): PlayerInstanceModel {
@@ -122,8 +133,6 @@ export class MwPlayersService {
   }
 
   public isEnemyUnitGroup(unitGroup: UnitGroupInstModel): boolean {
-    console.log('123213');
-    console.log('1', this.getUnitGroupsOfPlayer(this.getEnemyPlayer().id), unitGroup);
     return this.getUnitGroupsOfPlayer(this.getEnemyPlayer().id).includes(unitGroup);
   }
 
@@ -174,6 +183,23 @@ export class MwPlayersService {
 
   public addManaToPlayer(player: PlayerInstanceModel, mana: number): void {
     player.hero.stats.currentMana += mana;
+  }
+
+  public addItemToPlayer(player: PlayerInstanceModel, item: ItemInstanceModel): void {
+    player.hero.items.push(item);
+    player.hero.mods.push(item.baseType.staticMods);
+    if (item.baseType.staticMods.playerBonusAttack) {
+      player.hero.stats.bonusAttack += item.baseType.staticMods.playerBonusAttack;
+    }
+    this.itemsService.registerItemsEventHandlers(item, player);
+  }
+
+  public removeItemFromPlayer(player: PlayerInstanceModel, item: ItemInstanceModel): void {
+    CommonUtils.removeItem(player.hero.items, item);
+    CommonUtils.removeItem(player.hero.mods, item.baseType.staticMods);
+    if (item.baseType.staticMods.playerBonusAttack) {
+      player.hero.stats.bonusAttack -= item.baseType.staticMods.playerBonusAttack;
+    }
   }
 
   private createPlayer(id: string, playerInfo: PlayerModel): PlayerInstanceModel {

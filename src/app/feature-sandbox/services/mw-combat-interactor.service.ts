@@ -6,17 +6,14 @@ import {
   UnitGroupModel,
 } from 'src/app/core/model/main.model';
 import {
-  DamageType,
-  PostDamageInfo,
   SpellActivationType,
-  SpellCreationOptions,
   SpellEventHandlers,
   SpellEventsMapping,
   SpellEventTypes,
   SpellInstance,
   SpellModel,
 } from 'src/app/core/model/spells';
-import { Modifiers } from 'src/app/core/model/spells/modifiers';
+import { Modifiers } from 'src/app/core/model/modifiers';
 import { CommonUtils } from 'src/app/core/utils/common.utils';
 import { BattleEventsService } from './mw-battle-events.service';
 import { MwBattleLogService } from './mw-battle-log.service';
@@ -35,6 +32,9 @@ import {
   UIPlayerHoversCard,
 } from './types';
 import { ActionHintTypeEnum, AttackActionHint, SpellTargetActionHint } from './types/action-hint.types';
+import { CombatActionsRef, DamageType, PostDamageInfo, SpellCreationOptions } from 'src/app/core/model/combat-api/combat-api.types';
+// import { MwItemsService } from './mw-items-service.service';
+// import { GameEventTypes } from 'src/app/core/model/items/items.types';
 
 
 @Injectable({
@@ -123,20 +123,31 @@ export class CombatInteractorService {
       },
 
       [BattleEventTypeEnum.Fight_Next_Round_Starts]: (event) => {
-        this.triggerEventForAllSpellsHandler(SpellEventTypes.NewRoundBegins, { round: event.round });
+        this.triggerEventForAllSpellsHandler(
+          SpellEventTypes.NewRoundBegins,
+          {
+            round: event.round,
+          },
+        );
+        // this.itemsService.triggerEventForAllItemsHandlers(
+        //   GameEventTypes.NewRoundBegins,
+        //   {
+        //     round: event.round,
+        //   }
+        // );
       },
 
       [BattleEventTypeEnum.On_Group_Dies]: (event) => {
         const target = event.target;
 
         target.spells.forEach((spell) => {
-          if (spell.type.activationType === SpellActivationType.Debuff) {
+          if (spell.baseType.activationType === SpellActivationType.Debuff) {
             this.removeSpellFromUnitGroup(event.target, spell);
           }
         });
 
         const targetMods = this.unitGroupModifiersMap.get(target);
-        
+
         if (targetMods) {
           targetMods.length = 0;
         }
@@ -217,7 +228,11 @@ export class CombatInteractorService {
     const attacker = !isCounterattack ? attackingGroup : attackedGroup;
     const attacked = !isCounterattack ? attackedGroup : attackingGroup;
 
-    const attackDetails = this.unitState.getDetailedAttackInfo(attacker, attacked);
+    const attackDetails = this.unitState.getDetailedAttackInfo(
+      attacker,
+      attacked,
+      this.getModsForUnitGroup(attacker),
+    );
 
     const damageInfo = this.unitState.getFinalDamageInfoFromDamageDetailedInfo(attackDetails);
 
@@ -274,7 +289,10 @@ export class CombatInteractorService {
   }
 
   public setDamageHintMessageOnCardHover(event: UIPlayerHoversCard): void {
-    const attackDetails = this.unitState.getDetailedAttackInfo(this.battleState.currentUnitGroup, event.hoveredCard as UnitGroupModel);
+    const attackDetails = this.unitState.getDetailedAttackInfo(
+      this.battleState.currentUnitGroup, event.hoveredCard as UnitGroupModel,
+      this.getModsForUnitGroup(this.battleState.currentUnitGroup),
+    );
 
     const actionHint: AttackActionHint = {
       type: ActionHintTypeEnum.OnHoverEnemyCard,
@@ -291,6 +309,58 @@ export class CombatInteractorService {
     };
 
     this.battleState.hintMessage$.next(actionHint);
+  }
+
+  public createActionsApiRef(): CombatActionsRef {
+    return {
+      dealDamageTo: (target, damage, damageType, postActionFn) => {
+        this.dealDamageTo(target, damage, damageType, postActionFn);
+      },
+      createSpellInstance: <T>(spell: SpellModel<T>, options?: SpellCreationOptions<T>) => {
+        return this.spellsService.createSpellInstance(spell, options);
+      },
+      addModifiersToUnitGroup: (target, modifiers) => {
+        const groupModifiers = this.unitGroupModifiersMap.get(target);
+
+        if (groupModifiers) {
+          groupModifiers.push(modifiers);
+        } else {
+          this.unitGroupModifiersMap.set(target, [modifiers]);
+        }
+      },
+      createModifiers: (modifiers) => {
+        return this.spellsService.createModifiers(modifiers);
+      },
+      removeModifiresFromUnitGroup: (target, modifiers) => {
+        const unitGroupMods = this.unitGroupModifiersMap.get(target);
+        if (unitGroupMods) {
+          CommonUtils.removeItem(unitGroupMods, modifiers);
+        }
+      },
+      /* dark magic of types, just so it can work */
+      addSpellToUnitGroup: <T>(target: UnitGroupInstModel, spell: SpellInstance<T>, ownerPlayer: PlayerInstanceModel) => {
+        this.addSpellToUnitGroup(target, spell as SpellInstance, ownerPlayer);
+      },
+      removeSpellFromUnitGroup: (target, spell) => {
+        this.removeSpellFromUnitGroup(target, spell as SpellInstance);
+      },
+      getUnitGroupsOfPlayer: (player) => {
+        return this.battleState.heroesUnitGroupsMap.get(player) as UnitGroupInstModel[];
+      },
+      getRandomEnemyPlayerGroup: () => {
+        return this.getRandomEnemyUnitGroup();
+      },
+      historyLog: (plainMsg) => {
+        this.battleLog.logSimpleMessage(plainMsg);
+      }
+    };
+  }
+
+  private getModsForUnitGroup(unitGroup: UnitGroupInstModel): Modifiers[] {
+    return [
+      ...unitGroup.ownerPlayerRef.hero.mods,
+      ...this.unitGroupModifiersMap.get(unitGroup) ?? [],
+    ];
   }
 
   private addSpellToUnitGroup(target: UnitGroupInstModel, spell: SpellInstance, ownerPlayer: PlayerInstanceModel): void {
@@ -325,40 +395,8 @@ export class CombatInteractorService {
   }
 
   private initSpell(spell: SpellInstance, player: PlayerInstanceModel): void {
-    spell.type.type.spellConfig.init({
-      actions: {
-        dealDamageTo: (target, damage, damageType, postActionFn) => {
-          this.dealDamageTo(target, damage, damageType, postActionFn);
-        },
-        createSpellInstance: <T>(spell: SpellModel<T>, options?: SpellCreationOptions<T>) => {
-          return this.spellsService.createSpellInstance(spell, options);
-        },
-        addModifiersToUnitGroup: (target, modifiers) => {
-          const groupModifiers = this.unitGroupModifiersMap.get(target);
-
-          if (groupModifiers) {
-            groupModifiers.push(modifiers);
-          } else {
-            this.unitGroupModifiersMap.set(target, [modifiers]);
-          }
-        },
-        createModifiers: (modifiers) => {
-          return this.spellsService.createModifiers(modifiers);
-        },
-        /* dark magic of types, just so it can work */
-        addSpellToUnitGroup: <T>(target: UnitGroupInstModel, spell: SpellInstance<T>, ownerPlayer: PlayerInstanceModel) => {
-          this.addSpellToUnitGroup(target, spell as SpellInstance, ownerPlayer);
-        },
-        removeSpellFromUnitGroup: (target, spell) => {
-          this.removeSpellFromUnitGroup(target, spell as SpellInstance);
-        },
-        getRandomEnemyPlayerGroup: () => {
-          return this.getRandomEnemyUnitGroup();
-        },
-        historyLog: (plainMsg) => {
-          this.battleLog.logSimpleMessage(plainMsg);
-        }
-      },
+    spell.baseType.type.spellConfig.init({
+      actions: this.createActionsApiRef(),
       events: {
         on: (handlers: SpellEventHandlers) => {
           const spellHandlers = this.spellsHandlersMap.get(spell) ?? {};
@@ -366,7 +404,7 @@ export class CombatInteractorService {
           this.spellsHandlersMap.set(spell, { ...spellHandlers, ...handlers });
         },
       },
-      thisSpell: spell.type,
+      thisSpell: spell.baseType,
       ownerPlayer: player,
       spellInstance: spell,
       ownerHero: player.hero,

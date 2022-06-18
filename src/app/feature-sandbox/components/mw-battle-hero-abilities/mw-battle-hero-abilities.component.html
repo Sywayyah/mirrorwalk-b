@@ -6,7 +6,7 @@
     <mw-hover-hint [hintBody]="hint" *ngFor="let spell of currentPlayer.hero.spells">
         <div class="ability" (click)="onAbilityClick(spell)"
             [class.no-mana]="currentPlayer.hero.stats.currentMana < spell.currentManaCost"
-            [class.current-ability]="curPlayerState.currentSpell === spell && spell.type.activationType === activationTypes.Target">
+            [class.current-ability]="curPlayerState.currentSpell === spell && spell.baseType.activationType === activationTypes.Target">
             <div>
                 {{ spell.name }}
             </div>

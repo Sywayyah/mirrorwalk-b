@@ -1,5 +1,6 @@
+import { CombatActionsRef } from "../combat-api/combat-api.types";
 import type { HeroModel, PlayerInstanceModel, UnitGroupInstModel } from "../main.model";
-import type { SpellCombatActionsRef, SpellEventHandlers } from "./spell-events";
+import type { SpellEventHandlers } from "./spell-events";
 
 export enum SpellActivationType {
     Target = 'target',
@@ -9,6 +10,7 @@ export enum SpellActivationType {
     //  special type of ability, can be added to the unit group for some
     // continuous effect. When unit group dies, debuff gets removed and unregistered. 
     Debuff = 'debuff',
+    Buff = 'buff',
 }
 
 /* Spell model */
@@ -35,7 +37,7 @@ export interface SpellInstance<T = DefaultSpellStateType> {
     // cooldown: number;
 
 
-    type: SpellModel<T>;
+    baseType: SpellModel<T>;
 }
 
 export interface SpellTypeModel<SpellStateType> {
@@ -49,7 +51,7 @@ export interface SpellCombatEventsRef {
 
 export interface SpellCombatRefsModel<SpellStateType> {
     events: SpellCombatEventsRef;
-    actions: SpellCombatActionsRef;
+    actions: CombatActionsRef;
     thisSpell: SpellModel<SpellStateType>;
     spellInstance: SpellInstance<SpellStateType>;
     ownerPlayer: PlayerInstanceModel;

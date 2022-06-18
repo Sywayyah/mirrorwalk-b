@@ -1,4 +1,5 @@
-import { DamageType, SpellActivationType, SpellEventTypes, SpellModel } from "../../model/spells";
+import { DamageType } from "../../model/combat-api/combat-api.types";
+import { SpellActivationType, SpellEventTypes, SpellModel } from "../../model/spells";
 
 export const METEOR_SPELL: SpellModel = {
     activationType: SpellActivationType.Instant,

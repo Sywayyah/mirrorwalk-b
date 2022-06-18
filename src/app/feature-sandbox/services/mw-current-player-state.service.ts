@@ -38,7 +38,7 @@ const NULL_SPELL_INSTANCE: SpellInstance = {
   description: '',
   name: '',
   state: null,
-  type: NULL_SPELL,
+  baseType: NULL_SPELL,
 }
 
 @Injectable({
@@ -60,7 +60,7 @@ export class MwCurrentPlayerStateService {
   public onSpellClick(spell: SpellInstance): void {
     this.currentSpell = spell;
 
-    switch (spell.type.activationType) {
+    switch (spell.baseType.activationType) {
       case 'instant':
         this.onCurrentSpellCast();
 

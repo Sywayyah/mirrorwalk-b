@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { BaseAbilitiesTable } from 'src/app/core/dictionaries/abilities.const';
 import { AbilityTypesEnum } from 'src/app/core/model/abilities.types';
 import { UnitGroupModel } from 'src/app/core/model/main.model';
+import { Modifiers } from 'src/app/core/model/modifiers';
 import { CommonUtils } from 'src/app/core/utils/common.utils';
 
 export interface DamageInfo {
@@ -78,14 +79,22 @@ export class MwUnitGroupStateService {
     };
   }
 
-  public getDetailedAttackInfo(attackingGroup: UnitGroupModel, attackedGroup: UnitGroupModel): DetailedDamageInfo {
+  public getDetailedAttackInfo(attackingGroup: UnitGroupModel, attackedGroup: UnitGroupModel, mods: Modifiers[] = []): DetailedDamageInfo {
     const attackerUnitType = attackingGroup.type;
     const attackedUnitType = attackedGroup.type;
 
     const attackerBaseStats = attackerUnitType.baseStats;
     const attackedBaseStats = attackedUnitType.baseStats;
 
-    const attackSupperiority = attackerBaseStats.attackRating - attackedBaseStats.defence;
+    const attackBonus = mods
+      // .filter(mod => mod.playerBonusAttack)
+      .reduce((bonusAttack, nextMod) => bonusAttack +
+        (nextMod.playerBonusAttack ?? 0) +
+        (nextMod.unitGroupBonusAttack ?? 0),
+        0
+      );
+
+    const attackSupperiority = (attackerBaseStats.attackRating + attackBonus) - attackedBaseStats.defence;
 
     const damageInfo = this.getUnitGroupDamage(attackingGroup, attackSupperiority);
 
@@ -122,7 +131,7 @@ export class MwUnitGroupStateService {
     /* second line of this calc is to deal damage when tail hp is less than damage */
     /*  need to think this logic through */
     const unitLoss = Math.floor(damage / attackedGroup.type.baseStats.health);
-      // + ((attackedGroup.tailUnitHp && (attackedGroup.tailUnitHp <= damage)) ? 1 : 0);
+    // + ((attackedGroup.tailUnitHp && (attackedGroup.tailUnitHp <= damage)) ? 1 : 0);
 
     console.log(`final damage to ${attackedGroup.type.name}, 
           current tail: ${attackedGroup.tailUnitHp}

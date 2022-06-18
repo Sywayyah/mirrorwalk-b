@@ -27,6 +27,11 @@ export const CommonUtils = {
         return Math.round(to * Math.random());
     },
 
+    removeItem<T>(arr: T[], item: T): void {
+        const itemIndex = arr.indexOf(item);
+        arr.splice(itemIndex, 1);
+    }
+
 };
 
 export const RandomUtils = {

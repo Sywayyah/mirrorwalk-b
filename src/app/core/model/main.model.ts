@@ -1,4 +1,6 @@
 import { AbilityModel } from "./abilities.types";
+import { ItemInstanceModel } from "./items/items.types";
+import { Modifiers } from "./modifiers";
 import { ResourcesModel } from "./resources.types";
 import type { SpellInstance } from "./spells/spell.types";
 
@@ -54,6 +56,8 @@ export interface UnitTypeModel {
         gold: number;
         experience: number;
     };
+
+    defaultMods?: Modifiers;
 
     /* create a separate mapping, table UnitGroup->Abilities */
     /*  Associative tables.. can be useful. Don't need to overgrow the model */
@@ -119,6 +123,9 @@ export interface PlayerInstanceModel extends PlayerModel {
 export interface HeroStatsModel {
     maxMana: number;
     currentMana: number;
+    /* these ones can be just for UI, but mods will be used in calcs */
+    baseAttack: number;
+    bonusAttack: number;
 }
 
 /* Hero model */
@@ -130,4 +137,6 @@ export interface HeroModel {
     stats: HeroStatsModel;
     // abilities?: AbilityTypeModel[];
     spells: SpellInstance[];
+    mods: Modifiers[];
+    items: ItemInstanceModel[];
 }

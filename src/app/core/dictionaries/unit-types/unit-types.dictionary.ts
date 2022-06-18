@@ -54,6 +54,11 @@ export const HUMANS_FRACTION_UNIT_TYPES: Record<HF_TYPES_ENUM, UnitTypeModel> = 
             health: 8,
             speed: 21,
         },
+        
+        defaultMods: {
+            isRanged: true,
+        },
+
         minQuantityPerStack: 12,
         defaultTurnsPerRound: 2,
 

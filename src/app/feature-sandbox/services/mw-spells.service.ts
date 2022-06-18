@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { SpellCreationOptions, SpellInstance, SpellModel } from 'src/app/core/model/spells';
-import { Modifiers } from 'src/app/core/model/spells/modifiers';
+import { SpellInstance, SpellModel } from 'src/app/core/model/spells';
+import { Modifiers } from 'src/app/core/model/modifiers';
+import { SpellCreationOptions } from 'src/app/core/model/combat-api/combat-api.types';
 
 
 
@@ -19,7 +20,7 @@ export class MwSpellsService {
       currentManaCost: 0,
       description: spell.description ?? '',
       name: spell.type.spellInfo.name,
-      type: spell,
+      baseType: spell,
       state: options.state ?? null,
     };
 

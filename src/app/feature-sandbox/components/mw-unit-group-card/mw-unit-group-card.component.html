@@ -10,6 +10,7 @@
                 <div>Turns: {{unitGroup.turnsLeft}}</div>
             </div>
             <div>Speed: {{ unitGroup.type.baseStats.speed }}</div>
+            <!-- this info will have to be updated -->
             <div>Health: {{ unitGroup.type.baseStats.health * (unitGroup.count - 1) + (unitGroup.tailUnitHp ?? 0) }}</div>
             <div>Damage: {{ unitGroup.type.baseStats.damageInfo.maxDamage * unitGroup.count }}</div>
         </div>

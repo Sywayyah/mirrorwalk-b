@@ -23,6 +23,7 @@ import {
   HoverHintComponent,
 } from './feature-sandbox/components';
 import { MwSpellTargetDirective } from './feature-sandbox/directives/mw-spell-target.directive';
+import { MwItemsPanelComponent } from './feature-sandbox/components/mw-items-panel/mw-items-panel.component';
 
 @NgModule({
   declarations: [
@@ -47,6 +48,7 @@ import { MwSpellTargetDirective } from './feature-sandbox/directives/mw-spell-ta
     HoverHintComponent,
     HintsContainerComponent,
     MwSpellTargetDirective,
+    MwItemsPanelComponent,
   ],
   imports: [
     BrowserModule
