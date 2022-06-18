@@ -89,20 +89,7 @@ export class MwUnitGroupCardComponent implements OnInit, OnDestroy {
   }
 
   public onGroupClick(): void {
-    if (this.isEnemyCard) {
-      this.battleEvents.dispatchEvent({
-        type: BattleEventTypeEnum.UI_Player_Clicks_Enemy_Group,
-        attackedGroup: this.unitGroup,
-        attackingGroup: this.mwBattleStateService.currentUnitGroup,
-        attackingPlayer: this.mwBattleStateService.currentPlayer,
-      });
-      this.battleEvents.dispatchEvent({
-        type: BattleEventTypeEnum.UI_Player_Hovers_Group_Card,
-        hoverType: HoverTypeEnum.EnemyCard,
-        currentCard: this.mwBattleStateService.currentUnitGroup,
-        hoveredCard: this.unitGroup,
-      });
-    }
+    /* previously, it was handling click action, now directive handles it */
   }
 
 }

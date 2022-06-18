@@ -119,7 +119,10 @@ export class MwUnitGroupStateService {
 
     const targetGroupHealthAfterDamage = targetGroupTotalHealth - damage;
     const newTailHp = targetGroupHealthAfterDamage % attackedGroup.type.baseStats.health;
+    /* second line of this calc is to deal damage when tail hp is less than damage */
+    /*  need to think this logic through */
     const unitLoss = Math.floor(damage / attackedGroup.type.baseStats.health);
+      // + ((attackedGroup.tailUnitHp && (attackedGroup.tailUnitHp <= damage)) ? 1 : 0);
 
     console.log(`final damage to ${attackedGroup.type.name}, 
           current tail: ${attackedGroup.tailUnitHp}
