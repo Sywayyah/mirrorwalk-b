@@ -1,4 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
+$ra-font-path: '../node_modules/rpg-awesome/scss/_variables';
+ 
+@import url('../node_modules/rpg-awesome/css/rpg-awesome.css');
 
 body {
     font-family: 'Segoe UI';
