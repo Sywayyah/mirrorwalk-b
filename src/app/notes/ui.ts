@@ -6,4 +6,5 @@
 
   also there could be some special effects like expanding lightened round 
   or sparks, or some spinning element or elements...
+  maybe even flickering, for example, for lightning
 */
