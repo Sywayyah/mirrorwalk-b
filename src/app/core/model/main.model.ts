@@ -57,7 +57,7 @@ export interface UnitTypeModel {
         experience: number;
     };
 
-    defaultMods?: Modifiers;
+    defaultModifiers?: Modifiers;
 
     /* create a separate mapping, table UnitGroup->Abilities */
     /*  Associative tables.. can be useful. Don't need to overgrow the model */

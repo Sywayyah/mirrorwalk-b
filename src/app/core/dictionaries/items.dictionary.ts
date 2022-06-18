@@ -7,7 +7,7 @@ export const ItemDoomstring: ItemBaseModel<{}> = {
         playerBonusAttack: 2,
     },
     defaultState: {},
-    description: () => '+1 to Attack.',
+    description: () => '+2 to Attack.',
     config: {
         init: () => { },
     }
@@ -26,17 +26,17 @@ export const ItemWindCrest: ItemBaseModel = {
                 [GameEventTypes.NewRoundBegins]: event => {
                     if (event.round === 0) {
                         actions.getUnitGroupsOfPlayer(ownerPlayer)
-                            .filter(unitGroup => unitGroup.type.defaultMods?.isRanged)
+                            .filter(unitGroup => unitGroup.type.defaultModifiers?.isRanged)
                             .forEach(rangedUnitGroup => {
                                 const windBlessBuff = actions.createSpellInstance(WIND_BLESS_BUFF);
                                 actions.addSpellToUnitGroup(rangedUnitGroup, windBlessBuff, ownerPlayer);
-                            })
+                            });
                     }
                 }
             })
         },
     },
     description: (item) => {
-        return '+1 Attack. At the beginning of the fight, grants Wind Blessing (level 1) effect to your ranged units for 1 round.';
+        return '+2 Attack. At the beginning of the fight, grants Wind Blessing (level 1) effect to your ranged units for 1 round.';
     },
 }
