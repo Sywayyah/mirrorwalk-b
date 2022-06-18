@@ -1,5 +1,18 @@
 <div class="items-container">
-    <div class="player-item" *ngFor="let item of currentPlayer.hero.items">
-      {{item.baseType.name}}
-    </div>
-  </div>
+    <mw-hover-hint [hintBody]="hint" *ngFor="let item of currentPlayer.hero.items">
+        <div class="player-item">
+            {{item.baseType.name}}
+        </div>
+
+        <ng-template #hint>
+            <div style="max-width: 200px;">
+                <div style="padding: 8px; font-size: 14px">
+                    {{item.baseType.name}}
+                </div>
+                <div style="padding: 0 8px 8px; font-size: 13px;">
+                    {{item.currentDescription}}
+                </div>
+            </div>
+        </ng-template>
+    </mw-hover-hint>
+</div>

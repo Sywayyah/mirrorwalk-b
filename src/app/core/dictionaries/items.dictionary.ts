@@ -4,10 +4,10 @@ import { WIND_BLESS_BUFF } from "./spells/wind-bless.spell";
 export const ItemDoomstring: ItemBaseModel<{}> = {
     name: 'Doomstring',
     staticMods: {
-        // playerBonusAttack: 2,
+        playerBonusAttack: 2,
     },
     defaultState: {},
-    description: () => '',
+    description: () => '+1 to Attack.',
     config: {
         init: () => { },
     }
@@ -37,6 +37,6 @@ export const ItemWindCrest: ItemBaseModel = {
         },
     },
     description: (item) => {
-        return 'At the beginning of the round, grands Wind Blessing (level 1) to your ranged units for 1 round. Grants +1 to attack to your hero.';
+        return '+1 Attack. At the beginning of the fight, grants Wind Blessing (level 1) effect to your ranged units for 1 round.';
     },
 }
