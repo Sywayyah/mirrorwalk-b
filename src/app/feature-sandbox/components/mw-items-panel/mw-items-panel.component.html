@@ -1,13 +1,20 @@
 <div class="items-container">
     <mw-hover-hint [hintBody]="hint" *ngFor="let item of currentPlayer.hero.items">
-        <div class="player-item">
-            {{item.baseType.name}}
+        <div class="player-item item-icon"
+            [ngStyle]="{ 'color': item.baseType.icon.iconClr , 'background': item.baseType.icon.bgClr }">
+            <!-- {{item.baseType.name}} -->
+            <i class="ra" [class]="'ra-' + item.baseType.icon.icon"></i>
         </div>
 
         <ng-template #hint>
             <div style="max-width: 200px;">
-                <div style="padding: 8px; font-size: 14px">
-                    {{item.baseType.name}}
+                <div style="display: flex">
+                    <div class="tooltip-icon" [ngStyle]="{ 'color': item.baseType.icon.iconClr , 'background': item.baseType.icon.bgClr }">
+                        <i class="ra" [class]="'ra-' + item.baseType.icon.icon"></i>
+                    </div>
+                    <div style="padding: 8px; font-size: 14px">
+                        {{item.baseType.name}}
+                    </div>
                 </div>
                 <div style="padding: 0 8px 8px; font-size: 13px;">
                     {{item.currentDescription}}

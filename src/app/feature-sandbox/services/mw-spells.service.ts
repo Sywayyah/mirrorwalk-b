@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { SpellInstance, SpellModel } from 'src/app/core/model/spells';
 import { Modifiers } from 'src/app/core/model/modifiers';
 import { SpellCreationOptions } from 'src/app/core/model/combat-api/combat-api.types';
+import { Colors } from 'src/app/core/dictionaries/colors.const';
 
 
 
@@ -14,6 +15,15 @@ export class MwSpellsService {
 
   public createSpellInstance<T>(spell: SpellModel<T>, options: SpellCreationOptions<T> = {}): SpellInstance<T> {
     const initialLevel: number = options.initialLevel ?? 1;
+    const spellIcon = spell.icon;
+
+    if (!spellIcon.bgClr) {
+      spellIcon.bgClr = Colors.DefaultItemIconBg;
+    }
+
+    if (!spellIcon.iconClr) {
+      spellIcon.iconClr = Colors.DefaultItemIconClr;
+    }
 
     const spellInstance: SpellInstance<T> = {
       currentLevel: initialLevel,

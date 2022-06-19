@@ -5,6 +5,9 @@ export const ENCHANT_DEBUFF: SpellModel = {
     name: 'Enchanted',
     activationType: SpellActivationType.Debuff,
     level: 1,
+    icon: {
+        icon: 'enchanted',
+    },
     type: {
         spellInfo: {
             name: 'Enchanted',
@@ -32,6 +35,9 @@ export const ENCHANT_DEBUFF: SpellModel = {
 export const ENCHANT_SPELL: SpellModel = {
     name: 'Enchant',
     level: 1,
+    icon: {
+        icon: 'fire-ring',
+    },
     activationType: SpellActivationType.Target,
     description: 'Enchants an enemy, increases incoming magic damage by 50%.',
     type: {

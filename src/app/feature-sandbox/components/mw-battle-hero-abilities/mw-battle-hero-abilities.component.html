@@ -4,20 +4,28 @@
 
 <div class="abilities-list">
     <mw-hover-hint [hintBody]="hint" *ngFor="let spell of currentPlayer.hero.spells">
-        <div class="ability" (click)="onAbilityClick(spell)"
+        <div class="ability spell-icon" (click)="onAbilityClick(spell)"
             [class.no-mana]="currentPlayer.hero.stats.currentMana < spell.currentManaCost"
-            [class.current-ability]="curPlayerState.currentSpell === spell && spell.baseType.activationType === activationTypes.Target">
-            <div>
+            [class.current-ability]="curPlayerState.currentSpell === spell && spell.baseType.activationType === activationTypes.Target"
+            [ngStyle]="{ 'color': spell.baseType.icon.iconClr , 'background': spell.baseType.icon.bgClr }">
+            <i class="ra" [class]="'ra-' + spell.baseType.icon.icon"></i>
+
+            <!-- <div>
                 {{ spell.name }}
-            </div>
+            </div> -->
         </div>
 
         <ng-template #hint>
             <div style="min-width: 170px; max-width: 200px;">
-                <div style="padding: 4px;">
-                    <div style="font-size: 14px;">{{spell.name}}</div>
-                    <div style="font-size: 12px;">Level: {{spell.currentLevel}}</div>
-                    <div style="font-size: 12px;">Mana Cost: {{spell.currentManaCost}}</div>
+                <div style="display: flex;">
+                    <div  class="tooltip-icon" [ngStyle]="{ 'color': spell.baseType.icon.iconClr , 'background': spell.baseType.icon.bgClr }">
+                        <i class="ra" [class]="'ra-' + spell.baseType.icon.icon"></i>
+                    </div>
+                    <div style="padding: 4px;">
+                        <div style="font-size: 14px;">{{spell.name}}</div>
+                        <div style="font-size: 12px;">Level: {{spell.currentLevel}}</div>
+                        <div style="font-size: 12px;">Mana Cost: {{spell.currentManaCost}}</div>
+                    </div>
                 </div>
 
                 <div *ngIf="spell.description" style=" font-size: 12px; padding: 4px;">

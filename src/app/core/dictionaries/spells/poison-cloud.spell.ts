@@ -6,6 +6,9 @@ export const POISON_CLOUD_SPELL_EFFECT: SpellModel<undefined | { debuffRoundsLef
     activationType: SpellActivationType.Debuff,
     level: 1,
     name: 'Poisoned',
+    icon: {
+        icon: 'poison-cloud',
+    },
     type: {
         spellInfo: {
             name: 'Poisoned'
@@ -51,6 +54,9 @@ export const POISON_CLOUD_SPELL_EFFECT: SpellModel<undefined | { debuffRoundsLef
 export const POISON_CLOUD_SPELL: SpellModel = {
     activationType: SpellActivationType.Target,
     level: 1,
+    icon: {
+        icon: 'poison-cloud',
+    },
     name: 'Poison Cloud',
     description: 'Poisons target, which takes damage at the beginning of each round. Lasts 2 rounds.',
     type: {

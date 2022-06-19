@@ -4,6 +4,9 @@ import { SpellActivationType, SpellEventTypes, SpellModel } from "../../model/sp
 export const RAIN_OF_FIRE_SPELL: SpellModel = {
     name: 'Rain of Fire',
     level: 1,
+    icon: {
+        icon: 'fire',
+    },
     activationType: SpellActivationType.Target,
     description: 'Deals average damage to the target',
     type: {

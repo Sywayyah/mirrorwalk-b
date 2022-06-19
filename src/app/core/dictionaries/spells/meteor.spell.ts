@@ -6,6 +6,9 @@ export const METEOR_SPELL: SpellModel = {
     level: 1,
     name: 'Meteor',
 
+    icon: {
+        icon: 'burning-meteor'
+    },
     description: 'Deals medium damage to random enemy group',
 
     type: {

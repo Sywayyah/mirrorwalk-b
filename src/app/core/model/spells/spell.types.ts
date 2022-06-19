@@ -1,4 +1,5 @@
 import { CombatActionsRef } from "../combat-api/combat-api.types";
+import { Icon } from "../icons.types";
 import type { HeroModel, PlayerInstanceModel, UnitGroupInstModel } from "../main.model";
 import type { SpellEventHandlers } from "./spell-events";
 
@@ -25,6 +26,8 @@ export interface SpellModel<SpellStateType = DefaultSpellStateType> {
     description?: string;
 
     type: SpellTypeModel<SpellStateType>;
+
+    icon: Icon;
 }
 
 export interface SpellInstance<T = DefaultSpellStateType> {

@@ -6,6 +6,9 @@ export const ItemDoomstring: ItemBaseModel<{}> = {
     staticMods: {
         playerBonusAttack: 2,
     },
+    icon: {
+        icon: 'crossbow',
+    },
     defaultState: {},
     description: () => '+2 to Attack.',
     config: {
@@ -17,6 +20,9 @@ export const ItemWindCrest: ItemBaseModel = {
     name: 'Wind Crest',
     staticMods: {
         playerBonusAttack: 2,
+    },
+    icon: {
+        icon: 'feather-wing',
     },
     config: {
         init: ({

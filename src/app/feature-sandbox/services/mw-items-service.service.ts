@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Colors } from 'src/app/core/dictionaries/colors.const';
 import { GameEventsHandlers, GameEventsMapping, GameEventTypes, ItemBaseModel, ItemInstanceModel } from 'src/app/core/model/items/items.types';
 import { PlayerInstanceModel } from 'src/app/core/model/main.model';
 import { BattleEventsService } from './mw-battle-events.service';
@@ -31,6 +32,16 @@ export class MwItemsService {
   }
 
   public createItem<T extends object>(itemBase: ItemBaseModel<T>): ItemInstanceModel {
+    const itemIcon = itemBase.icon;
+
+    if (!itemIcon.bgClr) {
+      itemIcon.bgClr = Colors.DefaultItemIconBg;
+    }
+
+    if (!itemIcon.iconClr) {
+      itemIcon.iconClr = Colors.DefaultItemIconClr;
+    }
+
     return {
       baseType: itemBase,
       currentDescription: itemBase.description(itemBase),

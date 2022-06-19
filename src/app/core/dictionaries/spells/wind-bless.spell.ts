@@ -11,6 +11,9 @@ type State = {
 export const WIND_BLESS_BUFF: SpellModel<State> = {
     name: 'Wind Bless',
     level: 1,
+    icon: {
+        icon: 'feather-wing',
+    },
     activationType: SpellActivationType.Buff,
     description: 'Increases attack of ranged units',
     type: {

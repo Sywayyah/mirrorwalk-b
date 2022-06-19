@@ -20,6 +20,7 @@
 */
 
 import { CombatActionsRef } from "../combat-api/combat-api.types";
+import { Icon } from "../icons.types";
 import { HeroModel, PlayerInstanceModel, UnitGroupModel } from "../main.model";
 import { Modifiers } from "../modifiers";
 import { SpellCombatEventsRef, SpellConfig } from "../spells";
@@ -52,6 +53,7 @@ export interface ItemBaseModel<StateType extends object = object> {
     defaultState?: StateType;
 
     name: string;
+    icon: Icon;
     staticMods: Modifiers;
     /* Item can have reqs I think */
     // requirements: ItemRequirementModel[],

@@ -4,7 +4,7 @@
 }
 
 .ability {
-    width: 74px;
+    width: 68px;
     height: 42px;
     border: 1px solid gray;
     font-size: 13px;
@@ -23,4 +23,22 @@
 .no-mana {
     cursor: not-allowed;
     opacity: 0.5;
+}
+
+.spell-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 42px;
+    overflow: hidden;
+}
+
+.tooltip-icon {
+    height: 32px;
+    width: 32px;
+    overflow: hidden;
+    font-size: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
