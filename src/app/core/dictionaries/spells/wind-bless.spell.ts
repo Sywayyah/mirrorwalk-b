@@ -1,6 +1,7 @@
 import { UnitGroupInstModel } from "../../model/main.model";
 import { Modifiers } from "../../model/modifiers";
 import { SpellActivationType, SpellEventTypes, SpellModel } from "../../model/spells";
+import { Colors } from "../colors.const";
 
 type State = {
     roundsLeft: number,
@@ -13,6 +14,8 @@ export const WIND_BLESS_BUFF: SpellModel<State> = {
     level: 1,
     icon: {
         icon: 'feather-wing',
+        bgClr: Colors.DefautlBuffBg,
+        iconClr: Colors.DefautlBuffClr,
     },
     activationType: SpellActivationType.Buff,
     description: 'Increases attack of ranged units by 2.',

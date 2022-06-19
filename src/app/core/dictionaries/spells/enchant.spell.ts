@@ -1,4 +1,5 @@
 import { SpellActivationType, SpellEventTypes, SpellModel } from "../../model/spells";
+import { Colors } from "../colors.const";
 
 
 export const ENCHANT_DEBUFF: SpellModel = {
@@ -7,6 +8,8 @@ export const ENCHANT_DEBUFF: SpellModel = {
     level: 1,
     icon: {
         icon: 'fire-ring',
+        bgClr: Colors.DefautlDebuffBg,
+        iconClr: Colors.DefautlDebuffClr,
     },
     description: 'Incoming magic damage is increased by 50%.',
     type: {
