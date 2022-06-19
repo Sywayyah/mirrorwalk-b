@@ -12,6 +12,7 @@ export class HoverHintComponent implements OnInit {
   @Input() public hintBody!: TemplateRef<ElementRef>;
   /* todo: improve transition and overall logic of this component later */
   @Input() public transition: number = 0.15;
+  @Input() public xPos: 'before' | 'after' = 'after';
 
   @ViewChild('elem', { static: true }) public elem!: ElementRef;
   @ViewChild('generalHint', { static: true }) public generalHint!: TemplateRef<ElementRef>;
@@ -33,7 +34,7 @@ export class HoverHintComponent implements OnInit {
     this.currentHintRef = this.hintsService.containerRef.createHint(
       this.elem,
       this.generalHint,
-      'after'
+      this.xPos,
     );
 
     this.showTimeoutId = window.setTimeout(() => {

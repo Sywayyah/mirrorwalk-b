@@ -26,6 +26,7 @@
 }
 
 .spell-icon {
+    position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -42,3 +43,10 @@
     align-items: center;
     justify-content: center;
 }
+
+// light effect
+// .light {
+// position: absolute;
+// mix-blend-mode: hard-light;
+// filter: blur(4px);
+// }

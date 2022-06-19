@@ -8,7 +8,11 @@
             [class.no-mana]="currentPlayer.hero.stats.currentMana < spell.currentManaCost"
             [class.current-ability]="curPlayerState.currentSpell === spell && spell.baseType.activationType === activationTypes.Target"
             [ngStyle]="{ 'color': spell.baseType.icon.iconClr , 'background': spell.baseType.icon.bgClr }">
-            <i class="ra" [class]="'ra-' + spell.baseType.icon.icon"></i>
+            <mw-ra-icon [icon]="spell.baseType.icon.icon"></mw-ra-icon>
+            <!-- <i class="ra" [class]="'ra-' + spell.baseType.icon.icon"></i> -->
+            <!-- <mw-ra-icon [icon]="spell.baseType.icon.icon"></mw-ra-icon> -->
+            <!-- light effect -->
+            <!-- <i class="ra light" [class]="'ra-' + spell.baseType.icon.icon"></i> -->
 
             <!-- <div>
                 {{ spell.name }}
@@ -18,8 +22,11 @@
         <ng-template #hint>
             <div style="min-width: 170px; max-width: 200px;">
                 <div style="display: flex;">
-                    <div  class="tooltip-icon" [ngStyle]="{ 'color': spell.baseType.icon.iconClr , 'background': spell.baseType.icon.bgClr }">
-                        <i class="ra" [class]="'ra-' + spell.baseType.icon.icon"></i>
+                    <div class="tooltip-icon"
+                        [ngStyle]="{ 'color': spell.baseType.icon.iconClr , 'background': spell.baseType.icon.bgClr }">
+                        <!-- <i class="ra" [class]="'ra-' + spell.baseType.icon.icon"></i> -->
+                        <mw-ra-icon [icon]="spell.baseType.icon.icon"></mw-ra-icon>
+
                     </div>
                     <div style="padding: 4px;">
                         <div style="font-size: 14px;">{{spell.name}}</div>

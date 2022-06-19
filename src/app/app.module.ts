@@ -24,6 +24,7 @@ import {
 } from './feature-sandbox/components';
 import { MwSpellTargetDirective } from './feature-sandbox/directives/mw-spell-target.directive';
 import { MwItemsPanelComponent } from './feature-sandbox/components/mw-items-panel/mw-items-panel.component';
+import { MwRaIconComponent } from './feature-sandbox/components/ui-elements/mw-ra-icon/mw-ra-icon.component';
 
 @NgModule({
   declarations: [
@@ -49,6 +50,7 @@ import { MwItemsPanelComponent } from './feature-sandbox/components/mw-items-pan
     HintsContainerComponent,
     MwSpellTargetDirective,
     MwItemsPanelComponent,
+    MwRaIconComponent,
   ],
   imports: [
     BrowserModule

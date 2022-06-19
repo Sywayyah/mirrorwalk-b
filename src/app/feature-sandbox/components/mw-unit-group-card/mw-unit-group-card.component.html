@@ -11,12 +11,33 @@
             </div>
             <div>Speed: {{ unitGroup.type.baseStats.speed }}</div>
             <!-- this info will have to be updated -->
-            <div>Health: {{ unitGroup.type.baseStats.health * (unitGroup.count - 1) + (unitGroup.tailUnitHp ?? 0) }}</div>
+            <div>Health: {{ unitGroup.type.baseStats.health * (unitGroup.count - 1) + (unitGroup.tailUnitHp ?? 0) }}
+            </div>
             <div>Damage: {{ unitGroup.type.baseStats.damageInfo.maxDamage * unitGroup.count }}</div>
         </div>
         <div class="abilities" [ngClass]="side === 'left' ? 'left' : 'right'">
             <div class="ability" *ngFor="let ability of unitGroup.spells">
-                {{ ability.name }}
+                <!-- {{ ability.name }} -->
+                <mw-hover-hint [hintBody]="buffHint" [xPos]="side === 'left' ? 'after' : 'before'">
+                    <mw-ra-icon class="icon-label buff-icon" [icon]="ability.baseType.icon.icon"
+                        [ngStyle]="{ 'color': ability.baseType.icon.iconClr , 'background': ability.baseType.icon.bgClr }">
+                    </mw-ra-icon>
+                </mw-hover-hint>
+
+                <ng-template #buffHint>
+                    <div style="display: flex">
+                        <mw-ra-icon class="icon-label tooltip-icon" [icon]="ability.baseType.icon.icon"
+                            [ngStyle]="{ 'color': ability.baseType.icon.iconClr , 'background': ability.baseType.icon.bgClr }">
+                        </mw-ra-icon>
+                        <div style="padding: 4px; font-size: 14px;">
+                            <div>{{ability.baseType.name}}</div>
+                            <div>Level {{ability.currentLevel}}</div>
+                        </div>
+                    </div>
+                    <div style="padding: 4px; font-size: 13px;">
+                        <div>Level {{ability.description}}</div>
+                    </div>
+                </ng-template>
             </div>
         </div>
     </div>

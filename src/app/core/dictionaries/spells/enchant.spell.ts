@@ -6,7 +6,7 @@ export const ENCHANT_DEBUFF: SpellModel = {
     activationType: SpellActivationType.Debuff,
     level: 1,
     icon: {
-        icon: 'enchanted',
+        icon: 'fire-ring',
     },
     type: {
         spellInfo: {
@@ -36,6 +36,7 @@ export const ENCHANT_SPELL: SpellModel = {
     name: 'Enchant',
     level: 1,
     icon: {
+        // iconClr: 'rgb(235 142 178)',
         icon: 'fire-ring',
     },
     activationType: SpellActivationType.Target,
