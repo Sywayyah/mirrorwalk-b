@@ -45,8 +45,13 @@
 }
 
 // light effect
-// .light {
-// position: absolute;
-// mix-blend-mode: hard-light;
-// filter: blur(4px);
-// }
+.light {
+    position: absolute;
+    mix-blend-mode: hard-light;
+    filter: blur(4px);
+    display: none;
+}
+
+.ability:not(.no-mana):hover .light {
+    display: block;
+}
