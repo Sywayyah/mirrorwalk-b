@@ -8,6 +8,7 @@ export const ENCHANT_DEBUFF: SpellModel = {
     icon: {
         icon: 'fire-ring',
     },
+    description: 'Incoming magic damage is increased by 50%.',
     type: {
         spellInfo: {
             name: 'Enchanted',

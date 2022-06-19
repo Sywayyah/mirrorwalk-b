@@ -9,6 +9,7 @@ export const POISON_CLOUD_SPELL_EFFECT: SpellModel<undefined | { debuffRoundsLef
     icon: {
         icon: 'poison-cloud',
     },
+    description: 'Poison deals 65 damage at the beginning of each round.',
     type: {
         spellInfo: {
             name: 'Poisoned'
