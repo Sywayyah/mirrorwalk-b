@@ -53,10 +53,29 @@ export class MwCurrentPlayerStateService {
 
   public playerCurrentState: PlayerState = PlayerState.Normal;
 
+  public spellsAreOnCooldown: boolean = false;
+
   constructor(
     private readonly players: MwPlayersService,
     private readonly events: BattleEventsService,
-  ) { }
+  ) {
+    events.onEvents({
+      [BattleEventTypeEnum.Fight_Next_Round_Starts]: () => {
+        this.resetSpellsCooldown();
+      },
+      [BattleEventTypeEnum.Fight_Starts]: () => {
+        this.resetSpellsCooldown();
+      }
+    }).subscribe();
+  }
+
+  public resetSpellsCooldown(): void {
+    this.spellsAreOnCooldown = false;
+  }
+
+  public setSpellsOnCooldown(): void {
+    this.spellsAreOnCooldown = true;
+  }
 
   public onSpellClick(spell: SpellInstance): void {
     this.currentSpell = spell;
@@ -70,6 +89,8 @@ export class MwCurrentPlayerStateService {
           player: this.currentPlayer,
           spell: spell,
         });
+
+        this.setSpellsOnCooldown();
         break;
       case 'target':
         this.playerCurrentState = PlayerState.SpellTargeting;

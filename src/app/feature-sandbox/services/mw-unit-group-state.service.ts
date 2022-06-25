@@ -124,13 +124,21 @@ export class MwUnitGroupStateService {
 
   public getFinalDamageInfo(target: UnitGroupModel, damage: number): FinalDamageInfo {
     const attackedGroup = target;
+    const targetBaseStats = attackedGroup.type.baseStats;
+
+    const previousUnitCount = target.count;
+
     const targetGroupTotalHealth = this.getUnitGroupTotalHp(attackedGroup);
 
     const targetGroupHealthAfterDamage = targetGroupTotalHealth - damage;
-    const newTailHp = targetGroupHealthAfterDamage % attackedGroup.type.baseStats.health;
+
+    const newTailHp = targetGroupHealthAfterDamage % targetBaseStats.health;
+    const newUnitsCount = Math.floor(targetGroupHealthAfterDamage / targetBaseStats.health)
+      + (newTailHp ? 1 : 0);
+    
     /* second line of this calc is to deal damage when tail hp is less than damage */
     /*  need to think this logic through */
-    const unitLoss = Math.floor(damage / attackedGroup.type.baseStats.health);
+    const unitLoss = previousUnitCount - newUnitsCount;
     // + ((attackedGroup.tailUnitHp && (attackedGroup.tailUnitHp <= damage)) ? 1 : 0);
 
     console.log(`final damage to ${attackedGroup.type.name}, 
