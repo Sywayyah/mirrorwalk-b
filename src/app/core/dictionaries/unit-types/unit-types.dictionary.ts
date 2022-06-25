@@ -1,4 +1,5 @@
 import { UnitTypeModel } from "../../model/main.model";
+import { AssetsImages } from "../images.const";
 
 export enum HF_TYPES_ENUM {
     Pikemans = 'Pikemans',
@@ -15,7 +16,7 @@ const defaultRewards = {
 export const HUMANS_FRACTION_UNIT_TYPES: Record<HF_TYPES_ENUM, UnitTypeModel> = {
 
     [HF_TYPES_ENUM.Pikemans]: {
-        mainPortraitUrl: '',
+        mainPortraitUrl: AssetsImages.Melee,
         name: 'Pikemans',
         level: 1,
 
@@ -40,7 +41,7 @@ export const HUMANS_FRACTION_UNIT_TYPES: Record<HF_TYPES_ENUM, UnitTypeModel> = 
     },
 
     [HF_TYPES_ENUM.Archers]: {
-        mainPortraitUrl: '',
+        mainPortraitUrl: AssetsImages.Ranged,
         name: 'Archers',
         level: 2,
 
@@ -68,7 +69,7 @@ export const HUMANS_FRACTION_UNIT_TYPES: Record<HF_TYPES_ENUM, UnitTypeModel> = 
         neutralReward: defaultRewards,
     },
     [HF_TYPES_ENUM.Knights]: {
-        mainPortraitUrl: '',
+        mainPortraitUrl: AssetsImages.Melee,
         name: 'Knights',
         level: 3,
 
@@ -90,6 +91,8 @@ export const HUMANS_FRACTION_UNIT_TYPES: Record<HF_TYPES_ENUM, UnitTypeModel> = 
     },
     [HF_TYPES_ENUM.Cavalry]: {
         name: 'Cavalry',
+        mainPortraitUrl: AssetsImages.Melee,
+
         
         level: 4,
 
@@ -106,7 +109,6 @@ export const HUMANS_FRACTION_UNIT_TYPES: Record<HF_TYPES_ENUM, UnitTypeModel> = 
 
         defaultTurnsPerRound: 1,
         minQuantityPerStack: 1,
-        mainPortraitUrl: '',
         
         baseRequirements: {
             gold: 175,

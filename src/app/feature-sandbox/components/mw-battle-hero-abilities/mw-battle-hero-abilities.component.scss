@@ -1,17 +1,27 @@
 .abilities-list {
     display: flex;
     flex-direction: column;
+    position: relative;
+    width: 50px;
+}
+
+.cd-icon {
+    position: absolute;
+    top: 50%;
+    right: -27px;
+    margin-top: -25%;
+    font-size: 24px;
 }
 
 .ability {
-    width: 68px;
+    width: 48px;
     height: 42px;
     border: 1px solid gray;
     font-size: 13px;
     display: flex;
     justify-content: center;
     align-items: center;
-    border-radius: 5px;
+    border-radius: 4px;
     margin: 4px;
     cursor: pointer;
 }

@@ -60,6 +60,8 @@ export class BattleStateService {
     this.resetFightQueue();
 
     this.updateGroupsTailHp();
+    
+    this.refreshUnitGroups();
 
 
     this.battleEventsService.onEvents({
@@ -169,6 +171,7 @@ export class BattleStateService {
             spell: this.curPlayerState.currentSpell,
             target: event.attackedGroup,
           });
+          this.curPlayerState.setSpellsOnCooldown();
         }
       },
 
@@ -299,6 +302,14 @@ export class BattleStateService {
         if (!unitGroup.tailUnitHp) {
           unitGroup.tailUnitHp = unitGroup.type.baseStats.health;
         }
+      })
+    });
+  }
+
+  private refreshUnitGroups(): void {
+    this.players.forEach((player) => {
+      player.unitGroups.forEach(unitGroup => {
+        unitGroup.turnsLeft = unitGroup.type.defaultTurnsPerRound;
       })
     });
   }

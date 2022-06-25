@@ -2,10 +2,14 @@
     {{curPlayerState.playerCurrentState}}
 </div>
 
+
 <div class="abilities-list">
+    <div class="cd-icon">
+        <mw-ra-icon icon="hourglass" *ngIf=" curPlayerState.spellsAreOnCooldown"></mw-ra-icon>
+    </div>
     <mw-hover-hint [hintBody]="hint" *ngFor="let spell of currentPlayer.hero.spells">
         <div class="ability spell-icon" (click)="onAbilityClick(spell)"
-            [class.no-mana]="currentPlayer.hero.stats.currentMana < spell.currentManaCost"
+            [class.no-mana]="currentPlayer.hero.stats.currentMana < spell.currentManaCost || curPlayerState.spellsAreOnCooldown"
             [class.current-ability]="curPlayerState.currentSpell === spell && spell.baseType.activationType === activationTypes.Target"
             [ngStyle]="{ 'color': spell.baseType.icon.iconClr , 'background': spell.baseType.icon.bgClr }">
             <mw-ra-icon [icon]="spell.baseType.icon.icon"></mw-ra-icon>

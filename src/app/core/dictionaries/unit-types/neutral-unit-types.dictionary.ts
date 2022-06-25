@@ -1,4 +1,5 @@
 import { UnitTypeModel } from "../../model/main.model";
+import { AssetsImages } from "../images.const";
 
 export enum NEUTRAL_TYPES_ENUM {
     Gnolls = 'Gnolls',
@@ -15,7 +16,7 @@ const defaultReward = {
 export const NEUTRAL_FRACTION_UNIT_TYPES: Record<NEUTRAL_TYPES_ENUM, UnitTypeModel> = {
 
     [NEUTRAL_TYPES_ENUM.Ghosts]: {
-        mainPortraitUrl: '',
+        mainPortraitUrl: AssetsImages.Melee,
         name: 'Ghosts',
         level: 1,
         baseRequirements: {},
@@ -39,7 +40,7 @@ export const NEUTRAL_FRACTION_UNIT_TYPES: Record<NEUTRAL_TYPES_ENUM, UnitTypeMod
     },
 
     [NEUTRAL_TYPES_ENUM.Gnolls]: {
-        mainPortraitUrl: '',
+        mainPortraitUrl: AssetsImages.Melee,
         name: 'Gnolls',
         level: 2,
         baseStats: {
@@ -67,7 +68,7 @@ export const NEUTRAL_FRACTION_UNIT_TYPES: Record<NEUTRAL_TYPES_ENUM, UnitTypeMod
     },
 
     [NEUTRAL_TYPES_ENUM.Thiefs]: {
-        mainPortraitUrl: '',
+        mainPortraitUrl: AssetsImages.Melee,
         name: 'Thiefs',
         level: 3,
         baseStats: {
@@ -92,7 +93,7 @@ export const NEUTRAL_FRACTION_UNIT_TYPES: Record<NEUTRAL_TYPES_ENUM, UnitTypeMod
     },
 
     [NEUTRAL_TYPES_ENUM.ForestTrolls]: {
-        mainPortraitUrl: '',
+        mainPortraitUrl: AssetsImages.Melee,
         name: 'Trolls',
         level: 4,
 

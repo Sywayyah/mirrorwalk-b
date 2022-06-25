@@ -1,3 +1,34 @@
+.card-top {
+    display: flex;
+    position: relative;
+}
+
+.card-left .portrait {
+    right: 70%;
+    transform: scaleX(-1);
+}
+
+.card-left {
+    text-align: right;
+}
+
+.card-right {
+    text-align: left;
+}
+
+.card-right .portrait {
+    left: 70%;
+}
+
+.portrait {
+    position: absolute;
+    z-index: 1000;
+    height: 130px;
+    width: 127px;
+    top: -25px;
+    user-select: none;
+}
+
 .card-wrapper {
     position: relative;
 }
@@ -6,25 +37,26 @@
     position: absolute;
     font-size: 12px;
     top: 0;
+    z-index: 1500;
 }
 
 .abilities.left {
-    left: -100%;
+    left: -120%;
 }
 
 .abilities.right {
-    right: -100%;
+    right: -120%;
 }
 
 .card {
     display: block;
     width: 115px;
-    height: 115px;
+    height: 100px;
     border-radius: 6px;
     align-items: center;
     box-sizing: border-box;
     font-size: 13px;
-    padding: 12px;
+    padding: 4px 15px 0;
     color: white;
     border: 3px solid transparent;
     cursor: pointer;
