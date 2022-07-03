@@ -1,6 +1,4 @@
 import { Injectable } from '@angular/core';
-import { BaseAbilitiesTable } from 'src/app/core/dictionaries/abilities.const';
-import { AbilityTypesEnum } from 'src/app/core/model/abilities.types';
 import { UnitGroupModel } from 'src/app/core/model/main.model';
 import { Modifiers } from 'src/app/core/model/modifiers';
 import { CommonUtils } from 'src/app/core/utils/common.utils';
@@ -176,7 +174,7 @@ export class MwUnitGroupStateService {
   }
 
   public canGroupCounterattack(group: UnitGroupModel): boolean {
-    return !!BaseAbilitiesTable.get(group.type)?.some(ability => ability.type === AbilityTypesEnum.BaseCounterAttack);
+    return !!group.type.defaultModifiers?.counterattacks;
   }
 
   public rollDamage(damageDetailsInfo: DamageInfo): number {

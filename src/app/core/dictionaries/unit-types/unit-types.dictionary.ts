@@ -30,6 +30,9 @@ export const HUMANS_FRACTION_UNIT_TYPES: Record<HF_TYPES_ENUM, UnitTypeModel> = 
             health: 6,
             speed: 13,
         },
+        defaultModifiers: {
+            counterattacks: true,
+        },
         minQuantityPerStack: 5,
         defaultTurnsPerRound: 1,
 

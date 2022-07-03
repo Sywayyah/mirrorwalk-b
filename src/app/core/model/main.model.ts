@@ -1,4 +1,3 @@
-import { AbilityModel } from "./abilities.types";
 import { ItemInstanceModel } from "./items/items.types";
 import { Modifiers } from "./modifiers";
 import { ResourcesModel } from "./resources.types";
@@ -61,7 +60,7 @@ export interface UnitTypeModel {
 
     /* create a separate mapping, table UnitGroup->Abilities */
     /*  Associative tables.. can be useful. Don't need to overgrow the model */
-    baseAbilities?: AbilityModel[];
+    // baseAbilities?: AbilityModel[];
 
     /* minimal amount of units that can stack can be hired, sold or split by */
     minQuantityPerStack: number;
