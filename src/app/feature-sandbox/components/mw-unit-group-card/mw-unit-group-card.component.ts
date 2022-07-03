@@ -3,6 +3,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { PlayerModel, UnitGroupInstModel } from 'src/app/core/model/main.model';
 import { BattleEventsService, BattleEventTypeEnum, BattleStateService, HoverTypeEnum, MwPlayersService } from '../../services';
+import { MwUnitGroupStateService } from '../../services/mw-unit-group-state.service';
 import { CardEffectsComponent } from '../mw-card-effects/card-effects.component';
 
 @Component({
@@ -33,15 +34,18 @@ export class MwUnitGroupCardComponent implements OnInit, OnDestroy {
   public attackingUnitGroup!: UnitGroupInstModel;
 
   public canCurrentPlayerAttack: boolean = false;
+  public isGroupMelee: boolean = false;
   private destroy$: Subject<void> = new Subject();
 
   constructor(
     public mwBattleStateService: BattleStateService,
     private playersService: MwPlayersService,
     private readonly battleEvents: BattleEventsService,
+    private readonly unitsService: MwUnitGroupStateService,
   ) { }
 
   public ngOnInit(): void {
+    this.isGroupMelee = !this.unitsService.isUnitGroupRanged(this.unitGroup);
     this.isEnemyCard = this.playersService.getCurrentPlayer() !== this.playerInfo;
     this.cardReady.next(this);
 

@@ -18,7 +18,10 @@
                         ({{unitGroup.turnsLeft}}/{{unitGroup.type.defaultTurnsPerRound}})
                     </div>
                     <div>
-                        <mw-ra-icon icon="sword"></mw-ra-icon>
+                        <mw-ra-icon icon="sword" *ngIf="isGroupMelee; else rangedIcon"></mw-ra-icon>
+                        <ng-template #rangedIcon>
+                            <mw-ra-icon icon="crossbow"></mw-ra-icon>
+                        </ng-template>
                         {{ unitGroup.type.baseStats.damageInfo.maxDamage * unitGroup.count }}
                     </div>
                     <div>

@@ -177,6 +177,10 @@ export class MwUnitGroupStateService {
     return !!group.type.defaultModifiers?.counterattacks;
   }
 
+  public isUnitGroupRanged(group: UnitGroupModel): boolean {
+    return !!group.type.defaultModifiers?.isRanged;
+  }
+
   public rollDamage(damageDetailsInfo: DamageInfo): number {
     return CommonUtils.randIntInRange(damageDetailsInfo.multipliedMinDamage, damageDetailsInfo.multipliedMaxDamage);
   }
