@@ -1,6 +1,6 @@
 import { ResourceType } from "../model/resources.types";
 import { HiringReward, ItemReward, NeutralRewardTypesEnum, ResourcesReward, StructureGeneratorModel, StuctureControl } from "../model/structures.types";
-import { CommonUtils, GenerationModel, RandomUtils } from "../utils/common.utils";
+import { CommonUtils, GenerationModel } from "../utils/common.utils";
 import { ItemDoomstring, ItemWindCrest } from "./items.dictionary";
 import { NEUTRAL_FRACTION_UNIT_TYPES, NEUTRAL_TYPES_ENUM } from "./unit-types/neutral-unit-types.dictionary";
 import { HF_TYPES_ENUM, HUMANS_FRACTION_UNIT_TYPES } from "./unit-types/unit-types.dictionary";

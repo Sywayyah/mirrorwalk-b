@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { ArchersOutpostStructure, BanditCamp, CalavryStalls, GraveyardStructure } from 'src/app/core/dictionaries/structures.const';
 import { PlayerInstanceModel, UnitGroupInstModel } from 'src/app/core/model/main.model';
 import { NeutralCampStructure, StructureGeneratorModel, StructureModel, StructureTypeEnum } from "src/app/core/model/structures.types";
-import { RandomUtils } from 'src/app/core/utils/common.utils';
+import { GenerationUtils } from 'src/app/core/utils/common.utils';
 import { BattleEventsService } from './mw-battle-events.service';
 import { MwPlayersService } from './mw-players.service';
 import { BattleEventTypeEnum } from './types';
@@ -100,7 +100,7 @@ export class MwStructuresService {
     const guardsMap: Record<string, UnitGroupInstModel[]> = {};
 
     this.structures.forEach(struct => {
-      guardsMap[struct.id] = RandomUtils.createRandomArmyForPlayer(
+      guardsMap[struct.id] = GenerationUtils.createRandomArmyForPlayer(
         struct.generator.generateGuard(),
         this.neutralPlayer
       );

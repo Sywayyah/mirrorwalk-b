@@ -6,7 +6,7 @@ import { BLINDNESS_SPELL, ENCHANT_SPELL, METEOR_SPELL, POISON_CLOUD_SPELL, RAIN_
 import { HF_TYPES_ENUM, HUMANS_FRACTION_UNIT_TYPES } from 'src/app/core/dictionaries/unit-types/unit-types.dictionary';
 import { PlayerInstanceModel, PlayerModel, PlayerTypeEnum, UnitGroupInstModel, UnitGroupModel } from 'src/app/core/model/main.model';
 import { ResourcesModel } from 'src/app/core/model/resources.types';
-import { CommonUtils, RandomUtils } from 'src/app/core/utils/common.utils';
+import { CommonUtils, GenerationUtils } from 'src/app/core/utils/common.utils';
 import { BattleEventsService } from './mw-battle-events.service';
 import { BattleEventTypeEnum } from './types';
 import { MwSpellsService } from './mw-spells.service';
@@ -14,7 +14,7 @@ import { ItemInstanceModel } from 'src/app/core/model/items/items.types';
 import { MwItemsService } from './mw-items-service.service';
 
 
-const mainPlayerGroups = RandomUtils.createRandomArmy({
+const mainPlayerGroups = GenerationUtils.createRandomArmy({
   fraction: HUMANS_FRACTION_UNIT_TYPES,
   maxUnitGroups: 3,
   minUnitGroups: 1,
@@ -26,7 +26,7 @@ const mainPlayerGroups = RandomUtils.createRandomArmy({
   ],
 });
 
-const neutralGroups = RandomUtils.createRandomArmy({
+const neutralGroups = GenerationUtils.createRandomArmy({
   fraction: NEUTRAL_FRACTION_UNIT_TYPES,
   maxUnitGroups: 5,
   minUnitGroups: 2,

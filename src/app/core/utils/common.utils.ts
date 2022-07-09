@@ -1,4 +1,4 @@
-import { PlayerInstanceModel, PlayerModel, UnitGroupInstModel, UnitGroupModel, UnitTypeModel } from "../model/main.model";
+import { PlayerInstanceModel, UnitGroupInstModel, UnitGroupModel, UnitTypeModel } from "../model/main.model";
 
 export interface GenerationModel {
     fraction: Record<string, UnitTypeModel>;
@@ -38,7 +38,7 @@ export const CommonUtils = {
 
 };
 
-export const RandomUtils = {
+export const GenerationUtils = {
     createRandomArmy(options: GenerationModel): UnitGroupModel[] {
         const groupsToGenerateCount = CommonUtils.randIntInRange(options.minUnitGroups, options.maxUnitGroups);
         const generatedGroups = [];
