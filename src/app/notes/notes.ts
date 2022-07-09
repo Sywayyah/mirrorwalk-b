@@ -1,13 +1,14 @@
 
 /* 
     Checklist:
-        - Think of more complete structure models (Graveyard, Archer Tower, etc.)
+        + Think of more complete structure models (Graveyard, Archer Tower, etc.)
         - Add camps with units of different towns.
         - Add turns per location limit.
+        - Add character screen
         + Add hero levels and experience.
         + Add structures chains.
         - Add specialties.
-        > Add damaged unit group.
+        + Add damaged unit group.
 
         Side notes: 
             Items may provide more turns per location (Boots, most likely)
