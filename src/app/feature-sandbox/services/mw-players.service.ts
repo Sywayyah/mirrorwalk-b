@@ -16,13 +16,13 @@ import { MwItemsService } from './mw-items-service.service';
 
 const mainPlayerGroups = RandomUtils.createRandomArmy({
   fraction: HUMANS_FRACTION_UNIT_TYPES,
-  maxUnitGroups: 5,
-  minUnitGroups: 3,
+  maxUnitGroups: 3,
+  minUnitGroups: 1,
   units: [
-    [HF_TYPES_ENUM.Pikemans, 10, 60, 3],
-    [HF_TYPES_ENUM.Archers, 14, 36, 2],
-    [HF_TYPES_ENUM.Knights, 8, 17, 2],
-    [HF_TYPES_ENUM.Cavalry, 3, 7, 2],
+    [HF_TYPES_ENUM.Pikemans, 10, 22, 3],
+    [HF_TYPES_ENUM.Archers, 12, 20, 1],
+    [HF_TYPES_ENUM.Knights, 5, 9, 1],
+    [HF_TYPES_ENUM.Cavalry, 3, 5, 1],
   ],
 });
 

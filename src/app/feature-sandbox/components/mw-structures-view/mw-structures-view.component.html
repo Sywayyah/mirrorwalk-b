@@ -14,6 +14,7 @@
 <ng-template #neutralCamp let-structure="structure">
     <!-- todo: For the sake of better typization, these templates should be components -->
     <div class="structure" (click)="onStructureSelected(structure)" [class.defeated]="structure.isDefeated">
+        {{structure.generator.name}}
         {{structure.type}}
         <div *ngIf="structure.reward" style="font-size: 12px;">Reward: {{structure.reward?.type}}</div>
         <div *ngIf="structure.isDefeated">Defeated:</div>

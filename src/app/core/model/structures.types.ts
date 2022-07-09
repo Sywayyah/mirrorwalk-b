@@ -1,5 +1,28 @@
+import { GenerationModel } from "../utils/common.utils";
 import { PlayerInstanceModel, UnitTypeModel } from "./main.model";
 import { ResourceType } from "./resources.types";
+
+/* Base descriptive type */
+
+export enum StuctureControl {
+    Neutral = 'neutral',
+    EnemyPlayer = 'enemy',
+}
+
+export interface StructureGeneratorModel {
+    name: string;
+    control: StuctureControl;
+
+    /* looks good. it can be impossible to describe all possible logic data-driven, 
+        it's better to have it like fn, which decides on it's own
+
+        although, think about it later.
+     */
+    generateGuard: () => GenerationModel;
+    generateReward: () => NeutralRewardModel;
+}
+
+/* NOTE: all that is next - it looks more like instance */
 
 /* Rewarding resources models */
 export interface ResourceRewardModel {
@@ -20,6 +43,7 @@ export enum StructureTypeEnum {
 export interface StructureModel<T extends StructureTypeEnum = StructureTypeEnum> {
     id: string;
     type: T;
+    generator: StructureGeneratorModel;
 }
 
 /* Neutral structures */

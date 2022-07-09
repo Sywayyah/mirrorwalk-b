@@ -19,15 +19,17 @@ export const NEUTRAL_FRACTION_UNIT_TYPES: Record<NEUTRAL_TYPES_ENUM, UnitTypeMod
         mainPortraitUrl: AssetsImages.Melee,
         name: 'Ghosts',
         level: 1,
-        baseRequirements: {},
+        baseRequirements: {
+            gold: 40,
+        },
         baseStats: {
             damageInfo: {
                 minDamage: 2,
                 maxDamage: 3,
             },
             attackRating: 1,
-            defence: 1,
-            health: 5,
+            defence: 2,
+            health: 6,
             speed: 8,
         },
         defaultTurnsPerRound: 1,
