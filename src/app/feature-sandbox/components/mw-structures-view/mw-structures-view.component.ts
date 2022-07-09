@@ -22,7 +22,7 @@ export class MwStructuresViewComponent implements OnInit {
     private readonly events: BattleEventsService,
   ) {
     this.structures = this.structuresService.structures;
-    this.guardsMap = this.structuresService.generateNewGuardsMap();
+    this.guardsMap = this.structuresService.guardsMap;
     this.player = this.playersService.getCurrentPlayer();
   }
 
