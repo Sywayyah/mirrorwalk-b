@@ -1,7 +1,6 @@
 :host {
     display: flex;
     flex-direction: column;
-    min-height: 250px;
     justify-content: space-between;
 }
 
@@ -12,9 +11,10 @@
 }
 
 .items-group {
-    margin: 4px;
-    padding: 13px;
+    margin: 14px;
+    padding: 16px;
     border: 1px solid gray;
+    cursor: pointer;
 }
 
 .selected {

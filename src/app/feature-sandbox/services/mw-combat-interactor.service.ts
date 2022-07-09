@@ -140,8 +140,14 @@ export class CombatInteractorService {
       [BattleEventTypeEnum.On_Group_Dies]: (event) => {
         const target = event.target;
 
+        /* todo: apply the same when round ends */
+        const dispellableTypes: SpellActivationType[] = [
+          SpellActivationType.Buff,
+          SpellActivationType.Debuff,
+        ];
+
         target.spells.forEach((spell) => {
-          if (spell.baseType.activationType === SpellActivationType.Debuff) {
+          if (dispellableTypes.includes(spell.baseType.activationType)) {
             this.removeSpellFromUnitGroup(event.target, spell);
           }
         });
