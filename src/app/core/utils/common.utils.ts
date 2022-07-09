@@ -30,6 +30,10 @@ export const CommonUtils = {
     removeItem<T>(arr: T[], item: T): void {
         const itemIndex = arr.indexOf(item);
         arr.splice(itemIndex, 1);
+    },
+
+    randBoolean(): boolean {
+        return Math.random() > 0.5;
     }
 
 };

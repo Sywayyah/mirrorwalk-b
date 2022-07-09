@@ -19,6 +19,10 @@
                 <ng-container *ngTemplateOutlet="prefightPopup; context: {popup: popup}"></ng-container>
             </ng-container>
 
+            
+            <ng-container *ngSwitchCase="popupTypes.ItemReward">
+                <ng-container *ngTemplateOutlet="itemReward; context: {popup: popup}"></ng-container>
+            </ng-container>
         </ng-container>
     </ng-container>
 </div>
@@ -45,5 +49,11 @@
 <ng-template #hiringReward let-popup="popup">
     <div class="popup">
         <mw-hiring-reward-popup [popup]="popup" (close)="removePopup(popup)"></mw-hiring-reward-popup>
+    </div>
+</ng-template>
+
+<ng-template #itemReward let-popup="popup">
+    <div class="popup">
+        <mw-item-reward-popup [popup]="popup" (close)="removePopup(popup)"></mw-item-reward-popup>
     </div>
 </ng-template>

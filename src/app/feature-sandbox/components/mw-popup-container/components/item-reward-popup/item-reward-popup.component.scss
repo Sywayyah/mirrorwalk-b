@@ -1,0 +1,22 @@
+:host {
+    display: flex;
+    flex-direction: column;
+    min-height: 250px;
+    justify-content: space-between;
+}
+
+.reward-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.items-group {
+    margin: 4px;
+    padding: 13px;
+    border: 1px solid gray;
+}
+
+.selected {
+    border-color: gold;
+}

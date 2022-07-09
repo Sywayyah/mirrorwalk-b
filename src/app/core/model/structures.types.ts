@@ -1,8 +1,10 @@
 import { GenerationModel } from "../utils/common.utils";
+import { ItemBaseModel } from "./items/items.types";
 import { PlayerInstanceModel, UnitTypeModel } from "./main.model";
 import { ResourceType } from "./resources.types";
 
 /* Base descriptive type */
+/* Refactor these types */
 
 export enum StuctureControl {
     Neutral = 'neutral',
@@ -50,6 +52,7 @@ export interface StructureModel<T extends StructureTypeEnum = StructureTypeEnum>
 export enum NeutralRewardTypesEnum {
     SingleResource = 'resource',
     Resources = 'resources',
+    Item = 'item',
     UnitsHire = 'hire',
     Mines = 'mines',
 }
@@ -64,13 +67,18 @@ export interface NeutralCampStructure extends StructureModel<StructureTypeEnum.N
     isDefeated?: boolean;
 }
 
-/* Resources camp */
+/* Resources Reward */
 export interface ResourcesReward extends NeutralRewardModel<NeutralRewardTypesEnum.Resources> {
     resourceGroups: ResourceRewardModel[][];
 }
 
 
-/* Hiring Camp */
+/* Hiring Reward */
 export interface HiringReward extends NeutralRewardModel<NeutralRewardTypesEnum.UnitsHire> {
     units: HiringRewardModel[];
+}
+
+/* Item Reward */
+export interface ItemReward extends NeutralRewardModel<NeutralRewardTypesEnum.Item> {
+    itemGroups: ItemBaseModel[][];
 }

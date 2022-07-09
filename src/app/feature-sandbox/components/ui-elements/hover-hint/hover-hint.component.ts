@@ -1,6 +1,6 @@
 import { Component, ElementRef, Input, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { HintsService } from 'src/app/feature-sandbox/services/ui/hints.service';
-import { ElementHint } from '../hints-container/hints-container.component';
+import { ElementHint, HintAttachment } from '../hints-container/hints-container.component';
 
 @Component({
   selector: 'mw-hover-hint',
@@ -12,7 +12,7 @@ export class HoverHintComponent implements OnInit {
   @Input() public hintBody!: TemplateRef<ElementRef>;
   /* todo: improve transition and overall logic of this component later */
   @Input() public transition: number = 0.15;
-  @Input() public xPos: 'before' | 'after' = 'after';
+  @Input() public xPos: HintAttachment = 'after';
 
   @ViewChild('elem', { static: true }) public elem!: ElementRef;
   @ViewChild('generalHint', { static: true }) public generalHint!: TemplateRef<ElementRef>;

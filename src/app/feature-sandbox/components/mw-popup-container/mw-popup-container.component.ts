@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NeutralCampStructure, NeutralRewardTypesEnum } from "src/app/core/model/structures.types";
-import { BattleEventsService, BattleEventTypeEnum, BattleStateService, FightEndsPopup, LossModel, MwPlayersService, PopupModel, PopupTypesEnum, RoundEndsEvent, StructHireRewardPopup, StructRewardPopup } from '../../services';
+import { BattleEventsService, BattleEventTypeEnum, BattleStateService, FightEndsPopup, LossModel, MwPlayersService, PopupModel, PopupTypesEnum, RoundEndsEvent, StructHireRewardPopup, StructItemRewardPopup, StructRewardPopup } from '../../services';
 
 @Component({
   selector: 'mw-popup-container',
@@ -57,6 +57,15 @@ export class MwPopupContainerComponent implements OnInit {
               }
 
               this.battleEvents.dispatchEvent({ type: BattleEventTypeEnum.Display_Popup, popup: structHirePopup });
+              break;
+            case NeutralRewardTypesEnum.Item:
+              const structItemRewardPopup: StructItemRewardPopup = {
+                type: PopupTypesEnum.ItemReward,
+                struct: struct,
+              };
+
+              this.battleEvents.dispatchEvent({ type: BattleEventTypeEnum.Display_Popup, popup: structItemRewardPopup });
+              break;
           }
         }
       },

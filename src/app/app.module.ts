@@ -25,6 +25,8 @@ import {
 import { MwSpellTargetDirective } from './feature-sandbox/directives/mw-spell-target.directive';
 import { MwItemsPanelComponent } from './feature-sandbox/components/mw-items-panel/mw-items-panel.component';
 import { MwRaIconComponent } from './feature-sandbox/components/ui-elements/mw-ra-icon/mw-ra-icon.component';
+import { ItemRewardPopupComponent } from './feature-sandbox/components/mw-popup-container/components/item-reward-popup/item-reward-popup.component';
+import { ItemIconComponent } from './feature-sandbox/components/item-icon/item-icon.component';
 
 @NgModule({
   declarations: [
@@ -51,6 +53,8 @@ import { MwRaIconComponent } from './feature-sandbox/components/ui-elements/mw-r
     MwSpellTargetDirective,
     MwItemsPanelComponent,
     MwRaIconComponent,
+    ItemRewardPopupComponent,
+    ItemIconComponent,
   ],
   imports: [
     BrowserModule

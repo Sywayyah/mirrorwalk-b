@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ArchersOutpostStructure, BanditCamp, GraveyardStructure } from 'src/app/core/dictionaries/structures.const';
+import { ArchersOutpostStructure, BanditCamp, CalavryStalls, GraveyardStructure } from 'src/app/core/dictionaries/structures.const';
 import { PlayerInstanceModel, UnitGroupInstModel } from 'src/app/core/model/main.model';
 import { NeutralCampStructure, StructureGeneratorModel, StructureModel, StructureTypeEnum } from "src/app/core/model/structures.types";
 import { RandomUtils } from 'src/app/core/utils/common.utils';
@@ -21,6 +21,7 @@ export class MwStructuresService {
     GraveyardStructure,
     ArchersOutpostStructure,
     BanditCamp,
+    CalavryStalls,
   ];
 
   public structures: StructureModel[] = [

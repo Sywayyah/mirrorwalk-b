@@ -1,13 +1,15 @@
 import { Component, ElementRef, OnInit, TemplateRef } from '@angular/core';
 
-export type HintAttachment = 'before' | 'after';
+export type HintAttachment = 'before' | 'after' | 'above' | 'below';
 
 export interface ElementHint {
   template: TemplateRef<ElementRef>;
   targetElement: ElementRef;
   offsetLeft: number | null;
-  offsetTop: number;
+  offsetTop: number | null;
   offsetRight: number | null;
+  offsetBottom: number | null;
+  style: string;
 }
 
 @Component({
@@ -25,16 +27,39 @@ export class HintsContainerComponent implements OnInit {
 
   public createHint(target: ElementRef, template: TemplateRef<ElementRef>, pos: HintAttachment): ElementHint {
     const elem = target.nativeElement as HTMLElement;
-    const { left, top } = elem.getBoundingClientRect();
+    const { left, top, bottom } = elem.getBoundingClientRect();
     // console.log(left, top, right, window.innerWidth, elem.clientWidth);
+
+    let leftOffset = null;
+    let topOffset: number | null = top + (elem.clientHeight / 2);
+    let rightOffset = null;
+    let style = 'transform: translateY(-50%)';
+    let bottomOffset = null;
+
+    switch (pos) {
+      case 'after':
+        leftOffset = left + elem.clientWidth;
+        break;
+      case 'before':
+        rightOffset = window.innerWidth - left;
+        break;
+      case 'above':
+        topOffset = null;
+        style = 'transform: translateX(-50%)';
+        bottomOffset = bottom;
+        leftOffset = left + elem.clientWidth / 2;
+        break;
+    }
 
     const hint: ElementHint = {
       targetElement: target,
       template,
-      offsetLeft: pos === 'after' ? left + elem.clientWidth : null,
+      offsetLeft: leftOffset,
+      offsetBottom: bottomOffset,
       /* temporary */
-      offsetTop: top + (elem.clientHeight / 2),
-      offsetRight: pos === 'before' ? window.innerWidth - left : null,
+      offsetTop: topOffset,
+      offsetRight: rightOffset,
+      style: style,
     };
 
     this.hints.push(hint);

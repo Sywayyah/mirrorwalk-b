@@ -63,9 +63,9 @@ export class MwPlayersService {
       color: PLAYER_COLORS.BLUE,
       resources: {
         ...defaultResources,
-        gold: 3000,
-        wood: 5,
-        redCrystals: 2,
+        gold: 1500,
+        wood: 2,
+        redCrystals: 1,
       },
       type: PlayerTypeEnum.Player,
       hero: {

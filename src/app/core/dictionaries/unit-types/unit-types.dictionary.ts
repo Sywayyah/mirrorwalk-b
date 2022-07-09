@@ -69,7 +69,10 @@ export const HUMANS_FRACTION_UNIT_TYPES: Record<HF_TYPES_ENUM, UnitTypeModel> = 
         baseRequirements: {
             gold: 95,
         },
-        neutralReward: defaultRewards,
+        neutralReward: {
+            experience: 2,
+            gold: 2,
+        },
     },
     [HF_TYPES_ENUM.Knights]: {
         mainPortraitUrl: AssetsImages.Melee,
@@ -115,10 +118,13 @@ export const HUMANS_FRACTION_UNIT_TYPES: Record<HF_TYPES_ENUM, UnitTypeModel> = 
         
         baseRequirements: {
             gold: 175,
-            wood: 1,
+            // wood: 1,
             redCrystals: 1
         },
-        neutralReward: defaultRewards,
+        neutralReward: {
+            experience: 4,
+            gold: 6.3,
+        },
     }
 };
 

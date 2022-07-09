@@ -1,6 +1,7 @@
 import { ResourceType } from "../model/resources.types";
-import { HiringReward, NeutralRewardTypesEnum, ResourcesReward, StructureGeneratorModel, StuctureControl } from "../model/structures.types";
-import { GenerationModel } from "../utils/common.utils";
+import { HiringReward, ItemReward, NeutralRewardTypesEnum, ResourcesReward, StructureGeneratorModel, StuctureControl } from "../model/structures.types";
+import { CommonUtils, GenerationModel, RandomUtils } from "../utils/common.utils";
+import { ItemDoomstring, ItemWindCrest } from "./items.dictionary";
 import { NEUTRAL_FRACTION_UNIT_TYPES, NEUTRAL_TYPES_ENUM } from "./unit-types/neutral-unit-types.dictionary";
 import { HF_TYPES_ENUM, HUMANS_FRACTION_UNIT_TYPES } from "./unit-types/unit-types.dictionary";
 
@@ -53,21 +54,35 @@ export const BanditCamp: StructureGeneratorModel = {
     },
 
     generateReward: () => {
-        const resourcesReward: ResourcesReward = {
-            type: NeutralRewardTypesEnum.Resources,
-            resourceGroups: [
-                [
-                    { type: ResourceType.Gold, count: 450, },
-                    { type: ResourceType.RedCrystals, count: 1, },
+        if (CommonUtils.randBoolean()) {
+            const resourcesReward: ResourcesReward = {
+                type: NeutralRewardTypesEnum.Resources,
+                resourceGroups: [
+                    [
+                        { type: ResourceType.Gold, count: 450, },
+                        { type: ResourceType.RedCrystals, count: 1, },
+                    ],
+                    [
+                        { type: ResourceType.Gold, count: 800, },
+                        { type: ResourceType.Wood, count: 2, },
+                    ],
                 ],
-                [
-                    { type: ResourceType.Gold, count: 800, },
-                    { type: ResourceType.Wood, count: 2, },
-                ],
-            ],
-        };
+            };
 
-        return resourcesReward;
+            return resourcesReward;
+        } else {
+            const itemReward: ItemReward = {
+                type: NeutralRewardTypesEnum.Item,
+                itemGroups: [
+                    [ ItemWindCrest ],
+                    [ ItemDoomstring ],
+                ]
+            };
+
+            return itemReward;
+        }
+
+
     },
 };
 
@@ -93,6 +108,35 @@ export const ArchersOutpostStructure: StructureGeneratorModel = {
             type: NeutralRewardTypesEnum.UnitsHire,
             units: [
                 { unitType: HUMANS_FRACTION_UNIT_TYPES.Archers, maxCount: 12 },
+            ],
+        };
+
+        return hiringReward;
+    },
+};
+
+export const CalavryStalls: StructureGeneratorModel = {
+    name: 'Cavalry Stalls',
+    control: StuctureControl.Neutral,
+
+    generateGuard: () => {
+        const guard = {
+            fraction: HUMANS_FRACTION_UNIT_TYPES,
+            maxUnitGroups: 1,
+            minUnitGroups: 1,
+            units: [
+                [HF_TYPES_ENUM.Cavalry, 4, 7, 1],
+            ],
+        } as GenerationModel;
+
+        return guard;
+    },
+
+    generateReward: () => {
+        const hiringReward: HiringReward = {
+            type: NeutralRewardTypesEnum.UnitsHire,
+            units: [
+                { unitType: HUMANS_FRACTION_UNIT_TYPES.Cavalry, maxCount: 3 },
             ],
         };
 

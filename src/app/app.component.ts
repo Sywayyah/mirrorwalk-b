@@ -21,8 +21,8 @@ export class AppComponent implements OnInit {
 
   ) {
     items.initService(combat);
-    players.addItemToPlayer(players.getCurrentPlayer(), items.createItem(ItemDoomstring));
-    players.addItemToPlayer(players.getCurrentPlayer(), items.createItem(ItemWindCrest));
+    // players.addItemToPlayer(players.getCurrentPlayer(), items.createItem(ItemDoomstring));
+    // players.addItemToPlayer(players.getCurrentPlayer(), items.createItem(ItemWindCrest));
   }
 
   public ngOnInit(): void {
