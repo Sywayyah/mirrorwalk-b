@@ -29,4 +29,13 @@
         and some Masteries can just speed up this process? For example, on the level 4,
         Rain of Fire adds one more random target, and what if there would be a Mastery which
         allows to have this effect earlier?
+
+    (Potential) Additional spell casting. May it be that some unit types would allow hero
+        to cast spells once again during the same round? It could be an ability with global
+        cooldown, and may cost some mana to refresh hero's abilities.
+
+    (Potential) If will be strongly restricted to have more than one cast per round, maybe
+        some items can be added? For instance, some item that can allows to cast 
+        level 3 Enchant on the enemy. Or some advanced item with an ability Eclipse,
+        which instantly places level 4 Enchant on all enemy unit groups.
 */
