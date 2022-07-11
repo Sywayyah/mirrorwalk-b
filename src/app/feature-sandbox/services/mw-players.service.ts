@@ -1,43 +1,43 @@
 import { Injectable } from '@angular/core';
 import { PLAYER_COLORS } from 'src/app/core/dictionaries/colors.const';
+import { HelveticaHero } from 'src/app/core/dictionaries/heroes.const';
 import { LEVELS_BREAKPOINTS } from 'src/app/core/dictionaries/levels.const';
-import { NEUTRAL_FRACTION_UNIT_TYPES, NEUTRAL_TYPES_ENUM } from 'src/app/core/dictionaries/unit-types/neutral-unit-types.dictionary';
-import { BLINDNESS_SPELL, ENCHANT_SPELL, METEOR_SPELL, POISON_CLOUD_SPELL, RAIN_OF_FIRE_SPELL } from 'src/app/core/dictionaries/spells.const';
-import { HF_TYPES_ENUM, HUMANS_FRACTION_UNIT_TYPES } from 'src/app/core/dictionaries/unit-types/unit-types.dictionary';
+import { HeroModel } from 'src/app/core/model/hero.model';
+import { ItemInstanceModel } from 'src/app/core/model/items/items.types';
 import { PlayerInstanceModel, PlayerModel, PlayerTypeEnum, UnitGroupInstModel, UnitGroupModel } from 'src/app/core/model/main.model';
 import { ResourcesModel } from 'src/app/core/model/resources.types';
 import { CommonUtils, GenerationUtils } from 'src/app/core/utils/common.utils';
 import { BattleEventsService } from './mw-battle-events.service';
-import { BattleEventTypeEnum } from './types';
-import { MwSpellsService } from './mw-spells.service';
-import { ItemInstanceModel } from 'src/app/core/model/items/items.types';
+import { MwHeroesService } from './mw-heroes.service';
 import { MwItemsService } from './mw-items-service.service';
+import { MwSpellsService } from './mw-spells.service';
+import { BattleEventTypeEnum } from './types';
 
 
-const mainPlayerGroups = GenerationUtils.createRandomArmy({
-  fraction: HUMANS_FRACTION_UNIT_TYPES,
-  maxUnitGroups: 3,
-  minUnitGroups: 1,
-  units: [
-    [HF_TYPES_ENUM.Pikemans, 10, 22, 3],
-    [HF_TYPES_ENUM.Archers, 12, 20, 1],
-    [HF_TYPES_ENUM.Knights, 5, 9, 1],
-    [HF_TYPES_ENUM.Cavalry, 3, 5, 1],
-  ],
-});
+// const mainPlayerGroups = GenerationUtils.createRandomArmy({
+//   fraction: HUMANS_FRACTION_UNIT_TYPES,
+//   maxUnitGroups: 3,
+//   minUnitGroups: 1,
+//   units: [
+//     [HF_TYPES_ENUM.Pikemans, 10, 22, 3],
+//     [HF_TYPES_ENUM.Archers, 12, 20, 1],
+//     [HF_TYPES_ENUM.Knights, 5, 9, 1],
+//     [HF_TYPES_ENUM.Cavalry, 3, 5, 1],
+//   ],
+// });
 
-const neutralGroups = GenerationUtils.createRandomArmy({
-  fraction: NEUTRAL_FRACTION_UNIT_TYPES,
-  maxUnitGroups: 5,
-  minUnitGroups: 2,
-  units: [
-    [NEUTRAL_TYPES_ENUM.Gnolls, 10, 40, 3],
-    // [NEUTRAL_TYPES_ENUM.Gnolls, 10, 15, 3],
-    [NEUTRAL_TYPES_ENUM.ForestTrolls, 10, 25, 2],
-    [NEUTRAL_TYPES_ENUM.Thiefs, 12, 37, 2],
-    [NEUTRAL_TYPES_ENUM.Ghosts, 24, 42, 3],
-  ],
-});
+// const neutralGroups = GenerationUtils.createRandomArmy({
+//   fraction: NEUTRAL_FRACTION_UNIT_TYPES,
+//   maxUnitGroups: 5,
+//   minUnitGroups: 2,
+//   units: [
+//     [NEUTRAL_TYPES_ENUM.Gnolls, 10, 40, 3],
+//     // [NEUTRAL_TYPES_ENUM.Gnolls, 10, 15, 3],
+//     [NEUTRAL_TYPES_ENUM.ForestTrolls, 10, 25, 2],
+//     [NEUTRAL_TYPES_ENUM.Thiefs, 12, 37, 2],
+//     [NEUTRAL_TYPES_ENUM.Ghosts, 24, 42, 3],
+//   ],
+// });
 
 export enum PLAYER_IDS {
   Main = 'main',
@@ -57,59 +57,19 @@ const defaultResources: ResourcesModel = {
   providedIn: 'root'
 })
 export class MwPlayersService {
-  
+
   public players: Map<string, PlayerInstanceModel> = new Map([
-    this.createPlayerEntry(PLAYER_IDS.Main, {
-      color: PLAYER_COLORS.BLUE,
-      resources: {
-        ...defaultResources,
-        gold: 1500,
-        wood: 2,
-        redCrystals: 1,
-      },
-      type: PlayerTypeEnum.Player,
-      hero: {
-        name: 'Taltir',
-        experience: 0,
-        level: 1,
-        stats: {
-          maxMana: 25,
-          currentMana: 15,
-          baseAttack: 1,
-          bonusAttack: 0,
-        },
-        freeSkillpoints: 0,
-        spells: [
-          this.spellsService.createSpellInstance(RAIN_OF_FIRE_SPELL),
-          this.spellsService.createSpellInstance(POISON_CLOUD_SPELL),
-          this.spellsService.createSpellInstance(METEOR_SPELL),
-          this.spellsService.createSpellInstance(ENCHANT_SPELL),
-          this.spellsService.createSpellInstance(BLINDNESS_SPELL),
-        ],
-        mods: [],
-        items: [],
-      },
-      unitGroups: mainPlayerGroups,
-    }),
+    this.createPlayerEntry(PLAYER_IDS.Main, this.createPlayerWithHero(
+      PLAYER_COLORS.BLUE,
+      HelveticaHero,
+      PlayerTypeEnum.Player,
+    )),
+
     this.createPlayerEntry(PLAYER_IDS.Neutral, {
       color: PLAYER_COLORS.GRAY,
       type: PlayerTypeEnum.AI,
-      hero: {
-        name: null,
-        experience: 0,
-        level: 0,
-        stats: {
-          maxMana: 5,
-          currentMana: 1,
-          baseAttack: 0,
-          bonusAttack: 0,
-        },
-        freeSkillpoints: 0,
-        spells: [],
-        mods: [],
-        items: [],
-      },
-      unitGroups: neutralGroups,
+      hero: this.heroesService.createNeutralHero(),
+      unitGroups: [],
       resources: {
         ...defaultResources,
       },
@@ -122,6 +82,7 @@ export class MwPlayersService {
     private readonly events: BattleEventsService,
     private readonly spellsService: MwSpellsService,
     private readonly itemsService: MwItemsService,
+    private readonly heroesService: MwHeroesService,
   ) { }
 
   public getCurrentPlayer(): PlayerInstanceModel {
@@ -213,5 +174,21 @@ export class MwPlayersService {
 
   private createPlayerEntry(id: string, playerInfo: PlayerModel): [string, PlayerInstanceModel] {
     return [id, this.createPlayer(id, playerInfo)];
+  }
+
+  private createPlayerWithHero(
+    color: string,
+    hero: HeroModel,
+    type: PlayerTypeEnum,
+  ): PlayerModel {
+    const player = {
+      color,
+      hero: this.heroesService.createHero(hero),
+      resources: hero.initialState.resources,
+      type,
+      unitGroups: GenerationUtils.createRandomArmy(hero.initialState.army[0]),
+    };
+
+    return player;
   }
 }

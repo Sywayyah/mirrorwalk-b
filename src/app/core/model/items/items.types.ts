@@ -20,10 +20,10 @@
 */
 
 import { CombatActionsRef } from "../combat-api/combat-api.types";
+import { HeroInstanceModel } from "../hero.model";
 import { Icon } from "../icons.types";
-import { HeroModel, PlayerInstanceModel, UnitGroupModel } from "../main.model";
+import { PlayerInstanceModel, UnitGroupModel } from "../main.model";
 import { Modifiers } from "../modifiers";
-import { SpellCombatEventsRef, SpellConfig } from "../spells";
 
 export interface ItemRequirementModel<T extends object> {
     type: string;
@@ -68,7 +68,7 @@ export interface ItemBaseModel<StateType extends object = object> {
             actions: CombatActionsRef,
             events: GameEventsRef,
             ownerPlayer: PlayerInstanceModel,
-            ownerHero: HeroModel,
+            ownerHero: HeroInstanceModel,
             thisInstance: ItemInstanceModel<StateType>,
         }) => void,
     },

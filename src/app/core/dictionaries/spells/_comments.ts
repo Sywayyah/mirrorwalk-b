@@ -3,8 +3,8 @@
 
     - Combat API:
 
-    I need more api functions, like, healing units, slowing them (fight queue should be
-        recalculated in this case). More modifiers. Maybe events with certain
+    I need more methods in api for spells, like, healing units, slowing them (fight queue
+        should be recalculated in this case). More modifiers. Maybe events with certain
         initiative, for example, falling meteor can have an initiative of 8, so it will
         fall before units of this initiative value make their turn.
 

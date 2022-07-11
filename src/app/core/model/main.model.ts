@@ -1,4 +1,4 @@
-import { ItemInstanceModel } from "./items/items.types";
+import { HeroInstanceModel } from "./hero.model";
 import { Modifiers } from "./modifiers";
 import { ResourcesModel } from "./resources.types";
 import type { SpellInstance } from "./spells/spell.types";
@@ -110,7 +110,7 @@ export interface PlayerModel {
 
     type: PlayerTypeEnum;
 
-    hero: HeroModel;
+    hero: HeroInstanceModel;
 
     unitGroups: UnitGroupModel[];
 }
@@ -119,7 +119,7 @@ export interface PlayerInstanceModel extends PlayerModel {
     id: string;
 }
 
-export interface HeroStatsModel {
+export interface HeroInstanceStats {
     maxMana: number;
     currentMana: number;
     /* these ones can be just for UI, but mods will be used in calcs */
@@ -127,15 +127,4 @@ export interface HeroStatsModel {
     bonusAttack: number;
 }
 
-/* Hero model */
-export interface HeroModel {
-    name: string | null;
-    experience: number;
-    level: number;
-    freeSkillpoints: number;
-    stats: HeroStatsModel;
-    // abilities?: AbilityTypeModel[];
-    spells: SpellInstance[];
-    mods: Modifiers[];
-    items: ItemInstanceModel[];
-}
+

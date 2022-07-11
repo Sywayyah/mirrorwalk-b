@@ -1,6 +1,7 @@
 import { CombatActionsRef } from "../combat-api/combat-api.types";
 import { Icon } from "../icons.types";
-import type { HeroModel, PlayerInstanceModel, UnitGroupInstModel } from "../main.model";
+import type { PlayerInstanceModel, UnitGroupInstModel } from "../main.model";
+import { HeroInstanceModel } from "../hero.model";
 import type { SpellEventHandlers } from "./spell-events";
 
 export enum SpellActivationType {
@@ -58,7 +59,7 @@ export interface SpellCombatRefsModel<SpellStateType> {
     thisSpell: SpellModel<SpellStateType>;
     spellInstance: SpellInstance<SpellStateType>;
     ownerPlayer: PlayerInstanceModel;
-    ownerHero: HeroModel;
+    ownerHero: HeroInstanceModel;
 }
 
 export interface SpellConfig<SpellStateType> {

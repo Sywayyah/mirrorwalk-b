@@ -60,7 +60,7 @@ export const BanditCamp: StructureGeneratorModel = {
                 resourceGroups: [
                     [
                         { type: ResourceType.Gold, count: 450, },
-                        { type: ResourceType.RedCrystals, count: 1, },
+                        { type: ResourceType.Gems, count: 1, },
                     ],
                     [
                         { type: ResourceType.Gold, count: 800, },
