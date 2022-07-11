@@ -21,6 +21,7 @@ export class MwStructuresService {
     GraveyardStructure,
     ArchersOutpostStructure,
     BanditCamp,
+    BanditCamp,
     CalavryStalls,
     MagicRiverStructure,
   ];

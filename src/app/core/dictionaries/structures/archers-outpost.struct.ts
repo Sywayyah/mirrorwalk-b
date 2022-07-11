@@ -10,10 +10,10 @@ export const ArchersOutpostStructure: StructureGeneratorModel = {
     generateGuard: () => {
         const guard = {
             fraction: HUMANS_FRACTION_UNIT_TYPES,
-            maxUnitGroups: 2,
-            minUnitGroups: 1,
+            maxUnitGroups: 3,
+            minUnitGroups: 3,
             units: [
-                [HF_TYPES_ENUM.Archers, 8, 16, 2],
+                [HF_TYPES_ENUM.Archers, 8, 11, 3],
             ],
         } as GenerationModel;
 
