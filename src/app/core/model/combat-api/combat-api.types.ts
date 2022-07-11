@@ -1,6 +1,7 @@
+import { SpellsApi } from "../game-api/game-apis.types";
 import type { PlayerInstanceModel, UnitGroupInstModel } from "../main.model";
 import type { Modifiers } from "../modifiers";
-import type { DefaultSpellStateType, SpellInstance, SpellModel } from "../spells";
+import type { DefaultSpellStateType, SpellInstance } from "../spells";
 
 
 export interface PostDamageInfo {
@@ -19,7 +20,7 @@ export interface SpellCreationOptions<T = DefaultSpellStateType> {
     state?: T;
 }
 
-export interface CombatActionsRef {
+export interface CombatActionsRef extends SpellsApi {
     dealDamageTo: (
         target: UnitGroupInstModel,
         damage: number,
@@ -27,8 +28,7 @@ export interface CombatActionsRef {
         postActionFn?: (actionInfo: PostDamageInfo) => void,
     ) => void;
 
-    // Creates shallow clone of spell that is passed, registers it inside battle events system
-    //  adds it to the target group and returning the reference of the created spell.
+    // adds spell instance to specific unit group.
     addSpellToUnitGroup: <T = DefaultSpellStateType>(
         target: UnitGroupInstModel,
         spell: SpellInstance<T>,
@@ -46,8 +46,6 @@ export interface CombatActionsRef {
     getRandomEnemyPlayerGroup: () => UnitGroupInstModel;
 
     historyLog: (plainMsg: string) => void;
-
-    createSpellInstance: <T>(spell: SpellModel<T>, options?: SpellCreationOptions<T>) => SpellInstance<T>;
 
     createModifiers: (modifiers: Modifiers) => Modifiers;
 

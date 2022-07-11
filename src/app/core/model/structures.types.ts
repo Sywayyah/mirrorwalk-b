@@ -1,5 +1,5 @@
 import { GenerationModel } from "../utils/common.utils";
-import { GameApi } from "./game-api/game-api.types";
+import { PlayersApi, SpellsApi } from "./game-api/game-apis.types";
 import { ItemBaseModel } from "./items/items.types";
 import { PlayerInstanceModel, UnitTypeModel } from "./main.model";
 import { ResourceType } from "./resources.types";
@@ -10,6 +10,12 @@ import { ResourceType } from "./resources.types";
 export enum StuctureControl {
     Neutral = 'neutral',
     EnemyPlayer = 'enemy',
+}
+
+interface OnVisitedParams {
+    playersApi: PlayersApi;
+    spellsApi: SpellsApi,
+    visitingPlayer: PlayerInstanceModel;
 }
 
 export interface StructureGeneratorModel {
@@ -26,7 +32,7 @@ export interface StructureGeneratorModel {
     generateGuard?: () => GenerationModel;
     generateReward?: () => NeutralRewardModel;
 
-    onVisited?: (params: { api: GameApi, visitingPlayer: PlayerInstanceModel }) => void;
+    onVisited?: (params: OnVisitedParams) => void;
 }
 
 /* NOTE: all that is next - it looks more like instance */

@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { MwPlayersService, PreviewPopup } from 'src/app/feature-sandbox/services';
 import { MwHeroesService } from 'src/app/feature-sandbox/services/mw-heroes.service';
+import { MwSpellsService } from 'src/app/feature-sandbox/services/mw-spells.service';
 
 @Component({
   selector: 'mw-preview-popup',
@@ -15,6 +16,7 @@ export class PreviewPopupComponent implements OnInit {
   constructor(
     private players: MwPlayersService,
     private heroes: MwHeroesService,
+    private spells: MwSpellsService,
   ) { }
 
   ngOnInit(): void {
@@ -28,12 +30,20 @@ export class PreviewPopupComponent implements OnInit {
     const currentPlayer = this.players.getCurrentPlayer();
 
     this.popup.struct.generator.onVisited?.({
-      api: {
+      playersApi: {
         addManaToPlayer: (player, mana) => {
           this.heroes.addManaToHero(player.hero, mana);
         },
         addMaxManaToPlayer: (player, mana) => {
           this.heroes.addMaxManaToHero(player.hero, mana);
+        },
+        addSpellToPlayerHero: (player, spell) => {
+          player.hero.spells.push(spell);
+        },
+      },
+      spellsApi: {
+        createSpellInstance: (spell, options) => {
+          return this.spells.createSpellInstance(spell, options);
         },
       },
       visitingPlayer: currentPlayer,
