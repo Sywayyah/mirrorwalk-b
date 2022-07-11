@@ -38,7 +38,7 @@ export class PreviewPopupComponent implements OnInit {
           this.heroes.addMaxManaToHero(player.hero, mana);
         },
         addSpellToPlayerHero: (player, spell) => {
-          player.hero.spells.push(spell);
+          this.heroes.addSpellToHero(player.hero, spell);
         },
       },
       spellsApi: {

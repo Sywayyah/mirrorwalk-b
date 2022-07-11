@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { createHeroModelBase, EMPTY_RESOURCES } from 'src/app/core/dictionaries/heroes.const';
 import { HeroInstanceModel, HeroModel } from 'src/app/core/model/hero.model';
+import { SpellInstance } from 'src/app/core/model/spells';
 import { MwItemsService } from './mw-items-service.service';
 import { MwSpellsService } from './mw-spells.service';
 
@@ -31,6 +32,10 @@ export class MwHeroesService {
     const newMana = heroStats.currentMana + mana;
 
     heroStats.currentMana = newMana > heroStats.maxMana ? heroStats.maxMana : newMana;
+  }
+
+  public addSpellToHero(hero: HeroInstanceModel, spell: SpellInstance): void {
+    hero.spells.push(spell)
   }
 
   public addMaxManaToHero(hero: HeroInstanceModel, maxMana: number): void {
