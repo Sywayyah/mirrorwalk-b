@@ -15,10 +15,11 @@
     <!-- todo: For the sake of better typization, these templates should be components -->
     <div class="structure" (click)="onStructureSelected(structure)" [class.defeated]="structure.isDefeated">
         {{structure.generator.name}}
-        {{structure.type}}
+        <!-- {{structure.type}} -->
         <div *ngIf="structure.reward" style="font-size: 12px;">Reward: {{structure.reward?.type}}</div>
         <div *ngIf="structure.isDefeated">Defeated:</div>
         <div class="guards" *ngFor="let guards of guardsMap[structure.id]">
+            <!-- Aggregate, or remove later -->
             {{guards.type.name}}: {{guards.count}}
         </div>
     </div>

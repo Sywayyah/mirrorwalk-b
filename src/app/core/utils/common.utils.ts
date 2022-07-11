@@ -43,9 +43,9 @@ export const GenerationUtils = {
         const groupsToGenerateCount = CommonUtils.randIntInRange(options.minUnitGroups, options.maxUnitGroups);
         const generatedGroups = [];
 
-        const unitsMap = options.units.reduce((map, description) => {
+        const unitsMap = options.units.reduce((unitGroupsMap, description) => {
             const [unitType, min, max, maxGroupsOfThisType = Infinity] = description;
-            map.set(description, {
+            unitGroupsMap.set(description, {
                 unitType,
                 min,
                 max,
@@ -53,7 +53,7 @@ export const GenerationUtils = {
                 created: 0,
             });
 
-            return map;
+            return unitGroupsMap;
         }, new Map());
 
         for (let i = 0; i < groupsToGenerateCount; i++) {
