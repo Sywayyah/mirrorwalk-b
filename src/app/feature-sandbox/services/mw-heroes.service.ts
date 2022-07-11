@@ -26,6 +26,17 @@ export class MwHeroesService {
     private spellsService: MwSpellsService,
   ) { }
 
+  public addManaToHero(hero: HeroInstanceModel, mana: number): void {
+    const heroStats = hero.stats;
+    const newMana = heroStats.currentMana + mana;
+
+    heroStats.currentMana = newMana > heroStats.maxMana ? heroStats.maxMana : newMana;
+  }
+
+  public addMaxManaToHero(hero: HeroInstanceModel, maxMana: number): void {
+    hero.stats.maxMana += maxMana;
+  }
+
   public createHero(heroBase: HeroModel): HeroInstanceModel {
     const heroInitState = heroBase.initialState;
     const heroBaseStats = heroInitState.stats;
