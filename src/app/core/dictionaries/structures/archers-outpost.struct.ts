@@ -13,7 +13,7 @@ export const ArchersOutpostStructure: StructureGeneratorModel = {
             maxUnitGroups: 2,
             minUnitGroups: 1,
             units: [
-                [HF_TYPES_ENUM.Archers, 12, 22, 2],
+                [HF_TYPES_ENUM.Archers, 8, 16, 2],
             ],
         } as GenerationModel;
 
