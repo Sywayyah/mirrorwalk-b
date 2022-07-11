@@ -1,4 +1,5 @@
 import { GenerationModel } from "../utils/common.utils";
+import { GameApi } from "./game-api/game-api.types";
 import { ItemBaseModel } from "./items/items.types";
 import { PlayerInstanceModel, UnitTypeModel } from "./main.model";
 import { ResourceType } from "./resources.types";
@@ -14,14 +15,18 @@ export enum StuctureControl {
 export interface StructureGeneratorModel {
     name: string;
     control: StuctureControl;
-
+    description?: string,
     /* looks good. it can be impossible to describe all possible logic data-driven, 
         it's better to have it like fn, which decides on it's own
 
         although, think about it later.
      */
-    generateGuard: () => GenerationModel;
-    generateReward: () => NeutralRewardModel;
+
+    /* to generate neutral camp structure */
+    generateGuard?: () => GenerationModel;
+    generateReward?: () => NeutralRewardModel;
+
+    onVisited?: (params: { api: GameApi, visitingPlayer: PlayerInstanceModel }) => void;
 }
 
 /* NOTE: all that is next - it looks more like instance */
@@ -38,14 +43,24 @@ export interface HiringRewardModel {
 }
 
 /* Kinds of location structures */
+/*  this will require some later thinking */
 export enum StructureTypeEnum {
+    /* Mostly, for locations with guards+rewards */
     NeutralCamp = 'neutral-camp',
+    /* Mostly,for locations without guards, and which uses game api */
+    NeutralSite = 'neutral-site',
 }
 
 export interface StructureModel<T extends StructureTypeEnum = StructureTypeEnum> {
     id: string;
     type: T;
     generator: StructureGeneratorModel;
+    isInactive?: boolean;
+}
+
+/*  */
+export interface NeutralSite extends StructureModel<StructureTypeEnum.NeutralSite> {
+    isCompleted?: boolean;
 }
 
 /* Neutral structures */
@@ -64,7 +79,6 @@ export interface NeutralRewardModel<T extends NeutralRewardTypesEnum = NeutralRe
 export interface NeutralCampStructure extends StructureModel<StructureTypeEnum.NeutralCamp> {
     guard: PlayerInstanceModel;
     reward?: NeutralRewardModel;
-    isDefeated?: boolean;
 }
 
 /* Resources Reward */

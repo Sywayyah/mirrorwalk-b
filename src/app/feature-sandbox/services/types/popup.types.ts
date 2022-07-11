@@ -1,5 +1,5 @@
 import { UnitTypeModel } from "src/app/core/model/main.model";
-import { NeutralCampStructure, ResourceRewardModel } from "src/app/core/model/structures.types";
+import { NeutralCampStructure, NeutralSite, ResourceRewardModel } from "src/app/core/model/structures.types";
 
 export interface LossModel {
   type: UnitTypeModel;
@@ -11,7 +11,10 @@ export enum PopupTypesEnum {
   StructResourcesReward,
   HiringReward,
   ItemReward,
+  /* when there is a guard */
   Prefight,
+  /* when there is no guard, just text message */
+  Preview,
 }
 
 export interface PopupModel<T extends PopupTypesEnum = PopupTypesEnum> {
@@ -40,4 +43,8 @@ export interface StructItemRewardPopup extends PopupModel<PopupTypesEnum.ItemRew
 
 export interface PrefightPopup extends PopupModel<PopupTypesEnum.Prefight> {
   struct: NeutralCampStructure;
+}
+
+export interface PreviewPopup extends PopupModel<PopupTypesEnum.Preview> {
+  struct: NeutralSite;
 }

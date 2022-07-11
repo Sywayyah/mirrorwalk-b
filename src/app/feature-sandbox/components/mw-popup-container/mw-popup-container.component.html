@@ -19,7 +19,10 @@
                 <ng-container *ngTemplateOutlet="prefightPopup; context: {popup: popup}"></ng-container>
             </ng-container>
 
-            
+            <ng-container *ngSwitchCase="popupTypes.Preview">
+                <ng-container *ngTemplateOutlet="previewPopup; context: {popup: popup}"></ng-container>
+            </ng-container>
+
             <ng-container *ngSwitchCase="popupTypes.ItemReward">
                 <ng-container *ngTemplateOutlet="itemReward; context: {popup: popup}"></ng-container>
             </ng-container>
@@ -31,6 +34,12 @@
 <ng-template #prefightPopup let-popup="popup">
     <div class="popup">
         <mw-pre-fight-popup (close)="removePopup(popup)" [popup]="popup"></mw-pre-fight-popup>
+    </div>
+</ng-template>
+
+<ng-template #previewPopup let-popup="popup">
+    <div class="popup">
+        <mw-preview-popup (close)="removePopup(popup)" [popup]="popup"></mw-preview-popup>
     </div>
 </ng-template>
 

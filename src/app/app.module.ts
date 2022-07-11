@@ -27,6 +27,7 @@ import { MwItemsPanelComponent } from './feature-sandbox/components/mw-items-pan
 import { MwRaIconComponent } from './feature-sandbox/components/ui-elements/mw-ra-icon/mw-ra-icon.component';
 import { ItemRewardPopupComponent } from './feature-sandbox/components/mw-popup-container/components/item-reward-popup/item-reward-popup.component';
 import { ItemIconComponent } from './feature-sandbox/components/item-icon/item-icon.component';
+import { PreviewPopupComponent } from './feature-sandbox/components/mw-popup-container/components/preview-popup/preview-popup.component';
 
 @NgModule({
   declarations: [
@@ -55,6 +56,7 @@ import { ItemIconComponent } from './feature-sandbox/components/item-icon/item-i
     MwRaIconComponent,
     ItemRewardPopupComponent,
     ItemIconComponent,
+    PreviewPopupComponent,
   ],
   imports: [
     BrowserModule

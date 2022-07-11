@@ -30,7 +30,7 @@ export class MwStructuresViewComponent implements OnInit {
   }
 
   public onStructureSelected(struct: NeutralCampStructure): void {
-    if (struct.isDefeated) {
+    if (struct.isInactive) {
       return;
     }
 
@@ -38,4 +38,5 @@ export class MwStructuresViewComponent implements OnInit {
 
     this.events.dispatchEvent({ type: BattleEventTypeEnum.Struct_Selected, struct });
   }
+
 }

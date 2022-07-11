@@ -59,7 +59,7 @@ export interface PlayerCastsInstantSpell extends BattleEventModel<BattleEventTyp
 export interface PlayerGainsLevel extends BattleEventModel<BattleEventTypeEnum.Player_Gains_Level> {}
 
 export interface StructSelected extends BattleEventModel<BattleEventTypeEnum.Struct_Selected> {
-  struct: NeutralCampStructure;
+  struct: StructureModel;
 }
 
 export interface DisplayRewardPopup extends BattleEventModel<BattleEventTypeEnum.Display_Reward_Popup> {

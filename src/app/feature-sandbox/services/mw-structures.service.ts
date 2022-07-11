@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { ArchersOutpostStructure, BanditCamp, CalavryStalls, GraveyardStructure } from 'src/app/core/dictionaries/structures.const';
+import { ArchersOutpostStructure, BanditCamp, CalavryStalls, GraveyardStructure, MagicRiverStructure } from 'src/app/core/dictionaries/structures.const';
 import { PlayerInstanceModel, UnitGroupInstModel } from 'src/app/core/model/main.model';
-import { NeutralCampStructure, StructureGeneratorModel, StructureModel, StructureTypeEnum } from "src/app/core/model/structures.types";
+import { NeutralCampStructure, NeutralSite, StructureGeneratorModel, StructureModel, StructureTypeEnum } from "src/app/core/model/structures.types";
 import { GenerationUtils } from 'src/app/core/utils/common.utils';
 import { BattleEventsService } from './mw-battle-events.service';
 import { MwPlayersService } from './mw-players.service';
@@ -23,51 +23,10 @@ export class MwStructuresService {
     BanditCamp,
     BanditCamp,
     CalavryStalls,
+    MagicRiverStructure,
   ];
 
-  public structures: StructureModel[] = [
-    // {
-    //   type: StructureTypeEnum.NeutralCamp,
-    //   id: '0',
-    //   guard: this.neutralPlayer,
-    //   reward: {
-    //     type: NeutralRewardTypesEnum.UnitsHire,
-    //     units: [
-    //       { unitType: HUMANS_FRACTION_UNIT_TYPES.Pikemans, maxCount: 35 },
-    //     ],
-    //   } as HiringReward,
-    // } as NeutralCampStructure,
-
-    // {
-    //   type: StructureTypeEnum.NeutralCamp,
-    //   id: '1',
-    //   guard: this.neutralPlayer,
-    //   reward: {
-    //     type: NeutralRewardTypesEnum.UnitsHire,
-    //     units: [
-    //       { unitType: HUMANS_FRACTION_UNIT_TYPES.Archers, maxCount: 24 },
-    //       { unitType: HUMANS_FRACTION_UNIT_TYPES.Cavalry, maxCount: 13 },
-    //     ],
-    //   } as HiringReward,
-    // } as NeutralCampStructure,
-
-    // {
-    //   id: '2',
-    //   type: StructureTypeEnum.NeutralCamp,
-    //   guard: this.neutralPlayer,
-    //   reward: {
-    //     type: NeutralRewardTypesEnum.Resources,
-    //     resourceGroups: [
-    //       [
-    //         { type: ResourceType.Gold, count: 1000 },
-    //         { type: ResourceType.Wood, count: 10 },
-    //       ], [
-    //         { type: ResourceType.RedCrystals, count: 4 },
-    //       ]
-    //     ],
-    //   } as ResourcesReward,
-    // } as NeutralCampStructure,
-  ];
+  public structures: StructureModel[] = [];
 
   public guardsMap: Record<string, UnitGroupInstModel[]>;
 
@@ -84,15 +43,29 @@ export class MwStructuresService {
     }).subscribe();
 
     this.structureTypes.forEach((structureType, i) => {
-      const newStructure: NeutralCampStructure = {
-        id: String(i),
-        generator: structureType,
-        type: StructureTypeEnum.NeutralCamp,
-        reward: structureType.generateReward(),
-        guard: this.neutralPlayer,
-      };
 
-      this.structures.push(newStructure);
+      if (structureType.generateGuard && structureType.generateReward) {
+        const newStructure: NeutralCampStructure = {
+          id: String(i),
+          generator: structureType,
+          type: StructureTypeEnum.NeutralCamp,
+          reward: structureType.generateReward(),
+          guard: this.neutralPlayer,
+        };
+
+        this.structures.push(newStructure);
+      }
+
+      if (structureType.onVisited) {
+        const neutralSiteStructure: NeutralSite = {
+          generator: structureType,
+          id: String(i),
+          type: StructureTypeEnum.NeutralSite,
+        };
+
+        this.structures.push(neutralSiteStructure);
+      }
+
     });
     this.guardsMap = this.generateNewGuardsMap();
   }
@@ -101,10 +74,12 @@ export class MwStructuresService {
     const guardsMap: Record<string, UnitGroupInstModel[]> = {};
 
     this.structures.forEach(struct => {
-      guardsMap[struct.id] = GenerationUtils.createRandomArmyForPlayer(
-        struct.generator.generateGuard(),
-        this.neutralPlayer
-      );
+      guardsMap[struct.id] = struct.generator.generateGuard
+        ? GenerationUtils.createRandomArmyForPlayer(
+          struct.generator.generateGuard(),
+          this.neutralPlayer
+        )
+        : [];
     });
 
     return guardsMap;

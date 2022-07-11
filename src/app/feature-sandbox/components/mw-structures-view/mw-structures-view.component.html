@@ -5,6 +5,10 @@
             <ng-container *ngSwitchCase="structureTypes.NeutralCamp">
                 <ng-container *ngTemplateOutlet="neutralCamp; context: {structure: structure}"></ng-container>
             </ng-container>
+
+            <ng-container *ngSwitchCase="structureTypes.NeutralSite">
+                <ng-container *ngTemplateOutlet="neutralSite; context: {structure: structure}"></ng-container>
+            </ng-container>
         </ng-container>
     </div>
 </div>
@@ -13,7 +17,7 @@
 
 <ng-template #neutralCamp let-structure="structure">
     <!-- todo: For the sake of better typization, these templates should be components -->
-    <div class="structure" (click)="onStructureSelected(structure)" [class.defeated]="structure.isDefeated">
+    <div class="structure" (click)="onStructureSelected(structure)" [class.inactive]="structure.isInactive">
         {{structure.generator.name}}
         <!-- {{structure.type}} -->
         <div *ngIf="structure.reward" style="font-size: 12px;">Reward: {{structure.reward?.type}}</div>
@@ -22,5 +26,13 @@
             <!-- Aggregate, or remove later -->
             {{guards.type.name}}: {{guards.count}}
         </div>
+    </div>
+</ng-template>
+
+<ng-template #neutralSite let-structure="structure">
+    <div class="structure" (click)="onStructureSelected(structure)" [class.inactive]="structure.isInactive">
+        {{structure.generator.name}}
+        <!-- <div *ngIf="structure.reward" style="font-size: 12px;">Reward: {{structure.reward?.type}}</div> -->
+        <div *ngIf="structure.isDefeated">Defeated:</div>
     </div>
 </ng-template>
