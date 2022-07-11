@@ -18,4 +18,10 @@
 
       And it also could be the only way to achieve this Mastery, would be no other ways,
       only Witch Hut.
+
+    Idea: Materies can require costly rare resources, like Crystals. But they may also
+        do something like, learning some big mastery increases your level by 2, but
+        doesn't give spell points. And current experience is erased, experience bar 
+        becomes empty.
+
 */
