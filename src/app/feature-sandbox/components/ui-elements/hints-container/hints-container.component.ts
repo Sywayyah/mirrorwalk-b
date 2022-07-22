@@ -28,7 +28,6 @@ export class HintsContainerComponent implements OnInit {
   public createHint(target: ElementRef, template: TemplateRef<ElementRef>, pos: HintAttachment): ElementHint {
     const elem = target.nativeElement as HTMLElement;
     const { left, top, bottom } = elem.getBoundingClientRect();
-    // console.log(left, top, right, window.innerWidth, elem.clientWidth);
 
     let leftOffset = null;
     let topOffset: number | null = top + (elem.clientHeight / 2);
@@ -46,7 +45,7 @@ export class HintsContainerComponent implements OnInit {
       case 'above':
         topOffset = null;
         style = 'transform: translateX(-50%)';
-        bottomOffset = bottom;
+        bottomOffset = window.innerHeight - bottom + elem.clientHeight;
         leftOffset = left + elem.clientWidth / 2;
         break;
     }
@@ -56,7 +55,6 @@ export class HintsContainerComponent implements OnInit {
       template,
       offsetLeft: leftOffset,
       offsetBottom: bottomOffset,
-      /* temporary */
       offsetTop: topOffset,
       offsetRight: rightOffset,
       style: style,
