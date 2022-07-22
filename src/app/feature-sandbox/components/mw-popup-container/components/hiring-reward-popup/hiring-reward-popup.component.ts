@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ResourcesModel, ResourceType } from 'src/app/core/model/resources.types';
 import { HiringReward, HiringRewardModel } from 'src/app/core/model/structures.types';
 import { MwPlayersService, StructHireRewardPopup } from 'src/app/feature-sandbox/services';
+import { MwUnitGroupsService } from 'src/app/feature-sandbox/services/mw-unit-groups.service';
 
 interface HireModel {
   hire: HiringRewardModel,
@@ -27,6 +28,7 @@ export class HiringRewardPopupComponent implements OnInit {
 
   constructor(
     private readonly playersService: MwPlayersService,
+    private readonly unitGroups: MwUnitGroupsService,
   ) {
   }
 
@@ -85,12 +87,13 @@ export class HiringRewardPopupComponent implements OnInit {
 
     this.hiredGroups.forEach(group => {
       if (group.count) {
-        this.playersService.addUnitGroupToTypeStack(currentPlayer, {
-          count: group.count,
-          type: group.hire.unitType,
-          ownerPlayerRef: currentPlayer,
-          turnsLeft: group.hire.unitType.defaultTurnsPerRound,
-        });
+        const unitGroup = this.unitGroups.createUnitGroup(
+          group.hire.unitType,
+          { count: group.count },
+          currentPlayer
+        );
+
+        this.playersService.addUnitGroupToTypeStack(currentPlayer, unitGroup);
       }
     });
 

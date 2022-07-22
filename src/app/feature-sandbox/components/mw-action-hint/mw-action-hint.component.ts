@@ -27,7 +27,6 @@ export class MwActionHintComponent implements OnInit {
       this.mwBattleState.hintMessage$,
     ]).pipe(
       map(([playerTurnEvent, actionHint]) => {
-        console.log(playerTurnEvent.currentPlayer !== this.players.getCurrentPlayer());
         if (playerTurnEvent.currentPlayer !== this.players.getCurrentPlayer()) {
           return null;
         }

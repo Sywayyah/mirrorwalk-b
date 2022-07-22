@@ -3,9 +3,9 @@ import { ArchersOutpostStructure, BanditCamp, CalavryStalls, GraveyardStructure,
 import { WitchHutStructure } from 'src/app/core/dictionaries/structures/witch-hut.struct';
 import { PlayerInstanceModel, UnitGroupInstModel } from 'src/app/core/model/main.model';
 import { NeutralCampStructure, NeutralSite, StructureGeneratorModel, StructureModel, StructureTypeEnum } from "src/app/core/model/structures.types";
-import { GenerationUtils } from 'src/app/core/utils/common.utils';
 import { BattleEventsService } from './mw-battle-events.service';
 import { MwPlayersService } from './mw-players.service';
+import { MwUnitGroupsService } from './mw-unit-groups.service';
 import { BattleEventTypeEnum } from './types';
 
 @Injectable({
@@ -37,6 +37,7 @@ export class MwStructuresService {
   constructor(
     private playersService: MwPlayersService,
     private events: BattleEventsService,
+    private unitGroups: MwUnitGroupsService,
   ) {
     this.events.onEvents({
       [BattleEventTypeEnum.Struct_Selected]: event => {
@@ -77,10 +78,10 @@ export class MwStructuresService {
 
     this.structures.forEach(struct => {
       guardsMap[struct.id] = struct.generator.generateGuard
-        ? GenerationUtils.createRandomArmyForPlayer(
+        ? this.unitGroups.createUnitGroupFromGenModelForPlayer(
           struct.generator.generateGuard(),
-          this.neutralPlayer
-        )
+          this.neutralPlayer,
+        ) as UnitGroupInstModel[]
         : [];
     });
 

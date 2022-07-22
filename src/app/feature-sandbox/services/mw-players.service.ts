@@ -6,11 +6,12 @@ import { HeroModel } from 'src/app/core/model/hero.model';
 import { ItemInstanceModel } from 'src/app/core/model/items/items.types';
 import { PlayerInstanceModel, PlayerModel, PlayerTypeEnum, UnitGroupInstModel, UnitGroupModel } from 'src/app/core/model/main.model';
 import { ResourcesModel } from 'src/app/core/model/resources.types';
-import { CommonUtils, GenerationUtils } from 'src/app/core/utils/common.utils';
+import { CommonUtils } from 'src/app/core/utils/common.utils';
 import { BattleEventsService } from './mw-battle-events.service';
 import { MwHeroesService } from './mw-heroes.service';
 import { MwItemsService } from './mw-items-service.service';
 import { MwSpellsService } from './mw-spells.service';
+import { MwUnitGroupsService } from './mw-unit-groups.service';
 import { BattleEventTypeEnum } from './types';
 
 
@@ -83,6 +84,7 @@ export class MwPlayersService {
     private readonly spellsService: MwSpellsService,
     private readonly itemsService: MwItemsService,
     private readonly heroesService: MwHeroesService,
+    private readonly unitGroups: MwUnitGroupsService,
   ) { }
 
   public getCurrentPlayer(): PlayerInstanceModel {
@@ -186,7 +188,7 @@ export class MwPlayersService {
       hero: this.heroesService.createHero(hero),
       resources: hero.initialState.resources,
       type,
-      unitGroups: GenerationUtils.createRandomArmy(hero.initialState.army[0]),
+      unitGroups: this.unitGroups.createUnitGroupFromGenModel(hero.initialState.army[0]),
     };
 
     return player;

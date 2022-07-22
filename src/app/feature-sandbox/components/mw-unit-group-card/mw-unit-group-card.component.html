@@ -39,7 +39,7 @@
             <div class="abilities" [ngClass]="side === 'left' ? 'left' : 'right'">
                 <div class="ability" *ngFor="let ability of unitGroup.spells">
                     <!-- {{ ability.name }} -->
-                    <mw-hover-hint [hintBody]="buffHint" [xPos]="side === 'left' ? 'after' : 'before'">
+                    <mw-hover-hint [hintBody]="buffHint" [xPos]="'above'">
                         <mw-ra-icon class="icon-label buff-icon" [icon]="ability.baseType.icon.icon"
                             [ngStyle]="{ 'color': ability.baseType.icon.iconClr , 'background': ability.baseType.icon.bgClr }">
                         </mw-ra-icon>
