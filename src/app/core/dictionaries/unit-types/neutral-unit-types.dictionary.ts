@@ -1,5 +1,6 @@
 import { UnitTypeModel } from "../../model/main.model";
 import { AssetsImages } from "../images.const";
+import { FRIGHT_SPELL } from "../spells/fright.spell";
 
 export enum NEUTRAL_TYPES_ENUM {
     Gnolls = 'Gnolls',
@@ -35,6 +36,9 @@ export const NEUTRAL_FRACTION_UNIT_TYPES: Record<NEUTRAL_TYPES_ENUM, UnitTypeMod
         defaultTurnsPerRound: 1,
         minQuantityPerStack: 1,
 
+        defaultSpells: [
+            FRIGHT_SPELL,
+        ],
         neutralReward: {
             experience: 2.3,
             gold: 2.4,

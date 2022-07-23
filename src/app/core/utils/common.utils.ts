@@ -64,6 +64,7 @@ export const GenerationUtils = {
                 count: CommonUtils.randIntInRange(unit.min, unit.max),
                 type: unitType,
                 turnsLeft: unitType.defaultTurnsPerRound,
+
             };
             generatedGroups.push(newUnitGroup);
 
@@ -74,6 +75,7 @@ export const GenerationUtils = {
                 options.units = options.units.filter(item => item !== randUnitDescr);
             }
         }
+        
 
         console.log('generated groups', generatedGroups);
 

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { filter, map, take, takeUntil, tap } from 'rxjs/operators';
-import { BattleEvents, EventByEnumMapping, BattleEventTypeEnum } from './types';
+import { BattleEvents, EventByEnumMapping, BattleEvent } from './types';
 
 /*
   todo: I have a feeling that I want to have such events system.
@@ -37,7 +37,7 @@ export class BattleEventsService {
     this.battleEvents$.next(event);
   }
 
-  public listenEventsOfTypes(types: BattleEventTypeEnum[]): Observable<BattleEvents> {
+  public listenEventsOfTypes(types: BattleEvent[]): Observable<BattleEvents> {
     const typesSet = new Set(types);
 
     return this.battleEvents$.pipe(filter((event: BattleEvents) => typesSet.has(event.type)));

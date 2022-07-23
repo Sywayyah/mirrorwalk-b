@@ -6,7 +6,7 @@ import { NeutralCampStructure, NeutralSite, StructureGeneratorModel, StructureMo
 import { BattleEventsService } from './mw-battle-events.service';
 import { MwPlayersService } from './mw-players.service';
 import { MwUnitGroupsService } from './mw-unit-groups.service';
-import { BattleEventTypeEnum } from './types';
+import { BattleEvent } from './types';
 
 @Injectable({
   providedIn: 'root'
@@ -40,11 +40,16 @@ export class MwStructuresService {
     private unitGroups: MwUnitGroupsService,
   ) {
     this.events.onEvents({
-      [BattleEventTypeEnum.Struct_Selected]: event => {
+      [BattleEvent.Struct_Selected]: event => {
         this.currentStruct = event.struct;
       },
     }).subscribe();
 
+    this.generateStructuresByTypes();
+    this.guardsMap = this.generateNewGuardsMap();
+  }
+
+  private generateStructuresByTypes(): void {
     this.structureTypes.forEach((structureType, i) => {
 
       if (structureType.generateGuard && structureType.generateReward) {
@@ -70,10 +75,9 @@ export class MwStructuresService {
       }
 
     });
-    this.guardsMap = this.generateNewGuardsMap();
   }
 
-  public generateNewGuardsMap(): Record<string, UnitGroupInstModel[]> {
+  private generateNewGuardsMap(): Record<string, UnitGroupInstModel[]> {
     const guardsMap: Record<string, UnitGroupInstModel[]> = {};
 
     this.structures.forEach(struct => {
@@ -87,4 +91,5 @@ export class MwStructuresService {
 
     return guardsMap;
   }
+
 }

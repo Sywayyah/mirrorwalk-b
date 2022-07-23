@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ResourceType } from 'src/app/core/model/resources.types';
-import { BattleEventsService, BattleEventTypeEnum, FightEndsPopup, MwPlayersService } from 'src/app/feature-sandbox/services';
+import { BattleEventsService, BattleEvent, FightEndsPopup, MwPlayersService } from 'src/app/feature-sandbox/services';
 
 @Component({
   selector: 'mw-post-fight-reward-popup',
@@ -39,6 +39,6 @@ export class PostFightRewardPopupComponent implements OnInit {
     const playerResources = currentPlayer.resources;
     playerResources[ResourceType.Gold] += this.totalGoldReward;
 
-    this.events.dispatchEvent({ type: BattleEventTypeEnum.Struct_Completed, struct: popup.struct });
+    this.events.dispatchEvent({ type: BattleEvent.Struct_Completed, struct: popup.struct });
   }
 }

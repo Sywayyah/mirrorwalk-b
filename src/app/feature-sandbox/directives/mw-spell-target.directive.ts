@@ -1,6 +1,6 @@
 import { Directive, ElementRef, HostListener, Input, OnInit, Renderer2 } from '@angular/core';
 import { UnitGroupInstModel } from 'src/app/core/model/main.model';
-import { BattleEventsService, BattleEventTypeEnum, BattleStateService, HoverTypeEnum, MwPlayersService } from '../services';
+import { BattleEventsService, BattleEvent, BattleStateService, HoverTypeEnum, MwPlayersService } from '../services';
 import { MwCurrentPlayerStateService } from '../services/mw-current-player-state.service';
 
 /* 
@@ -55,7 +55,7 @@ export class MwSpellTargetDirective implements OnInit {
 
     if (this.isEnemyCard) {
       this.battleEvents.dispatchEvent({
-        type: BattleEventTypeEnum.UI_Player_Clicks_Enemy_Group,
+        type: BattleEvent.UI_Player_Clicks_Enemy_Group,
         attackedGroup: this.spellTargetUnitGroup,
         attackingGroup: this.mwBattleStateService.currentUnitGroup,
         attackingPlayer: this.mwBattleStateService.currentPlayer,
@@ -103,7 +103,7 @@ export class MwSpellTargetDirective implements OnInit {
 
   private dispatchUnitGroupHovered() {
     this.battleEvents.dispatchEvent({
-      type: BattleEventTypeEnum.UI_Player_Hovers_Group_Card,
+      type: BattleEvent.UI_Player_Hovers_Group_Card,
       hoverType: HoverTypeEnum.EnemyCard,
       currentCard: this.mwBattleStateService.currentUnitGroup,
       hoveredCard: this.spellTargetUnitGroup,

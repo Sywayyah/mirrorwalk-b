@@ -12,7 +12,7 @@ import { MwHeroesService } from './mw-heroes.service';
 import { MwItemsService } from './mw-items-service.service';
 import { MwSpellsService } from './mw-spells.service';
 import { MwUnitGroupsService } from './mw-unit-groups.service';
-import { BattleEventTypeEnum } from './types';
+import { BattleEvent } from './types';
 
 
 // const mainPlayerGroups = GenerationUtils.createRandomArmy({
@@ -110,7 +110,7 @@ export class MwPlayersService {
       playerHero.level++;
       playerHero.freeSkillpoints++;
       playerHero.experience = playerHero.experience - currentXpToNextLevel;
-      this.events.dispatchEvent({ type: BattleEventTypeEnum.Player_Gains_Level });
+      this.events.dispatchEvent({ type: BattleEvent.Player_Gains_Level });
     }
   }
 

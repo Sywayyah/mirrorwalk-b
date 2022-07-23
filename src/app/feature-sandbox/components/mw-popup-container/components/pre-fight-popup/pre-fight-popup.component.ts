@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { BattleEventsService, BattleEventTypeEnum, PrefightPopup } from 'src/app/feature-sandbox/services';
+import { BattleEventsService, BattleEvent, PrefightPopup } from 'src/app/feature-sandbox/services';
 
 @Component({
   selector: 'mw-pre-fight-popup',
@@ -33,7 +33,7 @@ export class PreFightPopupComponent implements OnInit {
     this.close.emit();
 
     this.events.dispatchEvent({
-      type: BattleEventTypeEnum.Struct_Fight_Confirmed,
+      type: BattleEvent.Struct_Fight_Confirmed,
       struct: this.popup.struct,
     })
   }

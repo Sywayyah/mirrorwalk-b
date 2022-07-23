@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { PlayerInstanceModel, UnitGroupInstModel } from 'src/app/core/model/main.model';
 import { NeutralCampStructure, StructureModel, StructureTypeEnum } from "src/app/core/model/structures.types";
-import { BattleEventsService, BattleEventTypeEnum, MwPlayersService } from '../../services';
+import { BattleEventsService, BattleEvent, MwPlayersService } from '../../services';
 import { MwStructuresService } from '../../services/mw-structures.service';
 
 @Component({
@@ -36,7 +36,7 @@ export class MwStructuresViewComponent implements OnInit {
 
     this.playersService.getEnemyPlayer().unitGroups = this.guardsMap[struct.id];
 
-    this.events.dispatchEvent({ type: BattleEventTypeEnum.Struct_Selected, struct });
+    this.events.dispatchEvent({ type: BattleEvent.Struct_Selected, struct });
   }
 
 }

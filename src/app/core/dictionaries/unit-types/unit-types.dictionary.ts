@@ -108,7 +108,7 @@ export const HUMANS_FRACTION_UNIT_TYPES: Record<HF_TYPES_ENUM, UnitTypeModel> = 
                 maxDamage: 15,
             },
             attackRating: 9,
-            defence: 8,
+            defence: 10,
             health: 31,
             speed: 12,
         },
@@ -118,8 +118,8 @@ export const HUMANS_FRACTION_UNIT_TYPES: Record<HF_TYPES_ENUM, UnitTypeModel> = 
         
         baseRequirements: {
             gold: 175,
-            // wood: 1,
-            redCrystals: 1
+            wood: 1,
+            // redCrystals: 1
         },
         neutralReward: {
             experience: 4,

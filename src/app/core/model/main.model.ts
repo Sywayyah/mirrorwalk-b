@@ -1,7 +1,7 @@
 import { HeroInstanceModel } from "./hero.model";
 import { Modifiers } from "./modifiers";
 import { ResourcesModel } from "./resources.types";
-import type { SpellInstance } from "./spells/spell.types";
+import type { SpellInstance, SpellModel } from "./spells/spell.types";
 
 interface RequirementModel extends Partial<ResourcesModel> {
     /* heroLevel?: number;
@@ -58,6 +58,7 @@ export interface UnitTypeModel {
 
     defaultModifiers?: Modifiers;
 
+    defaultSpells?: SpellModel[];
     /* create a separate mapping, table UnitGroup->Abilities */
     /*  Associative tables.. can be useful. Don't need to overgrow the model */
     // baseAbilities?: AbilityModel[];

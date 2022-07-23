@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } 
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { PlayerModel, UnitGroupInstModel } from 'src/app/core/model/main.model';
-import { BattleEventsService, BattleEventTypeEnum, BattleStateService, HoverTypeEnum, MwPlayersService } from '../../services';
+import { BattleEventsService, BattleEvent, BattleStateService, HoverTypeEnum, MwPlayersService } from '../../services';
 import { MwUnitGroupStateService } from '../../services/mw-unit-group-state.service';
 import { CardEffectsComponent } from '../mw-card-effects/card-effects.component';
 
@@ -72,7 +72,7 @@ export class MwUnitGroupCardComponent implements OnInit, OnDestroy {
   public ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
-    this.battleEvents.dispatchEvent({ type: BattleEventTypeEnum.UI_Player_Hovers_Group_Card, hoverType: HoverTypeEnum.Unhover });
+    this.battleEvents.dispatchEvent({ type: BattleEvent.UI_Player_Hovers_Group_Card, hoverType: HoverTypeEnum.Unhover });
     this.groupDies.next();
   }
 
@@ -81,13 +81,13 @@ export class MwUnitGroupCardComponent implements OnInit, OnDestroy {
     if (this.isEnemyCard) {
       if (isHovered) {
         this.battleEvents.dispatchEvent({
-          type: BattleEventTypeEnum.UI_Player_Hovers_Group_Card,
+          type: BattleEvent.UI_Player_Hovers_Group_Card,
           hoverType: HoverTypeEnum.EnemyCard,
           currentCard: this.mwBattleStateService.currentUnitGroup,
           hoveredCard: this.unitGroup,
         });
       } else {
-        this.battleEvents.dispatchEvent({ type: BattleEventTypeEnum.UI_Player_Hovers_Group_Card, hoverType: HoverTypeEnum.Unhover });
+        this.battleEvents.dispatchEvent({ type: BattleEvent.UI_Player_Hovers_Group_Card, hoverType: HoverTypeEnum.Unhover });
       }
     }
   }

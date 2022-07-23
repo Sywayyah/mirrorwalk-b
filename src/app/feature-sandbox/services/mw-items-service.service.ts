@@ -4,7 +4,7 @@ import { GameEventsHandlers, GameEventsMapping, GameEventTypes, ItemBaseModel, I
 import { PlayerInstanceModel } from 'src/app/core/model/main.model';
 import { BattleEventsService } from './mw-battle-events.service';
 import type { CombatInteractorService } from './mw-combat-interactor.service';
-import { BattleEventTypeEnum } from './types';
+import { BattleEvent } from './types';
 
 @Injectable({
   providedIn: 'root'
@@ -18,10 +18,10 @@ export class MwItemsService {
     private readonly events: BattleEventsService,
   ) {
     this.events.onEvents({
-      [BattleEventTypeEnum.Fight_Next_Round_Starts]: event => {
+      [BattleEvent.Fight_Next_Round_Starts]: event => {
         this.triggerEventForAllItemsHandlers(GameEventTypes.NewRoundBegins, { round: event.round });
       },
-      [BattleEventTypeEnum.Fight_Starts]: event => {
+      [BattleEvent.Fight_Starts]: event => {
         this.triggerEventForAllItemsHandlers(GameEventTypes.NewRoundBegins, { round: 0 });
       }
     }).subscribe();

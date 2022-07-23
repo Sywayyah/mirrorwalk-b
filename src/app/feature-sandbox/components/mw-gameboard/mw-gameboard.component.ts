@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { PlayerInstanceModel, UnitGroupInstModel } from 'src/app/core/model/main.model';
 import {
   BattleEventsService,
-  BattleEventTypeEnum,
+  BattleEvent,
   BattleStateService as MwBattleStateService,
   MwNeutralPlayerService,
   MwPlayersService,
@@ -35,7 +35,7 @@ export class MwGameboardComponent implements OnInit {
     private readonly battleEvents: BattleEventsService,
     private readonly combatInteractor: CombatInteractorService,
   ) {
-    this.combatInteractor.listenEvents();
+    this.combatInteractor.onBattleBegins();
   }
 
   public ngOnInit(): void {
@@ -58,7 +58,7 @@ export class MwGameboardComponent implements OnInit {
       this.fightQueue = this.mwBattleState.getFightQueue();
     });
 
-    this.battleEvents.onEvent(BattleEventTypeEnum.On_Group_Damaged_By_Group).subscribe((event) => {
+    this.battleEvents.onEvent(BattleEvent.On_Group_Damaged_By_Group).subscribe((event) => {
       this.cardsMapping.get(event.attackedGroup).effectsComponent.addLossEffect(event.loss);
     });
   }

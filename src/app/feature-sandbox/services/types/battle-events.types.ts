@@ -4,7 +4,7 @@ import { NeutralCampStructure, StructureModel } from "src/app/core/model/structu
 import { PopupModel } from './popup.types';
 
 
-export enum BattleEventTypeEnum {
+export enum BattleEvent {
   UI_Player_Clicks_Enemy_Group,
   UI_Player_Hovers_Group_Card,
 
@@ -41,44 +41,44 @@ export enum BattleEventTypeEnum {
 }
 
 
-export interface BattleEventModel<T extends BattleEventTypeEnum = BattleEventTypeEnum> {
+export interface BattleEventModel<T extends BattleEvent = BattleEvent> {
   type: T;
 }
 
-export interface PlayerTargetsSpell extends BattleEventModel<BattleEventTypeEnum.Player_Targets_Spell> {
+export interface PlayerTargetsSpell extends BattleEventModel<BattleEvent.Player_Targets_Spell> {
   player: PlayerInstanceModel;
   spell: SpellInstance;
   target: UnitGroupInstModel;
 }
 
-export interface PlayerCastsInstantSpell extends BattleEventModel<BattleEventTypeEnum.Player_Casts_Instant_Spell> {
+export interface PlayerCastsInstantSpell extends BattleEventModel<BattleEvent.Player_Casts_Instant_Spell> {
   player: PlayerInstanceModel;
   spell: SpellInstance;
 }
 
-export interface PlayerGainsLevel extends BattleEventModel<BattleEventTypeEnum.Player_Gains_Level> {}
+export interface PlayerGainsLevel extends BattleEventModel<BattleEvent.Player_Gains_Level> {}
 
-export interface StructSelected extends BattleEventModel<BattleEventTypeEnum.Struct_Selected> {
+export interface StructSelected extends BattleEventModel<BattleEvent.Struct_Selected> {
   struct: StructureModel;
 }
 
-export interface DisplayRewardPopup extends BattleEventModel<BattleEventTypeEnum.Display_Reward_Popup> {
+export interface DisplayRewardPopup extends BattleEventModel<BattleEvent.Display_Reward_Popup> {
   struct: NeutralCampStructure;
 }
 
-export interface StructCompleted extends BattleEventModel<BattleEventTypeEnum.Struct_Completed> {
+export interface StructCompleted extends BattleEventModel<BattleEvent.Struct_Completed> {
   struct: NeutralCampStructure;
 }
 
-export interface DisplayPopupEvent extends BattleEventModel<BattleEventTypeEnum.Display_Popup> {
+export interface DisplayPopupEvent extends BattleEventModel<BattleEvent.Display_Popup> {
   popup: PopupModel;
 }
 
-export interface StructureFightConfirmed extends BattleEventModel<BattleEventTypeEnum.Struct_Fight_Confirmed> {
+export interface StructureFightConfirmed extends BattleEventModel<BattleEvent.Struct_Fight_Confirmed> {
   struct: NeutralCampStructure;
 }
 
-export interface UIPlayerClicksEnemyGroup extends BattleEventModel<BattleEventTypeEnum.UI_Player_Clicks_Enemy_Group> {
+export interface UIPlayerClicksEnemyGroup extends BattleEventModel<BattleEvent.UI_Player_Clicks_Enemy_Group> {
   attackingPlayer: PlayerInstanceModel;
   attackingGroup: UnitGroupInstModel;
   attackedGroup: UnitGroupInstModel;
@@ -89,68 +89,68 @@ export enum HoverTypeEnum {
   Unhover,
 }
 
-export interface UIPlayerHoversCard extends BattleEventModel<BattleEventTypeEnum.UI_Player_Hovers_Group_Card> {
+export interface UIPlayerHoversCard extends BattleEventModel<BattleEvent.UI_Player_Hovers_Group_Card> {
   // hovered: boolean;
   hoverType: HoverTypeEnum;
   currentCard?: UnitGroupInstModel;
   hoveredCard?: UnitGroupInstModel;
 }
 
-export interface GroupDamagedByGroupEvent extends BattleEventModel<BattleEventTypeEnum.On_Group_Damaged_By_Group> {
+export interface GroupDamagedByGroupEvent extends BattleEventModel<BattleEvent.On_Group_Damaged_By_Group> {
   attackerGroup: UnitGroupInstModel;
   attackedGroup: UnitGroupInstModel;
   loss: number;
   damage: number;
 }
 
-export interface GroupTakesDamageEvent extends BattleEventModel<BattleEventTypeEnum.On_Group_Takes_Damage> {
+export interface GroupTakesDamageEvent extends BattleEventModel<BattleEvent.On_Group_Takes_Damage> {
   group: UnitGroupInstModel;
   registerLoss: boolean;
   unitLoss: number;
 }
 
-export interface OnGroupCounterAttacked extends BattleEventModel<BattleEventTypeEnum.On_Group_Counter_Attacked> {
+export interface OnGroupCounterAttacked extends BattleEventModel<BattleEvent.On_Group_Counter_Attacked> {
   attackerGroup: UnitGroupInstModel;
   attackedGroup: UnitGroupInstModel;
   loss: number;
   damage: number;
 }
 
-export interface GroupDiesEvent extends BattleEventModel<BattleEventTypeEnum.On_Group_Dies> {
+export interface GroupDiesEvent extends BattleEventModel<BattleEvent.On_Group_Dies> {
   target: UnitGroupInstModel;
   targetPlayer: PlayerModel;
   loss: number;
 }
 
-export interface RoundEndsEvent extends BattleEventModel<BattleEventTypeEnum.Fight_Ends> {
+export interface RoundEndsEvent extends BattleEventModel<BattleEvent.Fight_Ends> {
   win: boolean;
   struct: StructureModel;
 }
 
-export interface RoundNextGroupTurnEvent extends BattleEventModel<BattleEventTypeEnum.Fight_Next_Round_Starts> {
+export interface RoundNextGroupTurnEvent extends BattleEventModel<BattleEvent.Fight_Next_Round_Starts> {
   round: number;
 }
 
 
-export type RountPlayerContinuesAttacking = BattleEventModel<BattleEventTypeEnum.Round_Player_Continues_Attacking>;
+export type RountPlayerContinuesAttacking = BattleEventModel<BattleEvent.Round_Player_Continues_Attacking>;
 
-export interface RoundGroupTurnEnds extends BattleEventModel<BattleEventTypeEnum.Round_Group_Turn_Ends> {
+export interface RoundGroupTurnEnds extends BattleEventModel<BattleEvent.Round_Group_Turn_Ends> {
   playerEndsTurn: PlayerModel;
 }
 
-export interface RoundGroupSpendsTurn extends BattleEventModel<BattleEventTypeEnum.Round_Group_Spends_Turn> {
+export interface RoundGroupSpendsTurn extends BattleEventModel<BattleEvent.Round_Group_Spends_Turn> {
   groupPlayer: PlayerModel;
   group: UnitGroupInstModel;
   groupStillAlive: boolean;
   groupHasMoreTurns: boolean;
 }
 
-export interface RoundPlayerTurnStarts extends BattleEventModel<BattleEventTypeEnum.Round_Player_Turn_Starts> {
+export interface RoundPlayerTurnStarts extends BattleEventModel<BattleEvent.Round_Player_Turn_Starts> {
   currentPlayer: PlayerModel;
   previousPlayer: PlayerModel;
 }
 
-export interface CombatGroupAttacked extends BattleEventModel<BattleEventTypeEnum.Combat_Group_Attacked> {
+export interface CombatGroupAttacked extends BattleEventModel<BattleEvent.Combat_Group_Attacked> {
   attackerGroup: UnitGroupInstModel;
   attackedGroup: UnitGroupInstModel;
 }
@@ -161,45 +161,45 @@ export enum CombatInteractionEnum {
   AttackInteractionCompleted = 'completed',
 }
 
-export interface CombatInteractionState extends BattleEventModel<BattleEventTypeEnum.Combat_Attack_Interaction> {
+export interface CombatInteractionState extends BattleEventModel<BattleEvent.Combat_Attack_Interaction> {
   attackingGroup: UnitGroupInstModel;
   attackedGroup: UnitGroupInstModel;
   action: CombatInteractionEnum;
 }
 
-export type FightStartsEvent = BattleEventModel<BattleEventTypeEnum.Fight_Starts>;
+export type FightStartsEvent = BattleEventModel<BattleEvent.Fight_Starts>;
 
 export interface EventByEnumMapping {
-  [BattleEventTypeEnum.Struct_Selected]: StructSelected;
-  [BattleEventTypeEnum.Struct_Completed]: StructCompleted;
-  [BattleEventTypeEnum.Display_Reward_Popup]: DisplayRewardPopup;
-  [BattleEventTypeEnum.Struct_Fight_Confirmed]: StructureFightConfirmed;
-  [BattleEventTypeEnum.Display_Popup]: DisplayPopupEvent;
+  [BattleEvent.Struct_Selected]: StructSelected;
+  [BattleEvent.Struct_Completed]: StructCompleted;
+  [BattleEvent.Display_Reward_Popup]: DisplayRewardPopup;
+  [BattleEvent.Struct_Fight_Confirmed]: StructureFightConfirmed;
+  [BattleEvent.Display_Popup]: DisplayPopupEvent;
   
-  [BattleEventTypeEnum.Player_Gains_Level]: PlayerGainsLevel;
-  [BattleEventTypeEnum.Player_Targets_Spell]: PlayerTargetsSpell;
-  [BattleEventTypeEnum.Player_Casts_Instant_Spell]: PlayerCastsInstantSpell;
+  [BattleEvent.Player_Gains_Level]: PlayerGainsLevel;
+  [BattleEvent.Player_Targets_Spell]: PlayerTargetsSpell;
+  [BattleEvent.Player_Casts_Instant_Spell]: PlayerCastsInstantSpell;
 
-  [BattleEventTypeEnum.UI_Player_Clicks_Enemy_Group]: UIPlayerClicksEnemyGroup;
-  [BattleEventTypeEnum.UI_Player_Hovers_Group_Card]: UIPlayerHoversCard;
+  [BattleEvent.UI_Player_Clicks_Enemy_Group]: UIPlayerClicksEnemyGroup;
+  [BattleEvent.UI_Player_Hovers_Group_Card]: UIPlayerHoversCard;
 
-  [BattleEventTypeEnum.Combat_Group_Attacked]: CombatGroupAttacked;
-  [BattleEventTypeEnum.Combat_Attack_Interaction]: CombatInteractionState;
+  [BattleEvent.Combat_Group_Attacked]: CombatGroupAttacked;
+  [BattleEvent.Combat_Attack_Interaction]: CombatInteractionState;
 
-  [BattleEventTypeEnum.On_Group_Damaged_By_Group]: GroupDamagedByGroupEvent;
-  [BattleEventTypeEnum.On_Group_Takes_Damage]: GroupTakesDamageEvent;
-  [BattleEventTypeEnum.On_Group_Counter_Attacked]: OnGroupCounterAttacked;
-  [BattleEventTypeEnum.On_Group_Dies]: GroupDiesEvent;
+  [BattleEvent.On_Group_Damaged_By_Group]: GroupDamagedByGroupEvent;
+  [BattleEvent.On_Group_Takes_Damage]: GroupTakesDamageEvent;
+  [BattleEvent.On_Group_Counter_Attacked]: OnGroupCounterAttacked;
+  [BattleEvent.On_Group_Dies]: GroupDiesEvent;
 
-  [BattleEventTypeEnum.Round_Group_Spends_Turn]: RoundGroupSpendsTurn;
-  [BattleEventTypeEnum.Round_Group_Turn_Ends]: RoundGroupTurnEnds;
+  [BattleEvent.Round_Group_Spends_Turn]: RoundGroupSpendsTurn;
+  [BattleEvent.Round_Group_Turn_Ends]: RoundGroupTurnEnds;
 
-  [BattleEventTypeEnum.Round_Player_Turn_Starts]: RoundPlayerTurnStarts;
-  [BattleEventTypeEnum.Round_Player_Continues_Attacking]: RountPlayerContinuesAttacking;
+  [BattleEvent.Round_Player_Turn_Starts]: RoundPlayerTurnStarts;
+  [BattleEvent.Round_Player_Continues_Attacking]: RountPlayerContinuesAttacking;
 
-  [BattleEventTypeEnum.Fight_Starts]: FightStartsEvent;
-  [BattleEventTypeEnum.Fight_Next_Round_Starts]: RoundNextGroupTurnEvent;
-  [BattleEventTypeEnum.Fight_Ends]: RoundEndsEvent;
+  [BattleEvent.Fight_Starts]: FightStartsEvent;
+  [BattleEvent.Fight_Next_Round_Starts]: RoundNextGroupTurnEvent;
+  [BattleEvent.Fight_Ends]: RoundEndsEvent;
 }
 
 export type BattleEvents = EventByEnumMapping[keyof EventByEnumMapping];

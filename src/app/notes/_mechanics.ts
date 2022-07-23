@@ -2,6 +2,7 @@
     Here are just some mechanics. Some may be used, some are just described, 
         some can be potential.
 
+
     (Potential) Crests. Crest is a special item. Crest may give a player some
         helpful abilities, for example:
         
@@ -38,4 +39,8 @@
         some items can be added? For instance, some item that can allows to cast 
         level 3 Enchant on the enemy. Or some advanced item with an ability Eclipse,
         which instantly places level 4 Enchant on all enemy unit groups.
+
+    (Potential) Persistent Debuffs, which are not getting dispelled by the end of the fight.
+        Could add some additional difficulty and introduce dangerous creatures/bosses. Also
+        can possibly be cured in special locations or towns.
 */

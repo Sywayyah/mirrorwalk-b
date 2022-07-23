@@ -5,7 +5,6 @@ import { Colors } from "../colors.const";
 export const ENCHANT_DEBUFF: SpellModel = {
     name: 'Enchanted',
     activationType: SpellActivationType.Debuff,
-    level: 1,
     icon: {
         icon: 'fire-ring',
         bgClr: Colors.DefautlDebuffBg,
@@ -38,7 +37,6 @@ export const ENCHANT_DEBUFF: SpellModel = {
 
 export const ENCHANT_SPELL: SpellModel = {
     name: 'Enchant',
-    level: 1,
     icon: {
         // iconClr: 'rgb(235 142 178)',
         icon: 'fire-ring',

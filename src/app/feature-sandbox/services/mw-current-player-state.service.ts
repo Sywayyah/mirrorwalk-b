@@ -3,7 +3,7 @@ import { PlayerInstanceModel } from 'src/app/core/model/main.model';
 import { SpellActivationType, SpellInstance, SpellModel } from 'src/app/core/model/spells';
 import { BattleEventsService } from './mw-battle-events.service';
 import { MwPlayersService } from './mw-players.service';
-import { BattleEventTypeEnum } from './types';
+import { BattleEvent } from './types';
 
 
 export enum PlayerState {
@@ -17,7 +17,6 @@ export enum PlayerState {
 
 export const NULL_SPELL: SpellModel = {
   activationType: SpellActivationType.Instant,
-  level: 0,
   name: '',
   icon: { icon: '' },
   type: {
@@ -60,10 +59,10 @@ export class MwCurrentPlayerStateService {
     private readonly events: BattleEventsService,
   ) {
     events.onEvents({
-      [BattleEventTypeEnum.Fight_Next_Round_Starts]: () => {
+      [BattleEvent.Fight_Next_Round_Starts]: () => {
         this.resetSpellsCooldown();
       },
-      [BattleEventTypeEnum.Fight_Starts]: () => {
+      [BattleEvent.Fight_Starts]: () => {
         this.resetSpellsCooldown();
       }
     }).subscribe();
@@ -85,7 +84,7 @@ export class MwCurrentPlayerStateService {
         this.onCurrentSpellCast();
 
         this.events.dispatchEvent({
-          type: BattleEventTypeEnum.Player_Casts_Instant_Spell,
+          type: BattleEvent.Player_Casts_Instant_Spell,
           player: this.currentPlayer,
           spell: spell,
         });

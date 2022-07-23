@@ -21,7 +21,7 @@ export type DefaultSpellStateType = unknown;
 
 export interface SpellModel<SpellStateType = DefaultSpellStateType> {
     name: string;
-    level: number;
+    // level: number;
     activationType: SpellActivationType;
 
     description?: string;
@@ -59,6 +59,7 @@ export interface SpellCombatRefsModel<SpellStateType> {
     thisSpell: SpellModel<SpellStateType>;
     spellInstance: SpellInstance<SpellStateType>;
     ownerPlayer: PlayerInstanceModel;
+    ownerUnit?: UnitGroupInstModel;
     ownerHero: HeroInstanceModel;
 }
 

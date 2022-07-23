@@ -3,7 +3,6 @@ import { SpellActivationType, SpellEventTypes, SpellModel } from "../../model/sp
 
 export const METEOR_SPELL: SpellModel = {
     activationType: SpellActivationType.Instant,
-    level: 1,
     name: 'Meteor',
 
     icon: {

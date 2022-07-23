@@ -5,7 +5,6 @@ import { Colors } from "../colors.const";
 
 export const POISON_CLOUD_SPELL_EFFECT: SpellModel<undefined | { debuffRoundsLeft: number }> = {
     activationType: SpellActivationType.Debuff,
-    level: 1,
     name: 'Poisoned',
     icon: {
         icon: 'poison-cloud',
@@ -57,7 +56,6 @@ export const POISON_CLOUD_SPELL_EFFECT: SpellModel<undefined | { debuffRoundsLef
 
 export const POISON_CLOUD_SPELL: SpellModel = {
     activationType: SpellActivationType.Target,
-    level: 1,
     icon: {
         icon: 'poison-cloud',
     },

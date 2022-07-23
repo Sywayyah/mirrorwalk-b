@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { BehaviorSubject, combineLatest } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
-import { BattleEventModel, BattleEventsService, BattleEventTypeEnum, BattleStateService, MwPlayersService } from '../../services';
+import { BattleEventModel, BattleEventsService, BattleEvent, BattleStateService, MwPlayersService } from '../../services';
 import { ActionHintModel, ActionHintTypeEnum } from '../../services/types/action-hint.types';
 
 @Component({
@@ -23,7 +23,7 @@ export class MwActionHintComponent implements OnInit {
   ) {
     /* couldn't via async, because events are subject */
     combineLatest([
-      this.battleEvents.onEvent(BattleEventTypeEnum.Round_Player_Turn_Starts),
+      this.battleEvents.onEvent(BattleEvent.Round_Player_Turn_Starts),
       this.mwBattleState.hintMessage$,
     ]).pipe(
       map(([playerTurnEvent, actionHint]) => {

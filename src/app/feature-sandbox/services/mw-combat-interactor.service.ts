@@ -1,19 +1,22 @@
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { CombatActionsRef, DamageType, PostDamageInfo, SpellCreationOptions } from 'src/app/core/model/combat-api/combat-api.types';
 import {
   PlayerInstanceModel,
+  PlayerModel,
   UnitGroupInstModel,
-  UnitGroupModel,
+  UnitGroupModel
 } from 'src/app/core/model/main.model';
+import { Modifiers } from 'src/app/core/model/modifiers';
 import {
   SpellActivationType,
   SpellEventHandlers,
   SpellEventsMapping,
   SpellEventTypes,
   SpellInstance,
-  SpellModel,
+  SpellModel
 } from 'src/app/core/model/spells';
-import { Modifiers } from 'src/app/core/model/modifiers';
 import { CommonUtils } from 'src/app/core/utils/common.utils';
 import { BattleEventsService } from './mw-battle-events.service';
 import { MwBattleLogService } from './mw-battle-log.service';
@@ -21,20 +24,17 @@ import { BattleStateService } from './mw-battle-state.service';
 import { MwCurrentPlayerStateService, PlayerState } from './mw-current-player-state.service';
 import { MwPlayersService } from './mw-players.service';
 import { MwSpellsService } from './mw-spells.service';
-import { MwUnitGroupStateService } from './mw-unit-group-state.service';
+import { FinalDamageInfo, MwUnitGroupStateService } from './mw-unit-group-state.service';
 import {
-  BattleEventTypeEnum,
+  BattleEvent,
+  BattleEvents,
   CombatGroupAttacked,
   CombatInteractionEnum,
-  CombatInteractionState,
-  HoverTypeEnum,
+  CombatInteractionState, HoverTypeEnum,
   PlayerTargetsSpell,
-  UIPlayerHoversCard,
+  UIPlayerHoversCard
 } from './types';
 import { ActionHintTypeEnum, AttackActionHint, SpellTargetActionHint } from './types/action-hint.types';
-import { CombatActionsRef, DamageType, PostDamageInfo, SpellCreationOptions } from 'src/app/core/model/combat-api/combat-api.types';
-// import { MwItemsService } from './mw-items-service.service';
-// import { GameEventTypes } from 'src/app/core/model/items/items.types';
 
 
 @Injectable({
@@ -54,112 +54,19 @@ export class CombatInteractorService {
     private readonly unitState: MwUnitGroupStateService,
     private readonly spellsService: MwSpellsService,
   ) {
+    /* Dispell buffs and debuffs when location is left. May change in future. */
+    this.battleEvents.onEvents({
+      [BattleEvent.Struct_Completed]: () => {
+        this.forEachUnitGroup(unitGroup => this.applyDispellToUnitGroup(unitGroup));
+      },
+    }).subscribe();
   }
 
-  public listenEvents(): void {
+  public onBattleBegins(): void {
     this.initPlayersSpells();
 
-    this.battleEvents.onEvents({
-      [BattleEventTypeEnum.Combat_Group_Attacked]: (event: CombatGroupAttacked) => {
-        this.battleEvents.dispatchEvent({
-          type: BattleEventTypeEnum.Combat_Attack_Interaction,
-          attackedGroup: event.attackedGroup,
-          attackingGroup: event.attackerGroup,
-          action: CombatInteractionEnum.GroupAttacks,
-        })
-      },
-      [BattleEventTypeEnum.Combat_Attack_Interaction]: (state: CombatInteractionState) => {
-        switch (state.action) {
-          case CombatInteractionEnum.GroupAttacks:
-            console.log('group starts attack');
-            this.handleAttackInteraction(state);
-            break;
-          case CombatInteractionEnum.GroupCounterattacks:
-            this.handleAttackInteraction(state);
-            break;
-          case CombatInteractionEnum.AttackInteractionCompleted:
-            console.log('group completes attack');
-            this.battleEvents.dispatchEvent({
-              type: BattleEventTypeEnum.Round_Group_Spends_Turn,
-              groupPlayer: state.attackingGroup.ownerPlayerRef,
-              group: state.attackingGroup,
-              groupStillAlive: Boolean(state.attackingGroup.count),
-              groupHasMoreTurns: Boolean(state.attackingGroup.turnsLeft),
-            });
-        }
-      },
-
-      [BattleEventTypeEnum.UI_Player_Hovers_Group_Card]: (event: UIPlayerHoversCard) => {
-        switch (event.hoverType) {
-          case HoverTypeEnum.EnemyCard:
-            if (this.curPlayerState.playerCurrentState === PlayerState.Normal) {
-              this.setDamageHintMessageOnCardHover(event);
-            }
-            if (this.curPlayerState.playerCurrentState === PlayerState.SpellTargeting) {
-              const spellTargetHint: SpellTargetActionHint = {
-                type: ActionHintTypeEnum.OnTargetSpell,
-                spell: this.curPlayerState.currentSpell,
-                target: event.hoveredCard as UnitGroupInstModel,
-              };
-              this.battleState.hintMessage$.next(spellTargetHint);
-            }
-            break;
-          case HoverTypeEnum.Unhover:
-            this.battleState.hintMessage$.next(null);
-        }
-      },
-
-      [BattleEventTypeEnum.Player_Targets_Spell]: (event: PlayerTargetsSpell) => {
-        this.triggerEventForSpellHandler(event.spell, SpellEventTypes.PlayerTargetsSpell, { target: event.target });
-        this.curPlayerState.playerCurrentState = PlayerState.Normal;
-        this.curPlayerState.resetCurrentSpell();
-      },
-
-      [BattleEventTypeEnum.Player_Casts_Instant_Spell]: (event) => {
-        this.triggerEventForSpellHandler(event.spell, SpellEventTypes.PlayerCastsInstantSpell, {
-          player: event.player,
-          spell: event.spell,
-        });
-      },
-
-      [BattleEventTypeEnum.Fight_Next_Round_Starts]: (event) => {
-        this.triggerEventForAllSpellsHandler(
-          SpellEventTypes.NewRoundBegins,
-          {
-            round: event.round,
-          },
-        );
-        // this.itemsService.triggerEventForAllItemsHandlers(
-        //   GameEventTypes.NewRoundBegins,
-        //   {
-        //     round: event.round,
-        //   }
-        // );
-      },
-
-      [BattleEventTypeEnum.On_Group_Dies]: (event) => {
-        const target = event.target;
-
-        /* todo: apply the same when round ends */
-        const dispellableTypes: SpellActivationType[] = [
-          SpellActivationType.Buff,
-          SpellActivationType.Debuff,
-        ];
-
-        target.spells.forEach((spell) => {
-          if (dispellableTypes.includes(spell.baseType.activationType)) {
-            this.removeSpellFromUnitGroup(event.target, spell);
-          }
-        });
-
-        const targetMods = this.unitGroupModifiersMap.get(target);
-
-        if (targetMods) {
-          targetMods.length = 0;
-        }
-      }
-    }).pipe(
-      takeUntil(this.battleEvents.onEvent(BattleEventTypeEnum.Fight_Ends)),
+    this.listenEvents().pipe(
+      takeUntil(this.battleEvents.onEvent(BattleEvent.Fight_Ends)),
     ).subscribe();
   }
 
@@ -168,11 +75,14 @@ export class CombatInteractorService {
     damage: number,
     type: DamageType = DamageType.PhysicalAttack,
     postActionFn?: (actionInfo: PostDamageInfo) => void,
-  ): void {
+    /* options object, contains values depending on situation */
+    options: { attackerUnit?: UnitGroupInstModel } = {},
+  ): FinalDamageInfo {
     /* todo: OnGroupDamaged isn't dispatched, and reward isn't calculated because of that. */
     let finalDamage = damage;
 
     switch (type) {
+      /* Damage coming from spells mostly */
       case DamageType.Magic:
         const targetGroupModifiers = this.unitGroupModifiersMap.get(target);
 
@@ -185,6 +95,35 @@ export class CombatInteractorService {
           });
 
           finalDamage = Math.round(finalDamage);
+        }
+        break;
+
+      /* Normal Unit Group attack */
+      case DamageType.PhysicalAttack:
+
+        if (options.attackerUnit) {
+          const attackerUnitMods = this.unitGroupModifiersMap.get(options.attackerUnit);
+          
+          if (attackerUnitMods) {
+            const conditionalCombatModifiers = attackerUnitMods.map(mod => {
+              if (mod.attackConditionalModifiers) {
+                const generatedMods = mod.attackConditionalModifiers({
+                  attacked: target,
+                });
+
+                return generatedMods;
+              }
+
+              return mod;
+            });
+
+            const damagePercentMod = conditionalCombatModifiers
+              .filter(mod => mod.baseDamagePercentModifier)
+              .reduce((acc, next) => acc + (next.baseDamagePercentModifier as number), 0);
+
+            console.log(`damage reduced by ${damagePercentMod}%`);
+            finalDamage = finalDamage + finalDamage * damagePercentMod;
+          }
         }
 
         break;
@@ -201,10 +140,15 @@ export class CombatInteractorService {
       });
     }
 
+    /* don't handle rest if this is a phys attack */
+    if (type === DamageType.PhysicalAttack) {
+      return finalDamageInfo;
+    }
+
     if (finalDamageInfo.isDamageFatal) {
       this.battleState.handleDefeatedUnitGroup(target);
       this.battleEvents.dispatchEvent({
-        type: BattleEventTypeEnum.On_Group_Dies,
+        type: BattleEvent.On_Group_Dies,
         target: target,
         targetPlayer: target.ownerPlayerRef,
         loss: finalDamageInfo.finalUnitLoss,
@@ -213,12 +157,14 @@ export class CombatInteractorService {
 
     if (finalDamageInfo.finalUnitLoss) {
       this.battleEvents.dispatchEvent({
-        type: BattleEventTypeEnum.On_Group_Takes_Damage,
+        type: BattleEvent.On_Group_Takes_Damage,
         unitLoss: finalDamageInfo.finalUnitLoss,
         registerLoss: true,
         group: target,
       });
     }
+
+    return finalDamageInfo;
   }
 
   /* when group counterattacks and defeats enemy group, both are gone from queue */
@@ -234,6 +180,11 @@ export class CombatInteractorService {
     const attacker = !isCounterattack ? attackingGroup : attackedGroup;
     const attacked = !isCounterattack ? attackedGroup : attackingGroup;
 
+    this.triggerEventForAllSpellsHandler(SpellEventTypes.UnitGroupAttacks, {
+      attacked,
+      attacker,
+    });
+
     const attackDetails = this.unitState.getDetailedAttackInfo(
       attacker,
       attacked,
@@ -242,14 +193,20 @@ export class CombatInteractorService {
 
     const damageInfo = this.unitState.getFinalDamageInfoFromDamageDetailedInfo(attackDetails);
 
-    const finalDamageInfo = this.unitState.dealPureDamageToUnitGroup(attacked, damageInfo.finalDamage);
+    const finalDamageInfo = this.dealDamageTo(
+      attacked,
+      damageInfo.finalDamage,
+      DamageType.PhysicalAttack,
+      undefined,
+      { attackerUnit: attacker },
+    );
 
     if (!isCounterattack) {
       this.battleState.currentGroupTurnsLeft--;
       attacker.turnsLeft = this.battleState.currentGroupTurnsLeft;
 
       this.battleEvents.dispatchEvent({
-        type: BattleEventTypeEnum.On_Group_Damaged_By_Group,
+        type: BattleEvent.On_Group_Damaged_By_Group,
         attackerGroup: attacker,
         attackedGroup: attacked,
         loss: finalDamageInfo.finalUnitLoss,
@@ -257,7 +214,7 @@ export class CombatInteractorService {
       });
     } else {
       this.battleEvents.dispatchEvent({
-        type: BattleEventTypeEnum.On_Group_Counter_Attacked,
+        type: BattleEvent.On_Group_Counter_Attacked,
         attackerGroup: attacker,
         attackedGroup: attacked,
         loss: finalDamageInfo.finalUnitLoss,
@@ -268,7 +225,7 @@ export class CombatInteractorService {
     if (finalDamageInfo.isDamageFatal) {
       this.battleState.handleDefeatedUnitGroup(attacked);
       this.battleEvents.dispatchEvent({
-        type: BattleEventTypeEnum.On_Group_Dies,
+        type: BattleEvent.On_Group_Dies,
         target: attacked,
         targetPlayer: attacked.ownerPlayerRef,
         loss: finalDamageInfo.finalUnitLoss,
@@ -370,7 +327,6 @@ export class CombatInteractorService {
   }
 
   private addSpellToUnitGroup(target: UnitGroupInstModel, spell: SpellInstance, ownerPlayer: PlayerInstanceModel): void {
-    // const newSpellRef = this.spellsService.createSpell(spell);
     target.spells.push(spell);
 
     this.initSpell(spell, ownerPlayer);
@@ -400,7 +356,7 @@ export class CombatInteractorService {
     return CommonUtils.randItem(enemyUnitGroups);
   }
 
-  private initSpell(spell: SpellInstance, player: PlayerInstanceModel): void {
+  private initSpell(spell: SpellInstance, player: PlayerInstanceModel, ownerUnitGroup?: UnitGroupInstModel): void {
     spell.baseType.type.spellConfig.init({
       actions: this.createActionsApiRef(),
       events: {
@@ -414,6 +370,7 @@ export class CombatInteractorService {
       ownerPlayer: player,
       spellInstance: spell,
       ownerHero: player.hero,
+      ownerUnit: ownerUnitGroup,
     });
   }
 
@@ -425,6 +382,127 @@ export class CombatInteractorService {
       player.hero.spells.forEach(spell => {
         this.initSpell(spell, player);
       });
+    });
+  }
+
+  private initAllUnitGroupSpells(): void {
+    this.forEachUnitGroup((unitGroup, player) => {
+      if (unitGroup.spells) {
+        unitGroup.spells.forEach(spell => this.initSpell(
+          spell,
+          player as PlayerInstanceModel,
+          unitGroup,
+        ));
+      }
+    })
+  }
+
+  private forEachUnitGroup(callback: (unitGroup: UnitGroupInstModel, player: PlayerModel) => void): void {
+    this.battleState.heroesUnitGroupsMap.forEach((playerGroups, player) => {
+      playerGroups.forEach((group) => {
+        callback(group, player);
+      });
+    });
+  }
+
+  private applyDispellToUnitGroup(target: UnitGroupInstModel): void {
+    const dispellableTypes: SpellActivationType[] = [
+      SpellActivationType.Buff,
+      SpellActivationType.Debuff,
+    ];
+
+    target.spells.forEach((spell) => {
+      if (dispellableTypes.includes(spell.baseType.activationType)) {
+        this.removeSpellFromUnitGroup(target, spell);
+      }
+    });
+
+    const targetMods = this.unitGroupModifiersMap.get(target);
+
+    if (targetMods) {
+      targetMods.length = 0;
+    }
+  }
+
+  private listenEvents(): Observable<BattleEvents> {
+    return this.battleEvents.onEvents({
+      [BattleEvent.Fight_Starts]: () => {
+        this.initAllUnitGroupSpells();
+      },
+      [BattleEvent.Combat_Group_Attacked]: (event: CombatGroupAttacked) => {
+        this.battleEvents.dispatchEvent({
+          type: BattleEvent.Combat_Attack_Interaction,
+          attackedGroup: event.attackedGroup,
+          attackingGroup: event.attackerGroup,
+          action: CombatInteractionEnum.GroupAttacks,
+        });
+      },
+      [BattleEvent.Combat_Attack_Interaction]: (state: CombatInteractionState) => {
+        switch (state.action) {
+          case CombatInteractionEnum.GroupAttacks:
+            console.log('group starts attack');
+            this.handleAttackInteraction(state);
+            break;
+          case CombatInteractionEnum.GroupCounterattacks:
+            this.handleAttackInteraction(state);
+            break;
+          case CombatInteractionEnum.AttackInteractionCompleted:
+            console.log('group completes attack');
+            this.battleEvents.dispatchEvent({
+              type: BattleEvent.Round_Group_Spends_Turn,
+              groupPlayer: state.attackingGroup.ownerPlayerRef,
+              group: state.attackingGroup,
+              groupStillAlive: Boolean(state.attackingGroup.count),
+              groupHasMoreTurns: Boolean(state.attackingGroup.turnsLeft),
+            });
+        }
+      },
+
+      [BattleEvent.UI_Player_Hovers_Group_Card]: (event: UIPlayerHoversCard) => {
+        switch (event.hoverType) {
+          case HoverTypeEnum.EnemyCard:
+            if (this.curPlayerState.playerCurrentState === PlayerState.Normal) {
+              this.setDamageHintMessageOnCardHover(event);
+            }
+            if (this.curPlayerState.playerCurrentState === PlayerState.SpellTargeting) {
+              const spellTargetHint: SpellTargetActionHint = {
+                type: ActionHintTypeEnum.OnTargetSpell,
+                spell: this.curPlayerState.currentSpell,
+                target: event.hoveredCard as UnitGroupInstModel,
+              };
+              this.battleState.hintMessage$.next(spellTargetHint);
+            }
+            break;
+          case HoverTypeEnum.Unhover:
+            this.battleState.hintMessage$.next(null);
+        }
+      },
+
+      [BattleEvent.Player_Targets_Spell]: (event: PlayerTargetsSpell) => {
+        this.triggerEventForSpellHandler(event.spell, SpellEventTypes.PlayerTargetsSpell, { target: event.target });
+        this.curPlayerState.playerCurrentState = PlayerState.Normal;
+        this.curPlayerState.resetCurrentSpell();
+      },
+
+      [BattleEvent.Player_Casts_Instant_Spell]: (event) => {
+        this.triggerEventForSpellHandler(event.spell, SpellEventTypes.PlayerCastsInstantSpell, {
+          player: event.player,
+          spell: event.spell,
+        });
+      },
+
+      [BattleEvent.Fight_Next_Round_Starts]: (event) => {
+        this.triggerEventForAllSpellsHandler(
+          SpellEventTypes.NewRoundBegins,
+          {
+            round: event.round,
+          }
+        );
+      },
+
+      [BattleEvent.On_Group_Dies]: (event) => {
+        this.applyDispellToUnitGroup(event.target);
+      },
     });
   }
 }

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { BattleEventsService } from './mw-battle-events.service';
 import {
-  BattleEventTypeEnum, DealtDamageMessage, HistoryLogTypesEnum, HistoryLogModel, RoundInfoMessage, SimpleMessage
+  BattleEvent, DealtDamageMessage, HistoryLogTypesEnum, HistoryLogModel, RoundInfoMessage, SimpleMessage
 } from './types';
 
 @Injectable({
@@ -17,11 +17,11 @@ export class MwBattleLogService {
     private readonly battleEvents: BattleEventsService,
   ) {
     this.battleEvents.onEvents({
-      [BattleEventTypeEnum.Fight_Starts]: () => {
+      [BattleEvent.Fight_Starts]: () => {
         this.history = [];
       },
 
-      [BattleEventTypeEnum.On_Group_Damaged_By_Group]: event => this.logDealtDamageMessage({
+      [BattleEvent.On_Group_Damaged_By_Group]: event => this.logDealtDamageMessage({
         attacked: event.attackedGroup.type,
         attackedPlayer: event.attackedGroup.ownerPlayerRef,
         attacker: event.attackerGroup.type,
@@ -29,11 +29,11 @@ export class MwBattleLogService {
         damage: event.damage,
         losses: event.loss,
       }),
-      [BattleEventTypeEnum.On_Group_Counter_Attacked]: event => this.logSimpleMessage(`${event.attackerGroup.type.name} (${event.attackerGroup.count}) counterattacks, dealing ${event.damage} damage, ${event.loss} units perish`),
-      [BattleEventTypeEnum.On_Group_Dies]: event => this.logSimpleMessage(`Group of ${event.target.type.name} dies, losing ${event.loss} units`),
+      [BattleEvent.On_Group_Counter_Attacked]: event => this.logSimpleMessage(`${event.attackerGroup.type.name} (${event.attackerGroup.count}) counterattacks, dealing ${event.damage} damage, ${event.loss} units perish`),
+      [BattleEvent.On_Group_Dies]: event => this.logSimpleMessage(`Group of ${event.target.type.name} dies, losing ${event.loss} units`),
 
       /* todo: timely, logs will be controlled from spell's code */
-      [BattleEventTypeEnum.Player_Targets_Spell]: event => {
+      [BattleEvent.Player_Targets_Spell]: event => {
         switch (event.spell.baseType.activationType) {
           case 'target':
             // this.logSimpleMessage(`${event.player.hero.name} casts ${event.spell.name} against ${event.target.count} ${event.target.type.name}`);
@@ -42,10 +42,10 @@ export class MwBattleLogService {
         
       },
 
-      [BattleEventTypeEnum.Round_Player_Turn_Starts]: event => this.logRoundInfoMessage(`Player ${event.currentPlayer.type} starts his turn`),
+      [BattleEvent.Round_Player_Turn_Starts]: event => this.logRoundInfoMessage(`Player ${event.currentPlayer.type} starts his turn`),
 
-      [BattleEventTypeEnum.Fight_Ends]: event => this.logRoundInfoMessage(event.win ? 'Win!' : 'Defeat'),
-      [BattleEventTypeEnum.Fight_Next_Round_Starts]: event => this.logRoundInfoMessage(`Round ${event.round} starts`),
+      [BattleEvent.Fight_Ends]: event => this.logRoundInfoMessage(event.win ? 'Win!' : 'Defeat'),
+      [BattleEvent.Fight_Next_Round_Starts]: event => this.logRoundInfoMessage(`Round ${event.round} starts`),
     }).subscribe();
   }
 

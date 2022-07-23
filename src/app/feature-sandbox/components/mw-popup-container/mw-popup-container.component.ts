@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NeutralCampStructure, NeutralRewardTypesEnum } from "src/app/core/model/structures.types";
-import { BattleEventsService, BattleEventTypeEnum, BattleStateService, FightEndsPopup, LossModel, MwPlayersService, PopupModel, PopupTypesEnum, RoundEndsEvent, StructHireRewardPopup, StructItemRewardPopup, StructRewardPopup } from '../../services';
+import { BattleEventsService, BattleEvent, BattleStateService, FightEndsPopup, LossModel, MwPlayersService, PopupModel, PopupTypesEnum, RoundEndsEvent, StructHireRewardPopup, StructItemRewardPopup, StructRewardPopup } from '../../services';
 
 @Component({
   selector: 'mw-popup-container',
@@ -19,11 +19,11 @@ export class MwPopupContainerComponent implements OnInit {
   ) {
     this.battleEvents.onEvents({
 
-      [BattleEventTypeEnum.Display_Popup]: event => {
+      [BattleEvent.Display_Popup]: event => {
         this.popups.push(event.popup);
       },
 
-      [BattleEventTypeEnum.Fight_Ends]: (event: RoundEndsEvent) => {
+      [BattleEvent.Fight_Ends]: (event: RoundEndsEvent) => {
         const fightEndsPopup: FightEndsPopup = {
           type: PopupTypesEnum.FightEnds,
           isWin: event.win,
@@ -32,10 +32,10 @@ export class MwPopupContainerComponent implements OnInit {
           struct: event.struct as NeutralCampStructure,
         };
 
-        this.battleEvents.dispatchEvent({ type: BattleEventTypeEnum.Display_Popup, popup: fightEndsPopup });
+        this.battleEvents.dispatchEvent({ type: BattleEvent.Display_Popup, popup: fightEndsPopup });
       },
 
-      [BattleEventTypeEnum.Display_Reward_Popup]: event => {
+      [BattleEvent.Display_Reward_Popup]: event => {
         const struct = event.struct;
 
         const structReward = struct.reward;
@@ -47,7 +47,7 @@ export class MwPopupContainerComponent implements OnInit {
                 struct: struct,
               };
 
-              this.battleEvents.dispatchEvent({ type: BattleEventTypeEnum.Display_Popup, popup: structRewardPopup });
+              this.battleEvents.dispatchEvent({ type: BattleEvent.Display_Popup, popup: structRewardPopup });
               break;
 
             case NeutralRewardTypesEnum.UnitsHire:
@@ -56,7 +56,7 @@ export class MwPopupContainerComponent implements OnInit {
                 struct: struct,
               }
 
-              this.battleEvents.dispatchEvent({ type: BattleEventTypeEnum.Display_Popup, popup: structHirePopup });
+              this.battleEvents.dispatchEvent({ type: BattleEvent.Display_Popup, popup: structHirePopup });
               break;
             case NeutralRewardTypesEnum.Item:
               const structItemRewardPopup: StructItemRewardPopup = {
@@ -64,7 +64,7 @@ export class MwPopupContainerComponent implements OnInit {
                 struct: struct,
               };
 
-              this.battleEvents.dispatchEvent({ type: BattleEventTypeEnum.Display_Popup, popup: structItemRewardPopup });
+              this.battleEvents.dispatchEvent({ type: BattleEvent.Display_Popup, popup: structItemRewardPopup });
               break;
           }
         }

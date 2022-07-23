@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NeutralCampStructure, NeutralSite, StructureTypeEnum } from 'src/app/core/model/structures.types';
-import { BattleEventsService, BattleEventTypeEnum, PopupTypesEnum, PrefightPopup, PreviewPopup, StructSelected } from '../../services';
+import { BattleEventsService, BattleEvent, PopupTypesEnum, PrefightPopup, PreviewPopup, StructSelected } from '../../services';
 
 enum ViewsEnum {
   Structures = 'structures',
@@ -27,7 +27,7 @@ export class MwViewControlComponent implements OnInit {
     private readonly events: BattleEventsService,
   ) {
     this.events.onEvents({
-      [BattleEventTypeEnum.Struct_Selected]: (event: StructSelected) => {
+      [BattleEvent.Struct_Selected]: (event: StructSelected) => {
 
         if (event.struct.type === StructureTypeEnum.NeutralCamp) {
           const prefightPopup: PrefightPopup = {
@@ -35,7 +35,7 @@ export class MwViewControlComponent implements OnInit {
             struct: event.struct as NeutralCampStructure,
           };
 
-          this.events.dispatchEvent({ type: BattleEventTypeEnum.Display_Popup, popup: prefightPopup });
+          this.events.dispatchEvent({ type: BattleEvent.Display_Popup, popup: prefightPopup });
           return;
         }
 
@@ -45,18 +45,18 @@ export class MwViewControlComponent implements OnInit {
             struct: event.struct as NeutralSite,
           };
 
-          this.events.dispatchEvent({ type: BattleEventTypeEnum.Display_Popup, popup: previewPopup });
+          this.events.dispatchEvent({ type: BattleEvent.Display_Popup, popup: previewPopup });
         }
       },
 
-      [BattleEventTypeEnum.Struct_Fight_Confirmed]: (event) => {
+      [BattleEvent.Struct_Fight_Confirmed]: (event) => {
         this.currentView = ViewsEnum.Battleground;
       },
 
-      [BattleEventTypeEnum.Struct_Completed]: (event) => {
+      [BattleEvent.Struct_Completed]: (event) => {
         event.struct.isInactive = true;
         this.currentView = ViewsEnum.Structures;
-        this.events.dispatchEvent({ type: BattleEventTypeEnum.Display_Reward_Popup, struct: event.struct });
+        this.events.dispatchEvent({ type: BattleEvent.Display_Reward_Popup, struct: event.struct });
       },
     }).subscribe();
   }
