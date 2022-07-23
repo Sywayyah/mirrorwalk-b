@@ -152,6 +152,7 @@ export class MwPlayersService {
     player.hero.items.push(item);
     player.hero.mods.push(item.baseType.staticMods);
     if (item.baseType.staticMods.playerBonusAttack) {
+      /* todo: rethink this. modifiers array can be better */
       player.hero.stats.bonusAttack += item.baseType.staticMods.playerBonusAttack;
     }
     this.itemsService.registerItemsEventHandlers(item, player);
