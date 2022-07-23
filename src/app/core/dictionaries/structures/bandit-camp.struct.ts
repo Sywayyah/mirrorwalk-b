@@ -1,8 +1,8 @@
 import { ResourceType } from '../../model/resources.types';
 import { CommonUtils, GenerationModel } from '../../utils/common.utils';
-import { ItemDoomstring, ItemWindCrest } from '../items.dictionary';
 import { ItemReward, NeutralRewardTypesEnum, ResourcesReward, StructureGeneratorModel, StuctureControl } from '../../model/structures.types';
 import { NEUTRAL_FRACTION_UNIT_TYPES, NEUTRAL_TYPES_ENUM } from '../unit-types/neutral-unit-types.dictionary';
+import { ItemDoomstring, ItemWindCrest } from '../items';
 
 
 export const BanditCamp: StructureGeneratorModel = {

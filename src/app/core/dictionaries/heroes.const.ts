@@ -1,6 +1,6 @@
 import { HeroModel as HeroModelBase, HeroModelStats } from "../model/hero.model";
 import { ResourcesModel } from "../model/resources.types";
-import { ItemWindCrest } from "./items.dictionary";
+import { ItemWindCrest } from "./items";
 import { METEOR_SPELL, RAIN_OF_FIRE_SPELL } from "./spells";
 import { HF_TYPES_ENUM, HUMANS_FRACTION_UNIT_TYPES } from "./unit-types/unit-types.dictionary";
 

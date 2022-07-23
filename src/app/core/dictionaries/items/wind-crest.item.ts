@@ -1,20 +1,5 @@
-import { GameEventTypes, ItemBaseModel } from "../model/items/items.types";
-import { WIND_BLESS_BUFF } from "./spells/wind-bless.spell";
-
-export const ItemDoomstring: ItemBaseModel<{}> = {
-    name: 'Doomstring',
-    staticMods: {
-        playerBonusAttack: 2,
-    },
-    icon: {
-        icon: 'crossbow',
-    },
-    defaultState: {},
-    description: () => '+2 to Attack.',
-    config: {
-        init: () => { },
-    }
-};
+import { GameEventTypes, ItemBaseModel } from "../../model/items/items.types";
+import { WIND_BLESS_BUFF } from "../spells/wind-bless.spell";
 
 export const ItemWindCrest: ItemBaseModel = {
     name: 'Wind Crest',
@@ -35,6 +20,7 @@ export const ItemWindCrest: ItemBaseModel = {
                             .filter(unitGroup => unitGroup.type.defaultModifiers?.isRanged)
                             .forEach(rangedUnitGroup => {
                                 const windBlessBuff = actions.createSpellInstance(WIND_BLESS_BUFF);
+
                                 actions.addSpellToUnitGroup(rangedUnitGroup, windBlessBuff, ownerPlayer);
                             });
                     }

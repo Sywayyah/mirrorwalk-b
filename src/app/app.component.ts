@@ -1,7 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { ItemDoomstring, ItemWindCrest } from './core/dictionaries/items.dictionary';
 import { HintsContainerComponent } from './feature-sandbox/components/ui-elements/hints-container/hints-container.component';
-import { CombatInteractorService, MwPlayersService } from './feature-sandbox/services';
+import { CombatInteractorService } from './feature-sandbox/services';
 import { MwItemsService } from './feature-sandbox/services/mw-items-service.service';
 import { HintsService } from './feature-sandbox/services/ui/hints.service';
 
@@ -16,11 +15,11 @@ export class AppComponent implements OnInit {
   constructor(
     private readonly hintsService: HintsService,
     private readonly combat: CombatInteractorService,
-    players: MwPlayersService,
+    // players: MwPlayersService,
     items: MwItemsService,
-
   ) {
     items.initService(combat);
+    // players.initPlayers();
     // players.addItemToPlayer(players.getCurrentPlayer(), items.createItem(ItemDoomstring));
     // players.addItemToPlayer(players.getCurrentPlayer(), items.createItem(ItemWindCrest));
   }
