@@ -13,7 +13,7 @@ export const CalavryStalls: StructureGeneratorModel = {
             maxUnitGroups: 1,
             minUnitGroups: 1,
             units: [
-                [HF_TYPES_ENUM.Cavalry, 15, 15, 1],
+                [HF_TYPES_ENUM.Cavalry, 13, 13, 1],
             ],
         } as GenerationModel;
 

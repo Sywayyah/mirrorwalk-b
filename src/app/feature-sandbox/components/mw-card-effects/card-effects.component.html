@@ -11,5 +11,8 @@
 </div>
 
 <ng-template #damageVfx let-effect="effect">
-    <div class="damage-vfx">-{{effect.lossNumber}}</div>
+    <div class="damage-vfx" style="display: flex">
+        <mw-ra-icon icon="sword"></mw-ra-icon>
+        -{{effect.lossNumber}}
+    </div>
 </ng-template>

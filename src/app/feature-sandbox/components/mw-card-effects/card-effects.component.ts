@@ -25,7 +25,9 @@ export class CardEffectsComponent implements OnInit {
 
   public effects: EffectModel[] = [];
 
-  constructor() {}
+  constructor(
+    // private hintsService: HintsService,
+  ) {}
 
   ngOnInit(): void {
   }
