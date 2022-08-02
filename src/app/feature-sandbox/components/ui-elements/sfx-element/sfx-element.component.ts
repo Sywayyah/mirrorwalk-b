@@ -1,5 +1,5 @@
 import { Component, ElementRef, Input, OnInit, Renderer2, TemplateRef, ViewChild, ViewContainerRef, ViewRef } from '@angular/core';
-import { Animation, LightningAnimation } from './animations';
+import { Animation, FrightAnimation, LightningAnimation } from './animations';
 
 
 @Component({
@@ -9,7 +9,7 @@ import { Animation, LightningAnimation } from './animations';
 })
 export class SfxElementComponent implements OnInit {
 
-  @Input() public animation: Animation = LightningAnimation;
+  @Input() public animation: Animation = FrightAnimation;
 
   @ViewChild('container', { read: ViewContainerRef, static: true }) public viewContainerRef!: ViewContainerRef;
   @ViewChild('iconSfx', { static: true }) public iconSfx!: TemplateRef<unknown>;
