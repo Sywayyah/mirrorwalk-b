@@ -1,0 +1,11 @@
+<ng-container *ngFor="let effect of effects">
+    <div class="vfx" [ngSwitch]="effect.vfx.type" [style.left.px]="effect.offset.left" [style.top.px]="effect.offset.top">
+        <ng-container *ngSwitchCase="EffectTypes.VfxElement">
+            <ng-container *ngTemplateOutlet="vfxElement; context: {$implicit: effect}"></ng-container>
+        </ng-container>
+    </div>
+</ng-container>
+
+<ng-template #vfxElement let-effect>
+    <mw-vfx-element [animation]="effect.vfx.animation"></mw-vfx-element>
+</ng-template>

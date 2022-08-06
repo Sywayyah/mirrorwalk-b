@@ -29,6 +29,7 @@ import { ItemRewardPopupComponent } from './feature-sandbox/components/mw-popup-
 import { ItemIconComponent } from './feature-sandbox/components/item-icon/item-icon.component';
 import { PreviewPopupComponent } from './feature-sandbox/components/mw-popup-container/components/preview-popup/preview-popup.component';
 import { VfxElementComponent } from './feature-sandbox/components/ui-elements/vfx-element/vfx-element.component';
+import { VfxLayerComponent } from './feature-sandbox/components/ui-elements/vfx-layer/vfx-layer.component';
 
 @NgModule({
   declarations: [
@@ -59,6 +60,7 @@ import { VfxElementComponent } from './feature-sandbox/components/ui-elements/vf
     ItemIconComponent,
     PreviewPopupComponent,
     VfxElementComponent,
+    VfxLayerComponent,
   ],
   imports: [
     BrowserModule
