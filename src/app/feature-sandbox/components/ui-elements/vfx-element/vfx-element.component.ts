@@ -3,11 +3,11 @@ import { Animation, FrightAnimation, LightningAnimation } from './animations';
 
 
 @Component({
-  selector: 'mw-sfx-element',
-  templateUrl: './sfx-element.component.html',
-  styleUrls: ['./sfx-element.component.scss']
+  selector: 'mw-vfx-element',
+  templateUrl: './vfx-element.component.html',
+  styleUrls: ['./vfx-element.component.scss']
 })
-export class SfxElementComponent implements OnInit {
+export class VfxElementComponent implements OnInit {
 
   @Input() public animation: Animation = FrightAnimation;
 

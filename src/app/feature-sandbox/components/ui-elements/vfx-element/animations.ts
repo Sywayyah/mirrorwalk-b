@@ -164,7 +164,7 @@ const getBwKeyframes = (offsetDelay: number = 0) => {
 
 const getBwDefaultStyles = () => {
     // const transform = 'translate(-50%, -100%) scale(1)';
-    const transform = 'translate(-50%, -50%) scale(2)';
+    const transform = 'translate(-50%, -50%) scale(3)';
 
     return {
         transform: transform,
