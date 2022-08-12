@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import type { Effect, VfxLayerComponent } from './vfx-layer.component';
+import type { Effect, EffectOptions, VfxLayerComponent } from './vfx-layer.component';
 
 
 @Injectable({
@@ -21,7 +21,12 @@ export class VfxService {
     return this.latestVfxId++;
   }
 
-  public createXyVfx(x: number, y: number, effect: Effect): void {
-    this.layerComponent.createEffect(x, y, effect);
+  public createXyVfx(
+    x: number,
+    y: number,
+    effect: Effect,
+    options: EffectOptions = { darkOverlay: true },
+  ): void {
+    this.layerComponent.createEffect(x, y, effect, options);
   }
 }

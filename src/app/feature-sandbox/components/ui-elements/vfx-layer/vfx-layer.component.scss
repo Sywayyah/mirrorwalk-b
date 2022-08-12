@@ -11,3 +11,19 @@
     position: fixed;
     pointer-events: none;
 }
+
+.basic-overlay {
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    opacity: 0;
+    background: rgba(0, 0, 0, 0.418);
+    transition: 0.3s;
+    pointer-events: none;
+}
+
+.basic-overlay.visible {
+    opacity: 1;
+}

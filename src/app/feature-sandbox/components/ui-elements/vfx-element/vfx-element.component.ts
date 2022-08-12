@@ -1,6 +1,10 @@
 import { Component, ElementRef, Input, OnInit, Renderer2, TemplateRef, ViewChild, ViewContainerRef, ViewRef } from '@angular/core';
-import { Animation, FrightAnimation, LightningAnimation } from './animations';
+import { Animation as VfxAnimation, FrightAnimation, LightningAnimation } from './animations';
 
+export interface AnimationRef {
+  elem: VfxElementComponent;
+  animationsList: Animation[];
+}
 
 @Component({
   selector: 'mw-vfx-element',
@@ -9,7 +13,7 @@ import { Animation, FrightAnimation, LightningAnimation } from './animations';
 })
 export class VfxElementComponent implements OnInit {
 
-  @Input() public animation: Animation = FrightAnimation;
+  @Input() public animation: VfxAnimation = FrightAnimation;
 
   @ViewChild('container', { read: ViewContainerRef, static: true }) public viewContainerRef!: ViewContainerRef;
   @ViewChild('iconSfx', { static: true }) public iconSfx!: TemplateRef<unknown>;
@@ -17,14 +21,20 @@ export class VfxElementComponent implements OnInit {
   private createdViews: Record<string, ViewRef> = {};
 
   constructor(
-    private renderer: Renderer2,
-    private hostElem: ElementRef,
+    public renderer: Renderer2,
+    public hostElem: ElementRef,
   ) { }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
+    this.playAnimation();
+  }
+
+  public playAnimation(options: {duration?: number} = {duration: 1000}): AnimationRef {
     if (this.animation.config.layout === 'default') {
       this.renderer.addClass(this.hostElem.nativeElement, 'default-layout');
     }
+
+    const animationsList: Animation[] = [];
 
     this.animation.elements.forEach(animationElemConfig => {
       const iconSfxView = this.viewContainerRef.createEmbeddedView(
@@ -43,13 +53,20 @@ export class VfxElementComponent implements OnInit {
 
       const keyFramesConfig = this.animation.elemsKeyframes[animationElemConfig.id];
 
-      firstNode.animate(keyFramesConfig, {
-        duration: 1000,
+      const animation = firstNode.animate(keyFramesConfig, {
+        duration: options.duration,
         fill: 'forwards',
       });
+
+      animationsList.push(animation);
     });
 
     console.log('SFX -> ', this.createdViews);
+
+    return {
+      elem: this,
+      animationsList: animationsList,
+    };
   }
 
 }
