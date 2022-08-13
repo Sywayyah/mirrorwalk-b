@@ -4,7 +4,6 @@ import { takeUntil } from 'rxjs/operators';
 import { PlayerModel, UnitGroupInstModel } from 'src/app/core/model/main.model';
 import { BattleEventsService, BattleEvent, BattleStateService, HoverTypeEnum, MwPlayersService } from '../../services';
 import { MwUnitGroupStateService } from '../../services/mw-unit-group-state.service';
-import { CardEffectsComponent } from '../mw-card-effects/card-effects.component';
 
 @Component({
   selector: 'mw-unit-group-card',
@@ -24,8 +23,6 @@ export class MwUnitGroupCardComponent implements OnInit, OnDestroy {
   public cardReady: EventEmitter<MwUnitGroupCardComponent> = new EventEmitter();
   @Output()
   public groupDies: EventEmitter<void> = new EventEmitter();
-
-  @ViewChild('effects', { static: true }) public effectsComponent!: CardEffectsComponent;
 
   public isCardHovered: boolean = false;
   public isEnemyCard!: boolean;

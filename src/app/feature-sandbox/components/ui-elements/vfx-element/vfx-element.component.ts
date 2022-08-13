@@ -1,5 +1,5 @@
 import { Component, ElementRef, EmbeddedViewRef, Renderer2, TemplateRef, ViewChild, ViewContainerRef, ViewRef } from '@angular/core';
-import { AnimationElementType, AnimationIconElement, EffectAnimation } from 'src/app/core/model/vfx-api/vfx-api.types';
+import { AnimationElementType, AnimationIconElement, CustomAnimationData, CustomizableAnimationData, EffectAnimation } from 'src/app/core/model/vfx-api/vfx-api.types';
 
 export interface AnimationRef {
   elem: VfxElementComponent;
@@ -28,7 +28,7 @@ export class VfxElementComponent {
   public playAnimation(
     animation: EffectAnimation,
     options: { duration?: number } = { duration: 1000 },
-    data: object = {},
+    data: CustomAnimationData = {},
   ): AnimationRef {
     if (animation.config.layout === 'default') {
       this.renderer.addClass(this.hostElem.nativeElement, 'default-layout');
@@ -51,7 +51,7 @@ export class VfxElementComponent {
         case AnimationElementType.Customizable:
           iconSfxView = this.viewContainerRef.createEmbeddedView(
             this.damageVfx,
-            { data },
+            { data: data.custom },
           );
       }
 

@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppComponent } from './app.component';
 import {
-  CardEffectsComponent,
   HiringRewardPopupComponent,
   MwActionHintComponent,
   MwExperienceBarComponent,
@@ -38,7 +37,6 @@ import { VfxLayerComponent } from './feature-sandbox/components/ui-elements/vfx-
     MwUnitGroupCardComponent,
     MwHistoryLogComponent,
     MwActionHintComponent,
-    CardEffectsComponent,
     MwPopupContainerComponent,
     MwViewControlComponent,
     MwStructuresViewComponent,

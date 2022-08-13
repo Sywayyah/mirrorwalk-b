@@ -3,7 +3,7 @@ import { combineLatest, fromEvent } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { FloatingMessageAnimation } from 'src/app/core/dictionaries/vfx/animations';
 import { UnitGroupInstModel } from 'src/app/core/model/main.model';
-import { Effect, EffectInstRef, EffectOptions, EffectPosition, EffectType, VfxElemEffect } from 'src/app/core/model/vfx-api/vfx-api.types';
+import { CustomAnimationData, Effect, EffectInstRef, EffectOptions, EffectPosition, EffectType, VfxElemEffect } from 'src/app/core/model/vfx-api/vfx-api.types';
 import { MwCardsMappingService } from 'src/app/feature-sandbox/services/mw-cards-mapping.service';
 import { VfxElementComponent } from '../vfx-element/vfx-element.component';
 import { VfxService } from './vfx.service';
@@ -12,7 +12,6 @@ import { VfxService } from './vfx.service';
   VFX ideas:
     1. Maybe, instead of having shadow-overlay, there could be a shadow element
       below effect.
-    2. remove old card effects component
  */
 @Component({
   selector: 'mw-vfx-layer',
@@ -83,7 +82,7 @@ export class VfxLayerComponent implements OnInit {
   /* in theory, createVfxForUnitGroup can be reused */
   public createFloatingMessageForUnitGroup(
     unitGroup: UnitGroupInstModel,
-    data: object,
+    data: CustomAnimationData,
     options: EffectOptions = {},
   ): void {
     const cardComponent = this.unitsCardsMapping.get(unitGroup);

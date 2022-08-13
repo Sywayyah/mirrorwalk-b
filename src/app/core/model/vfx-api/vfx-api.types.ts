@@ -58,8 +58,21 @@ export interface EffectOptions {
     duration?: number;
 }
 
+export interface CustomizableAnimationData {
+    parts: {
+        type: string | 'plainPart';
+        text: string | number;
+        icon: string;
+        color: string;
+    }[];
+}
+
+export interface CustomAnimationData {
+    custom?: CustomizableAnimationData;
+}
+
 /*  replace data: object with normal type */
 export interface VfxApi {
     createEffectForUnitGroup(target: UnitGroupInstModel, animation: EffectAnimation, options: EffectOptions): void;
-    createFloatingMessageForUnitGroup(target: UnitGroupInstModel, data: object, options: EffectOptions): void;
+    createFloatingMessageForUnitGroup(target: UnitGroupInstModel, data: CustomizableAnimationData, options: EffectOptions): void;
 }

@@ -1,67 +1,64 @@
-<mw-card-effects #effects>
-    <div class="card-top" [ngClass]="side === 'left' ? 'card-left' : 'card-right'" (mouseenter)="onCardHover(true)"
-        (mouseleave)="onCardHover(false)" (click)="onGroupClick()">
+<div class="card-top" [ngClass]="side === 'left' ? 'card-left' : 'card-right'" (mouseenter)="onCardHover(true)"
+    (mouseleave)="onCardHover(false)" (click)="onGroupClick()">
 
-        <img src="../assets/{{unitGroup.type.mainPortraitUrl}}" class="portrait">
+    <img src="../assets/{{unitGroup.type.mainPortraitUrl}}" class="portrait">
 
-        <div class="card-wrapper">
-            <div [style.background]="playerInfo.color"
-                [class.current-group]="mwBattleStateService.currentPlayer === playerInfo && attackingUnitGroup === unitGroup"
-                [class.hovered-enemy]="isCardHovered && isEnemyCard && canCurrentPlayerAttack" class="card">
-                <div style="padding-bottom: 3px; font-weight: 500; white-space: nowrap;">
-                    {{ unitGroup.type.name }}
-                    ({{ unitGroup.count }})
-                </div>
-                <div style="font-size: 12px;">
-                    <div>
-                        <mw-ra-icon icon="spinning-sword"></mw-ra-icon>
-                        ({{unitGroup.turnsLeft}}/{{unitGroup.type.defaultTurnsPerRound}})
-                    </div>
-                    <div>
-                        <mw-ra-icon icon="sword" *ngIf="isGroupMelee; else rangedIcon"></mw-ra-icon>
-                        <ng-template #rangedIcon>
-                            <mw-ra-icon icon="crossbow"></mw-ra-icon>
-                        </ng-template>
-                        {{ unitGroup.type.baseStats.damageInfo.maxDamage * unitGroup.count }}
-                    </div>
-                    <div>
-                        <mw-ra-icon icon="feather-wing"></mw-ra-icon>
-                        {{ unitGroup.type.baseStats.speed }}
-                    </div>
-                    <!-- this info will have to be updated -->
-                    <div>
-                        <mw-ra-icon icon="health"></mw-ra-icon>
-                        {{ unitGroup.type.baseStats.health * (unitGroup.count - 1) + (unitGroup.tailUnitHp ?? 0) }}
-                    </div>
-
-                </div>
+    <div class="card-wrapper">
+        <div [style.background]="playerInfo.color"
+            [class.current-group]="mwBattleStateService.currentPlayer === playerInfo && attackingUnitGroup === unitGroup"
+            [class.hovered-enemy]="isCardHovered && isEnemyCard && canCurrentPlayerAttack" class="card">
+            <div style="padding-bottom: 3px; font-weight: 500; white-space: nowrap;">
+                {{ unitGroup.type.name }}
+                ({{ unitGroup.count }})
             </div>
-            <div class="abilities" [ngClass]="side === 'left' ? 'left' : 'right'">
-                <div class="ability" *ngFor="let ability of unitGroup.spells">
-                    <!-- {{ ability.name }} -->
-                    <mw-hover-hint [hintBody]="buffHint" [xPos]="'above'">
-                        <mw-ra-icon class="icon-label buff-icon" [icon]="ability.baseType.icon.icon"
-                            [ngStyle]="{ 'color': ability.baseType.icon.iconClr , 'background': ability.baseType.icon.bgClr }">
-                        </mw-ra-icon>
-                    </mw-hover-hint>
-
-                    <ng-template #buffHint>
-                        <div style="display: flex">
-                            <mw-ra-icon class="icon-label tooltip-icon" [icon]="ability.baseType.icon.icon"
-                                [ngStyle]="{ 'color': ability.baseType.icon.iconClr , 'background': ability.baseType.icon.bgClr }">
-                            </mw-ra-icon>
-                            <div style="padding: 4px; font-size: 14px;">
-                                <div>{{ability.baseType.name}}</div>
-                                <div>Level {{ability.currentLevel}}</div>
-                            </div>
-                        </div>
-                        <div style="padding: 4px; font-size: 13px; max-width: 240px;">
-                            <div>{{ability.description}}</div>
-                        </div>
-                    </ng-template>
+            <div style="font-size: 12px;">
+                <div>
+                    <mw-ra-icon icon="spinning-sword"></mw-ra-icon>
+                    ({{unitGroup.turnsLeft}}/{{unitGroup.type.defaultTurnsPerRound}})
                 </div>
+                <div>
+                    <mw-ra-icon icon="sword" *ngIf="isGroupMelee; else rangedIcon"></mw-ra-icon>
+                    <ng-template #rangedIcon>
+                        <mw-ra-icon icon="crossbow"></mw-ra-icon>
+                    </ng-template>
+                    {{ unitGroup.type.baseStats.damageInfo.maxDamage * unitGroup.count }}
+                </div>
+                <div>
+                    <mw-ra-icon icon="feather-wing"></mw-ra-icon>
+                    {{ unitGroup.type.baseStats.speed }}
+                </div>
+                <!-- this info will have to be updated -->
+                <div>
+                    <mw-ra-icon icon="health"></mw-ra-icon>
+                    {{ unitGroup.type.baseStats.health * (unitGroup.count - 1) + (unitGroup.tailUnitHp ?? 0) }}
+                </div>
+
             </div>
         </div>
+        <div class="abilities" [ngClass]="side === 'left' ? 'left' : 'right'">
+            <div class="ability" *ngFor="let ability of unitGroup.spells">
+                <!-- {{ ability.name }} -->
+                <mw-hover-hint [hintBody]="buffHint" [xPos]="'above'">
+                    <mw-ra-icon class="icon-label buff-icon" [icon]="ability.baseType.icon.icon"
+                        [ngStyle]="{ 'color': ability.baseType.icon.iconClr , 'background': ability.baseType.icon.bgClr }">
+                    </mw-ra-icon>
+                </mw-hover-hint>
 
+                <ng-template #buffHint>
+                    <div style="display: flex">
+                        <mw-ra-icon class="icon-label tooltip-icon" [icon]="ability.baseType.icon.icon"
+                            [ngStyle]="{ 'color': ability.baseType.icon.iconClr , 'background': ability.baseType.icon.bgClr }">
+                        </mw-ra-icon>
+                        <div style="padding: 4px; font-size: 14px;">
+                            <div>{{ability.baseType.name}}</div>
+                            <div>Level {{ability.currentLevel}}</div>
+                        </div>
+                    </div>
+                    <div style="padding: 4px; font-size: 13px; max-width: 240px;">
+                        <div>{{ability.description}}</div>
+                    </div>
+                </ng-template>
+            </div>
+        </div>
     </div>
-</mw-card-effects>
+</div>

@@ -9,7 +9,7 @@
 
 <!-- Damage composed VFX -->
 <ng-template #damageVfx let-data="data">
-    <div style="text-shadow: 1px 1px #4e4e4e;">
+    <div style="text-shadow: 1px 1px #4e4e4e; z-index: 10000;">
         <div *ngFor="let part of data.parts" [ngSwitch]="part.type" [style.color]="part.color">
             <ng-container *ngSwitchCase="'plainPart'">
                 <ng-container *ngTemplateOutlet="plainDamagePart; context: { part: part }"></ng-container>

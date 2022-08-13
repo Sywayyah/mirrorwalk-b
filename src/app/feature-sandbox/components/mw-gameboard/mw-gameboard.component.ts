@@ -11,6 +11,7 @@ import {
 import { MwCardsMappingService } from '../../services/mw-cards-mapping.service';
 import { CombatInteractorService } from '../../services/mw-combat-interactor.service';
 import { MwUnitGroupCardComponent } from '../mw-unit-group-card/mw-unit-group-card.component';
+import { VfxService } from '../ui-elements/vfx-layer/vfx.service';
 
 @Component({
   selector: 'mw-mw-gameboard',
@@ -34,6 +35,7 @@ export class MwGameboardComponent implements OnInit {
     private readonly cardsMapping: MwCardsMappingService,
     private readonly battleEvents: BattleEventsService,
     private readonly combatInteractor: CombatInteractorService,
+    private readonly vfx: VfxService,
   ) {
     this.combatInteractor.onBattleBegins();
   }
@@ -59,7 +61,12 @@ export class MwGameboardComponent implements OnInit {
     });
 
     this.battleEvents.onEvent(BattleEvent.On_Group_Damaged_By_Group).subscribe((event) => {
-      this.cardsMapping.get(event.attackedGroup).effectsComponent.addLossEffect(event.loss);
+      this.vfx.createFloatingMessageForUnitGroup(event.attackedGroup, {
+        parts: [
+          { icon: 'sword', text: event.damage, color: 'red', type: 'plainPart' },
+          // ...(!event.loss ? [] : [{ icon: 'skull', color: 'white', text: event.loss, type: 'plainPart' }]),
+        ],
+      })
     });
   }
 
