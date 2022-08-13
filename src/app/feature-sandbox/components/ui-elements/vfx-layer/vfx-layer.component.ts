@@ -1,5 +1,5 @@
 import { Component, ComponentFactoryResolver, OnInit, Renderer2, TemplateRef, ViewChild, ViewContainerRef } from '@angular/core';
-import { forkJoin, fromEvent } from 'rxjs';
+import { combineLatest, fromEvent } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { UnitGroupInstModel } from 'src/app/core/model/main.model';
 import { Effect, EffectInstRef, EffectOptions, EffectPosition, EffectType, VfxElemEffect } from 'src/app/core/model/vfx-api/vfx-api.types';
@@ -106,17 +106,19 @@ export class VfxLayerComponent implements OnInit {
           duration: options.duration,
         });
 
-        forkJoin(
-          animationRef.animationsList.map(animation => fromEvent(animation, 'finish').pipe(take(1)))
-        ).subscribe(() => {
-          this.activeEffects.delete(newEffect.id);
+        combineLatest(
+          animationRef.animationsList.map(animation => fromEvent(animation, 'finish'))
+        )
+          .pipe(take(1))
+          .subscribe(() => {
+            this.activeEffects.delete(newEffect.id);
 
-          if (options.darkOverlay) {
-            this.effectsWithOverlay--;
-          }
+            if (options.darkOverlay) {
+              this.effectsWithOverlay--;
+            }
 
-          vfxComponentRef.destroy();
-        });
+            vfxComponentRef.destroy();
+          });
 
         this.updateEffectElementPosition(vfxComponentInstance.hostElem.nativeElement, newEffect);
     }
