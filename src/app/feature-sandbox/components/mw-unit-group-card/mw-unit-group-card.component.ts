@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { PlayerModel, UnitGroupInstModel } from 'src/app/core/model/main.model';
@@ -38,6 +38,7 @@ export class MwUnitGroupCardComponent implements OnInit, OnDestroy {
   private destroy$: Subject<void> = new Subject();
 
   constructor(
+    public hostElem: ElementRef,
     public mwBattleStateService: BattleStateService,
     private playersService: MwPlayersService,
     private readonly battleEvents: BattleEventsService,

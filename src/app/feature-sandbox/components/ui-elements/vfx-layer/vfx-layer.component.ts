@@ -1,6 +1,8 @@
 import { Component, ComponentFactoryResolver, OnInit, Renderer2, TemplateRef, ViewChild, ViewContainerRef } from '@angular/core';
 import { forkJoin, fromEvent } from 'rxjs';
 import { take } from 'rxjs/operators';
+import { UnitGroupInstModel } from 'src/app/core/model/main.model';
+import { MwCardsMappingService } from 'src/app/feature-sandbox/services/mw-cards-mapping.service';
 import { Animation } from '../vfx-element/animations';
 import { VfxElementComponent } from '../vfx-element/vfx-element.component';
 import { VfxService } from './vfx.service';
@@ -57,31 +59,68 @@ export class VfxLayerComponent implements OnInit {
     private vfxService: VfxService,
     private componentFactoryResolver: ComponentFactoryResolver,
     private renderer: Renderer2,
+    private unitsCardsMapping: MwCardsMappingService,
   ) { }
 
   public ngOnInit(): void {
     this.vfxService.registerLayerComponent(this);
   }
 
-  public createEffect(x: number, y: number, effect: Effect, options: EffectOptions): void {
-    const newEffectId = this.vfxService.getNewId();
-
-    const newEffect: EffectInstRef = {
-      id: newEffectId,
-      offset: {
+  public createXyVfx(x: number, y: number, effect: Effect, options: EffectOptions): void {
+    const newEffect = this.createNewEffect(
+      {
         bottom: 0,
         left: x,
         right: 0,
         top: y,
       },
+      effect,
+    );
+
+    this.instantiateEffect(effect, options, newEffect);
+  }
+
+  public createVfxForUnitGroup(
+    unitGroup: UnitGroupInstModel,
+    effect: Effect<EffectType>,
+    options: EffectOptions
+  ): void {
+    const cardComponent = this.unitsCardsMapping.get(unitGroup);
+    const cardElement = cardComponent.hostElem.nativeElement as HTMLElement;
+
+    const { left, top } = cardElement.getBoundingClientRect();
+
+    const newEffect = this.createNewEffect(
+      {
+        bottom: 0,
+        left: left + (cardElement.clientWidth / 2),
+        right: 0,
+        top: top + (cardElement.clientHeight / 2),
+      },
+      effect,
+    );
+
+    this.instantiateEffect(effect, options, newEffect);
+  }
+
+  private createNewEffect(position: EffectPosition, effect: Effect): EffectInstRef {
+    const newEffectId = this.vfxService.getNewId();
+
+    const newEffect: EffectInstRef = {
+      id: newEffectId,
+      offset: position,
       vfx: effect,
     };
 
+    return newEffect;
+  }
+
+  private instantiateEffect(effect: Effect<EffectType>, options: EffectOptions, newEffect: EffectInstRef) {
     if (options.darkOverlay) {
       this.effectsWithOverlay++;
     }
 
-    this.activeEffects.set(newEffectId, newEffect);
+    this.activeEffects.set(newEffect.id, newEffect);
 
     switch (effect.type) {
       case EffectType.VfxElement:
@@ -98,7 +137,7 @@ export class VfxLayerComponent implements OnInit {
         forkJoin(
           animationRef.animationsList.map(animation => fromEvent(animation, 'finish').pipe(take(1)))
         ).subscribe(() => {
-          this.activeEffects.delete(newEffectId);
+          this.activeEffects.delete(newEffect.id);
 
           if (options.darkOverlay) {
             this.effectsWithOverlay--;
@@ -107,15 +146,14 @@ export class VfxLayerComponent implements OnInit {
           vfxComponentRef.destroy();
         });
 
-        this.setElementPositionByOptions(vfxComponentInstance.hostElem.nativeElement, newEffect.offset);
+        this.updateEffectElementPosition(vfxComponentInstance.hostElem.nativeElement, newEffect);
     }
   }
 
-
-  private setElementPositionByOptions(element: HTMLElement, options: EffectPosition): void {
+  private updateEffectElementPosition(element: HTMLElement, effect: EffectInstRef): void {
     this.renderer.setStyle(element, 'position', 'fixed');
-    this.renderer.setStyle(element, 'left', `${options.left}px`);
-    this.renderer.setStyle(element, 'top', `${options.top}px`);
+    this.renderer.setStyle(element, 'left', `${effect.offset.left}px`);
+    this.renderer.setStyle(element, 'top', `${effect.offset.top}px`);
   }
 
 }
