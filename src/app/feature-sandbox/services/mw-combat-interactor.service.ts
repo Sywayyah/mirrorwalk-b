@@ -17,6 +17,7 @@ import {
   SpellInstance,
   SpellModel
 } from 'src/app/core/model/spells';
+import { EffectType, VfxElemEffect } from 'src/app/core/model/vfx-api/vfx-api.types';
 import { CommonUtils } from 'src/app/core/utils/common.utils';
 import { VfxService } from '../components/ui-elements/vfx-layer/vfx.service';
 import { BattleEventsService } from './mw-battle-events.service';
@@ -368,7 +369,14 @@ export class CombatInteractorService {
           this.spellsHandlersMap.set(spell, { ...spellHandlers, ...handlers });
         },
       },
-      vfx: this.vfxService,
+      vfx: {
+        createEffectForUnitGroup: (target, effect, options) => {
+          this.vfxService.createVfxForUnitGroup(target, {
+            type: EffectType.VfxElement,
+            animation: effect,
+          } as VfxElemEffect, options);
+        }
+      },
       thisSpell: spell.baseType,
       ownerPlayer: player,
       spellInstance: spell,

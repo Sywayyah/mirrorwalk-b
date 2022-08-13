@@ -22,10 +22,7 @@ export const RAIN_OF_FIRE_SPELL: SpellModel = {
                 events.on({
                     [SpellEventTypes.PlayerTargetsSpell]: (event) => {
 
-                        vfx.createVfxForUnitGroup(event.target, {
-                            type: EffectType.VfxElement,
-                            animation: FireAnimation,
-                        } as VfxElemEffect, {
+                        vfx.createEffectForUnitGroup(event.target, FireAnimation, {
                             duration: 850,
                         });
 

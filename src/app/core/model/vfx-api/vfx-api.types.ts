@@ -1,5 +1,6 @@
+import { UnitGroupInstModel } from "../main.model";
 
-
+/* Think on better namings and structure for effects and animations */
 export interface EffectAnimation {
     elements: {
         id: string;
@@ -41,4 +42,8 @@ export interface EffectInstRef {
 export interface EffectOptions {
     darkOverlay?: boolean;
     duration?: number;
+}
+
+export interface VfxApi {
+    createEffectForUnitGroup(target: UnitGroupInstModel, animation: EffectAnimation, options: EffectOptions): void;
 }
