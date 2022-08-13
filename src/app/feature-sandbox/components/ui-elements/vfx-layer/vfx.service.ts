@@ -47,4 +47,12 @@ export class VfxService {
       ...options,
     });
   }
+
+  public createFloatingMessageForUnitGroup(
+    unitGroup: UnitGroupInstModel,
+    data: object,
+    options: EffectOptions = {},
+  ): void {
+    this.layerComponent.createFloatingMessageForUnitGroup(unitGroup, data, options);
+  }
 }

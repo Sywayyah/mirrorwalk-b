@@ -1,9 +1,15 @@
-import { EffectAnimation } from "../../model/vfx-api/vfx-api.types";
+import { AnimationElementType, AnimationIconElement, EffectAnimation } from "../../model/vfx-api/vfx-api.types";
+
+const getIconElement = (iconName: string, id: string): AnimationIconElement => ({
+    icon: iconName,
+    id: id,
+    type: AnimationElementType.Icon,
+});
 
 export const LightningAnimation: EffectAnimation = {
     elements: [
-        { icon: 'focused-lightning', id: 'l-main' },
-        { icon: 'focused-lightning', id: 'l-blur' },
+        getIconElement('focused-lightning', 'l-main'),
+        getIconElement('focused-lightning', 'l-blur'),
     ],
     elemsKeyframes: {
         'l-main': [
@@ -72,9 +78,9 @@ export const LightningAnimation: EffectAnimation = {
 
 export const FireAnimation: EffectAnimation = {
     elements: [
-        { icon: 'fire', id: 'fire-main' },
-        { icon: 'fire', id: 'fire-blur' },
-        { icon: 'fire', id: 'fire-pulse' },
+        getIconElement('fire', 'fire-main'),
+        getIconElement('fire', 'fire-blur'),
+        getIconElement('fire', 'fire-pulse'),
     ],
     elemsKeyframes: {
         'fire-main': [
@@ -201,12 +207,14 @@ const getBwDefaultStyles = () => {
     };
 };
 
+
+
 export const FrightAnimation: EffectAnimation = {
     elements: [
-        { icon: 'batwings', id: 'bw-1' },
-        { icon: 'batwings', id: 'bw-2' },
-        { icon: 'batwings', id: 'bw-3' },
-        { icon: 'batwings', id: 'bw-blur' },
+        getIconElement('batwings', 'bw-1'),
+        getIconElement('batwings', 'bw-2'),
+        getIconElement('batwings', 'bw-3'),
+        getIconElement('batwings', 'bw-blur'),
     ],
     elemsKeyframes: {
         'bw-1': getBwKeyframes(),
@@ -246,3 +254,54 @@ export const FrightAnimation: EffectAnimation = {
         layout: 'default',
     }
 };
+
+export const FloatingMessageAnimation: EffectAnimation = {
+    elements: [
+        { id: 'msg', type: AnimationElementType.Customizable },
+    ],
+    elemsKeyframes: {
+        msg: [
+            {
+                fontSize: '13px',
+            },
+            {
+                offset: 0.3,
+                opacity: 1,
+                transform: 'translate(10px, -50px) scale(1.3)',
+            },
+            {
+                opacity: 0,
+                transform: 'translate(20px, -100px) scale(0.8)',
+            }
+        ]
+    },
+    elemsDefaultStyles: {
+        msg: {
+            opacity: 0.3,
+            fontSize: '15px',
+        }
+    },
+    config: { layout: "default" },
+};
+
+/* 0% {
+        opacity: 0;
+        font-size: 13px;
+        top: 50%;
+        left: 50%;
+    }
+
+    30% {
+        opacity: 1;
+        font-size: 21px;
+        top: -34%;
+        left: 60%;
+    }
+
+    100% {
+        opacity: 0;
+        font-size: 14px;
+        top: -35%;
+        left: 75%;
+    }
+*/

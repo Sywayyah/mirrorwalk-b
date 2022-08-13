@@ -1,7 +1,6 @@
 import { FireAnimation } from "src/app/core/dictionaries/vfx/animations";
 import { DamageType } from "../../model/combat-api/combat-api.types";
 import { SpellActivationType, SpellEventTypes, SpellModel } from "../../model/spells";
-import { EffectType, VfxElemEffect } from "../../model/vfx-api/vfx-api.types";
 
 export const RAIN_OF_FIRE_SPELL: SpellModel = {
     name: 'Rain of Fire',
@@ -26,6 +25,7 @@ export const RAIN_OF_FIRE_SPELL: SpellModel = {
                             duration: 850,
                         });
 
+
                         const damage = 65 * ownerHero.level;
 
                         actions.dealDamageTo(
@@ -34,6 +34,13 @@ export const RAIN_OF_FIRE_SPELL: SpellModel = {
                             DamageType.Magic,
                             (actionInfo) => {
                                 actions.historyLog(`${ownerHero.name} deals ${actionInfo.finalDamage} damage to ${event.target.type.name} with ${thisSpell.name}`)
+
+                                vfx.createFloatingMessageForUnitGroup(event.target, {
+                                    parts: [
+                                        { type: 'plainPart', icon: 'sword', text: actionInfo.finalDamage, color: 'red' },
+                                        { type: 'plainPart', icon: 'skull', text: actionInfo.unitLoss, color: 'white' },
+                                    ],
+                                }, {duration: 1000})
                             },
                         );
                     }

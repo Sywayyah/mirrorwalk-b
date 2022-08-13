@@ -1,5 +1,5 @@
-import { Component, ElementRef, Input, OnInit, Renderer2, TemplateRef, ViewChild, ViewContainerRef, ViewRef } from '@angular/core';
-import { EffectAnimation } from 'src/app/core/model/vfx-api/vfx-api.types';
+import { Component, ElementRef, EmbeddedViewRef, Renderer2, TemplateRef, ViewChild, ViewContainerRef, ViewRef } from '@angular/core';
+import { AnimationElementType, AnimationIconElement, EffectAnimation } from 'src/app/core/model/vfx-api/vfx-api.types';
 
 export interface AnimationRef {
   elem: VfxElementComponent;
@@ -11,12 +11,12 @@ export interface AnimationRef {
   templateUrl: './vfx-element.component.html',
   styleUrls: ['./vfx-element.component.scss']
 })
-export class VfxElementComponent implements OnInit {
-
-  @Input() public animation!: EffectAnimation;
+export class VfxElementComponent {
 
   @ViewChild('container', { read: ViewContainerRef, static: true }) public viewContainerRef!: ViewContainerRef;
+
   @ViewChild('iconSfx', { static: true }) public iconSfx!: TemplateRef<unknown>;
+  @ViewChild('damageVfx', { static: true }) public damageVfx!: TemplateRef<unknown>;
 
   private createdViews: Record<string, ViewRef> = {};
 
@@ -25,40 +25,53 @@ export class VfxElementComponent implements OnInit {
     public hostElem: ElementRef,
   ) { }
 
-  public ngOnInit(): void {
-    this.playAnimation();
-  }
-
-  public playAnimation(options: {duration?: number} = {duration: 1000}): AnimationRef {
-    if (this.animation.config.layout === 'default') {
+  public playAnimation(
+    animation: EffectAnimation,
+    options: { duration?: number } = { duration: 1000 },
+    data: object = {},
+  ): AnimationRef {
+    if (animation.config.layout === 'default') {
       this.renderer.addClass(this.hostElem.nativeElement, 'default-layout');
     }
 
     const animationsList: Animation[] = [];
 
-    this.animation.elements.forEach(animationElemConfig => {
-      const iconSfxView = this.viewContainerRef.createEmbeddedView(
-        this.iconSfx,
-        { icon: animationElemConfig.icon },
-      );
+    animation.elements.forEach(animationElemConfig => {
+
+      let iconSfxView: EmbeddedViewRef<unknown> = null as unknown as EmbeddedViewRef<unknown>;
+
+      switch (animationElemConfig.type) {
+        case AnimationElementType.Icon:
+          iconSfxView = this.viewContainerRef.createEmbeddedView(
+            this.iconSfx,
+            { icon: (animationElemConfig as AnimationIconElement).icon },
+          );
+
+          break;
+        case AnimationElementType.Customizable:
+          iconSfxView = this.viewContainerRef.createEmbeddedView(
+            this.damageVfx,
+            { data },
+          );
+      }
 
       this.createdViews[animationElemConfig.id] = iconSfxView;
 
       const firstNode = iconSfxView.rootNodes[0] as HTMLElement;
-      Object.entries(this.animation.elemsDefaultStyles[animationElemConfig.id]).forEach(([prop, value]) => {
+      Object.entries(animation.elemsDefaultStyles[animationElemConfig.id]).forEach(([prop, value]) => {
         console.log(prop, value);
         this.renderer.setStyle(firstNode, prop, value);
       });
       this.renderer.addClass(firstNode, 'dl-sfx');
 
-      const keyFramesConfig = this.animation.elemsKeyframes[animationElemConfig.id];
+      const keyFramesConfig = animation.elemsKeyframes[animationElemConfig.id];
 
-      const animation = firstNode.animate(keyFramesConfig, {
+      const animationRef = firstNode.animate(keyFramesConfig, {
         duration: options.duration,
         fill: 'forwards',
       });
 
-      animationsList.push(animation);
+      animationsList.push(animationRef);
     });
 
     console.log('SFX -> ', this.createdViews);

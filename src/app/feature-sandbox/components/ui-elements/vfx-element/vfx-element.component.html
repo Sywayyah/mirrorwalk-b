@@ -2,6 +2,23 @@
     <ng-container #container></ng-container>
 </div>
 
+<!-- Plain icon VFX -->
 <ng-template #iconSfx let-icon="icon">
     <mw-ra-icon [icon]="icon"></mw-ra-icon>
+</ng-template>
+
+<!-- Damage composed VFX -->
+<ng-template #damageVfx let-data="data">
+    <div style="text-shadow: 1px 1px #4e4e4e;">
+        <div *ngFor="let part of data.parts" [ngSwitch]="part.type" [style.color]="part.color">
+            <ng-container *ngSwitchCase="'plainPart'">
+                <ng-container *ngTemplateOutlet="plainDamagePart; context: { part: part }"></ng-container>
+            </ng-container>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #plainDamagePart let-part="part">
+    <mw-ra-icon [icon]="part.icon"></mw-ra-icon>
+    <span>{{part.text}}</span>
 </ng-template>

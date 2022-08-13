@@ -1,11 +1,25 @@
 import { UnitGroupInstModel } from "../main.model";
 
 /* Think on better namings and structure for effects and animations */
+export enum AnimationElementType {
+    Icon,
+    Customizable,
+}
+
+export interface AnimationElement<T extends AnimationElementType = AnimationElementType> {
+    type: T;
+    id: string;
+}
+
+export interface AnimationIconElement extends AnimationElement<AnimationElementType.Icon> {
+    icon: string;
+}
+
+export interface AnimationCustomizableElement extends AnimationElement<AnimationElementType.Customizable> {
+}
+
 export interface EffectAnimation {
-    elements: {
-        id: string;
-        icon: string;
-    }[];
+    elements: AnimationElement[];
     elemsKeyframes: Record<string, Keyframe[]>;
     elemsDefaultStyles: Record<string, Record<string, unknown>>;
     config: {
@@ -44,6 +58,8 @@ export interface EffectOptions {
     duration?: number;
 }
 
+/*  replace data: object with normal type */
 export interface VfxApi {
     createEffectForUnitGroup(target: UnitGroupInstModel, animation: EffectAnimation, options: EffectOptions): void;
+    createFloatingMessageForUnitGroup(target: UnitGroupInstModel, data: object, options: EffectOptions): void;
 }

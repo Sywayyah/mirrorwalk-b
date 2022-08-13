@@ -375,6 +375,9 @@ export class CombatInteractorService {
             type: EffectType.VfxElement,
             animation: effect,
           } as VfxElemEffect, options);
+        },
+        createFloatingMessageForUnitGroup: (target, data, options) => {
+          this.vfxService.createFloatingMessageForUnitGroup(target, data, options);
         }
       },
       thisSpell: spell.baseType,

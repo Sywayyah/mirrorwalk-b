@@ -1,6 +1,7 @@
 import { Component, ComponentFactoryResolver, OnInit, Renderer2, TemplateRef, ViewChild, ViewContainerRef } from '@angular/core';
 import { combineLatest, fromEvent } from 'rxjs';
 import { take } from 'rxjs/operators';
+import { FloatingMessageAnimation } from 'src/app/core/dictionaries/vfx/animations';
 import { UnitGroupInstModel } from 'src/app/core/model/main.model';
 import { Effect, EffectInstRef, EffectOptions, EffectPosition, EffectType, VfxElemEffect } from 'src/app/core/model/vfx-api/vfx-api.types';
 import { MwCardsMappingService } from 'src/app/feature-sandbox/services/mw-cards-mapping.service';
@@ -11,6 +12,7 @@ import { VfxService } from './vfx.service';
   VFX ideas:
     1. Maybe, instead of having shadow-overlay, there could be a shadow element
       below effect.
+    2. remove old card effects component
  */
 @Component({
   selector: 'mw-vfx-layer',
@@ -78,7 +80,42 @@ export class VfxLayerComponent implements OnInit {
     this.instantiateEffect(effect, options, newEffect);
   }
 
-  private createNewEffect(position: EffectPosition, effect: Effect): EffectInstRef {
+  /* in theory, createVfxForUnitGroup can be reused */
+  public createFloatingMessageForUnitGroup(
+    unitGroup: UnitGroupInstModel,
+    data: object,
+    options: EffectOptions = {},
+  ): void {
+    const cardComponent = this.unitsCardsMapping.get(unitGroup);
+    const cardElement = cardComponent.hostElem.nativeElement as HTMLElement;
+
+    const { left, top } = cardElement.getBoundingClientRect();
+
+    const effect = { type: EffectType.VfxElement, animation: FloatingMessageAnimation } as VfxElemEffect;
+
+    const newEffect = this.createNewEffect(
+      {
+        bottom: 0,
+        left: left + (cardElement.clientWidth / 2),
+        right: 0,
+        top: top + (cardElement.clientHeight / 2),
+      },
+      effect,
+    );
+
+
+    this.instantiateEffect(
+      effect,
+      { darkOverlay: false, duration: 1000, ...options },
+      newEffect,
+      data,
+    );
+  }
+
+  private createNewEffect(
+    position: EffectPosition,
+    effect: Effect,
+  ): EffectInstRef {
     const newEffectId = this.vfxService.getNewId();
 
     const newEffect: EffectInstRef = {
@@ -90,7 +127,12 @@ export class VfxLayerComponent implements OnInit {
     return newEffect;
   }
 
-  private instantiateEffect(effect: Effect<EffectType>, options: EffectOptions, newEffect: EffectInstRef) {
+  private instantiateEffect(
+    effect: Effect<EffectType>,
+    options: EffectOptions,
+    newEffect: EffectInstRef,
+    data: object = {},
+  ): void {
     if (options.darkOverlay) {
       this.effectsWithOverlay++;
     }
@@ -105,11 +147,11 @@ export class VfxLayerComponent implements OnInit {
         const vfxComponentRef = this.effectsContainerRef.createComponent(vfxComponentFactory);
 
         const vfxComponentInstance = vfxComponentRef.instance;
-        vfxComponentInstance.animation = vfxEffect.animation;
 
-        const animationRef = vfxComponentInstance.playAnimation({
+        const animationRef = vfxComponentInstance.playAnimation(
+          vfxEffect.animation, {
           duration: options.duration,
-        });
+        }, data);
 
         combineLatest(
           animationRef.animationsList.map(animation => fromEvent(animation, 'finish'))
