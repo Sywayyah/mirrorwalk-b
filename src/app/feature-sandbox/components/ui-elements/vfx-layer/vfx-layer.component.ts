@@ -7,6 +7,11 @@ import { MwCardsMappingService } from 'src/app/feature-sandbox/services/mw-cards
 import { VfxElementComponent } from '../vfx-element/vfx-element.component';
 import { VfxService } from './vfx.service';
 
+/* 
+  VFX ideas:
+    1. Maybe, instead of having shadow-overlay, there could be a shadow element
+      below effect.
+ */
 @Component({
   selector: 'mw-vfx-layer',
   templateUrl: './vfx-layer.component.html',
