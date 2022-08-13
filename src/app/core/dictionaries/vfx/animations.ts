@@ -71,7 +71,11 @@ export const LightningAnimation: EffectAnimation = {
 };
 
 export const FireAnimation: EffectAnimation = {
-    elements: [{ icon: 'fire', id: 'fire-main' }, { icon: 'fire', id: 'fire-blur' }],
+    elements: [
+        { icon: 'fire', id: 'fire-main' },
+        { icon: 'fire', id: 'fire-blur' },
+        { icon: 'fire', id: 'fire-pulse' },
+    ],
     elemsKeyframes: {
         'fire-main': [
             {
@@ -106,6 +110,29 @@ export const FireAnimation: EffectAnimation = {
                 opacity: 0,
             }
         ],
+        'fire-pulse': [
+            {
+                opacity: '0',
+            },
+            {
+                opacity: '0.2',
+                transform: 'translate(-50%, -50%) scale(1.2)',
+                offset: 0.25,
+            },
+            {
+                opacity: '0.3',
+                transform: 'translate(-50%, -50%) scale(1.5)',
+                offset: 0.35,
+            },
+            {
+                offset: 0.76,
+                transform: 'translate(-50%, -50%) scale(1.6)',
+                opacity: '0',
+            },
+            {
+                opacity: '0',
+            },
+        ],
     },
     elemsDefaultStyles: {
         'fire-main': {
@@ -118,6 +145,13 @@ export const FireAnimation: EffectAnimation = {
             color: 'rgb(244 162 124)',
             filter: 'blur(6px)',
             opacity: '1',
+            mixBlendMode: 'hard-light'
+        },
+        'fire-pulse': {
+            fontSize: '64px',
+            color: 'rgb(244 162 124)',
+            opacity: '0.2',
+            transform: 'translate(-50%, -50%) scale(1)',
             mixBlendMode: 'hard-light'
         },
     },
