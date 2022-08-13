@@ -1,7 +1,10 @@
 import { Injectable } from '@angular/core';
 import { UnitGroupInstModel } from 'src/app/core/model/main.model';
-import type { Effect, EffectOptions, VfxLayerComponent } from './vfx-layer.component';
+import { Effect, EffectOptions } from 'src/app/core/model/vfx-api/vfx-api.types';
+import type { VfxLayerComponent } from './vfx-layer.component';
 
+
+const defaultOptions: EffectOptions = { darkOverlay: true, duration: 1000 };
 
 @Injectable({
   providedIn: 'root'
@@ -26,12 +29,22 @@ export class VfxService {
     x: number,
     y: number,
     effect: Effect,
-    options: EffectOptions = { darkOverlay: true },
+    options: EffectOptions = {},
   ): void {
-    this.layerComponent.createXyVfx(x, y, effect, options);
+    this.layerComponent.createXyVfx(x, y, effect, {
+      ...defaultOptions,
+      ...options,
+    });
   }
 
-  public createVfxForUnitGroup(unitGroup: UnitGroupInstModel, effect: Effect, options: EffectOptions = {}): void {
-    this.layerComponent.createVfxForUnitGroup(unitGroup, effect, options);
+  public createVfxForUnitGroup(
+    unitGroup: UnitGroupInstModel,
+    effect: Effect,
+    options: EffectOptions = {},
+  ): void {
+    this.layerComponent.createVfxForUnitGroup(unitGroup, effect, {
+      ...defaultOptions,
+      ...options,
+    });
   }
 }

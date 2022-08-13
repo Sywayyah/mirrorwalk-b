@@ -1,5 +1,7 @@
+import { FireAnimation } from "src/app/core/dictionaries/vfx/animations";
 import { DamageType } from "../../model/combat-api/combat-api.types";
 import { SpellActivationType, SpellEventTypes, SpellModel } from "../../model/spells";
+import { EffectType, VfxElemEffect } from "../../model/vfx-api/vfx-api.types";
 
 export const RAIN_OF_FIRE_SPELL: SpellModel = {
     name: 'Rain of Fire',
@@ -15,10 +17,18 @@ export const RAIN_OF_FIRE_SPELL: SpellModel = {
             name: 'Rain of Fire',
         },
         spellConfig: {
-            init: ({ events, actions, thisSpell, ownerHero }) => {
+            init: ({ events, actions, thisSpell, ownerHero, vfx }) => {
 
                 events.on({
                     [SpellEventTypes.PlayerTargetsSpell]: (event) => {
+
+                        vfx.createVfxForUnitGroup(event.target, {
+                            type: EffectType.VfxElement,
+                            animation: FireAnimation,
+                        } as VfxElemEffect, {
+                            duration: 850,
+                        });
+
                         const damage = 65 * ownerHero.level;
 
                         actions.dealDamageTo(
@@ -34,11 +44,13 @@ export const RAIN_OF_FIRE_SPELL: SpellModel = {
 
             },
             getManaCost: (spell) => {
+                const baseMana = 3;
+
                 const manaCosts: Record<number, number> = {
-                    1: 2,
-                    2: 2,
-                    3: 3,
-                    4: 3,
+                    1: baseMana,
+                    2: baseMana + 1,
+                    3: baseMana + 1,
+                    4: baseMana + 2,
                 };
 
                 return manaCosts[spell.currentLevel];

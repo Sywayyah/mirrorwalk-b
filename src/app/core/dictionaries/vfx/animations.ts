@@ -1,17 +1,6 @@
+import { EffectAnimation } from "../../model/vfx-api/vfx-api.types";
 
-export interface Animation {
-    elements: {
-        id: string;
-        icon: string;
-    }[];
-    elemsKeyframes: Record<string, Keyframe[]>;
-    elemsDefaultStyles: Record<string, Record<string, unknown>>;
-    config: {
-        layout: 'default';
-    };
-}
-
-export const LightningAnimation: Animation = {
+export const LightningAnimation: EffectAnimation = {
     elements: [
         { icon: 'focused-lightning', id: 'l-main' },
         { icon: 'focused-lightning', id: 'l-blur' },
@@ -81,7 +70,7 @@ export const LightningAnimation: Animation = {
     }
 };
 
-export const FireAnimation: Animation = {
+export const FireAnimation: EffectAnimation = {
     elements: [{ icon: 'fire', id: 'fire-main' }, { icon: 'fire', id: 'fire-blur' }],
     elemsKeyframes: {
         'fire-main': [
@@ -95,6 +84,10 @@ export const FireAnimation: Animation = {
             {
                 opacity: '1',
                 offset: 0.35,
+            },
+            {
+                offset: 0.76,
+                opacity: '0',
             },
             {
                 opacity: '0',
@@ -117,12 +110,12 @@ export const FireAnimation: Animation = {
     elemsDefaultStyles: {
         'fire-main': {
             fontSize: '64px',
-            color: 'orange',
+            color: 'rgb(244 162 124)',
             opacity: '1',
         },
         'fire-blur': {
             fontSize: '64px',
-            color: 'orange',
+            color: 'rgb(244 162 124)',
             filter: 'blur(6px)',
             opacity: '1',
             mixBlendMode: 'hard-light'
@@ -174,7 +167,7 @@ const getBwDefaultStyles = () => {
     };
 };
 
-export const FrightAnimation: Animation = {
+export const FrightAnimation: EffectAnimation = {
     elements: [
         { icon: 'batwings', id: 'bw-1' },
         { icon: 'batwings', id: 'bw-2' },

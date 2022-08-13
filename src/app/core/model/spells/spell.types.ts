@@ -3,6 +3,7 @@ import { Icon } from "../icons.types";
 import type { PlayerInstanceModel, UnitGroupInstModel } from "../main.model";
 import { HeroInstanceModel } from "../hero.model";
 import type { SpellEventHandlers } from "./spell-events";
+import type { VfxService } from "src/app/feature-sandbox/components/ui-elements/vfx-layer/vfx.service";
 
 export enum SpellActivationType {
     Target = 'target',
@@ -61,6 +62,7 @@ export interface SpellCombatRefsModel<SpellStateType> {
     ownerPlayer: PlayerInstanceModel;
     ownerUnit?: UnitGroupInstModel;
     ownerHero: HeroInstanceModel;
+    vfx: VfxService;
 }
 
 export interface SpellConfig<SpellStateType> {

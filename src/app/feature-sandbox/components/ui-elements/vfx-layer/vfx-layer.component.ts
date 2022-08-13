@@ -2,40 +2,10 @@ import { Component, ComponentFactoryResolver, OnInit, Renderer2, TemplateRef, Vi
 import { forkJoin, fromEvent } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { UnitGroupInstModel } from 'src/app/core/model/main.model';
+import { Effect, EffectInstRef, EffectOptions, EffectPosition, EffectType, VfxElemEffect } from 'src/app/core/model/vfx-api/vfx-api.types';
 import { MwCardsMappingService } from 'src/app/feature-sandbox/services/mw-cards-mapping.service';
-import { Animation } from '../vfx-element/animations';
 import { VfxElementComponent } from '../vfx-element/vfx-element.component';
 import { VfxService } from './vfx.service';
-
-export enum EffectType {
-  VfxElement,
-}
-
-export interface Effect<T extends EffectType = EffectType> {
-  type: T;
-}
-
-export interface VfxElemEffect extends Effect<EffectType.VfxElement> {
-  animation: Animation;
-}
-
-interface EffectPosition {
-  left: number | null;
-  top: number | null;
-  right: number | null;
-  bottom: number | null;
-}
-
-interface EffectInstRef {
-  id: number;
-  vfx: Effect;
-
-  offset: EffectPosition;
-}
-
-export interface EffectOptions {
-  darkOverlay?: boolean;
-}
 
 @Component({
   selector: 'mw-vfx-layer',
@@ -132,7 +102,9 @@ export class VfxLayerComponent implements OnInit {
         const vfxComponentInstance = vfxComponentRef.instance;
         vfxComponentInstance.animation = vfxEffect.animation;
 
-        const animationRef = vfxComponentInstance.playAnimation();
+        const animationRef = vfxComponentInstance.playAnimation({
+          duration: options.duration,
+        });
 
         forkJoin(
           animationRef.animationsList.map(animation => fromEvent(animation, 'finish').pipe(take(1)))

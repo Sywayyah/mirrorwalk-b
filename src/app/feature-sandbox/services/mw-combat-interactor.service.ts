@@ -18,6 +18,7 @@ import {
   SpellModel
 } from 'src/app/core/model/spells';
 import { CommonUtils } from 'src/app/core/utils/common.utils';
+import { VfxService } from '../components/ui-elements/vfx-layer/vfx.service';
 import { BattleEventsService } from './mw-battle-events.service';
 import { MwBattleLogService } from './mw-battle-log.service';
 import { BattleStateService } from './mw-battle-state.service';
@@ -53,6 +54,7 @@ export class CombatInteractorService {
     private readonly battleLog: MwBattleLogService,
     private readonly unitState: MwUnitGroupStateService,
     private readonly spellsService: MwSpellsService,
+    private readonly vfxService: VfxService,
   ) {
     /* Dispell buffs and debuffs when location is left. May change in future. */
     this.battleEvents.onEvents({
@@ -366,6 +368,7 @@ export class CombatInteractorService {
           this.spellsHandlersMap.set(spell, { ...spellHandlers, ...handlers });
         },
       },
+      vfx: this.vfxService,
       thisSpell: spell.baseType,
       ownerPlayer: player,
       spellInstance: spell,

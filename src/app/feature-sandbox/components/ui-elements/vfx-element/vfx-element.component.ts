@@ -1,5 +1,5 @@
 import { Component, ElementRef, Input, OnInit, Renderer2, TemplateRef, ViewChild, ViewContainerRef, ViewRef } from '@angular/core';
-import { Animation as VfxAnimation, FrightAnimation, LightningAnimation } from './animations';
+import { EffectAnimation } from 'src/app/core/model/vfx-api/vfx-api.types';
 
 export interface AnimationRef {
   elem: VfxElementComponent;
@@ -13,7 +13,7 @@ export interface AnimationRef {
 })
 export class VfxElementComponent implements OnInit {
 
-  @Input() public animation: VfxAnimation = FrightAnimation;
+  @Input() public animation!: EffectAnimation;
 
   @ViewChild('container', { read: ViewContainerRef, static: true }) public viewContainerRef!: ViewContainerRef;
   @ViewChild('iconSfx', { static: true }) public iconSfx!: TemplateRef<unknown>;
