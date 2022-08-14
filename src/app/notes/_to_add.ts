@@ -1,6 +1,11 @@
 /* 
     Short ideas of things to add
 
+    Add: Items, which can introduce individual cooldowns to spells. For example
+      Phoenix Shield: Changes cooldown of Fire, Lightning and Cold Shield abilities
+      to individual, lasting for 2 rounds. (Also a new concept of Individual Cooldown)
+
+
     Add structure: Beacon of Ghosts. Allows to upgrade ghosts and ghost-mages.
     
     Add: Locations with prices. For example, some location may suggest some
