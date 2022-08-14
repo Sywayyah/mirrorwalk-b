@@ -1,4 +1,5 @@
-import { AnimationElement, AnimationElementType, AnimationIconElement, EffectAnimation } from "../../model/vfx-api/vfx-api.types";
+import { AnimationElementType, AnimationIconElement, EffectAnimation } from "../../model/vfx-api/vfx-api.types";
+import { createAnimation } from "./utils";
 
 const getIconElement = (iconName: string, id: string): AnimationIconElement => ({
     icon: iconName,
@@ -267,7 +268,7 @@ export const FloatingMessageAnimation: EffectAnimation = {
             {
                 offset: 0.3,
                 opacity: 1,
-                transform: 'translate(10px, -50px) scale(1.3)',
+                transform: 'translate(10px, -50px) scale(1.5)',
             },
             {
                 opacity: 0,
@@ -306,24 +307,6 @@ export const FloatingMessageAnimation: EffectAnimation = {
     }
 */
 
-const createAnimation = (configs: [AnimationElement, Keyframe[], Record<string, string | number>][]) => {
-    const newAnimation: EffectAnimation = {
-        config: {
-            layout: "default",
-        },
-        elements: [],
-        elemsKeyframes: {},
-        elemsDefaultStyles: {},
-    };
-
-    configs.forEach(([elem, keyframes, defaultStyles]) => {
-        newAnimation.elements.push(elem);
-        newAnimation.elemsKeyframes[elem.id] = keyframes;
-        newAnimation.elemsDefaultStyles[elem.id] = defaultStyles;
-    });
-
-    return newAnimation;
-};
 
 export const EnchantAnimation: EffectAnimation = createAnimation([
     [
