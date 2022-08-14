@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { PlayerInstanceModel, UnitGroupInstModel } from 'src/app/core/model/main.model';
 import {
   BattleEventsService,
@@ -18,7 +18,7 @@ import { VfxService } from '../ui-elements/vfx-layer/vfx.service';
   templateUrl: './mw-gameboard.component.html',
   styleUrls: ['./mw-gameboard.component.scss'],
 })
-export class MwGameboardComponent implements OnInit {
+export class MwGameboardComponent implements OnInit, AfterViewInit {
   public mainPlayerUnitGroups!: UnitGroupInstModel[];
   public neutralPlayerGroups!: UnitGroupInstModel[];
 
@@ -26,6 +26,9 @@ export class MwGameboardComponent implements OnInit {
   public neutralPlayerInfo!: PlayerInstanceModel;
 
   public fightQueue!: UnitGroupInstModel[];
+
+  @ViewChildren(MwUnitGroupCardComponent)
+  public cards!: QueryList<MwUnitGroupCardComponent>;
 
 
   constructor(
@@ -36,26 +39,48 @@ export class MwGameboardComponent implements OnInit {
     private readonly battleEvents: BattleEventsService,
     private readonly combatInteractor: CombatInteractorService,
     private readonly vfx: VfxService,
+    private readonly cd: ChangeDetectorRef,
   ) {
-    this.combatInteractor.onBattleBegins();
   }
 
   public ngOnInit(): void {
+    /* todo: potentially, a good place for ordering dependencies and logic order */
     this.mainPlayerUnitGroups = this.mwPlayerState.getUnitGroups();
     this.neutralPlayerGroups = this.mwNeutralPlayer.getUnitGroups();
 
     this.mainPlayerInfo = this.mwPlayerState.getPlayerInfo();
     this.neutralPlayerInfo = this.mwNeutralPlayer.getPlayerInfo();
 
+    this.fightQueue = this.mwBattleState.getFightQueue();
+  }
+
+  public onCardReady(unitGroup: UnitGroupInstModel, cardRef: MwUnitGroupCardComponent): void {
+    // this.cardsMapping.register(unitGroup, cardRef);
+  }
+
+  public onGroupDies(unitGroup: UnitGroupInstModel): void {
+    this.cardsMapping.unregister(unitGroup);
+  }
+
+  public ngAfterViewInit(): void {
+    this.cards.forEach(card => this.cardsMapping.register(card.unitGroup, card));
+
+    /* init interactions only after view initialized and cards are available */
+    this.initInteractions();
+
+    this.cd.detectChanges();
+  }
+
+  private initInteractions(): void {
+    this.combatInteractor.onBattleBegins();
+
     this.mwBattleState.initBattle(
       [...this.mainPlayerUnitGroups, ...this.neutralPlayerGroups],
       [this.mainPlayerInfo, this.neutralPlayerInfo]
     );
 
-    this.fightQueue = this.mwBattleState.getFightQueue();
-
     this.mwBattleState.battleEvent$.subscribe(() => {
-      this.mainPlayerUnitGroups = this.mwBattleState.heroesUnitGroupsMap.get(this.mainPlayerInfo) as UnitGroupInstModel[]
+      this.mainPlayerUnitGroups = this.mwBattleState.heroesUnitGroupsMap.get(this.mainPlayerInfo) as UnitGroupInstModel[];
       this.neutralPlayerGroups = this.mwBattleState.heroesUnitGroupsMap.get(this.neutralPlayerInfo) as UnitGroupInstModel[];
       this.fightQueue = this.mwBattleState.getFightQueue();
     });
@@ -64,17 +89,8 @@ export class MwGameboardComponent implements OnInit {
       this.vfx.createFloatingMessageForUnitGroup(event.attackedGroup, {
         parts: [
           { icon: 'sword', text: event.damage, color: 'red', type: 'plainPart' },
-          // ...(!event.loss ? [] : [{ icon: 'skull', color: 'white', text: event.loss, type: 'plainPart' }]),
         ],
-      })
+      });
     });
-  }
-
-  public onCardReady(unitGroup: UnitGroupInstModel, cardRef: MwUnitGroupCardComponent): void {
-    this.cardsMapping.register(unitGroup, cardRef);
-  }
-
-  public onGroupDies(unitGroup: UnitGroupInstModel): void {
-    this.cardsMapping.unregister(unitGroup);
   }
 }

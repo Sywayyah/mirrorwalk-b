@@ -333,6 +333,7 @@ export class CombatInteractorService {
   }
 
   private addSpellToUnitGroup(target: UnitGroupInstModel, spell: SpellInstance, ownerPlayer: PlayerInstanceModel): void {
+    console.log('add spell');
     target.spells.push(spell);
 
     this.initSpell(spell, ownerPlayer);

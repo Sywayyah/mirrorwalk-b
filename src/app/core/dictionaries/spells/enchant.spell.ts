@@ -1,5 +1,6 @@
 import { SpellActivationType, SpellEventTypes, SpellModel } from "../../model/spells";
 import { Colors } from "../colors.const";
+import { FrightAnimation } from "../vfx/animations";
 
 
 export const ENCHANT_DEBUFF: SpellModel = {
@@ -20,13 +21,14 @@ export const ENCHANT_DEBUFF: SpellModel = {
                 return 0;
             },
 
-            init: ({ events, actions }) => {
+            init: ({ events, actions, vfx }) => {
                 const mods = actions.createModifiers({
                     amplifiedTakenMagicDamage: 0.2
                 });
 
                 events.on({
                     [SpellEventTypes.SpellPlacedOnUnitGroup]: (event) => {
+                        vfx.createEffectForUnitGroup(event.target, FrightAnimation, {duration: 1000});
                         actions.addModifiersToUnitGroup(event.target, mods);
                     },
                 })

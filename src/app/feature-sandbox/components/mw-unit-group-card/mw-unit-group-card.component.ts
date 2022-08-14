@@ -27,7 +27,7 @@ export class MwUnitGroupCardComponent implements OnInit, OnDestroy {
   public isCardHovered: boolean = false;
   public isEnemyCard!: boolean;
 
-  public potentialUnitCountLoss: number = 0;
+  // public potentialUnitCountLoss: number = 0;
   public attackingUnitGroup!: UnitGroupInstModel;
 
   public canCurrentPlayerAttack: boolean = false;
@@ -56,14 +56,14 @@ export class MwUnitGroupCardComponent implements OnInit, OnDestroy {
         this.attackingUnitGroup = currentUnitGroup;
         this.canCurrentPlayerAttack = this.mwBattleStateService.currentPlayer === this.playersService.getCurrentPlayer();
 
-        if (this.isEnemyCard) {
-          const potentialTotalMaxDamage = this.mwBattleStateService.getUnitGroupTotalDamage(currentUnitGroup);
+        // if (this.isEnemyCard) {
+        //   const potentialTotalMaxDamage = this.mwBattleStateService.getUnitGroupTotalDamage(currentUnitGroup);
 
-          this.potentialUnitCountLoss = Math.floor(potentialTotalMaxDamage / this.unitGroup.type.baseStats.health);
-          if (this.potentialUnitCountLoss > this.unitGroup.count) {
-            this.potentialUnitCountLoss = this.unitGroup.count;
-          }
-        }
+        //   this.potentialUnitCountLoss = Math.floor(potentialTotalMaxDamage / this.unitGroup.type.baseStats.health);
+        //   if (this.potentialUnitCountLoss > this.unitGroup.count) {
+        //     this.potentialUnitCountLoss = this.unitGroup.count;
+        //   }
+        // }
       });
   }
 
