@@ -305,3 +305,94 @@ export const FloatingMessageAnimation: EffectAnimation = {
         left: 75%;
     }
 */
+
+
+export const EnchantAnimation: EffectAnimation = {
+    elements: [
+        getIconElement('fire-ring', 'fr-main'),
+        getIconElement('fire-ring', 'fr-blur'),
+        getIconElement('fire-ring', 'fr-pulse'),
+    ],
+    elemsKeyframes: {
+        'fr-main': [
+            {
+                opacity: '0',
+            },
+            {
+                opacity: '1',
+                offset: 0.25,
+            },
+            {
+                opacity: '1',
+                offset: 0.35,
+            },
+            {
+                offset: 0.76,
+                opacity: '0',
+            },
+            {
+                opacity: '0',
+            },
+        ],
+        'fr-blur': [
+            {
+                filter: 'blur(10px)',
+            },
+            {
+                filter: 'blur(0px)',
+                offset: 0.4,
+            },
+            {
+                filter: 'blur(0px)',
+                opacity: 0,
+            }
+        ],
+        'fr-pulse': [
+            {
+                opacity: '0',
+            },
+            {
+                opacity: '0.2',
+                transform: 'translate(-50%, -50%) scale(1.2)',
+                offset: 0.25,
+            },
+            {
+                opacity: '0.3',
+                transform: 'translate(-50%, -50%) scale(1.5)',
+                offset: 0.35,
+            },
+            {
+                offset: 0.76,
+                transform: 'translate(-50%, -50%) scale(1.6)',
+                opacity: '0',
+            },
+            {
+                opacity: '0',
+            },
+        ],
+    },
+    elemsDefaultStyles: {
+        'fr-main': {
+            fontSize: '64px',
+            color: 'pink',
+            opacity: '1',
+        },
+        'fr-blur': {
+            fontSize: '64px',
+            color: 'violet',
+            filter: 'blur(6px)',
+            opacity: '1',
+            mixBlendMode: 'hard-light'
+        },
+        'fr-pulse': {
+            fontSize: '64px',
+            color: 'pink',
+            opacity: '0.2',
+            transform: 'translate(-50%, -50%) scale(1)',
+            mixBlendMode: 'hard-light'
+        },
+    },
+    config: {
+        layout: 'default',
+    }
+};

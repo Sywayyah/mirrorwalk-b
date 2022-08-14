@@ -1,6 +1,6 @@
 import { SpellActivationType, SpellEventTypes, SpellModel } from "../../model/spells";
 import { Colors } from "../colors.const";
-import { FrightAnimation } from "../vfx/animations";
+import { EnchantAnimation } from "../vfx/animations";
 
 
 export const ENCHANT_DEBUFF: SpellModel = {
@@ -28,7 +28,7 @@ export const ENCHANT_DEBUFF: SpellModel = {
 
                 events.on({
                     [SpellEventTypes.SpellPlacedOnUnitGroup]: (event) => {
-                        vfx.createEffectForUnitGroup(event.target, FrightAnimation, {duration: 1000});
+                        vfx.createEffectForUnitGroup(event.target, EnchantAnimation, {duration: 1000});
                         actions.addModifiersToUnitGroup(event.target, mods);
                     },
                 })
