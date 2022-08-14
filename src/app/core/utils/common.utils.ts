@@ -1,12 +1,10 @@
 import { PlayerInstanceModel, UnitGroupInstModel, UnitGroupModel, UnitTypeModel } from "../model/main.model";
 
 export interface GenerationModel {
-    /* todo: think about removing fraction */
-    fraction: Record<string, UnitTypeModel>;
     minUnitGroups: number;
     maxUnitGroups: number;
     /* unit type, min, max, maxGroupsOfThisType */
-    units: [string, number, number, number | void][];
+    units: [UnitTypeModel, number, number, number | void][];
 }
 
 export const CommonUtils = {
@@ -60,13 +58,14 @@ export const GenerationUtils = {
         for (let i = 0; i < groupsToGenerateCount; i++) {
             const randUnitDescr = CommonUtils.randItem(options.units);
             const unit = unitsMap.get(randUnitDescr);
-            const unitType = options.fraction[unit.unitType];
+            const unitType = unit.unitType;
+
             const newUnitGroup: UnitGroupModel = {
                 count: CommonUtils.randIntInRange(unit.min, unit.max),
                 type: unitType,
                 turnsLeft: unitType.defaultTurnsPerRound,
-
             };
+
             generatedGroups.push(newUnitGroup);
 
             unit.created++;

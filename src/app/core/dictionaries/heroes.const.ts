@@ -2,7 +2,7 @@ import { HeroModel as HeroModelBase, HeroModelStats } from "../model/hero.model"
 import { ResourcesModel } from "../model/resources.types";
 import { ItemWindCrest } from "./items";
 import { METEOR_SPELL, RAIN_OF_FIRE_SPELL } from "./spells";
-import { HF_TYPES_ENUM, HUMANS_FRACTION_UNIT_TYPES } from "./unit-types/unit-types.dictionary";
+import { HUMANS_FRACTION_UNIT_TYPES } from "./unit-types/unit-types.dictionary";
 
 const heroesDefaultResources: ResourcesModel = {
     gems: 0,
@@ -49,13 +49,12 @@ export const HelveticaHero: HeroModelBase = createHeroModelBase({
         RAIN_OF_FIRE_SPELL,
     ],
     army: [{
-        fraction: HUMANS_FRACTION_UNIT_TYPES,
         maxUnitGroups: 2,
         minUnitGroups: 2,
         units: [
-            [HF_TYPES_ENUM.Archers, 12, 18, 1],
-            [HF_TYPES_ENUM.Knights, 6, 11, 1],
-            [HF_TYPES_ENUM.Pikemans, 20, 32, 1],
+            [HUMANS_FRACTION_UNIT_TYPES.Archers, 12, 18, 1],
+            [HUMANS_FRACTION_UNIT_TYPES.Knights, 6, 11, 1],
+            [HUMANS_FRACTION_UNIT_TYPES.Pikemans, 20, 32, 1],
         ],
     }],
     items: [ItemWindCrest],
@@ -75,13 +74,12 @@ export const TaltirHero: HeroModelBase = createHeroModelBase({
         METEOR_SPELL,
     ],
     army: [{
-        fraction: HUMANS_FRACTION_UNIT_TYPES,
         maxUnitGroups: 2,
         minUnitGroups: 2,
         units: [
-            [HF_TYPES_ENUM.Knights, 6, 11, 2],
-            [HF_TYPES_ENUM.Cavalry, 3, 6, 2],
-            [HF_TYPES_ENUM.Pikemans, 25, 30, 1],
+            [HUMANS_FRACTION_UNIT_TYPES.Knights, 6, 11, 2],
+            [HUMANS_FRACTION_UNIT_TYPES.Cavalry, 3, 6, 2],
+            [HUMANS_FRACTION_UNIT_TYPES.Pikemans, 25, 30, 1],
         ],
     }],
     items: [ItemWindCrest],

@@ -1,8 +1,8 @@
 import { ResourceType } from '../../model/resources.types';
-import { CommonUtils, GenerationModel } from '../../utils/common.utils';
 import { ItemReward, NeutralRewardTypesEnum, ResourcesReward, StructureGeneratorModel, StuctureControl } from '../../model/structures.types';
-import { NEUTRAL_FRACTION_UNIT_TYPES, NEUTRAL_TYPES_ENUM } from '../unit-types/neutral-unit-types.dictionary';
+import { CommonUtils, GenerationModel } from '../../utils/common.utils';
 import { ItemDoomstring, ItemWindCrest } from '../items';
+import { NEUTRAL_FRACTION_UNIT_TYPES } from '../unit-types/neutral-unit-types.dictionary';
 
 
 export const BanditCamp: StructureGeneratorModel = {
@@ -11,12 +11,11 @@ export const BanditCamp: StructureGeneratorModel = {
 
     generateGuard: () => {
         const guard = {
-            fraction: NEUTRAL_FRACTION_UNIT_TYPES,
             maxUnitGroups: 2,
             minUnitGroups: 1,
             units: [
-                [NEUTRAL_TYPES_ENUM.Thiefs, 14, 24, 1],
-                [NEUTRAL_TYPES_ENUM.Gnolls, 14, 24, 3],
+                [NEUTRAL_FRACTION_UNIT_TYPES.Thiefs, 14, 24, 1],
+                [NEUTRAL_FRACTION_UNIT_TYPES.Gnolls, 14, 24, 3],
             ],
         } as GenerationModel;
 

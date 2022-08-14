@@ -1,6 +1,6 @@
 import { HiringReward, NeutralRewardTypesEnum, StructureGeneratorModel, StuctureControl } from "../../model/structures.types";
 import { GenerationModel } from "../../utils/common.utils";
-import { NEUTRAL_FRACTION_UNIT_TYPES, NEUTRAL_TYPES_ENUM } from "../unit-types/neutral-unit-types.dictionary";
+import { NEUTRAL_FRACTION_UNIT_TYPES } from "../unit-types/neutral-unit-types.dictionary";
 
 
 
@@ -10,11 +10,10 @@ export const GraveyardStructure: StructureGeneratorModel = {
 
     generateGuard: () => {
         const guard = {
-            fraction: NEUTRAL_FRACTION_UNIT_TYPES,
             maxUnitGroups: 3,
             minUnitGroups: 1,
             units: [
-                [NEUTRAL_TYPES_ENUM.Ghosts, 14, 24, 3],
+                [NEUTRAL_FRACTION_UNIT_TYPES.Ghosts, 14, 24, 3],
             ],
         } as GenerationModel;
 
