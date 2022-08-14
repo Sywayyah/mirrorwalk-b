@@ -11,7 +11,7 @@ export const ENCHANT_DEBUFF: SpellModel = {
         bgClr: Colors.DefautlDebuffBg,
         iconClr: Colors.DefautlDebuffClr,
     },
-    description: 'Incoming magic damage is increased by 20%.',
+    description: 'Incoming magic damage is increased by 17%.',
     type: {
         spellInfo: {
             name: 'Enchanted',
@@ -23,7 +23,7 @@ export const ENCHANT_DEBUFF: SpellModel = {
 
             init: ({ events, actions, vfx }) => {
                 const mods = actions.createModifiers({
-                    amplifiedTakenMagicDamage: 0.2
+                    amplifiedTakenMagicDamage: 0.17
                 });
 
                 events.on({
@@ -44,7 +44,7 @@ export const ENCHANT_SPELL: SpellModel = {
         icon: 'fire-ring',
     },
     activationType: SpellActivationType.Target,
-    description: 'Enchants an enemy, increases incoming magic damage by 20%.',
+    description: 'Enchants an enemy, increases incoming magic damage by 17%.',
     type: {
         spellInfo: {
             name: 'Enchant',
