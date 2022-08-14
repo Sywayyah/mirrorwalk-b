@@ -1,6 +1,7 @@
 /* 
     Short ideas of things to add
 
+    Add structure: Beacon of Ghosts. Allows to upgrade ghosts and ghost-mages.
     
     Add: Locations with prices. For example, some location may suggest some
       reward for a price. For example, Witch Guild could give you Eclipse Wand
