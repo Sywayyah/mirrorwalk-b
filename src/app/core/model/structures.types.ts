@@ -30,6 +30,8 @@ export interface StructureGeneratorModel {
 
     /* to generate neutral camp structure */
     generateGuard?: () => GenerationModel;
+
+    /* todo: Array of rewards? */
     generateReward?: () => NeutralRewardModel;
 
     onVisited?: (params: OnVisitedParams) => void;
