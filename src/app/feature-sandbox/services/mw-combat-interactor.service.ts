@@ -316,6 +316,9 @@ export class CombatInteractorService {
       getRandomEnemyPlayerGroup: () => {
         return this.getRandomEnemyUnitGroup();
       },
+      getEnemyPlayer: () => {
+        return this.players.getEnemyPlayer();
+      },
       historyLog: (plainMsg) => {
         this.battleLog.logSimpleMessage(plainMsg);
       }
