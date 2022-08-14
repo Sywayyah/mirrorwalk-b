@@ -1,4 +1,4 @@
-import { AnimationElementType, AnimationIconElement, EffectAnimation } from "../../model/vfx-api/vfx-api.types";
+import { AnimationElement, AnimationElementType, AnimationIconElement, EffectAnimation } from "../../model/vfx-api/vfx-api.types";
 
 const getIconElement = (iconName: string, id: string): AnimationIconElement => ({
     icon: iconName,
@@ -306,15 +306,29 @@ export const FloatingMessageAnimation: EffectAnimation = {
     }
 */
 
+const createAnimation = (configs: [AnimationElement, Keyframe[], Record<string, string | number>][]) => {
+    const newAnimation: EffectAnimation = {
+        config: {
+            layout: "default",
+        },
+        elements: [],
+        elemsKeyframes: {},
+        elemsDefaultStyles: {},
+    };
 
-export const EnchantAnimation: EffectAnimation = {
-    elements: [
+    configs.forEach(([elem, keyframes, defaultStyles]) => {
+        newAnimation.elements.push(elem);
+        newAnimation.elemsKeyframes[elem.id] = keyframes;
+        newAnimation.elemsDefaultStyles[elem.id] = defaultStyles;
+    });
+
+    return newAnimation;
+};
+
+export const EnchantAnimation: EffectAnimation = createAnimation([
+    [
         getIconElement('fire-ring', 'fr-main'),
-        getIconElement('fire-ring', 'fr-blur'),
-        getIconElement('fire-ring', 'fr-pulse'),
-    ],
-    elemsKeyframes: {
-        'fr-main': [
+        [
             {
                 opacity: '0',
             },
@@ -334,7 +348,15 @@ export const EnchantAnimation: EffectAnimation = {
                 opacity: '0',
             },
         ],
-        'fr-blur': [
+        {
+            fontSize: '64px',
+            color: 'pink',
+            opacity: '1',
+        },
+    ],
+    [
+        getIconElement('fire-ring', 'fr-blur'),
+        [
             {
                 filter: 'blur(10px)',
             },
@@ -347,7 +369,17 @@ export const EnchantAnimation: EffectAnimation = {
                 opacity: 0,
             }
         ],
-        'fr-pulse': [
+        {
+            fontSize: '64px',
+            color: 'violet',
+            filter: 'blur(6px)',
+            opacity: '1',
+            mixBlendMode: 'hard-light'
+        },
+    ],
+    [
+        getIconElement('fire-ring', 'fr-pulse'),
+        [
             {
                 opacity: '0',
             },
@@ -370,29 +402,12 @@ export const EnchantAnimation: EffectAnimation = {
                 opacity: '0',
             },
         ],
-    },
-    elemsDefaultStyles: {
-        'fr-main': {
-            fontSize: '64px',
-            color: 'pink',
-            opacity: '1',
-        },
-        'fr-blur': {
-            fontSize: '64px',
-            color: 'violet',
-            filter: 'blur(6px)',
-            opacity: '1',
-            mixBlendMode: 'hard-light'
-        },
-        'fr-pulse': {
+        {
             fontSize: '64px',
             color: 'pink',
             opacity: '0.2',
             transform: 'translate(-50%, -50%) scale(1)',
             mixBlendMode: 'hard-light'
         },
-    },
-    config: {
-        layout: 'default',
-    }
-};
+    ]
+]);
