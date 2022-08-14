@@ -1,5 +1,5 @@
 import { AnimationElementType, AnimationIconElement, EffectAnimation } from "../../model/vfx-api/vfx-api.types";
-import { createAnimation } from "./utils";
+import { createAnimation, getReversePulseKeyframes, getPlainAppearanceFrames, getPlainBlurFrames, getPlainPulseFrames } from "./utils";
 
 const getIconElement = (iconName: string, id: string): AnimationIconElement => ({
     icon: iconName,
@@ -84,62 +84,9 @@ export const FireAnimation: EffectAnimation = {
         getIconElement('fire', 'fire-pulse'),
     ],
     elemsKeyframes: {
-        'fire-main': [
-            {
-                opacity: '0',
-            },
-            {
-                opacity: '1',
-                offset: 0.25,
-            },
-            {
-                opacity: '1',
-                offset: 0.35,
-            },
-            {
-                offset: 0.76,
-                opacity: '0',
-            },
-            {
-                opacity: '0',
-            },
-        ],
-        'fire-blur': [
-            {
-                filter: 'blur(10px)',
-            },
-            {
-                filter: 'blur(0px)',
-                offset: 0.4,
-            },
-            {
-                filter: 'blur(0px)',
-                opacity: 0,
-            }
-        ],
-        'fire-pulse': [
-            {
-                opacity: '0',
-            },
-            {
-                opacity: '0.2',
-                transform: 'translate(-50%, -50%) scale(1.2)',
-                offset: 0.25,
-            },
-            {
-                opacity: '0.3',
-                transform: 'translate(-50%, -50%) scale(1.5)',
-                offset: 0.35,
-            },
-            {
-                offset: 0.76,
-                transform: 'translate(-50%, -50%) scale(1.6)',
-                opacity: '0',
-            },
-            {
-                opacity: '0',
-            },
-        ],
+        'fire-main': getPlainAppearanceFrames(),
+        'fire-blur': getPlainBlurFrames(),
+        'fire-pulse': getPlainPulseFrames(),
     },
     elemsDefaultStyles: {
         'fire-main': {
@@ -167,34 +114,7 @@ export const FireAnimation: EffectAnimation = {
     }
 };
 
-const getBwKeyframes = (offsetDelay: number = 0) => {
-    const transform = 'translate(-50%, -50%) scale(1)';
-    return [
-        {
-            opacity: 0,
-            offset: 0.001 + offsetDelay,
-        },
-        {
-            opacity: 0.3,
-            transform: transform,
-            offset: 0.3 + offsetDelay,
-        },
-        {
-            opacity: 0.3,
-            transform: transform,
-            offset: 0.5 + offsetDelay,
-        },
-        {
-            opacity: 0.3,
-            transform: transform,
-        },
-        {
-            opacity: 0,
-            transform: transform,
 
-        }
-    ];
-};
 
 const getBwDefaultStyles = () => {
     // const transform = 'translate(-50%, -100%) scale(1)';
@@ -208,8 +128,6 @@ const getBwDefaultStyles = () => {
     };
 };
 
-
-
 export const FrightAnimation: EffectAnimation = {
     elements: [
         getIconElement('batwings', 'bw-1'),
@@ -218,9 +136,9 @@ export const FrightAnimation: EffectAnimation = {
         getIconElement('batwings', 'bw-blur'),
     ],
     elemsKeyframes: {
-        'bw-1': getBwKeyframes(),
-        'bw-2': getBwKeyframes(0.20),
-        'bw-3': getBwKeyframes(0.40),
+        'bw-1': getReversePulseKeyframes(),
+        'bw-2': getReversePulseKeyframes(0.20),
+        'bw-3': getReversePulseKeyframes(0.40),
         'bw-blur': [
             {
                 filter: 'blur(10px)',
@@ -311,26 +229,7 @@ export const FloatingMessageAnimation: EffectAnimation = {
 export const EnchantAnimation: EffectAnimation = createAnimation([
     [
         getIconElement('fire-ring', 'fr-main'),
-        [
-            {
-                opacity: '0',
-            },
-            {
-                opacity: '1',
-                offset: 0.25,
-            },
-            {
-                opacity: '1',
-                offset: 0.35,
-            },
-            {
-                offset: 0.76,
-                opacity: '0',
-            },
-            {
-                opacity: '0',
-            },
-        ],
+        getPlainAppearanceFrames(),
         {
             fontSize: '64px',
             color: 'pink',
@@ -339,19 +238,7 @@ export const EnchantAnimation: EffectAnimation = createAnimation([
     ],
     [
         getIconElement('fire-ring', 'fr-blur'),
-        [
-            {
-                filter: 'blur(10px)',
-            },
-            {
-                filter: 'blur(0px)',
-                offset: 0.4,
-            },
-            {
-                filter: 'blur(0px)',
-                opacity: 0,
-            }
-        ],
+        getPlainBlurFrames(),
         {
             fontSize: '64px',
             color: 'violet',
@@ -362,29 +249,7 @@ export const EnchantAnimation: EffectAnimation = createAnimation([
     ],
     [
         getIconElement('fire-ring', 'fr-pulse'),
-        [
-            {
-                opacity: '0',
-            },
-            {
-                opacity: '0.2',
-                transform: 'translate(-50%, -50%) scale(1.2)',
-                offset: 0.25,
-            },
-            {
-                opacity: '0.3',
-                transform: 'translate(-50%, -50%) scale(1.5)',
-                offset: 0.35,
-            },
-            {
-                offset: 0.76,
-                transform: 'translate(-50%, -50%) scale(1.6)',
-                opacity: '0',
-            },
-            {
-                opacity: '0',
-            },
-        ],
+        getPlainPulseFrames(),
         {
             fontSize: '64px',
             color: 'pink',
