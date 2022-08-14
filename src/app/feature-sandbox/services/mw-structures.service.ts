@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { ArchersOutpostStructure, BanditCamp, CalavryStalls, GraveyardStructure, MagicRiverStructure } from 'src/app/core/dictionaries/structures';
+import { createHireStructure } from 'src/app/core/dictionaries/structures/utils';
 import { WitchHutStructure } from 'src/app/core/dictionaries/structures/witch-hut.struct';
+import { NEUTRAL_FRACTION_UNIT_TYPES, NEUTRAL_TYPES_ENUM } from 'src/app/core/dictionaries/unit-types/neutral-unit-types.dictionary';
 import { PlayerInstanceModel, UnitGroupInstModel } from 'src/app/core/model/main.model';
 import { NeutralCampStructure, NeutralSite, StructureGeneratorModel, StructureModel, StructureTypeEnum } from "src/app/core/model/structures.types";
 import { BattleEventsService } from './mw-battle-events.service';
@@ -26,6 +28,16 @@ export class MwStructuresService {
     CalavryStalls,
     WitchHutStructure,
     MagicRiverStructure,
+    createHireStructure('Boss Camp', {
+      fraction: NEUTRAL_FRACTION_UNIT_TYPES,
+      maxUnitGroups: 3,
+      minUnitGroups: 3,
+      units: [
+        [NEUTRAL_TYPES_ENUM.ForestTrolls, 24, 26, 1],
+        [NEUTRAL_TYPES_ENUM.Gnolls, 28, 36, 1],
+        [NEUTRAL_TYPES_ENUM.Thiefs, 15, 18, 1],
+      ],
+    }, []),
   ];
 
   public structures: StructureModel[] = [];

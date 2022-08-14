@@ -59,7 +59,10 @@ export const HelveticaHero: HeroModelBase = createHeroModelBase({
         ],
     }],
     items: [ItemWindCrest],
-    resources: heroesDefaultResources,
+    resources: {
+        ...heroesDefaultResources,
+        wood: 4,
+    },
     stats: {
         mana: 15,
         baseAttack: 1,

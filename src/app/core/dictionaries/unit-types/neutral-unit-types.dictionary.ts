@@ -79,8 +79,8 @@ export const NEUTRAL_FRACTION_UNIT_TYPES: Record<NEUTRAL_TYPES_ENUM, UnitTypeMod
         level: 3,
         baseStats: {
             damageInfo: {
-                minDamage: 7,
-                maxDamage: 9,
+                minDamage: 6,
+                maxDamage: 7,
             },
             attackRating: 2,
             defence: 1,

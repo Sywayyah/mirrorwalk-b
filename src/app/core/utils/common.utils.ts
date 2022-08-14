@@ -1,6 +1,7 @@
 import { PlayerInstanceModel, UnitGroupInstModel, UnitGroupModel, UnitTypeModel } from "../model/main.model";
 
 export interface GenerationModel {
+    /* todo: think about removing fraction */
     fraction: Record<string, UnitTypeModel>;
     minUnitGroups: number;
     maxUnitGroups: number;
