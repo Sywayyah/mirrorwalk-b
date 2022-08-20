@@ -1,5 +1,5 @@
 import { SpellCreationOptions } from "../combat-api/combat-api.types";
-import { PlayerInstanceModel } from "../main.model";
+import { PlayerInstanceModel, UnitGroupInstModel } from "../main.model";
 import { SpellInstance, SpellModel } from "../spells";
 
 export interface PlayersApi {
@@ -7,6 +7,9 @@ export interface PlayersApi {
     addMaxManaToPlayer: (player: PlayerInstanceModel, plusToMaxMana: number) => void;
 
     addSpellToPlayerHero: (player: PlayerInstanceModel, spell: SpellInstance) => void;
+
+    getCurrentPlayer: () => PlayerInstanceModel;
+    getCurrentPlayerUnitGroups: () => UnitGroupInstModel[];
 }
 
 export interface SpellsApi {

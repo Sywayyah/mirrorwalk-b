@@ -24,6 +24,7 @@ export interface ModifiersModel {
     /* markers */
     isRanged: boolean;
     counterattacks: boolean;
+    isGhost: boolean;
 }
 
 export type Modifiers = Partial<ModifiersModel>;

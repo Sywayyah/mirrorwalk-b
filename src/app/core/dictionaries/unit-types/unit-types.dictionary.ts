@@ -27,7 +27,7 @@ export const HUMANS_FRACTION_UNIT_TYPES: Record<HF_TYPES_ENUM, UnitTypeModel> = 
             },
             attackRating: 2,
             defence: 2,
-            health: 6,
+            health: 8,
             speed: 13,
         },
         defaultModifiers: {
@@ -104,8 +104,8 @@ export const HUMANS_FRACTION_UNIT_TYPES: Record<HF_TYPES_ENUM, UnitTypeModel> = 
 
         baseStats: {
             damageInfo: {
-                minDamage: 12,
-                maxDamage: 15,
+                minDamage: 14,
+                maxDamage: 18,
             },
             attackRating: 9,
             defence: 10,

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NeutralCampStructure, NeutralSite, StructureTypeEnum } from 'src/app/core/model/structures.types';
-import { BattleEventsService, BattleEvent, PopupTypesEnum, PrefightPopup, PreviewPopup, StructSelected } from '../../services';
+import { BattleEventsService, BattleEvent, PopupTypesEnum, PrefightPopup, PreviewPopup, StructSelected, UpgradingPopup } from '../../services';
 
 enum ViewsEnum {
   Structures = 'structures',
@@ -40,12 +40,22 @@ export class MwViewControlComponent implements OnInit {
         }
 
         if (event.struct.type === StructureTypeEnum.NeutralSite) {
-          const previewPopup: PreviewPopup = {
-            type: PopupTypesEnum.Preview,
-            struct: event.struct as NeutralSite,
-          };
+          if (event.struct.generator.onVisited) {
+            const previewPopup: PreviewPopup = {
+              type: PopupTypesEnum.Preview,
+              struct: event.struct as NeutralSite,
+            };
 
-          this.events.dispatchEvent({ type: BattleEvent.Display_Popup, popup: previewPopup });
+            this.events.dispatchEvent({ type: BattleEvent.Display_Popup, popup: previewPopup });
+          } else {
+            const upgradingPopup: UpgradingPopup = {
+              type: PopupTypesEnum.UpgradingReward,
+              struct: event.struct as NeutralSite,
+            };
+
+            this.events.dispatchEvent({ type: BattleEvent.Display_Popup, popup: upgradingPopup });
+            
+          }
         }
       },
 

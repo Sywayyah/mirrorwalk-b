@@ -29,6 +29,7 @@ import { ItemIconComponent } from './feature-sandbox/components/item-icon/item-i
 import { PreviewPopupComponent } from './feature-sandbox/components/mw-popup-container/components/preview-popup/preview-popup.component';
 import { VfxElementComponent } from './feature-sandbox/components/ui-elements/vfx-element/vfx-element.component';
 import { VfxLayerComponent } from './feature-sandbox/components/ui-elements/vfx-layer/vfx-layer.component';
+import { UpgradeRewardPopup } from './feature-sandbox/components/mw-popup-container/components/upgrade-reward-popup/upgrade-reward-popup.component';
 
 @NgModule({
   declarations: [
@@ -41,6 +42,7 @@ import { VfxLayerComponent } from './feature-sandbox/components/ui-elements/vfx-
     MwViewControlComponent,
     MwStructuresViewComponent,
     MwPlayerResourcesComponent,
+    UpgradeRewardPopup,
     ResourcesRewardPopupComponent,
     HiringRewardPopupComponent,
     PreFightPopupComponent,

@@ -40,6 +40,8 @@ export class PreviewPopupComponent implements OnInit {
         addSpellToPlayerHero: (player, spell) => {
           this.heroes.addSpellToHero(player.hero, spell);
         },
+        getCurrentPlayer: () => this.players.getCurrentPlayer(),
+        getCurrentPlayerUnitGroups: () => this.players.getUnitGroupsOfPlayer(this.players.getCurrentPlayer().id),
       },
       spellsApi: {
         createSpellInstance: (spell, options) => {

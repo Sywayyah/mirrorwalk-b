@@ -1,7 +1,7 @@
 import { GenerationModel } from "../utils/common.utils";
 import { PlayersApi, SpellsApi } from "./game-api/game-apis.types";
 import { ItemBaseModel } from "./items/items.types";
-import { PlayerInstanceModel, UnitTypeModel } from "./main.model";
+import { PlayerInstanceModel, UnitGroupInstModel, UnitGroupModel, UnitTypeModel } from "./main.model";
 import { ResourceType } from "./resources.types";
 
 /* Base descriptive type */
@@ -69,6 +69,7 @@ export interface StructureModel<T extends StructureTypeEnum = StructureTypeEnum>
 /*  */
 export interface NeutralSite extends StructureModel<StructureTypeEnum.NeutralSite> {
     isCompleted?: boolean;
+    reward?: NeutralRewardModel;
 }
 
 /* Neutral structures */
@@ -78,6 +79,7 @@ export enum NeutralRewardTypesEnum {
     Item = 'item',
     UnitsHire = 'hire',
     Mines = 'mines',
+    UnitsUpgrade = 'upgrading',
 }
 
 export interface NeutralRewardModel<T extends NeutralRewardTypesEnum = NeutralRewardTypesEnum> {
@@ -103,4 +105,9 @@ export interface HiringReward extends NeutralRewardModel<NeutralRewardTypesEnum.
 /* Item Reward */
 export interface ItemReward extends NeutralRewardModel<NeutralRewardTypesEnum.Item> {
     itemGroups: ItemBaseModel[][];
+}
+
+/* Unit ungrade reward */
+export interface UnitUpgradeReward extends NeutralRewardModel<NeutralRewardTypesEnum.UnitsUpgrade> {
+    getUnits: (api: PlayersApi) => UnitGroupInstModel[];
 }

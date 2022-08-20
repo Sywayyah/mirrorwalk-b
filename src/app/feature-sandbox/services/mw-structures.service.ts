@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ArchersOutpostStructure, BanditCamp, CalavryStalls, GraveyardStructure, MagicRiverStructure } from 'src/app/core/dictionaries/structures';
+import { ArchersOutpostStructure, BanditCamp, BeaconOfTheUndead, CalavryStalls, GraveyardStructure, MagicRiverStructure } from 'src/app/core/dictionaries/structures';
 import { createHireStructure } from 'src/app/core/dictionaries/structures/utils';
 import { WitchHutStructure } from 'src/app/core/dictionaries/structures/witch-hut.struct';
 import { NEUTRAL_FRACTION_UNIT_TYPES } from 'src/app/core/dictionaries/unit-types/neutral-unit-types.dictionary';
@@ -21,7 +21,9 @@ export class MwStructuresService {
   public neutralPlayer: PlayerInstanceModel = this.playersService.getEnemyPlayer();
 
   public structureTypes: StructureGeneratorModel[] = [
+    BeaconOfTheUndead,
     GraveyardStructure,
+    
     ArchersOutpostStructure,
     BanditCamp,
     BanditCamp,
@@ -61,6 +63,7 @@ export class MwStructuresService {
   }
 
   private generateStructuresByTypes(): void {
+    /* Improve this logic */
     this.structureTypes.forEach((structureType, i) => {
 
       if (structureType.generateGuard && structureType.generateReward) {
@@ -73,6 +76,19 @@ export class MwStructuresService {
         };
 
         this.structures.push(newStructure);
+        return;
+      }
+
+      if (!structureType.generateGuard && structureType.generateReward) {
+        const newStructure: NeutralSite = {
+          id: String(i),
+          generator: structureType,
+          type: StructureTypeEnum.NeutralSite,
+          reward: structureType.generateReward(),
+        };
+
+        this.structures.push(newStructure);
+        return;
       }
 
       if (structureType.onVisited) {
@@ -83,6 +99,7 @@ export class MwStructuresService {
         };
 
         this.structures.push(neutralSiteStructure);
+        return;
       }
 
     });

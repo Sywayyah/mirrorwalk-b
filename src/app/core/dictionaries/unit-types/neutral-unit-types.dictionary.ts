@@ -6,12 +6,50 @@ export enum NEUTRAL_TYPES_ENUM {
     Gnolls = 'Gnolls',
     Thiefs = 'Thiefs',
     ForestTrolls = 'ForestTrolls',
+
     Ghosts = 'Ghosts',
+    SupremeGhosts = 'SupremeGhosts',
+
 }
 
 const defaultReward = {
     gold: 0,
     experience: 0,
+};
+
+const Wraiths: UnitTypeModel = {
+    mainPortraitUrl: AssetsImages.Melee,
+    name: 'Wraiths',
+    level: 1,
+    baseRequirements: {
+        gold: 55,
+    },
+    baseStats: {
+        damageInfo: {
+            minDamage: 3,
+            maxDamage: 3,
+        },
+        attackRating: 2,
+        defence: 4,
+        health: 12,
+        speed: 12,
+    },
+    defaultTurnsPerRound: 1,
+    minQuantityPerStack: 1,
+
+    defaultSpells: [
+        FRIGHT_SPELL,
+    ],
+
+    defaultModifiers: {
+        isGhost: true,
+    },
+
+    neutralReward: {
+        experience: 2.3,
+        gold: 2.4,
+    },
+    upgraded: true,
 };
 
 export const NEUTRAL_FRACTION_UNIT_TYPES: Record<NEUTRAL_TYPES_ENUM, UnitTypeModel> = {
@@ -21,7 +59,7 @@ export const NEUTRAL_FRACTION_UNIT_TYPES: Record<NEUTRAL_TYPES_ENUM, UnitTypeMod
         name: 'Ghosts',
         level: 1,
         baseRequirements: {
-            gold: 40,
+            gold: 30,
         },
         baseStats: {
             damageInfo: {
@@ -42,8 +80,19 @@ export const NEUTRAL_FRACTION_UNIT_TYPES: Record<NEUTRAL_TYPES_ENUM, UnitTypeMod
         neutralReward: {
             experience: 2.3,
             gold: 2.4,
+        },
+        upgradeDetails: {
+            target: Wraiths,
+            upgradeCost: {
+                gold: 25,
+            }
+        },
+        defaultModifiers: {
+            isGhost: true,
         }
     },
+
+    [NEUTRAL_TYPES_ENUM.SupremeGhosts]: Wraiths,
 
     [NEUTRAL_TYPES_ENUM.Gnolls]: {
         mainPortraitUrl: AssetsImages.Melee,

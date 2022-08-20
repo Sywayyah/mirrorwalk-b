@@ -10,6 +10,7 @@ export enum PopupTypesEnum {
   FightEnds,
   StructResourcesReward,
   HiringReward,
+  UpgradingReward,
   ItemReward,
   /* when there is a guard */
   Prefight,
@@ -46,5 +47,9 @@ export interface PrefightPopup extends PopupModel<PopupTypesEnum.Prefight> {
 }
 
 export interface PreviewPopup extends PopupModel<PopupTypesEnum.Preview> {
+  struct: NeutralSite;
+}
+
+export interface UpgradingPopup extends PopupModel<PopupTypesEnum.UpgradingReward> {
   struct: NeutralSite;
 }

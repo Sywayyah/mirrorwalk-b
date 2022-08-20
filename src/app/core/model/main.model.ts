@@ -68,17 +68,14 @@ export interface UnitTypeModel {
 
     /* How many attacks unit can make by default */
     defaultTurnsPerRound: number;
+
+    upgraded?: boolean;
+
+    upgradeDetails?: {
+        target: UnitTypeModel,
+        upgradeCost: Partial<ResourcesModel>,
+    };
 }
-
-interface ItemTypeModel {
-    name: string;
-    mainIconUrl: string;
-
-    /* what does this item type requires */
-    requirements: RequirementModel;
-}
-
-
 
 export interface UnitGroupModel {
     count: number;

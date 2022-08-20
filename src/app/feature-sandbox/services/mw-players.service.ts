@@ -144,6 +144,14 @@ export class MwPlayersService {
     }
   }
 
+  public removeNUnitsFromGroup(player: PlayerModel, unitGroup: UnitGroupModel, count: number): void {
+    unitGroup.count -= count;
+
+    if (unitGroup.count <= 0) {
+      CommonUtils.removeItem(player.unitGroups, unitGroup);
+    }
+  }
+
   public addManaToPlayer(player: PlayerInstanceModel, mana: number): void {
     player.hero.stats.currentMana += mana;
   }
