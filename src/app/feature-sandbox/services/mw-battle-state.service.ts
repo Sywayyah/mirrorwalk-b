@@ -79,10 +79,10 @@ export class BattleStateService {
         console.log('Player starts turn');
         if (event.currentPlayer.type === PlayerTypeEnum.AI) {
           console.log(`AI player's Turn`)
-          this.curPlayerState.playerCurrentState = PlayerState.WaitsForTurn;
+          this.curPlayerState.setPlayerState( PlayerState.WaitsForTurn);
           this.processAiPlayer();
         } else {
-          this.curPlayerState.playerCurrentState = PlayerState.Normal;
+          this.curPlayerState.setPlayerState(PlayerState.Normal);
         }
       },
 

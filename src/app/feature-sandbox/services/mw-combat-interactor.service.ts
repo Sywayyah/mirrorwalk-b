@@ -498,7 +498,7 @@ export class CombatInteractorService {
 
       [BattleEvent.Player_Targets_Spell]: (event: PlayerTargetsSpell) => {
         this.triggerEventForSpellHandler(event.spell, SpellEventTypes.PlayerTargetsSpell, { target: event.target });
-        this.curPlayerState.playerCurrentState = PlayerState.Normal;
+        this.curPlayerState.setPlayerState(PlayerState.Normal);
         this.curPlayerState.resetCurrentSpell();
       },
 

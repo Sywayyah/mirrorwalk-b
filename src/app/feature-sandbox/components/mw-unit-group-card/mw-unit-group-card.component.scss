@@ -28,7 +28,7 @@
 
 .portrait {
     position: absolute;
-    z-index: 1000;
+    // z-index: 1000;
     height: 130px;
     width: 127px;
     top: -25px;
@@ -65,7 +65,7 @@
     padding: 4px 15px 0;
     color: white;
     border: 3px solid transparent;
-    cursor: pointer;
+    // cursor: pointer;
     user-select: none;
 }
 
@@ -75,7 +75,7 @@
 
 .hovered-enemy {
     border: 3px solid rgba(240, 113, 113, 0.906);
-    cursor: pointer;
+    // cursor: pointer;
 }
 
 .buff-icon {

@@ -232,7 +232,7 @@ export const EnchantAnimation: EffectAnimation = createAnimation([
         getPlainAppearanceFrames(),
         {
             fontSize: '64px',
-            color: 'pink',
+            color: 'white',
             opacity: '1',
         },
     ],

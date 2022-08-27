@@ -1,6 +1,6 @@
-import { Directive, ElementRef, HostListener, Input, OnInit, Renderer2 } from '@angular/core';
+import { Directive, ElementRef, HostListener, Input, OnInit } from '@angular/core';
 import { UnitGroupInstModel } from 'src/app/core/model/main.model';
-import { BattleEventsService, BattleEvent, BattleStateService, HoverTypeEnum, MwPlayersService } from '../services';
+import { BattleEvent, BattleEventsService, BattleStateService, HoverTypeEnum, MwPlayersService } from '../services';
 import { MwCurrentPlayerStateService } from '../services/mw-current-player-state.service';
 
 /* 
@@ -18,11 +18,12 @@ export class MwSpellTargetDirective implements OnInit {
   constructor(
     private readonly curPlayerState: MwCurrentPlayerStateService,
     private readonly players: MwPlayersService,
-    private readonly elemRef: ElementRef,
-    private readonly renderer: Renderer2,
+    // private readonly elemRef: ElementRefss,
+    // private readonly renderer: Renderer2,
     private readonly battleEvents: BattleEventsService,
     private readonly mwBattleStateService: BattleStateService,
-  ) { }
+  ) { 
+  }
 
   public ngOnInit(): void {
     this.isEnemyCard = this.players.isEnemyUnitGroup(this.spellTargetUnitGroup);
@@ -72,9 +73,9 @@ export class MwSpellTargetDirective implements OnInit {
       return;
     }
 
-    if (!this.canActivateCurrentSpell()) {
-      this.renderer.addClass(this.elemRef.nativeElement, 'cannot-target');
-    }
+    // if (!this.canActivateCurrentSpell()) {
+    //   // this.renderer.addClass(this.elemRef.nativeElement, 'cannot-target');
+    // }
   }
 
   @HostListener('mouseleave')
@@ -83,7 +84,7 @@ export class MwSpellTargetDirective implements OnInit {
       return;
     }
 
-    this.renderer.removeClass(this.elemRef.nativeElement, 'cannot-target');
+    // this.renderer.removeClass(this.elemRef.nativeElement, 'cannot-target');
   }
 
   private canActivateCurrentSpell(): boolean {

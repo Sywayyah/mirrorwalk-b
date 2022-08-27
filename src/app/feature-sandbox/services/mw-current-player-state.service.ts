@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { PlayerInstanceModel } from 'src/app/core/model/main.model';
 import { SpellActivationType, SpellInstance, SpellModel } from 'src/app/core/model/spells';
 import { BattleEventsService } from './mw-battle-events.service';
@@ -52,6 +53,8 @@ export class MwCurrentPlayerStateService {
 
   public playerCurrentState: PlayerState = PlayerState.Normal;
 
+  public playerStateChanged$: BehaviorSubject<PlayerState> = new BehaviorSubject<PlayerState>(PlayerState.Normal);
+
   public spellsAreOnCooldown: boolean = false;
 
   constructor(
@@ -92,7 +95,7 @@ export class MwCurrentPlayerStateService {
         this.setSpellsOnCooldown();
         break;
       case 'target':
-        this.playerCurrentState = PlayerState.SpellTargeting;
+        this.setPlayerState(PlayerState.SpellTargeting);
         break;
       case 'passive':
         break;
@@ -111,10 +114,15 @@ export class MwCurrentPlayerStateService {
 
   public cancelCurrentSpell(): void {
     this.resetCurrentSpell();
-    this.playerCurrentState = PlayerState.Normal;
+    this.setPlayerState(PlayerState.Normal);
   }
 
   public onCurrentSpellCast(): void {
     this.players.addManaToPlayer(this.currentPlayer, -this.currentSpell.currentManaCost);
+  }
+
+  public setPlayerState(state: PlayerState): void {
+    this.playerCurrentState = state;
+    this.playerStateChanged$.next(state);
   }
 }

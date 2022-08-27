@@ -31,6 +31,10 @@ export class VfxLayerComponent implements OnInit {
 
   public effectsWithOverlay: number = 0;
 
+  public customCursor: string = '';
+
+  public customCursorPos: { x: number, y: number } = { x: 0, y: 0 };
+
   constructor(
     private vfxService: VfxService,
     private componentFactoryResolver: ComponentFactoryResolver,

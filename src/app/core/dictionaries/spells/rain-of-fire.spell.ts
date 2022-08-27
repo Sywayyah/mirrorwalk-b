@@ -16,6 +16,11 @@ export const RAIN_OF_FIRE_SPELL: SpellModel = {
             name: 'Rain of Fire',
         },
         spellConfig: {
+            targetCastConfig: {
+                canActivate: ({ isEnemy, unitGroup }) => {
+                    return isEnemy;
+                }
+            },
             init: ({ events, actions, thisSpell, ownerHero, vfx }) => {
 
                 events.on({
@@ -40,7 +45,7 @@ export const RAIN_OF_FIRE_SPELL: SpellModel = {
                                         { type: 'plainPart', icon: 'sword', text: actionInfo.finalDamage, color: 'red' },
                                         { type: 'plainPart', icon: 'skull', text: actionInfo.unitLoss, color: 'white' },
                                     ],
-                                }, {duration: 1000})
+                                }, { duration: 1000 })
                             },
                         );
                     }

@@ -15,7 +15,8 @@ export class VfxService {
 
   private layerComponent!: VfxLayerComponent;
 
-  constructor() { }
+  constructor(
+  ) { }
 
   public registerLayerComponent(component: VfxLayerComponent): void {
     this.layerComponent = component;
@@ -56,5 +57,18 @@ export class VfxService {
     this.layerComponent.createFloatingMessageForUnitGroup(unitGroup, {
       custom: data,
     }, options);
+  }
+
+  public setCustomCursor(iconName: string): void {
+    this.layerComponent.customCursor = iconName;
+  }
+
+  public setCustomCursorPos(x: number, y: number): void {
+    this.layerComponent.customCursorPos.x = x;
+    this.layerComponent.customCursorPos.y = y;
+  }
+
+  public clearCustomCursor(): void {
+    this.layerComponent.customCursor = '';
   }
 }

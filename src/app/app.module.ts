@@ -30,6 +30,10 @@ import { PreviewPopupComponent } from './feature-sandbox/components/mw-popup-con
 import { VfxElementComponent } from './feature-sandbox/components/ui-elements/vfx-element/vfx-element.component';
 import { VfxLayerComponent } from './feature-sandbox/components/ui-elements/vfx-layer/vfx-layer.component';
 import { UpgradeRewardPopup } from './feature-sandbox/components/mw-popup-container/components/upgrade-reward-popup/upgrade-reward-popup.component';
+import { MwCustomCursorDirective } from './feature-sandbox/directives/mw-custom-cursor.directive';
+import { MwUnitEventsCursorDirective } from './feature-sandbox/directives/mw-unit-events-cursor.directive';
+import { SharedTemplatesComponent } from './feature-sandbox/components/ui-elements/shared-templates/shared-templates.component';
+import { SharedTemplateDirective } from './feature-sandbox/components/ui-elements/shared-templates/shared-template.directive';
 
 @NgModule({
   declarations: [
@@ -61,6 +65,10 @@ import { UpgradeRewardPopup } from './feature-sandbox/components/mw-popup-contai
     PreviewPopupComponent,
     VfxElementComponent,
     VfxLayerComponent,
+    MwCustomCursorDirective,
+    MwUnitEventsCursorDirective,
+    SharedTemplatesComponent,
+    SharedTemplateDirective,
   ],
   imports: [
     BrowserModule

@@ -1,16 +1,20 @@
-import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, forwardRef, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { PlayerModel, UnitGroupInstModel } from 'src/app/core/model/main.model';
-import { BattleEventsService, BattleEvent, BattleStateService, HoverTypeEnum, MwPlayersService } from '../../services';
+import { PROVIDE_UI_UNIT_GROUP, UIUnitProvider } from '../../directives/mw-unit-events-cursor.directive';
+import { BattleEvent, BattleEventsService, BattleStateService, HoverTypeEnum, MwPlayersService } from '../../services';
 import { MwUnitGroupStateService } from '../../services/mw-unit-group-state.service';
 
 @Component({
   selector: 'mw-unit-group-card',
   templateUrl: './mw-unit-group-card.component.html',
-  styleUrls: ['./mw-unit-group-card.component.scss']
+  styleUrls: ['./mw-unit-group-card.component.scss'],
+  providers: [
+    { provide: PROVIDE_UI_UNIT_GROUP, useExisting: forwardRef(() => MwUnitGroupCardComponent) }
+  ],
 })
-export class MwUnitGroupCardComponent implements OnInit, OnDestroy {
+export class MwUnitGroupCardComponent implements UIUnitProvider, OnInit, OnDestroy {
 
   @Input()
   public unitGroup!: UnitGroupInstModel;
@@ -92,6 +96,10 @@ export class MwUnitGroupCardComponent implements OnInit, OnDestroy {
 
   public onGroupClick(): void {
     /* previously, it was handling click action, now directive handles it */
+  }
+
+  public getUnitGroup(): UnitGroupInstModel {
+    return this.unitGroup;
   }
 
 }

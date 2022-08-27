@@ -6,6 +6,7 @@
           *ngFor="let unitGroup of mainPlayerUnitGroups"
           mwSpellTarget
           [spellTargetUnitGroup]="unitGroup"
+          mwUnitEventsCursor
           side="left"
           [playerInfo]="mainPlayerInfo"
           [unitGroup]="unitGroup"
@@ -21,6 +22,7 @@
           *ngFor="let unitGroup of neutralPlayerGroups"
           mwSpellTarget
           [spellTargetUnitGroup]="unitGroup"
+          mwUnitEventsCursor
           side="right"
           [playerInfo]="neutralPlayerInfo"
           [unitGroup]="unitGroup"

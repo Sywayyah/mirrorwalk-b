@@ -1,8 +1,6 @@
 <div class="card-top" [ngClass]="side === 'left' ? 'card-left' : 'card-right'" (mouseenter)="onCardHover(true)"
     (mouseleave)="onCardHover(false)" (click)="onGroupClick()">
 
-    <img src="../assets/{{unitGroup.type.mainPortraitUrl}}" class="portrait">
-
     <div class="card-wrapper">
         <div [style.background]="playerInfo.color"
             [class.current-group]="mwBattleStateService.currentPlayer === playerInfo && attackingUnitGroup === unitGroup"
@@ -61,4 +59,6 @@
             </div>
         </div>
     </div>
+
+    <img src="../assets/{{unitGroup.type.mainPortraitUrl}}" class="portrait">
 </div>
