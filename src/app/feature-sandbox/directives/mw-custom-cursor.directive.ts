@@ -1,7 +1,14 @@
-import { Directive, ElementRef, HostListener, Input, OnDestroy, Renderer2 } from '@angular/core';
+import { Directive, ElementRef, HostListener, OnDestroy, Renderer2 } from '@angular/core';
 import { Subject } from 'rxjs';
-import { VfxService } from '../components/ui-elements/vfx-layer/vfx.service';
+import { CustomAnimationData, EffectAnimation, EffectOptions } from 'src/app/core/model/vfx-api/vfx-api.types';
+import { CursorService } from '../components/ui-elements/custom-cursor/cursor.service';
 
+export interface AnimatedCursor {
+
+  animation: EffectAnimation,
+  options?: EffectOptions,
+  data?: CustomAnimationData,
+}
 
 @Directive({
   selector: '[mwCustomCursor]',
@@ -9,27 +16,26 @@ import { VfxService } from '../components/ui-elements/vfx-layer/vfx.service';
 export class MwCustomCursorDirective implements OnDestroy {
   protected isHovered: boolean = false;
 
-  @Input()
-  public icon: string = '';
+  protected cursorAnimation!: AnimatedCursor;
 
   protected destroyed$: Subject<void> = new Subject();
 
   constructor(
-    protected vfx: VfxService,
+    protected cursor: CursorService,
     protected elemRef: ElementRef,
     protected renderer: Renderer2,
   ) {
     this.showCursorForHostElem(false);
   }
 
-  @HostListener('mouseover')
+  @HostListener('mouseenter')
   public onMouseOver(): void {
     this.isHovered = true;
     const cursorIcon = this.getCursorIconToShow();
 
     if (cursorIcon) {
       this.showCursorForHostElem(false);
-      this.vfx.setCustomCursor(cursorIcon);
+      this.cursor.setCustomCursor(cursorIcon.animation, cursorIcon.options, cursorIcon.data);
     } else {
       this.showCursorForHostElem(true);
     }
@@ -38,29 +44,28 @@ export class MwCustomCursorDirective implements OnDestroy {
   @HostListener('mousemove', ['$event'])
   public onMouseMove(mouseEvent: MouseEvent): void {
     // todo: ngZone addEventListener + runOutsideAngular
-    this.vfx.setCustomCursorPos(mouseEvent.clientX, mouseEvent.clientY);
+    this.cursor.setCustomCursorPos(mouseEvent.clientX, mouseEvent.clientY);
   }
 
-  @HostListener('mouseout')
+  @HostListener('mouseleave')
   public onMouseOut(): void {
     this.isHovered = false;
-    this.vfx.clearCustomCursor();
+    this.cursor.clearCustomCursor();
   }
 
   public ngOnDestroy(): void {
-    this.vfx.clearCustomCursor();
+    this.cursor.clearCustomCursor();
     this.isHovered = false;
     this.destroyed$.next();
   }
 
-  protected getCursorIconToShow(): string {
-    return this.icon;
+  protected getCursorIconToShow(): AnimatedCursor {
+    return this.cursorAnimation;
   }
 
-  protected setCursorIcon(icon: string): void {
-    this.icon = icon;
+  protected setCursorIcon(cursor: AnimatedCursor): void {
     if (this.isHovered) {
-      this.vfx.setCustomCursor(icon);
+      this.cursor.setCustomCursor(cursor.animation, cursor.options, cursor.data);
     }
   }
 

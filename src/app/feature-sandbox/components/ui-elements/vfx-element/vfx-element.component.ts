@@ -1,5 +1,5 @@
 import { Component, ElementRef, EmbeddedViewRef, Renderer2, TemplateRef, ViewChild, ViewContainerRef, ViewRef } from '@angular/core';
-import { AnimationElementType, AnimationIconElement, CustomAnimationData, CustomizableAnimationData, EffectAnimation } from 'src/app/core/model/vfx-api/vfx-api.types';
+import { AnimationElementType, AnimationIconElement, CustomAnimationData, EffectAnimation, EffectOptions } from 'src/app/core/model/vfx-api/vfx-api.types';
 
 export interface AnimationRef {
   elem: VfxElementComponent;
@@ -27,7 +27,7 @@ export class VfxElementComponent {
 
   public playAnimation(
     animation: EffectAnimation,
-    options: { duration?: number } = { duration: 1000 },
+    options: EffectOptions = { duration: 1000 },
     data: CustomAnimationData = {},
   ): AnimationRef {
     if (animation.config.layout === 'default') {
@@ -67,8 +67,9 @@ export class VfxElementComponent {
       const keyFramesConfig = animation.elemsKeyframes[animationElemConfig.id];
 
       const animationRef = firstNode.animate(keyFramesConfig, {
-        duration: options.duration,
-        fill: 'forwards',
+        duration: options.duration ?? 1000,
+        fill: options.type ?? 'forwards',
+        iterations: options.iterations ?? 1,
       });
 
       animationsList.push(animationRef);
@@ -82,4 +83,8 @@ export class VfxElementComponent {
     };
   }
 
+  // Destroys all created VFX elements
+  public clearAnimation(): void {
+    this.viewContainerRef.clear();
+  }
 }

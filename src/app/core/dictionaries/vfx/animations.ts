@@ -1,11 +1,6 @@
-import { AnimationElementType, AnimationIconElement, EffectAnimation } from "../../model/vfx-api/vfx-api.types";
-import { createAnimation, getReversePulseKeyframes, getPlainAppearanceFrames, getPlainBlurFrames, getPlainPulseFrames } from "./utils";
+import { AnimationElementType, EffectAnimation } from "../../model/vfx-api/vfx-api.types";
+import { createAnimation, getIconElement, getPlainAppearanceFrames, getPlainBlurFrames, getPlainPulseFrames, getReversePulseKeyframes } from "./utils";
 
-const getIconElement = (iconName: string, id: string): AnimationIconElement => ({
-    icon: iconName,
-    id: id,
-    type: AnimationElementType.Icon,
-});
 
 export const LightningAnimation: EffectAnimation = {
     elements: [

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { UnitGroupInstModel } from 'src/app/core/model/main.model';
-import { CustomizableAnimationData, Effect, EffectOptions } from 'src/app/core/model/vfx-api/vfx-api.types';
+import { CustomAnimationData, CustomizableAnimationData, Effect, EffectAnimation, EffectOptions } from 'src/app/core/model/vfx-api/vfx-api.types';
 import type { VfxLayerComponent } from './vfx-layer.component';
 
 
@@ -59,16 +59,4 @@ export class VfxService {
     }, options);
   }
 
-  public setCustomCursor(iconName: string): void {
-    this.layerComponent.customCursor = iconName;
-  }
-
-  public setCustomCursorPos(x: number, y: number): void {
-    this.layerComponent.customCursorPos.x = x;
-    this.layerComponent.customCursorPos.y = y;
-  }
-
-  public clearCustomCursor(): void {
-    this.layerComponent.customCursor = '';
-  }
 }

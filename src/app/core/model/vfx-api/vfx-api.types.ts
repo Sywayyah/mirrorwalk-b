@@ -56,6 +56,8 @@ export interface EffectInstRef {
 export interface EffectOptions {
     darkOverlay?: boolean;
     duration?: number;
+    type?: FillMode,
+    iterations?: number;
 }
 
 export interface CustomizableAnimationData {

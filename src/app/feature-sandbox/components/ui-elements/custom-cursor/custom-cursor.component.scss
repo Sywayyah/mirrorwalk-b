@@ -1,0 +1,16 @@
+:host {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 0;
+    height: 0;
+}
+
+.custom-cursor {
+    pointer-events: none;
+    position: absolute;
+    z-index: 100000;
+    font-size: 24px;
+    color: white;
+    transform: scaleX(-1);
+}

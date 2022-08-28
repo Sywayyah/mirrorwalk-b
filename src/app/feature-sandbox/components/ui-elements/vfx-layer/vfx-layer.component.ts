@@ -1,4 +1,4 @@
-import { Component, ComponentFactoryResolver, OnInit, Renderer2, TemplateRef, ViewChild, ViewContainerRef } from '@angular/core';
+import { ChangeDetectorRef, Component, ComponentFactoryResolver, OnInit, Renderer2, TemplateRef, ViewChild, ViewContainerRef } from '@angular/core';
 import { combineLatest, fromEvent } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { FloatingMessageAnimation } from 'src/app/core/dictionaries/vfx/animations';
@@ -31,15 +31,13 @@ export class VfxLayerComponent implements OnInit {
 
   public effectsWithOverlay: number = 0;
 
-  public customCursor: string = '';
-
-  public customCursorPos: { x: number, y: number } = { x: 0, y: 0 };
 
   constructor(
     private vfxService: VfxService,
     private componentFactoryResolver: ComponentFactoryResolver,
     private renderer: Renderer2,
     private unitsCardsMapping: MwCardsMappingService,
+    public cdr: ChangeDetectorRef,
   ) { }
 
   public ngOnInit(): void {

@@ -1,11 +1,13 @@
 import { Directive, ElementRef, Inject, InjectionToken, Renderer2 } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
+import { SpellCastCursorAnimation, StaticCursorAnimation } from 'src/app/core/dictionaries/vfx/cursors';
 import { UnitGroupInstModel } from 'src/app/core/model/main.model';
+import { CursorService } from '../components/ui-elements/custom-cursor/cursor.service';
 import { VfxService } from '../components/ui-elements/vfx-layer/vfx.service';
 import { MwPlayersService } from '../services';
 import { MwCurrentPlayerStateService, PlayerState } from '../services/mw-current-player-state.service';
 import { MwSpellsService } from '../services/mw-spells.service';
-import { MwCustomCursorDirective } from './mw-custom-cursor.directive';
+import { AnimatedCursor, MwCustomCursorDirective } from './mw-custom-cursor.directive';
 
 export interface UIUnitProvider {
   getUnitGroup(): UnitGroupInstModel;
@@ -21,7 +23,7 @@ export class MwUnitEventsCursorDirective extends MwCustomCursorDirective {
   private unitGroup!: UnitGroupInstModel;
 
   constructor(
-    vfx: VfxService,
+    vfx: CursorService,
     hostElem: ElementRef,
     renderer: Renderer2,
     private curPlayerState: MwCurrentPlayerStateService,
@@ -44,18 +46,39 @@ export class MwUnitEventsCursorDirective extends MwCustomCursorDirective {
       });
   }
 
-  protected getCursorIconToShow(): string {
+  protected getCursorIconToShow(): AnimatedCursor {
     const isEnemyUnitGroup = this.players.isEnemyUnitGroup(this.unitGroup);
     const playerState = this.curPlayerState.playerCurrentState;
 
     if (!isEnemyUnitGroup && playerState === PlayerState.Normal) {
-      return '';
+      return {
+        animation: StaticCursorAnimation,
+        data: {
+          custom: {
+            parts: [
+              
+              { color: 'hand', icon: 'interdiction', text: '', type: 'plainPart' },
+            ],
+          }
+        },
+        options: {},
+      };
     }
 
     const canCastSpellOnTarget = this.spells.canSpellBeCastOnUnit(this.curPlayerState.currentSpell, this.unitGroup, isEnemyUnitGroup);
 
     if (playerState === PlayerState.SpellTargeting && !canCastSpellOnTarget) {
-      return 'interdiction';
+      return {
+        animation: StaticCursorAnimation,
+        data: {
+          custom: {
+            parts: [
+              { color: 'white', icon: 'interdiction', text: '', type: 'plainPart' },
+            ],
+          }
+        },
+        options: {},
+      };
     }
 
     const mapping: Record<PlayerState, string> = {
@@ -63,6 +86,27 @@ export class MwUnitEventsCursorDirective extends MwCustomCursorDirective {
       [PlayerState.SpellTargeting]: 'burning-book',
       [PlayerState.WaitsForTurn]: 'hourglass',
     };
-    return mapping[this.curPlayerState.playerCurrentState];
+  
+    if (this.curPlayerState.playerCurrentState === PlayerState.SpellTargeting) {
+      return {
+        animation: SpellCastCursorAnimation,
+        options: {
+          duration: 2000,
+          iterations: Infinity,
+        }
+      };
+    }
+
+    return {
+        animation: StaticCursorAnimation,
+        data: {
+          custom: {
+            parts: [
+              { color: 'white', icon: mapping[this.curPlayerState.playerCurrentState], text: '', type: 'plainPart' },
+            ],
+          }
+        },
+        options: {},
+      };
   }
 }
