@@ -12,7 +12,7 @@ export interface UIUnitProvider {
   getUnitGroup(): UnitGroupInstModel;
 }
 
-export const PROVIDE_UI_UNIT_GROUP: InjectionToken<string> = new InjectionToken('UI provider');
+export const PROVIDE_UI_UNIT_GROUP: InjectionToken<string> = new InjectionToken('UI element unit group provider');
 
 
 @Directive({
