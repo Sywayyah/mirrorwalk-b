@@ -59,7 +59,7 @@ export class VfxElementComponent {
 
       const firstNode = iconSfxView.rootNodes[0] as HTMLElement;
       Object.entries(animation.elemsDefaultStyles[animationElemConfig.id]).forEach(([prop, value]) => {
-        console.log(prop, value);
+        // console.log(prop, value);
         this.renderer.setStyle(firstNode, prop, value);
       });
       this.renderer.addClass(firstNode, 'dl-sfx');
@@ -75,7 +75,7 @@ export class VfxElementComponent {
       animationsList.push(animationRef);
     });
 
-    console.log('SFX -> ', this.createdViews);
+    // console.log('SFX -> ', this.createdViews);
 
     return {
       elem: this,
