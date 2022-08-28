@@ -31,11 +31,11 @@ export class MwCustomCursorDirective implements OnDestroy {
   @HostListener('mouseenter')
   public onMouseOver(): void {
     this.isHovered = true;
-    const cursorIcon = this.getCursorIconToShow();
+    const cursor = this.getCursorToShow();
 
-    if (cursorIcon) {
+    if (cursor) {
       this.showCursorForHostElem(false);
-      this.cursor.setCustomCursor(cursorIcon.animation, cursorIcon.options, cursorIcon.data);
+      this.cursor.setCustomCursor(cursor.animation, cursor.options, cursor.data);
     } else {
       this.showCursorForHostElem(true);
     }
@@ -59,7 +59,7 @@ export class MwCustomCursorDirective implements OnDestroy {
     this.destroyed$.next();
   }
 
-  protected getCursorIconToShow(): AnimatedCursor {
+  protected getCursorToShow(): AnimatedCursor {
     return this.cursorAnimation;
   }
 
@@ -70,8 +70,9 @@ export class MwCustomCursorDirective implements OnDestroy {
   }
 
   protected recalcCursorIcon(): void {
+    const cursor = this.getCursorToShow();
     if (this.isHovered) {
-      this.setCursorIcon(this.getCursorIconToShow());
+      this.setCursorIcon(cursor);
     }
   }
 

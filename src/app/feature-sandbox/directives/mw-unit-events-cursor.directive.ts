@@ -45,39 +45,20 @@ export class MwUnitEventsCursorDirective extends MwCustomCursorDirective {
       });
   }
 
-  protected getCursorIconToShow(): AnimatedCursor {
+  protected getCursorToShow(): AnimatedCursor {
+    // todo: maybe some way to use normal cursor
+
     const isEnemyUnitGroup = this.players.isEnemyUnitGroup(this.unitGroup);
     const playerState = this.curPlayerState.playerCurrentState;
 
     if (!isEnemyUnitGroup && playerState === PlayerState.Normal) {
-      return {
-        animation: StaticCursorAnimation,
-        data: {
-          custom: {
-            parts: [
-              
-              { color: 'hand', icon: 'interdiction', text: '', type: 'plainPart' },
-            ],
-          }
-        },
-        options: {},
-      };
+      return this.createStaticCursor('interdiction');
     }
 
     const canCastSpellOnTarget = this.spells.canSpellBeCastOnUnit(this.curPlayerState.currentSpell, this.unitGroup, isEnemyUnitGroup);
 
     if (playerState === PlayerState.SpellTargeting && !canCastSpellOnTarget) {
-      return {
-        animation: StaticCursorAnimation,
-        data: {
-          custom: {
-            parts: [
-              { color: 'white', icon: 'interdiction', text: '', type: 'plainPart' },
-            ],
-          }
-        },
-        options: {},
-      };
+      return this.createStaticCursor('interdiction');
     }
 
     const mapping: Record<PlayerState, string> = {
@@ -96,16 +77,19 @@ export class MwUnitEventsCursorDirective extends MwCustomCursorDirective {
       };
     }
 
-    return {
-        animation: StaticCursorAnimation,
-        data: {
-          custom: {
-            parts: [
-              { color: 'white', icon: mapping[this.curPlayerState.playerCurrentState], text: '', type: 'plainPart' },
-            ],
-          }
-        },
-        options: {},
-      };
+    return this.createStaticCursor(mapping[this.curPlayerState.playerCurrentState]);
   }
+
+  private createStaticCursor(cursorIcon: string): AnimatedCursor {
+    return {
+      animation: StaticCursorAnimation,
+      data: {
+        custom: {
+          parts: [
+            { color: 'white', icon: cursorIcon, text: '', type: 'plainPart' },
+          ],
+        }
+      },
+    }
+  } 
 }
