@@ -3,7 +3,6 @@ import { takeUntil } from 'rxjs/operators';
 import { SpellCastCursorAnimation, StaticCursorAnimation } from 'src/app/core/dictionaries/vfx/cursors';
 import { UnitGroupInstModel } from 'src/app/core/model/main.model';
 import { CursorService } from '../components/ui-elements/custom-cursor/cursor.service';
-import { VfxService } from '../components/ui-elements/vfx-layer/vfx.service';
 import { MwPlayersService } from '../services';
 import { MwCurrentPlayerStateService, PlayerState } from '../services/mw-current-player-state.service';
 import { MwSpellsService } from '../services/mw-spells.service';
