@@ -16,7 +16,7 @@ export class VfxElementComponent {
   @ViewChild('container', { read: ViewContainerRef, static: true }) public viewContainerRef!: ViewContainerRef;
 
   @ViewChild('iconSfx', { static: true }) public iconSfx!: TemplateRef<unknown>;
-  @ViewChild('damageVfx', { static: true }) public damageVfx!: TemplateRef<unknown>;
+  @ViewChild('customizableVfx', { static: true }) public customizableVfx!: TemplateRef<unknown>;
 
   private createdViews: Record<string, ViewRef> = {};
 
@@ -50,7 +50,7 @@ export class VfxElementComponent {
           break;
         case AnimationElementType.Customizable:
           iconSfxView = this.viewContainerRef.createEmbeddedView(
-            this.damageVfx,
+            this.customizableVfx,
             { data: data.custom },
           );
       }
