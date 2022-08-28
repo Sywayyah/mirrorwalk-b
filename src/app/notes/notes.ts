@@ -2,11 +2,11 @@
 /* 
     Checklist:
         + Think of more complete structure models (Graveyard, Archer Tower, etc.)
-        - Add camps with units of different towns.
+        + (Now is possible) Add camps with units of different towns.
         - Add turns per location limit.
         - Add character screen
         + Add hero levels and experience.
-        + Add structures chains.
+        - Add structures chains.
         - Add specialties.
         + Add damaged unit group.
 
@@ -21,8 +21,12 @@
         > Add abilities
         - New towns and unit types
         - Locations
-        - Unit upgrades
+        + (Partially) Unit upgrades
         - Limit hero's army, ability to split units
+*/
+
+/* 
+    to implement: source info for debuffs and spells.
 */
 
 /* 
