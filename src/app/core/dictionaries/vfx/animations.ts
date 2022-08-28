@@ -1,14 +1,10 @@
 import { AnimationElementType, EffectAnimation } from "../../model/vfx-api/vfx-api.types";
-import { createAnimation, getIconElement, getPlainAppearanceFrames, getPlainBlurFrames, getPlainPulseFrames, getReversePulseKeyframes } from "./utils";
+import { createAnimation, getCustomizableElement, getIconElement, getPlainAppearanceFrames, getPlainBlurFrames, getPlainPulseFrames, getReversePulseKeyframes } from "./utils";
 
-
-export const LightningAnimation: EffectAnimation = {
-    elements: [
+export const LightningAnimation: EffectAnimation = createAnimation([
+    [
         getIconElement('focused-lightning', 'l-main'),
-        getIconElement('focused-lightning', 'l-blur'),
-    ],
-    elemsKeyframes: {
-        'l-main': [
+        [
             {
                 opacity: '0',
             },
@@ -36,7 +32,15 @@ export const LightningAnimation: EffectAnimation = {
                 opacity: '0',
             },
         ],
-        'l-blur': [
+        {
+            fontSize: '64px',
+            color: '#eaefff',
+            opacity: '1',
+        }
+    ],
+    [
+        getIconElement('focused-lightning', 'l-blur'),
+        [
             {
                 filter: 'blur(10px)',
             },
@@ -51,14 +55,7 @@ export const LightningAnimation: EffectAnimation = {
 
             }
         ],
-    },
-    elemsDefaultStyles: {
-        'l-main': {
-            fontSize: '64px',
-            color: '#eaefff',
-            opacity: '1',
-        },
-        'l-blur': {
+        {
             transform: 'translate(-50%, -50%) scale(1.5)',
             fontSize: '64px',
             color: '#98abff',
@@ -66,49 +63,42 @@ export const LightningAnimation: EffectAnimation = {
             opacity: '1',
             mixBlendMode: 'hard-light'
         },
-    },
-    config: {
-        layout: 'default',
-    }
-};
-
-export const FireAnimation: EffectAnimation = {
-    elements: [
-        getIconElement('fire', 'fire-main'),
-        getIconElement('fire', 'fire-blur'),
-        getIconElement('fire', 'fire-pulse'),
     ],
-    elemsKeyframes: {
-        'fire-main': getPlainAppearanceFrames(),
-        'fire-blur': getPlainBlurFrames(),
-        'fire-pulse': getPlainPulseFrames(),
-    },
-    elemsDefaultStyles: {
-        'fire-main': {
+]);
+
+export const FireAnimation: EffectAnimation = createAnimation([
+    [
+        getIconElement('fire', 'fire-main'),
+        getPlainAppearanceFrames(),
+        {
             fontSize: '64px',
             color: 'rgb(244 162 124)',
             opacity: '1',
         },
-        'fire-blur': {
+    ],
+    [
+        getIconElement('fire', 'fire-blur'),
+        getPlainBlurFrames(),
+        {
             fontSize: '64px',
             color: 'rgb(244 162 124)',
             filter: 'blur(6px)',
             opacity: '1',
             mixBlendMode: 'hard-light'
-        },
-        'fire-pulse': {
+        }
+    ],
+    [
+        getIconElement('fire', 'fire-pulse'),
+        getPlainPulseFrames(),
+        {
             fontSize: '64px',
             color: 'rgb(244 162 124)',
             opacity: '0.2',
             transform: 'translate(-50%, -50%) scale(1)',
             mixBlendMode: 'hard-light'
         },
-    },
-    config: {
-        layout: 'default',
-    }
-};
-
+    ]
+]);
 
 
 const getBwDefaultStyles = () => {
@@ -123,18 +113,27 @@ const getBwDefaultStyles = () => {
     };
 };
 
-export const FrightAnimation: EffectAnimation = {
-    elements: [
+
+
+export const FrightAnimation: EffectAnimation = createAnimation([
+    [
         getIconElement('batwings', 'bw-1'),
-        getIconElement('batwings', 'bw-2'),
-        getIconElement('batwings', 'bw-3'),
-        getIconElement('batwings', 'bw-blur'),
+        getReversePulseKeyframes(),
+        getBwDefaultStyles(),
     ],
-    elemsKeyframes: {
-        'bw-1': getReversePulseKeyframes(),
-        'bw-2': getReversePulseKeyframes(0.20),
-        'bw-3': getReversePulseKeyframes(0.40),
-        'bw-blur': [
+    [
+        getIconElement('batwings', 'bw-2'),
+        getReversePulseKeyframes(0.2),
+        getBwDefaultStyles(),
+    ],
+    [
+        getIconElement('batwings', 'bw-3'),
+        getReversePulseKeyframes(0.4),
+        getBwDefaultStyles(),
+    ],
+    [
+        getIconElement('batwings', 'bw-blur'),
+        [
             {
                 filter: 'blur(10px)',
             },
@@ -150,12 +149,7 @@ export const FrightAnimation: EffectAnimation = {
 
             }
         ],
-    },
-    elemsDefaultStyles: {
-        'bw-1': getBwDefaultStyles(),
-        'bw-2': getBwDefaultStyles(),
-        'bw-3': getBwDefaultStyles(),
-        'bw-blur': {
+        {
             transform: 'translate(-50%, -50%) scale(1.5)',
             fontSize: '64px',
             color: 'rgba(218, 137, 204, 0.78)',
@@ -163,18 +157,13 @@ export const FrightAnimation: EffectAnimation = {
             opacity: '0',
             mixBlendMode: 'hard-light'
         },
-    },
-    config: {
-        layout: 'default',
-    }
-};
-
-export const FloatingMessageAnimation: EffectAnimation = {
-    elements: [
-        { id: 'msg', type: AnimationElementType.Customizable },
     ],
-    elemsKeyframes: {
-        msg: [
+]);
+
+export const FloatingMessageAnimation: EffectAnimation = createAnimation([
+    [
+        getCustomizableElement('msg'),
+        [
             {
                 fontSize: '13px',
             },
@@ -187,39 +176,13 @@ export const FloatingMessageAnimation: EffectAnimation = {
                 opacity: 0,
                 transform: 'translate(20px, -100px) scale(0.8)',
             }
-        ]
-    },
-    elemsDefaultStyles: {
-        msg: {
+        ],
+        {
             opacity: 0.3,
             fontSize: '15px',
         }
-    },
-    config: { layout: "default" },
-};
-
-/* 0% {
-        opacity: 0;
-        font-size: 13px;
-        top: 50%;
-        left: 50%;
-    }
-
-    30% {
-        opacity: 1;
-        font-size: 21px;
-        top: -34%;
-        left: 60%;
-    }
-
-    100% {
-        opacity: 0;
-        font-size: 14px;
-        top: -35%;
-        left: 75%;
-    }
-*/
-
+    ]
+]);
 
 export const EnchantAnimation: EffectAnimation = createAnimation([
     [
