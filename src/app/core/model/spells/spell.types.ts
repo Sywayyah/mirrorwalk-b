@@ -65,14 +65,16 @@ export interface SpellCombatRefsModel<SpellStateType> {
     vfx: VfxApi;
 }
 
+export interface CanActivateSpellParams {
+    unitGroup: UnitGroupInstModel,
+    isEnemy: boolean,
+}
+
 export interface SpellConfig<SpellStateType> {
     init: (combatRefs: SpellCombatRefsModel<SpellStateType>) => void;
     getManaCost: (spellInst: SpellInstance<SpellStateType>) => number;
     targetCastConfig?: {
-        canActivate?: (info: {
-            unitGroup: UnitGroupInstModel,
-            isEnemy: boolean,
-        }) => boolean,
+        canActivate?: (info: CanActivateSpellParams) => boolean,
     };
 }
 

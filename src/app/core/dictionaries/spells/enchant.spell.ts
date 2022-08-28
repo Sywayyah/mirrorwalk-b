@@ -1,6 +1,7 @@
 import { SpellActivationType, SpellEventTypes, SpellModel } from "../../model/spells";
 import { Colors } from "../colors.const";
 import { EnchantAnimation } from "../vfx/animations";
+import { canActivateOnEnemyFn } from "./utils";
 
 
 export const ENCHANT_DEBUFF: SpellModel = {
@@ -28,7 +29,7 @@ export const ENCHANT_DEBUFF: SpellModel = {
 
                 events.on({
                     [SpellEventTypes.SpellPlacedOnUnitGroup]: (event) => {
-                        vfx.createEffectForUnitGroup(event.target, EnchantAnimation, {duration: 1000});
+                        vfx.createEffectForUnitGroup(event.target, EnchantAnimation, { duration: 1000 });
                         actions.addModifiersToUnitGroup(event.target, mods);
                     },
                 })
@@ -51,9 +52,7 @@ export const ENCHANT_SPELL: SpellModel = {
         },
         spellConfig: {
             targetCastConfig: {
-                canActivate: ({ isEnemy, unitGroup }) => {
-                    return isEnemy;
-                }
+                canActivate: canActivateOnEnemyFn,
             },
             getManaCost(spellInst) {
                 const manaCosts: Record<number, number> = {

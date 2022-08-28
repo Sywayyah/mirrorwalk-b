@@ -1,6 +1,7 @@
 import { FireAnimation } from "src/app/core/dictionaries/vfx/animations";
 import { DamageType } from "../../model/combat-api/combat-api.types";
 import { SpellActivationType, SpellEventTypes, SpellModel } from "../../model/spells";
+import { canActivateOnEnemyFn } from "./utils";
 
 export const RAIN_OF_FIRE_SPELL: SpellModel = {
     name: 'Rain of Fire',
@@ -17,9 +18,7 @@ export const RAIN_OF_FIRE_SPELL: SpellModel = {
         },
         spellConfig: {
             targetCastConfig: {
-                canActivate: ({ isEnemy, unitGroup }) => {
-                    return isEnemy;
-                }
+                canActivate: canActivateOnEnemyFn,
             },
             init: ({ events, actions, thisSpell, ownerHero, vfx }) => {
 
