@@ -36,7 +36,7 @@ import {
   PlayerTargetsSpell,
   UIPlayerHoversCard
 } from './types';
-import { ActionHintTypeEnum, AttackActionHint, SpellTargetActionHint } from './types/action-hint.types';
+import { ActionHintTypeEnum, AttackActionHintInfo, SpellTargetActionHint } from './types/action-hint.types';
 
 
 @Injectable({
@@ -106,7 +106,7 @@ export class CombatInteractorService {
 
         if (options.attackerUnit) {
           const attackerUnitMods = this.unitGroupModifiersMap.get(options.attackerUnit);
-          
+
           if (attackerUnitMods) {
             const conditionalCombatModifiers = attackerUnitMods.map(mod => {
               if (mod.attackConditionalModifiers) {
@@ -255,12 +255,20 @@ export class CombatInteractorService {
   }
 
   public setDamageHintMessageOnCardHover(event: UIPlayerHoversCard): void {
+    const actionHint: AttackActionHintInfo = this.getTargetAttackActionInfo(event.hoveredCard as UnitGroupInstModel);
+
+    this.battleState.hintMessage$.next(actionHint);
+  }
+
+  public getTargetAttackActionInfo(target: UnitGroupInstModel): AttackActionHintInfo {
+    const currentUnitGroup = this.battleState.currentUnitGroup;
     const attackDetails = this.unitState.getDetailedAttackInfo(
-      this.battleState.currentUnitGroup, event.hoveredCard as UnitGroupModel,
-      this.getModsForUnitGroup(this.battleState.currentUnitGroup),
+      currentUnitGroup,
+      target,
+      this.getModsForUnitGroup(currentUnitGroup),
     );
 
-    const actionHint: AttackActionHint = {
+    const attackActionInfo: AttackActionHintInfo = {
       type: ActionHintTypeEnum.OnHoverEnemyCard,
       attackedGroup: attackDetails.attacked,
       minDamage: attackDetails.multipliedMinDamage,
@@ -274,7 +282,7 @@ export class CombatInteractorService {
       attackSuperiority: attackDetails.attackSuperiority,
     };
 
-    this.battleState.hintMessage$.next(actionHint);
+    return attackActionInfo;
   }
 
   public createActionsApiRef(): CombatActionsRef {

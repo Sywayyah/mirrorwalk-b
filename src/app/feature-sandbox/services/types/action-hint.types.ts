@@ -10,7 +10,7 @@ export interface ActionHintModel<T extends ActionHintTypeEnum = ActionHintTypeEn
     type: T;
 }
 
-export interface AttackActionHint extends ActionHintModel<ActionHintTypeEnum.OnHoverEnemyCard> {
+export interface AttackActionHintInfo extends ActionHintModel<ActionHintTypeEnum.OnHoverEnemyCard> {
     attackedGroup: UnitGroupModel;
     minDamage: number;
     maxDamage: number;
