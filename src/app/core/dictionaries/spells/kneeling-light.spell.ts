@@ -1,21 +1,20 @@
 import { SpellActivationType, SpellEventTypes, SpellModel } from "../../model/spells";
 import { Colors } from "../colors.const";
-import { EnchantAnimation } from "../vfx/animations";
 import { canActivateOnEnemyFn } from "./utils";
 
 
-export const EnchantBuff: SpellModel = {
-    name: 'Enchanted',
+export const KneelingLightDebuff: SpellModel = {
+    name: 'Slowed',
     activationType: SpellActivationType.Debuff,
     icon: {
-        icon: 'fire-ring',
+        icon: 'sunbeams',
         bgClr: Colors.DefautlDebuffBg,
         iconClr: Colors.DefautlDebuffClr,
     },
-    description: 'Incoming magic damage is increased by 17%.',
+    description: 'Unit group is slowed down by 3',
     type: {
         spellInfo: {
-            name: 'Enchanted',
+            name: 'Slowed',
         },
         spellConfig: {
             getManaCost(spellInst) {
@@ -24,12 +23,12 @@ export const EnchantBuff: SpellModel = {
 
             init: ({ events, actions, vfx }) => {
                 const mods = actions.createModifiers({
-                    amplifiedTakenMagicDamage: 0.17
+                    unitGroupSpeedBonus: -3,
                 });
 
                 events.on({
                     [SpellEventTypes.SpellPlacedOnUnitGroup]: (event) => {
-                        vfx.createEffectForUnitGroup(event.target, EnchantAnimation, { duration: 1000 });
+                        // vfx.createEffectForUnitGroup(event.target, EnchantAnimation, { duration: 1000 });
                         actions.addModifiersToUnitGroup(event.target, mods);
                     },
                 })
@@ -38,17 +37,17 @@ export const EnchantBuff: SpellModel = {
     },
 };
 
-export const EnchantSpell: SpellModel = {
-    name: 'Enchant',
+export const KneelingLight: SpellModel = {
+    name: 'Kneeling Light',
     icon: {
         // iconClr: 'rgb(235 142 178)',
-        icon: 'fire-ring',
+        icon: 'sunbeams',
     },
     activationType: SpellActivationType.Target,
-    description: 'Enchants an enemy, increases incoming magic damage by 17%.',
+    description: 'Makes light so heavy for the enemy target that it loses 3 speed.',
     type: {
         spellInfo: {
-            name: 'Enchant',
+            name: 'Kneeling light',
         },
         spellConfig: {
             targetCastConfig: {
@@ -68,9 +67,8 @@ export const EnchantSpell: SpellModel = {
             init: ({ events, actions, ownerPlayer }) => {
                 events.on({
                     [SpellEventTypes.PlayerTargetsSpell]: (event) => {
-                        const enchantDebuff = actions.createSpellInstance(EnchantBuff);
+                        const enchantDebuff = actions.createSpellInstance(KneelingLightDebuff);
                         actions.addSpellToUnitGroup(event.target, enchantDebuff, ownerPlayer);
-                        actions.historyLog('Enemy is enchanted');
                     },
                 });
             },

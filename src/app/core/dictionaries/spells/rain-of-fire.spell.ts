@@ -3,7 +3,7 @@ import { DamageType } from "../../model/combat-api/combat-api.types";
 import { SpellActivationType, SpellEventTypes, SpellModel } from "../../model/spells";
 import { canActivateOnEnemyFn } from "./utils";
 
-export const RAIN_OF_FIRE_SPELL: SpellModel = {
+export const RainOfFireSpell: SpellModel = {
     name: 'Rain of Fire',
     icon: {
         // iconClr: 'rgb(244 162 124)',

@@ -1,4 +1,4 @@
-import { AnimationElementType, EffectAnimation } from "../../model/vfx-api/vfx-api.types";
+import { EffectAnimation } from "../../model/vfx-api/vfx-api.types";
 import { createAnimation, getCustomizableElement, getIconElement, getPlainAppearanceFrames, getPlainBlurFrames, getPlainPulseFrames, getReversePulseKeyframes } from "./utils";
 
 export const LightningAnimation: EffectAnimation = createAnimation([
@@ -112,7 +112,6 @@ const getBwDefaultStyles = () => {
         opacity: '0',
     };
 };
-
 
 
 export const FrightAnimation: EffectAnimation = createAnimation([

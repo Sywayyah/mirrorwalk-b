@@ -7,6 +7,7 @@ import { BattleEventsService } from './mw-battle-events.service';
 import { MwCurrentPlayerStateService, PlayerState } from './mw-current-player-state.service';
 import { MwPlayersService } from './mw-players.service';
 import { MwStructuresService } from './mw-structures.service';
+import { MwUnitGroupsService } from './mw-unit-groups.service';
 import { BattleEvent, ActionHintModel } from "./types";
 
 
@@ -40,6 +41,7 @@ export class BattleStateService {
     private readonly playersService: MwPlayersService,
     private readonly structuresService: MwStructuresService,
     private readonly curPlayerState: MwCurrentPlayerStateService,
+    private readonly units: MwUnitGroupsService,
   ) { }
 
   public initBattle(
@@ -60,7 +62,7 @@ export class BattleStateService {
     this.resetFightQueue();
 
     this.updateGroupsTailHp();
-    
+
     this.refreshUnitGroups();
 
 
@@ -79,7 +81,7 @@ export class BattleStateService {
         console.log('Player starts turn');
         if (event.currentPlayer.type === PlayerTypeEnum.AI) {
           console.log(`AI player's Turn`)
-          this.curPlayerState.setPlayerState( PlayerState.WaitsForTurn);
+          this.curPlayerState.setPlayerState(PlayerState.WaitsForTurn);
           this.processAiPlayer();
         } else {
           this.curPlayerState.setPlayerState(PlayerState.Normal);
@@ -154,6 +156,10 @@ export class BattleStateService {
         }
       },
 
+      [BattleEvent.Combat_Unit_Speed_Changed]: () => {
+        this.resortFightQuery();
+      },
+
       [BattleEvent.UI_Player_Clicks_Enemy_Group]: event => {
         console.log('player clicks');
         if (this.curPlayerState.playerCurrentState === PlayerState.Normal) {
@@ -174,6 +180,19 @@ export class BattleStateService {
           this.curPlayerState.setSpellsOnCooldown();
         }
       },
+
+      [BattleEvent.UI_Player_Clicks_Ally_Group]: (event) => {
+        if (this.curPlayerState.playerCurrentState === PlayerState.SpellTargeting) {
+          this.curPlayerState.onCurrentSpellCast();
+          this.battleEventsService.dispatchEvent({
+            type: BattleEvent.Player_Targets_Spell,
+            player: event.unit.ownerPlayerRef,
+            spell: this.curPlayerState.currentSpell,
+            target: event.unit,
+          });
+          this.curPlayerState.setSpellsOnCooldown();
+        }
+      }
 
     }).pipe(
       takeUntil(this.battleEventsService.onEvent(BattleEvent.Fight_Ends)),
@@ -275,11 +294,19 @@ export class BattleStateService {
   }
 
   private resetFightQueue() {
-    this.fightQueue = [
+    this.fightQueue = this.sortUnitsBySpeed([
       ...this.heroesUnitGroupsMap.get(this.players[0]) as UnitGroupInstModel[],
       ...this.heroesUnitGroupsMap.get(this.players[1]) as UnitGroupInstModel[],
-    ].sort((a, b) => {
-      return b.type.baseStats.speed - a.type.baseStats.speed;
+    ]);
+  }
+
+  private resortFightQuery(): void {
+    this.fightQueue = [this.fightQueue[0], ...this.sortUnitsBySpeed(this.fightQueue.slice(1))];
+  }
+
+  private sortUnitsBySpeed(units: UnitGroupInstModel[]): UnitGroupInstModel[] {
+    return units.sort((a, b) => {
+      return this.units.getUnitGroupSpeed(b) - this.units.getUnitGroupSpeed(a);
     });
   }
 

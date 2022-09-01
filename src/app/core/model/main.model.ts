@@ -92,6 +92,8 @@ export interface UnitGroupInstModel extends UnitGroupModel {
     ownerPlayerRef: PlayerInstanceModel;
 
     spells: SpellInstance[];
+
+    modifiers: Modifiers[];
 }
 
 export enum PlayerTypeEnum {

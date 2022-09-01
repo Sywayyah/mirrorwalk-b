@@ -1,6 +1,6 @@
 import { UnitTypeModel } from "../../model/main.model";
 import { AssetsImages } from "../images.const";
-import { FRIGHT_SPELL } from "../spells/fright.spell";
+import { FrightSpell } from "../spells/fright.spell";
 
 export enum NEUTRAL_TYPES_ENUM {
     Gnolls = 'Gnolls',
@@ -38,7 +38,7 @@ const Wraiths: UnitTypeModel = {
     minQuantityPerStack: 1,
 
     defaultSpells: [
-        FRIGHT_SPELL,
+        FrightSpell,
     ],
 
     defaultModifiers: {
@@ -75,7 +75,7 @@ export const NEUTRAL_FRACTION_UNIT_TYPES: Record<NEUTRAL_TYPES_ENUM, UnitTypeMod
         minQuantityPerStack: 1,
 
         defaultSpells: [
-            FRIGHT_SPELL,
+            FrightSpell,
         ],
         neutralReward: {
             experience: 2.3,

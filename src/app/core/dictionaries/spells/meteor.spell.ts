@@ -1,7 +1,7 @@
 import { DamageType } from "../../model/combat-api/combat-api.types";
 import { SpellActivationType, SpellEventTypes, SpellModel } from "../../model/spells";
 
-export const METEOR_SPELL: SpellModel = {
+export const MeteorSpell: SpellModel = {
     activationType: SpellActivationType.Instant,
     name: 'Meteor',
 

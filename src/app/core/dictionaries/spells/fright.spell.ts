@@ -2,7 +2,7 @@ import { UnitGroupInstModel } from "../../model/main.model";
 import { SpellActivationType, SpellEventTypes, SpellModel } from "../../model/spells";
 import { Colors } from "../colors.const";
 
-export const FRIGHT_SPELL_DEBUFF: SpellModel<{ frighter: UnitGroupInstModel }> = {
+export const FrightSpellDebuff: SpellModel<{ frighter: UnitGroupInstModel }> = {
     name: 'Fright',
     activationType: SpellActivationType.Debuff,
     description: 'This unit group is frightened, dealing 25% less damage to the one who scared it.',
@@ -41,7 +41,7 @@ export const FRIGHT_SPELL_DEBUFF: SpellModel<{ frighter: UnitGroupInstModel }> =
     },
 };
 
-export const FRIGHT_SPELL: SpellModel = {
+export const FrightSpell: SpellModel = {
     name: 'Fright',
     activationType: SpellActivationType.Passive,
     description: 'Scares enemy group on attack, reducing damage against this group by 25%.',
@@ -60,12 +60,12 @@ export const FRIGHT_SPELL: SpellModel = {
                             return;
                         }
 
-                        if (attacked.spells.find(spell => spell.baseType === FRIGHT_SPELL_DEBUFF)) {
+                        if (attacked.spells.find(spell => spell.baseType === FrightSpellDebuff)) {
                             return;
                         }
 
                         const frightSpellDebuff = actions.createSpellInstance(
-                            FRIGHT_SPELL_DEBUFF,
+                            FrightSpellDebuff,
                             { state: { frighter: attacker }, },
                         );
 

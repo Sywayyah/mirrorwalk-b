@@ -35,6 +35,7 @@ import { MwUnitEventsCursorDirective } from './feature-sandbox/directives/mw-uni
 import { SharedTemplatesComponent } from './feature-sandbox/components/ui-elements/shared-templates/shared-templates.component';
 import { SharedTemplateDirective } from './feature-sandbox/components/ui-elements/shared-templates/shared-template.directive';
 import { CustomCursorComponent } from './feature-sandbox/components/ui-elements/custom-cursor/custom-cursor.component';
+import { NumberModifierDirective } from './feature-sandbox/directives/mw-modifier.directive';
 
 @NgModule({
   declarations: [
@@ -71,6 +72,7 @@ import { CustomCursorComponent } from './feature-sandbox/components/ui-elements/
     SharedTemplatesComponent,
     SharedTemplateDirective,
     CustomCursorComponent,
+    NumberModifierDirective,
   ],
   imports: [
     BrowserModule

@@ -27,6 +27,7 @@ import { MwCurrentPlayerStateService, PlayerState } from './mw-current-player-st
 import { MwPlayersService } from './mw-players.service';
 import { MwSpellsService } from './mw-spells.service';
 import { FinalDamageInfo, MwUnitGroupStateService } from './mw-unit-group-state.service';
+import { MwUnitGroupsService } from './mw-unit-groups.service';
 import {
   BattleEvent,
   BattleEvents,
@@ -56,6 +57,7 @@ export class CombatInteractorService {
     private readonly unitState: MwUnitGroupStateService,
     private readonly spellsService: MwSpellsService,
     private readonly vfxService: VfxService,
+    private readonly units: MwUnitGroupsService,
   ) {
     /* Dispell buffs and debuffs when location is left. May change in future. */
     this.battleEvents.onEvents({
@@ -294,22 +296,45 @@ export class CombatInteractorService {
         return this.spellsService.createSpellInstance(spell, options);
       },
       addModifiersToUnitGroup: (target, modifiers) => {
+
         const groupModifiers = this.unitGroupModifiersMap.get(target);
+
+        this.units.addModifierToUnitGroup(target, modifiers);
 
         if (groupModifiers) {
           groupModifiers.push(modifiers);
         } else {
           this.unitGroupModifiersMap.set(target, [modifiers]);
         }
+
+        if (modifiers.unitGroupSpeedBonus) {
+          this.battleEvents.dispatchEvent({
+            type: BattleEvent.Combat_Unit_Speed_Changed
+          });
+        }
+
+        this.battleEvents.dispatchEvent({
+          type: BattleEvent.OnGroupModifiersChagned,
+          unit: target,
+        });
       },
       createModifiers: (modifiers) => {
         return this.spellsService.createModifiers(modifiers);
       },
       removeModifiresFromUnitGroup: (target, modifiers) => {
+        /* todo: solve mods/spells being duplicated in 2 places. */
         const unitGroupMods = this.unitGroupModifiersMap.get(target);
+
+        this.units.removeModifiers(target, modifiers);
+
         if (unitGroupMods) {
           CommonUtils.removeItem(unitGroupMods, modifiers);
         }
+
+        this.battleEvents.dispatchEvent({
+          type: BattleEvent.OnGroupModifiersChagned,
+          unit: target,
+        });
       },
       /* dark magic of types, just so it can work */
       addSpellToUnitGroup: <T>(target: UnitGroupInstModel, spell: SpellInstance<T>, ownerPlayer: PlayerInstanceModel) => {
@@ -448,6 +473,9 @@ export class CombatInteractorService {
     if (targetMods) {
       targetMods.length = 0;
     }
+
+    /* for now, all modifiers on the unit instance are removed */
+    this.units.clearUnitModifiers(target);
   }
 
   private listenEvents(): Observable<BattleEvents> {
@@ -496,6 +524,18 @@ export class CombatInteractorService {
                 spell: this.curPlayerState.currentSpell,
                 target: event.hoveredCard as UnitGroupInstModel,
               };
+              this.battleState.hintMessage$.next(spellTargetHint);
+            }
+            break;
+          case HoverTypeEnum.AllyCard:
+            /* similar logic */
+            if (this.curPlayerState.playerCurrentState === PlayerState.SpellTargeting) {
+              const spellTargetHint: SpellTargetActionHint = {
+                type: ActionHintTypeEnum.OnTargetSpell,
+                spell: this.curPlayerState.currentSpell,
+                target: event.hoveredCard as UnitGroupInstModel,
+              };
+
               this.battleState.hintMessage$.next(spellTargetHint);
             }
             break;

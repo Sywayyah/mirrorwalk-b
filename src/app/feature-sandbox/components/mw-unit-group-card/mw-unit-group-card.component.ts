@@ -1,10 +1,11 @@
 import { Component, ElementRef, EventEmitter, forwardRef, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { filter, takeUntil } from 'rxjs/operators';
 import { PlayerModel, UnitGroupInstModel } from 'src/app/core/model/main.model';
 import { PROVIDE_UI_UNIT_GROUP, UIUnitProvider } from '../../directives/mw-unit-events-cursor.directive';
 import { BattleEvent, BattleEventsService, BattleStateService, HoverTypeEnum, MwPlayersService } from '../../services';
 import { MwUnitGroupStateService } from '../../services/mw-unit-group-state.service';
+import { MwUnitGroupsService, UIModsModel } from '../../services/mw-unit-groups.service';
 
 @Component({
   selector: 'mw-unit-group-card',
@@ -36,6 +37,8 @@ export class MwUnitGroupCardComponent implements UIUnitProvider, OnInit, OnDestr
 
   public canCurrentPlayerAttack: boolean = false;
   public isGroupMelee: boolean = false;
+  public modsForUi!: UIModsModel;
+
   private destroy$: Subject<void> = new Subject();
 
   constructor(
@@ -44,12 +47,24 @@ export class MwUnitGroupCardComponent implements UIUnitProvider, OnInit, OnDestr
     private playersService: MwPlayersService,
     private readonly battleEvents: BattleEventsService,
     private readonly unitsService: MwUnitGroupStateService,
+    private readonly units: MwUnitGroupsService,
   ) { }
 
   public ngOnInit(): void {
     this.isGroupMelee = !this.unitsService.isUnitGroupRanged(this.unitGroup);
     this.isEnemyCard = this.playersService.getCurrentPlayer() !== this.playerInfo;
     this.cardReady.next(this);
+
+    this.modsForUi = this.units.calcUiMods(this.unitGroup);
+
+    this.battleEvents.onEvent(BattleEvent.OnGroupModifiersChagned)
+      .pipe(
+        filter(unitEvent => unitEvent.unit === this.unitGroup),
+        takeUntil(this.destroy$),
+      )
+      .subscribe((event) => {
+        this.modsForUi = this.units.calcUiMods(this.unitGroup);
+      });
 
     this.mwBattleStateService.battleEvent$
       .pipe(
@@ -88,6 +103,20 @@ export class MwUnitGroupCardComponent implements UIUnitProvider, OnInit, OnDestr
           currentCard: this.mwBattleStateService.currentUnitGroup,
           hoveredCard: this.unitGroup,
         });
+      } else {
+        this.battleEvents.dispatchEvent({ type: BattleEvent.UI_Player_Hovers_Group_Card, hoverType: HoverTypeEnum.Unhover });
+      }
+    }
+
+    /* todo: duplicated logic */
+    if (!this.isEnemyCard) {
+      if (isHovered) {
+        this.battleEvents.dispatchEvent({
+          type: BattleEvent.UI_Player_Hovers_Group_Card,
+          hoverType: HoverTypeEnum.AllyCard,
+          currentCard: this.mwBattleStateService.currentUnitGroup,
+          hoveredCard: this.unitGroup,
+        })
       } else {
         this.battleEvents.dispatchEvent({ type: BattleEvent.UI_Player_Hovers_Group_Card, hoverType: HoverTypeEnum.Unhover });
       }

@@ -23,7 +23,7 @@
                 </div>
                 <div>
                     <mw-ra-icon icon="feather-wing"></mw-ra-icon>
-                    {{ unitGroup.type.baseStats.speed }}
+                    {{ unitGroup.type.baseStats.speed }}<span [mwNumberModifier]="modsForUi.speed"></span>
                 </div>
                 <!-- this info will have to be updated -->
                 <div>

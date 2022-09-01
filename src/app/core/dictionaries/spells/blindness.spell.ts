@@ -1,7 +1,7 @@
 import { SpellActivationType, SpellModel } from "../../model/spells";
 
 
-export const BLINDNESS_SPELL: SpellModel = {
+export const BlindnessSpell: SpellModel = {
     name: 'Blindness',
     icon: {
         icon: 'sunbeams',

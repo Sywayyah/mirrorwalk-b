@@ -20,7 +20,7 @@ export class MwSpellTargetDirective implements OnInit {
     private readonly players: MwPlayersService,
     private readonly battleEvents: BattleEventsService,
     private readonly mwBattleStateService: BattleStateService,
-  ) { 
+  ) {
   }
 
   public ngOnInit(): void {
@@ -41,7 +41,7 @@ export class MwSpellTargetDirective implements OnInit {
       event.preventDefault();
 
       this.curPlayerState.cancelCurrentSpell();
-      this.dispatchUnitGroupHovered();
+      this.dispatchUnitGroupHovered(this.isEnemyCard ? HoverTypeEnum.EnemyCard : HoverTypeEnum.AllyCard);
     }
   }
 
@@ -59,7 +59,13 @@ export class MwSpellTargetDirective implements OnInit {
         attackingGroup: this.mwBattleStateService.currentUnitGroup,
         attackingPlayer: this.mwBattleStateService.currentPlayer,
       });
-      this.dispatchUnitGroupHovered();
+      this.dispatchUnitGroupHovered(HoverTypeEnum.EnemyCard);
+    } else {
+      this.battleEvents.dispatchEvent({
+        type: BattleEvent.UI_Player_Clicks_Ally_Group,
+        unit: this.spellTargetUnitGroup
+      });
+      this.dispatchUnitGroupHovered(HoverTypeEnum.Unhover);
     }
   }
 
@@ -78,10 +84,10 @@ export class MwSpellTargetDirective implements OnInit {
     });
   }
 
-  private dispatchUnitGroupHovered() {
+  private dispatchUnitGroupHovered(hoverType: HoverTypeEnum) {
     this.battleEvents.dispatchEvent({
       type: BattleEvent.UI_Player_Hovers_Group_Card,
-      hoverType: HoverTypeEnum.EnemyCard,
+      hoverType: hoverType,
       currentCard: this.mwBattleStateService.currentUnitGroup,
       hoveredCard: this.spellTargetUnitGroup,
     });

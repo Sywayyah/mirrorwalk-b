@@ -1,5 +1,5 @@
 import { GameEventTypes, ItemBaseModel } from "../../model/items/items.types";
-import { WIND_BLESS_BUFF } from "../spells/wind-bless.spell";
+import { WindBlessBuff } from "../spells/wind-bless.spell";
 
 export const ItemWindCrest: ItemBaseModel = {
     name: 'Wind Crest',
@@ -19,7 +19,7 @@ export const ItemWindCrest: ItemBaseModel = {
                         actions.getUnitGroupsOfPlayer(ownerPlayer)
                             .filter(unitGroup => unitGroup.type.defaultModifiers?.isRanged)
                             .forEach(rangedUnitGroup => {
-                                const windBlessBuff = actions.createSpellInstance(WIND_BLESS_BUFF);
+                                const windBlessBuff = actions.createSpellInstance(WindBlessBuff);
 
                                 actions.addSpellToUnitGroup(rangedUnitGroup, windBlessBuff, ownerPlayer);
                             });

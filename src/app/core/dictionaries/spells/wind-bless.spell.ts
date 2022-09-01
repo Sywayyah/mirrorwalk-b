@@ -9,7 +9,7 @@ type State = {
     mods: Modifiers,
 };
 
-export const WIND_BLESS_BUFF: SpellModel<State> = {
+export const WindBlessBuff: SpellModel<State> = {
     name: 'Wind Bless',
     icon: {
         icon: 'feather-wing',

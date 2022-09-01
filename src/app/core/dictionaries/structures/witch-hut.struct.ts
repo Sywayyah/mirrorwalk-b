@@ -1,5 +1,5 @@
 import { StructureGeneratorModel, StuctureControl } from "../../model/structures.types";
-import { ENCHANT_SPELL } from "../spells";
+import { EnchantSpell } from "../spells";
 
 export const WitchHutStructure: StructureGeneratorModel = {
     control: StuctureControl.Neutral,
@@ -7,7 +7,7 @@ export const WitchHutStructure: StructureGeneratorModel = {
     description: 'Walking trough the woods, you find an abandoned Witch Hut.\n\nLearn "Enchant" level 2',
 
     onVisited: ({ playersApi, spellsApi, visitingPlayer }) => {
-        const enchantSpell = spellsApi.createSpellInstance(ENCHANT_SPELL, { initialLevel: 2 });
+        const enchantSpell = spellsApi.createSpellInstance(EnchantSpell, { initialLevel: 2 });
         playersApi.addSpellToPlayerHero(visitingPlayer, enchantSpell);
     },
 };

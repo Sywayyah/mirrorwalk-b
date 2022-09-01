@@ -18,6 +18,9 @@ export interface ModifiersModel {
     /* unit group bonuses */
     unitGroupBonusAttack: number;
 
+    /* unit speed bonus */
+    unitGroupSpeedBonus: number;
+
     /* Modifiers can be returned on condition */
     attackConditionalModifiers?: (params: ConditionalModifierParamsModel) => Modifiers;
 

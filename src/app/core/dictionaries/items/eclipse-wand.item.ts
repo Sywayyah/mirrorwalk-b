@@ -1,5 +1,5 @@
 import { GameEventTypes, ItemBaseModel } from "../../model/items/items.types";
-import { ENCHANT_DEBUFF } from "../spells";
+import { EnchantBuff } from "../spells";
 
 export const ItemEclipseWand: ItemBaseModel<{}> = {
     name: 'Eclipse Wand',
@@ -20,7 +20,7 @@ export const ItemEclipseWand: ItemBaseModel<{}> = {
                         const enemyUnitGroups = actions.getUnitGroupsOfPlayer(enemyPlayer);
 
                         enemyUnitGroups.forEach(unitGroup => {
-                            const enchantDebuff = actions.createSpellInstance(ENCHANT_DEBUFF, { initialLevel: 1 });
+                            const enchantDebuff = actions.createSpellInstance(EnchantBuff, { initialLevel: 1 });
 
                             actions.addSpellToUnitGroup(unitGroup, enchantDebuff, ownerPlayer);
                         });

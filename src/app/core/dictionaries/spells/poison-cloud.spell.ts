@@ -3,7 +3,7 @@ import { SpellActivationType, SpellEventTypes, SpellModel } from "../../model/sp
 import { Colors } from "../colors.const";
 
 
-export const POISON_CLOUD_SPELL_EFFECT: SpellModel<undefined | { debuffRoundsLeft: number }> = {
+export const PoisonCloudDebuff: SpellModel<undefined | { debuffRoundsLeft: number }> = {
     activationType: SpellActivationType.Debuff,
     name: 'Poisoned',
     icon: {
@@ -54,7 +54,7 @@ export const POISON_CLOUD_SPELL_EFFECT: SpellModel<undefined | { debuffRoundsLef
     }
 };
 
-export const POISON_CLOUD_SPELL: SpellModel = {
+export const PoisonCloudSpell: SpellModel = {
     activationType: SpellActivationType.Target,
     icon: {
         icon: 'poison-cloud',
@@ -82,7 +82,7 @@ export const POISON_CLOUD_SPELL: SpellModel = {
                     [SpellEventTypes.PlayerTargetsSpell]: event => {
                         actions.historyLog(`${ownerHero.name} applies "${thisSpell.name}" against ${event.target.type.name}`);
 
-                        const poisonDebuffInstance = actions.createSpellInstance(POISON_CLOUD_SPELL_EFFECT);
+                        const poisonDebuffInstance = actions.createSpellInstance(PoisonCloudDebuff);
 
                         actions.addSpellToUnitGroup(event.target, poisonDebuffInstance, ownerPlayer);
                     }

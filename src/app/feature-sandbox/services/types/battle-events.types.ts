@@ -6,6 +6,7 @@ import { PopupModel } from './popup.types';
 
 export enum BattleEvent {
   UI_Player_Clicks_Enemy_Group,
+  UI_Player_Clicks_Ally_Group,
   UI_Player_Hovers_Group_Card,
 
   /* todo: it can be considered to split away these events */
@@ -26,8 +27,11 @@ export enum BattleEvent {
   On_Group_Counter_Attacked,
   On_Group_Dies,
 
+  OnGroupModifiersChagned,
+
   Combat_Group_Attacked,
   Combat_Attack_Interaction,
+  Combat_Unit_Speed_Changed,
 
   Round_Group_Spends_Turn,
   Round_Group_Turn_Ends,
@@ -43,6 +47,10 @@ export enum BattleEvent {
 
 export interface BattleEventModel<T extends BattleEvent = BattleEvent> {
   type: T;
+}
+
+export interface UnitEvent<T extends BattleEvent> extends BattleEventModel<T> {
+  unit: UnitGroupInstModel;
 }
 
 export interface PlayerTargetsSpell extends BattleEventModel<BattleEvent.Player_Targets_Spell> {
@@ -86,6 +94,7 @@ export interface UIPlayerClicksEnemyGroup extends BattleEventModel<BattleEvent.U
 
 export enum HoverTypeEnum {
   EnemyCard,
+  AllyCard,
   Unhover,
 }
 
@@ -167,6 +176,10 @@ export interface CombatInteractionState extends BattleEventModel<BattleEvent.Com
   action: CombatInteractionEnum;
 }
 
+export interface SpeedEvent extends BattleEventModel<BattleEvent.Combat_Unit_Speed_Changed> {
+}
+
+
 export type FightStartsEvent = BattleEventModel<BattleEvent.Fight_Starts>;
 
 export interface EventByEnumMapping {
@@ -181,11 +194,14 @@ export interface EventByEnumMapping {
   [BattleEvent.Player_Casts_Instant_Spell]: PlayerCastsInstantSpell;
 
   [BattleEvent.UI_Player_Clicks_Enemy_Group]: UIPlayerClicksEnemyGroup;
+  [BattleEvent.UI_Player_Clicks_Ally_Group]: UnitEvent<BattleEvent.UI_Player_Clicks_Ally_Group>;
   [BattleEvent.UI_Player_Hovers_Group_Card]: UIPlayerHoversCard;
 
   [BattleEvent.Combat_Group_Attacked]: CombatGroupAttacked;
   [BattleEvent.Combat_Attack_Interaction]: CombatInteractionState;
-
+  [BattleEvent.Combat_Unit_Speed_Changed]: SpeedEvent;
+  
+  [BattleEvent.OnGroupModifiersChagned]: UnitEvent<BattleEvent.OnGroupModifiersChagned>;
   [BattleEvent.On_Group_Damaged_By_Group]: GroupDamagedByGroupEvent;
   [BattleEvent.On_Group_Takes_Damage]: GroupTakesDamageEvent;
   [BattleEvent.On_Group_Counter_Attacked]: OnGroupCounterAttacked;
