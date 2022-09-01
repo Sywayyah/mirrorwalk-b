@@ -95,31 +95,16 @@ export class MwUnitGroupCardComponent implements UIUnitProvider, OnInit, OnDestr
 
   public onCardHover(isHovered: boolean): void {
     this.isCardHovered = isHovered;
-    if (this.isEnemyCard) {
-      if (isHovered) {
-        this.battleEvents.dispatchEvent({
-          type: BattleEvent.UI_Player_Hovers_Group_Card,
-          hoverType: HoverTypeEnum.EnemyCard,
-          currentCard: this.mwBattleStateService.currentUnitGroup,
-          hoveredCard: this.unitGroup,
-        });
-      } else {
-        this.battleEvents.dispatchEvent({ type: BattleEvent.UI_Player_Hovers_Group_Card, hoverType: HoverTypeEnum.Unhover });
-      }
-    }
 
-    /* todo: duplicated logic */
-    if (!this.isEnemyCard) {
-      if (isHovered) {
-        this.battleEvents.dispatchEvent({
-          type: BattleEvent.UI_Player_Hovers_Group_Card,
-          hoverType: HoverTypeEnum.AllyCard,
-          currentCard: this.mwBattleStateService.currentUnitGroup,
-          hoveredCard: this.unitGroup,
-        })
-      } else {
-        this.battleEvents.dispatchEvent({ type: BattleEvent.UI_Player_Hovers_Group_Card, hoverType: HoverTypeEnum.Unhover });
-      }
+    if (isHovered) {
+      this.battleEvents.dispatchEvent({
+        type: BattleEvent.UI_Player_Hovers_Group_Card,
+        hoverType: this.isEnemyCard ? HoverTypeEnum.EnemyCard : HoverTypeEnum.AllyCard,
+        currentCard: this.mwBattleStateService.currentUnitGroup,
+        hoveredCard: this.unitGroup,
+      });
+    } else {
+      this.battleEvents.dispatchEvent({ type: BattleEvent.UI_Player_Hovers_Group_Card, hoverType: HoverTypeEnum.Unhover });
     }
   }
 
