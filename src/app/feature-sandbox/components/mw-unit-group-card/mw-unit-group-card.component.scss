@@ -103,6 +103,16 @@ $shadow: rgba(0, 0, 0, 0.721);
     transform: scale(1.1);
 }
 
+.card-top.active.card-left {
+    filter: brightness(100%) drop-shadow(2px 4px 6px $shadow);
+    transform: scale(1.1) translateX(20px);
+}
+
+.card-top.active.card-right {
+    filter: brightness(100%) drop-shadow(2px 4px 6px $shadow);
+    transform: scale(1.1) translateX(-20px);
+}
+
 .card-top.inactive {
     filter: brightness(85%) drop-shadow(0 0 0 $shadow);
 }
