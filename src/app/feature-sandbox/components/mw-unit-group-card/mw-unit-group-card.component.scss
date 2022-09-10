@@ -83,3 +83,24 @@
     border-radius: 50%;
     margin: 4px;
 }
+
+
+:host {
+    position: relative;
+}
+
+.card-top {
+    transition: 0.5s;
+}
+
+.card-top.inactive {
+    filter: brightness(75%);
+}
+
+.card-top.inactive.card-left {
+    transform: translateX(-20px);
+}
+
+.card-top.inactive.card-right {
+    transform: translateX(20px);
+}

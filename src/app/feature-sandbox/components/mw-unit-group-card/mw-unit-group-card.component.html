@@ -1,4 +1,4 @@
-<div class="card-top" [ngClass]="side === 'left' ? 'card-left' : 'card-right'" (mouseenter)="onCardHover(true)"
+<div class="card-top" [ngClass]="side === 'left' ? 'card-left' : 'card-right'" [class.inactive]="!unitGroup.turnsLeft" (mouseenter)="onCardHover(true)"
     (mouseleave)="onCardHover(false)" (click)="onGroupClick()">
 
     <div class="card-wrapper">
