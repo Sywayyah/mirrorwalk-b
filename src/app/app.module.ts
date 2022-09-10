@@ -36,6 +36,7 @@ import { SharedTemplatesComponent } from './feature-sandbox/components/ui-elemen
 import { SharedTemplateDirective } from './feature-sandbox/components/ui-elements/shared-templates/shared-template.directive';
 import { CustomCursorComponent } from './feature-sandbox/components/ui-elements/custom-cursor/custom-cursor.component';
 import { NumberModifierDirective } from './feature-sandbox/directives/mw-modifier.directive';
+import { ValueBarComponent } from './feature-sandbox/components/ui-elements/value-bar/value-bar.component';
 
 @NgModule({
   declarations: [
@@ -73,6 +74,7 @@ import { NumberModifierDirective } from './feature-sandbox/directives/mw-modifie
     SharedTemplateDirective,
     CustomCursorComponent,
     NumberModifierDirective,
+    ValueBarComponent,
   ],
   imports: [
     BrowserModule

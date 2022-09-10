@@ -100,16 +100,17 @@ $shadow: rgba(0, 0, 0, 0.721);
 
 .card-top.active {
     filter: brightness(100%) drop-shadow(2px 4px 6px $shadow);
+    transform: scale(1.1);
 }
 
 .card-top.inactive {
-    filter: brightness(75%) drop-shadow(0 0 0 $shadow);
+    filter: brightness(85%) drop-shadow(0 0 0 $shadow);
 }
 
 .card-top.inactive.card-left {
-    transform: translateX(-20px);
+    transform: scale(1) translateX(-20px);
 }
 
 .card-top.inactive.card-right {
-    transform: translateX(20px);
+    transform: scale(1) translateX(20px);
 }

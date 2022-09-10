@@ -1,0 +1,30 @@
+:host {
+    position: relative;
+    display: block;
+    background: rgb(87, 87, 87);
+    width: 100%;
+}
+
+.diff-bar {
+    transition: 1s;
+    background: white;
+    position: absolute;
+}
+
+.main-bar {
+    transition: 0.4s;
+    position: absolute;
+}
+
+.values {
+    position: absolute;
+    right: 0;
+    top: -15px;
+    font-size: 10px;
+    color: white;
+}
+
+.left {
+    left: 0;
+    right: auto;
+}

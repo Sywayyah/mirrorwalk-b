@@ -39,6 +39,8 @@ export class MwUnitGroupCardComponent implements UIUnitProvider, OnInit, OnDestr
   public isGroupMelee: boolean = false;
   public modsForUi!: UIModsModel;
 
+  public initialCount: number = 0;
+
   private destroy$: Subject<void> = new Subject();
 
   constructor(
@@ -53,6 +55,7 @@ export class MwUnitGroupCardComponent implements UIUnitProvider, OnInit, OnDestr
   public ngOnInit(): void {
     this.isGroupMelee = !this.unitsService.isUnitGroupRanged(this.unitGroup);
     this.isEnemyCard = this.playersService.getCurrentPlayer() !== this.playerInfo;
+    this.initialCount = this.unitGroup.count;
     this.cardReady.next(this);
 
     this.modsForUi = this.units.calcUiMods(this.unitGroup);

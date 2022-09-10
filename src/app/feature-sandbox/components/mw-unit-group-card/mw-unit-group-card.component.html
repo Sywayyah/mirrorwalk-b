@@ -1,5 +1,7 @@
-<div class="card-top" [class.active]="mwBattleStateService.currentPlayer === playerInfo && attackingUnitGroup === unitGroup" [ngClass]="side === 'left' ? 'card-left' : 'card-right'" [class.inactive]="!unitGroup.turnsLeft" (mouseenter)="onCardHover(true)"
-    (mouseleave)="onCardHover(false)" (click)="onGroupClick()">
+<div class="card-top"
+    [class.active]="mwBattleStateService.currentPlayer === playerInfo && attackingUnitGroup === unitGroup"
+    [ngClass]="side === 'left' ? 'card-left' : 'card-right'" [class.inactive]="!unitGroup.turnsLeft"
+    (mouseenter)="onCardHover(true)" (mouseleave)="onCardHover(false)" (click)="onGroupClick()">
 
     <div class="card-wrapper">
         <div [style.background]="playerInfo.color"
@@ -9,6 +11,8 @@
                 {{ unitGroup.type.name }}
                 ({{ unitGroup.count }})
             </div>
+            <!-- can be customizable (on/off), also some highlight can be implemented -->
+            <!-- <mw-value-bar [side]="side" color="red" [currentValue]="unitGroup.count" [maxValue]="initialCount" [barHeight]="4"></mw-value-bar> -->
             <div style="font-size: 12px;">
                 <div>
                     <mw-ra-icon icon="spinning-sword"></mw-ra-icon>

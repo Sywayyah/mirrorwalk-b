@@ -1,0 +1,5 @@
+<span class="values" [class.left]="side === 'left'">
+    {{currentValue}}/{{maxValue}}
+</span>
+<div class="diff-bar" [style.width.%]="currentValue / maxValue * 100" [style.height.px]="barHeight"></div>
+<div class="main-bar" [style.background]="color" [style.width.%]="currentValue / maxValue * 100" [style.height.px]="barHeight"></div>
