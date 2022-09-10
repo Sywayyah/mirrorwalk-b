@@ -21,7 +21,7 @@ export class CursorService {
         data?: CustomAnimationData,
     ): void {
         this.cursorComponent.showCustomCursor = true;
-        this.cursorComponent.cdr.detectChanges();
+        this.updateCursorComponent();
         this.cursorComponent.customCursorRef.clearAnimation();
         this.cursorComponent.customCursorRef.playAnimation(animation, options, data);
     }
@@ -29,13 +29,18 @@ export class CursorService {
     public setCustomCursorPos(x: number, y: number): void {
         this.cursorComponent.customCursorPos.x = x;
         this.cursorComponent.customCursorPos.y = y;
+        this.updateCursorComponent();
     }
 
     public clearCustomCursor(): void {
-        this.cursorComponent.cdr.detectChanges();
+        this.updateCursorComponent();
         if (this.cursorComponent.customCursorRef) {
             this.cursorComponent.customCursorRef.clearAnimation();
             this.cursorComponent.showCustomCursor = false;
         }
+    }
+
+    private updateCursorComponent(): void {
+        this.cursorComponent.cdr.detectChanges();
     }
 }

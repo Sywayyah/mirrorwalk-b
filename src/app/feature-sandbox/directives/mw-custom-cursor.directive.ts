@@ -1,4 +1,4 @@
-import { Directive, ElementRef, HostListener, OnDestroy, Renderer2 } from '@angular/core';
+import { Directive, ElementRef, HostListener, NgZone, OnDestroy, Renderer2 } from '@angular/core';
 import { Subject } from 'rxjs';
 import { CustomAnimationData, EffectAnimation, EffectOptions } from 'src/app/core/model/vfx-api/vfx-api.types';
 import { CursorService } from '../components/ui-elements/custom-cursor/cursor.service';
@@ -20,12 +20,29 @@ export class MwCustomCursorDirective implements OnDestroy {
 
   protected destroyed$: Subject<void> = new Subject();
 
+  private unlistenMouseMove!: () => void;
+
   constructor(
     protected cursor: CursorService,
     protected elemRef: ElementRef,
     protected renderer: Renderer2,
+    protected ngZone: NgZone,
   ) {
     this.showCursorForHostElem(false);
+
+    ngZone.runOutsideAngular(() => {
+      this.unlistenMouseMove = renderer.listen(elemRef.nativeElement, 'mousemove', (mouseEvent: MouseEvent) => {
+        this.cursor.setCustomCursorPos(mouseEvent.clientX, mouseEvent.clientY);
+      });
+    });
+  }
+
+  public ngOnDestroy(): void {
+    this.cursor.clearCustomCursor();
+    this.isHovered = false;
+    this.destroyed$.next();
+
+    this.unlistenMouseMove();
   }
 
   @HostListener('mouseenter')
@@ -41,22 +58,10 @@ export class MwCustomCursorDirective implements OnDestroy {
     }
   }
 
-  @HostListener('mousemove', ['$event'])
-  public onMouseMove(mouseEvent: MouseEvent): void {
-    // todo: ngZone addEventListener + runOutsideAngular
-    this.cursor.setCustomCursorPos(mouseEvent.clientX, mouseEvent.clientY);
-  }
-
   @HostListener('mouseleave')
   public onMouseOut(): void {
     this.isHovered = false;
     this.cursor.clearCustomCursor();
-  }
-
-  public ngOnDestroy(): void {
-    this.cursor.clearCustomCursor();
-    this.isHovered = false;
-    this.destroyed$.next();
   }
 
   protected getCursorToShow(): AnimatedCursor {

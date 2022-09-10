@@ -1,4 +1,4 @@
-import { Directive, ElementRef, Inject, InjectionToken, Renderer2 } from '@angular/core';
+import { Directive, ElementRef, Inject, InjectionToken, NgZone, Renderer2 } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 import { SpellCastCursorAnimation, StaticCursorAnimation } from 'src/app/core/dictionaries/vfx/cursors';
 import { UnitGroupInstModel } from 'src/app/core/model/main.model';
@@ -31,8 +31,9 @@ export class MwUnitEventsCursorDirective extends MwCustomCursorDirective {
 
     @Inject(PROVIDE_UI_UNIT_GROUP)
     private unitGroupProvider: UIUnitProvider,
+    protected ngZone: NgZone,
   ) {
-    super(vfx, hostElem, renderer);
+    super(vfx, hostElem, renderer, ngZone);
   }
 
   public ngOnInit(): void {
