@@ -1,5 +1,6 @@
 import { AfterViewInit, ChangeDetectorRef, Component, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { PlayerInstanceModel, UnitGroupInstModel } from 'src/app/core/model/main.model';
+import { getDamageParts } from 'src/app/core/utils/utils';
 import {
   BattleEventsService,
   BattleEvent,
@@ -86,11 +87,7 @@ export class MwGameboardComponent implements OnInit, AfterViewInit {
     });
 
     this.battleEvents.onEvent(BattleEvent.On_Group_Damaged_By_Group).subscribe((event) => {
-      this.vfx.createFloatingMessageForUnitGroup(event.attackedGroup, {
-        parts: [
-          { icon: 'sword', text: event.damage, color: 'red', type: 'plainPart' },
-        ],
-      });
+      this.vfx.createFloatingMessageForUnitGroup(event.attackedGroup, getDamageParts(event.damage, event.loss));
     });
   }
 }
