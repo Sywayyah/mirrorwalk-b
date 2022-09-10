@@ -87,7 +87,8 @@ export class MwGameboardComponent implements OnInit, AfterViewInit {
     });
 
     this.battleEvents.onEvent(BattleEvent.On_Group_Damaged_By_Group).subscribe((event) => {
-      this.vfx.createFloatingMessageForUnitGroup(event.attackedGroup, getDamageParts(event.damage, event.loss));
+      const isRanged = event.attackerGroup.type.defaultModifiers?.isRanged;
+      this.vfx.createFloatingMessageForUnitGroup(event.attackedGroup, getDamageParts(event.damage, event.loss, isRanged));
     });
   }
 }
