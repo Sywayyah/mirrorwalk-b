@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ArchersOutpostStructure, BanditCamp, BeaconOfTheUndead, CalavryStalls, GraveyardStructure, MagicRiverStructure } from 'src/app/core/dictionaries/structures';
+import { MountainNestStructure } from 'src/app/core/dictionaries/structures/mountain-nest.struct';
 import { createHireStructure } from 'src/app/core/dictionaries/structures/utils';
 import { WitchHutStructure } from 'src/app/core/dictionaries/structures/witch-hut.struct';
 import { NEUTRAL_FRACTION_UNIT_TYPES } from 'src/app/core/dictionaries/unit-types/neutral-unit-types.dictionary';
@@ -30,6 +31,7 @@ export class MwStructuresService {
     CalavryStalls,
     WitchHutStructure,
     MagicRiverStructure,
+    MountainNestStructure,
     createHireStructure('Boss Camp', {
       maxUnitGroups: 3,
       minUnitGroups: 3,

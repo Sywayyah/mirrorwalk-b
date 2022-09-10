@@ -35,6 +35,7 @@ export class UpgradeRewardPopup implements OnInit {
     private readonly playersService: MwPlayersService,
     private readonly heroes: MwHeroesService,
     private readonly unitGroups: MwUnitGroupsService,
+    private readonly players: MwPlayersService,
   ) {
   }
 
@@ -80,6 +81,10 @@ export class UpgradeRewardPopup implements OnInit {
 
   private getPlayerApi(): PlayersApi {
     return {
+      addUnitGroupToPlayer: (player, unitType, count) => {
+        const unitGroup = this.unitGroups.createUnitGroup(unitType, { count }, player);
+        this.players.addUnitGroupToTypeStack(player, unitGroup);
+      },
       addManaToPlayer: (player, mana) => {
         this.heroes.addManaToHero(player.hero, mana);
       },

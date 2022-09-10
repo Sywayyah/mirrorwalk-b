@@ -1,5 +1,5 @@
 import { SpellCreationOptions } from "../combat-api/combat-api.types";
-import { PlayerInstanceModel, UnitGroupInstModel } from "../main.model";
+import { PlayerInstanceModel, UnitGroupInstModel, UnitTypeModel } from "../main.model";
 import { SpellInstance, SpellModel } from "../spells";
 
 export interface PlayersApi {
@@ -10,6 +10,8 @@ export interface PlayersApi {
 
     getCurrentPlayer: () => PlayerInstanceModel;
     getCurrentPlayerUnitGroups: () => UnitGroupInstModel[];
+
+    addUnitGroupToPlayer: (player: PlayerInstanceModel, unitType: UnitTypeModel, count: number) => void;
 }
 
 export interface SpellsApi {

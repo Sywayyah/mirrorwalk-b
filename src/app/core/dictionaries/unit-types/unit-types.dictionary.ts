@@ -6,6 +6,7 @@ export enum HF_TYPES_ENUM {
     Archers = 'Archers',
     Knights = 'Knights',
     Cavalry = 'Cavalry',
+    Firebird = 'Firebird'
 }
 
 const defaultRewards = {
@@ -124,6 +125,38 @@ export const HUMANS_FRACTION_UNIT_TYPES: Record<HF_TYPES_ENUM, UnitTypeModel> = 
         neutralReward: {
             experience: 4,
             gold: 6.3,
+        },
+    },
+
+    [HF_TYPES_ENUM.Firebird]: {
+        name: 'Firebird',
+        mainPortraitUrl: AssetsImages.Melee,
+
+        
+        level: 5,
+
+        baseStats: {
+            damageInfo: {
+                minDamage: 21,
+                maxDamage: 32,
+            },
+            attackRating: 12,
+            defence: 14,
+            health: 56,
+            speed: 17,
+        },
+
+        defaultTurnsPerRound: 1,
+        minQuantityPerStack: 1,
+        
+        baseRequirements: {
+            gold: 400,
+            wood: 1,
+            // redCrystals: 1
+        },
+        neutralReward: {
+            experience: 40,
+            gold: 60,
         },
     }
 };
