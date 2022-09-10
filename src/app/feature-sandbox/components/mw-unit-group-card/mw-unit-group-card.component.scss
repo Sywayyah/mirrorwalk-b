@@ -6,7 +6,7 @@
 
 /* brightness can be used to make element darker */
 // .no-turns .card-top {
-    // filter: brightness(0.65);
+// filter: brightness(0.65);
 // }
 
 .card-left .portrait {
@@ -89,12 +89,21 @@
     position: relative;
 }
 
+$shadow: rgba(0, 0, 0, 0.721);
+
+/* todo: rework template, css and units themselves someday */
 .card-top {
     transition: 0.5s;
+    /* shadows are experimental */
+    filter: brightness(100%) drop-shadow(0 0 0 $shadow);
+}
+
+.card-top.active {
+    filter: brightness(100%) drop-shadow(2px 4px 6px $shadow);
 }
 
 .card-top.inactive {
-    filter: brightness(75%);
+    filter: brightness(75%) drop-shadow(0 0 0 $shadow);
 }
 
 .card-top.inactive.card-left {
