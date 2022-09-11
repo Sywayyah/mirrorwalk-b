@@ -60,10 +60,15 @@ export const GenerationUtils = {
             const unit = unitsMap.get(randUnitDescr);
             const unitType = unit.unitType;
 
+            const count = CommonUtils.randIntInRange(unit.min, unit.max);
             const newUnitGroup: UnitGroupModel = {
-                count: CommonUtils.randIntInRange(unit.min, unit.max),
+                count: count,
                 type: unitType,
                 turnsLeft: unitType.defaultTurnsPerRound,
+                fightInfo: {
+                    initialCount: count,
+                    isAlive: true,
+                },
             };
 
             generatedGroups.push(newUnitGroup);
@@ -75,7 +80,7 @@ export const GenerationUtils = {
                 options.units = options.units.filter(item => item !== randUnitDescr);
             }
         }
-        
+
 
         console.log('generated groups', generatedGroups);
 

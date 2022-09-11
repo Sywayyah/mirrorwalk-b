@@ -8,10 +8,48 @@
 // .no-turns .card-top {
 // filter: brightness(0.65);
 // }
+.portrait {
+    height: 130px;
+    width: 127px;
+}
+
+.portrait-container {
+    position: absolute;
+    // z-index: 1000;
+    top: -25px;
+    user-select: none;
+}
+
+$portrait-offset: 70%;
+
+.card-left .portrait-container {
+    right: $portrait-offset;
+}
 
 .card-left .portrait {
-    right: 70%;
     transform: scaleX(-1);
+}
+
+.card-right .portrait-container {
+    left: $portrait-offset;
+}
+
+.health-bar {
+    position: relative;
+    border-radius: 6px;
+    border: 1px solid whitesmoke;
+    overflow: hidden;
+
+    top: -39px;
+    width: 68px;
+}
+
+.card-left .health-bar {
+    left: 31px;
+}
+
+.card-right .health-bar {
+    right: -25px;
 }
 
 .card-left {
@@ -22,18 +60,8 @@
     text-align: left;
 }
 
-.card-right .portrait {
-    left: 70%;
-}
 
-.portrait {
-    position: absolute;
-    // z-index: 1000;
-    height: 130px;
-    width: 127px;
-    top: -25px;
-    user-select: none;
-}
+
 
 .card-wrapper {
     position: relative;
@@ -90,6 +118,10 @@
 }
 
 $shadow: rgba(0, 0, 0, 0.721);
+$active-scale: 1.0;
+$active-offset: 32px;
+$inactive-offset: 32px;
+// $active-scale: 1.087;
 
 /* todo: rework template, css and units themselves someday */
 .card-top {
@@ -100,17 +132,17 @@ $shadow: rgba(0, 0, 0, 0.721);
 
 .card-top.active {
     filter: brightness(100%) drop-shadow(2px 4px 6px $shadow);
-    transform: scale(1.1);
+    transform: scale($active-scale);
 }
 
 .card-top.active.card-left {
     filter: brightness(100%) drop-shadow(2px 4px 6px $shadow);
-    transform: scale(1.1) translateX(20px);
+    transform: scale($active-scale) translateX($active-offset);
 }
 
 .card-top.active.card-right {
     filter: brightness(100%) drop-shadow(2px 4px 6px $shadow);
-    transform: scale(1.1) translateX(-20px);
+    transform: scale($active-scale) translateX(-$active-offset);
 }
 
 .card-top.inactive {
@@ -118,9 +150,9 @@ $shadow: rgba(0, 0, 0, 0.721);
 }
 
 .card-top.inactive.card-left {
-    transform: scale(1) translateX(-20px);
+    transform: scale(1) translateX(-$inactive-offset);
 }
 
 .card-top.inactive.card-right {
-    transform: scale(1) translateX(20px);
+    transform: scale(1) translateX($inactive-offset);
 }

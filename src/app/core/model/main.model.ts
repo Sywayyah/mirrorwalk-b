@@ -86,6 +86,11 @@ export interface UnitGroupModel {
     turnsLeft: number;
     /* the last unit hp tail. If undefined, the tail unit hp is full */
     tailUnitHp?: number;
+    /* not sure if this should be in this model, tbd later */
+    fightInfo: {
+        initialCount: number;
+        isAlive: boolean;
+    };
 }
 
 export interface UnitGroupInstModel extends UnitGroupModel {

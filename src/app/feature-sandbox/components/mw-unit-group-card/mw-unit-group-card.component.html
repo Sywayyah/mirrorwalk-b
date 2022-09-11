@@ -9,10 +9,8 @@
             [class.hovered-enemy]="isCardHovered && isEnemyCard && canCurrentPlayerAttack" class="card">
             <div style="padding-bottom: 3px; font-weight: 500; white-space: nowrap;">
                 {{ unitGroup.type.name }}
-                ({{ unitGroup.count }})
+                <!-- ({{ unitGroup.count }}) -->
             </div>
-            <!-- can be customizable (on/off), also some highlight can be implemented -->
-            <!-- <mw-value-bar [side]="side" color="red" [currentValue]="unitGroup.count" [maxValue]="initialCount" [barHeight]="4"></mw-value-bar> -->
             <div style="font-size: 12px;">
                 <div>
                     <mw-ra-icon icon="spinning-sword"></mw-ra-icon>
@@ -36,7 +34,12 @@
                 </div>
 
             </div>
+
         </div>
+
+        <!-- #4f52bd -->
+        <!-- "linear-gradient(180deg, rgba(255,77,93,1) 0%, rgba(129,25,25,1) 100%)" -->
+
         <div class="abilities" [ngClass]="side === 'left' ? 'left' : 'right'">
             <div class="ability" *ngFor="let ability of unitGroup.spells">
                 <!-- {{ ability.name }} -->
@@ -64,5 +67,12 @@
         </div>
     </div>
 
-    <img src="../assets/{{unitGroup.type.mainPortraitUrl}}" class="portrait">
+    <div class="portrait-container">
+        <img src="../assets/{{unitGroup.type.mainPortraitUrl}}" class="portrait">
+        <!-- can be customizable (on/off), also some highlight can be implemented -->
+        <mw-value-bar class="health-bar" [side]="side"
+            color="linear-gradient(180deg, rgba(255,77,93,1) 0%, rgba(129,25,25,1) 100%)"
+            [currentValue]="unitGroup.count" [maxValue]="unitGroup.fightInfo.initialCount" [barHeight]="14">
+        </mw-value-bar>
+    </div>
 </div>

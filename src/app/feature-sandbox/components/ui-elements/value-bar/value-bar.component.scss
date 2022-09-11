@@ -6,25 +6,30 @@
 }
 
 .diff-bar {
-    transition: 1s;
+    transition: 1.5s;
     background: white;
     position: absolute;
 }
 
 .main-bar {
-    transition: 0.4s;
+    transition: 1s;
     position: absolute;
 }
 
 .values {
     position: absolute;
-    right: 0;
-    top: -15px;
+    // right: 0;
+
+    // top: -15px;
+    left: 50%;
+    transform: translate(-50%, -2px);
+    text-shadow: 1px 2px black;
+
     font-size: 10px;
     color: white;
 }
 
-.left {
-    left: 0;
-    right: auto;
-}
+// .left {
+//     left: 0;
+//     right: auto;
+// }

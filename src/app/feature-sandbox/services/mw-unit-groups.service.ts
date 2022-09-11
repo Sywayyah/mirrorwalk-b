@@ -30,11 +30,15 @@ export class MwUnitGroupsService {
     options: { count: number },
     player: PlayerInstanceModel,
   ): UnitGroupModel {
-    const unitGroup = {
+    const unitGroup: UnitGroupModel = {
       count: options.count,
       type: type,
       ownerPlayerRef: player,
       turnsLeft: type.defaultTurnsPerRound,
+      fightInfo: {
+        initialCount: options.count,
+        isAlive: true,
+      },
     };
 
     this.updateUnitGroupSpells(unitGroup);
@@ -87,7 +91,7 @@ export class MwUnitGroupsService {
   }
 
   private getNumericModifier(target: UnitGroupInstModel, modifierProp: KeysMatching<ModifiersModel, number>): number {
-    return target.modifiers.filter(mod => mod[modifierProp]).reduce((sum , next) => sum + (next[modifierProp] ?? 0), 0);
+    return target.modifiers.filter(mod => mod[modifierProp]).reduce((sum, next) => sum + (next[modifierProp] ?? 0), 0);
   }
 
   private updateUnitGroupSpells(unitGroup: UnitGroupModel): UnitGroupModel {
