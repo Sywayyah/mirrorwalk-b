@@ -52,7 +52,7 @@ export class MwUnitEventsCursorDirective extends MwCustomCursorDirective {
     const isEnemyUnitGroup = this.players.isEnemyUnitGroup(this.unitGroup);
     const playerState = this.curPlayerState.playerCurrentState;
 
-    if (!isEnemyUnitGroup && playerState === PlayerState.Normal) {
+    if (playerState === PlayerState.Normal && (!isEnemyUnitGroup || isEnemyUnitGroup && !this.unitGroup.fightInfo.isAlive)) {
       return this.createStaticCursor('interdiction');
     }
 
@@ -67,7 +67,7 @@ export class MwUnitEventsCursorDirective extends MwCustomCursorDirective {
       [PlayerState.SpellTargeting]: 'burning-book',
       [PlayerState.WaitsForTurn]: 'hourglass',
     };
-  
+
     if (this.curPlayerState.playerCurrentState === PlayerState.SpellTargeting) {
       return {
         animation: SpellCastCursorAnimation,
@@ -92,5 +92,5 @@ export class MwUnitEventsCursorDirective extends MwCustomCursorDirective {
         }
       },
     }
-  } 
+  }
 }

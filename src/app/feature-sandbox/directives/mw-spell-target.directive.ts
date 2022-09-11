@@ -53,6 +53,10 @@ export class MwSpellTargetDirective implements OnInit {
     }
 
     if (this.isEnemyCard) {
+      if (!this.spellTargetUnitGroup.fightInfo.isAlive) {
+        return;
+      }
+
       this.battleEvents.dispatchEvent({
         type: BattleEvent.UI_Player_Clicks_Enemy_Group,
         attackedGroup: this.spellTargetUnitGroup,

@@ -36,20 +36,20 @@ $portrait-offset: 70%;
 
 .health-bar {
     position: relative;
-    border-radius: 6px;
-    border: 1px solid whitesmoke;
+    border-radius: 2px;
+    // border: 1px solid whitesmoke;
     overflow: hidden;
 
-    top: -39px;
-    width: 68px;
+    top: -42px;
+    width: 37px;
 }
 
 .card-left .health-bar {
-    left: 31px;
+    left: 48px;
 }
 
 .card-right .health-bar {
-    right: -25px;
+    right: -41px;
 }
 
 .card-left {
@@ -119,8 +119,10 @@ $portrait-offset: 70%;
 
 $shadow: rgba(0, 0, 0, 0.721);
 $active-scale: 1.0;
+// $active-offset: 64px;
 $active-offset: 32px;
 $inactive-offset: 32px;
+
 // $active-scale: 1.087;
 
 /* todo: rework template, css and units themselves someday */
@@ -154,5 +156,18 @@ $inactive-offset: 32px;
 }
 
 .card-top.inactive.card-right {
+    transform: scale(1) translateX($inactive-offset);
+}
+
+.card-top.defeated {
+    filter: brightness(55%) drop-shadow(0 0 0 $shadow);
+}
+
+
+.card-top.defeated.card-left {
+    transform: scale(1) translateX(-$inactive-offset);
+}
+
+.card-top.defeated.card-right {
     transform: scale(1) translateX($inactive-offset);
 }

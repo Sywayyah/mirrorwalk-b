@@ -132,7 +132,7 @@ export class MwUnitGroupStateService {
 
     const newTailHp = targetGroupHealthAfterDamage % targetBaseStats.health;
     const newUnitsCount = Math.floor(targetGroupHealthAfterDamage / targetBaseStats.health)
-      + (newTailHp ? 1 : 0);
+    + (newTailHp ? 1 : 0);
     
     /* second line of this calc is to deal damage when tail hp is less than damage */
     /*  need to think this logic through */

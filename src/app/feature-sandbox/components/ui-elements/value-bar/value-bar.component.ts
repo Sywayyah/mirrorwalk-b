@@ -1,5 +1,11 @@
-import { ChangeDetectionStrategy, Component, ElementRef, Input, OnChanges, OnInit, Renderer2, SimpleChanges } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, Input, OnChanges, Renderer2, SimpleChanges } from '@angular/core';
 
+/* 
+  For now, I'm not sure if I want to use it for showing amount of units.
+    Maybe it just needs time, or it can become useful if there will be portraits.
+
+  For now, it still can be useful for debugging in some cases.
+*/
 @Component({
   selector: 'mw-value-bar',
   templateUrl: './value-bar.component.html',
@@ -10,6 +16,12 @@ export class ValueBarComponent implements OnChanges {
 
   @Input()
   public maxValue: number = 0;
+
+  @Input()
+  public barStyle: 'normal' | 'static' = 'static';
+
+  @Input()
+  public showMax: boolean = false;
 
   @Input()
   public currentValue: number = 0;

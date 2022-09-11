@@ -100,6 +100,11 @@ export class MwUnitGroupCardComponent implements UIUnitProvider, OnInit, OnDestr
     this.isCardHovered = isHovered;
 
     if (isHovered) {
+      if (!this.unitGroup.fightInfo.isAlive) {
+        this.battleEvents.dispatchEvent({ type: BattleEvent.UI_Player_Hovers_Group_Card, hoverType: HoverTypeEnum.Unhover });
+        return;
+      }
+
       this.battleEvents.dispatchEvent({
         type: BattleEvent.UI_Player_Hovers_Group_Card,
         hoverType: this.isEnemyCard ? HoverTypeEnum.EnemyCard : HoverTypeEnum.AllyCard,

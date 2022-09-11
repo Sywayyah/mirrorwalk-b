@@ -61,7 +61,7 @@ export class BattleStateService {
 
     this.resetFightQueue();
 
-    this.updateGroupsTailHp();
+    this.updateGroupsTailHpAndCombatInfo();
 
     this.refreshUnitGroups();
 
@@ -116,7 +116,7 @@ export class BattleStateService {
         const currentStructure = this.structuresService.currentStruct as NeutralCampStructure;
 
         /* Reflect dying groups on win. This logic may be revisited later */
-        const currentPlayerUnitGroups = this.heroesUnitGroupsMap.get(this.players[0]) as UnitGroupInstModel[];
+        const currentPlayerUnitGroups = this.getAliveUnitsOfPlayer(this.players[0]);
 
         if (!(currentPlayerUnitGroups).length) {
           this.playersService.getCurrentPlayer().unitGroups = currentPlayerUnitGroups;
@@ -128,7 +128,7 @@ export class BattleStateService {
           });
         }
 
-        if (!(this.heroesUnitGroupsMap.get(this.players[1]) as UnitGroupModel[]).length) {
+        if (!(this.getAliveUnitsOfPlayer(this.players[1])).length) {
           this.playersService.getCurrentPlayer().unitGroups = currentPlayerUnitGroups;
 
           currentStructure.isInactive = true;
@@ -257,8 +257,9 @@ export class BattleStateService {
     const enemyPlayer = unitGroup.ownerPlayerRef;
     const enemyPlayerGroups = this.heroesUnitGroupsMap.get(enemyPlayer) as UnitGroupInstModel[];
     const indexOfUnitGroup = enemyPlayerGroups?.indexOf(unitGroup);
+    unitGroup.fightInfo.isAlive = false;
 
-    enemyPlayerGroups.splice(indexOfUnitGroup, 1);
+    // enemyPlayerGroups.splice(indexOfUnitGroup, 1);
     this.heroesUnitGroupsMap.set(enemyPlayer, enemyPlayerGroups);
 
     const indexOfRemovedGroupInQueue = this.fightQueue.indexOf(unitGroup);
@@ -273,7 +274,7 @@ export class BattleStateService {
 
   private processAiPlayer(): void {
     setTimeout(() => {
-      const enemyUnitGroups = this.heroesUnitGroupsMap.get(this.getEnemyOfPlayer(this.currentPlayer)) as UnitGroupInstModel[];
+      const enemyUnitGroups = this.getAliveUnitsOfPlayer(this.getEnemyOfPlayer(this.currentPlayer) as PlayerInstanceModel);
       const randomGroupIndex = Math.round(Math.random() * (enemyUnitGroups.length - 1));
       const targetGroup = enemyUnitGroups[randomGroupIndex];
 
@@ -295,9 +296,13 @@ export class BattleStateService {
 
   private resetFightQueue() {
     this.fightQueue = this.sortUnitsBySpeed([
-      ...this.heroesUnitGroupsMap.get(this.players[0]) as UnitGroupInstModel[],
-      ...this.heroesUnitGroupsMap.get(this.players[1]) as UnitGroupInstModel[],
+      ...this.getAliveUnitsOfPlayer(this.players[0]),
+      ...this.getAliveUnitsOfPlayer(this.players[1]),
     ]);
+  }
+
+  public getAliveUnitsOfPlayer(player: PlayerInstanceModel): UnitGroupInstModel[] {
+    return (this.heroesUnitGroupsMap.get(player) as UnitGroupInstModel[]).filter(unitGroup => unitGroup.fightInfo.isAlive);
   }
 
   private resortFightQuery(): void {
@@ -323,12 +328,13 @@ export class BattleStateService {
     });
   }
 
-  private updateGroupsTailHp(): void {
+  private updateGroupsTailHpAndCombatInfo(): void {
     this.players.forEach((player) => {
       player.unitGroups.forEach(unitGroup => {
         if (!unitGroup.tailUnitHp) {
           unitGroup.tailUnitHp = unitGroup.type.baseStats.health;
         }
+        unitGroup.fightInfo.initialCount = unitGroup.count;
       })
     });
   }
