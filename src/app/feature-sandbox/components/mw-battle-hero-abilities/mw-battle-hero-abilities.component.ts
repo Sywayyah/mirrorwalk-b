@@ -23,7 +23,7 @@ export class MwBattleHeroAbilitiesComponent implements OnInit {
   }
 
   public onAbilityClick(spell: SpellInstance) {
-    if (spell.currentManaCost > this.currentPlayer.hero.stats.currentMana) {
+    if (spell.currentManaCost > this.currentPlayer.hero.stats.currentMana || this.curPlayerState.spellsAreOnCooldown) {
       return;
     }
 
