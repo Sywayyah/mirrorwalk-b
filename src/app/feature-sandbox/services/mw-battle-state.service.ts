@@ -8,7 +8,7 @@ import { MwCurrentPlayerStateService, PlayerState } from './mw-current-player-st
 import { MwPlayersService } from './mw-players.service';
 import { MwStructuresService } from './mw-structures.service';
 import { MwUnitGroupsService } from './mw-unit-groups.service';
-import { BattleEvent, ActionHintModel } from "./types";
+import { ActionHintModel, BattleEvent } from "./types";
 
 
 @Injectable({
@@ -64,8 +64,7 @@ export class BattleStateService {
     this.updateGroupsTailHpAndCombatInfo();
 
     this.refreshUnitGroups();
-
-
+ 
     this.battleEventsService.onEvents({
       [BattleEvent.Fight_Starts]: event => {
         console.log('Battle starts');

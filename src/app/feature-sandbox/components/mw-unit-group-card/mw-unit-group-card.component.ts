@@ -50,7 +50,9 @@ export class MwUnitGroupCardComponent implements UIUnitProvider, OnInit, OnDestr
     private readonly battleEvents: BattleEventsService,
     private readonly unitsService: MwUnitGroupStateService,
     private readonly units: MwUnitGroupsService,
-  ) { }
+  ) {
+    // const a = inject(HintsService)
+  }
 
   public ngOnInit(): void {
     this.isGroupMelee = !this.unitsService.isUnitGroupRanged(this.unitGroup);

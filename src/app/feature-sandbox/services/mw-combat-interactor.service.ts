@@ -5,8 +5,7 @@ import { CombatActionsRef, DamageType, PostDamageInfo, SpellCreationOptions } fr
 import {
   PlayerInstanceModel,
   PlayerModel,
-  UnitGroupInstModel,
-  UnitGroupModel
+  UnitGroupInstModel
 } from 'src/app/core/model/main.model';
 import { Modifiers } from 'src/app/core/model/modifiers';
 import {
@@ -20,6 +19,7 @@ import {
 import { EffectType, VfxElemEffect } from 'src/app/core/model/vfx-api/vfx-api.types';
 import { CommonUtils } from 'src/app/core/utils/common.utils';
 import { VfxService } from '../components/ui-elements/vfx-layer/vfx.service';
+import { Event as OnEvent, StoreClient } from './store-decorators.config';
 import { BattleEventsService } from './mw-battle-events.service';
 import { MwBattleLogService } from './mw-battle-log.service';
 import { BattleStateService } from './mw-battle-state.service';
@@ -33,7 +33,7 @@ import {
   BattleEvents,
   CombatGroupAttacked,
   CombatInteractionEnum,
-  CombatInteractionState, HoverTypeEnum,
+  CombatInteractionState, FightStartsEvent, HoverTypeEnum,
   PlayerTargetsSpell,
   UIPlayerHoversCard
 } from './types';
@@ -43,7 +43,7 @@ import { ActionHintTypeEnum, AttackActionHintInfo, SpellTargetActionHint } from 
 @Injectable({
   providedIn: 'root'
 })
-export class CombatInteractorService {
+export class CombatInteractorService extends StoreClient(BattleEventsService) {
 
   private spellsHandlersMap: Map<SpellInstance, SpellEventHandlers> = new Map();
   private unitGroupModifiersMap: Map<UnitGroupInstModel, Modifiers[]> = new Map();
@@ -59,12 +59,18 @@ export class CombatInteractorService {
     private readonly vfxService: VfxService,
     private readonly units: MwUnitGroupsService,
   ) {
+    super();
     /* Dispell buffs and debuffs when location is left. May change in future. */
     this.battleEvents.onEvents({
       [BattleEvent.Struct_Completed]: () => {
         this.forEachUnitGroup(unitGroup => this.applyDispellToUnitGroup(unitGroup));
       },
     }).subscribe();
+  }
+
+  @OnEvent(BattleEvent.Fight_Starts)
+  public onAttack(event: FightStartsEvent): void {
+    console.log('-----> HUH?', event, this);
   }
 
   public onBattleBegins(): void {

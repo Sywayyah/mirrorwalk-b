@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { filter, map, take, takeUntil, tap } from 'rxjs/operators';
 import { BattleEvents, EventByEnumMapping, BattleEvent } from './types';
 
@@ -24,6 +24,16 @@ import { BattleEvents, EventByEnumMapping, BattleEvent } from './types';
   Might be better than having all sorts of switches
 */
 
+function isNullish<T>(value: T | null | undefined): value is T {
+  return value !== null && value !== undefined ? true : false;
+}
+
+function filterNullish<T>(source$: Observable<T | null | undefined>): Observable<T> {
+  return source$.pipe(
+    filter(isNullish),
+  );
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -31,7 +41,20 @@ export class BattleEventsService {
 
   public battleEvents$: Subject<BattleEvents> = new Subject<BattleEvents>();
 
-  constructor() { }
+  /* remove all that later */
+  public static instance: BattleEventsService;
+  
+  private static instance$ = new BehaviorSubject<BattleEventsService | null>(null);
+
+  public static getInstance$(): Observable<BattleEventsService> {
+    return this.instance$.pipe(
+      filterNullish,
+    );
+  }
+
+  constructor() {
+    BattleEventsService.instance$.next(this);
+  }
 
   public dispatchEvent<K extends keyof EventByEnumMapping>(event: EventByEnumMapping[K]): void {
     this.battleEvents$.next(event);
