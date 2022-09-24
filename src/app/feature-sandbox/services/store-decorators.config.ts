@@ -6,6 +6,11 @@ import { Subject, Observable } from 'rxjs';
 
 export interface Store { };
 
+/*
+  next:
+   - try to develop store
+   - @State() param decorators? 
+*/
 
 type StoreTypes = 'storeClient';
 
