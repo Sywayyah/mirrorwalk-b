@@ -1,13 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { NeutralCampStructure, NeutralRewardTypesEnum } from "src/app/core/model/structures.types";
-import { BattleEvent, BattleEventsService, BattleStateService, FightEndsPopup, LossModel, MwPlayersService, PopupModel, PopupTypesEnum, RoundEndsEvent, StructHireRewardPopup, StructItemRewardPopup, StructRewardPopup } from '../../services';
+import { BattleEvent, BattleEventsService, BattleStateService, DisplayPopupEvent, FightEndsPopup, LossModel, MwPlayersService, PopupModel, PopupTypesEnum, RoundEndsEvent, StructHireRewardPopup, StructItemRewardPopup, StructRewardPopup } from '../../services';
+import { Event, StoreClient } from '../../services/store-decorators.config';
 
 @Component({
   selector: 'mw-popup-container',
   templateUrl: './mw-popup-container.component.html',
   styleUrls: ['./mw-popup-container.component.scss']
 })
-export class MwPopupContainerComponent implements OnInit {
+export class MwPopupContainerComponent extends StoreClient(BattleEventsService) implements OnInit {
 
   public popups: PopupModel[] = [];
   public popupTypes: typeof PopupTypesEnum = PopupTypesEnum;
@@ -17,12 +18,9 @@ export class MwPopupContainerComponent implements OnInit {
     private readonly battleState: BattleStateService,
     private readonly playersService: MwPlayersService,
   ) {
+    super();
+
     this.battleEvents.onEvents({
-
-      [BattleEvent.Display_Popup]: event => {
-        this.popups.push(event.popup);
-      },
-
       [BattleEvent.Fight_Ends]: (event: RoundEndsEvent) => {
         const fightEndsPopup: FightEndsPopup = {
           type: PopupTypesEnum.FightEnds,
@@ -70,6 +68,11 @@ export class MwPopupContainerComponent implements OnInit {
         }
       },
     }).subscribe();
+  }
+
+  @Event(BattleEvent.Display_Popup)
+  public displayPopup(event: DisplayPopupEvent): void {
+    this.popups.push(event.popup);
   }
 
   public removePopup(popupToRemove: PopupModel): void {
