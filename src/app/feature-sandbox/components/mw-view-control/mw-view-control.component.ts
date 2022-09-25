@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { NeutralCampStructure, NeutralSite, StructureTypeEnum } from 'src/app/core/model/structures.types';
 import { BattleEvent, PopupTypesEnum, PrefightPopup, PreviewPopup, StructCompleted, StructSelected, StructureFightConfirmed, UpgradingPopup } from '../../services';
-import { GameStore } from '../../services/state/game-state.service';
-import { StoreClient, WireEvent } from '../../services/state/store-decorators.config';
+import { GameStoreClient } from '../../services/state/game-state.service';
+import { WireEvent } from '../../services/state/store-decorators.config';
 
 enum ViewsEnum {
   Structures = 'structures',
@@ -14,7 +14,7 @@ enum ViewsEnum {
   templateUrl: './mw-view-control.component.html',
   styleUrls: ['./mw-view-control.component.scss']
 })
-export class MwViewControlComponent extends StoreClient(GameStore) {
+export class MwViewControlComponent extends GameStoreClient() {
 
   /*
     I need to complete this view logic, the logic of battle being

@@ -180,7 +180,7 @@ export interface SpeedEvent extends BattleEventModel<BattleEvent.Combat_Unit_Spe
 
 export type FightStartsEvent = BattleEventModel<BattleEvent.Fight_Starts>;
 
-export interface EventByEnumMapping {
+export interface EventByEnumMapping extends Record<BattleEvent, BattleEventModel> {
   [BattleEvent.Struct_Selected]: StructSelected;
   [BattleEvent.Struct_Completed]: StructCompleted;
   [BattleEvent.Display_Reward_Popup]: DisplayRewardPopup;

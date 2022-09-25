@@ -27,8 +27,8 @@ import { MwPlayersService } from './mw-players.service';
 import { MwSpellsService } from './mw-spells.service';
 import { FinalDamageInfo, MwUnitGroupStateService } from './mw-unit-group-state.service';
 import { MwUnitGroupsService } from './mw-unit-groups.service';
-import { GameStore } from './state/game-state.service';
-import { StoreClient, WireEvent } from './state/store-decorators.config';
+import { GameStoreClient } from './state/game-state.service';
+import { WireEvent } from './state/store-decorators.config';
 import {
   BattleEvent,
   BattleEvents,
@@ -46,7 +46,7 @@ import { ActionHintTypeEnum, AttackActionHintInfo, SpellTargetActionHint } from 
 @Injectable({
   providedIn: 'root'
 })
-export class CombatInteractorService extends StoreClient(GameStore) {
+export class CombatInteractorService extends GameStoreClient() {
 
   private spellsHandlersMap: Map<SpellInstance, SpellEventHandlers> = new Map();
   private unitGroupModifiersMap: Map<UnitGroupInstModel, Modifiers[]> = new Map();
