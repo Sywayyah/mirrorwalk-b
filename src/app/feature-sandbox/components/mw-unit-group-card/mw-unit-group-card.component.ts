@@ -1,4 +1,3 @@
-import { inject } from '@angular/core';
 import { Component, ElementRef, EventEmitter, forwardRef, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
@@ -7,7 +6,6 @@ import { PROVIDE_UI_UNIT_GROUP, UIUnitProvider } from '../../directives/mw-unit-
 import { BattleEvent, BattleEventsService, BattleStateService, HoverTypeEnum, MwPlayersService } from '../../services';
 import { MwUnitGroupStateService } from '../../services/mw-unit-group-state.service';
 import { MwUnitGroupsService, UIModsModel } from '../../services/mw-unit-groups.service';
-import { HintsService } from '../../services/ui/hints.service';
 
 @Component({
   selector: 'mw-unit-group-card',

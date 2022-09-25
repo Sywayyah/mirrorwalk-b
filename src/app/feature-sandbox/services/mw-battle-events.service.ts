@@ -1,28 +1,9 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
-import { filter, map, take, takeUntil, tap } from 'rxjs/operators';
-import { BattleEvents, EventByEnumMapping, BattleEvent } from './types';
+import { Observable } from 'rxjs';
+import { filter } from 'rxjs/operators';
+import { EventsServiceBase } from './state/events-service-base';
+import { BattleEvent, EventByEnumMapping } from './types';
 
-/*
-  todo: I have a feeling that I want to have such events system.
-    because I might want to be able to listen different events 
-    across the game. And maybe I want other systems to kind of
-    depend on it;
-
-    I'm not sure what kind of approach I'd like to use, for now
-    I have one stream for all sorts of events;
-
-  Also an idea is to listenUntil some other event fires,
-    so it would be a bit easier to manage subscriptions
-
-  Idea: event map objects. like
-    {
-      [ON_GROUP_DAMAGED]: (event) => ...,
-      [ON_FIGHT_ENDS]: (event) => ...,
-    }
-
-  Might be better than having all sorts of switches
-*/
 
 function isNullish<T>(value: T | null | undefined): value is T {
   return value !== null && value !== undefined ? true : false;
@@ -37,71 +18,5 @@ function filterNullish<T>(source$: Observable<T | null | undefined>): Observable
 @Injectable({
   providedIn: 'root'
 })
-export class BattleEventsService {
-
-  public battleEvents$: Subject<BattleEvents> = new Subject<BattleEvents>();
-
-  /* remove all that later */
-  public static instance: BattleEventsService;
-  
-  private static instance$ = new BehaviorSubject<BattleEventsService | null>(null);
-
-  public static getInstance$(): Observable<BattleEventsService> {
-    return this.instance$.pipe(
-      filterNullish,
-    );
-  }
-
-  constructor() {
-    BattleEventsService.instance$.next(this);
-  }
-
-  public dispatchEvent<K extends keyof EventByEnumMapping>(event: EventByEnumMapping[K]): void {
-    this.battleEvents$.next(event);
-  }
-
-  public listenEventsOfTypes(types: BattleEvent[]): Observable<BattleEvents> {
-    const typesSet = new Set(types);
-
-    return this.battleEvents$.pipe(filter((event: BattleEvents) => typesSet.has(event.type)));
-  }
-
-  /* todo: think about it, feels advanced */
-  public onEvents(
-    handlersByEventType: { [K1 in keyof EventByEnumMapping]?: (event: EventByEnumMapping[K1]) => void },
-  ): Observable<BattleEvents> {
-    type EventsKeys = keyof typeof handlersByEventType;
-
-    type ListenedEvents = EventByEnumMapping[EventsKeys];
-
-    return this.battleEvents$
-      .pipe(
-        filter((event: BattleEvents) => event.type in handlersByEventType),
-        tap((event: ListenedEvents) => {
-          const eventType = event.type as EventsKeys;
-
-          if (eventType in handlersByEventType) {
-            const eventHandler = handlersByEventType[eventType];
-
-            if (eventHandler) {
-              (eventHandler as (arg: EventByEnumMapping[typeof eventType]) => void)(event);
-            }
-          }
-        })
-      );
-  }
-
-  public onEvent<K extends keyof EventByEnumMapping>(type: K): Observable<EventByEnumMapping[K]> {
-    return this.battleEvents$.pipe(
-      filter((event) => event.type === type),
-      /* todo: workaround find out if there is better solution */
-      map((event) => event as EventByEnumMapping[K]),
-    );
-  }
-
-  public untilEvent<K extends keyof EventByEnumMapping, T>(type: K): (source: Observable<T>) => Observable<T> {
-    return (source$) => source$.pipe(
-      takeUntil(this.onEvent(type).pipe(take(1))),
-    );
-  }
+export class BattleEventsService extends EventsServiceBase<BattleEvent, EventByEnumMapping> {
 }

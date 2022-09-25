@@ -64,6 +64,7 @@ export class MwPopupContainerComponent extends StoreClient(GameStore) implements
               };
 
               this.battleEvents.dispatchEvent({ type: BattleEvent.Display_Popup, popup: structItemRewardPopup });
+              
               break;
           }
         }

@@ -1,6 +1,7 @@
 import { PlayerInstanceModel, PlayerModel, UnitGroupInstModel } from 'src/app/core/model/main.model';
 import { SpellInstance } from 'src/app/core/model/spells';
 import { NeutralCampStructure, StructureModel } from "src/app/core/model/structures.types";
+import { EventModel } from '../state/events-service-base';
 import { PopupModel } from './popup.types';
 
 
@@ -44,10 +45,7 @@ export enum BattleEvent {
   Fight_Ends
 }
 
-
-export interface BattleEventModel<T extends BattleEvent = BattleEvent> {
-  type: T;
-}
+export type BattleEventModel<T extends BattleEvent = BattleEvent> = EventModel<T>;
 
 export interface UnitEvent<T extends BattleEvent> extends BattleEventModel<T> {
   unit: UnitGroupInstModel;

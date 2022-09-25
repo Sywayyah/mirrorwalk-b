@@ -1,15 +1,21 @@
-import { Type, inject, OnDestroy } from "@angular/core";
-import { BattleEventsService } from "../mw-battle-events.service";
+import { inject, OnDestroy, Type } from "@angular/core";
+import { Observable, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { BattleEvent, EventByEnumMapping } from "../types";
-import { mergeMap, takeUntil } from 'rxjs/operators';
-import { Subject, Observable } from 'rxjs';
+import { EventsServiceBase } from "./events-service-base";
 
 /* Also, StoreSegment? */
-export interface Store<T> {
-  events: Observable<void>;
+export interface StoreSegment<T> {
+
+}
+
+export interface Store<T, Events extends EventsServiceBase<any, any>> {
   state: T;
 
+  events: Events;
   getState: () => T;
+
+  onEvent: (eventName: any) => Observable<void>;
 };
 
 /*
@@ -27,7 +33,9 @@ const storeClientIndicator = Symbol('Store class indicator for decorators');
 type BasicListener = [number, Function];
 type StoreBaseClass = { [storeEventListeners]: BasicListener[] };
 
-export function StoreClient<S, T extends Store<S>>(storeClass: Type<T>): Type<{ store: T }> {
+/* returned type can be specified, but for bow, better let typescript resolve it */
+// export function StoreClient<S, Events extends EventsServiceBase<any, any>, T extends Store<S, Events>>(storeClass: Type<T>): Type<{ store: T } & OnDestroy> {
+export function StoreClient<S, Events extends EventsServiceBase<any, any>, T extends Store<S, Events>>(storeClass: Type<T>) {
   return class StoreClient implements OnDestroy {
     /* think on if I can access it somehow from decorators */
     public static [storeEventListeners]: BasicListener[] = [];
@@ -51,9 +59,9 @@ export function StoreClient<S, T extends Store<S>>(storeClass: Type<T>): Type<{ 
 
       (ownConstructor)[storeEventListeners]!.forEach(([event, fn]: [number, Function]) => {
         /* change it to store */
-        BattleEventsService.getInstance$()
+        // BattleEventsService.getInstance$()
+        this.store.onEvent(event)
           .pipe(
-            mergeMap(instance => instance.onEvent(event as BattleEvent)),
             this.untilDestroyed.bind(self),
           )
           .subscribe(val => {
@@ -65,6 +73,10 @@ export function StoreClient<S, T extends Store<S>>(storeClass: Type<T>): Type<{ 
     public ngOnDestroy(): void {
       this.destroyed$.next();
       this.destroyed$.complete();
+    }
+
+    public events(): T['events'] {
+      return this.store.events;
     }
 
     public untilDestroyed<T>(source$: Observable<T>): Observable<T> {
