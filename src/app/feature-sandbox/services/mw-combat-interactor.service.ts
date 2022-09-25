@@ -19,7 +19,6 @@ import {
 import { EffectType, VfxElemEffect } from 'src/app/core/model/vfx-api/vfx-api.types';
 import { CommonUtils } from 'src/app/core/utils/common.utils';
 import { VfxService } from '../components/ui-elements/vfx-layer/vfx.service';
-import { Event as OnEvent, StoreClient } from './store-decorators.config';
 import { BattleEventsService } from './mw-battle-events.service';
 import { MwBattleLogService } from './mw-battle-log.service';
 import { BattleStateService } from './mw-battle-state.service';
@@ -28,13 +27,17 @@ import { MwPlayersService } from './mw-players.service';
 import { MwSpellsService } from './mw-spells.service';
 import { FinalDamageInfo, MwUnitGroupStateService } from './mw-unit-group-state.service';
 import { MwUnitGroupsService } from './mw-unit-groups.service';
+import { GameStore } from './state/game-state.service';
+import { StoreClient, WireEvent } from './state/store-decorators.config';
 import {
   BattleEvent,
   BattleEvents,
   CombatGroupAttacked,
   CombatInteractionEnum,
-  CombatInteractionState, FightStartsEvent, HoverTypeEnum,
+  CombatInteractionState,
+  HoverTypeEnum,
   PlayerTargetsSpell,
+  StructCompleted,
   UIPlayerHoversCard
 } from './types';
 import { ActionHintTypeEnum, AttackActionHintInfo, SpellTargetActionHint } from './types/action-hint.types';
@@ -43,7 +46,7 @@ import { ActionHintTypeEnum, AttackActionHintInfo, SpellTargetActionHint } from 
 @Injectable({
   providedIn: 'root'
 })
-export class CombatInteractorService extends StoreClient(BattleEventsService) {
+export class CombatInteractorService extends StoreClient(GameStore) {
 
   private spellsHandlersMap: Map<SpellInstance, SpellEventHandlers> = new Map();
   private unitGroupModifiersMap: Map<UnitGroupInstModel, Modifiers[]> = new Map();
@@ -61,16 +64,11 @@ export class CombatInteractorService extends StoreClient(BattleEventsService) {
   ) {
     super();
     /* Dispell buffs and debuffs when location is left. May change in future. */
-    this.battleEvents.onEvents({
-      [BattleEvent.Struct_Completed]: () => {
-        this.forEachUnitGroup(unitGroup => this.applyDispellToUnitGroup(unitGroup));
-      },
-    }).subscribe();
   }
 
-  @OnEvent(BattleEvent.Fight_Starts)
-  public onAttack(event: FightStartsEvent): void {
-    console.log('-----> HUH?', event, this);
+  @WireEvent(BattleEvent.Struct_Completed)
+  public dispellAllUnits(event: StructCompleted): void {
+    this.forEachUnitGroup(unitGroup => this.applyDispellToUnitGroup(unitGroup));
   }
 
   public onBattleBegins(): void {

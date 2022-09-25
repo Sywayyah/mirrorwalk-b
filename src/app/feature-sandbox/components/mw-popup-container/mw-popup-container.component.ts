@@ -1,14 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { NeutralCampStructure, NeutralRewardTypesEnum } from "src/app/core/model/structures.types";
 import { BattleEvent, BattleEventsService, BattleStateService, DisplayPopupEvent, FightEndsPopup, LossModel, MwPlayersService, PopupModel, PopupTypesEnum, RoundEndsEvent, StructHireRewardPopup, StructItemRewardPopup, StructRewardPopup } from '../../services';
-import { Event, StoreClient } from '../../services/store-decorators.config';
+import { GameStore } from '../../services/state/game-state.service';
+import { WireEvent, StoreClient } from '../../services/state/store-decorators.config';
 
 @Component({
   selector: 'mw-popup-container',
   templateUrl: './mw-popup-container.component.html',
   styleUrls: ['./mw-popup-container.component.scss']
 })
-export class MwPopupContainerComponent extends StoreClient(BattleEventsService) implements OnInit {
+export class MwPopupContainerComponent extends StoreClient(GameStore) implements OnInit {
 
   public popups: PopupModel[] = [];
   public popupTypes: typeof PopupTypesEnum = PopupTypesEnum;
@@ -70,7 +71,7 @@ export class MwPopupContainerComponent extends StoreClient(BattleEventsService) 
     }).subscribe();
   }
 
-  @Event(BattleEvent.Display_Popup)
+  @WireEvent(BattleEvent.Display_Popup)
   public displayPopup(event: DisplayPopupEvent): void {
     this.popups.push(event.popup);
   }
