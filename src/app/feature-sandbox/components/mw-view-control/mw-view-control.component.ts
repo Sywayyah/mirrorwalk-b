@@ -1,6 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { NeutralCampStructure, NeutralSite, StructureTypeEnum } from 'src/app/core/model/structures.types';
-import { BattleEventsService, BattleEvent, PopupTypesEnum, PrefightPopup, PreviewPopup, StructSelected, UpgradingPopup } from '../../services';
+import { BattleEvent, PopupTypesEnum, PrefightPopup, PreviewPopup, StructCompleted, StructSelected, StructureFightConfirmed, UpgradingPopup } from '../../services';
+import { GameStore } from '../../services/state/game-state.service';
+import { StoreClient, WireEvent } from '../../services/state/store-decorators.config';
 
 enum ViewsEnum {
   Structures = 'structures',
@@ -12,7 +14,7 @@ enum ViewsEnum {
   templateUrl: './mw-view-control.component.html',
   styleUrls: ['./mw-view-control.component.scss']
 })
-export class MwViewControlComponent implements OnInit {
+export class MwViewControlComponent extends StoreClient(GameStore) {
 
   /*
     I need to complete this view logic, the logic of battle being
@@ -23,55 +25,48 @@ export class MwViewControlComponent implements OnInit {
   public currentView: ViewsEnum = ViewsEnum.Structures;
   public viewTypes: typeof ViewsEnum = ViewsEnum;
 
-  constructor(
-    private readonly events: BattleEventsService,
-  ) {
-    this.events.onEvents({
-      [BattleEvent.Struct_Selected]: (event: StructSelected) => {
 
-        if (event.struct.type === StructureTypeEnum.NeutralCamp) {
-          const prefightPopup: PrefightPopup = {
-            type: PopupTypesEnum.Prefight,
-            struct: event.struct as NeutralCampStructure,
-          };
+  @WireEvent(BattleEvent.Struct_Selected)
+  public playerSelectsStructure(event: StructSelected): void {
+    if (event.struct.type === StructureTypeEnum.NeutralCamp) {
+      const prefightPopup: PrefightPopup = {
+        type: PopupTypesEnum.Prefight,
+        struct: event.struct as NeutralCampStructure,
+      };
 
-          this.events.dispatchEvent({ type: BattleEvent.Display_Popup, popup: prefightPopup });
-          return;
-        }
+      this.events().dispatchEvent({ type: BattleEvent.Display_Popup, popup: prefightPopup });
+      return;
+    }
 
-        if (event.struct.type === StructureTypeEnum.NeutralSite) {
-          if (event.struct.generator.onVisited) {
-            const previewPopup: PreviewPopup = {
-              type: PopupTypesEnum.Preview,
-              struct: event.struct as NeutralSite,
-            };
+    if (event.struct.type === StructureTypeEnum.NeutralSite) {
+      if (event.struct.generator.onVisited) {
+        const previewPopup: PreviewPopup = {
+          type: PopupTypesEnum.Preview,
+          struct: event.struct as NeutralSite,
+        };
 
-            this.events.dispatchEvent({ type: BattleEvent.Display_Popup, popup: previewPopup });
-          } else {
-            const upgradingPopup: UpgradingPopup = {
-              type: PopupTypesEnum.UpgradingReward,
-              struct: event.struct as NeutralSite,
-            };
+        this.events().dispatchEvent({ type: BattleEvent.Display_Popup, popup: previewPopup });
+      } else {
+        const upgradingPopup: UpgradingPopup = {
+          type: PopupTypesEnum.UpgradingReward,
+          struct: event.struct as NeutralSite,
+        };
 
-            this.events.dispatchEvent({ type: BattleEvent.Display_Popup, popup: upgradingPopup });
-            
-          }
-        }
-      },
-
-      [BattleEvent.Struct_Fight_Confirmed]: (event) => {
-        this.currentView = ViewsEnum.Battleground;
-      },
-
-      [BattleEvent.Struct_Completed]: (event) => {
-        event.struct.isInactive = true;
-        this.currentView = ViewsEnum.Structures;
-        this.events.dispatchEvent({ type: BattleEvent.Display_Reward_Popup, struct: event.struct });
-      },
-    }).subscribe();
+        this.events().dispatchEvent({ type: BattleEvent.Display_Popup, popup: upgradingPopup });
+      }
+    }
   }
 
-  ngOnInit(): void {
+  @WireEvent(BattleEvent.Struct_Fight_Confirmed)
+  public playerAcceptsFight(event: StructureFightConfirmed): void {
+    this.currentView = ViewsEnum.Battleground;
   }
 
+  @WireEvent(BattleEvent.Struct_Completed)
+  public structIsCompleted(event: StructCompleted): void {
+    event.struct.isInactive = true;
+    this.currentView = ViewsEnum.Structures;
+    this.events().dispatchEvent({ type: BattleEvent.Display_Reward_Popup, struct: event.struct });
+
+  }
 }
