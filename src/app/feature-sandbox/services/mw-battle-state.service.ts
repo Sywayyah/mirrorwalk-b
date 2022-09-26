@@ -185,9 +185,9 @@ export class BattleStateService {
           this.curPlayerState.onCurrentSpellCast();
           this.battleEventsService.dispatchEvent({
             type: BattleEvent.Player_Targets_Spell,
-            player: event.unit.ownerPlayerRef,
+            player: event.unitGroup.ownerPlayerRef,
             spell: this.curPlayerState.currentSpell,
-            target: event.unit,
+            target: event.unitGroup,
           });
           this.curPlayerState.setSpellsOnCooldown();
         }

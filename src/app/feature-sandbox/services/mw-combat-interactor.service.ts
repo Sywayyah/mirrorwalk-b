@@ -319,7 +319,7 @@ export class CombatInteractorService extends GameStoreClient() {
 
         this.battleEvents.dispatchEvent({
           type: BattleEvent.OnGroupModifiersChagned,
-          unit: target,
+          unitGroup: target,
         });
       },
       createModifiers: (modifiers) => {
@@ -337,7 +337,7 @@ export class CombatInteractorService extends GameStoreClient() {
 
         this.battleEvents.dispatchEvent({
           type: BattleEvent.OnGroupModifiersChagned,
-          unit: target,
+          unitGroup: target,
         });
       },
       /* dark magic of types, just so it can work */

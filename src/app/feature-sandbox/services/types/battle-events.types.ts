@@ -4,7 +4,6 @@ import { NeutralCampStructure, StructureModel } from "src/app/core/model/structu
 import { EventModel } from '../state/events-service-base';
 import { PopupModel } from './popup.types';
 
-
 export enum BattleEvent {
   UI_Player_Clicks_Enemy_Group,
   UI_Player_Clicks_Ally_Group,
@@ -48,8 +47,18 @@ export enum BattleEvent {
 export type BattleEventModel<T extends BattleEvent = BattleEvent> = EventModel<T>;
 
 export interface UnitEvent<T extends BattleEvent> extends BattleEventModel<T> {
-  unit: UnitGroupInstModel;
+  unitGroup: UnitGroupInstModel;
 }
+
+/* Example for simplfied event types creation */
+// interface CommonEventProps {
+//   unitGroup: UnitGroupInstModel;
+//   player: PlayerInstanceModel;
+//   spell: SpellInstance;
+//   target: UnitGroupInstModel;
+// }
+// type BuildEventType<E extends BattleEvent, T extends keyof CommonEventProps> = BattleEventModel<E> & Pick<CommonEventProps, T>;
+// type SpellEvent = BuildEventType<BattleEvent.Player_Targets_Spell, 'player' | 'spell' | 'target'>;
 
 export interface PlayerTargetsSpell extends BattleEventModel<BattleEvent.Player_Targets_Spell> {
   player: PlayerInstanceModel;
@@ -62,7 +71,7 @@ export interface PlayerCastsInstantSpell extends BattleEventModel<BattleEvent.Pl
   spell: SpellInstance;
 }
 
-export interface PlayerGainsLevel extends BattleEventModel<BattleEvent.Player_Gains_Level> {}
+export interface PlayerGainsLevel extends BattleEventModel<BattleEvent.Player_Gains_Level> { }
 
 export interface StructSelected extends BattleEventModel<BattleEvent.Struct_Selected> {
   struct: StructureModel;
@@ -186,7 +195,7 @@ export interface EventByEnumMapping extends Record<BattleEvent, BattleEventModel
   [BattleEvent.Display_Reward_Popup]: DisplayRewardPopup;
   [BattleEvent.Struct_Fight_Confirmed]: StructureFightConfirmed;
   [BattleEvent.Display_Popup]: DisplayPopupEvent;
-  
+
   [BattleEvent.Player_Gains_Level]: PlayerGainsLevel;
   [BattleEvent.Player_Targets_Spell]: PlayerTargetsSpell;
   [BattleEvent.Player_Casts_Instant_Spell]: PlayerCastsInstantSpell;
@@ -198,7 +207,7 @@ export interface EventByEnumMapping extends Record<BattleEvent, BattleEventModel
   [BattleEvent.Combat_Group_Attacked]: CombatGroupAttacked;
   [BattleEvent.Combat_Attack_Interaction]: CombatInteractionState;
   [BattleEvent.Combat_Unit_Speed_Changed]: SpeedEvent;
-  
+
   [BattleEvent.OnGroupModifiersChagned]: UnitEvent<BattleEvent.OnGroupModifiersChagned>;
   [BattleEvent.On_Group_Damaged_By_Group]: GroupDamagedByGroupEvent;
   [BattleEvent.On_Group_Takes_Damage]: GroupTakesDamageEvent;

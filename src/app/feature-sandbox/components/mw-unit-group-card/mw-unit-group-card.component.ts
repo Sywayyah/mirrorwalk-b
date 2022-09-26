@@ -63,7 +63,7 @@ export class MwUnitGroupCardComponent implements UIUnitProvider, OnInit, OnDestr
 
     this.battleEvents.onEvent(BattleEvent.OnGroupModifiersChagned)
       .pipe(
-        filter(unitEvent => unitEvent.unit === this.unitGroup),
+        filter(unitEvent => unitEvent.unitGroup === this.unitGroup),
         takeUntil(this.destroy$),
       )
       .subscribe((event) => {

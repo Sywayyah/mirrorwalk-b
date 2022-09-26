@@ -67,7 +67,7 @@ export class MwSpellTargetDirective implements OnInit {
     } else {
       this.battleEvents.dispatchEvent({
         type: BattleEvent.UI_Player_Clicks_Ally_Group,
-        unit: this.spellTargetUnitGroup
+        unitGroup: this.spellTargetUnitGroup
       });
       this.dispatchUnitGroupHovered(HoverTypeEnum.Unhover);
     }
