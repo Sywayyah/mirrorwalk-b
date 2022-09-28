@@ -25,6 +25,7 @@ export interface Store<T,
   next:
    - try to develop store
    - @State() param decorators? 
+   - support for events array...
 */
 
 type StoreTypes = 'storeClient';
@@ -33,8 +34,10 @@ const storeClassRef = Symbol(`Client's store class reference`);
 const storeEventListeners = Symbol('Store client event listeners');
 const storeClientIndicator = Symbol('Store class indicator for decorators');
 
-type BasicListener = [number, Function];
-type StoreBaseClass = { [storeEventListeners]: BasicListener[] };
+type ClassPropertyConfig = { type: 'wire', event: number, method: Function }
+  | { type: 'notify', method: Function, event: number };
+
+type StoreBaseClass = { [storeEventListeners]: ClassPropertyConfig[] };
 
 interface IStoreClient<
   StateT,
@@ -56,7 +59,7 @@ export function StoreClient<
   StoreT extends Store<StateT, EventKeysT, EventsMapT, EventsServiceT>
 >(storeClass: Type<StoreT>): Type<IStoreClient<StateT, EventKeysT, EventsMapT, EventsServiceT, StoreT>> {
   return class StoreClient implements OnDestroy {
-    public static [storeEventListeners]: BasicListener[] = [];
+    public static [storeEventListeners]: ClassPropertyConfig[] = [];
 
     public static [storeClientIndicator]: StoreTypes = 'storeClient';
 
@@ -75,14 +78,29 @@ export function StoreClient<
 
       const ownConstructor = Object.getPrototypeOf(this).constructor;
 
-      (ownConstructor)[storeEventListeners]!.forEach(([event, fn]: [number, Function]) => {
-        this.store.onEvent(event)
-          .pipe(
-            this.untilDestroyed.bind(self),
-          )
-          .subscribe(val => {
-            fn.apply(this, [val]);
-          });
+      ((ownConstructor)[storeEventListeners] as ClassPropertyConfig[]).forEach(config => {
+        const method = config.method;
+
+        switch (config.type) {
+          case 'wire':
+            this.store.onEvent(config.event)
+              .pipe(
+                this.untilDestroyed.bind(self),
+              )
+              .subscribe(val => {
+                method.apply(this, [val]);
+              });
+            break;
+          case 'notify':
+            this.store.onEvent(config.event)
+              .pipe(
+                this.untilDestroyed.bind(self),
+              )
+              .subscribe(() => {
+                method.apply(this);
+              });
+            break;
+        }
       });
     }
 
@@ -103,7 +121,7 @@ export function StoreClient<
   }
 }
 
-function findStoreClientBaseClass<C>(childClass: Type<C>, type: StoreTypes): Type<{ [storeClientIndicator]: StoreTypes, [storeEventListeners]: BasicListener[] }> | null {
+function findStoreClientBaseClass<C>(childClass: Type<C>, type: StoreTypes): Type<{ [storeClientIndicator]: StoreTypes, [storeEventListeners]: ClassPropertyConfig[] }> | null {
   const parentProto = Object.getPrototypeOf(childClass);
 
   if (!parentProto) {
@@ -115,12 +133,42 @@ function findStoreClientBaseClass<C>(childClass: Type<C>, type: StoreTypes): Typ
     : findStoreClientBaseClass(parentProto, type);
 }
 
+/* todo: maybe some generic fn for Notify and WireEvent */
 /**
  * Store client method decorator. Allows method to be triggered when event or events occur, without
  * receiving any parameters.
 */
-export function Notify() {
+export function Notify<
+  EventKeyT extends EventKeys,
+  EventMapT extends EventMap<EventKeyT>,
+  BaseClass extends IStoreClient<any, EventKeyT, EventMapT, any, any>
+>(event: EventKeyT) {
+  return function (
+    targetClass: object,
+    methodName: string,
+    descriptor: PropertyDescriptor,
+  ) {
+    const method = descriptor.value;
 
+    const targetConstructor = targetClass.constructor as Type<BaseClass>;
+    const storeClientBaseClass = findStoreClientBaseClass(targetConstructor, 'storeClient');
+
+    if (!storeClientBaseClass) {
+      throw new Error(`[Store Feature] Error. Decorator @Notify() was used in ${targetConstructor.name}.${methodName} without @ForStore().`);
+    }
+
+    if (typeof method !== 'function') {
+      throw new Error(`[Store Feature] Error. Decorator @Notify() in ${targetConstructor.name}.${methodName} must be applied to method.`);
+    }
+
+    const config: ClassPropertyConfig[] = (storeClientBaseClass as unknown as StoreBaseClass)[storeEventListeners];
+
+    config.push({
+      type: 'notify',
+      method: method,
+      event: event as number,
+    });
+  };
 }
 
 /**
@@ -152,8 +200,12 @@ export function WireEvent<
       throw new Error(`[Store Feature] Error. Decorator @WireEvent(${event as string}) in ${targetConstructor.name}.${methodName} must be applied to method.`);
     }
 
-    const config: BasicListener[] = (storeClientBaseClass as unknown as StoreBaseClass)[storeEventListeners];
+    const config: ClassPropertyConfig[] = (storeClientBaseClass as unknown as StoreBaseClass)[storeEventListeners];
 
-    config.push([event as number, method as Function]);
+    config.push({
+      type: 'wire',
+      event: event as number,
+      method: method,
+    });
   }
 }

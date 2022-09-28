@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { PlayerInstanceModel } from 'src/app/core/model/main.model';
 import { SpellActivationType, SpellInstance, SpellModel } from 'src/app/core/model/spells';
 import { BattleEventsService } from './mw-battle-events.service';
 import { MwPlayersService } from './mw-players.service';
+import { GameStoreClient } from './state/game-state.service';
+import { Notify } from './state/store-decorators.config';
 import { BattleEvent } from './types';
 
 
@@ -45,7 +47,7 @@ const NULL_SPELL_INSTANCE: SpellInstance = {
 @Injectable({
   providedIn: 'root'
 })
-export class MwCurrentPlayerStateService {
+export class MwCurrentPlayerStateService extends GameStoreClient() {
 
   public readonly currentPlayer: PlayerInstanceModel = this.players.getCurrentPlayer();
 
@@ -59,18 +61,13 @@ export class MwCurrentPlayerStateService {
 
   constructor(
     private readonly players: MwPlayersService,
-    private readonly events: BattleEventsService,
+    private readonly battleEvents: BattleEventsService,
   ) {
-    events.onEvents({
-      [BattleEvent.Fight_Next_Round_Starts]: () => {
-        this.resetSpellsCooldown();
-      },
-      [BattleEvent.Fight_Starts]: () => {
-        this.resetSpellsCooldown();
-      }
-    }).subscribe();
+    super();
   }
 
+  @Notify(BattleEvent.Fight_Next_Round_Starts)
+  @Notify(BattleEvent.Fight_Starts)
   public resetSpellsCooldown(): void {
     this.spellsAreOnCooldown = false;
   }
@@ -86,7 +83,7 @@ export class MwCurrentPlayerStateService {
       case 'instant':
         this.onCurrentSpellCast();
 
-        this.events.dispatchEvent({
+        this.battleEvents.dispatchEvent({
           type: BattleEvent.Player_Casts_Instant_Spell,
           player: this.currentPlayer,
           spell: spell,

@@ -2,15 +2,12 @@ import { AfterViewInit, ChangeDetectorRef, Component, OnInit, QueryList, ViewChi
 import { PlayerInstanceModel, UnitGroupInstModel } from 'src/app/core/model/main.model';
 import { getDamageParts } from 'src/app/core/utils/utils';
 import {
-  BattleEventsService,
-  BattleEvent,
-  BattleStateService as MwBattleStateService,
-  MwNeutralPlayerService,
-  MwPlayersService,
-  MwPlayerStateService
+  BattleEvent, BattleStateService as MwBattleStateService, GroupDamagedByGroupEvent, MwNeutralPlayerService, MwPlayerStateService
 } from '../../services';
 import { MwCardsMappingService } from '../../services/mw-cards-mapping.service';
 import { CombatInteractorService } from '../../services/mw-combat-interactor.service';
+import { GameStoreClient } from '../../services/state/game-state.service';
+import { WireEvent } from '../../services/state/store-decorators.config';
 import { MwUnitGroupCardComponent } from '../mw-unit-group-card/mw-unit-group-card.component';
 import { VfxService } from '../ui-elements/vfx-layer/vfx.service';
 
@@ -19,7 +16,7 @@ import { VfxService } from '../ui-elements/vfx-layer/vfx.service';
   templateUrl: './mw-gameboard.component.html',
   styleUrls: ['./mw-gameboard.component.scss'],
 })
-export class MwGameboardComponent implements OnInit, AfterViewInit {
+export class MwGameboardComponent extends GameStoreClient() implements OnInit, AfterViewInit {
   public mainPlayerUnitGroups!: UnitGroupInstModel[];
   public neutralPlayerGroups!: UnitGroupInstModel[];
 
@@ -31,17 +28,16 @@ export class MwGameboardComponent implements OnInit, AfterViewInit {
   @ViewChildren(MwUnitGroupCardComponent)
   public cards!: QueryList<MwUnitGroupCardComponent>;
 
-
   constructor(
     public readonly mwPlayerState: MwPlayerStateService,
     public readonly mwBattleState: MwBattleStateService,
     private readonly mwNeutralPlayer: MwNeutralPlayerService,
     private readonly cardsMapping: MwCardsMappingService,
-    private readonly battleEvents: BattleEventsService,
     private readonly combatInteractor: CombatInteractorService,
     private readonly vfx: VfxService,
     private readonly cd: ChangeDetectorRef,
   ) {
+    super();
   }
 
   public ngOnInit(): void {
@@ -85,10 +81,13 @@ export class MwGameboardComponent implements OnInit, AfterViewInit {
       this.neutralPlayerGroups = this.mwBattleState.heroesUnitGroupsMap.get(this.neutralPlayerInfo) as UnitGroupInstModel[];
       this.fightQueue = this.mwBattleState.getFightQueue();
     });
-
-    this.battleEvents.onEvent(BattleEvent.On_Group_Damaged_By_Group).subscribe((event) => {
-      const isRanged = event.attackerGroup.type.defaultModifiers?.isRanged;
-      this.vfx.createFloatingMessageForUnitGroup(event.attackedGroup, getDamageParts(event.damage, event.loss, isRanged));
-    });
   }
+
+  @WireEvent(BattleEvent.On_Group_Damaged_By_Group)
+  public displayDamageVfxOverAttackedGroup(event: GroupDamagedByGroupEvent): void {
+    /* previous solution was stacking because of no unsubscribe. */
+    const isRanged = event.attackerGroup.type.defaultModifiers?.isRanged;
+    this.vfx.createFloatingMessageForUnitGroup(event.attackedGroup, getDamageParts(event.damage, event.loss, isRanged));
+  }
+
 }
