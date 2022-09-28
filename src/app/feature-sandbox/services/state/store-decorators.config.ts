@@ -209,3 +209,13 @@ export function WireEvent<
     });
   }
 }
+
+/* todo: idea, @WirePipe */
+/* 
+  @WirePipe(Event.UnitMods, [
+    filter(event => event.unit === this.unit)
+  ])
+  public method(event: QWE): void {
+
+  }
+*/
