@@ -141,11 +141,11 @@ export const HUMANS_FRACTION_UNIT_TYPES: Record<HF_TYPES_ENUM, UnitTypeModel> = 
     baseStats: {
       damageInfo: {
         minDamage: 21,
-        maxDamage: 32,
+        maxDamage: 28,
       },
-      attackRating: 12,
-      defence: 14,
-      health: 56,
+      attackRating: 11,
+      defence: 12,
+      health: 51,
       speed: 17,
     },
 
