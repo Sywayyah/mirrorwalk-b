@@ -188,6 +188,7 @@ export interface SpeedEvent extends BattleEventModel<BattleEvent.Combat_Unit_Spe
 
 
 export type FightStartsEvent = BattleEventModel<BattleEvent.Fight_Starts>;
+export type OnGroupModsChanged = UnitEvent<BattleEvent.OnGroupModifiersChagned>;
 
 export interface EventByEnumMapping extends Record<BattleEvent, BattleEventModel> {
   [BattleEvent.Struct_Selected]: StructSelected;
@@ -208,7 +209,7 @@ export interface EventByEnumMapping extends Record<BattleEvent, BattleEventModel
   [BattleEvent.Combat_Attack_Interaction]: CombatInteractionState;
   [BattleEvent.Combat_Unit_Speed_Changed]: SpeedEvent;
 
-  [BattleEvent.OnGroupModifiersChagned]: UnitEvent<BattleEvent.OnGroupModifiersChagned>;
+  [BattleEvent.OnGroupModifiersChagned]: OnGroupModsChanged;
   [BattleEvent.On_Group_Damaged_By_Group]: GroupDamagedByGroupEvent;
   [BattleEvent.On_Group_Takes_Damage]: GroupTakesDamageEvent;
   [BattleEvent.On_Group_Counter_Attacked]: OnGroupCounterAttacked;

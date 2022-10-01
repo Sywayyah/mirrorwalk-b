@@ -1,6 +1,7 @@
 import { inject, OnDestroy, Type } from "@angular/core";
-import { Observable, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { Observable, pipe, Subject, Subscription } from 'rxjs';
+import { takeUntil, filter } from 'rxjs/operators';
+import { GameEventsMapping } from "src/app/core/model/items/items.types";
 import { EventKeys, EventMap, EventsServiceBase } from "./events-service-base";
 
 /* Also, StoreSegment? */
@@ -34,8 +35,7 @@ const storeClassRef = Symbol(`Client's store class reference`);
 const storeEventListeners = Symbol('Store client event listeners');
 const storeClientIndicator = Symbol('Store class indicator for decorators');
 
-type ClassPropertyConfig = { type: 'wire', event: number, method: Function }
-  | { type: 'notify', method: Function, event: number };
+type ClassPropertyConfig = { type: 'wire' | 'notify' | 'subscribeEvent', event: number, method: Function };
 
 type StoreBaseClass = { [storeEventListeners]: ClassPropertyConfig[] };
 
@@ -45,10 +45,12 @@ interface IStoreClient<
   EventsMapT extends EventMap<EventsKeyT>,
   EventsServiceT extends EventsServiceBase<EventsKeyT, EventsMapT>,
   StoreT extends Store<StateT, EventsKeyT, EventsMapT, EventsServiceT>
-> {
+> extends OnDestroy {
   store: StoreT;
 
   events(): StoreT['events'];
+
+  onDestroyed?(): void;
 }
 
 export function StoreClient<
@@ -70,6 +72,10 @@ export function StoreClient<
     public store: StoreT;
 
     public destroyed$ = new Subject<void>();
+
+    public onDestroyed?: () => void;
+
+    private plainSubscriptions = new Subscription();
 
     constructor() {
       const self = this;
@@ -100,13 +106,21 @@ export function StoreClient<
                 method.apply(this);
               });
             break;
+          case 'subscribeEvent':
+            const subscription: Subscription = method.apply(self, [this.store.onEvent(config.event)]);
+
+            this.plainSubscriptions.add(subscription);
+
+            break;
         }
       });
     }
 
     public ngOnDestroy(): void {
+      this.onDestroyed?.();
       this.destroyed$.next();
       this.destroyed$.complete();
+      this.plainSubscriptions.unsubscribe();
     }
 
     public events(): StoreT['events'] {
@@ -133,7 +147,36 @@ function findStoreClientBaseClass<C>(childClass: Type<C>, type: StoreTypes): Typ
     : findStoreClientBaseClass(parentProto, type);
 }
 
-/* todo: maybe some generic fn for Notify and WireEvent */
+function decorateStoreClientMethod<BaseClass>(
+  targetClass: object,
+  methodName: string,
+  descriptor: PropertyDescriptor,
+  event: string | number,
+  messageName: string,
+  configType: ClassPropertyConfig['type'],
+) {
+  const method = descriptor.value;
+
+  const targetConstructor = targetClass.constructor as Type<BaseClass>;
+  const storeClientBaseClass = findStoreClientBaseClass(targetConstructor, 'storeClient');
+
+  if (!storeClientBaseClass) {
+    throw new Error(`[Store Feature] Error. Decorator ${messageName} was used in ${targetConstructor.name}.${methodName} without @ForStore().`);
+  }
+
+  if (typeof method !== 'function') {
+    throw new Error(`[Store Feature] Error. Decorator ${messageName} in ${targetConstructor.name}.${methodName} must be applied to method.`);
+  }
+
+  const config: ClassPropertyConfig[] = (storeClientBaseClass as unknown as StoreBaseClass)[storeEventListeners];
+
+  config.push({
+    type: configType,
+    method: method,
+    event: event as number,
+  });
+}
+
 /**
  * Store client method decorator. Allows method to be triggered when event or events occur, without
  * receiving any parameters.
@@ -148,26 +191,14 @@ export function Notify<
     methodName: string,
     descriptor: PropertyDescriptor,
   ) {
-    const method = descriptor.value;
-
-    const targetConstructor = targetClass.constructor as Type<BaseClass>;
-    const storeClientBaseClass = findStoreClientBaseClass(targetConstructor, 'storeClient');
-
-    if (!storeClientBaseClass) {
-      throw new Error(`[Store Feature] Error. Decorator @Notify() was used in ${targetConstructor.name}.${methodName} without @ForStore().`);
-    }
-
-    if (typeof method !== 'function') {
-      throw new Error(`[Store Feature] Error. Decorator @Notify() in ${targetConstructor.name}.${methodName} must be applied to method.`);
-    }
-
-    const config: ClassPropertyConfig[] = (storeClientBaseClass as unknown as StoreBaseClass)[storeEventListeners];
-
-    config.push({
-      type: 'notify',
-      method: method,
-      event: event as number,
-    });
+    decorateStoreClientMethod<BaseClass>(
+      targetClass,
+      methodName,
+      descriptor,
+      event,
+      `@Notify(${event})`,
+      'notify'
+    );
   };
 }
 
@@ -186,36 +217,40 @@ export function WireEvent<
     methodName: string,
     descriptor: TypedPropertyDescriptor<(event: EventArg, ...rest: any) => void>
   ) {
-
-    const method = descriptor.value;
-
-    const targetConstructor = targetClass.constructor as Type<BaseClass>;
-    const storeClientBaseClass = findStoreClientBaseClass(targetConstructor, 'storeClient');
-
-    if (!storeClientBaseClass) {
-      throw new Error(`[Store Feature] Error. Decorator @WireEvent(${event as string}) was used in ${targetConstructor.name}.${methodName} without @ForStore().`);
-    }
-
-    if (typeof method !== 'function') {
-      throw new Error(`[Store Feature] Error. Decorator @WireEvent(${event as string}) in ${targetConstructor.name}.${methodName} must be applied to method.`);
-    }
-
-    const config: ClassPropertyConfig[] = (storeClientBaseClass as unknown as StoreBaseClass)[storeEventListeners];
-
-    config.push({
-      type: 'wire',
-      event: event as number,
-      method: method,
-    });
+    decorateStoreClientMethod<BaseClass>(
+      targetClass,
+      methodName,
+      descriptor,
+      event,
+      `@WireEvent(${event as string})`,
+      'wire',
+    );
   }
 }
 
-/* todo: idea, @WirePipe */
-/* 
-  @WirePipe(Event.UnitMods, [
-    filter(event => event.unit === this.unit)
-  ])
-  public method(event: QWE): void {
-
+/**
+ * Observable of this event will be passed as first argument, returned Subscrition will be
+ * handled automatically.
+ */
+export function SubscribeEvent<
+  EventKeyT extends EventKeys,
+  EventMapT extends EventMap<EventKeyT>,
+  BaseClass extends IStoreClient<any, EventKeyT, EventMapT, any, any>
+>(
+  event: EventKeyT,
+) {
+  return function <EventArg extends EventMapT[EventKeyT]>(
+    targetClass: BaseClass,
+    methodName: string,
+    descriptor: TypedPropertyDescriptor<(event: Observable<EventArg>, ...rest: any) => Subscription>
+  ) {
+    decorateStoreClientMethod<BaseClass>(
+      targetClass,
+      methodName,
+      descriptor,
+      event,
+      `@SubscribeEvent(${event as string})`,
+      'subscribeEvent',
+    );
   }
-*/
+}

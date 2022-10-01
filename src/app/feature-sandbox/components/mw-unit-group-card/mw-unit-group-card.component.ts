@@ -1,11 +1,13 @@
 import { Component, ElementRef, EventEmitter, forwardRef, Input, OnDestroy, OnInit, Output } from '@angular/core';
-import { Subject } from 'rxjs';
+import { Observable, Subject, Subscription } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 import { PlayerModel, UnitGroupInstModel } from 'src/app/core/model/main.model';
 import { PROVIDE_UI_UNIT_GROUP, UIUnitProvider } from '../../directives/mw-unit-events-cursor.directive';
-import { BattleEvent, BattleEventsService, BattleStateService, HoverTypeEnum, MwPlayersService } from '../../services';
+import { BattleEvent, BattleEventsService, BattleStateService, HoverTypeEnum, MwPlayersService, OnGroupModsChanged } from '../../services';
 import { MwUnitGroupStateService } from '../../services/mw-unit-group-state.service';
 import { MwUnitGroupsService, UIModsModel } from '../../services/mw-unit-groups.service';
+import { GameStoreClient } from '../../services/state/game-state.service';
+import { SubscribeEvent } from '../../services/state/store-decorators.config';
 
 @Component({
   selector: 'mw-unit-group-card',
@@ -15,7 +17,7 @@ import { MwUnitGroupsService, UIModsModel } from '../../services/mw-unit-groups.
     { provide: PROVIDE_UI_UNIT_GROUP, useExisting: forwardRef(() => MwUnitGroupCardComponent) }
   ],
 })
-export class MwUnitGroupCardComponent implements UIUnitProvider, OnInit, OnDestroy {
+export class MwUnitGroupCardComponent extends GameStoreClient() implements UIUnitProvider, OnInit, OnDestroy {
 
   @Input()
   public unitGroup!: UnitGroupInstModel;
@@ -51,6 +53,7 @@ export class MwUnitGroupCardComponent implements UIUnitProvider, OnInit, OnDestr
     private readonly unitsService: MwUnitGroupStateService,
     private readonly units: MwUnitGroupsService,
   ) {
+    super();
   }
 
   public ngOnInit(): void {
@@ -60,15 +63,6 @@ export class MwUnitGroupCardComponent implements UIUnitProvider, OnInit, OnDestr
     this.cardReady.next(this);
 
     this.modsForUi = this.units.calcUiMods(this.unitGroup);
-
-    this.battleEvents.onEvent(BattleEvent.OnGroupModifiersChagned)
-      .pipe(
-        filter(unitEvent => unitEvent.unitGroup === this.unitGroup),
-        takeUntil(this.destroy$),
-      )
-      .subscribe((event) => {
-        this.modsForUi = this.units.calcUiMods(this.unitGroup);
-      });
 
     this.mwBattleStateService.battleEvent$
       .pipe(
@@ -90,11 +84,22 @@ export class MwUnitGroupCardComponent implements UIUnitProvider, OnInit, OnDestr
       });
   }
 
-  public ngOnDestroy(): void {
+  public onDestroyed(): void {
     this.destroy$.next();
     this.destroy$.complete();
     this.battleEvents.dispatchEvent({ type: BattleEvent.UI_Player_Hovers_Group_Card, hoverType: HoverTypeEnum.Unhover });
     this.groupDies.next();
+  }
+
+  @SubscribeEvent(BattleEvent.OnGroupModifiersChagned)
+  public updateMods(event$: Observable<OnGroupModsChanged>): Subscription {
+    return event$
+      .pipe(
+        filter(event => event.unitGroup === this.unitGroup)
+      )
+      .subscribe(() => {
+        this.modsForUi = this.units.calcUiMods(this.unitGroup);
+      });
   }
 
   public onCardHover(isHovered: boolean): void {
