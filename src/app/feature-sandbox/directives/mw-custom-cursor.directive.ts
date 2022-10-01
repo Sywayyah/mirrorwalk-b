@@ -28,7 +28,7 @@ export class MwCustomCursorDirective implements OnDestroy {
     protected renderer: Renderer2,
     protected ngZone: NgZone,
   ) {
-    this.showCursorForHostElem(false);
+    this.setNativeCursorVisibility(false);
 
     ngZone.runOutsideAngular(() => {
       this.unlistenMouseMove = renderer.listen(elemRef.nativeElement, 'mousemove', (mouseEvent: MouseEvent) => {
@@ -45,43 +45,63 @@ export class MwCustomCursorDirective implements OnDestroy {
     this.unlistenMouseMove();
   }
 
-  @HostListener('mouseenter')
-  public onMouseOver(): void {
+  @HostListener('mouseenter', ['$event'])
+  public onMouseOver(event: MouseEvent): void {
+    event.stopPropagation();
+
     this.isHovered = true;
     const cursor = this.getCursorToShow();
 
+    /* todo: fix cursors */
+
     if (cursor) {
-      this.showCursorForHostElem(false);
       this.cursor.setCustomCursor(cursor.animation, cursor.options, cursor.data);
+      this.setNativeCursorVisibility(false);
     } else {
-      this.showCursorForHostElem(true);
+      this.setNativeCursorVisibility(true);
+      this.cursor.clearCustomCursor();
     }
   }
 
-  @HostListener('mouseleave')
-  public onMouseOut(): void {
+  @HostListener('mouseleave', ['$event'])
+  public onMouseOut(event: MouseEvent): void {
+    event.stopPropagation();
+
     this.isHovered = false;
     this.cursor.clearCustomCursor();
   }
 
-  protected getCursorToShow(): AnimatedCursor {
+  protected getCursorToShow(): AnimatedCursor | null {
     return this.cursorAnimation;
   }
 
   protected setCursorIcon(cursor: AnimatedCursor): void {
-    if (this.isHovered) {
+    if (this.isHovered && cursor) {
+      this.setNativeCursorVisibility(false);
       this.cursor.setCustomCursor(cursor.animation, cursor.options, cursor.data);
+    }
+
+    if (!cursor) {
+      this.setNativeCursorVisibility(true);
+      this.cursor.clearCustomCursor();
     }
   }
 
   protected recalcCursorIcon(): void {
     const cursor = this.getCursorToShow();
-    if (this.isHovered) {
+
+    if (this.isHovered && cursor) {
       this.setCursorIcon(cursor);
+      this.setNativeCursorVisibility(false);
+    }
+
+    if (!cursor) {
+      this.cursor.clearCustomCursor();
+      this.setNativeCursorVisibility(true);
     }
   }
 
-  private showCursorForHostElem(show: boolean): void {
+  private setNativeCursorVisibility(show: boolean): void {
     this.renderer.setStyle(this.elemRef.nativeElement, 'cursor', show ? 'auto' : 'none');
   }
 }

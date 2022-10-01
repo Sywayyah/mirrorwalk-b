@@ -358,6 +358,10 @@ export class CombatInteractorService extends GameStoreClient() {
       },
       historyLog: (plainMsg) => {
         this.battleLog.logSimpleMessage(plainMsg);
+      },
+      healUnit: (unit, healValue) => {
+        /* think on resorting queue */
+        this.units.healUnit(unit, healValue);
       }
     };
   }
@@ -490,6 +494,8 @@ export class CombatInteractorService extends GameStoreClient() {
     return this.battleEvents.onEvents({
       [BattleEvent.Fight_Starts]: () => {
         this.initAllUnitGroupSpells();
+
+        this.resetAllUnitGroupsCooldowns();
       },
       [BattleEvent.Combat_Group_Attacked]: (event: CombatGroupAttacked) => {
         this.battleEvents.dispatchEvent({
@@ -572,11 +578,17 @@ export class CombatInteractorService extends GameStoreClient() {
             round: event.round,
           }
         );
+
+        this.resetAllUnitGroupsCooldowns();
       },
 
       [BattleEvent.On_Group_Dies]: (event) => {
         this.applyDispellToUnitGroup(event.target);
       },
     });
+  }
+
+  private resetAllUnitGroupsCooldowns(): void {
+    this.forEachUnitGroup(unitGroup => unitGroup.fightInfo.spellsOnCooldown = false);
   }
 }

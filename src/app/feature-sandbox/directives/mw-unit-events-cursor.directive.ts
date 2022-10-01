@@ -46,11 +46,15 @@ export class MwUnitEventsCursorDirective extends MwCustomCursorDirective {
       });
   }
 
-  protected getCursorToShow(): AnimatedCursor {
+  protected getCursorToShow(): AnimatedCursor | null {
     // todo: maybe some way to use normal cursor
 
     const isEnemyUnitGroup = this.players.isEnemyUnitGroup(this.unitGroup);
     const playerState = this.curPlayerState.playerCurrentState;
+
+    if (this.curPlayerState.playerCurrentState !== PlayerState.SpellTargeting && !isEnemyUnitGroup) {
+      return null;
+    }
 
     if (playerState === PlayerState.Normal && (!isEnemyUnitGroup || isEnemyUnitGroup && !this.unitGroup.fightInfo.isAlive)) {
       return this.createStaticCursor('interdiction');
@@ -68,6 +72,7 @@ export class MwUnitEventsCursorDirective extends MwCustomCursorDirective {
       [PlayerState.WaitsForTurn]: 'hourglass',
     };
 
+
     if (this.curPlayerState.playerCurrentState === PlayerState.SpellTargeting) {
       return {
         animation: SpellCastCursorAnimation,
@@ -77,6 +82,7 @@ export class MwUnitEventsCursorDirective extends MwCustomCursorDirective {
         }
       };
     }
+
 
     return this.createStaticCursor(mapping[this.curPlayerState.playerCurrentState]);
   }

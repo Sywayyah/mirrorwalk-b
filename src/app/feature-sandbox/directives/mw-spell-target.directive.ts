@@ -3,7 +3,7 @@ import { UnitGroupInstModel } from 'src/app/core/model/main.model';
 import { BattleEvent, BattleEventsService, BattleStateService, HoverTypeEnum, MwPlayersService } from '../services';
 import { MwCurrentPlayerStateService } from '../services/mw-current-player-state.service';
 
-/* 
+/*
   considering that this directive handles not only spells, it can be renamed later
 */
 @Directive({

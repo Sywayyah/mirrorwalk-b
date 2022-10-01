@@ -6,7 +6,7 @@ import type { SpellInstance, SpellModel } from "./spells/spell.types";
 interface RequirementModel extends Partial<ResourcesModel> {
     /* heroLevel?: number;
     gold?: number;
-    redCrystals?: number; 
+    redCrystals?: number;
     glory?: number;
     gems?: number; */
 }
@@ -90,6 +90,7 @@ export interface UnitGroupModel {
     fightInfo: {
         initialCount: number;
         isAlive: boolean;
+        spellsOnCooldown?: boolean;
     };
 }
 

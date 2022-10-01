@@ -19,6 +19,7 @@ export interface UIModsModel {
 })
 export class MwUnitGroupsService {
 
+
   constructor(
     private spells: MwSpellsService,
   ) { }
@@ -81,6 +82,40 @@ export class MwUnitGroupsService {
       .reduce((speedBonusSum, nextMod) => speedBonusSum + (nextMod.unitGroupSpeedBonus ?? 0), 0);
 
     return unitGroup.type.baseStats.speed + speedBonusFromMods;
+  }
+
+  public healUnit(unit: UnitGroupInstModel, healValue: number): void {
+    const singleUnitHealth = unit.type.baseStats.health;
+
+    const healedUnitsCount = Math.floor(healValue / singleUnitHealth);
+
+    let fullHealedUnitsCount = healedUnitsCount * singleUnitHealth;
+
+    let healValueTail = healValue - fullHealedUnitsCount;
+
+    if (unit.tailUnitHp) {
+      const combinedTails = healValueTail + unit.tailUnitHp;
+
+      if (combinedTails > singleUnitHealth) {
+        fullHealedUnitsCount + 1;
+      }
+
+      healValueTail = combinedTails - singleUnitHealth;
+    }
+
+    unit.count += fullHealedUnitsCount;
+    unit.tailUnitHp = healValueTail;
+
+    const initialCount = unit.fightInfo.initialCount;
+
+    if (unit.count >= initialCount) {
+      unit.count = initialCount;
+      unit.tailUnitHp = singleUnitHealth;
+    }
+
+    if (!unit.fightInfo.isAlive) {
+      unit.fightInfo.isAlive = true;
+    }
   }
 
   public calcUiMods(target: UnitGroupInstModel): UIModsModel {

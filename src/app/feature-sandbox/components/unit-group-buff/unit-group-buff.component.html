@@ -1,21 +1,20 @@
 <mw-hover-hint [hintBody]="buffHint" [xPos]="'above'">
-    <mw-ra-icon class="buff-icon" [icon]="icon.icon"
-        [ngStyle]="{ 'color': icon.iconClr , 'background': icon.bgClr }">
-    </mw-ra-icon>
+  <mw-ra-icon class="buff-icon" [icon]="icon.icon" [ngStyle]="{ 'color': icon.iconClr , 'background': icon.bgClr }">
+  </mw-ra-icon>
 </mw-hover-hint>
 
 <ng-template #buffHint>
-    <div style="display: flex">
-        <mw-ra-icon [icon]="icon.icon"
-            class="hint-icon"
-            [ngStyle]="{ 'color': icon.iconClr , 'background': icon.bgClr }">
-        </mw-ra-icon>
-        <div style="padding: 4px; font-size: 14px;">
-            <div>{{baseType.name}}</div>
-            <div>Level {{buff.currentLevel}}</div>
-        </div>
+  <div style="display: flex">
+    <mw-ra-icon [icon]="icon.icon" class="hint-icon" [ngStyle]="{ 'color': icon.iconClr , 'background': icon.bgClr }">
+    </mw-ra-icon>
+
+    <div style="padding: 4px; font-size: 14px;">
+      <div>{{baseType.name}}</div>
+      <div>Level {{buff.currentLevel}}</div>
     </div>
-    <div style="padding: 4px; font-size: 13px; max-width: 240px;">
-        <div>{{buff.description}}</div>
-    </div>
+  </div>
+
+  <div style="padding: 4px; font-size: 13px; max-width: 240px;">
+    <div>{{buff.description}}</div>
+  </div>
 </ng-template>

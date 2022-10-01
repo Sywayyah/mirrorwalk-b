@@ -64,7 +64,7 @@ export class BattleStateService {
     this.updateGroupsTailHpAndCombatInfo();
 
     this.refreshUnitGroups();
- 
+
     this.battleEventsService.onEvents({
       [BattleEvent.Fight_Starts]: event => {
         console.log('Battle starts');
@@ -170,12 +170,14 @@ export class BattleStateService {
         }
         if (this.curPlayerState.playerCurrentState === PlayerState.SpellTargeting) {
           this.curPlayerState.onCurrentSpellCast();
+
           this.battleEventsService.dispatchEvent({
             type: BattleEvent.Player_Targets_Spell,
             player: event.attackingPlayer,
             spell: this.curPlayerState.currentSpell,
             target: event.attackedGroup,
           });
+
           this.curPlayerState.setSpellsOnCooldown();
         }
       },
@@ -289,29 +291,31 @@ export class BattleStateService {
     return unitGroup.count * unitGroup.type.baseStats.damageInfo.maxDamage;
   }
 
-  private resetGroupsTurnsLeft(): void {
-    this.fightQueue.forEach((unitGroup: UnitGroupModel) => unitGroup.turnsLeft = unitGroup.type.defaultTurnsPerRound);
-  }
-
-  private resetFightQueue() {
-    this.fightQueue = this.sortUnitsBySpeed([
-      ...this.getAliveUnitsOfPlayer(this.players[0]),
-      ...this.getAliveUnitsOfPlayer(this.players[1]),
-    ]);
+  public resortFightQuery(): void {
+    this.fightQueue = [this.fightQueue[0], ...this.sortUnitsBySpeed(this.fightQueue.slice(1))];
   }
 
   public getAliveUnitsOfPlayer(player: PlayerInstanceModel): UnitGroupInstModel[] {
-    return (this.heroesUnitGroupsMap.get(player) as UnitGroupInstModel[]).filter(unitGroup => unitGroup.fightInfo.isAlive);
+    return (this.heroesUnitGroupsMap.get(player) as UnitGroupInstModel[]).filter(
+      unitGroup => unitGroup.fightInfo.isAlive,
+    );
   }
 
-  private resortFightQuery(): void {
-    this.fightQueue = [this.fightQueue[0], ...this.sortUnitsBySpeed(this.fightQueue.slice(1))];
+  private resetGroupsTurnsLeft(): void {
+    this.fightQueue.forEach((unitGroup: UnitGroupModel) => unitGroup.turnsLeft = unitGroup.type.defaultTurnsPerRound);
   }
 
   private sortUnitsBySpeed(units: UnitGroupInstModel[]): UnitGroupInstModel[] {
     return units.sort((a, b) => {
       return this.units.getUnitGroupSpeed(b) - this.units.getUnitGroupSpeed(a);
     });
+  }
+
+  private resetFightQueue(): void {
+    this.fightQueue = this.sortUnitsBySpeed([
+      ...this.getAliveUnitsOfPlayer(this.players[0]),
+      ...this.getAliveUnitsOfPlayer(this.players[1]),
+    ]);
   }
 
   private initPlayerUnitGroupsMap(unitGroups: UnitGroupInstModel[]): void {

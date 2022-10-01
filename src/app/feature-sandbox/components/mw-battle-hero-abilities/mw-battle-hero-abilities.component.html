@@ -7,20 +7,15 @@
     <div class="cd-icon">
         <mw-ra-icon icon="hourglass" *ngIf=" curPlayerState.spellsAreOnCooldown"></mw-ra-icon>
     </div>
+
     <mw-hover-hint [hintBody]="hint" *ngFor="let spell of currentPlayer.hero.spells">
         <div class="ability spell-icon" (click)="onAbilityClick(spell)"
             [class.no-mana]="currentPlayer.hero.stats.currentMana < spell.currentManaCost || curPlayerState.spellsAreOnCooldown"
             [class.current-ability]="curPlayerState.currentSpell === spell && spell.baseType.activationType === activationTypes.Target"
             [ngStyle]="{ 'color': spell.baseType.icon.iconClr , 'background': spell.baseType.icon.bgClr }">
             <mw-ra-icon [icon]="spell.baseType.icon.icon"></mw-ra-icon>
-            <!-- <i class="ra" [class]="'ra-' + spell.baseType.icon.icon"></i> -->
-            <!-- <mw-ra-icon [icon]="spell.baseType.icon.icon"></mw-ra-icon> -->
-            <!-- light effect -->
-            <i class="ra light" [class]="'ra-' + spell.baseType.icon.icon"></i>
 
-            <!-- <div>
-                {{ spell.name }}
-            </div> -->
+            <i class="ra light" [class]="'ra-' + spell.baseType.icon.icon"></i>
         </div>
 
         <ng-template #hint>
@@ -28,10 +23,9 @@
                 <div style="display: flex;">
                     <div class="tooltip-icon"
                         [ngStyle]="{ 'color': spell.baseType.icon.iconClr , 'background': spell.baseType.icon.bgClr }">
-                        <!-- <i class="ra" [class]="'ra-' + spell.baseType.icon.icon"></i> -->
                         <mw-ra-icon [icon]="spell.baseType.icon.icon"></mw-ra-icon>
-
                     </div>
+
                     <div style="padding: 4px;">
                         <div style="font-size: 14px;">{{spell.name}}</div>
                         <div style="font-size: 12px;">Level: {{spell.currentLevel}}</div>

@@ -9,3 +9,13 @@ export const getDamageParts = (damage: number, loss: number, isRanged: boolean =
         ],
     };
 };
+
+export const getHealParts = (healCount: number, healValue: number): CustomizableAnimationData => {
+  return {
+      parts: [
+          // { type: 'plainPart', icon: isRanged ? 'broadhead-arrow' : 'sword', text: damage, color: 'red' },
+          { type: 'plainPart', icon: 'double-team', text: healCount, color: 'white' },
+          { type: 'plainPart', icon: 'health', text: healValue, color: '#5fc960' },
+      ],
+  };
+};

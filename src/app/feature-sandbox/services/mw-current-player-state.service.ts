@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { PlayerInstanceModel } from 'src/app/core/model/main.model';
+import { PlayerInstanceModel, UnitGroupInstModel } from 'src/app/core/model/main.model';
 import { SpellActivationType, SpellInstance, SpellModel } from 'src/app/core/model/spells';
 import { BattleEventsService } from './mw-battle-events.service';
 import { MwPlayersService } from './mw-players.service';
@@ -53,6 +53,8 @@ export class MwCurrentPlayerStateService extends GameStoreClient() {
 
   public currentSpell: SpellInstance = NULL_SPELL_INSTANCE;
 
+  public currentCasterUnit: UnitGroupInstModel | undefined;
+
   public playerCurrentState: PlayerState = PlayerState.Normal;
 
   public playerStateChanged$: BehaviorSubject<PlayerState> = new BehaviorSubject<PlayerState>(PlayerState.Normal);
@@ -73,11 +75,19 @@ export class MwCurrentPlayerStateService extends GameStoreClient() {
   }
 
   public setSpellsOnCooldown(): void {
-    this.spellsAreOnCooldown = true;
+    if (this.currentCasterUnit) {
+      this.currentCasterUnit.fightInfo.spellsOnCooldown = true;
+
+      this.currentCasterUnit = undefined;
+    } else {
+      /* set spells on cooldown if caster is not a unit */
+      this.spellsAreOnCooldown = true;
+    }
   }
 
-  public onSpellClick(spell: SpellInstance): void {
+  public onSpellClick(spell: SpellInstance, casterUnit?: UnitGroupInstModel): void {
     this.currentSpell = spell;
+    this.currentCasterUnit = casterUnit;
 
     switch (spell.baseType.activationType) {
       case 'instant':
@@ -112,6 +122,7 @@ export class MwCurrentPlayerStateService extends GameStoreClient() {
   public cancelCurrentSpell(): void {
     this.resetCurrentSpell();
     this.setPlayerState(PlayerState.Normal);
+    this.currentCasterUnit = undefined;
   }
 
   public onCurrentSpellCast(): void {
