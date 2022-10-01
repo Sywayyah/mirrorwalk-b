@@ -1,0 +1,21 @@
+<mw-hover-hint [hintBody]="buffHint" [xPos]="'above'">
+    <mw-ra-icon class="spell-icon" [icon]="spell.baseType.icon.icon"
+    [ngStyle]="{ 'color': spell.baseType.icon.iconClr , 'background': spell.baseType.icon.bgClr }">
+</mw-ra-icon>
+</mw-hover-hint>
+
+<ng-template #buffHint>
+    <div style="display: flex">
+        <mw-ra-icon [icon]="icon.icon"
+            class="hint-icon"
+            [ngStyle]="{ 'color': icon.iconClr , 'background': icon.bgClr }">
+        </mw-ra-icon>
+        <div style="padding: 4px; font-size: 14px;">
+            <div>{{baseType.name}}</div>
+            <div>Level {{spell.currentLevel}}</div>
+        </div>
+    </div>
+    <div style="padding: 4px; font-size: 13px; max-width: 240px;">
+        <div>{{spell.description}}</div>
+    </div>
+</ng-template>

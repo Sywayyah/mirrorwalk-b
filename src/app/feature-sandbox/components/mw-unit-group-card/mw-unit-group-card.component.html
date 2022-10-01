@@ -42,14 +42,8 @@
         <!-- "linear-gradient(180deg, rgba(255,77,93,1) 0%, rgba(129,25,25,1) 100%)" -->
         <!-- rgb(201, 45, 45) -->
         <div class="abilities" [ngClass]="side === 'left' ? 'left' : 'right'">
-            <div *ngFor="let spell of spells">
-                <mw-ra-icon class="icon-label spell-icon" [icon]="spell.baseType.icon.icon"
-                    [ngStyle]="{ 'color': spell.baseType.icon.iconClr , 'background': spell.baseType.icon.bgClr }">
-                </mw-ra-icon>
-            </div>
-            <div class="ability" *ngFor="let ability of effects">
-                <mw-unit-group-buff [buff]="ability"></mw-unit-group-buff>
-            </div>
+            <mw-unit-group-spell *ngFor="let spell of spells" [spell]="spell"></mw-unit-group-spell>
+            <mw-unit-group-buff *ngFor="let ability of effects" [buff]="ability"></mw-unit-group-buff>
         </div>
     </div>
 

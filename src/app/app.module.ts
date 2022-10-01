@@ -38,6 +38,7 @@ import { CustomCursorComponent } from './feature-sandbox/components/ui-elements/
 import { NumberModifierDirective } from './feature-sandbox/directives/mw-modifier.directive';
 import { ValueBarComponent } from './feature-sandbox/components/ui-elements/value-bar/value-bar.component';
 import { UnitGroupBuffComponent } from './feature-sandbox/components/unit-group-buff/unit-group-buff.component';
+import { UnitGroupSpellComponent } from './feature-sandbox/components/unit-group-spell/unit-group-spell.component';
 
 @NgModule({
   declarations: [
@@ -77,6 +78,7 @@ import { UnitGroupBuffComponent } from './feature-sandbox/components/unit-group-
     NumberModifierDirective,
     ValueBarComponent,
     UnitGroupBuffComponent,
+    UnitGroupSpellComponent,
   ],
   imports: [
     BrowserModule
