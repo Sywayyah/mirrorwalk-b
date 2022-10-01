@@ -2,8 +2,9 @@ import { Component, ElementRef, EventEmitter, forwardRef, Input, OnDestroy, OnIn
 import { Observable, Subject, Subscription } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 import { PlayerModel, UnitGroupInstModel } from 'src/app/core/model/main.model';
+import { SpellActivationType, SpellInstance, SpellModel } from 'src/app/core/model/spells';
 import { PROVIDE_UI_UNIT_GROUP, UIUnitProvider } from '../../directives/mw-unit-events-cursor.directive';
-import { BattleEvent, BattleEventsService, BattleStateService, HoverTypeEnum, MwPlayersService, OnGroupModsChanged } from '../../services';
+import { BattleEvent, BattleEventsService, BattleStateService, HoverTypeEnum, MwPlayersService, OnGroupModsChanged, OnGroupSpellsChanged } from '../../services';
 import { MwUnitGroupStateService } from '../../services/mw-unit-group-state.service';
 import { MwUnitGroupsService, UIModsModel } from '../../services/mw-unit-groups.service';
 import { GameStoreClient } from '../../services/state/game-state.service';
@@ -43,6 +44,9 @@ export class MwUnitGroupCardComponent extends GameStoreClient() implements UIUni
 
   public initialCount: number = 0;
 
+  public spells: SpellInstance[] = [];
+  public effects: SpellInstance[] = [];
+
   private destroy$: Subject<void> = new Subject();
 
   constructor(
@@ -62,6 +66,7 @@ export class MwUnitGroupCardComponent extends GameStoreClient() implements UIUni
     this.initialCount = this.unitGroup.count;
     this.cardReady.next(this);
 
+    this.updateSpellsAndEffects();
     this.modsForUi = this.units.calcUiMods(this.unitGroup);
 
     this.mwBattleStateService.battleEvent$
@@ -72,15 +77,6 @@ export class MwUnitGroupCardComponent extends GameStoreClient() implements UIUni
         const currentUnitGroup = this.mwBattleStateService.currentUnitGroup;
         this.attackingUnitGroup = currentUnitGroup;
         this.canCurrentPlayerAttack = this.mwBattleStateService.currentPlayer === this.playersService.getCurrentPlayer();
-
-        // if (this.isEnemyCard) {
-        //   const potentialTotalMaxDamage = this.mwBattleStateService.getUnitGroupTotalDamage(currentUnitGroup);
-
-        //   this.potentialUnitCountLoss = Math.floor(potentialTotalMaxDamage / this.unitGroup.type.baseStats.health);
-        //   if (this.potentialUnitCountLoss > this.unitGroup.count) {
-        //     this.potentialUnitCountLoss = this.unitGroup.count;
-        //   }
-        // }
       });
   }
 
@@ -93,13 +89,20 @@ export class MwUnitGroupCardComponent extends GameStoreClient() implements UIUni
 
   @SubscribeEvent(BattleEvent.OnGroupModifiersChagned)
   public updateMods(event$: Observable<OnGroupModsChanged>): Subscription {
-    return event$
-      .pipe(
-        filter(event => event.unitGroup === this.unitGroup)
-      )
-      .subscribe(() => {
-        this.modsForUi = this.units.calcUiMods(this.unitGroup);
-      });
+    return event$.pipe(
+      filter(event => event.unitGroup === this.unitGroup)
+    ).subscribe(() => {
+      this.modsForUi = this.units.calcUiMods(this.unitGroup);
+    });
+  }
+
+  @SubscribeEvent(BattleEvent.OnGroupSpellsChanged)
+  public updateSpellsOnChanged(event$: Observable<OnGroupSpellsChanged>): Subscription {
+    return event$.pipe(
+      filter(event => event.unitGroup === this.unitGroup),
+    ).subscribe(() => {
+      this.updateSpellsAndEffects();
+    });
   }
 
   public onCardHover(isHovered: boolean): void {
@@ -122,12 +125,26 @@ export class MwUnitGroupCardComponent extends GameStoreClient() implements UIUni
     }
   }
 
-  public onGroupClick(): void {
-    /* previously, it was handling click action, now directive handles it */
-  }
-
   public getUnitGroup(): UnitGroupInstModel {
     return this.unitGroup;
+  }
+
+  public updateSpellsAndEffects(): void {
+    const spells = this.unitGroup.spells;
+    this.effects = spells.filter(spell =>
+      [
+        SpellActivationType.Buff,
+        SpellActivationType.Debuff,
+      ].includes(spell.baseType.activationType)
+    );
+
+    this.spells = spells.filter(spell =>
+      [
+        SpellActivationType.Instant,
+        SpellActivationType.Passive,
+        SpellActivationType.Target
+      ].includes(spell.baseType.activationType)
+    )
   }
 
 }

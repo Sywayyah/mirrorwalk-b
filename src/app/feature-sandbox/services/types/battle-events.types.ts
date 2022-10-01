@@ -28,6 +28,7 @@ export enum BattleEvent {
   On_Group_Dies,
 
   OnGroupModifiersChagned,
+  OnGroupSpellsChanged,
 
   Combat_Group_Attacked,
   Combat_Attack_Interaction,
@@ -51,13 +52,15 @@ export interface UnitEvent<T extends BattleEvent> extends BattleEventModel<T> {
 }
 
 /* Example for simplfied event types creation */
-// interface CommonEventProps {
-//   unitGroup: UnitGroupInstModel;
-//   player: PlayerInstanceModel;
-//   spell: SpellInstance;
-//   target: UnitGroupInstModel;
-// }
-// type BuildEventType<E extends BattleEvent, T extends keyof CommonEventProps> = BattleEventModel<E> & Pick<CommonEventProps, T>;
+interface CommonEventProps {
+  unitGroup: UnitGroupInstModel;
+  player: PlayerInstanceModel;
+  spell: SpellInstance;
+  target: UnitGroupInstModel;
+}
+
+type BuildEventType<E extends BattleEvent, T extends keyof CommonEventProps> = BattleEventModel<E> & Pick<CommonEventProps, T>;
+
 // type SpellEvent = BuildEventType<BattleEvent.Player_Targets_Spell, 'player' | 'spell' | 'target'>;
 
 export interface PlayerTargetsSpell extends BattleEventModel<BattleEvent.Player_Targets_Spell> {
@@ -189,6 +192,7 @@ export interface SpeedEvent extends BattleEventModel<BattleEvent.Combat_Unit_Spe
 
 export type FightStartsEvent = BattleEventModel<BattleEvent.Fight_Starts>;
 export type OnGroupModsChanged = UnitEvent<BattleEvent.OnGroupModifiersChagned>;
+export type OnGroupSpellsChanged = BuildEventType<BattleEvent.OnGroupSpellsChanged, 'unitGroup'>;
 
 export interface EventByEnumMapping extends Record<BattleEvent, BattleEventModel> {
   [BattleEvent.Struct_Selected]: StructSelected;
@@ -210,6 +214,8 @@ export interface EventByEnumMapping extends Record<BattleEvent, BattleEventModel
   [BattleEvent.Combat_Unit_Speed_Changed]: SpeedEvent;
 
   [BattleEvent.OnGroupModifiersChagned]: OnGroupModsChanged;
+  [BattleEvent.OnGroupSpellsChanged]: OnGroupSpellsChanged;
+
   [BattleEvent.On_Group_Damaged_By_Group]: GroupDamagedByGroupEvent;
   [BattleEvent.On_Group_Takes_Damage]: GroupTakesDamageEvent;
   [BattleEvent.On_Group_Counter_Attacked]: OnGroupCounterAttacked;

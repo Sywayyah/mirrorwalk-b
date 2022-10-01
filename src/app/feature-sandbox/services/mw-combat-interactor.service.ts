@@ -370,8 +370,12 @@ export class CombatInteractorService extends GameStoreClient() {
   }
 
   private addSpellToUnitGroup(target: UnitGroupInstModel, spell: SpellInstance, ownerPlayer: PlayerInstanceModel): void {
-    console.log('add spell');
+    // console.log('add spell');
     target.spells.push(spell);
+    this.events().dispatchEvent({
+      type: BattleEvent.OnGroupSpellsChanged,
+      unitGroup: target,
+    })
 
     this.initSpell(spell, ownerPlayer);
     this.triggerEventForSpellHandler(spell, SpellEventTypes.SpellPlacedOnUnitGroup, { target: target });
