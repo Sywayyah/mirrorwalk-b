@@ -2,7 +2,7 @@ import { Component, ElementRef, EventEmitter, forwardRef, Input, OnDestroy, OnIn
 import { Observable, Subject, Subscription } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 import { PlayerModel, UnitGroupInstModel } from 'src/app/core/model/main.model';
-import { SpellActivationType, SpellInstance, SpellModel } from 'src/app/core/model/spells';
+import { SpellActivationType, SpellInstance } from 'src/app/core/model/spells';
 import { PROVIDE_UI_UNIT_GROUP, UIUnitProvider } from '../../directives/mw-unit-events-cursor.directive';
 import { BattleEvent, BattleEventsService, BattleStateService, HoverTypeEnum, MwPlayersService, OnGroupModsChanged, OnGroupSpellsChanged } from '../../services';
 import { MwUnitGroupStateService } from '../../services/mw-unit-group-state.service';

@@ -31,9 +31,12 @@ export class MwCustomCursorDirective implements OnDestroy {
     this.setNativeCursorVisibility(false);
 
     ngZone.runOutsideAngular(() => {
-      this.unlistenMouseMove = renderer.listen(elemRef.nativeElement, 'mousemove', (mouseEvent: MouseEvent) => {
-        this.cursor.setCustomCursorPos(mouseEvent.clientX, mouseEvent.clientY);
-      });
+      this.unlistenMouseMove = renderer.listen(
+        elemRef.nativeElement,
+        'mousemove',
+        (mouseEvent: MouseEvent) => {
+          this.cursor.setCustomCursorPos(mouseEvent.clientX, mouseEvent.clientY);
+        });
     });
   }
 
@@ -51,8 +54,6 @@ export class MwCustomCursorDirective implements OnDestroy {
 
     this.isHovered = true;
     const cursor = this.getCursorToShow();
-
-    /* todo: fix cursors */
 
     if (cursor) {
       this.cursor.setCustomCursor(cursor.animation, cursor.options, cursor.data);
