@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NeutralCampStructure, NeutralRewardTypesEnum } from "src/app/core/model/structures.types";
-import { BattleEvent, BattleEventsService, BattleStateService, DisplayPopupEvent, FightEndsPopup, LossModel, MwPlayersService, PopupModel, PopupTypesEnum, RoundEndsEvent, StructHireRewardPopup, StructItemRewardPopup, StructRewardPopup } from '../../services';
+import { BattleEvent, BattleEventsService, BattleStateService, DisplayPopupEvent, FightEndsPopup, LossModel, MwPlayersService, PopupModel, PopupTypesEnum, RoundEndsEvent, ScriptedRewardPopup, StructHireRewardPopup, StructItemRewardPopup, StructRewardPopup } from '../../services';
 import { GameStoreClient } from '../../services/state/game-state.service';
 import { WireEvent } from '../../services/state/store-decorators.config';
 
@@ -64,7 +64,17 @@ export class MwPopupContainerComponent extends GameStoreClient() implements OnIn
               };
 
               this.battleEvents.dispatchEvent({ type: BattleEvent.Display_Popup, popup: structItemRewardPopup });
-              
+
+              break;
+
+            case NeutralRewardTypesEnum.Scripted:
+              const scriptedRewardPopup: ScriptedRewardPopup = {
+                type: PopupTypesEnum.ScriptedReward,
+                struct: struct,
+              };
+
+              this.battleEvents.dispatchEvent({ type: BattleEvent.Display_Popup, popup: scriptedRewardPopup });
+
               break;
           }
         }

@@ -81,6 +81,9 @@ export class UpgradeRewardPopup implements OnInit {
 
   private getPlayerApi(): PlayersApi {
     return {
+      addExperienceToPlayer: (player, xpAmount) => {
+        this.players.addExperienceToPlayer(player.id, xpAmount);
+      },
       addUnitGroupToPlayer: (player, unitType, count) => {
         const unitGroup = this.unitGroups.createUnitGroup(unitType, { count }, player);
         this.players.addUnitGroupToTypeStack(player, unitGroup);

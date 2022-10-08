@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
 import { ArchersOutpostStructure, BanditCamp, BeaconOfTheUndead, CalavryStalls, GraveyardStructure, MagicRiverStructure } from 'src/app/core/dictionaries/structures';
+import { BigCampStructure as BigCampStrcuture } from 'src/app/core/dictionaries/structures/big-camp.struct';
 import { MountainNestStructure } from 'src/app/core/dictionaries/structures/mountain-nest.struct';
-import { createHireStructure } from 'src/app/core/dictionaries/structures/utils';
 import { WitchHutStructure } from 'src/app/core/dictionaries/structures/witch-hut.struct';
-import { NEUTRAL_FRACTION_UNIT_TYPES } from 'src/app/core/dictionaries/unit-types/neutral-unit-types.dictionary';
 import { PlayerInstanceModel, UnitGroupInstModel } from 'src/app/core/model/main.model';
 import { NeutralCampStructure, NeutralSite, StructureGeneratorModel, StructureModel, StructureTypeEnum } from "src/app/core/model/structures.types";
 import { BattleEventsService } from './mw-battle-events.service';
@@ -24,7 +23,7 @@ export class MwStructuresService {
   public structureTypes: StructureGeneratorModel[] = [
     BeaconOfTheUndead,
     GraveyardStructure,
-    
+
     ArchersOutpostStructure,
     BanditCamp,
     BanditCamp,
@@ -32,15 +31,7 @@ export class MwStructuresService {
     WitchHutStructure,
     MagicRiverStructure,
     MountainNestStructure,
-    createHireStructure('Boss Camp', {
-      maxUnitGroups: 3,
-      minUnitGroups: 3,
-      units: [
-        [NEUTRAL_FRACTION_UNIT_TYPES.ForestTrolls, 24, 26, 1],
-        [NEUTRAL_FRACTION_UNIT_TYPES.Gnolls, 28, 36, 1],
-        [NEUTRAL_FRACTION_UNIT_TYPES.Thiefs, 15, 18, 1],
-      ],
-    }, []),
+    BigCampStrcuture,
   ];
 
   public structures: StructureModel[] = [];

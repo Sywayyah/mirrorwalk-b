@@ -1,37 +1,43 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { MwPlayersService, PreviewPopup } from 'src/app/feature-sandbox/services';
+import { ScriptedReward } from 'src/app/core/model/structures.types';
+import { MwPlayersService, ScriptedRewardPopup } from 'src/app/feature-sandbox/services';
 import { MwHeroesService } from 'src/app/feature-sandbox/services/mw-heroes.service';
 import { MwSpellsService } from 'src/app/feature-sandbox/services/mw-spells.service';
 import { MwUnitGroupsService } from 'src/app/feature-sandbox/services/mw-unit-groups.service';
 
 @Component({
-  selector: 'mw-preview-popup',
-  templateUrl: './preview-popup.component.html',
-  styleUrls: ['./preview-popup.component.scss']
+  selector: 'mw-scripted-reward-popup',
+  templateUrl: './scripted-reward-popup.component.html',
+  styleUrls: ['./scripted-reward-popup.component.scss']
 })
-export class PreviewPopupComponent implements OnInit {
+export class ScriptedRewardPopupComponent implements OnInit {
 
-  @Input() public popup!: PreviewPopup;
-  @Output() public close: EventEmitter<void> = new EventEmitter<void>();
+  @Input() public popup!: ScriptedRewardPopup;
+  @Output() public close: EventEmitter<void> = new EventEmitter();
+
+  public description!: string;
+
+  private reward!: ScriptedReward;
 
   constructor(
     private players: MwPlayersService,
     private heroes: MwHeroesService,
     private spells: MwSpellsService,
     private unitGroups: MwUnitGroupsService,
-  ) { }
+) { }
 
   ngOnInit(): void {
+    const generator = this.popup.struct.generator;
+    const reward = generator.generateReward?.() as ScriptedReward;
+
+    if (reward) {
+      this.reward = reward;
+      this.description = reward.description;
+    }
   }
 
   public closePopup(): void {
-    this.close.emit();
-  }
-
-  public accept(): void {
-    const currentPlayer = this.players.getCurrentPlayer();
-
-    this.popup.struct.generator.onVisited?.({
+    this.reward.onAccept({
       playersApi: {
         addExperienceToPlayer: (player, xpAmount) => {
           this.players.addExperienceToPlayer(player.id, xpAmount);
@@ -57,11 +63,8 @@ export class PreviewPopupComponent implements OnInit {
           return this.spells.createSpellInstance(spell, options);
         },
       },
-      visitingPlayer: currentPlayer,
+      visitingPlayer: this.players.getCurrentPlayer(),
     });
-
-    this.popup.struct.isInactive = true;
-
-    this.closePopup();
+    this.close.emit();
   }
 }

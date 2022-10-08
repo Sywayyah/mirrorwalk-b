@@ -12,6 +12,7 @@ export interface PlayersApi {
     getCurrentPlayerUnitGroups: () => UnitGroupInstModel[];
 
     addUnitGroupToPlayer: (player: PlayerInstanceModel, unitType: UnitTypeModel, count: number) => void;
+    addExperienceToPlayer: (player: PlayerInstanceModel, xpAmount: number) => void;
 }
 
 export interface SpellsApi {

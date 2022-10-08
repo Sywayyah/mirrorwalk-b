@@ -8,106 +8,113 @@ import { ResourceType } from "./resources.types";
 /* Refactor these types */
 
 export enum StuctureControl {
-    Neutral = 'neutral',
-    EnemyPlayer = 'enemy',
+  Neutral = 'neutral',
+  EnemyPlayer = 'enemy',
 }
 
 interface OnVisitedParams {
-    playersApi: PlayersApi;
-    spellsApi: SpellsApi,
-    visitingPlayer: PlayerInstanceModel;
+  playersApi: PlayersApi;
+  spellsApi: SpellsApi,
+  visitingPlayer: PlayerInstanceModel;
 }
 
 export interface StructureGeneratorModel {
-    name: string;
-    control: StuctureControl;
-    description?: string,
-    /* looks good. it can be impossible to describe all possible logic data-driven, 
-        it's better to have it like fn, which decides on it's own
+  name: string;
+  control: StuctureControl;
+  description?: string,
+  /* looks good. it can be impossible to describe all possible logic data-driven,
+      it's better to have it like fn, which decides on it's own
 
-        although, think about it later.
-     */
+      although, think about it later.
+   */
 
-    /* to generate neutral camp structure */
-    generateGuard?: () => GenerationModel;
+  /* to generate neutral camp structure */
+  generateGuard?: () => GenerationModel;
 
-    /* todo: Array of rewards? */
-    generateReward?: () => NeutralRewardModel;
+  /* todo: Array of rewards? */
+  generateReward?: () => NeutralRewardModel;
 
-    onVisited?: (params: OnVisitedParams) => void;
+  onVisited?: (params: OnVisitedParams) => void;
 }
 
 /* NOTE: all that is next - it looks more like instance */
 
 /* Rewarding resources models */
 export interface ResourceRewardModel {
-    type: ResourceType;
-    count: number;
+  type: ResourceType;
+  count: number;
 }
 
 export interface HiringRewardModel {
-    unitType: UnitTypeModel;
-    maxCount: number;
+  unitType: UnitTypeModel;
+  maxCount: number;
 }
 
 /* Kinds of location structures */
 /*  this will require some later thinking */
 export enum StructureTypeEnum {
-    /* Mostly, for locations with guards+rewards */
-    NeutralCamp = 'neutral-camp',
-    /* Mostly,for locations without guards, and which uses game api */
-    NeutralSite = 'neutral-site',
+  /* Mostly, for locations with guards+rewards */
+  NeutralCamp = 'neutral-camp',
+  /* Mostly,for locations without guards, and which uses game api */
+  NeutralSite = 'neutral-site',
 }
 
 export interface StructureModel<T extends StructureTypeEnum = StructureTypeEnum> {
-    id: string;
-    type: T;
-    generator: StructureGeneratorModel;
-    isInactive?: boolean;
+  id: string;
+  type: T;
+  generator: StructureGeneratorModel;
+  isInactive?: boolean;
 }
 
 /*  */
 export interface NeutralSite extends StructureModel<StructureTypeEnum.NeutralSite> {
-    isCompleted?: boolean;
-    reward?: NeutralRewardModel;
+  isCompleted?: boolean;
+  reward?: NeutralRewardModel;
 }
 
 /* Neutral structures */
 export enum NeutralRewardTypesEnum {
-    SingleResource = 'resource',
-    Resources = 'resources',
-    Item = 'item',
-    UnitsHire = 'hire',
-    Mines = 'mines',
-    UnitsUpgrade = 'upgrading',
+  SingleResource = 'resource',
+  Resources = 'resources',
+  Item = 'item',
+  UnitsHire = 'hire',
+  Mines = 'mines',
+  UnitsUpgrade = 'upgrading',
+  Scripted = 'scripted',
 }
 
 export interface NeutralRewardModel<T extends NeutralRewardTypesEnum = NeutralRewardTypesEnum> {
-    type: T;
+  type: T;
 }
 
 export interface NeutralCampStructure extends StructureModel<StructureTypeEnum.NeutralCamp> {
-    guard: PlayerInstanceModel;
-    reward?: NeutralRewardModel;
+  guard: PlayerInstanceModel;
+  reward?: NeutralRewardModel;
 }
 
 /* Resources Reward */
 export interface ResourcesReward extends NeutralRewardModel<NeutralRewardTypesEnum.Resources> {
-    resourceGroups: ResourceRewardModel[][];
+  resourceGroups: ResourceRewardModel[][];
 }
 
 
 /* Hiring Reward */
 export interface HiringReward extends NeutralRewardModel<NeutralRewardTypesEnum.UnitsHire> {
-    units: HiringRewardModel[];
+  units: HiringRewardModel[];
 }
 
 /* Item Reward */
 export interface ItemReward extends NeutralRewardModel<NeutralRewardTypesEnum.Item> {
-    itemGroups: ItemBaseModel[][];
+  itemGroups: ItemBaseModel[][];
 }
 
 /* Unit ungrade reward */
 export interface UnitUpgradeReward extends NeutralRewardModel<NeutralRewardTypesEnum.UnitsUpgrade> {
-    getUnits: (api: PlayersApi) => UnitGroupInstModel[];
+  getUnits: (api: PlayersApi) => UnitGroupInstModel[];
+}
+
+/* Reward defined by script */
+export interface ScriptedReward extends NeutralRewardModel<NeutralRewardTypesEnum.Scripted> {
+  description: string;
+  onAccept: (apiRefs: OnVisitedParams) => void,
 }

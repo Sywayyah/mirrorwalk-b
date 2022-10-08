@@ -16,6 +16,8 @@ export enum PopupTypesEnum {
   Prefight,
   /* when there is no guard, just text message */
   Preview,
+  /* scripted reward */
+  ScriptedReward,
 }
 
 export interface PopupModel<T extends PopupTypesEnum = PopupTypesEnum> {
@@ -52,4 +54,8 @@ export interface PreviewPopup extends PopupModel<PopupTypesEnum.Preview> {
 
 export interface UpgradingPopup extends PopupModel<PopupTypesEnum.UpgradingReward> {
   struct: NeutralSite;
+}
+
+export interface ScriptedRewardPopup extends PopupModel<PopupTypesEnum.ScriptedReward> {
+  struct: NeutralCampStructure;
 }

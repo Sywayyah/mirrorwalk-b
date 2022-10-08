@@ -30,6 +30,10 @@
             <ng-container *ngSwitchCase="popupTypes.UpgradingReward">
                 <ng-container *ngTemplateOutlet="upgradeReward; context: {popup: popup}"></ng-container>
             </ng-container>
+
+            <ng-container *ngSwitchCase="popupTypes.ScriptedReward">
+                <ng-container *ngTemplateOutlet="scriptedReward; context: {popup: popup}"></ng-container>
+            </ng-container>
         </ng-container>
     </ng-container>
 </div>
@@ -68,6 +72,12 @@
 <ng-template #upgradeReward let-popup="popup">
     <div class="popup">
         <mw-upgrade-reward-popup [popup]="popup" (close)="removePopup(popup)"></mw-upgrade-reward-popup>
+    </div>
+</ng-template>
+
+<ng-template #scriptedReward let-popup="popup">
+    <div class="popup">
+        <mw-scripted-reward-popup [popup]="popup" (close)="removePopup(popup)"></mw-scripted-reward-popup>
     </div>
 </ng-template>
 

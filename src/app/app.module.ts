@@ -39,6 +39,7 @@ import { NumberModifierDirective } from './feature-sandbox/directives/mw-modifie
 import { ValueBarComponent } from './feature-sandbox/components/ui-elements/value-bar/value-bar.component';
 import { UnitGroupBuffComponent } from './feature-sandbox/components/unit-group-buff/unit-group-buff.component';
 import { UnitGroupSpellComponent } from './feature-sandbox/components/unit-group-spell/unit-group-spell.component';
+import { ScriptedRewardPopupComponent } from './feature-sandbox/components/mw-popup-container/components/scripted-reward-popup/scripted-reward-popup.component';
 
 @NgModule({
   declarations: [
@@ -79,6 +80,7 @@ import { UnitGroupSpellComponent } from './feature-sandbox/components/unit-group
     ValueBarComponent,
     UnitGroupBuffComponent,
     UnitGroupSpellComponent,
+    ScriptedRewardPopupComponent,
   ],
   imports: [
     BrowserModule
