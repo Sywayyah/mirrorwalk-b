@@ -67,7 +67,7 @@ export const FirebirdHealSpell: SpellModel = {
       init: ({ events, actions, ownerUnit, vfx }) => {
         events.on({
           [SpellEventTypes.PlayerTargetsSpell]: (event) => {
-            const casterUnit = ownerUnit as UnitGroupInstModel;
+            const casterUnit = ownerUnit!;
 
             const healValue = casterUnit.count * healPerBird;
             const originalCount = event.target.count;
