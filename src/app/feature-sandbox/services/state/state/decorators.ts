@@ -32,20 +32,21 @@ function decorateStoreClientMethod<T extends object>(
   methodName: string,
   descriptor: PropertyDescriptor,
   event: EventType<T>,
-  messageName: string,
+  decoratorName: string,
   configType: 'wire' | 'notify' | 'subscribeEvent',
 ) {
   const method = descriptor.value;
 
   const targetConstructor = targetClass.constructor as Type<any>;
+
   const storeClass = findStoreClientBaseClass(targetConstructor, 'store');
 
   if (!storeClass) {
-    throw new Error(`[Store Feature] Error. Decorator ${messageName} was used in ${targetConstructor.name}.${methodName} without @ForStore().`);
+    throw new Error(`[Store Feature] ${decoratorName} Error. Class ${targetConstructor.name} must extend StoreClient(). Method ${targetConstructor.name}.${methodName}.`);
   }
 
   if (typeof method !== 'function') {
-    throw new Error(`[Store Feature] Error. Decorator ${messageName} in ${targetConstructor.name}.${methodName} must be applied to method.`);
+    throw new Error(`[Store Feature] ${decoratorName} Error. ${decoratorName} in ${targetConstructor.name}.${methodName} must be applied to method.`);
   }
 
   const membersConfigs = storeClass[classMembersConfigs];
@@ -58,7 +59,7 @@ function decorateStoreClientMethod<T extends object>(
 }
 
 /**
- * Store client method decorator. Allows method to be triggered when event or events occur, without
+ * Store client method decorator. Allows method to be triggered when event or events occur without
  * receiving any parameters.
 */
 export function Notify<T extends object>(event: EventType<T>) {
@@ -72,7 +73,7 @@ export function Notify<T extends object>(event: EventType<T>) {
       methodName,
       descriptor,
       event,
-      `@Notify(${event})`,
+      `@Notify(${event.name})`,
       'notify'
     );
   };
@@ -80,8 +81,8 @@ export function Notify<T extends object>(event: EventType<T>) {
 
 /**
   Method decorator for store clients. Allows method to be automatically called
-    when store event happens, also receiving the data from it. Execution will
-    automatically stop when store client is destroyed by Angular.
+    when store event happens, also receiving the data from it. Subscription will
+    automatically stop with ngOnDestroy.
 */
 export function WireMethod<T extends object>(event: EventType<T>) {
   return function (
