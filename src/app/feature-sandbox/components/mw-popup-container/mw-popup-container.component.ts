@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { NeutralCampStructure, NeutralRewardTypesEnum } from "src/app/core/model";
 import { BattleStateService, FightEndsPopup, LossModel, MwPlayersService, PopupModel, PopupTypesEnum, ScriptedRewardPopup, StructHireRewardPopup, StructItemRewardPopup, StructRewardPopup } from '../../services';
 import { DisplayPopup, DisplayPopupEvent, DisplayReward, FightEnds, FightEndsEvent, NeutralStructParams } from '../../services/events';
-import { StoreClient, WireMethod } from '../../services/state';
+import { StoreClient, WireMethod } from '../../services/store';
 
 @Component({
   selector: 'mw-popup-container',

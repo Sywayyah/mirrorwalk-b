@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { NeutralCampStructure, NeutralSite, StructureTypeEnum } from 'src/app/core/model';
 import { PopupTypesEnum, PrefightPopup, PreviewPopup, UpgradingPopup } from '../../services';
-import { EventsService, Notify, StoreClient, WireMethod } from '../../services/state';
 import { DisplayPopup, DisplayReward, NeutralStructParams, StructCompleted, StructFightConfirmed, StructSelected, StructSelectedEvent } from '../../services/events';
+import { Notify, StoreClient, WireMethod } from '../../services/store';
 
 enum ViewsEnum {
   Structures = 'structures',
