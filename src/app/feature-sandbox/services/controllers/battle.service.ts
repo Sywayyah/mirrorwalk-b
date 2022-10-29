@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { NeutralCampStructure, PlayerTypeEnum } from "src/app/core/model";
 import { BattleStateService, MwCurrentPlayerStateService, MwPlayersService, MwStructuresService, PlayerState } from "..";
-import { FightEnds, FightNextRoundStarts, FightStarts, FightStartsEvent, GroupAttacked, GroupDamagedByGroup, GroupDamagedByGroupEvent, GroupDies, GroupSpeedChanged, GroupTakesDamage, GroupTakesDamageEvent, PlayerClicksAllyGroup, PlayerClicksAllyGroupEvent, PlayerClicksEnemyGroup, PlayerClicksEnemyGroupEvent, PlayerStartsFight, PlayerTargetsSpell, PlayerTurnStartEvent, RoundGroupSpendsTurn, RoundGroupSpendsTurnEvent, RoundGroupTurnEnds, RoundPlayerCountinuesAttacking, RoundPlayerTurnStarts } from "../events";
+import { FightEnds, FightNextRoundStarts, FightStarts, FightStartsEvent, GroupDamagedByGroup, GroupDamagedByGroupEvent, GroupDies, GroupSpeedChanged, GroupTakesDamage, GroupTakesDamageEvent, PlayerStartsFight, PlayerTurnStartEvent, RoundGroupSpendsTurn, RoundGroupSpendsTurnEvent, RoundGroupTurnEnds, RoundPlayerCountinuesAttacking, RoundPlayerTurnStarts } from "../events";
 import { Notify, StoreClient, WireMethod } from "../state";
 
 @Injectable()
@@ -13,13 +13,6 @@ export class BattleController extends StoreClient() {
     private playersService: MwPlayersService,
   ) {
     super();
-  }
-
-  @WireMethod(PlayerStartsFight)
-  public fightStartInitQueue({ players, unitGroups }: FightStartsEvent): void {
-    this.battleState.initBattleState(unitGroups, players);
-
-    this.events.dispatch(FightStarts({}));
   }
 
   @Notify(FightStarts)
@@ -131,47 +124,5 @@ export class BattleController extends StoreClient() {
   @Notify(GroupSpeedChanged)
   public resortFightQuery(): void {
     this.battleState.resortFightQuery();
-  }
-
-  @WireMethod(PlayerClicksEnemyGroup)
-  public handleEnemyCardClick(event: PlayerClicksEnemyGroupEvent): void {
-    const playerCurrentState = this.curPlayerState.playerCurrentState;
-    if (playerCurrentState === PlayerState.Normal) {
-      this.events.dispatch(GroupAttacked({
-        attackedGroup: event.attackedGroup,
-        attackingGroup: event.attackingGroup,
-      }));
-
-      return;
-    }
-
-    if (playerCurrentState === PlayerState.SpellTargeting) {
-      this.curPlayerState.onCurrentSpellCast();
-
-      this.events.dispatch(PlayerTargetsSpell({
-        player: event.attackingPlayer,
-        spell: this.curPlayerState.currentSpell,
-        target: event.attackedGroup,
-      }));
-
-      this.curPlayerState.setSpellsOnCooldown();
-    }
-  }
-
-  @WireMethod(PlayerClicksAllyGroup)
-  public handleAllyGroupClick(event: PlayerClicksAllyGroupEvent): void {
-    if (this.curPlayerState.playerCurrentState === PlayerState.SpellTargeting) {
-      this.curPlayerState.onCurrentSpellCast();
-
-      const unitGroup = event.unitGroup;
-
-      this.events.dispatch(PlayerTargetsSpell({
-        player: unitGroup.ownerPlayerRef,
-        spell: this.curPlayerState.currentSpell,
-        target: unitGroup,
-      }));
-
-      this.curPlayerState.setSpellsOnCooldown();
-    }
   }
 }

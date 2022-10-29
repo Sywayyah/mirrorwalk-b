@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { HintsContainerComponent } from './feature-sandbox/components/ui-elements/hints-container/hints-container.component';
 import { CombatInteractorService } from './feature-sandbox/services';
-import { BattleController, BattleLogController, CombatController, ItemsController, PlayerController, StructuresController } from './feature-sandbox/services/controllers';
+import { BattleController, BattleLogController, CombatController, ItemsController, PlayerController, StructuresController, UiController } from './feature-sandbox/services/controllers';
 import { MwItemsService } from './feature-sandbox/services/mw-items.service';
 import { HintsService } from './feature-sandbox/services/ui/hints.service';
 
@@ -16,6 +16,7 @@ import { HintsService } from './feature-sandbox/services/ui/hints.service';
     StructuresController,
     ItemsController,
     BattleLogController,
+    UiController,
   ],
 })
 export class AppComponent implements OnInit {
@@ -30,6 +31,7 @@ export class AppComponent implements OnInit {
     battleLogController: BattleLogController,
     itemsController: ItemsController,
     structureController: StructuresController,
+    uiController: UiController,
     // players: MwPlayersService,
     items: MwItemsService,
   ) {

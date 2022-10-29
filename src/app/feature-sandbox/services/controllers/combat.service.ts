@@ -1,9 +1,8 @@
 import { Injectable } from "@angular/core";
-import { SpellEventTypes, UnitGroupInstModel } from "src/app/core/model";
-import { BattleStateService, CombatInteractorService, MwCurrentPlayerStateService, PlayerState } from "../";
-import { CombatAttackInteraction, CombatInteractionEnum, CombatInteractionStateEvent, FightNextRoundStarts, FightStarts, GroupAttacked, GroupAttackedEvent, GroupDies, GroupDiesEvent, NextRoundStarts, PlayerCastsInstantSpell, PlayerHoversCardEvent, PlayerHoversGroupCard, PlayerTargetsInstantSpellEvent, PlayerTargetsSpell, PlayerTargetsSpellEvent, RoundGroupSpendsTurn, StructCompleted } from "../events";
+import { SpellEventTypes } from "src/app/core/model";
+import { CombatInteractorService } from "../";
+import { CombatAttackInteraction, CombatInteractionEnum, CombatInteractionStateEvent, FightNextRoundStarts, FightStarts, GroupAttacked, GroupAttackedEvent, GroupDies, GroupDiesEvent, NextRoundStarts, RoundGroupSpendsTurn, StructCompleted } from "../events";
 import { Notify, StoreClient, WireMethod } from "../state";
-import { ActionHintTypeEnum, HoverTypeEnum, SpellTargetActionHint } from "../types";
 
 
 @Injectable()
@@ -11,8 +10,6 @@ export class CombatController extends StoreClient() {
 
   constructor(
     private combatInteractor: CombatInteractorService,
-    private battleState: BattleStateService,
-    private curPlayerState: MwCurrentPlayerStateService,
   ) {
     super();
   }
@@ -56,64 +53,6 @@ export class CombatController extends StoreClient() {
           groupHasMoreTurns: Boolean(attackerGroup.turnsLeft),
         }));
     }
-  }
-
-  @WireMethod(PlayerHoversGroupCard)
-  public handlePlayerHover(event: PlayerHoversCardEvent): void {
-    switch (event.hoverType) {
-      case HoverTypeEnum.EnemyCard:
-        if (this.curPlayerState.playerCurrentState === PlayerState.Normal) {
-          /* fix it */
-          this.combatInteractor.setDamageHintMessageOnCardHover(event);
-        }
-        if (this.curPlayerState.playerCurrentState === PlayerState.SpellTargeting) {
-          const spellTargetHint: SpellTargetActionHint = {
-            type: ActionHintTypeEnum.OnTargetSpell,
-            spell: this.curPlayerState.currentSpell,
-            target: event.hoveredCard as UnitGroupInstModel,
-          };
-          this.battleState.hintMessage$.next(spellTargetHint);
-        }
-        break;
-      case HoverTypeEnum.AllyCard:
-        /* similar logic */
-        if (this.curPlayerState.playerCurrentState === PlayerState.SpellTargeting) {
-          const spellTargetHint: SpellTargetActionHint = {
-            type: ActionHintTypeEnum.OnTargetSpell,
-            spell: this.curPlayerState.currentSpell,
-            target: event.hoveredCard as UnitGroupInstModel,
-          };
-
-          this.battleState.hintMessage$.next(spellTargetHint);
-        }
-        break;
-      case HoverTypeEnum.Unhover:
-        this.battleState.hintMessage$.next(null);
-    }
-  }
-
-  @WireMethod(PlayerTargetsSpell)
-  public playerTargetsSpell(event: PlayerTargetsSpellEvent): void {
-    this.combatInteractor.triggerEventForSpellHandler(
-      event.spell,
-      SpellEventTypes.PlayerTargetsSpell,
-      { target: event.target },
-    );
-
-    this.curPlayerState.setPlayerState(PlayerState.Normal);
-    this.curPlayerState.resetCurrentSpell();
-  }
-
-  @WireMethod(PlayerCastsInstantSpell)
-  public playerUsesInstantSpell(event: PlayerTargetsInstantSpellEvent): void {
-    this.combatInteractor.triggerEventForSpellHandler(
-      event.spell,
-      SpellEventTypes.PlayerCastsInstantSpell,
-      {
-        player: event.player,
-        spell: event.spell,
-      }
-    );
   }
 
   @WireMethod(FightNextRoundStarts)
