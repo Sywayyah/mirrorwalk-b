@@ -1,7 +1,7 @@
 import { PlayerInstanceModel, PlayerModel, UnitGroupInstModel } from 'src/app/core/model/main.model';
 import { SpellInstance } from 'src/app/core/model/spells';
 import { NeutralCampStructure, StructureModel } from "src/app/core/model/structures.types";
-import { EventModel } from '../state/events-service-base';
+import { EventModel } from '../state-old/events-service-base';
 import { PopupModel } from './popup.types';
 
 export enum BattleEvent {

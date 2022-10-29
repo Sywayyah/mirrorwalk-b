@@ -1,7 +1,6 @@
 import { inject, OnDestroy, Type } from "@angular/core";
-import { Observable, pipe, Subject, Subscription } from 'rxjs';
-import { takeUntil, filter } from 'rxjs/operators';
-import { GameEventsMapping } from "src/app/core/model/items/items.types";
+import { Observable, Subject, Subscription } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { EventKeys, EventMap, EventsServiceBase } from "./events-service-base";
 
 /* Also, StoreSegment? */
@@ -25,7 +24,7 @@ export interface Store<T,
 /*
   next:
    - try to develop store
-   - @State() param decorators? 
+   - @State() param decorators?
    - support for events array...
 */
 
@@ -39,6 +38,7 @@ type ClassPropertyConfig = { type: 'wire' | 'notify' | 'subscribeEvent', event: 
 
 type StoreBaseClass = { [storeEventListeners]: ClassPropertyConfig[] };
 
+/** @deprecated */
 interface IStoreClient<
   StateT,
   EventsKeyT extends EventKeys,
@@ -53,6 +53,7 @@ interface IStoreClient<
   onDestroyed?(): void;
 }
 
+/** @deprecated */
 export function StoreClient<
   StateT,
   EventKeysT extends EventKeys,
@@ -203,7 +204,7 @@ export function Notify<
 }
 
 /**
-  Method decorator for store clients. Allows method to be automatically called 
+  Method decorator for store clients. Allows method to be automatically called
     when store event happens, also receiving the data from it. Execution will
     automatically stop when store client is destroyed by Angular.
 */

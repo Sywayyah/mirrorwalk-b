@@ -4,8 +4,8 @@ import { PlayerInstanceModel, UnitGroupInstModel } from 'src/app/core/model/main
 import { SpellActivationType, SpellInstance, SpellModel } from 'src/app/core/model/spells';
 import { BattleEventsService } from './mw-battle-events.service';
 import { MwPlayersService } from './mw-players.service';
-import { GameStoreClient } from './state/game-state.service';
-import { Notify } from './state/store-decorators.config';
+import { EventsService } from './state';
+import { PlayerCastsInstantSpell } from './state-values/battle-events';
 import { BattleEvent } from './types';
 
 
@@ -47,7 +47,7 @@ const NULL_SPELL_INSTANCE: SpellInstance = {
 @Injectable({
   providedIn: 'root'
 })
-export class MwCurrentPlayerStateService extends GameStoreClient() {
+export class MwCurrentPlayerStateService {
 
   public readonly currentPlayer: PlayerInstanceModel = this.players.getCurrentPlayer();
 
@@ -64,13 +64,12 @@ export class MwCurrentPlayerStateService extends GameStoreClient() {
   constructor(
     private readonly players: MwPlayersService,
     private readonly battleEvents: BattleEventsService,
-  ) {
-    super();
-  }
+    private readonly newEvents: EventsService,
+  ) { }
 
-  @Notify(BattleEvent.Fight_Next_Round_Starts)
-  @Notify(BattleEvent.Fight_Starts)
-  public resetSpellsCooldown(): void {
+  // @Notify(BattleEvent.Fight_Next_Round_Starts)
+  // @Notify(BattleEvent.Fight_Starts)
+  public resetSpellsCooldowns(): void {
     this.spellsAreOnCooldown = false;
   }
 
@@ -93,11 +92,15 @@ export class MwCurrentPlayerStateService extends GameStoreClient() {
       case 'instant':
         this.onCurrentSpellCast();
 
-        this.battleEvents.dispatchEvent({
-          type: BattleEvent.Player_Casts_Instant_Spell,
+        // this.battleEvents.dispatchEvent({
+        //   type: BattleEvent.Player_Casts_Instant_Spell,
+        //   player: this.currentPlayer,
+        //   spell: spell,
+        // });
+        this.newEvents.dispatch(PlayerCastsInstantSpell({
           player: this.currentPlayer,
           spell: spell,
-        });
+        }));
 
         this.setSpellsOnCooldown();
         break;

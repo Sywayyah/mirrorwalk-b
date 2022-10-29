@@ -1,13 +1,22 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { HintsContainerComponent } from './feature-sandbox/components/ui-elements/hints-container/hints-container.component';
 import { CombatInteractorService } from './feature-sandbox/services';
+import { BattleController, BattleLogController, CombatController, ItemsController, PlayerController, StructuresController } from './feature-sandbox/services/controllers';
 import { MwItemsService } from './feature-sandbox/services/mw-items-service.service';
 import { HintsService } from './feature-sandbox/services/ui/hints.service';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  styleUrls: ['./app.component.scss'],
+  providers: [
+    BattleController,
+    CombatController,
+    PlayerController,
+    StructuresController,
+    ItemsController,
+    BattleLogController,
+  ],
 })
 export class AppComponent implements OnInit {
   @ViewChild('hintsContainer', { static: true }) public hintsContainer!: HintsContainerComponent;
@@ -15,6 +24,12 @@ export class AppComponent implements OnInit {
   constructor(
     private readonly hintsService: HintsService,
     private readonly combat: CombatInteractorService,
+    battleController: BattleController,
+    combatController: CombatController,
+    playerController: PlayerController,
+    battleLogController: BattleLogController,
+    itemsController: ItemsController,
+    structureController: StructuresController,
     // players: MwPlayersService,
     items: MwItemsService,
   ) {

@@ -7,8 +7,11 @@ import { PROVIDE_UI_UNIT_GROUP, UIUnitProvider } from '../../directives/mw-unit-
 import { BattleEvent, BattleEventsService, BattleStateService, HoverTypeEnum, MwPlayersService, OnGroupModsChanged, OnGroupSpellsChanged } from '../../services';
 import { MwUnitGroupStateService } from '../../services/mw-unit-group-state.service';
 import { MwUnitGroupsService, UIModsModel } from '../../services/mw-unit-groups.service';
-import { GameStoreClient } from '../../services/state/game-state.service';
-import { SubscribeEvent } from '../../services/state/store-decorators.config';
+import { EventsService, StoreClient } from '../../services/state';
+import { GameStoreClient } from '../../services/state-old/game-state.service';
+import { SubscribeEvent } from '../../services/state-old/store-decorators.config';
+import { GroupModifiersChanged, GroupSpellsChanged } from '../../services/state-values/battle-events';
+import { PlayerHoversGroupCard } from '../../services/state-values/ui-events';
 
 @Component({
   selector: 'mw-unit-group-card',
@@ -18,7 +21,7 @@ import { SubscribeEvent } from '../../services/state/store-decorators.config';
     { provide: PROVIDE_UI_UNIT_GROUP, useExisting: forwardRef(() => MwUnitGroupCardComponent) }
   ],
 })
-export class MwUnitGroupCardComponent extends GameStoreClient() implements UIUnitProvider, OnInit, OnDestroy {
+export class MwUnitGroupCardComponent extends StoreClient() implements UIUnitProvider, OnInit, OnDestroy {
 
   @Input()
   public unitGroup!: UnitGroupInstModel;
@@ -53,9 +56,10 @@ export class MwUnitGroupCardComponent extends GameStoreClient() implements UIUni
     public hostElem: ElementRef,
     public mwBattleStateService: BattleStateService,
     private playersService: MwPlayersService,
-    private readonly battleEvents: BattleEventsService,
+    // private readonly battleEvents: BattleEventsService,
     private readonly unitsService: MwUnitGroupStateService,
     private readonly units: MwUnitGroupsService,
+    private newEvents: EventsService,
   ) {
     super();
   }
@@ -69,59 +73,91 @@ export class MwUnitGroupCardComponent extends GameStoreClient() implements UIUni
     this.updateSpellsAndEffects();
     this.modsForUi = this.units.calcUiMods(this.unitGroup);
 
-    this.mwBattleStateService.battleEvent$
+    // this.mwBattleStateService.battleEvent$
+    this.newEvents.eventStream$
       .pipe(
-        takeUntil(this.destroy$),
+        takeUntil(this.destroyed$),
       )
       .subscribe(() => {
+        // console.log('')
         const currentUnitGroup = this.mwBattleStateService.currentUnitGroup;
         this.attackingUnitGroup = currentUnitGroup;
         this.canCurrentPlayerAttack = this.mwBattleStateService.currentPlayer === this.playersService.getCurrentPlayer();
       });
+
+    this.newEvents.onEvent(GroupModifiersChanged).pipe(
+      takeUntil(this.destroyed$)
+    ).subscribe(event => {
+      if (event.unitGroup === this.unitGroup) {
+        this.modsForUi = this.units.calcUiMods(this.unitGroup);
+      }
+    });
+
+    this.newEvents.onEvent(GroupSpellsChanged).pipe(
+      takeUntil(this.destroyed$)
+    ).subscribe(event => {
+      if (event.unitGroup === this.unitGroup) {
+        this.updateSpellsAndEffects();
+      }
+    });
   }
 
   public onDestroyed(): void {
     this.destroy$.next();
     this.destroy$.complete();
-    this.battleEvents.dispatchEvent({ type: BattleEvent.UI_Player_Hovers_Group_Card, hoverType: HoverTypeEnum.Unhover });
+    // this.battleEvents.dispatchEvent({ type: BattleEvent.UI_Player_Hovers_Group_Card, hoverType: HoverTypeEnum.Unhover });
+    this.newEvents.dispatch(PlayerHoversGroupCard({
+      hoverType: HoverTypeEnum.Unhover,
+    }))
     this.groupDies.next();
   }
 
-  @SubscribeEvent(BattleEvent.OnGroupModifiersChagned)
-  public updateMods(event$: Observable<OnGroupModsChanged>): Subscription {
-    return event$.pipe(
-      filter(event => event.unitGroup === this.unitGroup)
-    ).subscribe(() => {
-      this.modsForUi = this.units.calcUiMods(this.unitGroup);
-    });
-  }
+  // @SubscribeEvent(BattleEvent.OnGroupModifiersChagned)
+  // public updateMods(event$: Observable<OnGroupModsChanged>): Subscription {
+  //   return event$.pipe(
+  //     filter(event => event.unitGroup === this.unitGroup)
+  //   ).subscribe(() => {
+  //     this.modsForUi = this.units.calcUiMods(this.unitGroup);
+  //   });
+  // }
 
-  @SubscribeEvent(BattleEvent.OnGroupSpellsChanged)
-  public updateSpellsOnChanged(event$: Observable<OnGroupSpellsChanged>): Subscription {
-    return event$.pipe(
-      filter(event => event.unitGroup === this.unitGroup),
-    ).subscribe(() => {
-      this.updateSpellsAndEffects();
-    });
-  }
+  // @SubscribeEvent(BattleEvent.OnGroupSpellsChanged)
+  // public updateSpellsOnChanged(event$: Observable<OnGroupSpellsChanged>): Subscription {
+  //   return event$.pipe(
+  //     filter(event => event.unitGroup === this.unitGroup),
+  //   ).subscribe(() => {
+  //     this.updateSpellsAndEffects();
+  //   });
+  // }
 
   public onCardHover(isHovered: boolean): void {
     this.isCardHovered = isHovered;
 
     if (isHovered) {
       if (!this.unitGroup.fightInfo.isAlive) {
-        this.battleEvents.dispatchEvent({ type: BattleEvent.UI_Player_Hovers_Group_Card, hoverType: HoverTypeEnum.Unhover });
+        // this.battleEvents.dispatchEvent({ type: BattleEvent.UI_Player_Hovers_Group_Card, hoverType: HoverTypeEnum.Unhover });
+        this.newEvents.dispatch(PlayerHoversGroupCard({
+          hoverType: HoverTypeEnum.Unhover,
+        }))
         return;
       }
 
-      this.battleEvents.dispatchEvent({
-        type: BattleEvent.UI_Player_Hovers_Group_Card,
+      // this.battleEvents.dispatchEvent({
+      //   type: BattleEvent.UI_Player_Hovers_Group_Card,
+      //   hoverType: this.isEnemyCard ? HoverTypeEnum.EnemyCard : HoverTypeEnum.AllyCard,
+      //   currentCard: this.mwBattleStateService.currentUnitGroup,
+      //   hoveredCard: this.unitGroup,
+      // });
+      this.newEvents.dispatch(PlayerHoversGroupCard({
         hoverType: this.isEnemyCard ? HoverTypeEnum.EnemyCard : HoverTypeEnum.AllyCard,
         currentCard: this.mwBattleStateService.currentUnitGroup,
         hoveredCard: this.unitGroup,
-      });
+      }));
     } else {
-      this.battleEvents.dispatchEvent({ type: BattleEvent.UI_Player_Hovers_Group_Card, hoverType: HoverTypeEnum.Unhover });
+      // this.battleEvents.dispatchEvent({ type: BattleEvent.UI_Player_Hovers_Group_Card, hoverType: HoverTypeEnum.Unhover });
+      this.newEvents.dispatch(PlayerHoversGroupCard({
+        hoverType: HoverTypeEnum.Unhover
+      }));
     }
   }
 

@@ -12,6 +12,8 @@ import { MwHeroesService } from './mw-heroes.service';
 import { MwItemsService } from './mw-items-service.service';
 import { MwSpellsService } from './mw-spells.service';
 import { MwUnitGroupsService } from './mw-unit-groups.service';
+import { EventsService } from './state';
+import { PlayerGainsLevel } from './state-values/game-events';
 import { BattleEvent } from './types';
 
 
@@ -85,6 +87,7 @@ export class MwPlayersService {
     private readonly itemsService: MwItemsService,
     private readonly heroesService: MwHeroesService,
     private readonly unitGroups: MwUnitGroupsService,
+    private newEvents: EventsService,
   ) { }
 
   public getCurrentPlayer(): PlayerInstanceModel {
@@ -110,7 +113,8 @@ export class MwPlayersService {
       playerHero.level++;
       playerHero.freeSkillpoints++;
       playerHero.experience = playerHero.experience - currentXpToNextLevel;
-      this.events.dispatchEvent({ type: BattleEvent.Player_Gains_Level });
+      // this.events.dispatchEvent({ type: BattleEvent.Player_Gains_Level });
+      this.newEvents.dispatch(PlayerGainsLevel({}));
     }
   }
 

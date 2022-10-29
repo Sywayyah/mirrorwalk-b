@@ -5,10 +5,8 @@ import { MountainNestStructure } from 'src/app/core/dictionaries/structures/moun
 import { WitchHutStructure } from 'src/app/core/dictionaries/structures/witch-hut.struct';
 import { PlayerInstanceModel, UnitGroupInstModel } from 'src/app/core/model/main.model';
 import { NeutralCampStructure, NeutralSite, StructureGeneratorModel, StructureModel, StructureTypeEnum } from "src/app/core/model/structures.types";
-import { BattleEventsService } from './mw-battle-events.service';
 import { MwPlayersService } from './mw-players.service';
 import { MwUnitGroupsService } from './mw-unit-groups.service';
-import { BattleEvent } from './types';
 
 @Injectable({
   providedIn: 'root'
@@ -42,14 +40,14 @@ export class MwStructuresService {
 
   constructor(
     private playersService: MwPlayersService,
-    private events: BattleEventsService,
+    // private events: BattleEventsService,
     private unitGroups: MwUnitGroupsService,
   ) {
-    this.events.onEvents({
-      [BattleEvent.Struct_Selected]: event => {
-        this.currentStruct = event.struct;
-      },
-    }).subscribe();
+    // this.events.onEvents({
+    //   [BattleEvent.Struct_Selected]: event => {
+    //     this.currentStruct = event.struct;
+    //   },
+    // }).subscribe();
 
     this.generateStructuresByTypes();
     this.guardsMap = this.generateNewGuardsMap();

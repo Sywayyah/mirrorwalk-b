@@ -1,13 +1,18 @@
 import { AfterViewInit, ChangeDetectorRef, Component, OnInit, QueryList, ViewChildren } from '@angular/core';
+import { takeUntil } from 'rxjs/operators';
 import { PlayerInstanceModel, UnitGroupInstModel } from 'src/app/core/model/main.model';
 import { getDamageParts } from 'src/app/core/utils/utils';
 import {
-  BattleEvent, BattleStateService as MwBattleStateService, GroupDamagedByGroupEvent, MwNeutralPlayerService, MwPlayerStateService
+  BattleEvent, BattleStateService as MwBattleStateService, /* GroupDamagedByGroupEvent */ MwNeutralPlayerService, MwPlayerStateService
 } from '../../services';
 import { MwCardsMappingService } from '../../services/mw-cards-mapping.service';
 import { CombatInteractorService } from '../../services/mw-combat-interactor.service';
-import { GameStoreClient } from '../../services/state/game-state.service';
-import { WireEvent } from '../../services/state/store-decorators.config';
+import { EventsService, StoreClient, WireMethod } from '../../services/state';
+import { GameStoreClient } from '../../services/state-old/game-state.service';
+import { WireEvent } from '../../services/state-old/store-decorators.config';
+import { GroupDamagedByGroup } from '../../services/state-values/battle-events';
+import { GroupDamagedByGroupEvent } from '../../services/state-values/battle.types';
+import { PlayerStartsFight } from '../../services/state-values/game-events';
 import { MwUnitGroupCardComponent } from '../mw-unit-group-card/mw-unit-group-card.component';
 import { VfxService } from '../ui-elements/vfx-layer/vfx.service';
 
@@ -16,7 +21,7 @@ import { VfxService } from '../ui-elements/vfx-layer/vfx.service';
   templateUrl: './mw-gameboard.component.html',
   styleUrls: ['./mw-gameboard.component.scss'],
 })
-export class MwGameboardComponent extends GameStoreClient() implements OnInit, AfterViewInit {
+export class MwGameboardComponent extends StoreClient() implements OnInit, AfterViewInit {
   public mainPlayerUnitGroups!: UnitGroupInstModel[];
   public neutralPlayerGroups!: UnitGroupInstModel[];
 
@@ -36,6 +41,7 @@ export class MwGameboardComponent extends GameStoreClient() implements OnInit, A
     private readonly combatInteractor: CombatInteractorService,
     private readonly vfx: VfxService,
     private readonly cd: ChangeDetectorRef,
+    private newEvents: EventsService,
   ) {
     super();
   }
@@ -71,22 +77,36 @@ export class MwGameboardComponent extends GameStoreClient() implements OnInit, A
   private initInteractions(): void {
     this.combatInteractor.onBattleBegins();
 
-    this.mwBattleState.initBattle(
-      [...this.mainPlayerUnitGroups, ...this.neutralPlayerGroups],
-      [this.mainPlayerInfo, this.neutralPlayerInfo]
-    );
+    // this.mwBattleState.initBattleState(
+    //   [...this.mainPlayerUnitGroups, ...this.neutralPlayerGroups],
+    //   [this.mainPlayerInfo, this.neutralPlayerInfo],
+    // );
+    this.newEvents.dispatch(PlayerStartsFight({
+      players: [this.mainPlayerInfo, this.neutralPlayerInfo],
+      unitGroups: [...this.mainPlayerUnitGroups, ...this.neutralPlayerGroups],
+    }));
 
-    this.mwBattleState.battleEvent$.subscribe(() => {
+    this.updateFightQueue();
+
+    this.newEvents.eventStream$.pipe(
+      takeUntil(this.destroyed$),
+    ).subscribe(() => {
       this.mainPlayerUnitGroups = this.mwBattleState.heroesUnitGroupsMap.get(this.mainPlayerInfo) as UnitGroupInstModel[];
       this.neutralPlayerGroups = this.mwBattleState.heroesUnitGroupsMap.get(this.neutralPlayerInfo) as UnitGroupInstModel[];
-      this.fightQueue = this.mwBattleState.getFightQueue();
+      this.updateFightQueue();
     });
   }
 
-  @WireEvent(BattleEvent.On_Group_Damaged_By_Group)
+  private updateFightQueue() {
+    this.fightQueue = this.mwBattleState.getFightQueue();
+  }
+
+  // @WireFn()
+  // @WireEvent(BattleEvent.On_Group_Damaged_By_Group)
+  @WireMethod(GroupDamagedByGroup)
   public displayDamageVfxOverAttackedGroup(event: GroupDamagedByGroupEvent): void {
     /* previous solution was stacking because of no unsubscribe. */
-    const isRanged = event.attackerGroup.type.defaultModifiers?.isRanged;
+    const isRanged = event.attackingGroup.type.defaultModifiers?.isRanged;
     this.vfx.createFloatingMessageForUnitGroup(event.attackedGroup, getDamageParts(event.damage, event.loss, isRanged));
   }
 

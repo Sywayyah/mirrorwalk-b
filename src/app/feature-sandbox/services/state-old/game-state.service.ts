@@ -1,4 +1,4 @@
-import { Injectable, Type } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { BattleEventsService } from '../mw-battle-events.service';
 import { BattleEvent, EventByEnumMapping } from '../types';
@@ -11,6 +11,7 @@ interface GameStateModel {
 @Injectable({
   providedIn: 'root'
 })
+/** @deprecated */
 export class GameStore implements Store<GameStateModel, BattleEvent, EventByEnumMapping, BattleEventsService> {
   public state: GameStateModel = {
   };
@@ -32,6 +33,7 @@ export class GameStore implements Store<GameStateModel, BattleEvent, EventByEnum
   }
 }
 
+/** @deprecated */
 export function GameStoreClient() {
   return StoreClient<
     GameStateModel,

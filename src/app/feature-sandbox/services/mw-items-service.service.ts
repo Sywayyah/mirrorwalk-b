@@ -15,16 +15,16 @@ export class MwItemsService {
   private combatInteractorRef!: CombatInteractorService;
 
   constructor(
-    private readonly events: BattleEventsService,
+    // private readonly events: BattleEventsService,
   ) {
-    this.events.onEvents({
-      [BattleEvent.Fight_Next_Round_Starts]: event => {
-        this.triggerEventForAllItemsHandlers(GameEventTypes.NewRoundBegins, { round: event.round });
-      },
-      [BattleEvent.Fight_Starts]: event => {
-        this.triggerEventForAllItemsHandlers(GameEventTypes.NewRoundBegins, { round: 0 });
-      }
-    }).subscribe();
+    // this.events.onEvents({
+    //   [BattleEvent.Fight_Next_Round_Starts]: event => {
+    //     this.triggerEventForAllItemsHandlers(GameEventTypes.NewRoundBegins, { round: event.round });
+    //   },
+    //   [BattleEvent.Fight_Starts]: event => {
+    //     this.triggerEventForAllItemsHandlers(GameEventTypes.NewRoundBegins, { round: 0 });
+    //   }
+    // }).subscribe();
   }
 
   public initService(combatInteractor: CombatInteractorService): void {

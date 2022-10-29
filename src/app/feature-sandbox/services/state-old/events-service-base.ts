@@ -14,7 +14,7 @@ function filterNullish<T>(source$: Observable<T | null | undefined>): Observable
 
 /*
   todo: I have a feeling that I want to have such events system.
-    because I might want to be able to listen different events 
+    because I might want to be able to listen different events
     across the game. And maybe I want other systems to kind of
     depend on it;
 
@@ -42,6 +42,7 @@ export type EventKeys = string | number;
 export type EventMap<T extends EventKeys> = Record<T, EventModel<T>>;
 
 /** Events dispatcher base class */
+/** @deprecated */
 export class EventsServiceBase<
   EventKeyType extends EventKeys,
   EventsMapping extends EventMap<EventKeyType>,
