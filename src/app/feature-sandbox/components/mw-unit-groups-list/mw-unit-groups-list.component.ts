@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { UnitGroupModel } from 'src/app/core/model/main.model';
+import { UnitGroupModel } from 'src/app/core/model';
 
 @Component({
   selector: 'mw-unit-groups-list',

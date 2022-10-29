@@ -1,15 +1,8 @@
 import { Injectable } from "@angular/core";
-import { UnitGroupInstModel } from "src/app/core/model/main.model";
-import { SpellEventTypes } from "src/app/core/model/spells";
-import { BattleStateService } from "../mw-battle-state.service";
-import { CombatInteractorService } from "../mw-combat-interactor.service";
-import { MwCurrentPlayerStateService, PlayerState } from "../mw-current-player-state.service";
+import { SpellEventTypes, UnitGroupInstModel } from "src/app/core/model";
+import { BattleStateService, CombatInteractorService, MwCurrentPlayerStateService, PlayerState } from "../";
+import { CombatAttackInteraction, CombatInteractionEnum, CombatInteractionStateEvent, FightNextRoundStarts, FightStarts, GroupAttacked, GroupAttackedEvent, GroupDies, GroupDiesEvent, NextRoundStarts, PlayerCastsInstantSpell, PlayerHoversCardEvent, PlayerHoversGroupCard, PlayerTargetsInstantSpellEvent, PlayerTargetsSpell, PlayerTargetsSpellEvent, RoundGroupSpendsTurn, StructCompleted } from "../events";
 import { Notify, StoreClient, WireMethod } from "../state";
-import { CombatAttackInteraction, FightNextRoundStarts, GroupAttacked, GroupDies, PlayerCastsInstantSpell, PlayerTargetsSpell, RoundGroupSpendsTurn } from "../state-values/battle-events";
-import { CombatInteractionEnum, CombatInteractionStateEvent, GroupAttackedEvent, GroupDiesEvent, NextRoundStarts, PlayerTargetsInstantSpellEvent, PlayerTargetsSpellEvent } from "../state-values/battle.types";
-import { FightStarts, StructCompleted } from "../state-values/game-events";
-import { PlayerHoversGroupCard } from "../state-values/ui-events";
-import { PlayerHoversCardEvent } from "../state-values/ui.types";
 import { ActionHintTypeEnum, HoverTypeEnum, SpellTargetActionHint } from "../types";
 
 

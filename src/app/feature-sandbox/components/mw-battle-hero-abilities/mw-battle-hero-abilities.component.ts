@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { PlayerInstanceModel } from 'src/app/core/model/main.model';
-import { SpellActivationType, SpellInstance } from 'src/app/core/model/spells';
+import { PlayerInstanceModel, SpellActivationType, SpellInstance } from 'src/app/core/model';
 import { MwPlayersService } from '../../services';
 import { MwCurrentPlayerStateService, PlayerState } from '../../services/mw-current-player-state.service';
 

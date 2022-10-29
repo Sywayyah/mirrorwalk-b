@@ -1,9 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { ScriptedReward } from 'src/app/core/model/structures.types';
-import { MwPlayersService, ScriptedRewardPopup } from 'src/app/feature-sandbox/services';
-import { MwHeroesService } from 'src/app/feature-sandbox/services/mw-heroes.service';
-import { MwSpellsService } from 'src/app/feature-sandbox/services/mw-spells.service';
-import { MwUnitGroupsService } from 'src/app/feature-sandbox/services/mw-unit-groups.service';
+import { ScriptedReward } from 'src/app/core/model';
+import { MwHeroesService, MwPlayersService, MwSpellsService, MwUnitGroupsService, ScriptedRewardPopup } from 'src/app/feature-sandbox/services';
 
 @Component({
   selector: 'mw-scripted-reward-popup',

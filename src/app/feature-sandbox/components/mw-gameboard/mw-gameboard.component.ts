@@ -1,18 +1,10 @@
 import { AfterViewInit, ChangeDetectorRef, Component, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
-import { PlayerInstanceModel, UnitGroupInstModel } from 'src/app/core/model/main.model';
+import { PlayerInstanceModel, UnitGroupInstModel } from 'src/app/core/model';
 import { getDamageParts } from 'src/app/core/utils/utils';
-import {
-  BattleEvent, BattleStateService as MwBattleStateService, /* GroupDamagedByGroupEvent */ MwNeutralPlayerService, MwPlayerStateService
-} from '../../services';
-import { MwCardsMappingService } from '../../services/mw-cards-mapping.service';
-import { CombatInteractorService } from '../../services/mw-combat-interactor.service';
-import { EventsService, StoreClient, WireMethod } from '../../services/state';
-import { GameStoreClient } from '../../services/state-old/game-state.service';
-import { WireEvent } from '../../services/state-old/store-decorators.config';
-import { GroupDamagedByGroup } from '../../services/state-values/battle-events';
-import { GroupDamagedByGroupEvent } from '../../services/state-values/battle.types';
-import { PlayerStartsFight } from '../../services/state-values/game-events';
+import { BattleStateService as MwBattleStateService, CombatInteractorService, MwCardsMappingService, MwNeutralPlayerService, MwPlayerStateService } from '../../services';
+import { GroupDamagedByGroup, GroupDamagedByGroupEvent, PlayerStartsFight } from '../../services/events';
+import { StoreClient, WireMethod } from '../../services/state';
 import { MwUnitGroupCardComponent } from '../mw-unit-group-card/mw-unit-group-card.component';
 import { VfxService } from '../ui-elements/vfx-layer/vfx.service';
 
@@ -41,7 +33,6 @@ export class MwGameboardComponent extends StoreClient() implements OnInit, After
     private readonly combatInteractor: CombatInteractorService,
     private readonly vfx: VfxService,
     private readonly cd: ChangeDetectorRef,
-    private newEvents: EventsService,
   ) {
     super();
   }
@@ -81,14 +72,14 @@ export class MwGameboardComponent extends StoreClient() implements OnInit, After
     //   [...this.mainPlayerUnitGroups, ...this.neutralPlayerGroups],
     //   [this.mainPlayerInfo, this.neutralPlayerInfo],
     // );
-    this.newEvents.dispatch(PlayerStartsFight({
+    this.events.dispatch(PlayerStartsFight({
       players: [this.mainPlayerInfo, this.neutralPlayerInfo],
       unitGroups: [...this.mainPlayerUnitGroups, ...this.neutralPlayerGroups],
     }));
 
     this.updateFightQueue();
 
-    this.newEvents.eventStream$.pipe(
+    this.events.eventStream$.pipe(
       takeUntil(this.destroyed$),
     ).subscribe(() => {
       this.mainPlayerUnitGroups = this.mwBattleState.heroesUnitGroupsMap.get(this.mainPlayerInfo) as UnitGroupInstModel[];
@@ -109,5 +100,5 @@ export class MwGameboardComponent extends StoreClient() implements OnInit, After
     const isRanged = event.attackingGroup.type.defaultModifiers?.isRanged;
     this.vfx.createFloatingMessageForUnitGroup(event.attackedGroup, getDamageParts(event.damage, event.loss, isRanged));
   }
-
 }
+

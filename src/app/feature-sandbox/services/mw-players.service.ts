@@ -2,19 +2,11 @@ import { Injectable } from '@angular/core';
 import { PLAYER_COLORS } from 'src/app/core/dictionaries/colors.const';
 import { HelveticaHero } from 'src/app/core/dictionaries/heroes.const';
 import { LEVELS_BREAKPOINTS } from 'src/app/core/dictionaries/levels.const';
-import { HeroModel } from 'src/app/core/model/hero.model';
-import { ItemInstanceModel } from 'src/app/core/model/items/items.types';
-import { PlayerInstanceModel, PlayerModel, PlayerTypeEnum, UnitGroupInstModel, UnitGroupModel } from 'src/app/core/model/main.model';
-import { ResourcesModel } from 'src/app/core/model/resources.types';
+import { HeroModel, ItemInstanceModel, PlayerInstanceModel, PlayerModel, PlayerTypeEnum, ResourcesModel, UnitGroupInstModel, UnitGroupModel } from 'src/app/core/model';
 import { CommonUtils } from 'src/app/core/utils/common.utils';
-import { BattleEventsService } from './mw-battle-events.service';
-import { MwHeroesService } from './mw-heroes.service';
-import { MwItemsService } from './mw-items-service.service';
-import { MwSpellsService } from './mw-spells.service';
-import { MwUnitGroupsService } from './mw-unit-groups.service';
+import { MwHeroesService, MwItemsService, MwSpellsService, MwUnitGroupsService } from './';
+import { PlayerGainsLevel } from './events/';
 import { EventsService } from './state';
-import { PlayerGainsLevel } from './state-values/game-events';
-import { BattleEvent } from './types';
 
 
 // const mainPlayerGroups = GenerationUtils.createRandomArmy({
@@ -82,12 +74,11 @@ export class MwPlayersService {
   private currentPlayerId: string = PLAYER_IDS.Main;
 
   constructor(
-    private readonly events: BattleEventsService,
     private readonly spellsService: MwSpellsService,
     private readonly itemsService: MwItemsService,
     private readonly heroesService: MwHeroesService,
     private readonly unitGroups: MwUnitGroupsService,
-    private newEvents: EventsService,
+    private events: EventsService,
   ) { }
 
   public getCurrentPlayer(): PlayerInstanceModel {
@@ -113,8 +104,8 @@ export class MwPlayersService {
       playerHero.level++;
       playerHero.freeSkillpoints++;
       playerHero.experience = playerHero.experience - currentXpToNextLevel;
-      // this.events.dispatchEvent({ type: BattleEvent.Player_Gains_Level });
-      this.newEvents.dispatch(PlayerGainsLevel({}));
+
+      this.events.dispatch(PlayerGainsLevel({}));
     }
   }
 

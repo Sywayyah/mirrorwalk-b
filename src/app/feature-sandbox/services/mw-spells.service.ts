@@ -1,9 +1,7 @@
 import { Injectable } from '@angular/core';
-import { SpellInstance, SpellModel } from 'src/app/core/model/spells';
-import { Modifiers } from 'src/app/core/model/modifiers';
-import { SpellCreationOptions } from 'src/app/core/model/combat-api/combat-api.types';
 import { Colors } from 'src/app/core/dictionaries/colors.const';
-import { UnitGroupInstModel } from 'src/app/core/model/main.model';
+import { Modifiers, SpellInstance, SpellModel, UnitGroupInstModel } from 'src/app/core/model';
+import { SpellCreationOptions } from 'src/app/core/model/combat-api/combat-api.types';
 
 
 

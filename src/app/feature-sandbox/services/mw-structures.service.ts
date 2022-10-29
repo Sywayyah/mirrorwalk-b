@@ -3,10 +3,8 @@ import { ArchersOutpostStructure, BanditCamp, BeaconOfTheUndead, CalavryStalls, 
 import { BigCampStructure as BigCampStrcuture } from 'src/app/core/dictionaries/structures/big-camp.struct';
 import { MountainNestStructure } from 'src/app/core/dictionaries/structures/mountain-nest.struct';
 import { WitchHutStructure } from 'src/app/core/dictionaries/structures/witch-hut.struct';
-import { PlayerInstanceModel, UnitGroupInstModel } from 'src/app/core/model/main.model';
-import { NeutralCampStructure, NeutralSite, StructureGeneratorModel, StructureModel, StructureTypeEnum } from "src/app/core/model/structures.types";
-import { MwPlayersService } from './mw-players.service';
-import { MwUnitGroupsService } from './mw-unit-groups.service';
+import { NeutralCampStructure, NeutralSite, PlayerInstanceModel, StructureGeneratorModel, StructureModel, StructureTypeEnum, UnitGroupInstModel } from 'src/app/core/model';
+import { MwPlayersService, MwUnitGroupsService } from './';
 
 @Injectable({
   providedIn: 'root'

@@ -1,9 +1,7 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
-import { Icon } from 'src/app/core/model/icons.types';
-import { UnitGroupInstModel } from 'src/app/core/model/main.model';
-import { SpellActivationType, SpellInstance, SpellModel } from 'src/app/core/model/spells';
+import { Component, Input, OnChanges } from '@angular/core';
+import { Icon, SpellActivationType, SpellInstance, SpellModel, UnitGroupInstModel } from 'src/app/core/model';
 import { TypedChanges } from 'src/app/core/utils/types';
-import { MwCurrentPlayerStateService, PlayerState } from '../../services/mw-current-player-state.service';
+import { MwCurrentPlayerStateService, PlayerState } from '../../services';
 
 @Component({
   selector: 'mw-unit-group-spell',

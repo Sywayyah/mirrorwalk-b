@@ -1,10 +1,8 @@
 import { Injectable } from "@angular/core";
-import { GameEventTypes } from "src/app/core/model/items/items.types";
-import { MwItemsService } from "../mw-items-service.service";
+import { GameEventTypes } from "src/app/core/model";
+import { MwItemsService } from "../";
+import { FightNextRoundStarts, FightStarts, NextRoundStarts } from "../events";
 import { Notify, StoreClient, WireMethod } from "../state";
-import { FightNextRoundStarts } from "../state-values/battle-events";
-import { NextRoundStarts } from "../state-values/battle.types";
-import { FightStarts } from "../state-values/game-events";
 
 @Injectable()
 export class ItemsController extends StoreClient() {

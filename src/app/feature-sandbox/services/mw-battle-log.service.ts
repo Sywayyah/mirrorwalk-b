@@ -1,9 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
-import { BattleEventsService } from './mw-battle-events.service';
-import {
-  BattleEvent, DealtDamageMessage, HistoryLogTypesEnum, HistoryLogModel, RoundInfoMessage, SimpleMessage
-} from './types';
+import { DealtDamageMessage, HistoryLogModel, HistoryLogTypesEnum, RoundInfoMessage, SimpleMessage } from './types';
 
 @Injectable({
   providedIn: 'root'
@@ -12,42 +9,6 @@ export class MwBattleLogService {
 
   public history: HistoryLogModel[] = [];
   public historyEvent$: Subject<void> = new Subject();
-
-  constructor(
-    private readonly battleEvents: BattleEventsService,
-  ) {
-    // this.battleEvents.onEvents({
-    //   [BattleEvent.Fight_Starts]: () => {
-    //     this.history = [];
-    //   },
-
-    //   [BattleEvent.On_Group_Damaged_By_Group]: event => this.logDealtDamageMessage({
-    //     attacked: event.attackedGroup.type,
-    //     attackedPlayer: event.attackedGroup.ownerPlayerRef,
-    //     attacker: event.attackerGroup.type,
-    //     attackingPlayer: event.attackerGroup.ownerPlayerRef,
-    //     damage: event.damage,
-    //     losses: event.loss,
-    //   }),
-    //   [BattleEvent.On_Group_Counter_Attacked]: event => this.logSimpleMessage(`${event.attackerGroup.type.name} (${event.attackerGroup.count}) counterattacks, dealing ${event.damage} damage, ${event.loss} units perish`),
-    //   [BattleEvent.On_Group_Dies]: event => this.logSimpleMessage(`Group of ${event.target.type.name} dies, losing ${event.loss} units`),
-
-    //   /* todo: timely, logs will be controlled from spell's code */
-    //   [BattleEvent.Player_Targets_Spell]: event => {
-    //     switch (event.spell.baseType.activationType) {
-    //       case 'target':
-    //         // this.logSimpleMessage(`${event.player.hero.name} casts ${event.spell.name} against ${event.target.count} ${event.target.type.name}`);
-    //         break;
-    //     }
-
-    //   },
-
-    //   [BattleEvent.Round_Player_Turn_Starts]: event => this.logRoundInfoMessage(`Player ${event.currentPlayer.type} starts his turn`),
-
-    //   [BattleEvent.Fight_Ends]: event => this.logRoundInfoMessage(event.win ? 'Win!' : 'Defeat'),
-    //   [BattleEvent.Fight_Next_Round_Starts]: event => this.logRoundInfoMessage(`Round ${event.round} starts`),
-    // }).subscribe();
-  }
 
   public logSimpleMessage(log: string): void {
     const simpleMessage: SimpleMessage = { type: HistoryLogTypesEnum.SimpleMsg, message: log };

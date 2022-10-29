@@ -1,12 +1,9 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { PlayerInstanceModel, UnitGroupInstModel } from 'src/app/core/model/main.model';
-import { SpellActivationType, SpellInstance, SpellModel } from 'src/app/core/model/spells';
-import { BattleEventsService } from './mw-battle-events.service';
-import { MwPlayersService } from './mw-players.service';
+import { PlayerInstanceModel, SpellActivationType, SpellInstance, SpellModel, UnitGroupInstModel } from 'src/app/core/model';
+import { PlayerCastsInstantSpell } from './events';
+import { MwPlayersService } from './';
 import { EventsService } from './state';
-import { PlayerCastsInstantSpell } from './state-values/battle-events';
-import { BattleEvent } from './types';
 
 
 export enum PlayerState {
@@ -63,12 +60,9 @@ export class MwCurrentPlayerStateService {
 
   constructor(
     private readonly players: MwPlayersService,
-    private readonly battleEvents: BattleEventsService,
-    private readonly newEvents: EventsService,
+    private readonly events: EventsService,
   ) { }
 
-  // @Notify(BattleEvent.Fight_Next_Round_Starts)
-  // @Notify(BattleEvent.Fight_Starts)
   public resetSpellsCooldowns(): void {
     this.spellsAreOnCooldown = false;
   }
@@ -92,12 +86,7 @@ export class MwCurrentPlayerStateService {
       case 'instant':
         this.onCurrentSpellCast();
 
-        // this.battleEvents.dispatchEvent({
-        //   type: BattleEvent.Player_Casts_Instant_Spell,
-        //   player: this.currentPlayer,
-        //   spell: spell,
-        // });
-        this.newEvents.dispatch(PlayerCastsInstantSpell({
+        this.events.dispatch(PlayerCastsInstantSpell({
           player: this.currentPlayer,
           spell: spell,
         }));

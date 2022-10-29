@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { HintsContainerComponent } from './feature-sandbox/components/ui-elements/hints-container/hints-container.component';
 import { CombatInteractorService } from './feature-sandbox/services';
 import { BattleController, BattleLogController, CombatController, ItemsController, PlayerController, StructuresController } from './feature-sandbox/services/controllers';
-import { MwItemsService } from './feature-sandbox/services/mw-items-service.service';
+import { MwItemsService } from './feature-sandbox/services/mw-items.service';
 import { HintsService } from './feature-sandbox/services/ui/hints.service';
 
 @Component({

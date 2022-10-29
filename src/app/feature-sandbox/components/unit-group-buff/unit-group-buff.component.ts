@@ -1,6 +1,5 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
-import { Icon } from 'src/app/core/model/icons.types';
-import { SpellInstance, SpellModel } from 'src/app/core/model/spells';
+import { Component, Input, OnChanges } from '@angular/core';
+import { Icon, SpellInstance, SpellModel } from 'src/app/core/model';
 import { TypedChanges } from 'src/app/core/utils/types';
 
 @Component({

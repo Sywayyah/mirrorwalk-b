@@ -1,4 +1,4 @@
-import { UnitGroupInstModel } from "src/app/core/model/main.model";
+import { UnitGroupInstModel } from "src/app/core/model";
 import { HoverTypeEnum } from "../types";
 
 export type PlayerHoversCardEvent = {

@@ -1,8 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { ItemInstanceModel } from 'src/app/core/model/items/items.types';
-import { ItemReward } from 'src/app/core/model/structures.types';
+import { ItemInstanceModel, ItemReward } from 'src/app/core/model';
 import { MwPlayersService, StructItemRewardPopup } from 'src/app/feature-sandbox/services';
-import { MwItemsService } from 'src/app/feature-sandbox/services/mw-items-service.service';
+import { MwItemsService } from 'src/app/feature-sandbox/services/mw-items.service';
 
 @Component({
   selector: 'mw-item-reward-popup',
@@ -41,7 +40,7 @@ export class ItemRewardPopupComponent implements OnInit {
     this.selectedGroup.forEach(item => {
       this.playersService.addItemToPlayer(this.playersService.getCurrentPlayer(), item);
     });
-    
+
     this.close.emit();
   }
 

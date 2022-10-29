@@ -1,10 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Colors } from 'src/app/core/dictionaries/colors.const';
-import { GameEventsHandlers, GameEventsMapping, GameEventTypes, ItemBaseModel, ItemInstanceModel } from 'src/app/core/model/items/items.types';
-import { PlayerInstanceModel } from 'src/app/core/model/main.model';
-import { BattleEventsService } from './mw-battle-events.service';
+import { GameEventsHandlers, GameEventsMapping, ItemBaseModel, ItemInstanceModel, PlayerInstanceModel } from 'src/app/core/model';
 import type { CombatInteractorService } from './mw-combat-interactor.service';
-import { BattleEvent } from './types';
 
 @Injectable({
   providedIn: 'root'
@@ -13,19 +10,6 @@ export class MwItemsService {
 
   private itemsHandlersMap: Map<ItemInstanceModel, GameEventsHandlers> = new Map();
   private combatInteractorRef!: CombatInteractorService;
-
-  constructor(
-    // private readonly events: BattleEventsService,
-  ) {
-    // this.events.onEvents({
-    //   [BattleEvent.Fight_Next_Round_Starts]: event => {
-    //     this.triggerEventForAllItemsHandlers(GameEventTypes.NewRoundBegins, { round: event.round });
-    //   },
-    //   [BattleEvent.Fight_Starts]: event => {
-    //     this.triggerEventForAllItemsHandlers(GameEventTypes.NewRoundBegins, { round: 0 });
-    //   }
-    // }).subscribe();
-  }
 
   public initService(combatInteractor: CombatInteractorService): void {
     this.combatInteractorRef = combatInteractor;

@@ -1,9 +1,8 @@
 import { Directive, HostListener, Input, OnInit } from '@angular/core';
-import { UnitGroupInstModel } from 'src/app/core/model/main.model';
-import { BattleEvent, BattleEventsService, BattleStateService, HoverTypeEnum, MwPlayersService } from '../services';
-import { MwCurrentPlayerStateService } from '../services/mw-current-player-state.service';
+import { UnitGroupInstModel } from 'src/app/core/model';
+import { BattleStateService, HoverTypeEnum, MwCurrentPlayerStateService, MwPlayersService } from '../services';
+import { PlayerClicksAllyGroup, PlayerClicksEnemyGroup, PlayerHoversGroupCard } from '../services/events';
 import { EventsService } from '../services/state';
-import { PlayerClicksAllyGroup, PlayerClicksEnemyGroup, PlayerHoversGroupCard } from '../services/state-values/ui-events';
 
 /*
   considering that this directive handles not only spells, it can be renamed later
@@ -20,9 +19,8 @@ export class MwSpellTargetDirective implements OnInit {
   constructor(
     private readonly curPlayerState: MwCurrentPlayerStateService,
     private readonly players: MwPlayersService,
-    private readonly battleEvents: BattleEventsService,
     private readonly mwBattleStateService: BattleStateService,
-    private newEvents: EventsService,
+    private events: EventsService,
   ) {
   }
 
@@ -60,24 +58,14 @@ export class MwSpellTargetDirective implements OnInit {
         return;
       }
 
-      // this.battleEvents.dispatchEvent({
-      //   type: BattleEvent.UI_Player_Clicks_Enemy_Group,
-      //   attackedGroup: this.spellTargetUnitGroup,
-      //   attackingGroup: this.mwBattleStateService.currentUnitGroup,
-      //   attackingPlayer: this.mwBattleStateService.currentPlayer,
-      // });
-      this.newEvents.dispatch(PlayerClicksEnemyGroup({
+      this.events.dispatch(PlayerClicksEnemyGroup({
         attackedGroup: this.spellTargetUnitGroup,
         attackingGroup: this.mwBattleStateService.currentUnitGroup,
         attackingPlayer: this.mwBattleStateService.currentPlayer,
       }));
       this.dispatchUnitGroupHovered(HoverTypeEnum.EnemyCard);
     } else {
-      // this.battleEvents.dispatchEvent({
-      //   type: BattleEvent.UI_Player_Clicks_Ally_Group,
-      //   unitGroup: this.spellTargetUnitGroup
-      // });
-      this.newEvents.dispatch(PlayerClicksAllyGroup({
+      this.events.dispatch(PlayerClicksAllyGroup({
         unitGroup: this.spellTargetUnitGroup
       }));
       this.dispatchUnitGroupHovered(HoverTypeEnum.Unhover);
@@ -100,14 +88,7 @@ export class MwSpellTargetDirective implements OnInit {
   }
 
   private dispatchUnitGroupHovered(hoverType: HoverTypeEnum) {
-    // this.battleEvents.dispatchEvent({
-    //   type: BattleEvent.UI_Player_Hovers_Group_Card,
-    //   hoverType: hoverType,
-    //   currentCard: this.mwBattleStateService.currentUnitGroup,
-    //   hoveredCard: this.spellTargetUnitGroup,
-    // });
-    console.log(hoverType);
-    this.newEvents.dispatch(PlayerHoversGroupCard({
+    this.events.dispatch(PlayerHoversGroupCard({
       hoverType: hoverType,
       currentCard: this.mwBattleStateService.currentUnitGroup,
       hoveredCard: this.spellTargetUnitGroup,

@@ -1,76 +1,47 @@
 import { Injectable } from '@angular/core';
-import { CombatActionsRef, DamageType, PostDamageInfo, SpellCreationOptions } from 'src/app/core/model/combat-api/combat-api.types';
 import {
-  PlayerInstanceModel,
-  PlayerModel,
-  UnitGroupInstModel
-} from 'src/app/core/model/main.model';
-import { Modifiers } from 'src/app/core/model/modifiers';
-import {
-  SpellActivationType,
+  Modifiers, PlayerInstanceModel,
+  PlayerModel, SpellActivationType,
   SpellEventHandlers,
   SpellEventsMapping,
   SpellEventTypes,
   SpellInstance,
-  SpellModel
-} from 'src/app/core/model/spells';
+  SpellModel,
+  UnitGroupInstModel
+} from 'src/app/core/model';
+import { CombatActionsRef, DamageType, PostDamageInfo, SpellCreationOptions } from 'src/app/core/model/combat-api/combat-api.types';
 import { EffectType, VfxElemEffect } from 'src/app/core/model/vfx-api/vfx-api.types';
 import { CommonUtils } from 'src/app/core/utils/common.utils';
 import { VfxService } from '../components/ui-elements/vfx-layer/vfx.service';
-import { BattleEventsService } from './mw-battle-events.service';
-import { MwBattleLogService } from './mw-battle-log.service';
-import { BattleStateService } from './mw-battle-state.service';
-import { MwPlayersService } from './mw-players.service';
-import { MwSpellsService } from './mw-spells.service';
-import { FinalDamageInfo, MwUnitGroupStateService } from './mw-unit-group-state.service';
-import { MwUnitGroupsService } from './mw-unit-groups.service';
-import { EventsService } from './state';
-import { GameStoreClient } from './state-old/game-state.service';
-import { CombatAttackInteraction, GroupCounterAttacked, GroupDamagedByGroup, GroupDies, GroupModifiersChanged, GroupSpeedChanged, GroupSpellsChanged, GroupTakesDamage } from './state-values/battle-events';
-import { CombatInteractionStateEvent } from './state-values/battle.types';
-import { PlayerHoversCardEvent } from './state-values/ui.types';
-import {
-  BattleEvent, CombatInteractionEnum,
-  CombatInteractionState, UIPlayerHoversCard
-} from './types';
-import { ActionHintTypeEnum, AttackActionHintInfo } from './types/action-hint.types';
+import { BattleStateService, FinalDamageInfo, MwBattleLogService, MwPlayersService, MwSpellsService, MwUnitGroupsService, MwUnitGroupStateService } from './';
+import { CombatAttackInteraction, CombatInteractionStateEvent, GroupCounterAttacked, GroupDamagedByGroup, GroupDies, GroupModifiersChanged, GroupSpeedChanged, GroupSpellsChanged, GroupTakesDamage, PlayerHoversCardEvent } from './events';
+import { StoreClient } from './state';
+import { ActionHintTypeEnum, AttackActionHintInfo, CombatInteractionEnum } from './types';
 
 
 @Injectable({
   providedIn: 'root'
 })
-export class CombatInteractorService extends GameStoreClient() {
+export class CombatInteractorService extends StoreClient() {
 
   private spellsHandlersMap: Map<SpellInstance, SpellEventHandlers> = new Map();
   private unitGroupModifiersMap: Map<UnitGroupInstModel, Modifiers[]> = new Map();
 
   constructor(
     private readonly battleState: BattleStateService,
-    private readonly battleEvents: BattleEventsService,
-    // private readonly curPlayerState: MwCurrentPlayerStateService,
     private readonly players: MwPlayersService,
     private readonly battleLog: MwBattleLogService,
     private readonly unitState: MwUnitGroupStateService,
     private readonly spellsService: MwSpellsService,
     private readonly vfxService: VfxService,
     private readonly units: MwUnitGroupsService,
-    private newEvents: EventsService,
   ) {
     super();
     /* Dispell buffs and debuffs when location is left. May change in future. */
   }
 
-  // @WireEvent(BattleEvent.Struct_Completed)
-  // public dispellAllUnits(event: StructCompleted): void {
-  //   this.forEachUnitGroup(unitGroup => this.applyDispellToUnitGroup(unitGroup));
-  // }
-
   public onBattleBegins(): void {
     this.initPlayersSpells();
-
-    // this.listenEvents().pipe(
-    //   takeUntil(this.battleEvents.onEvent(BattleEvent.Fight_Ends)),
-    // ).subscribe();
   }
 
   public dealDamageTo(
@@ -150,13 +121,7 @@ export class CombatInteractorService extends GameStoreClient() {
 
     if (finalDamageInfo.isDamageFatal) {
       this.battleState.handleDefeatedUnitGroup(target);
-      // this.battleEvents.dispatchEvent({
-      //   type: BattleEvent.On_Group_Dies,
-      //   target: target,
-      //   targetPlayer: target.ownerPlayerRef,
-      //   loss: finalDamageInfo.finalUnitLoss,
-      // });
-      this.newEvents.dispatch(GroupDies({
+      this.events.dispatch(GroupDies({
         target: target,
         targetPlayer: target.ownerPlayerRef,
         loss: finalDamageInfo.finalUnitLoss,
@@ -164,13 +129,7 @@ export class CombatInteractorService extends GameStoreClient() {
     }
 
     if (finalDamageInfo.finalUnitLoss) {
-      // this.battleEvents.dispatchEvent({
-      //   type: BattleEvent.On_Group_Takes_Damage,
-      //   unitLoss: finalDamageInfo.finalUnitLoss,
-      //   registerLoss: true,
-      //   group: target,
-      // });
-      this.newEvents.dispatch(GroupTakesDamage({
+      this.events.dispatch(GroupTakesDamage({
         unitLoss: finalDamageInfo.finalUnitLoss,
         registerLoss: true,
         group: target,
@@ -218,28 +177,14 @@ export class CombatInteractorService extends GameStoreClient() {
       this.battleState.currentGroupTurnsLeft--;
       attacker.turnsLeft = this.battleState.currentGroupTurnsLeft;
 
-      // this.battleEvents.dispatchEvent({
-      //   type: BattleEvent.On_Group_Damaged_By_Group,
-      //   attackerGroup: attacker,
-      //   attackedGroup: attacked,
-      //   loss: finalDamageInfo.finalUnitLoss,
-      //   damage: finalDamageInfo.finalDamage,
-      // });
-      this.newEvents.dispatch(GroupDamagedByGroup({
+      this.events.dispatch(GroupDamagedByGroup({
         attackingGroup: attacker,
         attackedGroup: attacked,
         loss: finalDamageInfo.finalUnitLoss,
         damage: finalDamageInfo.finalDamage,
       }));
     } else {
-      // this.battleEvents.dispatchEvent({
-      //   type: BattleEvent.On_Group_Counter_Attacked,
-      //   attackerGroup: attacker,
-      //   attackedGroup: attacked,
-      //   loss: finalDamageInfo.finalUnitLoss,
-      //   damage: finalDamageInfo.finalDamage,
-      // });
-      this.newEvents.dispatch(GroupCounterAttacked({
+      this.events.dispatch(GroupCounterAttacked({
         attackingGroup: attacker,
         attackedGroup: attacked,
         loss: finalDamageInfo.finalUnitLoss,
@@ -249,20 +194,14 @@ export class CombatInteractorService extends GameStoreClient() {
 
     if (finalDamageInfo.isDamageFatal) {
       this.battleState.handleDefeatedUnitGroup(attacked);
-      // this.battleEvents.dispatchEvent({
-      //   type: BattleEvent.On_Group_Dies,
-      //   target: attacked,
-      //   targetPlayer: attacked.ownerPlayerRef,
-      //   loss: finalDamageInfo.finalUnitLoss,
-      // });
-      this.newEvents.dispatch(GroupDies({
+      this.events.dispatch(GroupDies({
         target: attacked,
         targetPlayer: attacked.ownerPlayerRef,
         loss: finalDamageInfo.finalUnitLoss,
       }));
       attackActionState.action = CombatInteractionEnum.AttackInteractionCompleted;
-      // this.battleEvents.dispatchEvent(attackActionState);
-      this.newEvents.dispatch(CombatAttackInteraction(attackActionState));
+
+      this.events.dispatch(CombatAttackInteraction(attackActionState));
       return;
     }
 
@@ -272,16 +211,14 @@ export class CombatInteractorService extends GameStoreClient() {
       } else {
         attackActionState.action = CombatInteractionEnum.AttackInteractionCompleted;
       }
-      // this.battleEvents.dispatchEvent(attackActionState);
-      this.newEvents.dispatch(CombatAttackInteraction(attackActionState));
+      this.events.dispatch(CombatAttackInteraction(attackActionState));
       return;
     }
 
     if (isCounterattack) {
       attackActionState.action = CombatInteractionEnum.AttackInteractionCompleted;
     }
-    // this.battleEvents.dispatchEvent(attackActionState);
-    this.newEvents.dispatch(CombatAttackInteraction(attackActionState));
+    this.events.dispatch(CombatAttackInteraction(attackActionState));
   }
 
   public setDamageHintMessageOnCardHover(event: PlayerHoversCardEvent): void {
@@ -336,19 +273,12 @@ export class CombatInteractorService extends GameStoreClient() {
         }
 
         if (modifiers.unitGroupSpeedBonus) {
-          // this.battleEvents.dispatchEvent({
-          //   type: BattleEvent.Combat_Unit_Speed_Changed
-          // });
-          this.newEvents.dispatch(GroupSpeedChanged({
+          this.events.dispatch(GroupSpeedChanged({
             unitGroup: target
           }));
         }
 
-        // this.battleEvents.dispatchEvent({
-        //   type: BattleEvent.OnGroupModifiersChagned,
-        //   unitGroup: target,
-        // });
-        this.newEvents.dispatch(GroupModifiersChanged({
+        this.events.dispatch(GroupModifiersChanged({
           unitGroup: target,
         }));
       },
@@ -365,11 +295,7 @@ export class CombatInteractorService extends GameStoreClient() {
           CommonUtils.removeItem(unitGroupMods, modifiers);
         }
 
-        // this.battleEvents.dispatchEvent({
-        //   type: BattleEvent.OnGroupModifiersChagned,
-        //   unitGroup: target,
-        // });
-        this.newEvents.dispatch(GroupModifiersChanged({
+        this.events.dispatch(GroupModifiersChanged({
           unitGroup: target,
         }));
       },
@@ -439,11 +365,8 @@ export class CombatInteractorService extends GameStoreClient() {
   private addSpellToUnitGroup(target: UnitGroupInstModel, spell: SpellInstance, ownerPlayer: PlayerInstanceModel): void {
     // console.log('add spell');
     target.spells.push(spell);
-    // this.events().dispatchEvent({
-    //   type: BattleEvent.OnGroupSpellsChanged,
-    //   unitGroup: target,
-    // })
-    this.newEvents.dispatch(GroupSpellsChanged({
+
+    this.events.dispatch(GroupSpellsChanged({
       unitGroup: target,
     }));
 
@@ -525,104 +448,6 @@ export class CombatInteractorService extends GameStoreClient() {
       }
     })
   }
-
-  // private listenEvents(): Observable<BattleEvents> {
-  // return this.battleEvents.onEvents({
-  //   [BattleEvent.Fight_Starts]: () => {
-  //     this.initAllUnitGroupSpells();
-
-  //     this.resetAllUnitGroupsCooldowns();
-  //   },
-  //   [BattleEvent.Combat_Group_Attacked]: (event: CombatGroupAttacked) => {
-  //     this.battleEvents.dispatchEvent({
-  //       type: BattleEvent.Combat_Attack_Interaction,
-  //       attackedGroup: event.attackedGroup,
-  //       attackingGroup: event.attackerGroup,
-  //       action: CombatInteractionEnum.GroupAttacks,
-  //     });
-  //   },
-  //   [BattleEvent.Combat_Attack_Interaction]: (state: CombatInteractionState) => {
-  //     switch (state.action) {
-  //       case CombatInteractionEnum.GroupAttacks:
-  //         console.log('group starts attack');
-  //         this.handleAttackInteraction(state);
-  //         break;
-  //       case CombatInteractionEnum.GroupCounterattacks:
-  //         this.handleAttackInteraction(state);
-  //         break;
-  //       case CombatInteractionEnum.AttackInteractionCompleted:
-  //         console.log('group completes attack');
-  //         this.battleEvents.dispatchEvent({
-  //           type: BattleEvent.Round_Group_Spends_Turn,
-  //           groupPlayer: state.attackingGroup.ownerPlayerRef,
-  //           group: state.attackingGroup,
-  //           groupStillAlive: Boolean(state.attackingGroup.count),
-  //           groupHasMoreTurns: Boolean(state.attackingGroup.turnsLeft),
-  //         });
-  //     }
-  //   },
-
-  //   [BattleEvent.UI_Player_Hovers_Group_Card]: (event: UIPlayerHoversCard) => {
-  //     switch (event.hoverType) {
-  //       case HoverTypeEnum.EnemyCard:
-  //         if (this.curPlayerState.playerCurrentState === PlayerState.Normal) {
-  //           this.setDamageHintMessageOnCardHover(event);
-  //         }
-  //         if (this.curPlayerState.playerCurrentState === PlayerState.SpellTargeting) {
-  //           const spellTargetHint: SpellTargetActionHint = {
-  //             type: ActionHintTypeEnum.OnTargetSpell,
-  //             spell: this.curPlayerState.currentSpell,
-  //             target: event.hoveredCard as UnitGroupInstModel,
-  //           };
-  //           this.battleState.hintMessage$.next(spellTargetHint);
-  //         }
-  //         break;
-  //       case HoverTypeEnum.AllyCard:
-  //         /* similar logic */
-  //         if (this.curPlayerState.playerCurrentState === PlayerState.SpellTargeting) {
-  //           const spellTargetHint: SpellTargetActionHint = {
-  //             type: ActionHintTypeEnum.OnTargetSpell,
-  //             spell: this.curPlayerState.currentSpell,
-  //             target: event.hoveredCard as UnitGroupInstModel,
-  //           };
-
-  //           this.battleState.hintMessage$.next(spellTargetHint);
-  //         }
-  //         break;
-  //       case HoverTypeEnum.Unhover:
-  //         this.battleState.hintMessage$.next(null);
-  //     }
-  //   },
-
-  //   [BattleEvent.Player_Targets_Spell]: (event: PlayerTargetsSpell) => {
-  //     this.triggerEventForSpellHandler(event.spell, SpellEventTypes.PlayerTargetsSpell, { target: event.target });
-  //     this.curPlayerState.setPlayerState(PlayerState.Normal);
-  //     this.curPlayerState.resetCurrentSpell();
-  //   },
-
-  //   [BattleEvent.Player_Casts_Instant_Spell]: (event) => {
-  //     this.triggerEventForSpellHandler(event.spell, SpellEventTypes.PlayerCastsInstantSpell, {
-  //       player: event.player,
-  //       spell: event.spell,
-  //     });
-  //   },
-
-  //   [BattleEvent.Fight_Next_Round_Starts]: (event) => {
-  //     this.triggerEventForAllSpellsHandler(
-  //       SpellEventTypes.NewRoundBegins,
-  //       {
-  //         round: event.round,
-  //       }
-  //     );
-
-  //     this.resetAllUnitGroupsCooldowns();
-  //   },
-
-  //   [BattleEvent.On_Group_Dies]: (event) => {
-  //     this.applyDispellToUnitGroup(event.target);
-  //   },
-  // });
-  // }
 
   public resetAllUnitGroupsCooldowns(): void {
     this.forEachUnitGroup(unitGroup => unitGroup.fightInfo.spellsOnCooldown = false);

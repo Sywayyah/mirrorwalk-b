@@ -1,7 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { MwPlayersService, PreviewPopup } from 'src/app/feature-sandbox/services';
-import { MwHeroesService } from 'src/app/feature-sandbox/services/mw-heroes.service';
-import { MwSpellsService } from 'src/app/feature-sandbox/services/mw-spells.service';
+import { MwHeroesService, MwPlayersService, MwSpellsService, PreviewPopup } from 'src/app/feature-sandbox/services';
 import { MwUnitGroupsService } from 'src/app/feature-sandbox/services/mw-unit-groups.service';
 
 @Component({

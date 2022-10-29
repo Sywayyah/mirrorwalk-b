@@ -1,6 +1,4 @@
-import { UnitGroupInstModel, PlayerInstanceModel, PlayerModel } from "src/app/core/model/main.model";
-import { SpellInstance } from "src/app/core/model/spells";
-import { StructureModel } from "src/app/core/model/structures.types";
+import { PlayerInstanceModel, PlayerModel, SpellInstance, StructureModel, UnitGroupInstModel } from "src/app/core/model";
 
 export enum CombatInteractionEnum {
   GroupAttacks = 'attacks',

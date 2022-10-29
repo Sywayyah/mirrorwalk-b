@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { BattleEventsService, BattleEvent, PrefightPopup } from 'src/app/feature-sandbox/services';
+import { PrefightPopup } from 'src/app/feature-sandbox/services';
 import { EventsService } from 'src/app/feature-sandbox/services/state';
-import { StructFightConfirmed } from 'src/app/feature-sandbox/services/state-values/game-events';
+import { StructFightConfirmed } from 'src/app/feature-sandbox/services/events';
 
 @Component({
   selector: 'mw-pre-fight-popup',
@@ -17,8 +17,7 @@ export class PreFightPopupComponent implements OnInit {
   public totalExpReward: number = 0;
 
   constructor(
-    // private readonly events: BattleEventsService,
-    private newEvents: EventsService,
+    private events: EventsService,
   ) { }
 
   public ngOnInit(): void {
@@ -35,11 +34,7 @@ export class PreFightPopupComponent implements OnInit {
   public onBattleConfirmed(): void {
     this.close.emit();
 
-    // this.events.dispatchEvent({
-    //   type: BattleEvent.Struct_Fight_Confirmed,
-    //   struct: this.popup.struct,
-    // })
-    this.newEvents.dispatch(StructFightConfirmed({
+    this.events.dispatch(StructFightConfirmed({
       struct: this.popup.struct,
     }));
   }

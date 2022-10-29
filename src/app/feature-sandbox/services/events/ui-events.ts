@@ -1,8 +1,5 @@
-import { UnitGroupInstModel } from "src/app/core/model/main.model";
 import { eventsForPrefix } from "../state/events";
-import { HoverTypeEnum } from "../types";
-import { props } from "./battle.types";
-import { PlayerHoversCardEvent } from "./ui.types";
+import { PlayerHoversCardEvent, props } from "./";
 
 
 const uiEvent = eventsForPrefix('[UI]');

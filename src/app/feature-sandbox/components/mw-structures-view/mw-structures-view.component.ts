@@ -1,10 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { PlayerInstanceModel, UnitGroupInstModel } from 'src/app/core/model/main.model';
-import { NeutralCampStructure, StructureModel, StructureTypeEnum } from "src/app/core/model/structures.types";
-import { BattleEvent, BattleEventsService, MwPlayersService } from '../../services';
-import { MwStructuresService } from '../../services/mw-structures.service';
+import { NeutralCampStructure, PlayerInstanceModel, StructureModel, StructureTypeEnum, UnitGroupInstModel } from 'src/app/core/model';
+import { MwPlayersService, MwStructuresService } from '../../services';
+import { StructSelected } from '../../services/events';
 import { EventsService } from '../../services/state';
-import { StructSelected } from '../../services/state-values/game-events';
 
 @Component({
   selector: 'mw-structures-view',
@@ -21,8 +19,7 @@ export class MwStructuresViewComponent implements OnInit {
   constructor(
     private readonly structuresService: MwStructuresService,
     private readonly playersService: MwPlayersService,
-    // private readonly events: BattleEventsService,
-    private newEvents: EventsService,
+    private events: EventsService,
   ) {
     this.structures = this.structuresService.structures;
     this.guardsMap = this.structuresService.guardsMap;
@@ -39,8 +36,7 @@ export class MwStructuresViewComponent implements OnInit {
 
     this.playersService.getEnemyPlayer().unitGroups = this.guardsMap[struct.id];
 
-    // this.events.dispatchEvent({ type: BattleEvent.Struct_Selected, struct });
-    this.newEvents.dispatch(StructSelected({
+    this.events.dispatch(StructSelected({
       struct
     }));
   }

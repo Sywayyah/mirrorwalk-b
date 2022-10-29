@@ -1,15 +1,8 @@
 import { Injectable } from "@angular/core";
-import { PlayerTypeEnum } from "src/app/core/model/main.model";
-import { NeutralCampStructure } from "src/app/core/model/structures.types";
-import { BattleStateService } from "../mw-battle-state.service";
-import { MwCurrentPlayerStateService, PlayerState } from "../mw-current-player-state.service";
-import { MwPlayersService } from "../mw-players.service";
-import { MwStructuresService } from "../mw-structures.service";
+import { NeutralCampStructure, PlayerTypeEnum } from "src/app/core/model";
+import { BattleStateService, MwCurrentPlayerStateService, MwPlayersService, MwStructuresService, PlayerState } from "..";
+import { FightEnds, FightNextRoundStarts, FightStarts, FightStartsEvent, GroupAttacked, GroupDamagedByGroup, GroupDamagedByGroupEvent, GroupDies, GroupSpeedChanged, GroupTakesDamage, GroupTakesDamageEvent, PlayerClicksAllyGroup, PlayerClicksAllyGroupEvent, PlayerClicksEnemyGroup, PlayerClicksEnemyGroupEvent, PlayerStartsFight, PlayerTargetsSpell, PlayerTurnStartEvent, RoundGroupSpendsTurn, RoundGroupSpendsTurnEvent, RoundGroupTurnEnds, RoundPlayerCountinuesAttacking, RoundPlayerTurnStarts } from "../events";
 import { Notify, StoreClient, WireMethod } from "../state";
-import { FightEnds, FightNextRoundStarts, GroupAttacked, GroupDamagedByGroup, GroupDies, GroupSpeedChanged, GroupTakesDamage, PlayerTargetsSpell, RoundGroupSpendsTurn, RoundGroupTurnEnds, RoundPlayerCountinuesAttacking, RoundPlayerTurnStarts } from "../state-values/battle-events";
-import { GroupDamagedByGroupEvent, GroupTakesDamageEvent, PlayerTurnStartEvent, RoundGroupSpendsTurnEvent } from "../state-values/battle.types";
-import { FightStarts, FightStartsEvent, PlayerStartsFight } from "../state-values/game-events";
-import { PlayerClicksAllyGroup, PlayerClicksAllyGroupEvent, PlayerClicksEnemyGroup, PlayerClicksEnemyGroupEvent } from "../state-values/ui-events";
 
 @Injectable()
 export class BattleController extends StoreClient() {

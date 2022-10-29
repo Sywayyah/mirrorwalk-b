@@ -1,5 +1,4 @@
-import { PlayerInstanceModel, UnitGroupInstModel } from "src/app/core/model/main.model";
-import { NeutralCampStructure, StructureModel } from "src/app/core/model/structures.types";
+import { NeutralCampStructure, PlayerInstanceModel, StructureModel, UnitGroupInstModel } from "src/app/core/model";
 import { eventsForPrefix } from "../state/events";
 import { PopupModel } from "../types";
 

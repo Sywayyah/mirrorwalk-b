@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { UnitGroupInstModel } from 'src/app/core/model/main.model';
+import { UnitGroupInstModel } from 'src/app/core/model';
 import { MwUnitGroupCardComponent } from '../components';
 
 @Injectable({
@@ -18,7 +18,7 @@ export class MwCardsMappingService {
   public unregister(unitGroup: UnitGroupInstModel): void {
     this.mapping.delete(unitGroup);
   }
-  
+
   public get(unitGroup: UnitGroupInstModel): MwUnitGroupCardComponent {
     return this.mapping.get(unitGroup) as MwUnitGroupCardComponent;
   }

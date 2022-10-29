@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
-import { PlayerInstanceModel, UnitGroupInstModel, UnitGroupModel, UnitTypeModel } from 'src/app/core/model/main.model';
-import { Modifiers, ModifiersModel } from 'src/app/core/model/modifiers';
+import { Modifiers, ModifiersModel, PlayerInstanceModel, UnitGroupInstModel, UnitGroupModel, UnitTypeModel } from 'src/app/core/model';
 import { CommonUtils, GenerationModel, GenerationUtils } from 'src/app/core/utils/common.utils';
 import { MwSpellsService } from './mw-spells.service';
 

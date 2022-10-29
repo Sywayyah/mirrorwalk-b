@@ -1,16 +1,10 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Subject } from 'rxjs';
-import { PlayerInstanceModel, PlayerModel, UnitGroupInstModel, UnitGroupModel, UnitTypeModel } from 'src/app/core/model/main.model';
-import { BattleEventsService } from './mw-battle-events.service';
-import { MwCurrentPlayerStateService } from './mw-current-player-state.service';
-import { MwPlayersService } from './mw-players.service';
-import { MwStructuresService } from './mw-structures.service';
+import { PlayerInstanceModel, PlayerModel, UnitGroupInstModel, UnitGroupModel, UnitTypeModel } from 'src/app/core/model';
+import { FightNextRoundStarts, GroupAttacked, RoundPlayerCountinuesAttacking, RoundPlayerTurnStarts } from './events';
 import { MwUnitGroupsService } from './mw-unit-groups.service';
 import { EventsService } from './state';
-import { FightNextRoundStarts, GroupAttacked, RoundPlayerCountinuesAttacking, RoundPlayerTurnStarts } from './state-values/battle-events';
-// import { EventsService } from './state';
-// import { FightStarts } from './state-values/battle-events';
-import { ActionHintModel, BattleEvent } from "./types";
+import { ActionHintModel } from "./types";
 
 
 @Injectable({
@@ -39,12 +33,8 @@ export class BattleStateService {
 
 
   constructor(
-    private readonly battleEventsService: BattleEventsService,
-    private readonly playersService: MwPlayersService,
-    private readonly structuresService: MwStructuresService,
-    private readonly curPlayerState: MwCurrentPlayerStateService,
     private readonly units: MwUnitGroupsService,
-    private newEvents: EventsService,
+    private events: EventsService,
   ) { }
 
   public resetCurrentPlayer(): void {
@@ -71,148 +61,6 @@ export class BattleStateService {
     this.updateGroupsTailHpAndCombatInfo();
 
     this.refreshUnitGroups();
-
-    // this.battleEventsService.onEvents({
-    //   [BattleEvent.Fight_Starts]: event => {
-    //     console.log('Battle starts');
-    //     this.resetCurrentPlayer();
-
-    //     this.initNextTurnByQueue();
-    //   },
-    //   [BattleEvent.Fight_Next_Round_Starts]: event => {
-    //     console.log('Next round');
-    //     this.initNextTurnByQueue();
-    //   },
-
-    //   [BattleEvent.Round_Player_Turn_Starts]: event => {
-    //     console.log('Player starts turn');
-    //     if (event.currentPlayer.type === PlayerTypeEnum.AI) {
-    //       console.log(`AI player's Turn`)
-    //       this.curPlayerState.setPlayerState(PlayerState.WaitsForTurn);
-    //       this.processAiPlayer();
-    //     } else {
-    //       this.curPlayerState.setPlayerState(PlayerState.Normal);
-    //     }
-    //   },
-
-    //   [BattleEvent.Round_Player_Continues_Attacking]: event => {
-    //     if (this.currentPlayer.type === PlayerTypeEnum.AI) {
-    //       this.processAiPlayer();
-    //     }
-    //   },
-
-    //   [BattleEvent.Round_Group_Turn_Ends]: event => {
-    //     this.initNextTurnByQueue(true);
-    //   },
-
-    //   [BattleEvent.On_Group_Damaged_By_Group]: event => {
-    //     if (!event.loss) {
-    //       return;
-    //     }
-
-    //     this.registerPlayerUnitLoss(event.attackedGroup, event.loss);
-    //   },
-
-    //   [BattleEvent.On_Group_Takes_Damage]: event => {
-    //     if (event.registerLoss && event.unitLoss) {
-    //       this.registerPlayerUnitLoss(event.group, event.unitLoss);
-    //     }
-    //   },
-
-    //   [BattleEvent.On_Group_Dies]: event => {
-    //     const currentStructure = this.structuresService.currentStruct as NeutralCampStructure;
-
-    //     /* Reflect dying groups on win. This logic may be revisited later */
-    //     const currentPlayerUnitGroups = this.getAliveUnitsOfPlayer(this.players[0]);
-
-    //     if (!(currentPlayerUnitGroups).length) {
-    //       this.playersService.getCurrentPlayer().unitGroups = currentPlayerUnitGroups;
-
-    //       this.battleEventsService.dispatchEvent({
-    //         type: BattleEvent.Fight_Ends,
-    //         win: false,
-    //         struct: currentStructure,
-    //       });
-    //     }
-
-    //     if (!(this.getAliveUnitsOfPlayer(this.players[1])).length) {
-    //       this.playersService.getCurrentPlayer().unitGroups = currentPlayerUnitGroups;
-
-    //       currentStructure.isInactive = true;
-
-    //       this.battleEventsService.dispatchEvent({
-    //         type: BattleEvent.Fight_Ends,
-    //         win: true,
-    //         struct: currentStructure,
-    //       });
-    //     }
-
-    //   },
-
-    //   [BattleEvent.Round_Group_Spends_Turn]: event => {
-    //     console.log('spends a turn');
-    //     if (event.groupPlayer.type === PlayerTypeEnum.AI && event.groupHasMoreTurns && event.groupStillAlive) {
-    //       this.processAiPlayer();
-    //     }
-
-    //     if (!event.groupHasMoreTurns || !event.groupStillAlive) {
-    //       this.battleEventsService.dispatchEvent({
-    //         type: BattleEvent.Round_Group_Turn_Ends,
-    //         playerEndsTurn: event.groupPlayer,
-    //       });
-    //     }
-    //   },
-
-    //   [BattleEvent.Combat_Unit_Speed_Changed]: () => {
-    //     this.resortFightQuery();
-    //   },
-
-    //   [BattleEvent.UI_Player_Clicks_Enemy_Group]: event => {
-    //     console.log('player clicks');
-    //     if (this.curPlayerState.playerCurrentState === PlayerState.Normal) {
-    //       this.battleEventsService.dispatchEvent({
-    //         type: BattleEvent.Combat_Group_Attacked,
-    //         attackedGroup: event.attackedGroup,
-    //         attackerGroup: event.attackingGroup,
-    //       });
-    //     }
-    //     if (this.curPlayerState.playerCurrentState === PlayerState.SpellTargeting) {
-    //       this.curPlayerState.onCurrentSpellCast();
-
-    //       this.battleEventsService.dispatchEvent({
-    //         type: BattleEvent.Player_Targets_Spell,
-    //         player: event.attackingPlayer,
-    //         spell: this.curPlayerState.currentSpell,
-    //         target: event.attackedGroup,
-    //       });
-
-    //       this.curPlayerState.setSpellsOnCooldown();
-    //     }
-    //   },
-
-    //   [BattleEvent.UI_Player_Clicks_Ally_Group]: (event) => {
-    //     if (this.curPlayerState.playerCurrentState === PlayerState.SpellTargeting) {
-    //       this.curPlayerState.onCurrentSpellCast();
-    //       this.battleEventsService.dispatchEvent({
-    //         type: BattleEvent.Player_Targets_Spell,
-    //         player: event.unitGroup.ownerPlayerRef,
-    //         spell: this.curPlayerState.currentSpell,
-    //         target: event.unitGroup,
-    //       });
-    //       this.curPlayerState.setSpellsOnCooldown();
-    //     }
-    //   }
-
-    // }).pipe(
-    //   takeUntil(this.battleEventsService.onEvent(BattleEvent.Fight_Ends)),
-    // ).subscribe(() => {
-    //   this.battleEvent$.next();
-    // });
-
-
-    // this.battleEventsService.dispatchEvent({
-    //   type: BattleEvent.Fight_Starts,
-    // });
   }
 
   private initPlayerLossesMap() {
@@ -232,11 +80,7 @@ export class BattleStateService {
       this.resetGroupsTurnsLeft();
 
       this.round++;
-      // this.battleEventsService.dispatchEvent({
-      //   type: BattleEvent.Fight_Next_Round_Starts,
-      //   round: this.round,
-      // });
-      this.newEvents.dispatch(FightNextRoundStarts({
+      this.events.dispatch(FightNextRoundStarts({
         round: this.round,
       }));
       return;
@@ -249,20 +93,12 @@ export class BattleStateService {
     this.currentGroupTurnsLeft = this.currentUnitGroup.type.defaultTurnsPerRound;
 
     if (this.currentPlayer !== previousPlayer) {
-      // this.battleEventsService.dispatchEvent({
-      //   type: BattleEvent.Round_Player_Turn_Starts,
-      //   currentPlayer: this.currentPlayer,
-      //   previousPlayer: previousPlayer,
-      // });
-      this.newEvents.dispatch(RoundPlayerTurnStarts({
-          currentPlayer: this.currentPlayer,
-          previousPlayer: previousPlayer,
+      this.events.dispatch(RoundPlayerTurnStarts({
+        currentPlayer: this.currentPlayer,
+        previousPlayer: previousPlayer,
       }));
     } else {
-      // this.battleEventsService.dispatchEvent({
-      //   type: BattleEvent.Round_Player_Continues_Attacking,
-      // });
-      this.newEvents.dispatch(RoundPlayerCountinuesAttacking({}));
+      this.events.dispatch(RoundPlayerCountinuesAttacking({}));
     }
   }
 
@@ -295,12 +131,7 @@ export class BattleStateService {
       const randomGroupIndex = Math.round(Math.random() * (enemyUnitGroups.length - 1));
       const targetGroup = enemyUnitGroups[randomGroupIndex];
 
-      // this.battleEventsService.dispatchEvent({
-      //   type: BattleEvent.Combat_Group_Attacked,
-      //   attackedGroup: targetGroup,
-      //   attackerGroup: this.currentUnitGroup,
-      // })
-      this.newEvents.dispatch(GroupAttacked({
+      this.events.dispatch(GroupAttacked({
         attackedGroup: targetGroup,
         attackingGroup: this.currentUnitGroup,
       }));
@@ -381,6 +212,4 @@ export class BattleStateService {
       })
     });
   }
-
-
 }
