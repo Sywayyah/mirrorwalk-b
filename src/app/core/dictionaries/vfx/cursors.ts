@@ -29,7 +29,7 @@ export const SpellCastCursorAnimation: EffectAnimation = createAnimation([
             fontSize: '34px',
             color: '#bfcbff',
             opacity: 0.7,
-            mixBlendMode: 'color-dodge',
+            // mixBlendMode: 'color-dodge',
             ...CursorStyles,
         },
     ],
@@ -40,7 +40,8 @@ export const SpellCastCursorAnimation: EffectAnimation = createAnimation([
         {
             fontSize: '34px',
             color: '#bfcbff',
-            mixBlendMode: 'color-dodge',
+            // mixBlendMode: 'color-dodge',
+            mixBlendMode: 'screen',
         },
     ],
     [
@@ -50,7 +51,8 @@ export const SpellCastCursorAnimation: EffectAnimation = createAnimation([
             fontSize: '36px',
             filter: 'blur(6px)',
             color: '#98abff',
-            mixBlendMode: 'color-dodge'
+            // mixBlendMode: 'color-dodge',
+            mixBlendMode: 'screen'
         },
     ],
     [
@@ -60,7 +62,7 @@ export const SpellCastCursorAnimation: EffectAnimation = createAnimation([
             fontSize: '36px',
             filter: 'blur(6px)',
             color: '#98abff',
-            mixBlendMode: 'color-dodge'
+            // mixBlendMode: 'color-dodge'
         },
     ],
 
