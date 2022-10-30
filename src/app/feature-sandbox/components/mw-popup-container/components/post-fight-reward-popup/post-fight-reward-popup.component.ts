@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ResourceType } from 'src/app/core/model';
 import { FightEndsPopup, MwPlayersService } from 'src/app/feature-sandbox/services';
-import { EventsService } from 'src/app/feature-sandbox/services/state';
+import { EventsService } from 'src/app/feature-sandbox/services/store';
 import { StructCompleted } from 'src/app/feature-sandbox/services/events';
 
 @Component({
@@ -18,7 +18,6 @@ export class PostFightRewardPopupComponent implements OnInit {
   public totalExperienceReward: number = 0;
 
   constructor(
-    // private readonly events: BattleEventsService,
     private readonly players: MwPlayersService,
     private events: EventsService,
   ) { }

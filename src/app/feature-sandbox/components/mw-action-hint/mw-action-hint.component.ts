@@ -3,7 +3,7 @@ import { BehaviorSubject, combineLatest } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import { BattleStateService, MwPlayersService } from '../../services';
 import { RoundPlayerTurnStarts } from '../../services/events';
-import { EventsService } from '../../services/state';
+import { EventsService } from '../../services/store';
 import { ActionHintModel, ActionHintTypeEnum } from '../../services/types/action-hint.types';
 
 @Component({

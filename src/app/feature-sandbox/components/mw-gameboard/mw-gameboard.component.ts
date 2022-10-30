@@ -4,7 +4,7 @@ import { PlayerInstanceModel, UnitGroupInstModel } from 'src/app/core/model';
 import { getDamageParts } from 'src/app/core/utils/utils';
 import { BattleStateService as MwBattleStateService, CombatInteractorService, MwCardsMappingService, MwNeutralPlayerService, MwPlayerStateService } from '../../services';
 import { GroupDamagedByGroup, GroupDamagedByGroupEvent, PlayerStartsFight } from '../../services/events';
-import { StoreClient, WireMethod } from '../../services/state';
+import { StoreClient, WireMethod } from '../../services/store';
 import { MwUnitGroupCardComponent } from '../mw-unit-group-card/mw-unit-group-card.component';
 import { VfxService } from '../ui-elements/vfx-layer/vfx.service';
 

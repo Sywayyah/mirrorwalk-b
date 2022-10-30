@@ -4,9 +4,9 @@ import { HelveticaHero } from 'src/app/core/dictionaries/heroes.const';
 import { LEVELS_BREAKPOINTS } from 'src/app/core/dictionaries/levels.const';
 import { HeroModel, ItemInstanceModel, PlayerInstanceModel, PlayerModel, PlayerTypeEnum, ResourcesModel, UnitGroupInstModel, UnitGroupModel } from 'src/app/core/model';
 import { CommonUtils } from 'src/app/core/utils/common.utils';
-import { MwHeroesService, MwItemsService, MwSpellsService, MwUnitGroupsService } from './';
+import { MwHeroesService, MwItemsService, MwUnitGroupsService } from './';
 import { PlayerGainsLevel } from './events/';
-import { EventsService } from './state';
+import { EventsService } from './store';
 
 
 // const mainPlayerGroups = GenerationUtils.createRandomArmy({
@@ -74,7 +74,6 @@ export class MwPlayersService {
   private currentPlayerId: string = PLAYER_IDS.Main;
 
   constructor(
-    private readonly spellsService: MwSpellsService,
     private readonly itemsService: MwItemsService,
     private readonly heroesService: MwHeroesService,
     private readonly unitGroups: MwUnitGroupsService,

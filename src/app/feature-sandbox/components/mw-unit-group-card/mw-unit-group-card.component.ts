@@ -5,7 +5,7 @@ import { PlayerModel, SpellActivationType, SpellInstance, UnitGroupInstModel } f
 import { PROVIDE_UI_UNIT_GROUP, UIUnitProvider } from '../../directives/mw-unit-events-cursor.directive';
 import { BattleStateService, HoverTypeEnum, MwPlayersService, MwUnitGroupsService, MwUnitGroupStateService, UIModsModel } from '../../services';
 import { GroupModifiersChanged, GroupSpellsChanged, PlayerHoversGroupCard } from '../../services/events';
-import { StoreClient } from '../../services/state';
+import { StoreClient } from '../../services/store';
 
 @Component({
   selector: 'mw-unit-group-card',

@@ -2,7 +2,7 @@ import { Directive, HostListener, Input, OnInit } from '@angular/core';
 import { UnitGroupInstModel } from 'src/app/core/model';
 import { BattleStateService, HoverTypeEnum, MwCurrentPlayerStateService, MwPlayersService } from '../services';
 import { PlayerClicksAllyGroup, PlayerClicksEnemyGroup, PlayerHoversGroupCard } from '../services/events';
-import { EventsService } from '../services/state';
+import { EventsService } from '../services/store';
 
 /*
   considering that this directive handles not only spells, it can be renamed later

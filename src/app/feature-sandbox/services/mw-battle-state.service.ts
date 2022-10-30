@@ -3,7 +3,7 @@ import { BehaviorSubject, Subject } from 'rxjs';
 import { PlayerInstanceModel, PlayerModel, UnitGroupInstModel, UnitGroupModel, UnitTypeModel } from 'src/app/core/model';
 import { FightNextRoundStarts, GroupAttacked, RoundPlayerCountinuesAttacking, RoundPlayerTurnStarts } from './events';
 import { MwUnitGroupsService } from './mw-unit-groups.service';
-import { EventsService } from './state';
+import { EventsService } from './store';
 import { ActionHintModel } from "./types";
 
 

@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { PrefightPopup } from 'src/app/feature-sandbox/services';
-import { EventsService } from 'src/app/feature-sandbox/services/state';
+import { EventsService } from 'src/app/feature-sandbox/services/store';
 import { StructFightConfirmed } from 'src/app/feature-sandbox/services/events';
 
 @Component({

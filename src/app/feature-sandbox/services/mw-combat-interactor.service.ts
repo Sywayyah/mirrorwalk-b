@@ -15,7 +15,7 @@ import { CommonUtils } from 'src/app/core/utils/common.utils';
 import { VfxService } from '../components/ui-elements/vfx-layer/vfx.service';
 import { BattleStateService, FinalDamageInfo, MwBattleLogService, MwPlayersService, MwSpellsService, MwUnitGroupsService, MwUnitGroupStateService } from './';
 import { CombatAttackInteraction, CombatInteractionStateEvent, GroupCounterAttacked, GroupDamagedByGroup, GroupDies, GroupModifiersChanged, GroupSpeedChanged, GroupSpellsChanged, GroupTakesDamage, PlayerHoversCardEvent } from './events';
-import { StoreClient } from './state';
+import { StoreClient } from './store';
 import { ActionHintTypeEnum, AttackActionHintInfo, CombatInteractionEnum } from './types';
 
 

@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { MwCurrentPlayerStateService } from "../";
 import { FightNextRoundStarts, FightStarts } from "../events";
-import { Notify, StoreClient } from "../state";
+import { Notify, StoreClient } from "../store";
 
 @Injectable()
 export class PlayerController extends StoreClient() {
