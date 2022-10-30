@@ -1,9 +1,8 @@
 import { HeroModel as HeroModelBase, HeroModelStats } from "../model/hero.model";
 import { ResourcesModel } from "../model/resources.types";
 import { ItemWindCrest } from "./items";
-import { MeteorSpell, PoisonCloudSpell, RainOfFireSpell } from "./spells";
+import { MeteorSpell, RainOfFireSpell } from "./spells";
 import { HasteSpell } from "./spells/haste.spell";
-import { HealSpell } from "./spells/heal.spell";
 import { HUMANS_FRACTION_UNIT_TYPES } from "./unit-types/unit-types.dictionary";
 
 const heroesDefaultResources: ResourcesModel = {

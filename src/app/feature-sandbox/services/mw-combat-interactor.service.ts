@@ -355,6 +355,38 @@ export class CombatInteractorService extends StoreClient() {
     this.units.clearUnitModifiers(target);
   }
 
+  public triggerEventForAllSpellsHandler<T extends keyof SpellEventHandlers>(eventType: T, data: SpellEventsMapping[T]): void {
+    this.spellsHandlersMap.forEach(spellHandlers => {
+      (spellHandlers?.[eventType] as (arg: SpellEventsMapping[T]) => void)?.(data);
+    });
+  }
+
+  public triggerEventForSpellHandler<T extends keyof SpellEventHandlers>(spell: SpellInstance, eventType: T, data: SpellEventsMapping[T]): void {
+    (this.spellsHandlersMap.get(spell)?.[eventType] as (arg: SpellEventsMapping[T]) => void)?.(data);
+  }
+
+  public initAllUnitGroupSpells(): void {
+    this.forEachUnitGroup((unitGroup, player) => {
+      if (unitGroup.spells) {
+        unitGroup.spells.forEach(spell => this.initSpell(
+          spell,
+          player as PlayerInstanceModel,
+          unitGroup,
+        ));
+      }
+    })
+  }
+
+  public resetAllUnitGroupsCooldowns(): void {
+    this.forEachUnitGroup(unitGroup => unitGroup.fightInfo.spellsOnCooldown = false);
+  }
+
+  private getRandomEnemyUnitGroup(): UnitGroupInstModel {
+    const enemyPlayer = this.players.getEnemyPlayer()
+    const enemyUnitGroups = this.battleState.heroesUnitGroupsMap.get(enemyPlayer) as UnitGroupInstModel[];
+    return CommonUtils.randItem(enemyUnitGroups);
+  }
+
   private getModsForUnitGroup(unitGroup: UnitGroupInstModel): Modifiers[] {
     return [
       ...unitGroup.ownerPlayerRef.hero.mods,
@@ -379,22 +411,6 @@ export class CombatInteractorService extends StoreClient() {
     target.spells.splice(spellIndex, 1);
 
     this.spellsHandlersMap.delete(spell);
-  }
-
-  public triggerEventForAllSpellsHandler<T extends keyof SpellEventHandlers>(eventType: T, data: SpellEventsMapping[T]): void {
-    this.spellsHandlersMap.forEach(spellHandlers => {
-      (spellHandlers?.[eventType] as (arg: SpellEventsMapping[T]) => void)?.(data);
-    });
-  }
-
-  public triggerEventForSpellHandler<T extends keyof SpellEventHandlers>(spell: SpellInstance, eventType: T, data: SpellEventsMapping[T]): void {
-    (this.spellsHandlersMap.get(spell)?.[eventType] as (arg: SpellEventsMapping[T]) => void)?.(data);
-  }
-
-  private getRandomEnemyUnitGroup(): UnitGroupInstModel {
-    const enemyPlayer = this.players.getEnemyPlayer()
-    const enemyUnitGroups = this.battleState.heroesUnitGroupsMap.get(enemyPlayer) as UnitGroupInstModel[];
-    return CommonUtils.randItem(enemyUnitGroups);
   }
 
   private initSpell(spell: SpellInstance, player: PlayerInstanceModel, ownerUnitGroup?: UnitGroupInstModel): void {
@@ -435,21 +451,5 @@ export class CombatInteractorService extends StoreClient() {
         this.initSpell(spell, player);
       });
     });
-  }
-
-  public initAllUnitGroupSpells(): void {
-    this.forEachUnitGroup((unitGroup, player) => {
-      if (unitGroup.spells) {
-        unitGroup.spells.forEach(spell => this.initSpell(
-          spell,
-          player as PlayerInstanceModel,
-          unitGroup,
-        ));
-      }
-    })
-  }
-
-  public resetAllUnitGroupsCooldowns(): void {
-    this.forEachUnitGroup(unitGroup => unitGroup.fightInfo.spellsOnCooldown = false);
   }
 }

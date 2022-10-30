@@ -63,12 +63,6 @@ export class BattleStateService {
     this.refreshUnitGroups();
   }
 
-  private initPlayerLossesMap() {
-    this.players.forEach(player => {
-      this.playerLosses[player.id] = new Map();
-    });
-  }
-
   public initNextTurnByQueue(removeCurrentGroupFromQueue: boolean = false): void {
     /* Simultaneous, the unit who dies on counterattack removes because of dying and initNextTurn removes one more unit */
     if (removeCurrentGroupFromQueue && this.currentUnitGroup.count) {
@@ -162,6 +156,12 @@ export class BattleStateService {
     } else {
       playersLossesMap.set(attackedGroupUnitType, unitLoss);
     }
+  }
+
+  private initPlayerLossesMap() {
+    this.players.forEach(player => {
+      this.playerLosses[player.id] = new Map();
+    });
   }
 
   private resetGroupsTurnsLeft(): void {
