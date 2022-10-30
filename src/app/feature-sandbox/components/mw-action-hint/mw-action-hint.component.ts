@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { BehaviorSubject, combineLatest } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { BehaviorSubject, combineLatest, Subject } from 'rxjs';
+import { map, takeUntil, tap } from 'rxjs/operators';
 import { BattleStateService, MwPlayersService } from '../../services';
 import { RoundPlayerTurnStarts } from '../../services/events';
 import { EventsService } from '../../services/store';
-import { ActionHintModel, ActionHintTypeEnum } from '../../services/types/action-hint.types';
+import { ActionHintModel, ActionHintTypeEnum } from '../../services/types/action-hint';
 
 @Component({
   selector: 'mw-action-hint',
@@ -17,14 +17,13 @@ export class MwActionHintComponent implements OnInit {
 
   public hint$: BehaviorSubject<ActionHintModel | null> = new BehaviorSubject<ActionHintModel | null>(null);
 
+  private destroyed$ = new Subject<void>();
+
   constructor(
     public readonly mwBattleState: BattleStateService,
     public readonly players: MwPlayersService,
     public events: EventsService,
   ) {
-    /* couldn't via async, because events are subject */
-    // this.battleEvents.onEvent(BattleEvent.Round_Player_Turn_Starts).subscribe(event => {event.});
-
     combineLatest([
       this.events.onEvent(RoundPlayerTurnStarts),
       this.mwBattleState.hintMessage$,
@@ -37,9 +36,15 @@ export class MwActionHintComponent implements OnInit {
         return actionHint;
       }),
       tap(actionHint => this.hint$.next(actionHint)),
+      takeUntil(this.destroyed$),
     ).subscribe();
   }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
+  }
+
+  public ngOnDestroy(): void {
+    this.destroyed$.next();
+    this.destroyed$.complete();
   }
 }

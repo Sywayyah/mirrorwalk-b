@@ -14,9 +14,9 @@ import { EffectType, VfxElemEffect } from 'src/app/core/model/vfx-api/vfx-api.ty
 import { CommonUtils } from 'src/app/core/utils/common.utils';
 import { VfxService } from '../components/ui-elements/vfx-layer/vfx.service';
 import { BattleStateService, FinalDamageInfo, MwBattleLogService, MwPlayersService, MwSpellsService, MwUnitGroupsService, MwUnitGroupStateService } from './';
-import { CombatAttackInteraction, CombatInteractionStateEvent, GroupCounterAttacked, GroupDamagedByGroup, GroupDies, GroupModifiersChanged, GroupSpeedChanged, GroupSpellsChanged, GroupTakesDamage, PlayerHoversCardEvent } from './events';
+import { CombatAttackInteraction, CombatInteractionEnum, CombatInteractionStateEvent, GroupCounterAttacked, GroupDamagedByGroup, GroupDies, GroupModifiersChanged, GroupSpeedChanged, GroupSpellsChanged, GroupTakesDamage, PlayerHoversCardEvent } from './events';
 import { StoreClient } from './store';
-import { ActionHintTypeEnum, AttackActionHintInfo, CombatInteractionEnum } from './types';
+import { ActionHintTypeEnum, AttackActionHintInfo } from './types';
 
 
 @Injectable({

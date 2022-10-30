@@ -1,6 +1,11 @@
 import { UnitGroupInstModel } from "src/app/core/model";
-import { HoverTypeEnum } from "../../types";
 import { props } from "../common";
+
+export enum HoverTypeEnum {
+  EnemyCard,
+  AllyCard,
+  Unhover,
+}
 
 export type PlayerHoversCardEvent = {
   hoverType: HoverTypeEnum;

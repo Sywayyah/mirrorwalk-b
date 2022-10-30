@@ -53,10 +53,12 @@ export class MwGameboardComponent extends StoreClient() implements OnInit, After
   }
 
   public onGroupDies(unitGroup: UnitGroupInstModel): void {
+    /* todo: questionable */
     this.cardsMapping.unregister(unitGroup);
   }
 
   public ngAfterViewInit(): void {
+    /* todo: might work poorly if there will be summoned units */
     this.cards.forEach(card => this.cardsMapping.register(card.unitGroup, card));
 
     /* init interactions only after view initialized and cards are available */
@@ -68,10 +70,6 @@ export class MwGameboardComponent extends StoreClient() implements OnInit, After
   private initInteractions(): void {
     this.combatInteractor.onBattleBegins();
 
-    // this.mwBattleState.initBattleState(
-    //   [...this.mainPlayerUnitGroups, ...this.neutralPlayerGroups],
-    //   [this.mainPlayerInfo, this.neutralPlayerInfo],
-    // );
     this.events.dispatch(PlayerStartsFight({
       players: [this.mainPlayerInfo, this.neutralPlayerInfo],
       unitGroups: [...this.mainPlayerUnitGroups, ...this.neutralPlayerGroups],
@@ -92,8 +90,6 @@ export class MwGameboardComponent extends StoreClient() implements OnInit, After
     this.fightQueue = this.mwBattleState.getFightQueue();
   }
 
-  // @WireFn()
-  // @WireEvent(BattleEvent.On_Group_Damaged_By_Group)
   @WireMethod(GroupDamagedByGroup)
   public displayDamageVfxOverAttackedGroup(event: GroupDamagedByGroupEvent): void {
     /* previous solution was stacking because of no unsubscribe. */

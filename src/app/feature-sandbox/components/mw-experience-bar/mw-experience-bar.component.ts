@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { LEVELS_BREAKPOINTS } from 'src/app/core/dictionaries/levels.const';
-import { PlayerInstanceModel } from 'src/app/core/model/main.model';
+import { PlayerInstanceModel } from 'src/app/core/model';
 import { MwPlayersService } from '../../services';
 
 @Component({

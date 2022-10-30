@@ -1,5 +1,5 @@
 import { UnitGroupInstModel, PlayerInstanceModel, PlayerModel, SpellInstance } from "src/app/core/model";
-import { CombatInteractionEnum } from "../types";
+import { CombatInteractionEnum } from "./battle";
 
 export interface CommonEventProps {
     unitGroup: UnitGroupInstModel;

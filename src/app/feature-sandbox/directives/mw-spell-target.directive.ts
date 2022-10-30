@@ -1,7 +1,7 @@
 import { Directive, HostListener, Input, OnInit } from '@angular/core';
 import { UnitGroupInstModel } from 'src/app/core/model';
-import { BattleStateService, HoverTypeEnum, MwCurrentPlayerStateService, MwPlayersService } from '../services';
-import { PlayerClicksAllyGroup, PlayerClicksEnemyGroup, PlayerHoversGroupCard } from '../services/events';
+import { BattleStateService, MwCurrentPlayerStateService, MwPlayersService } from '../services';
+import { HoverTypeEnum, PlayerClicksAllyGroup, PlayerClicksEnemyGroup, PlayerHoversGroupCard } from '../services/events';
 import { EventsService } from '../services/store';
 
 /*

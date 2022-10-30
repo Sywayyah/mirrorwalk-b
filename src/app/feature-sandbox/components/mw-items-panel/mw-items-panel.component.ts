@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { PlayerInstanceModel } from 'src/app/core/model/main.model';
+import { PlayerInstanceModel } from 'src/app/core/model';
 import { MwPlayersService } from '../../services';
 
 @Component({
@@ -8,7 +8,7 @@ import { MwPlayersService } from '../../services';
   styleUrls: ['./mw-items-panel.component.scss']
 })
 export class MwItemsPanelComponent implements OnInit {
-  
+
   public currentPlayer!: PlayerInstanceModel;
 
   constructor(

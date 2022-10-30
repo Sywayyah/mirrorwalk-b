@@ -42,16 +42,19 @@ export class MwViewControlComponent extends StoreClient() {
         this.events.dispatch(DisplayPopup({
           popup: previewPopup
         }));
-      } else {
-        const upgradingPopup: UpgradingPopup = {
-          type: PopupTypesEnum.UpgradingReward,
-          struct: event.struct as NeutralSite,
-        };
 
-        this.events.dispatch(DisplayPopup({
-          popup: upgradingPopup,
-        }));
+        return;
       }
+
+      const upgradingPopup: UpgradingPopup = {
+        type: PopupTypesEnum.UpgradingReward,
+        struct: event.struct as NeutralSite,
+      };
+
+      this.events.dispatch(DisplayPopup({
+        popup: upgradingPopup,
+      }));
+
     }
   }
 

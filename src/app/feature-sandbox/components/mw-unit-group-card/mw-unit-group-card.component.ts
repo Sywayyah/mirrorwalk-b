@@ -3,8 +3,8 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { PlayerModel, SpellActivationType, SpellInstance, UnitGroupInstModel } from 'src/app/core/model';
 import { PROVIDE_UI_UNIT_GROUP, UIUnitProvider } from '../../directives/mw-unit-events-cursor.directive';
-import { BattleStateService, HoverTypeEnum, MwPlayersService, MwUnitGroupsService, MwUnitGroupStateService, UIModsModel } from '../../services';
-import { GroupModifiersChanged, GroupSpellsChanged, PlayerHoversGroupCard } from '../../services/events';
+import { BattleStateService, MwPlayersService, MwUnitGroupsService, MwUnitGroupStateService, UIModsModel } from '../../services';
+import { GroupModifiersChanged, GroupSpellsChanged, HoverTypeEnum, PlayerHoversGroupCard } from '../../services/events';
 import { StoreClient } from '../../services/store';
 
 @Component({

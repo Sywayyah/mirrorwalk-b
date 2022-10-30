@@ -7,7 +7,6 @@ export enum CombatInteractionEnum {
   AttackInteractionCompleted = 'completed',
 }
 
-
 export type GroupTakesDamageEvent = {
   group: UnitGroupInstModel;
   registerLoss: boolean;

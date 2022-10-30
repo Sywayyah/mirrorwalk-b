@@ -1,11 +1,11 @@
 import { Injectable } from "@angular/core";
 import { SpellEventTypes, UnitGroupInstModel } from "src/app/core/model";
-import { GroupAttacked, PlayerCastsInstantSpell, PlayerClicksAllyGroup, PlayerClicksAllyGroupEvent, PlayerClicksEnemyGroup, PlayerClicksEnemyGroupEvent, PlayerHoversCardEvent, PlayerHoversGroupCard, PlayerTargetsInstantSpellEvent, PlayerTargetsSpell, PlayerTargetsSpellEvent } from "../events";
+import { GroupAttacked, HoverTypeEnum, PlayerCastsInstantSpell, PlayerClicksAllyGroup, PlayerClicksAllyGroupEvent, PlayerClicksEnemyGroup, PlayerClicksEnemyGroupEvent, PlayerHoversCardEvent, PlayerHoversGroupCard, PlayerTargetsInstantSpellEvent, PlayerTargetsSpell, PlayerTargetsSpellEvent } from "../events";
 import { BattleStateService } from "../mw-battle-state.service";
 import { CombatInteractorService } from "../mw-combat-interactor.service";
 import { MwCurrentPlayerStateService, PlayerState } from "../mw-current-player-state.service";
 import { StoreClient, WireMethod } from "../store";
-import { ActionHintTypeEnum, HoverTypeEnum, SpellTargetActionHint } from "../types";
+import { ActionHintTypeEnum, SpellTargetActionHint } from "../types";
 
 @Injectable()
 export class UiController extends StoreClient() {

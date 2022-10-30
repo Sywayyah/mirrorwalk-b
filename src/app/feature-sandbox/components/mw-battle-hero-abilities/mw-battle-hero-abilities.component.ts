@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { PlayerInstanceModel, SpellActivationType, SpellInstance } from 'src/app/core/model';
-import { MwPlayersService } from '../../services';
-import { MwCurrentPlayerStateService, PlayerState } from '../../services/mw-current-player-state.service';
+import { MwCurrentPlayerStateService, MwPlayersService, PlayerState } from '../../services';
 
 @Component({
   selector: 'mw-battle-hero-abilities',

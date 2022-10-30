@@ -16,19 +16,19 @@ export class BattleController extends StoreClient() {
   }
 
   @Notify(FightStarts)
-  public resetCurrentPlayer(): void {
+  public prepareFightState(): void {
     this.battleState.resetCurrentPlayer();
 
     this.battleState.initNextTurnByQueue();
   }
 
   @Notify(FightNextRoundStarts)
-  public resetTurnQueue(): void {
+  public recalcTurnQueue(): void {
     this.battleState.initNextTurnByQueue();
   }
 
   @WireMethod(RoundPlayerTurnStarts)
-  public changePlayerState({ currentPlayer }: PlayerTurnStartEvent): void {
+  public updatePlayerState({ currentPlayer }: PlayerTurnStartEvent): void {
     if (currentPlayer.type === PlayerTypeEnum.AI) {
       this.curPlayerState.setPlayerState(PlayerState.WaitsForTurn);
 
@@ -46,7 +46,7 @@ export class BattleController extends StoreClient() {
   }
 
   @Notify(RoundGroupTurnEnds)
-  public groupEndsTurn(): void {
+  public updateQueueOnGroupTurnEnd(): void {
     this.battleState.initNextTurnByQueue(true);
   }
 
@@ -63,7 +63,9 @@ export class BattleController extends StoreClient() {
   }
 
   @WireMethod(GroupTakesDamage)
-  public registerUnitLossOnDamage({ group, registerLoss, unitLoss }: GroupTakesDamageEvent): void {
+  public registerUnitLossOnAnyOtherDamageSources(
+    { group, registerLoss, unitLoss }: GroupTakesDamageEvent,
+  ): void {
     if (registerLoss && unitLoss) {
       this.battleState.registerPlayerUnitLoss(group, unitLoss);
     }
@@ -105,7 +107,7 @@ export class BattleController extends StoreClient() {
   }
 
   @WireMethod(RoundGroupSpendsTurn)
-  public onGroupSpendsTurn({
+  public checkControlWhenGroupRunsOutOfTurns({
     groupHasMoreTurns,
     groupPlayer,
     groupStillAlive,
@@ -122,7 +124,7 @@ export class BattleController extends StoreClient() {
   }
 
   @Notify(GroupSpeedChanged)
-  public resortFightQuery(): void {
+  public updateFightQueryDueToSpeedChange(): void {
     this.battleState.resortFightQuery();
   }
 }

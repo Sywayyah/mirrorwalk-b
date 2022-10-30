@@ -20,14 +20,14 @@ export class CombatController extends StoreClient() {
   }
 
   @Notify(FightStarts)
-  public initSpells(): void {
+  public prepareSpellsOnFightStart(): void {
     this.combatInteractor.initAllUnitGroupSpells();
 
     this.combatInteractor.resetAllUnitGroupsCooldowns();
   }
 
   @WireMethod(GroupAttacked)
-  public startInteraction(event: GroupAttackedEvent): void {
+  public startCombatInteraction(event: GroupAttackedEvent): void {
     this.events.dispatch(CombatAttackInteraction({
       action: CombatInteractionEnum.GroupAttacks,
       attackedGroup: event.attackedGroup,
@@ -36,7 +36,7 @@ export class CombatController extends StoreClient() {
   }
 
   @WireMethod(CombatAttackInteraction)
-  public processAttackInteraction(state: CombatInteractionStateEvent): void {
+  public processCombatInteraction(state: CombatInteractionStateEvent): void {
     switch (state.action) {
       case CombatInteractionEnum.GroupAttacks:
         this.combatInteractor.handleAttackInteraction(state);
@@ -56,7 +56,7 @@ export class CombatController extends StoreClient() {
   }
 
   @WireMethod(FightNextRoundStarts)
-  public nextRoundStarts(event: NextRoundStarts): void {
+  public resetCooldownsAndEmitNewRoundEventToSpells(event: NextRoundStarts): void {
     this.combatInteractor.triggerEventForAllSpellsHandler(
       SpellEventTypes.NewRoundBegins,
       {
@@ -68,7 +68,7 @@ export class CombatController extends StoreClient() {
   }
 
   @WireMethod(GroupDies)
-  public onUnitGroupDies(event: GroupDiesEvent): void {
+  public dispelUnitOnDeath(event: GroupDiesEvent): void {
     this.combatInteractor.applyDispellToUnitGroup(event.target);
   }
 }
