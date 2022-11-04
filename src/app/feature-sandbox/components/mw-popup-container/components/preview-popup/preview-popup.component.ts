@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { MwHeroesService, MwPlayersService, MwSpellsService, PreviewPopup } from 'src/app/feature-sandbox/services';
-import { MwUnitGroupsService } from 'src/app/feature-sandbox/services/mw-unit-groups.service';
+import { MwPlayersService, PreviewPopup } from 'src/app/feature-sandbox/services';
+import { ApiProvider } from 'src/app/feature-sandbox/services/api-provider.service';
 
 @Component({
   selector: 'mw-preview-popup',
@@ -14,9 +14,7 @@ export class PreviewPopupComponent implements OnInit {
 
   constructor(
     private players: MwPlayersService,
-    private heroes: MwHeroesService,
-    private spells: MwSpellsService,
-    private unitGroups: MwUnitGroupsService,
+    private apiProvider: ApiProvider,
   ) { }
 
   ngOnInit(): void {
@@ -30,31 +28,8 @@ export class PreviewPopupComponent implements OnInit {
     const currentPlayer = this.players.getCurrentPlayer();
 
     this.popup.struct.generator.onVisited?.({
-      playersApi: {
-        addExperienceToPlayer: (player, xpAmount) => {
-          this.players.addExperienceToPlayer(player.id, xpAmount);
-        },
-        addUnitGroupToPlayer: (player, unitType, count) => {
-          const unitGroup = this.unitGroups.createUnitGroup(unitType, { count }, player);
-          this.players.addUnitGroupToTypeStack(player, unitGroup);
-        },
-        addManaToPlayer: (player, mana) => {
-          this.heroes.addManaToHero(player.hero, mana);
-        },
-        addMaxManaToPlayer: (player, mana) => {
-          this.heroes.addMaxManaToHero(player.hero, mana);
-        },
-        addSpellToPlayerHero: (player, spell) => {
-          this.heroes.addSpellToHero(player.hero, spell);
-        },
-        getCurrentPlayer: () => this.players.getCurrentPlayer(),
-        getCurrentPlayerUnitGroups: () => this.players.getUnitGroupsOfPlayer(this.players.getCurrentPlayer().id),
-      },
-      spellsApi: {
-        createSpellInstance: (spell, options) => {
-          return this.spells.createSpellInstance(spell, options);
-        },
-      },
+      playersApi: this.apiProvider.getPlayerApi(),
+      spellsApi: this.apiProvider.getSpellsApi(),
       visitingPlayer: currentPlayer,
     });
 

@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ScriptedReward } from 'src/app/core/model';
-import { MwHeroesService, MwPlayersService, MwSpellsService, MwUnitGroupsService, ScriptedRewardPopup } from 'src/app/feature-sandbox/services';
+import { MwPlayersService, ScriptedRewardPopup } from 'src/app/feature-sandbox/services';
+import { ApiProvider } from 'src/app/feature-sandbox/services/api-provider.service';
 
 @Component({
   selector: 'mw-scripted-reward-popup',
@@ -18,9 +19,7 @@ export class ScriptedRewardPopupComponent implements OnInit {
 
   constructor(
     private players: MwPlayersService,
-    private heroes: MwHeroesService,
-    private spells: MwSpellsService,
-    private unitGroups: MwUnitGroupsService,
+    private apiProvider: ApiProvider,
 ) { }
 
   ngOnInit(): void {
@@ -35,31 +34,8 @@ export class ScriptedRewardPopupComponent implements OnInit {
 
   public closePopup(): void {
     this.reward.onAccept({
-      playersApi: {
-        addExperienceToPlayer: (player, xpAmount) => {
-          this.players.addExperienceToPlayer(player.id, xpAmount);
-        },
-        addUnitGroupToPlayer: (player, unitType, count) => {
-          const unitGroup = this.unitGroups.createUnitGroup(unitType, { count }, player);
-          this.players.addUnitGroupToTypeStack(player, unitGroup);
-        },
-        addManaToPlayer: (player, mana) => {
-          this.heroes.addManaToHero(player.hero, mana);
-        },
-        addMaxManaToPlayer: (player, mana) => {
-          this.heroes.addMaxManaToHero(player.hero, mana);
-        },
-        addSpellToPlayerHero: (player, spell) => {
-          this.heroes.addSpellToHero(player.hero, spell);
-        },
-        getCurrentPlayer: () => this.players.getCurrentPlayer(),
-        getCurrentPlayerUnitGroups: () => this.players.getUnitGroupsOfPlayer(this.players.getCurrentPlayer().id),
-      },
-      spellsApi: {
-        createSpellInstance: (spell, options) => {
-          return this.spells.createSpellInstance(spell, options);
-        },
-      },
+      playersApi: this.apiProvider.getPlayerApi(),
+      spellsApi: this.apiProvider.getSpellsApi(),
       visitingPlayer: this.players.getCurrentPlayer(),
     });
     this.close.emit();

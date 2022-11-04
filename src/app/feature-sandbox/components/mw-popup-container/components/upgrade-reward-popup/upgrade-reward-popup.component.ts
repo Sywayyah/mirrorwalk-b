@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { HiringRewardModel, ResourcesModel, UnitGroupInstModel, UnitUpgradeReward, ResourceType, UnitTypeModel } from 'src/app/core/model';
 import { PlayersApi } from 'src/app/core/model/game-api/game-apis.types';
 import { MwHeroesService, MwPlayersService, MwUnitGroupsService, UpgradingPopup } from 'src/app/feature-sandbox/services';
+import { ApiProvider } from 'src/app/feature-sandbox/services/api-provider.service';
 
 interface UpgradeModel {
   hire: HiringRewardModel,
@@ -28,10 +29,9 @@ export class UpgradeRewardPopup implements OnInit {
   public canConfirm: boolean = true;
 
   constructor(
-    private readonly playersService: MwPlayersService,
-    private readonly heroes: MwHeroesService,
-    private readonly unitGroups: MwUnitGroupsService,
-    private readonly players: MwPlayersService,
+    private apiProvider: ApiProvider,
+    private playersService: MwPlayersService,
+    private unitGroups: MwUnitGroupsService,
   ) {
   }
 
@@ -40,7 +40,7 @@ export class UpgradeRewardPopup implements OnInit {
 
   public ngOnInit(): void {
     this.hiredGroups = (this.popup.struct.reward as UnitUpgradeReward)
-      .getUnits(this.getPlayerApi())
+      .getUnits(this.apiProvider.getPlayerApi())
       .map(unit => {
         const baseCost: Partial<ResourcesModel> = {};
         const currentCost: Partial<ResourcesModel> = {};
@@ -73,29 +73,6 @@ export class UpgradeRewardPopup implements OnInit {
           originalGroup: unit,
         };
       });
-  }
-
-  private getPlayerApi(): PlayersApi {
-    return {
-      addExperienceToPlayer: (player, xpAmount) => {
-        this.players.addExperienceToPlayer(player.id, xpAmount);
-      },
-      addUnitGroupToPlayer: (player, unitType, count) => {
-        const unitGroup = this.unitGroups.createUnitGroup(unitType, { count }, player);
-        this.players.addUnitGroupToTypeStack(player, unitGroup);
-      },
-      addManaToPlayer: (player, mana) => {
-        this.heroes.addManaToHero(player.hero, mana);
-      },
-      addMaxManaToPlayer: (player, mana) => {
-        this.heroes.addMaxManaToHero(player.hero, mana);
-      },
-      addSpellToPlayerHero: (player, spell) => {
-        this.heroes.addSpellToHero(player.hero, spell);
-      },
-      getCurrentPlayer: () => this.playersService.getCurrentPlayer(),
-      getCurrentPlayerUnitGroups: () => this.playersService.getUnitGroupsOfPlayer(this.playersService.getCurrentPlayer().id),
-    };
   }
 
   public updateCountForGroup(unit: UpgradeModel, event: Event): void {
