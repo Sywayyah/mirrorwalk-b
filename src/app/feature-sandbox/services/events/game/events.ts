@@ -1,5 +1,5 @@
 import { eventsForPrefix } from "../../store";
-import { DisplayPopupEvent, FightStartsEvent, NeutralStructParams, StructSelectedEvent } from "./types";
+import { DisplayPopupEvent, FightStartsEvent, InitItemAction, InitSpellAction, NeutralStructParams, StructSelectedEvent } from "./types";
 
 const gameEvent = eventsForPrefix('[Game]');
 
@@ -18,3 +18,7 @@ export const StructFightConfirmed = gameEvent<NeutralStructParams>();
 export const DisplayPopup = gameEvent<DisplayPopupEvent>();
 
 export const PlayerGainsLevel = gameEvent();
+
+export const InitSpell = gameEvent<InitSpellAction>();
+
+export const InitItem = gameEvent<InitItemAction>();

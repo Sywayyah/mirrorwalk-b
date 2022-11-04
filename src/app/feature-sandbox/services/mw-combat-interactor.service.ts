@@ -1,20 +1,18 @@
 import { Injectable } from '@angular/core';
 import {
-  Modifiers, PlayerInstanceModel,
-  PlayerModel, SpellActivationType,
+  Modifiers,
+  PlayerInstanceModel,
+  PlayerModel,
+  SpellActivationType,
   SpellEventHandlers,
   SpellEventsMapping,
   SpellEventTypes,
-  SpellInstance,
-  SpellModel,
-  UnitGroupInstModel
+  SpellInstance, UnitGroupInstModel
 } from 'src/app/core/model';
-import { CombatActionsRef, DamageType, PostDamageInfo, SpellCreationOptions } from 'src/app/core/model/combat-api/combat-api.types';
-import { EffectType, VfxElemEffect } from 'src/app/core/model/vfx-api/vfx-api.types';
+import { DamageType, PostDamageInfo } from 'src/app/core/model/combat-api/combat-api.types';
 import { CommonUtils } from 'src/app/core/utils/common.utils';
-import { VfxService } from '../components/ui-elements/vfx-layer/vfx.service';
-import { BattleStateService, FinalDamageInfo, MwBattleLogService, MwPlayersService, MwSpellsService, MwUnitGroupsService, MwUnitGroupStateService } from './';
-import { CombatAttackInteraction, CombatInteractionEnum, CombatInteractionStateEvent, GroupCounterAttacked, GroupDamagedByGroup, GroupDies, GroupModifiersChanged, GroupSpeedChanged, GroupSpellsChanged, GroupTakesDamage, PlayerHoversCardEvent } from './events';
+import { BattleStateService, FinalDamageInfo, MwPlayersService, MwUnitGroupsService, MwUnitGroupStateService } from './';
+import { CombatAttackInteraction, CombatInteractionEnum, CombatInteractionStateEvent, GroupCounterAttacked, GroupDamagedByGroup, GroupDies, GroupSpellsChanged, GroupTakesDamage, InitSpell, PlayerHoversCardEvent } from './events';
 import { StoreClient } from './store';
 import { ActionHintTypeEnum, AttackActionHintInfo } from './types';
 
@@ -24,16 +22,13 @@ import { ActionHintTypeEnum, AttackActionHintInfo } from './types';
 })
 export class CombatInteractorService extends StoreClient() {
 
-  private spellsHandlersMap: Map<SpellInstance, SpellEventHandlers> = new Map();
-  private unitGroupModifiersMap: Map<UnitGroupInstModel, Modifiers[]> = new Map();
+  public spellsHandlersMap: Map<SpellInstance, SpellEventHandlers> = new Map();
+  public unitGroupModifiersMap: Map<UnitGroupInstModel, Modifiers[]> = new Map();
 
   constructor(
     private readonly battleState: BattleStateService,
     private readonly players: MwPlayersService,
-    private readonly battleLog: MwBattleLogService,
     private readonly unitState: MwUnitGroupStateService,
-    private readonly spellsService: MwSpellsService,
-    private readonly vfxService: VfxService,
     private readonly units: MwUnitGroupsService,
   ) {
     super();
@@ -252,79 +247,6 @@ export class CombatInteractorService extends StoreClient() {
     return attackActionInfo;
   }
 
-  public createActionsApiRef(): CombatActionsRef {
-    return {
-      dealDamageTo: (target, damage, damageType, postActionFn) => {
-        this.dealDamageTo(target, damage, damageType, postActionFn);
-      },
-      createSpellInstance: <T>(spell: SpellModel<T>, options?: SpellCreationOptions<T>) => {
-        return this.spellsService.createSpellInstance(spell, options);
-      },
-      addModifiersToUnitGroup: (target, modifiers) => {
-
-        const groupModifiers = this.unitGroupModifiersMap.get(target);
-
-        this.units.addModifierToUnitGroup(target, modifiers);
-
-        if (groupModifiers) {
-          groupModifiers.push(modifiers);
-        } else {
-          this.unitGroupModifiersMap.set(target, [modifiers]);
-        }
-
-        if (modifiers.unitGroupSpeedBonus) {
-          this.events.dispatch(GroupSpeedChanged({
-            unitGroup: target
-          }));
-        }
-
-        this.events.dispatch(GroupModifiersChanged({
-          unitGroup: target,
-        }));
-      },
-      createModifiers: (modifiers) => {
-        return this.spellsService.createModifiers(modifiers);
-      },
-      removeModifiresFromUnitGroup: (target, modifiers) => {
-        /* todo: solve mods/spells being duplicated in 2 places. */
-        const unitGroupMods = this.unitGroupModifiersMap.get(target);
-
-        this.units.removeModifiers(target, modifiers);
-
-        if (unitGroupMods) {
-          CommonUtils.removeItem(unitGroupMods, modifiers);
-        }
-
-        this.events.dispatch(GroupModifiersChanged({
-          unitGroup: target,
-        }));
-      },
-      /* dark magic of types, just so it can work */
-      addSpellToUnitGroup: <T>(target: UnitGroupInstModel, spell: SpellInstance<T>, ownerPlayer: PlayerInstanceModel) => {
-        this.addSpellToUnitGroup(target, spell as SpellInstance, ownerPlayer);
-      },
-      removeSpellFromUnitGroup: (target, spell) => {
-        this.removeSpellFromUnitGroup(target, spell as SpellInstance);
-      },
-      getUnitGroupsOfPlayer: (player) => {
-        return this.battleState.heroesUnitGroupsMap.get(player) as UnitGroupInstModel[];
-      },
-      getRandomEnemyPlayerGroup: () => {
-        return this.getRandomEnemyUnitGroup();
-      },
-      getEnemyPlayer: () => {
-        return this.players.getEnemyPlayer();
-      },
-      historyLog: (plainMsg) => {
-        this.battleLog.logSimpleMessage(plainMsg);
-      },
-      healUnit: (unit, healValue) => {
-        /* think on resorting queue */
-        this.units.healUnit(unit, healValue);
-      }
-    };
-  }
-
   public forEachUnitGroup(callback: (unitGroup: UnitGroupInstModel, player: PlayerModel) => void): void {
     this.battleState.heroesUnitGroupsMap.forEach((playerGroups, player) => {
       playerGroups.forEach((group) => {
@@ -381,7 +303,7 @@ export class CombatInteractorService extends StoreClient() {
     this.forEachUnitGroup(unitGroup => unitGroup.fightInfo.spellsOnCooldown = false);
   }
 
-  private getRandomEnemyUnitGroup(): UnitGroupInstModel {
+  public getRandomEnemyUnitGroup(): UnitGroupInstModel {
     const enemyPlayer = this.players.getEnemyPlayer()
     const enemyUnitGroups = this.battleState.heroesUnitGroupsMap.get(enemyPlayer) as UnitGroupInstModel[];
     return CommonUtils.randItem(enemyUnitGroups);
@@ -394,7 +316,7 @@ export class CombatInteractorService extends StoreClient() {
     ];
   }
 
-  private addSpellToUnitGroup(target: UnitGroupInstModel, spell: SpellInstance, ownerPlayer: PlayerInstanceModel): void {
+  public addSpellToUnitGroup(target: UnitGroupInstModel, spell: SpellInstance, ownerPlayer: PlayerInstanceModel): void {
     // console.log('add spell');
     target.spells.push(spell);
 
@@ -406,7 +328,7 @@ export class CombatInteractorService extends StoreClient() {
     this.triggerEventForSpellHandler(spell, SpellEventTypes.SpellPlacedOnUnitGroup, { target: target });
   }
 
-  private removeSpellFromUnitGroup(target: UnitGroupInstModel, spell: SpellInstance): void {
+  public removeSpellFromUnitGroup(target: UnitGroupInstModel, spell: SpellInstance): void {
     const spellIndex = target.spells.indexOf(spell);
     target.spells.splice(spellIndex, 1);
 
@@ -414,32 +336,11 @@ export class CombatInteractorService extends StoreClient() {
   }
 
   private initSpell(spell: SpellInstance, player: PlayerInstanceModel, ownerUnitGroup?: UnitGroupInstModel): void {
-    spell.baseType.type.spellConfig.init({
-      actions: this.createActionsApiRef(),
-      events: {
-        on: (handlers: SpellEventHandlers) => {
-          const spellHandlers = this.spellsHandlersMap.get(spell) ?? {};
-
-          this.spellsHandlersMap.set(spell, { ...spellHandlers, ...handlers });
-        },
-      },
-      vfx: {
-        createEffectForUnitGroup: (target, effect, options) => {
-          this.vfxService.createVfxForUnitGroup(target, {
-            type: EffectType.VfxElement,
-            animation: effect,
-          } as VfxElemEffect, options);
-        },
-        createFloatingMessageForUnitGroup: (target, data, options) => {
-          this.vfxService.createFloatingMessageForUnitGroup(target, data, options);
-        }
-      },
-      thisSpell: spell.baseType,
-      ownerPlayer: player,
-      spellInstance: spell,
-      ownerHero: player.hero,
+    this.events.dispatch(InitSpell({
+      spell,
+      player,
       ownerUnit: ownerUnitGroup,
-    });
+    }));
   }
 
   private initPlayersSpells(): void {

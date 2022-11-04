@@ -1,19 +1,19 @@
 import { Injectable } from '@angular/core';
 import { Colors } from 'src/app/core/dictionaries/colors.const';
 import { GameEventsHandlers, GameEventsMapping, ItemBaseModel, ItemInstanceModel, PlayerInstanceModel } from 'src/app/core/model';
-import type { CombatInteractorService } from './mw-combat-interactor.service';
+import { InitItem } from './events';
+import { EventsService } from './store';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MwItemsService {
 
-  private itemsHandlersMap: Map<ItemInstanceModel, GameEventsHandlers> = new Map();
-  private combatInteractorRef!: CombatInteractorService;
+  public itemsHandlersMap: Map<ItemInstanceModel, GameEventsHandlers> = new Map();
 
-  public initService(combatInteractor: CombatInteractorService): void {
-    this.combatInteractorRef = combatInteractor;
-  }
+  constructor(
+    private events: EventsService,
+  ) { }
 
   public createItem<T extends object>(itemBase: ItemBaseModel<T>): ItemInstanceModel {
     const itemIcon = itemBase.icon;
@@ -34,19 +34,10 @@ export class MwItemsService {
   }
 
   public registerItemsEventHandlers(item: ItemInstanceModel, ownerPlayer: PlayerInstanceModel): void {
-    item.baseType.config.init({
-      actions: this.combatInteractorRef.createActionsApiRef(),
-      events: {
-        on: (newEventHandlers: GameEventsHandlers) => {
-          const prevEventHandlers = this.itemsHandlersMap.get(item) ?? {};
-
-          this.itemsHandlersMap.set(item, { ...prevEventHandlers, ...newEventHandlers });
-        }
-      },
-      ownerHero: ownerPlayer.hero,
-      ownerPlayer: ownerPlayer,
-      thisInstance: item,
-    });
+    this.events.dispatch(InitItem({
+      item,
+      ownerPlayer,
+    }));
   }
 
   public triggerEventForAllItemsHandlers<T extends keyof GameEventsHandlers>(

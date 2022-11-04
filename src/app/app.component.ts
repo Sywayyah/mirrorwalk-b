@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { HintsContainerComponent } from './feature-sandbox/components/ui-elements/hints-container/hints-container.component';
 import { CombatInteractorService } from './feature-sandbox/services';
 import { BattleController, BattleLogController, CombatController, GameController, ItemsController, PlayerController, StructuresController, UiController } from './feature-sandbox/services/controllers';
-import { MwItemsService } from './feature-sandbox/services/mw-items.service';
+import { InGameApiController } from './feature-sandbox/services/controllers/in-game-api.service';
 import { HintsService } from './feature-sandbox/services/ui/hints.service';
 
 @Component({
@@ -18,6 +18,7 @@ import { HintsService } from './feature-sandbox/services/ui/hints.service';
     BattleLogController,
     UiController,
     GameController,
+    InGameApiController,
   ],
 })
 export class AppComponent implements OnInit {
@@ -25,7 +26,6 @@ export class AppComponent implements OnInit {
 
   constructor(
     private readonly hintsService: HintsService,
-    private readonly combat: CombatInteractorService,
     battleController: BattleController,
     combatController: CombatController,
     playerController: PlayerController,
@@ -34,10 +34,11 @@ export class AppComponent implements OnInit {
     structureController: StructuresController,
     uiController: UiController,
     gameController: GameController,
+    inGameApiController: InGameApiController,
     // players: MwPlayersService,
-    items: MwItemsService,
+    // items: MwItemsService,
   ) {
-    items.initService(combat);
+    // items.initService(combat);
     // players.initPlayers();
     // players.addItemToPlayer(players.getCurrentPlayer(), items.createItem(ItemDoomstring));
     // players.addItemToPlayer(players.getCurrentPlayer(), items.createItem(ItemWindCrest));
