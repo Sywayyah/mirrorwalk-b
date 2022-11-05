@@ -1,7 +1,6 @@
-import { UnitGroupInstModel } from "../../model/main.model";
 import { SpellActivationType, SpellEventTypes, SpellModel } from "../../model/spells";
 import { EffectAnimation } from "../../model/vfx-api/vfx-api.types";
-import { getDamageParts, getHealParts } from "../../utils/utils";
+import { getHealParts } from "../../utils/utils";
 import { createAnimation, getIconElement, getPlainAppearanceFrames, getPlainBlurFrames, getReversePulseKeyframes } from "../vfx/utils";
 import { canActivateOnAllyFn } from "./utils";
 
@@ -91,7 +90,7 @@ export const FirebirdHealSpell: SpellModel = {
               event.target,
               getHealParts(healedCount, healValue),
               { duration: 1600 },
-          );
+            );
           },
         });
       },

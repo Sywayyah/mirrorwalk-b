@@ -2,21 +2,21 @@ import { SpellActivationType, SpellModel } from "../../model/spells";
 
 
 export const BlindnessSpell: SpellModel = {
-    name: 'Blindness',
-    icon: {
-        icon: 'sunbeams',
+  name: 'Blindness',
+  icon: {
+    icon: 'sunbeams',
+  },
+  activationType: SpellActivationType.Instant,
+  type: {
+    spellInfo: {
+      name: 'blindness',
     },
-    activationType: SpellActivationType.Instant,
-    type: {
-        spellInfo: {
-            name: 'blindness',
-        },
-        spellConfig: {
-            getManaCost(spellInst) {
-                return 0;
-            },
+    spellConfig: {
+      getManaCost(spellInst) {
+        return 0;
+      },
 
-            init: () => { },
-        },
-    }
+      init: () => { },
+    },
+  }
 };
