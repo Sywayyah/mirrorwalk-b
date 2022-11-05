@@ -4,7 +4,7 @@ import { CombatActionsRef, SpellCreationOptions } from "src/app/core/model/comba
 import { EffectType, VfxElemEffect } from "src/app/core/model/vfx-api/vfx-api.types";
 import { CommonUtils } from "src/app/core/utils/common.utils";
 import { VfxService } from "../../components/ui-elements/vfx-layer/vfx.service";
-import { GroupModifiersChanged, GroupSpeedChanged, InitItem, InitItemAction, InitSpell, InitSpellAction } from "../events";
+import { GroupModifiersChanged, GroupSpeedChanged, InitItem, InitItemAction, InitSpell, InitSpellAction, UnitHealed } from "../events";
 import { MwBattleLogService } from "../mw-battle-log.service";
 import { BattleStateService } from "../mw-battle-state.service";
 import { CombatInteractorService } from "../mw-combat-interactor.service";
@@ -145,7 +145,12 @@ export class InGameApiController extends StoreClient() {
       },
       healUnit: (unit, healValue) => {
         /* think on resorting queue */
-        this.units.healUnit(unit, healValue);
+        const healInfo = this.units.healUnit(unit, healValue);
+
+        this.events.dispatch(UnitHealed({
+          target: unit,
+          healedUnitsCount: healInfo.healedUnitsCount,
+        }));
       }
     };
   }

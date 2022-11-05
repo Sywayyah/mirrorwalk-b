@@ -83,7 +83,7 @@ export class MwUnitGroupsService {
     return unitGroup.type.baseStats.speed + speedBonusFromMods;
   }
 
-  public healUnit(unit: UnitGroupInstModel, healValue: number): void {
+  public healUnit(unit: UnitGroupInstModel, healValue: number): { healedUnitsCount: number } {
     const singleUnitHealth = unit.type.baseStats.health;
 
     const healedUnitsCount = Math.floor(healValue / singleUnitHealth);
@@ -115,6 +115,10 @@ export class MwUnitGroupsService {
     if (!unit.fightInfo.isAlive) {
       unit.fightInfo.isAlive = true;
     }
+
+    return {
+      healedUnitsCount: fullHealedUnitsCount,
+    };
   }
 
   public calcUiMods(target: UnitGroupInstModel): UIModsModel {

@@ -152,7 +152,14 @@ export class BattleStateService {
     const attackedGroupUnitType = attackedGroup.type;
     const typeLossCount = playersLossesMap.get(attackedGroupUnitType);
     if (typeLossCount) {
-      playersLossesMap.set(attackedGroupUnitType, typeLossCount + unitLoss);
+      const finalLossCount = typeLossCount + unitLoss;
+
+      if (finalLossCount > 0) {
+        playersLossesMap.set(attackedGroupUnitType, finalLossCount);
+      } else {
+        /* Remove loss record when units got fully healed. */
+        playersLossesMap.delete(attackedGroupUnitType);
+      }
     } else {
       playersLossesMap.set(attackedGroupUnitType, unitLoss);
     }

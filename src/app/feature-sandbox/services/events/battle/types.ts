@@ -37,6 +37,8 @@ export type PlayerTargetsSpellEvent = props<'player' | 'spell' | 'target'>;
 
 export type PlayerTargetsInstantSpellEvent = props<'player' | 'spell'>;
 
+export type UnitHealedEvent = props<'target'> & { healedUnitsCount: number };
+
 export type NextRoundStarts = { round: number };
 
 export type FightEndsEvent = {

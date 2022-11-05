@@ -1,7 +1,7 @@
 import { PlayerModel } from "src/app/core/model";
 import { eventsForPrefix } from "../../store";
 import { props } from "../common";
-import { PlayerTargetsSpellEvent, PlayerTargetsInstantSpellEvent, GroupAttackedEvent, CombatInteractionStateEvent, GroupDamagedByGroupEvent, GroupTakesDamageEvent, GroupDiesEvent, RoundGroupSpendsTurnEvent, PlayerTurnStartEvent, NextRoundStarts, FightEndsEvent } from "./types";
+import { CombatInteractionStateEvent, FightEndsEvent, GroupAttackedEvent, GroupDamagedByGroupEvent, GroupDiesEvent, GroupTakesDamageEvent, NextRoundStarts, PlayerTargetsInstantSpellEvent, PlayerTargetsSpellEvent, PlayerTurnStartEvent, RoundGroupSpendsTurnEvent, UnitHealedEvent } from "./types";
 
 const battleEvent = eventsForPrefix('[Battle]');
 
@@ -38,3 +38,5 @@ export const RoundPlayerCountinuesAttacking = battleEvent();
 export const FightNextRoundStarts = battleEvent<NextRoundStarts>();
 
 export const FightEnds = battleEvent<FightEndsEvent>();
+
+export const UnitHealed = battleEvent<UnitHealedEvent>();
