@@ -7,3 +7,5 @@ export type DisplayPopupEvent = { popup: PopupModel };
 export type FightStartsEvent = { unitGroups: UnitGroupInstModel[], players: PlayerInstanceModel[] };
 export type InitSpellAction = { spell: SpellInstance, player: PlayerInstanceModel, ownerUnit?: UnitGroupInstModel };
 export type InitItemAction = { item: ItemInstanceModel, ownerPlayer: PlayerInstanceModel };
+export type PlayerEquipsItemAction = { player: PlayerInstanceModel, item: ItemInstanceModel };
+export type PlayerUnequipsItemAction = { player: PlayerInstanceModel, item: ItemInstanceModel };

@@ -4,8 +4,8 @@ import { HelveticaHero } from 'src/app/core/dictionaries/heroes.const';
 import { LEVELS_BREAKPOINTS } from 'src/app/core/dictionaries/levels.const';
 import { HeroModel, ItemInstanceModel, PlayerInstanceModel, PlayerModel, PlayerTypeEnum, ResourcesModel, UnitGroupInstModel, UnitGroupModel } from 'src/app/core/model';
 import { CommonUtils } from 'src/app/core/utils/common.utils';
-import { MwHeroesService, MwItemsService, MwUnitGroupsService } from './';
-import { PlayerGainsLevel } from './events/';
+import { MwHeroesService, MwUnitGroupsService } from './';
+import { PlayerEquipsItem, PlayerGainsLevel, PlayerUnequipsItem } from './events/';
 import { EventsService } from './store';
 
 
@@ -74,7 +74,6 @@ export class MwPlayersService {
   private currentPlayerId: string = PLAYER_IDS.Main;
 
   constructor(
-    private readonly itemsService: MwItemsService,
     private readonly heroesService: MwHeroesService,
     private readonly unitGroups: MwUnitGroupsService,
     private events: EventsService,
@@ -151,28 +150,18 @@ export class MwPlayersService {
   }
 
   public addItemToPlayer(player: PlayerInstanceModel, item: ItemInstanceModel): void {
-    player.hero.items.push(item);
-    player.hero.mods.push(item.baseType.staticMods);
-    if (item.baseType.staticMods.playerBonusAttack) {
-      /* todo: rethink this. modifiers array can be better */
-      player.hero.stats.bonusAttack += item.baseType.staticMods.playerBonusAttack;
-    }
-    this.itemsService.registerItemsEventHandlers(item, player);
+    this.events.dispatch(PlayerEquipsItem({ player, item }));
   }
 
   public removeItemFromPlayer(player: PlayerInstanceModel, item: ItemInstanceModel): void {
-    CommonUtils.removeItem(player.hero.items, item);
-    CommonUtils.removeItem(player.hero.mods, item.baseType.staticMods);
-    if (item.baseType.staticMods.playerBonusAttack) {
-      player.hero.stats.bonusAttack -= item.baseType.staticMods.playerBonusAttack;
-    }
+    this.events.dispatch(PlayerUnequipsItem({ player, item }));
   }
 
   private createPlayer(id: string, playerInfo: PlayerModel): PlayerInstanceModel {
     const player: PlayerInstanceModel = {
       id,
       ...playerInfo,
-    }
+    };
 
     return player;
   }

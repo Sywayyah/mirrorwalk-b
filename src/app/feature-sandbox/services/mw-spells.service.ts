@@ -12,7 +12,10 @@ export class MwSpellsService {
 
   constructor() { }
 
-  public createSpellInstance<T>(spell: SpellModel<T>, options: SpellCreationOptions<T> = {}): SpellInstance<T> {
+  public createSpellInstance<T>(
+    spell: SpellModel<T>,
+    options: SpellCreationOptions<T> = {},
+  ): SpellInstance<T> {
     const initialLevel: number = options.initialLevel ?? 1;
     const spellIcon = spell.icon;
 
@@ -31,6 +34,7 @@ export class MwSpellsService {
       name: spell.type.spellInfo.name,
       baseType: spell,
       state: options.state ?? null,
+      sourceInfo: {},
     };
 
     spellInstance.currentManaCost = spell.type.spellConfig.getManaCost(spellInstance);

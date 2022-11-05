@@ -39,6 +39,7 @@ const NULL_SPELL_INSTANCE: SpellInstance = {
   name: '',
   state: null,
   baseType: NULL_SPELL,
+  sourceInfo: {},
 }
 
 @Injectable({

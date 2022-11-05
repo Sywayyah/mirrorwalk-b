@@ -1,48 +1,63 @@
 import { DamageType } from "../../model/combat-api/combat-api.types";
 import { SpellActivationType, SpellEventTypes, SpellModel } from "../../model/spells";
+import { getDamageParts } from "../../utils/utils";
+import { createFireAnimation } from "../vfx/templates";
 
 export const MeteorSpell: SpellModel = {
-    activationType: SpellActivationType.Instant,
-    name: 'Meteor',
+  name: 'Meteor',
+  activationType: SpellActivationType.Instant,
+  icon: {
+    iconClr: 'rgb(244 162 124)',
 
-    icon: {
-        // iconClr: 'rgb(244 162 124)',
+    icon: 'burning-meteor'
+  },
+  description: 'Deals 82 damage to random enemy group',
 
-        icon: 'burning-meteor'
+  type: {
+    spellInfo: {
+      name: 'Meteor',
     },
-    description: 'Deals medium damage to random enemy group',
+    spellConfig: {
+      getManaCost: (spell) => {
+        const manaCosts: Record<number, number> = {
+          1: 6,
+          2: 7,
+          3: 8,
+          4: 9,
+        };
 
-    type: {
-        spellInfo: {
-            name: 'Meteor',
-        },
-        spellConfig: {
-            getManaCost: (spell) => {
-                const manaCosts: Record<number, number> = {
-                    1: 7,
-                    2: 8,
-                    3: 9,
-                    4: 10,
-                };
+        return manaCosts[spell.currentLevel];
+      },
 
-                return manaCosts[spell.currentLevel];
-            },
+      init({ events, actions, thisSpell, ownerHero, vfx }) {
+        events.on({
+          [SpellEventTypes.PlayerCastsInstantSpell]: event => {
+            const randomEnemyGroup = actions.getRandomEnemyPlayerGroup();
 
-            init({ events, actions, thisSpell, ownerHero }) {
-                events.on({
-                    [SpellEventTypes.PlayerCastsInstantSpell]: event => {
-                        const randomEnemyGroup = actions.getRandomEnemyPlayerGroup();
-                        actions.dealDamageTo(
-                            randomEnemyGroup,
-                            160,
-                            DamageType.Magic,
-                            ({ unitLoss, finalDamage }) => {
-                                actions.historyLog(`${ownerHero.name} deals ${finalDamage} damage to ${randomEnemyGroup.count} ${randomEnemyGroup.type.name} with ${thisSpell.name}, ${unitLoss} units perish`);
+            const countBeforeDamage = randomEnemyGroup.count;
 
-                            });
-                    },
-                });
-            },
-        }
+            vfx.createEffectForUnitGroup(
+              randomEnemyGroup,
+              createFireAnimation('burning-meteor'),
+              { duration: 1000 },
+            );
+
+            actions.dealDamageTo(
+              randomEnemyGroup,
+              82,
+              DamageType.Magic,
+              ({ unitLoss, finalDamage }) => {
+                actions.historyLog(`${ownerHero.name} deals ${finalDamage} damage to ${countBeforeDamage} ${randomEnemyGroup.type.name} with ${thisSpell.name}, ${unitLoss} units perish`);
+
+                vfx.createFloatingMessageForUnitGroup(
+                  randomEnemyGroup,
+                  getDamageParts(finalDamage, unitLoss),
+                  { duration: 1000 },
+                );
+              });
+          },
+        });
+      },
     }
+  }
 }
