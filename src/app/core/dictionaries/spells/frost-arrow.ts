@@ -61,15 +61,16 @@ export const FrozenArrowDebuff: SpellModel = {
         return 0;
       },
 
-      init: ({ events, actions, vfx }) => {
+      init: ({ events, actions, vfx, thisSpell }) => {
         const mods = actions.createModifiers({
           unitGroupSpeedBonus: -4,
         });
 
         events.on({
-          [SpellEventTypes.SpellPlacedOnUnitGroup]: (event) => {
-            vfx.createEffectForUnitGroup(event.target, FrozenAnimation, { duration: 800 });
-            actions.addModifiersToUnitGroup(event.target, mods);
+          [SpellEventTypes.SpellPlacedOnUnitGroup]: ({ target }) => {
+            vfx.createEffectForUnitGroup(target, FrozenAnimation, { duration: 800 });
+            actions.addModifiersToUnitGroup(target, mods);
+            actions.historyLog(`${target.type.name} receives ${thisSpell.name} debuff and gets slowed by 4.`);
           },
         })
       }
@@ -111,7 +112,8 @@ export const FrostArrowSpell: SpellModel = {
             actions.addSpellToUnitGroup(event.target, enchantDebuff, ownerPlayer);
 
             actions.dealDamageTo(event.target, 40, DamageType.Magic, ({ finalDamage, unitLoss }) => {
-              actions.historyLog(`${ownerHero.name} deals ${finalDamage} damage to ${event.target.type.name} with ${thisSpell.name}`)
+              const unitTypeName = event.target.type.name;
+              actions.historyLog(`${ownerHero.name} deals ${finalDamage} damage to ${unitTypeName} with ${thisSpell.name}, ${unitLoss} ${unitTypeName} perishes`)
 
               vfx.createFloatingMessageForUnitGroup(
                 event.target,
