@@ -1,6 +1,6 @@
 import { DamageType } from "../../model/combat-api/combat-api.types";
 import { SpellActivationType, SpellEventTypes, SpellModel } from "../../model/spells";
-import { Colors } from "../colors.const";
+import { debuffColors } from "./utils";
 
 
 export const PoisonCloudDebuff: SpellModel<undefined | { debuffRoundsLeft: number }> = {
@@ -8,8 +8,7 @@ export const PoisonCloudDebuff: SpellModel<undefined | { debuffRoundsLeft: numbe
   name: 'Poisoned',
   icon: {
     icon: 'poison-cloud',
-    bgClr: Colors.DefautlDebuffBg,
-    iconClr: Colors.DefautlDebuffClr,
+    ...debuffColors,
   },
   description: 'Poison deals 65 damage at the beginning of each round.',
   type: {

@@ -7,7 +7,7 @@ export const MeteorSpell: SpellModel = {
   name: 'Meteor',
   activationType: SpellActivationType.Instant,
   icon: {
-    iconClr: 'rgb(244 162 124)',
+    // iconClr: 'rgb(244 162 124)',
 
     icon: 'burning-meteor'
   },

@@ -1,5 +1,6 @@
 import { SpellActivationType, SpellEventTypes, SpellModel, UnitGroupInstModel } from "../../model";
 import { Colors } from "../colors.const";
+import { debuffColors } from "./utils";
 
 export const FrightSpellDebuff: SpellModel<{ frighter: UnitGroupInstModel }> = {
   name: 'Fright',
@@ -7,8 +8,7 @@ export const FrightSpellDebuff: SpellModel<{ frighter: UnitGroupInstModel }> = {
   description: 'This unit group is frightened, dealing 25% less damage to the one who scared it.',
   icon: {
     icon: 'batwings',
-    bgClr: Colors.DefautlDebuffBg,
-    iconClr: Colors.DefautlDebuffClr,
+    ...debuffColors,
   },
   type: {
     spellInfo: {

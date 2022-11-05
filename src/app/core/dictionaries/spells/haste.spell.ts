@@ -1,8 +1,7 @@
 import { SpellActivationType, SpellEventTypes, SpellModel } from "../../model/spells";
 import { EffectAnimation } from "../../model/vfx-api/vfx-api.types";
-import { Colors } from "../colors.const";
 import { createAnimation, getIconElement, getPlainAppearanceFrames, getPlainBlurFrames, getReversePulseKeyframes } from "../vfx/utils";
-import { canActivateOnAllyFn } from "./utils";
+import { buffColors, canActivateOnAllyFn } from "./utils";
 
 
 const icon = 'boot-stomp';
@@ -50,8 +49,7 @@ export const HasteBuff: SpellModel = {
   activationType: SpellActivationType.Buff,
   icon: {
     icon: icon,
-    bgClr: Colors.DefautlBuffBg,
-    iconClr: Colors.DefautlBuffClr,
+    ...buffColors,
   },
   description: 'Unit group is speeded up by 5.',
   type: {

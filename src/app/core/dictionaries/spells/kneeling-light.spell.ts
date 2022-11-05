@@ -1,6 +1,5 @@
 import { SpellActivationType, SpellEventTypes, SpellModel } from "../../model/spells";
-import { Colors } from "../colors.const";
-import { canActivateOnEnemyFn } from "./utils";
+import { canActivateOnEnemyFn, debuffColors } from "./utils";
 
 
 export const KneelingLightDebuff: SpellModel = {
@@ -8,8 +7,7 @@ export const KneelingLightDebuff: SpellModel = {
   activationType: SpellActivationType.Debuff,
   icon: {
     icon: 'sunbeams',
-    bgClr: Colors.DefautlDebuffBg,
-    iconClr: Colors.DefautlDebuffClr,
+    ...debuffColors,
   },
   description: 'Unit group is slowed down by 3',
   type: {

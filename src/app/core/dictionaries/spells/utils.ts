@@ -3,11 +3,11 @@ import { Colors } from "../colors.const";
 
 
 export const canActivateOnEnemyFn = ({ isEnemy, unitGroup }: CanActivateSpellParams): boolean => {
-    return isEnemy;
+  return isEnemy && unitGroup.fightInfo.isAlive;
 };
 
 export const canActivateOnAllyFn = ({ isEnemy, unitGroup }: CanActivateSpellParams): boolean => {
-    return !isEnemy;
+  return !isEnemy;
 };
 
 export const debuffColors = {

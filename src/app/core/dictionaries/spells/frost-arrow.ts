@@ -2,9 +2,8 @@ import { SpellActivationType, SpellEventTypes, SpellModel } from "../../model";
 import { DamageType } from "../../model/combat-api/combat-api.types";
 import { EffectAnimation } from "../../model/vfx-api/vfx-api.types";
 import { getDamageParts } from "../../utils/utils";
-import { Colors } from "../colors.const";
 import { createAnimation, getIconElement, getPlainAppearanceFrames, getPlainBlurFrames, getReversePulseKeyframes } from "../vfx/utils";
-import { canActivateOnEnemyFn } from "./utils";
+import { canActivateOnEnemyFn, debuffColors } from "./utils";
 
 const icon = 'frost-emblem';
 
@@ -44,15 +43,13 @@ export const FrozenAnimation: EffectAnimation = createAnimation([
   ]
 ]);
 
-
-
 export const FrozenArrowDebuff: SpellModel = {
   name: 'Freeze',
   activationType: SpellActivationType.Debuff,
   icon: {
     icon: icon,
+    ...debuffColors,
     bgClr: '#a9bee2',
-    iconClr: Colors.DefautlDebuffClr,
   },
   description: 'Unit group is slowed down by 4.',
   type: {

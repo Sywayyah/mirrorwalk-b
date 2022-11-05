@@ -1,7 +1,6 @@
 import { SpellActivationType, SpellEventTypes, SpellModel } from "../../model/spells";
-import { Colors } from "../colors.const";
 import { EnchantAnimation } from "../vfx/animations";
-import { canActivateOnEnemyFn } from "./utils";
+import { canActivateOnEnemyFn, debuffColors } from "./utils";
 
 
 export const EnchantBuff: SpellModel = {
@@ -9,8 +8,7 @@ export const EnchantBuff: SpellModel = {
   activationType: SpellActivationType.Debuff,
   icon: {
     icon: 'fire-ring',
-    bgClr: Colors.DefautlDebuffBg,
-    iconClr: Colors.DefautlDebuffClr,
+    ...debuffColors,
   },
   description: 'Incoming magic damage is increased by 17%.',
   type: {
