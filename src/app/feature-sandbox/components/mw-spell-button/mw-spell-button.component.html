@@ -1,5 +1,5 @@
 <mw-hover-hint [hintBody]="hint">
-  <div class="ability spell-icon" (click)="onClick()" [class.no-mana]="disabled"
+  <div class="ability spell-icon" (click)="onClick()" [class.disabled]="disabled"
     [class.current-ability]="isActive && spell.baseType.activationType === activationTypes.Target"
     [ngStyle]="{ 'color': spell.baseType.icon.iconClr , 'background': spell.baseType.icon.bgClr }">
     <mw-ra-icon [icon]="spell.baseType.icon.icon"></mw-ra-icon>
