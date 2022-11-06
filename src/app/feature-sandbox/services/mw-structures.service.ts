@@ -38,15 +38,8 @@ export class MwStructuresService {
 
   constructor(
     private playersService: MwPlayersService,
-    // private events: BattleEventsService,
     private unitGroups: MwUnitGroupsService,
   ) {
-    // this.events.onEvents({
-    //   [BattleEvent.Struct_Selected]: event => {
-    //     this.currentStruct = event.struct;
-    //   },
-    // }).subscribe();
-
     this.generateStructuresByTypes();
     this.guardsMap = this.generateNewGuardsMap();
   }
