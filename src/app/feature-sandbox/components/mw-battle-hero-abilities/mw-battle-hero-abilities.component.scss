@@ -1,67 +1,14 @@
 .abilities-list {
-    display: flex;
-    flex-direction: column;
-    position: relative;
-    width: 56px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  width: 56px;
 }
 
 .cd-icon {
-    position: absolute;
-    top: 50%;
-    left: -27px;
-    margin-top: -25%;
-    font-size: 24px;
-}
-
-.ability {
-    width: 48px;
-    height: 42px;
-    border: 1px solid gray;
-    font-size: 13px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 4px;
-    margin: 4px;
-    cursor: pointer;
-}
-
-.current-ability {
-    border: 1px solid gold;
-}
-
-.no-mana {
-    cursor: not-allowed;
-    opacity: 0.5;
-}
-
-.spell-icon {
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 42px;
-    overflow: hidden;
-}
-
-.tooltip-icon {
-    height: 32px;
-    width: 32px;
-    overflow: hidden;
-    font-size: 28px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-// light effect
-.light {
-    position: absolute;
-    mix-blend-mode: hard-light;
-    filter: blur(4px);
-    display: none;
-}
-
-.ability:not(.no-mana):hover .light {
-    display: block;
+  position: absolute;
+  top: 50%;
+  left: -27px;
+  margin-top: -25%;
+  font-size: 24px;
 }

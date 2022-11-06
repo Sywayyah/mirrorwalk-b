@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { PlayerInstanceModel, SpellActivationType, SpellInstance } from 'src/app/core/model';
+import { Component } from '@angular/core';
+import { PlayerInstanceModel, SpellInstance } from 'src/app/core/model';
 import { MwCurrentPlayerStateService, MwPlayersService, PlayerState } from '../../services';
 
 @Component({
@@ -7,18 +7,14 @@ import { MwCurrentPlayerStateService, MwPlayersService, PlayerState } from '../.
   templateUrl: './mw-battle-hero-abilities.component.html',
   styleUrls: ['./mw-battle-hero-abilities.component.scss']
 })
-export class MwBattleHeroAbilitiesComponent implements OnInit {
+export class MwBattleHeroAbilitiesComponent {
 
   public currentPlayer: PlayerInstanceModel = this.players.getCurrentPlayer();
-  public activationTypes: typeof SpellActivationType = SpellActivationType;
 
   constructor(
     private readonly players: MwPlayersService,
     public readonly curPlayerState: MwCurrentPlayerStateService,
   ) { }
-
-  ngOnInit(): void {
-  }
 
   public onAbilityClick(spell: SpellInstance) {
     if (spell.currentManaCost > this.currentPlayer.hero.stats.currentMana || this.curPlayerState.spellsAreOnCooldown) {

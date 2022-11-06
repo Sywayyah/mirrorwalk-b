@@ -1,0 +1,30 @@
+<mw-hover-hint [hintBody]="hint">
+  <div class="ability spell-icon" (click)="onClick()" [class.no-mana]="disabled"
+    [class.current-ability]="isActive && spell.baseType.activationType === activationTypes.Target"
+    [ngStyle]="{ 'color': spell.baseType.icon.iconClr , 'background': spell.baseType.icon.bgClr }">
+    <mw-ra-icon [icon]="spell.baseType.icon.icon"></mw-ra-icon>
+
+    <i class="ra light" [class]="'ra-' + spell.baseType.icon.icon"></i>
+  </div>
+
+  <ng-template #hint>
+    <div style="min-width: 170px; max-width: 200px;">
+      <div style="display: flex;">
+        <div class="tooltip-icon"
+          [ngStyle]="{ 'color': spell.baseType.icon.iconClr , 'background': spell.baseType.icon.bgClr }">
+          <mw-ra-icon [icon]="spell.baseType.icon.icon"></mw-ra-icon>
+        </div>
+
+        <div style="padding: 4px;">
+          <div style="font-size: 14px;">{{spell.name}}</div>
+          <div style="font-size: 12px;">Level: {{spell.currentLevel}}</div>
+          <div style="font-size: 12px;">Mana Cost: {{spell.currentManaCost}}</div>
+        </div>
+      </div>
+
+      <div *ngIf="spell.description" style=" font-size: 12px; padding: 4px;">
+        {{spell.description}}
+      </div>
+    </div>
+  </ng-template>
+</mw-hover-hint>

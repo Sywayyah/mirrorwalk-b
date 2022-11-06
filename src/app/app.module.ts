@@ -40,6 +40,7 @@ import { ValueBarComponent } from './feature-sandbox/components/ui-elements/valu
 import { UnitGroupBuffComponent } from './feature-sandbox/components/unit-group-buff/unit-group-buff.component';
 import { UnitGroupSpellComponent } from './feature-sandbox/components/unit-group-spell/unit-group-spell.component';
 import { ScriptedRewardPopupComponent } from './feature-sandbox/components/mw-popup-container/components/scripted-reward-popup/scripted-reward-popup.component';
+import { MwSpellButtonComponent } from './feature-sandbox/components/mw-spell-button/mw-spell-button.component';
 
 @NgModule({
   declarations: [
@@ -81,6 +82,7 @@ import { ScriptedRewardPopupComponent } from './feature-sandbox/components/mw-po
     UnitGroupBuffComponent,
     UnitGroupSpellComponent,
     ScriptedRewardPopupComponent,
+    MwSpellButtonComponent,
   ],
   imports: [
     BrowserModule
