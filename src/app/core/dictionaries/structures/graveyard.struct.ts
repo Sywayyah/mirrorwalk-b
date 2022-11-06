@@ -1,6 +1,6 @@
 import { HiringReward, NeutralRewardTypesEnum, StructureGeneratorModel, StuctureControl, UnitUpgradeReward } from "../../model/structures.types";
 import { GenerationModel } from "../../utils/common.utils";
-import { NEUTRAL_FRACTION_UNIT_TYPES } from "../unit-types/neutral-unit-types.dictionary";
+import { NEUTRAL_FRACTION_UNIT_TYPES } from "../unit-types/neutral.units";
 
 
 
@@ -36,7 +36,7 @@ export const BeaconOfTheUndead: StructureGeneratorModel = {
     name: 'Beacon of the Undead',
     control: StuctureControl.Neutral,
     description: 'Allows to upgrade your ghost units below level 4.',
-    
+
     /* todo: also, think about this. Maybe if we can have callbacks like this,
         then there is no need for 'onVisited'
      */

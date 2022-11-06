@@ -1,5 +1,5 @@
 import { StructureGeneratorModel } from "../../model/structures.types";
-import { HUMANS_FRACTION_UNIT_TYPES } from "../unit-types/unit-types.dictionary";
+import { HUMANS_FRACTION_UNIT_TYPES } from "../unit-types/humans.units";
 import { createHireStructure } from "./utils";
 
 export const ArchersOutpostStructure: StructureGeneratorModel = createHireStructure(

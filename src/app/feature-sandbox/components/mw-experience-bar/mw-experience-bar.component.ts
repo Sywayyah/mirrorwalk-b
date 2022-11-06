@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { LEVELS_BREAKPOINTS } from 'src/app/core/dictionaries/levels.const';
+import { HERO_LEVELS_BREAKPOINTS } from 'src/app/core/dictionaries/levels.const';
 import { PlayerInstanceModel } from 'src/app/core/model';
 import { MwPlayersService } from '../../services';
 
@@ -16,7 +16,7 @@ export class MwExperienceBarComponent implements OnInit {
   constructor(
     private readonly players: MwPlayersService
   ) {
-    this.xpToNextLevel = LEVELS_BREAKPOINTS[this.currentPlayer.hero.level + 1];
+    this.xpToNextLevel = HERO_LEVELS_BREAKPOINTS[this.currentPlayer.hero.level + 1];
   }
 
   ngOnInit(): void {

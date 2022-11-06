@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { PLAYER_COLORS } from 'src/app/core/dictionaries/colors.const';
-import { HelveticaHero } from 'src/app/core/dictionaries/heroes.const';
-import { LEVELS_BREAKPOINTS } from 'src/app/core/dictionaries/levels.const';
+import { HelveticaHero } from "src/app/core/dictionaries/heroes/helvetica.hero";
+import { HERO_LEVELS_BREAKPOINTS } from 'src/app/core/dictionaries/levels.const';
 import { HeroModel, ItemInstanceModel, PlayerInstanceModel, PlayerModel, PlayerTypeEnum, ResourcesModel, UnitGroupInstModel, UnitGroupModel } from 'src/app/core/model';
 import { CommonUtils } from 'src/app/core/utils/common.utils';
 import { MwHeroesService, MwUnitGroupsService } from './';
@@ -96,7 +96,7 @@ export class MwPlayersService {
     const playerHero = player.hero;
     playerHero.experience += experience;
 
-    const currentXpToNextLevel = LEVELS_BREAKPOINTS[playerHero.level + 1];
+    const currentXpToNextLevel = HERO_LEVELS_BREAKPOINTS[playerHero.level + 1];
 
     if (currentXpToNextLevel <= playerHero.experience) {
       playerHero.level++;

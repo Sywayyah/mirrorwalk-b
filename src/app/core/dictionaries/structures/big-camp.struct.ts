@@ -1,5 +1,5 @@
 import { NeutralRewardTypesEnum, ScriptedReward, StructureGeneratorModel, StuctureControl } from "../../model/structures.types";
-import { NEUTRAL_FRACTION_UNIT_TYPES } from "../unit-types/neutral-unit-types.dictionary";
+import { NEUTRAL_FRACTION_UNIT_TYPES } from "../unit-types/neutral.units";
 
 export const BigCampStructure: StructureGeneratorModel = {
   name: 'Big Camp',

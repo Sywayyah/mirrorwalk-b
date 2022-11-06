@@ -1,4 +1,4 @@
-import { GameEventTypes, ItemBaseModel } from "../../model/items/items.types";
+import { GameEventTypes, ItemBaseModel } from "../../model";
 import { EnchantBuff } from "../spells";
 
 export const ItemEclipseWand: ItemBaseModel<{}> = {

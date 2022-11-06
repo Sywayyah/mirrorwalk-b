@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { createHeroModelBase, EMPTY_RESOURCES } from 'src/app/core/dictionaries/heroes.const';
+import { createHeroModelBase, EMPTY_RESOURCES } from 'src/app/core/dictionaries/heroes/utils';
 import { HeroInstanceModel, HeroModel, SpellInstance } from 'src/app/core/model';
 import { MwItemsService, MwSpellsService } from './';
 

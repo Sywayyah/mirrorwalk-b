@@ -2,8 +2,8 @@ import { ResourceType } from '../../model/resources.types';
 import { ItemReward, NeutralRewardTypesEnum, ResourcesReward, StructureGeneratorModel, StuctureControl } from '../../model/structures.types';
 import { CommonUtils, GenerationModel } from '../../utils/common.utils';
 import { ItemEclipseWand, ItemMeteorSwords, ItemWindCrest } from '../items';
-import { ItemIceBow } from '../items/ice-bow';
-import { NEUTRAL_FRACTION_UNIT_TYPES } from '../unit-types/neutral-unit-types.dictionary';
+import { ItemIceBow } from '../items/ice-bow.item';
+import { NEUTRAL_FRACTION_UNIT_TYPES } from '../unit-types/neutral.units';
 
 
 export const BanditCamp: StructureGeneratorModel = {

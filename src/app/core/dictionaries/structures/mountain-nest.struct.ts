@@ -1,6 +1,6 @@
 import { StructureGeneratorModel, StuctureControl } from "../../model/structures.types";
 import { CommonUtils } from "../../utils/common.utils";
-import { HF_TYPES_ENUM, HUMANS_FRACTION_UNIT_TYPES } from "../unit-types/unit-types.dictionary";
+import { HF_TYPES_ENUM, HUMANS_FRACTION_UNIT_TYPES } from "../unit-types/humans.units";
 
 export const MountainNestStructure: StructureGeneratorModel = {
     control: StuctureControl.Neutral,
