@@ -47,6 +47,11 @@
   display: none;
 }
 
-.ability:not(.no-mana):hover .light {
+.ability:not(.no-mana):not(.disabled):hover .light {
   display: block;
+}
+
+:host:active .spell-icon,
+.spell-icon.current-ability {
+  filter: brightness(0.65);
 }

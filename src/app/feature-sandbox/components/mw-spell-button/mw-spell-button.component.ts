@@ -30,5 +30,4 @@ export class MwSpellButtonComponent {
   public onClick(): void {
     this.clicked.emit(this.spell);
   }
-
 }
