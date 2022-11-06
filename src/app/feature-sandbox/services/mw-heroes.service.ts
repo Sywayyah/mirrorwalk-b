@@ -47,7 +47,7 @@ export class MwHeroesService {
     return {
       experience: 0,
       freeSkillpoints: 0,
-      items: heroInitState.items.map(item => this.itemsService.createItem(item)),
+      items: [],
       level: 1,
       mods: [],
       name: heroBase.name,

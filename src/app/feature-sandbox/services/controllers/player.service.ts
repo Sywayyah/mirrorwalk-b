@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { CommonUtils } from "src/app/core/utils/common.utils";
-import { MwCurrentPlayerStateService, MwItemsService, MwSpellsService } from "../";
+import { MwCurrentPlayerStateService, MwItemsService, MwPlayersService, MwSpellsService } from "../";
 import { FightNextRoundStarts, FightStarts, PlayerEquipsItem, PlayerEquipsItemAction, PlayerUnequipsItem, PlayerUnequipsItemAction } from "../events";
 import { Notify, StoreClient, WireMethod } from "../store";
 
@@ -25,10 +25,12 @@ export class PlayerController extends StoreClient() {
   public equipItem({ item, player }: PlayerEquipsItemAction): void {
     player.hero.items.push(item);
     player.hero.mods.push(item.baseType.staticMods);
+
     if (item.baseType.staticMods.playerBonusAttack) {
       /* todo: rethink this. modifiers array can be better */
       player.hero.stats.bonusAttack += item.baseType.staticMods.playerBonusAttack;
     }
+
     if (item.baseType.bonusAbilities) {
       item.baseType.bonusAbilities.forEach((spellConfig) => {
         const spellInstance = this.spellsService.createSpellInstance(
@@ -41,6 +43,7 @@ export class PlayerController extends StoreClient() {
         player.hero.spells.push(spellInstance);
       });
     }
+
     this.itemsService.registerItemsEventHandlers(item, player);
   }
 

@@ -4,7 +4,7 @@ import { CombatActionsRef, SpellCreationOptions } from "src/app/core/model/comba
 import { EffectType, VfxElemEffect } from "src/app/core/model/vfx-api/vfx-api.types";
 import { CommonUtils } from "src/app/core/utils/common.utils";
 import { VfxService } from "../../components/ui-elements/vfx-layer/vfx.service";
-import { GroupModifiersChanged, GroupSpeedChanged, InitItem, InitItemAction, InitSpell, InitSpellAction, UnitHealed } from "../events";
+import { GroupModifiersChanged, GroupSpeedChanged, InitItem, InitItemAction, InitSpell, InitSpellAction, PlayerEquipsItem, UnitHealed } from "../events";
 import { MwBattleLogService } from "../mw-battle-log.service";
 import { BattleStateService } from "../mw-battle-state.service";
 import { CombatInteractorService } from "../mw-combat-interactor.service";
@@ -28,6 +28,17 @@ export class InGameApiController extends StoreClient() {
     private itemsService: MwItemsService,
   ) {
     super();
+
+    // Keep items initialization here for a while
+    this.initPlayerItems();
+  }
+
+  public initPlayerItems(): void {
+    const player = this.players.getCurrentPlayer();
+
+    player.hero.base.initialState.items.forEach(item => {
+      this.events.dispatch(PlayerEquipsItem({ player, item: this.itemsService.createItem(item) }));
+    });
   }
 
   @WireMethod(InitSpell)
@@ -62,6 +73,7 @@ export class InGameApiController extends StoreClient() {
 
   @WireMethod(InitItem)
   public initItem({ item, ownerPlayer }: InitItemAction): void {
+    console.log('qweqwe');
     item.baseType.config.init({
       actions: this.createActionsApiRef(),
       events: {

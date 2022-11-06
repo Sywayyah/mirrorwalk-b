@@ -182,7 +182,6 @@ export class MwPlayersService {
       type,
       unitGroups: this.unitGroups.createUnitGroupFromGenModel(hero.initialState.army[0]),
     };
-    /* handle items initialization */
 
     return player;
   }
