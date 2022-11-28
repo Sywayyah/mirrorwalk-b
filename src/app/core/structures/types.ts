@@ -2,7 +2,7 @@ import { PlayersApi, SpellsApi } from '../api/game-api';
 import { ItemBaseModel } from '../items';
 import { PlayerInstanceModel } from '../players';
 import { ResourceType } from '../resources';
-import { GenerationModel, UnitTypeModel, UnitGroupInstModel } from '../unit-types';
+import { GenerationModel, UnitBase, UnitGroupInstModel } from '../unit-types';
 
 /* Base descriptive type */
 /* Refactor these types */
@@ -46,7 +46,7 @@ export interface ResourceRewardModel {
 }
 
 export interface HiringRewardModel {
-  unitType: UnitTypeModel;
+  unitType: UnitBase;
   maxCount: number;
 }
 

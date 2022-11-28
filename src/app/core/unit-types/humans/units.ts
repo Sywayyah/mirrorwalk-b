@@ -1,6 +1,6 @@
 import { AssetsImages } from '../../assets';
 import { FirebirdHealSpell } from '../../spells/common';
-import { UnitTypeModel } from '../types';
+import { UnitBase } from '../types';
 
 export enum HF_TYPES_ENUM {
   Pikemans = 'Pikemans',
@@ -15,7 +15,7 @@ const defaultRewards = {
   gold: 0,
 };
 
-export const HUMANS_FRACTION_UNIT_TYPES: Record<HF_TYPES_ENUM, UnitTypeModel> = {
+export const HUMANS_FRACTION_UNIT_TYPES: Record<HF_TYPES_ENUM, UnitBase> = {
 
   [HF_TYPES_ENUM.Pikemans]: {
     mainPortraitUrl: AssetsImages.Melee,

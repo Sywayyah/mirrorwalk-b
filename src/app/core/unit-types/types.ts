@@ -37,7 +37,7 @@ export interface UnitTypeBaseStatsModel {
   damageInfo: UnitDamageModel;
 }
 
-export interface UnitTypeModel {
+export interface UnitBase {
   /* displayed name */
   name: string;
   /* main portrait for this unit (used during combat, hiring and so on) */
@@ -72,14 +72,14 @@ export interface UnitTypeModel {
   upgraded?: boolean;
 
   upgradeDetails?: {
-    target: UnitTypeModel,
+    target: UnitBase,
     upgradeCost: Partial<ResourcesModel>,
   };
 }
 
 export interface UnitGroupModel {
   count: number;
-  type: UnitTypeModel;
+  type: UnitBase;
   ownerPlayerRef?: PlayerInstanceModel;
 
   /* how much turns left during round, not sure if it's best to have it there */

@@ -1,8 +1,8 @@
 import { NeutralCampStructure, NeutralSite, ResourceRewardModel } from 'src/app/core/structures';
-import { UnitTypeModel } from 'src/app/core/unit-types';
+import { UnitBase } from 'src/app/core/unit-types';
 
 export interface LossModel {
-  type: UnitTypeModel;
+  type: UnitBase;
   count: number;
 };
 

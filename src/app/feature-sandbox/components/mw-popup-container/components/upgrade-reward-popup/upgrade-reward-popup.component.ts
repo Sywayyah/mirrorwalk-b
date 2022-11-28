@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ResourcesModel, ResourceType } from 'src/app/core/resources';
 import { HiringRewardModel, UnitUpgradeReward } from 'src/app/core/structures';
 import { UpgradingPopup } from 'src/app/core/ui';
-import { UnitGroupInstModel, UnitTypeModel } from 'src/app/core/unit-types';
+import { UnitBase, UnitGroupInstModel } from 'src/app/core/unit-types';
 import { MwPlayersService, MwUnitGroupsService } from 'src/app/feature-sandbox/services';
 import { ApiProvider } from 'src/app/feature-sandbox/services/api-provider.service';
 
@@ -66,7 +66,7 @@ export class UpgradeRewardPopup implements OnInit {
         return {
           hire: {
             maxCount: unit.count,
-            unitType: unit.type.upgradeDetails?.target as UnitTypeModel,
+            unitType: unit.type.upgradeDetails?.target as UnitBase,
           },
           count: 0,
           baseCost: baseCost,

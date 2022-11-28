@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { PlayerInstanceModel } from 'src/app/core/players';
-import { CommonUtils, GenerationModel, UnitsUtils, Modifiers, ModifiersModel, UnitGroupInstModel, UnitGroupModel, UnitTypeModel } from 'src/app/core/unit-types';
+import { CommonUtils, GenerationModel, UnitsUtils, Modifiers, ModifiersModel, UnitGroupInstModel, UnitGroupModel, UnitBase } from 'src/app/core/unit-types';
 import { MwSpellsService } from './mw-spells.service';
 
 
@@ -26,7 +26,7 @@ export class MwUnitGroupsService {
   /*  todo: figure out diff between UnitGroupModel and Inst */
 
   public createUnitGroup(
-    type: UnitTypeModel,
+    type: UnitBase,
     options: { count: number },
     player: PlayerInstanceModel,
   ): UnitGroupModel {

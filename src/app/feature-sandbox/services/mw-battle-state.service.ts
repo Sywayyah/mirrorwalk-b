@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { PlayerInstanceModel, PlayerModel } from 'src/app/core/players';
 import { ActionHintModel } from 'src/app/core/ui';
-import { UnitGroupInstModel, UnitGroupModel, UnitTypeModel } from 'src/app/core/unit-types';
+import { UnitGroupInstModel, UnitGroupModel, UnitBase } from 'src/app/core/unit-types';
 import { EventsService } from 'src/app/store';
 import { FightNextRoundStarts, GroupAttacked, RoundPlayerCountinuesAttacking, RoundPlayerTurnStarts } from './events';
 import { MwUnitGroupsService } from './mw-unit-groups.service';
@@ -24,7 +24,7 @@ export class BattleStateService {
 
   public hintMessage$: BehaviorSubject<ActionHintModel | null> = new BehaviorSubject<ActionHintModel | null>(null);
 
-  public playerLosses: Record<string, Map<UnitTypeModel, number>> = {};
+  public playerLosses: Record<string, Map<UnitBase, number>> = {};
 
   private playersRivalryMap: Map<PlayerModel, PlayerModel> = new Map();
 

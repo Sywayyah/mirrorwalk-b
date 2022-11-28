@@ -1,11 +1,11 @@
 import { PlayerInstanceModel } from '../players';
-import { UnitTypeModel, UnitGroupModel, UnitGroupInstModel } from './types';
+import { UnitBase, UnitGroupModel, UnitGroupInstModel } from './types';
 
 export interface GenerationModel {
   minUnitGroups: number;
   maxUnitGroups: number;
   /* unit type, min, max, maxGroupsOfThisType */
-  units: [UnitTypeModel, number, number, number | void][];
+  units: [UnitBase, number, number, number | void][];
 }
 
 export const CommonUtils = {

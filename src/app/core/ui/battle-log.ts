@@ -1,5 +1,5 @@
 import { PlayerModel } from 'src/app/core/players';
-import { UnitTypeModel } from 'src/app/core/unit-types';
+import { UnitBase } from 'src/app/core/unit-types';
 
 
 export enum HistoryLogTypesEnum {
@@ -23,8 +23,8 @@ export interface RoundInfoMessage extends HistoryLogModel<HistoryLogTypesEnum.Ro
 export interface DealtDamageMessage extends HistoryLogModel<HistoryLogTypesEnum.DealtDamageMsg> {
   attackingPlayer: PlayerModel;
   attackedPlayer: PlayerModel;
-  attacker: UnitTypeModel;
-  attacked: UnitTypeModel;
+  attacker: UnitBase;
+  attacked: UnitBase;
   losses: number;
   damage: number;
 }
