@@ -2,7 +2,7 @@ import { Component, Input, OnChanges } from '@angular/core';
 import { Icon } from 'src/app/core/assets';
 import { SpellActivationType, SpellInstance, SpellModel } from 'src/app/core/spells';
 import { UnitGroupInstModel } from 'src/app/core/unit-types';
-import { TypedChanges } from 'src/app/core/utils/types';
+import { TypedChanges } from 'src/app/core/utils';
 import { MwCurrentPlayerStateService, PlayerState } from '../../services';
 
 @Component({

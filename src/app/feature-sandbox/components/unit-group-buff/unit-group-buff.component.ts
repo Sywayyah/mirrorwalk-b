@@ -1,7 +1,7 @@
 import { Component, Input, OnChanges } from '@angular/core';
 import { Icon } from 'src/app/core/assets';
 import { SpellInstance, SpellModel } from 'src/app/core/spells';
-import { TypedChanges } from 'src/app/core/utils/types';
+import { TypedChanges } from 'src/app/core/utils';
 
 @Component({
   selector: 'mw-unit-group-buff',
