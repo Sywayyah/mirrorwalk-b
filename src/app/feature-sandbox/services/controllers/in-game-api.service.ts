@@ -1,4 +1,4 @@
-import { Injectable } from "@angular/core";
+import { Injectable } from '@angular/core';
 import { CombatActionsRef, SpellCreationOptions } from 'src/app/core/api/combat-api';
 import { EffectType, VfxElemEffect } from 'src/app/core/api/vfx-api';
 import { GameEventsHandlers } from 'src/app/core/items';
@@ -6,16 +6,15 @@ import { PlayerInstanceModel } from 'src/app/core/players';
 import { SpellEventHandlers, SpellInstance, SpellModel } from 'src/app/core/spells';
 import { CommonUtils, UnitGroupInstModel } from 'src/app/core/unit-types';
 import { VfxService } from '../../components/ui-elements/vfx-layer/vfx.service';
-import { GroupModifiersChanged, GroupSpeedChanged, InitItem, InitItemAction, InitSpell, InitSpellAction, PlayerEquipsItem, UnitHealed } from "../events";
-import { MwBattleLogService } from "../mw-battle-log.service";
-import { BattleStateService } from "../mw-battle-state.service";
-import { CombatInteractorService } from "../mw-combat-interactor.service";
-import { MwItemsService } from "../mw-items.service";
-import { MwPlayersService } from "../mw-players.service";
-import { MwSpellsService } from "../mw-spells.service";
-import { MwUnitGroupsService } from "../mw-unit-groups.service";
-import { StoreClient, WireMethod } from "../store";
-
+import { GroupModifiersChanged, GroupSpeedChanged, InitItem, InitItemAction, InitSpell, InitSpellAction, PlayerEquipsItem, UnitHealed } from '../events';
+import { MwBattleLogService } from '../mw-battle-log.service';
+import { BattleStateService } from '../mw-battle-state.service';
+import { CombatInteractorService } from '../mw-combat-interactor.service';
+import { MwItemsService } from '../mw-items.service';
+import { MwPlayersService } from '../mw-players.service';
+import { MwSpellsService } from '../mw-spells.service';
+import { MwUnitGroupsService } from '../mw-unit-groups.service';
+import { StoreClient, WireMethod } from '../store';
 
 @Injectable()
 export class InGameApiController extends StoreClient() {

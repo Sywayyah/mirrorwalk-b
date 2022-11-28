@@ -1,5 +1,5 @@
 import { UnitGroupInstModel } from 'src/app/core/unit-types';
-import { props } from "../common";
+import { props } from '../common';
 
 export enum HoverTypeEnum {
   EnemyCard,

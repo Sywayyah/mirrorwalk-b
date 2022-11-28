@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ScriptedReward } from 'src/app/core/structures';
-import { MwPlayersService, ScriptedRewardPopup } from 'src/app/feature-sandbox/services';
+import { ScriptedRewardPopup } from 'src/app/core/ui';
+import { MwPlayersService } from 'src/app/feature-sandbox/services';
 import { ApiProvider } from 'src/app/feature-sandbox/services/api-provider.service';
 
 @Component({

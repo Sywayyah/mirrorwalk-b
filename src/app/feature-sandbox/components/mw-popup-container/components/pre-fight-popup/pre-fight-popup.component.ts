@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { PrefightPopup } from 'src/app/feature-sandbox/services';
-import { EventsService } from 'src/app/feature-sandbox/services/store';
+import { PrefightPopup } from 'src/app/core/ui';
 import { StructFightConfirmed } from 'src/app/feature-sandbox/services/events';
+import { EventsService } from 'src/app/feature-sandbox/services/store';
 
 @Component({
   selector: 'mw-pre-fight-popup',

@@ -1,5 +1,5 @@
 import { Component, ElementRef, Input, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { HintsService } from 'src/app/feature-sandbox/services/ui/hints.service';
+import { HintsService } from 'src/app/feature-sandbox/services/hints.service';
 import { ElementHint, HintAttachment } from '../hints-container/hints-container.component';
 
 @Component({

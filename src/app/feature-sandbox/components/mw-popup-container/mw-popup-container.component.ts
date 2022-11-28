@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NeutralCampStructure, NeutralRewardTypesEnum } from 'src/app/core/structures';
-import { BattleStateService, FightEndsPopup, LossModel, MwPlayersService, PopupModel, PopupTypesEnum, ScriptedRewardPopup, StructHireRewardPopup, StructItemRewardPopup, StructRewardPopup } from '../../services';
+import { PopupModel, PopupTypesEnum, FightEndsPopup, StructRewardPopup, StructHireRewardPopup, StructItemRewardPopup, ScriptedRewardPopup, LossModel } from 'src/app/core/ui';
+import { BattleStateService, MwPlayersService } from '../../services';
 import { DisplayPopup, DisplayPopupEvent, DisplayReward, FightEnds, FightEndsEvent, NeutralStructParams } from '../../services/events';
 import { StoreClient, WireMethod } from '../../services/store';
 

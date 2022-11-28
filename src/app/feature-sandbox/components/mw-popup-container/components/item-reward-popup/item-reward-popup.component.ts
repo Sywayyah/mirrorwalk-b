@@ -1,7 +1,8 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ItemInstanceModel } from 'src/app/core/items';
 import { ItemReward } from 'src/app/core/structures';
-import { StructItemRewardPopup, MwItemsService, MwPlayersService } from 'src/app/feature-sandbox/services';
+import { StructItemRewardPopup } from 'src/app/core/ui';
+import { MwItemsService, MwPlayersService } from 'src/app/feature-sandbox/services';
 
 @Component({
   selector: 'mw-item-reward-popup',

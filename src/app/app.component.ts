@@ -3,7 +3,7 @@ import { HintsContainerComponent } from './feature-sandbox/components/ui-element
 import { CombatInteractorService } from './feature-sandbox/services';
 import { BattleController, BattleLogController, CombatController, GameController, ItemsController, PlayerController, StructuresController, UiController } from './feature-sandbox/services/controllers';
 import { InGameApiController } from './feature-sandbox/services/controllers/in-game-api.service';
-import { HintsService } from './feature-sandbox/services/ui/hints.service';
+import { HintsService } from './feature-sandbox/services/hints.service';
 
 @Component({
   selector: 'app-root',

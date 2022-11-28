@@ -1,10 +1,9 @@
-import { Injectable } from "@angular/core";
+import { Injectable } from '@angular/core';
 import { PlayersApi, SpellsApi } from 'src/app/core/api/game-api';
-import { MwHeroesService } from "./mw-heroes.service";
-import { MwPlayersService } from "./mw-players.service";
-import { MwSpellsService } from "./mw-spells.service";
-import { MwUnitGroupsService } from "./mw-unit-groups.service";
-
+import { MwHeroesService } from './mw-heroes.service';
+import { MwPlayersService } from './mw-players.service';
+import { MwSpellsService } from './mw-spells.service';
+import { MwUnitGroupsService } from './mw-unit-groups.service';
 
 @Injectable({
   providedIn: 'root',

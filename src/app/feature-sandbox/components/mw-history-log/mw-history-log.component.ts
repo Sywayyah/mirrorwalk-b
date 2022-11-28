@@ -1,7 +1,8 @@
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { MwBattleLogService, HistoryLogTypesEnum } from 'src/app/feature-sandbox/services';
+import { HistoryLogTypesEnum } from 'src/app/core/ui';
+import { MwBattleLogService } from 'src/app/feature-sandbox/services';
 
 @Component({
   selector: 'mw-history-log',

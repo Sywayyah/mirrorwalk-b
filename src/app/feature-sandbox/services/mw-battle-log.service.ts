@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
-import { DealtDamageMessage, HistoryLogModel, HistoryLogTypesEnum, RoundInfoMessage, SimpleMessage } from './types';
+import { DealtDamageMessage, HistoryLogModel, HistoryLogTypesEnum, RoundInfoMessage, SimpleMessage } from 'src/app/core/ui';
 
 @Injectable({
   providedIn: 'root'

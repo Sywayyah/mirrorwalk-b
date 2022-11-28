@@ -2,12 +2,12 @@ import { Injectable } from '@angular/core';
 import { DamageType, PostDamageInfo } from 'src/app/core/api/combat-api/types';
 import { PlayerInstanceModel, PlayerModel } from 'src/app/core/players';
 import { SpellActivationType, SpellEventHandlers, SpellEventsMapping, SpellEventTypes, SpellInstance } from 'src/app/core/spells';
+import { AttackActionHintInfo, ActionHintTypeEnum } from 'src/app/core/ui';
 import { Modifiers, UnitGroupInstModel } from 'src/app/core/unit-types';
 import { CommonUtils } from 'src/app/core/unit-types/utils';
 import { BattleStateService, FinalDamageInfo, MwPlayersService, MwUnitGroupsService, MwUnitGroupStateService } from './';
 import { CombatAttackInteraction, CombatInteractionEnum, CombatInteractionStateEvent, GroupCounterAttacked, GroupDamagedByGroup, GroupDies, GroupSpellsChanged, GroupTakesDamage, InitSpell, PlayerHoversCardEvent } from './events';
 import { StoreClient } from './store';
-import { ActionHintTypeEnum, AttackActionHintInfo } from './types';
 
 
 @Injectable({

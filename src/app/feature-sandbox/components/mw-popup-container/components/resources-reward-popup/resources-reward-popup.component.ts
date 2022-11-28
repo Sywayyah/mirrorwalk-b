@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ResourceRewardModel, ResourcesReward } from 'src/app/core/structures';
-import { MwPlayersService, StructRewardPopup } from 'src/app/feature-sandbox/services';
+import { StructRewardPopup } from 'src/app/core/ui';
+import { MwPlayersService } from 'src/app/feature-sandbox/services';
 
 @Component({
   selector: 'mw-resources-reward-popup',

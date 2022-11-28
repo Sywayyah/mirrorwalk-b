@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ResourceType } from 'src/app/core/resources';
-import { FightEndsPopup, MwPlayersService } from 'src/app/feature-sandbox/services';
+import { FightEndsPopup } from 'src/app/core/ui';
+import { MwPlayersService } from 'src/app/feature-sandbox/services';
 import { StructCompleted } from 'src/app/feature-sandbox/services/events';
 import { EventsService } from 'src/app/feature-sandbox/services/store';
 

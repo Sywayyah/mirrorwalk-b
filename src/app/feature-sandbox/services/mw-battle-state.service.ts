@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { PlayerInstanceModel, PlayerModel } from 'src/app/core/players';
+import { ActionHintModel } from 'src/app/core/ui';
 import { UnitGroupInstModel, UnitTypeModel, UnitGroupModel } from 'src/app/core/unit-types';
 import { FightNextRoundStarts, GroupAttacked, RoundPlayerCountinuesAttacking, RoundPlayerTurnStarts } from './events';
 import { MwUnitGroupsService } from './mw-unit-groups.service';
 import { EventsService } from './store';
-import { ActionHintModel } from "./types";
 
 
 @Injectable({

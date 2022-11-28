@@ -12,5 +12,4 @@ export * from './mw-spells.service';
 export * from './mw-structures.service';
 export * from './mw-unit-group-state.service';
 export * from './mw-unit-groups.service';
-export * from './types';
 

@@ -1,7 +1,8 @@
-import { Injectable } from "@angular/core";
-import { BattleStateService, MwStructuresService } from "..";
-import { FightStarts, FightStartsEvent, PlayerStartsFight, StructSelected, StructSelectedEvent } from "../events";
-import { StoreClient, WireMethod } from "../store";
+import { Injectable } from '@angular/core';
+import { FightStarts, FightStartsEvent, PlayerStartsFight, StructSelected, StructSelectedEvent } from '../events';
+import { BattleStateService } from '../mw-battle-state.service';
+import { MwStructuresService } from '../mw-structures.service';
+import { StoreClient, WireMethod } from '../store';
 
 
 @Injectable()

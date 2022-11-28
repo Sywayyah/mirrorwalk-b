@@ -4,7 +4,7 @@ import { map, takeUntil, tap } from 'rxjs/operators';
 import { BattleStateService, MwPlayersService } from '../../services';
 import { RoundPlayerTurnStarts } from '../../services/events';
 import { EventsService } from '../../services/store';
-import { ActionHintModel, ActionHintTypeEnum } from '../../services/types/action-hint';
+import { ActionHintModel, ActionHintTypeEnum } from '../../../core/ui/action-hint';
 
 @Component({
   selector: 'mw-action-hint',

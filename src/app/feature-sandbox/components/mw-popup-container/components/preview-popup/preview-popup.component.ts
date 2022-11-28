@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { MwPlayersService, PreviewPopup } from 'src/app/feature-sandbox/services';
+import { PreviewPopup } from 'src/app/core/ui';
+import { MwPlayersService } from 'src/app/feature-sandbox/services';
 import { ApiProvider } from 'src/app/feature-sandbox/services/api-provider.service';
 
 @Component({
