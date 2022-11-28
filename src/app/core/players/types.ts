@@ -1,4 +1,4 @@
-import { HeroInstanceModel } from '../heroes';
+import { Hero } from '../heroes';
 import { ResourcesModel } from '../resources';
 import { UnitGroupModel } from '../unit-types';
 
@@ -16,7 +16,7 @@ export interface PlayerModel {
 
   type: PlayerTypeEnum;
 
-  hero: HeroInstanceModel;
+  hero: Hero;
 
   unitGroups: UnitGroupModel[];
 }

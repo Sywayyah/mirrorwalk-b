@@ -9,6 +9,13 @@
             Structures are currently swampy and unclear, hard to work with,
             also gonna need to rework popups along with structures.
 
+        Fractions
+            Now fractions are defined rather as simple map, where each base type
+            for unit is created as plain object. It could be useful to have
+            fraction itself as a separate object with it's own name, state and
+            rest, but also from it will be possible to create base types for
+            units.
+
     Candidates for implementation:
         Main screen
         Dynamic and flexible descriptions

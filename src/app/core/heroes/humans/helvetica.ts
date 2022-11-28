@@ -1,10 +1,10 @@
 import { ItemWindCrest } from '../../items/neutral';
-import { RainOfFireSpell, HasteSpell } from '../../spells/common';
-import { HUMANS_FRACTION_UNIT_TYPES } from '../../unit-types/humans/units';
-import { HeroModel } from '../types';
+import { HasteSpell, RainOfFireSpell } from '../../spells/common';
+import { HUMANS_FRACTION_UNIT_TYPES } from '../../unit-types/humans';
+import { HeroBase } from '../types';
 import { createHeroModelBase, heroesDefaultResources } from '../utils';
 
-export const HelveticaHero: HeroModel = createHeroModelBase({
+export const HelveticaHero: HeroBase = createHeroModelBase({
   name: 'Helvetica',
   abilities: [
     // ENCHANT_SPELL,
