@@ -1,7 +1,9 @@
 import { Component, ElementRef, EventEmitter, forwardRef, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { PlayerModel, SpellActivationType, SpellInstance, UnitGroupInstModel } from 'src/app/core/model';
+import { PlayerModel } from 'src/app/core/players';
+import { SpellActivationType, SpellInstance } from 'src/app/core/spells';
+import { UnitGroupInstModel } from 'src/app/core/unit-types';
 import { PROVIDE_UI_UNIT_GROUP, UIUnitProvider } from '../../directives/mw-unit-events-cursor.directive';
 import { BattleStateService, MwPlayersService, MwUnitGroupsService, MwUnitGroupStateService, UIModsModel } from '../../services';
 import { GroupModifiersChanged, GroupSpellsChanged, HoverTypeEnum, PlayerHoversGroupCard } from '../../services/events';

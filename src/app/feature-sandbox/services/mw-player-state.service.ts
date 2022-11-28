@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { PlayerInstanceModel, UnitGroupInstModel } from 'src/app/core/model';
+import { PlayerInstanceModel } from 'src/app/core/players';
+import { UnitGroupInstModel } from 'src/app/core/unit-types';
 import { MwPlayersService, PLAYER_IDS } from './mw-players.service';
 
 @Injectable({
@@ -10,7 +11,7 @@ export class MwPlayerStateService {
 
   constructor(
     private playersService: MwPlayersService,
-  ) {}
+  ) { }
 
   public getPlayerInfo(): PlayerInstanceModel {
     return this.mainPlayer;

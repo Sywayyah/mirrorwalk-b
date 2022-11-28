@@ -1,16 +1,9 @@
 import { Injectable } from '@angular/core';
-import {
-  Modifiers,
-  PlayerInstanceModel,
-  PlayerModel,
-  SpellActivationType,
-  SpellEventHandlers,
-  SpellEventsMapping,
-  SpellEventTypes,
-  SpellInstance, UnitGroupInstModel
-} from 'src/app/core/model';
-import { DamageType, PostDamageInfo } from 'src/app/core/model/combat-api/combat-api.types';
-import { CommonUtils } from 'src/app/core/utils/common.utils';
+import { DamageType, PostDamageInfo } from 'src/app/core/api/combat-api/types';
+import { PlayerInstanceModel, PlayerModel } from 'src/app/core/players';
+import { SpellActivationType, SpellEventHandlers, SpellEventsMapping, SpellEventTypes, SpellInstance } from 'src/app/core/spells';
+import { Modifiers, UnitGroupInstModel } from 'src/app/core/unit-types';
+import { CommonUtils } from 'src/app/core/unit-types/utils';
 import { BattleStateService, FinalDamageInfo, MwPlayersService, MwUnitGroupsService, MwUnitGroupStateService } from './';
 import { CombatAttackInteraction, CombatInteractionEnum, CombatInteractionStateEvent, GroupCounterAttacked, GroupDamagedByGroup, GroupDies, GroupSpellsChanged, GroupTakesDamage, InitSpell, PlayerHoversCardEvent } from './events';
 import { StoreClient } from './store';

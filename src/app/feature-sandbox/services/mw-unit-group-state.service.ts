@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Modifiers, UnitGroupModel } from 'src/app/core/model';
-import { CommonUtils } from 'src/app/core/utils/common.utils';
+import { Modifiers, UnitGroupModel } from 'src/app/core/unit-types';
+import { CommonUtils } from 'src/app/core/unit-types/utils';
 
 export interface DamageInfo {
   attacker: UnitGroupModel;
@@ -131,7 +131,7 @@ export class MwUnitGroupStateService {
 
     const newTailHp = targetGroupHealthAfterDamage % targetBaseStats.health;
     const newUnitsCount = Math.floor(targetGroupHealthAfterDamage / targetBaseStats.health)
-    + (newTailHp ? 1 : 0);
+      + (newTailHp ? 1 : 0);
 
     /* second line of this calc is to deal damage when tail hp is less than damage */
     /*  need to think this logic through */

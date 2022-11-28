@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { NeutralCampStructure, PlayerInstanceModel, StructureModel, StructureTypeEnum, UnitGroupInstModel } from 'src/app/core/model';
+import { PlayerInstanceModel } from 'src/app/core/players';
+import { NeutralCampStructure, StructureModel, StructureTypeEnum } from 'src/app/core/structures';
+import { UnitGroupInstModel } from 'src/app/core/unit-types';
 import { MwPlayersService, MwStructuresService } from '../../services';
 import { StructSelected } from '../../services/events';
 import { EventsService } from '../../services/store';

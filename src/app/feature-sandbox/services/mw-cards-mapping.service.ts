@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { UnitGroupInstModel } from 'src/app/core/model';
+import { UnitGroupInstModel } from 'src/app/core/unit-types';
 import { MwUnitGroupCardComponent } from '../components';
 
 @Injectable({

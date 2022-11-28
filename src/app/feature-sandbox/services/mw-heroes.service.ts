@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { createHeroModelBase, EMPTY_RESOURCES } from 'src/app/core/dictionaries/heroes/utils';
-import { HeroInstanceModel, HeroModel, SpellInstance } from 'src/app/core/model';
+import { HeroInstanceModel, HeroModel } from 'src/app/core/heroes';
+import { createHeroModelBase, EMPTY_RESOURCES } from 'src/app/core/heroes/utils';
+import { SpellInstance } from 'src/app/core/spells';
 import { MwItemsService, MwSpellsService } from './';
 
 const neutralHeroBase = createHeroModelBase({

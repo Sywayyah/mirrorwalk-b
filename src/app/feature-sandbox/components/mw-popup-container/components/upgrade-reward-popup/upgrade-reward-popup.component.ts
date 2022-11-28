@@ -1,7 +1,8 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { HiringRewardModel, ResourcesModel, UnitGroupInstModel, UnitUpgradeReward, ResourceType, UnitTypeModel } from 'src/app/core/model';
-import { PlayersApi } from 'src/app/core/model/game-api/game-apis.types';
-import { MwHeroesService, MwPlayersService, MwUnitGroupsService, UpgradingPopup } from 'src/app/feature-sandbox/services';
+import { ResourcesModel, ResourceType } from 'src/app/core/resources';
+import { HiringRewardModel, UnitUpgradeReward } from 'src/app/core/structures';
+import { UnitGroupInstModel, UnitTypeModel } from 'src/app/core/unit-types';
+import { MwPlayersService, MwUnitGroupsService, UpgradingPopup } from 'src/app/feature-sandbox/services';
 import { ApiProvider } from 'src/app/feature-sandbox/services/api-provider.service';
 
 interface UpgradeModel {

@@ -1,8 +1,8 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { ResourceType } from 'src/app/core/model';
+import { ResourceType } from 'src/app/core/resources';
 import { FightEndsPopup, MwPlayersService } from 'src/app/feature-sandbox/services';
-import { EventsService } from 'src/app/feature-sandbox/services/store';
 import { StructCompleted } from 'src/app/feature-sandbox/services/events';
+import { EventsService } from 'src/app/feature-sandbox/services/store';
 
 @Component({
   selector: 'mw-post-fight-reward-popup',

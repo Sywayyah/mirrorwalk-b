@@ -1,4 +1,4 @@
-import { PlayerModel } from "src/app/core/model";
+import { PlayerModel } from 'src/app/core/players';
 import { eventsForPrefix } from "../../store";
 import { props } from "../common";
 import { CombatInteractionStateEvent, FightEndsEvent, GroupAttackedEvent, GroupDamagedByGroupEvent, GroupDiesEvent, GroupTakesDamageEvent, NextRoundStarts, PlayerTargetsInstantSpellEvent, PlayerTargetsSpellEvent, PlayerTurnStartEvent, RoundGroupSpendsTurnEvent, UnitHealedEvent } from "./types";

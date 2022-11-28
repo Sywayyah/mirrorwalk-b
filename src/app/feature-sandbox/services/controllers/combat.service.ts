@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { SpellEventTypes } from "src/app/core/model";
+import { SpellEventTypes } from 'src/app/core/spells';
 import { CombatInteractorService } from "../";
 import { CombatAttackInteraction, CombatInteractionEnum, CombatInteractionStateEvent, FightNextRoundStarts, FightStarts, GroupAttacked, GroupAttackedEvent, GroupDies, GroupDiesEvent, NextRoundStarts, RoundGroupSpendsTurn, StructCompleted } from "../events";
 import { Notify, StoreClient, WireMethod } from "../store";

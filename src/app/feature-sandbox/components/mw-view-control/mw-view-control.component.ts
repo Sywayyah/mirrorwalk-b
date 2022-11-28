@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NeutralCampStructure, NeutralSite, StructureTypeEnum } from 'src/app/core/model';
+import { NeutralCampStructure, NeutralSite, StructureTypeEnum } from 'src/app/core/structures';
 import { PopupTypesEnum, PrefightPopup, PreviewPopup, UpgradingPopup } from '../../services';
 import { DisplayPopup, DisplayReward, NeutralStructParams, StructCompleted, StructFightConfirmed, StructSelected, StructSelectedEvent } from '../../services/events';
 import { Notify, StoreClient, WireMethod } from '../../services/store';

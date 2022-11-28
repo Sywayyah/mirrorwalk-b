@@ -1,5 +1,9 @@
-import { StructureModel, NeutralCampStructure, UnitGroupInstModel, PlayerInstanceModel, SpellInstance, ItemInstanceModel } from "src/app/core/model";
-import { PopupModel } from "../../types";
+import { ItemInstanceModel } from 'src/app/core/items';
+import { PlayerInstanceModel } from 'src/app/core/players';
+import { SpellInstance } from 'src/app/core/spells';
+import { NeutralCampStructure, StructureModel } from 'src/app/core/structures';
+import { UnitGroupInstModel } from 'src/app/core/unit-types';
+import { PopupModel } from '../../types';
 
 export type StructSelectedEvent = { struct: StructureModel };
 export type NeutralStructParams = { struct: NeutralCampStructure };

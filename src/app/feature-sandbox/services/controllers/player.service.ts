@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
-import { CommonUtils } from "src/app/core/utils/common.utils";
-import { MwCurrentPlayerStateService, MwItemsService, MwPlayersService, MwSpellsService } from "../";
+import { CommonUtils } from 'src/app/core/unit-types';
+import { MwCurrentPlayerStateService, MwItemsService, MwSpellsService } from "../";
 import { FightNextRoundStarts, FightStarts, PlayerEquipsItem, PlayerEquipsItemAction, PlayerUnequipsItem, PlayerUnequipsItemAction } from "../events";
 import { Notify, StoreClient, WireMethod } from "../store";
 

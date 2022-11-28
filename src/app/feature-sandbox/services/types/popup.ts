@@ -1,4 +1,5 @@
-import { NeutralCampStructure, NeutralSite, ResourceRewardModel, UnitTypeModel } from "src/app/core/model";
+import { NeutralCampStructure, NeutralSite, ResourceRewardModel } from 'src/app/core/structures';
+import { UnitTypeModel } from 'src/app/core/unit-types';
 
 export interface LossModel {
   type: UnitTypeModel;

@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
-import { ArchersOutpostStructure, BanditCamp, BeaconOfTheUndead, CalavryStalls, GraveyardStructure, MagicRiverStructure } from 'src/app/core/dictionaries/structures';
-import { BigCampStructure as BigCampStrcuture } from 'src/app/core/dictionaries/structures/big-camp.struct';
-import { MountainNestStructure } from 'src/app/core/dictionaries/structures/mountain-nest.struct';
-import { WitchHutStructure } from 'src/app/core/dictionaries/structures/witch-hut.struct';
-import { NeutralCampStructure, NeutralSite, PlayerInstanceModel, StructureGeneratorModel, StructureModel, StructureTypeEnum, UnitGroupInstModel } from 'src/app/core/model';
+import { PlayerInstanceModel } from 'src/app/core/players';
+import { NeutralCampStructure, NeutralSite, StructureGeneratorModel, StructureModel, StructureTypeEnum } from 'src/app/core/structures';
+import { ArchersOutpostStructure, BanditCamp, BeaconOfTheUndead, BigCampStructure, CalavryStalls, GraveyardStructure, MagicRiverStructure, MountainNestStructure, WitchHutStructure } from 'src/app/core/structures/common';
+import { UnitGroupInstModel } from 'src/app/core/unit-types';
 import { MwPlayersService, MwUnitGroupsService } from './';
 
 @Injectable({
@@ -27,7 +26,7 @@ export class MwStructuresService {
     WitchHutStructure,
     MagicRiverStructure,
     MountainNestStructure,
-    BigCampStrcuture,
+    BigCampStructure,
   ];
 
   public structures: StructureModel[] = [];

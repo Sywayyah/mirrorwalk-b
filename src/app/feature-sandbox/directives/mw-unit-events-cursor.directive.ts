@@ -1,7 +1,7 @@
 import { Directive, ElementRef, Inject, InjectionToken, NgZone, Renderer2 } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
-import { SpellCastCursorAnimation, StaticCursorAnimation } from 'src/app/core/dictionaries/vfx/cursors';
-import { UnitGroupInstModel } from 'src/app/core/model';
+import { UnitGroupInstModel } from 'src/app/core/unit-types';
+import { SpellCastCursorAnimation, StaticCursorAnimation } from 'src/app/core/vfx';
 import { CursorService } from '../components/ui-elements';
 import { MwCurrentPlayerStateService, MwPlayersService, MwSpellsService, PlayerState } from '../services';
 import { AnimatedCursor, MwCustomCursorDirective } from './mw-custom-cursor.directive';

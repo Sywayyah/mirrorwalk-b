@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { ItemInstanceModel } from 'src/app/core/model/items/items.types';
+import { ItemInstanceModel } from 'src/app/core/items';
 import { HintAttachment } from '../ui-elements';
 
 @Component({

@@ -1,5 +1,7 @@
-import { PlayerModel, StructureModel, UnitGroupInstModel } from "src/app/core/model";
-import { props } from "../common";
+import { PlayerModel } from 'src/app/core/players';
+import { StructureModel } from 'src/app/core/structures';
+import { UnitGroupInstModel } from 'src/app/core/unit-types';
+import { props } from '../common';
 
 export enum CombatInteractionEnum {
   GroupAttacks = 'attacks',

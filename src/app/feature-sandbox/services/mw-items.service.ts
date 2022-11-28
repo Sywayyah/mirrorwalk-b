@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Colors } from 'src/app/core/dictionaries/colors.const';
-import { GameEventsHandlers, GameEventsMapping, ItemBaseModel, ItemInstanceModel, PlayerInstanceModel } from 'src/app/core/model';
+import { Colors } from 'src/app/core/assets';
+import { GameEventsHandlers, GameEventsMapping, ItemBaseModel, ItemInstanceModel } from 'src/app/core/items';
+import { PlayerInstanceModel } from 'src/app/core/players';
 import { InitItem } from './events';
 import { EventsService } from './store';
 

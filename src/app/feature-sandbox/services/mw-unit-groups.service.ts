@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Modifiers, ModifiersModel, PlayerInstanceModel, UnitGroupInstModel, UnitGroupModel, UnitTypeModel } from 'src/app/core/model';
-import { CommonUtils, GenerationModel, GenerationUtils } from 'src/app/core/utils/common.utils';
+import { PlayerInstanceModel } from 'src/app/core/players';
+import { CommonUtils, GenerationModel, UnitsUtils, Modifiers, ModifiersModel, UnitGroupInstModel, UnitGroupModel, UnitTypeModel } from 'src/app/core/unit-types';
 import { MwSpellsService } from './mw-spells.service';
 
 
@@ -49,7 +49,7 @@ export class MwUnitGroupsService {
   public createUnitGroupFromGenModel(
     genModel: GenerationModel,
   ): UnitGroupModel[] {
-    return GenerationUtils
+    return UnitsUtils
       .createRandomArmy(genModel)
       .map(unitGroup => this.updateUnitGroupSpells(unitGroup));
   }
@@ -58,7 +58,7 @@ export class MwUnitGroupsService {
     genModel: GenerationModel,
     player: PlayerInstanceModel,
   ): UnitGroupModel[] {
-    return GenerationUtils
+    return UnitsUtils
       .createRandomArmyForPlayer(genModel, player)
       .map(unitGroup => this.updateUnitGroupSpells(unitGroup));
   }

@@ -1,4 +1,5 @@
-import { PlayerModel, UnitTypeModel } from 'src/app/core/model/main.model';
+import { PlayerModel } from 'src/app/core/players';
+import { UnitTypeModel } from 'src/app/core/unit-types';
 
 
 export enum HistoryLogTypesEnum {

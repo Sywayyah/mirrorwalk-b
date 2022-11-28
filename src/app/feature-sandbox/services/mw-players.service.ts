@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
-import { PLAYER_COLORS } from 'src/app/core/dictionaries/colors.const';
-import { HelveticaHero } from "src/app/core/dictionaries/heroes/helvetica.hero";
-import { HERO_LEVELS_BREAKPOINTS } from 'src/app/core/dictionaries/levels.const';
-import { HeroModel, ItemInstanceModel, PlayerInstanceModel, PlayerModel, PlayerTypeEnum, ResourcesModel, UnitGroupInstModel, UnitGroupModel } from 'src/app/core/model';
-import { CommonUtils } from 'src/app/core/utils/common.utils';
+import { PLAYER_COLORS } from 'src/app/core/assets';
+import { HeroModel, HERO_LEVELS_BREAKPOINTS } from 'src/app/core/heroes';
+import { HelveticaHero } from 'src/app/core/heroes/humans';
+import { ItemInstanceModel } from 'src/app/core/items';
+import { PlayerInstanceModel, PlayerModel, PlayerTypeEnum } from 'src/app/core/players';
+import { ResourcesModel } from 'src/app/core/resources';
+import { CommonUtils, UnitGroupInstModel, UnitGroupModel } from 'src/app/core/unit-types';
 import { MwHeroesService, MwUnitGroupsService } from './';
 import { PlayerEquipsItem, PlayerGainsLevel, PlayerUnequipsItem } from './events/';
 import { EventsService } from './store';

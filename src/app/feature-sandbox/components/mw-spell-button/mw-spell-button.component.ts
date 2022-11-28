@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { SpellActivationType, SpellInstance } from 'src/app/core/model';
+import { SpellInstance, SpellActivationType } from 'src/app/core/spells';
 
 @Component({
   selector: 'mw-spell-button',

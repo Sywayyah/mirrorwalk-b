@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { HiringRewardModel, ResourcesModel, HiringReward, ResourceType } from 'src/app/core/model';
-import { MwPlayersService, StructHireRewardPopup } from 'src/app/feature-sandbox/services';
-import { MwUnitGroupsService } from 'src/app/feature-sandbox/services/mw-unit-groups.service';
+import { ResourcesModel, ResourceType } from 'src/app/core/resources';
+import { HiringRewardModel, HiringReward } from 'src/app/core/structures';
+import { StructHireRewardPopup, MwPlayersService, MwUnitGroupsService } from 'src/app/feature-sandbox/services';
 
 interface HireModel {
   hire: HiringRewardModel,

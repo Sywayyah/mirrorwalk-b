@@ -1,5 +1,6 @@
 import { Injectable } from "@angular/core";
-import { SpellEventTypes, UnitGroupInstModel } from "src/app/core/model";
+import { SpellEventTypes } from 'src/app/core/spells';
+import { UnitGroupInstModel } from 'src/app/core/unit-types';
 import { GroupAttacked, HoverTypeEnum, PlayerCastsInstantSpell, PlayerClicksAllyGroup, PlayerClicksAllyGroupEvent, PlayerClicksEnemyGroup, PlayerClicksEnemyGroupEvent, PlayerHoversCardEvent, PlayerHoversGroupCard, PlayerTargetsInstantSpellEvent, PlayerTargetsSpell, PlayerTargetsSpellEvent } from "../events";
 import { BattleStateService } from "../mw-battle-state.service";
 import { CombatInteractorService } from "../mw-combat-interactor.service";

@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { ResourceRewardModel, ResourcesReward } from 'src/app/core/model';
+import { ResourceRewardModel, ResourcesReward } from 'src/app/core/structures';
 import { MwPlayersService, StructRewardPopup } from 'src/app/feature-sandbox/services';
 
 @Component({

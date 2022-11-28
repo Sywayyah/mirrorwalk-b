@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { PlayerInstanceModel, SpellInstance } from 'src/app/core/model';
+import { PlayerInstanceModel } from 'src/app/core/players';
+import { SpellInstance } from 'src/app/core/spells';
 import { MwCurrentPlayerStateService, MwPlayersService, PlayerState } from '../../services';
 
 @Component({

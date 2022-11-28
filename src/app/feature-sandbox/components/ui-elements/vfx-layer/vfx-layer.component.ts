@@ -1,14 +1,14 @@
 import { ChangeDetectorRef, Component, ComponentFactoryResolver, OnInit, Renderer2, TemplateRef, ViewChild, ViewContainerRef } from '@angular/core';
 import { combineLatest, fromEvent } from 'rxjs';
 import { take } from 'rxjs/operators';
-import { FloatingMessageAnimation } from 'src/app/core/dictionaries/vfx/animations';
-import { UnitGroupInstModel } from 'src/app/core/model/main.model';
-import { CustomAnimationData, Effect, EffectInstRef, EffectOptions, EffectPosition, EffectType, VfxElemEffect } from 'src/app/core/model/vfx-api/vfx-api.types';
+import { EffectInstRef, EffectType, Effect, EffectOptions, CustomAnimationData, VfxElemEffect, EffectPosition } from 'src/app/core/api/vfx-api';
+import { UnitGroupInstModel } from 'src/app/core/unit-types';
+import { FloatingMessageAnimation } from 'src/app/core/vfx';
 import { MwCardsMappingService } from 'src/app/feature-sandbox/services/mw-cards-mapping.service';
 import { VfxElementComponent } from '../vfx-element/vfx-element.component';
 import { VfxService } from './vfx.service';
 
-/* 
+/*
   VFX ideas:
     1. Maybe, instead of having shadow-overlay, there could be a shadow element
       below effect.

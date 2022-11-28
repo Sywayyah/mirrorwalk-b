@@ -1,4 +1,4 @@
-import { SimpleChanges } from "@angular/core";
+import { SimpleChanges } from '@angular/core';
 
 export type TypedChange<T> = {
     currentValue: T;

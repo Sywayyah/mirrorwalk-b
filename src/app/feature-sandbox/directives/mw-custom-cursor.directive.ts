@@ -1,6 +1,6 @@
 import { Directive, ElementRef, HostListener, NgZone, OnDestroy, Renderer2 } from '@angular/core';
 import { Subject } from 'rxjs';
-import { CustomAnimationData, EffectAnimation, EffectOptions } from 'src/app/core/model/vfx-api/vfx-api.types';
+import { CustomAnimationData, EffectAnimation, EffectOptions } from 'src/app/core/api/vfx-api';
 import { CursorService } from '../components/ui-elements/custom-cursor/cursor.service';
 
 export interface AnimatedCursor {

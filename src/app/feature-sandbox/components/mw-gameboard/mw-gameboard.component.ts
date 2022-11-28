@@ -1,7 +1,8 @@
 import { AfterViewInit, ChangeDetectorRef, Component, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
-import { PlayerInstanceModel, UnitGroupInstModel } from 'src/app/core/model';
-import { getDamageParts } from 'src/app/core/utils/utils';
+import { PlayerInstanceModel } from 'src/app/core/players';
+import { UnitGroupInstModel } from 'src/app/core/unit-types';
+import { getDamageParts } from 'src/app/core/vfx';
 import { BattleStateService as MwBattleStateService, CombatInteractorService, MwCardsMappingService, MwNeutralPlayerService, MwPlayerStateService } from '../../services';
 import { GroupDamagedByGroup, GroupDamagedByGroupEvent, PlayerStartsFight } from '../../services/events';
 import { StoreClient, WireMethod } from '../../services/store';

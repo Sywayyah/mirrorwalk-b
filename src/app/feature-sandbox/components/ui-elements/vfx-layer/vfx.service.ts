@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { UnitGroupInstModel } from 'src/app/core/model/main.model';
-import { CustomAnimationData, CustomizableAnimationData, Effect, EffectAnimation, EffectOptions } from 'src/app/core/model/vfx-api/vfx-api.types';
+import { EffectOptions, Effect, CustomizableAnimationData } from 'src/app/core/api/vfx-api';
+import { UnitGroupInstModel } from 'src/app/core/unit-types/types';
 import type { VfxLayerComponent } from './vfx-layer.component';
 
 

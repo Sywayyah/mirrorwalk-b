@@ -1,5 +1,5 @@
 import { Component, ElementRef, EmbeddedViewRef, Renderer2, TemplateRef, ViewChild, ViewContainerRef, ViewRef } from '@angular/core';
-import { AnimationElementType, AnimationIconElement, CustomAnimationData, EffectAnimation, EffectOptions } from 'src/app/core/model/vfx-api/vfx-api.types';
+import { EffectAnimation, EffectOptions, CustomAnimationData, AnimationElementType, AnimationIconElement } from 'src/app/core/api/vfx-api';
 
 export interface AnimationRef {
   elem: VfxElementComponent;

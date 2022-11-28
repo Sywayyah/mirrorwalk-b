@@ -1,5 +1,6 @@
 import { Injectable } from "@angular/core";
-import { NeutralCampStructure, PlayerTypeEnum } from "src/app/core/model";
+import { PlayerTypeEnum } from 'src/app/core/players';
+import { NeutralCampStructure } from 'src/app/core/structures';
 import { BattleStateService, MwCurrentPlayerStateService, MwPlayersService, MwStructuresService, PlayerState } from "..";
 import { FightEnds, FightNextRoundStarts, FightStarts, GroupDamagedByGroup, GroupDamagedByGroupEvent, GroupDies, GroupSpeedChanged, GroupTakesDamage, GroupTakesDamageEvent, PlayerTurnStartEvent, RoundGroupSpendsTurn, RoundGroupSpendsTurnEvent, RoundGroupTurnEnds, RoundPlayerCountinuesAttacking, RoundPlayerTurnStarts, UnitHealed, UnitHealedEvent } from "../events";
 import { Notify, StoreClient, WireMethod } from "../store";
