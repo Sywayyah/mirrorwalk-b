@@ -5,9 +5,9 @@ import { SpellActivationType, SpellEventHandlers, SpellEventsMapping, SpellEvent
 import { AttackActionHintInfo, ActionHintTypeEnum } from 'src/app/core/ui';
 import { Modifiers, UnitGroupInstModel } from 'src/app/core/unit-types';
 import { CommonUtils } from 'src/app/core/unit-types/utils';
+import { StoreClient } from 'src/app/store';
 import { BattleStateService, FinalDamageInfo, MwPlayersService, MwUnitGroupsService, MwUnitGroupStateService } from './';
 import { CombatAttackInteraction, CombatInteractionEnum, CombatInteractionStateEvent, GroupCounterAttacked, GroupDamagedByGroup, GroupDies, GroupSpellsChanged, GroupTakesDamage, InitSpell, PlayerHoversCardEvent } from './events';
-import { StoreClient } from './store';
 
 
 @Injectable({

@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { CommonUtils } from 'src/app/core/unit-types';
+import { StoreClient, Notify, WireMethod } from 'src/app/store';
 import { FightNextRoundStarts, FightStarts, PlayerEquipsItem, PlayerEquipsItemAction, PlayerUnequipsItem, PlayerUnequipsItemAction } from '../events';
 import { MwCurrentPlayerStateService } from '../mw-current-player-state.service';
 import { MwItemsService } from '../mw-items.service';
 import { MwSpellsService } from '../mw-spells.service';
-import { Notify, StoreClient, WireMethod } from '../store';
 
 @Injectable()
 export class PlayerController extends StoreClient() {

@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ResourcesModel, ResourceType } from 'src/app/core/resources';
-import { HiringRewardModel, HiringReward } from 'src/app/core/structures';
+import { HiringReward, HiringRewardModel } from 'src/app/core/structures';
 import { StructHireRewardPopup } from 'src/app/core/ui';
 import { MwPlayersService, MwUnitGroupsService } from 'src/app/feature-sandbox/services';
 

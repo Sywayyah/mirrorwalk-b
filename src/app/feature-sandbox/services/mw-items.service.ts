@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { Colors } from 'src/app/core/assets';
 import { GameEventsHandlers, GameEventsMapping, ItemBaseModel, ItemInstanceModel } from 'src/app/core/items';
 import { PlayerInstanceModel } from 'src/app/core/players';
+import { EventsService } from 'src/app/store';
 import { InitItem } from './events';
-import { EventsService } from './store';
 
 @Injectable({
   providedIn: 'root'

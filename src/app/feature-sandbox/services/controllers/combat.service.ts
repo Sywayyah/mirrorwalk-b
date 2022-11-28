@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { SpellEventTypes } from 'src/app/core/spells';
+import { Notify, StoreClient, WireMethod } from 'src/app/store';
 import { StructCompleted, FightStarts, GroupAttacked, GroupAttackedEvent, CombatAttackInteraction, CombatInteractionEnum, CombatInteractionStateEvent, RoundGroupSpendsTurn, FightNextRoundStarts, NextRoundStarts, GroupDies, GroupDiesEvent } from '../events';
 import { CombatInteractorService } from '../mw-combat-interactor.service';
-import { StoreClient, Notify, WireMethod } from '../store';
 
 @Injectable()
 export class CombatController extends StoreClient() {

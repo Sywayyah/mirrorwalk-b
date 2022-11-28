@@ -2,9 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { PlayerInstanceModel } from 'src/app/core/players';
 import { NeutralCampStructure, StructureModel, StructureTypeEnum } from 'src/app/core/structures';
 import { UnitGroupInstModel } from 'src/app/core/unit-types';
+import { EventsService } from 'src/app/store';
 import { MwPlayersService, MwStructuresService } from '../../services';
 import { StructSelected } from '../../services/events';
-import { EventsService } from '../../services/store';
 
 @Component({
   selector: 'mw-structures-view',

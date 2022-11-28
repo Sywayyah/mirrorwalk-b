@@ -4,10 +4,10 @@ import { takeUntil } from 'rxjs/operators';
 import { PlayerModel } from 'src/app/core/players';
 import { SpellActivationType, SpellInstance } from 'src/app/core/spells';
 import { UnitGroupInstModel } from 'src/app/core/unit-types';
+import { StoreClient } from 'src/app/store';
 import { PROVIDE_UI_UNIT_GROUP, UIUnitProvider } from '../../directives/mw-unit-events-cursor.directive';
 import { BattleStateService, MwPlayersService, MwUnitGroupsService, MwUnitGroupStateService, UIModsModel } from '../../services';
 import { GroupModifiersChanged, GroupSpellsChanged, HoverTypeEnum, PlayerHoversGroupCard } from '../../services/events';
-import { StoreClient } from '../../services/store';
 
 @Component({
   selector: 'mw-unit-group-card',

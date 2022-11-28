@@ -34,7 +34,7 @@ export class MwHeroesService {
   }
 
   public addSpellToHero(hero: HeroInstanceModel, spell: SpellInstance): void {
-    hero.spells.push(spell)
+    hero.spells.push(spell);
   }
 
   public addMaxManaToHero(hero: HeroInstanceModel, maxMana: number): void {

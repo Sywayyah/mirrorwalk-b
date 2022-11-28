@@ -1,4 +1,4 @@
-import { eventsForPrefix } from '../../store';
+import { eventsForPrefix } from 'src/app/store';
 import { props } from '../common';
 import { PlayerClicksEnemyGroupEvent, PlayerHoversCardEvent } from './types';
 

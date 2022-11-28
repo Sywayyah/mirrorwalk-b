@@ -3,9 +3,9 @@ import { BehaviorSubject } from 'rxjs';
 import { PlayerInstanceModel } from 'src/app/core/players';
 import { SpellActivationType, SpellInstance, SpellModel } from 'src/app/core/spells';
 import { UnitGroupInstModel } from 'src/app/core/unit-types';
+import { EventsService } from 'src/app/store';
 import { MwPlayersService } from './';
 import { PlayerCastsInstantSpell } from './events';
-import { EventsService } from './store';
 
 
 export enum PlayerState {

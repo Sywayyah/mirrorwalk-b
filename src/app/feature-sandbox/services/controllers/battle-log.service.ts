@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
+import { Notify, StoreClient, WireMethod } from 'src/app/store';
 import { FightEnds, FightEndsEvent, FightNextRoundStarts, FightStarts, GroupDamagedByGroup, GroupDamagedByGroupEvent, NextRoundStarts, PlayerTurnStartEvent, RoundPlayerTurnStarts } from '../events';
 import { MwBattleLogService } from '../mw-battle-log.service';
-import { Notify, StoreClient, WireMethod } from '../store';
 
 @Injectable()
 export class BattleLogController extends StoreClient() {

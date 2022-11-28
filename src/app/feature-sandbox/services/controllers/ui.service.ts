@@ -2,11 +2,11 @@ import { Injectable } from '@angular/core';
 import { SpellEventTypes } from 'src/app/core/spells';
 import { ActionHintTypeEnum, SpellTargetActionHint } from 'src/app/core/ui';
 import { UnitGroupInstModel } from 'src/app/core/unit-types';
+import { StoreClient, WireMethod } from 'src/app/store';
 import { GroupAttacked, HoverTypeEnum, PlayerCastsInstantSpell, PlayerClicksAllyGroup, PlayerClicksAllyGroupEvent, PlayerClicksEnemyGroup, PlayerClicksEnemyGroupEvent, PlayerHoversCardEvent, PlayerHoversGroupCard, PlayerTargetsInstantSpellEvent, PlayerTargetsSpell, PlayerTargetsSpellEvent } from '../events';
 import { BattleStateService } from '../mw-battle-state.service';
 import { CombatInteractorService } from '../mw-combat-interactor.service';
 import { MwCurrentPlayerStateService, PlayerState } from '../mw-current-player-state.service';
-import { StoreClient, WireMethod } from '../store';
 
 @Injectable()
 export class UiController extends StoreClient() {

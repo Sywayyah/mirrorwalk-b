@@ -1,4 +1,4 @@
-import { eventsForPrefix } from "../../store";
+import { eventsForPrefix } from 'src/app/store';
 import { DisplayPopupEvent, FightStartsEvent, InitItemAction, InitSpellAction, NeutralStructParams, PlayerEquipsItemAction, PlayerUnequipsItemAction, StructSelectedEvent } from "./types";
 
 const gameEvent = eventsForPrefix('[Game]');

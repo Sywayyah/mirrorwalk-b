@@ -6,9 +6,9 @@ import { ItemInstanceModel } from 'src/app/core/items';
 import { PlayerInstanceModel, PlayerModel, PlayerTypeEnum } from 'src/app/core/players';
 import { ResourcesModel } from 'src/app/core/resources';
 import { CommonUtils, UnitGroupInstModel, UnitGroupModel } from 'src/app/core/unit-types';
+import { EventsService } from 'src/app/store';
 import { MwHeroesService, MwUnitGroupsService } from './';
 import { PlayerEquipsItem, PlayerGainsLevel, PlayerUnequipsItem } from './events/';
-import { EventsService } from './store';
 
 
 // const mainPlayerGroups = GenerationUtils.createRandomArmy({

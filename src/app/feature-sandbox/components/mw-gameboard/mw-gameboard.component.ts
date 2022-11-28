@@ -3,9 +3,9 @@ import { takeUntil } from 'rxjs/operators';
 import { PlayerInstanceModel } from 'src/app/core/players';
 import { UnitGroupInstModel } from 'src/app/core/unit-types';
 import { getDamageParts } from 'src/app/core/vfx';
+import { StoreClient, WireMethod } from 'src/app/store';
 import { BattleStateService as MwBattleStateService, CombatInteractorService, MwCardsMappingService, MwNeutralPlayerService, MwPlayerStateService } from '../../services';
 import { GroupDamagedByGroup, GroupDamagedByGroupEvent, PlayerStartsFight } from '../../services/events';
-import { StoreClient, WireMethod } from '../../services/store';
 import { MwUnitGroupCardComponent } from '../mw-unit-group-card/mw-unit-group-card.component';
 import { VfxService } from '../ui-elements/vfx-layer/vfx.service';
 

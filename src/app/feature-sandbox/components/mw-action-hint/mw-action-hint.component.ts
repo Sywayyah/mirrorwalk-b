@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { BehaviorSubject, combineLatest, Subject } from 'rxjs';
 import { map, takeUntil, tap } from 'rxjs/operators';
+import { EventsService } from 'src/app/store';
+import { ActionHintModel, ActionHintTypeEnum } from '../../../core/ui/action-hint';
 import { BattleStateService, MwPlayersService } from '../../services';
 import { RoundPlayerTurnStarts } from '../../services/events';
-import { EventsService } from '../../services/store';
-import { ActionHintModel, ActionHintTypeEnum } from '../../../core/ui/action-hint';
 
 @Component({
   selector: 'mw-action-hint',

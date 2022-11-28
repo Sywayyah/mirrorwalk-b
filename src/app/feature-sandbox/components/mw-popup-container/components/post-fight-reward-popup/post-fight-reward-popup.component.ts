@@ -3,7 +3,7 @@ import { ResourceType } from 'src/app/core/resources';
 import { FightEndsPopup } from 'src/app/core/ui';
 import { MwPlayersService } from 'src/app/feature-sandbox/services';
 import { StructCompleted } from 'src/app/feature-sandbox/services/events';
-import { EventsService } from 'src/app/feature-sandbox/services/store';
+import { EventsService } from 'src/app/store';
 
 @Component({
   selector: 'mw-post-fight-reward-popup',
