@@ -1,51 +1,53 @@
 import { AssetsImages } from '../../assets';
+import { Fractions, FractionsEnum } from '../../fractions';
 import { FirebirdHealSpell } from '../../spells/common';
 import { UnitBase } from '../types';
 
-export enum HF_TYPES_ENUM {
-  Pikemans = 'Pikemans',
-  Archers = 'Archers',
-  Knights = 'Knights',
-  Cavalry = 'Cavalry',
-  Firebird = 'Firebird'
-}
+type HUMANS_UNIT_TYPES = 'Archer'
+  | 'Pikeman'
+  | 'Knight'
+  | 'Cavalry'
+  | 'Firebird';
 
 const defaultRewards = {
   experience: 0,
   gold: 0,
 };
 
-export const HUMANS_FRACTION_UNIT_TYPES: Record<HF_TYPES_ENUM, UnitBase> = {
+export const humansFraction = Fractions.createFraction<HUMANS_UNIT_TYPES>(FractionsEnum.Humans);
 
-  [HF_TYPES_ENUM.Pikemans]: {
-    mainPortraitUrl: AssetsImages.Melee,
-    name: 'Pikemans',
-    level: 1,
+const Pikeman = humansFraction.defineUnitType('Archer', {
+  mainPortraitUrl: AssetsImages.Melee,
+  name: 'Pikemans',
+  level: 1,
 
-    baseStats: {
-      damageInfo: {
-        minDamage: 3,
-        maxDamage: 3,
-      },
-      attackRating: 2,
-      defence: 2,
-      health: 8,
-      speed: 13,
+  baseStats: {
+    damageInfo: {
+      minDamage: 3,
+      maxDamage: 3,
     },
-    defaultModifiers: {
-      counterattacks: true,
-    },
-    minQuantityPerStack: 5,
-    defaultTurnsPerRound: 1,
-
-    baseRequirements: {
-      gold: 60,
-      redCrystals: 0,
-    },
-    neutralReward: defaultRewards,
+    attackRating: 2,
+    defence: 2,
+    health: 8,
+    speed: 13,
   },
+  defaultModifiers: {
+    counterattacks: true,
+  },
+  minQuantityPerStack: 5,
+  defaultTurnsPerRound: 1,
 
-  [HF_TYPES_ENUM.Archers]: {
+  baseRequirements: {
+    gold: 60,
+    redCrystals: 0,
+  },
+  neutralReward: defaultRewards,
+});
+
+export const HUMANS_FRACTION_UNIT_TYPES: Record<HUMANS_UNIT_TYPES, UnitBase> = {
+  Pikeman,
+
+  Archer: humansFraction.defineUnitType('Archer', {
     mainPortraitUrl: AssetsImages.Ranged,
     name: 'Archers',
     level: 2,
@@ -75,9 +77,9 @@ export const HUMANS_FRACTION_UNIT_TYPES: Record<HF_TYPES_ENUM, UnitBase> = {
       experience: 2,
       gold: 2,
     },
-  },
+  }),
 
-  [HF_TYPES_ENUM.Knights]: {
+  Knight: humansFraction.defineUnitType('Knight', {
     mainPortraitUrl: AssetsImages.Melee,
     name: 'Knights',
     level: 3,
@@ -97,9 +99,9 @@ export const HUMANS_FRACTION_UNIT_TYPES: Record<HF_TYPES_ENUM, UnitBase> = {
 
     baseRequirements: {},
     neutralReward: defaultRewards,
-  },
+  }),
 
-  [HF_TYPES_ENUM.Cavalry]: {
+  Cavalry: humansFraction.defineUnitType('Cavalry', {
     name: 'Cavalry',
     mainPortraitUrl: AssetsImages.Melee,
 
@@ -129,9 +131,9 @@ export const HUMANS_FRACTION_UNIT_TYPES: Record<HF_TYPES_ENUM, UnitBase> = {
       experience: 4,
       gold: 6.3,
     },
-  },
+  }),
 
-  [HF_TYPES_ENUM.Firebird]: {
+  Firebird: humansFraction.defineUnitType('Firebird', {
     name: 'Firebird',
     mainPortraitUrl: AssetsImages.Melee,
 
@@ -165,6 +167,6 @@ export const HUMANS_FRACTION_UNIT_TYPES: Record<HF_TYPES_ENUM, UnitBase> = {
       experience: 40,
       gold: 60,
     },
-  }
+  }),
 };
 

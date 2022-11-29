@@ -1,23 +1,24 @@
 import { AssetsImages } from '../../assets';
+import { Fractions, FractionsEnum } from '../../fractions';
 import { FrightSpell } from '../../spells/common';
 import { UnitBase } from '../types';
 
-export enum NEUTRAL_TYPES_ENUM {
-  Gnolls = 'Gnolls',
-  Thiefs = 'Thiefs',
-  ForestTrolls = 'ForestTrolls',
-
-  Ghosts = 'Ghosts',
-  SupremeGhosts = 'SupremeGhosts',
-
-}
+type NEUTRAL_UNIT_TYPES =
+  'Ghosts'
+  | 'SupremeGhosts'
+  | 'Gnoll'
+  | 'Thiefs'
+  | 'ForestTrolls'
+  ;
 
 const defaultReward = {
   gold: 0,
   experience: 0,
 };
 
-const Wraiths: UnitBase = {
+export const neutralsFraction = Fractions.createFraction<NEUTRAL_UNIT_TYPES>(FractionsEnum.Neutrals);
+
+const Wraiths: UnitBase = neutralsFraction.defineUnitType('SupremeGhosts', {
   mainPortraitUrl: AssetsImages.Melee,
   name: 'Wraiths',
   level: 1,
@@ -50,11 +51,10 @@ const Wraiths: UnitBase = {
     gold: 2.4,
   },
   upgraded: true,
-};
+});
 
-export const NEUTRAL_FRACTION_UNIT_TYPES: Record<NEUTRAL_TYPES_ENUM, UnitBase> = {
-
-  [NEUTRAL_TYPES_ENUM.Ghosts]: {
+export const NEUTRAL_FRACTION_UNIT_TYPES: Record<NEUTRAL_UNIT_TYPES, UnitBase> = {
+  Ghosts: neutralsFraction.defineUnitType('Ghosts', {
     mainPortraitUrl: AssetsImages.Melee,
     name: 'Ghosts',
     level: 1,
@@ -90,11 +90,11 @@ export const NEUTRAL_FRACTION_UNIT_TYPES: Record<NEUTRAL_TYPES_ENUM, UnitBase> =
     defaultModifiers: {
       isGhost: true,
     }
-  },
+  }),
 
-  [NEUTRAL_TYPES_ENUM.SupremeGhosts]: Wraiths,
+  SupremeGhosts: Wraiths,
 
-  [NEUTRAL_TYPES_ENUM.Gnolls]: {
+  Gnoll: neutralsFraction.defineUnitType('Gnoll', {
     mainPortraitUrl: AssetsImages.Melee,
     name: 'Gnolls',
     level: 2,
@@ -120,9 +120,9 @@ export const NEUTRAL_FRACTION_UNIT_TYPES: Record<NEUTRAL_TYPES_ENUM, UnitBase> =
       experience: 3.3,
       gold: 2.8
     },
-  },
+  }),
 
-  [NEUTRAL_TYPES_ENUM.Thiefs]: {
+  Thiefs: neutralsFraction.defineUnitType('Thiefs', {
     mainPortraitUrl: AssetsImages.Melee,
     name: 'Thiefs',
     level: 3,
@@ -145,9 +145,9 @@ export const NEUTRAL_FRACTION_UNIT_TYPES: Record<NEUTRAL_TYPES_ENUM, UnitBase> =
       experience: 4.55,
       gold: 3.9
     }
-  },
+  }),
 
-  [NEUTRAL_TYPES_ENUM.ForestTrolls]: {
+  ForestTrolls: neutralsFraction.defineUnitType('ForestTrolls', {
     mainPortraitUrl: AssetsImages.Melee,
     name: 'Trolls',
     level: 4,
@@ -171,5 +171,5 @@ export const NEUTRAL_FRACTION_UNIT_TYPES: Record<NEUTRAL_TYPES_ENUM, UnitBase> =
       experience: 4,
       gold: 4.6,
     }
-  },
+  }),
 };

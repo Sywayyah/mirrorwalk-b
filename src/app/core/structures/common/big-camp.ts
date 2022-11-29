@@ -1,5 +1,5 @@
-import { NEUTRAL_FRACTION_UNIT_TYPES } from '../../unit-types/neutrals';
-import { StructureGeneratorModel, StuctureControl, NeutralRewardTypesEnum, ScriptedReward } from '../types';
+import { neutralsFraction } from '../../unit-types/neutrals';
+import { NeutralRewardTypesEnum, ScriptedReward, StructureGeneratorModel, StuctureControl } from '../types';
 
 export const BigCampStructure: StructureGeneratorModel = {
   name: 'Big Camp',
@@ -8,9 +8,9 @@ export const BigCampStructure: StructureGeneratorModel = {
       maxUnitGroups: 3,
       minUnitGroups: 3,
       units: [
-        [NEUTRAL_FRACTION_UNIT_TYPES.ForestTrolls, 24, 26, 1],
-        [NEUTRAL_FRACTION_UNIT_TYPES.Gnolls, 28, 36, 1],
-        [NEUTRAL_FRACTION_UNIT_TYPES.Thiefs, 15, 18, 1],
+        [neutralsFraction.getUnitType('ForestTrolls'), 24, 26, 1],
+        [neutralsFraction.getUnitType('Gnoll'), 28, 36, 1],
+        [neutralsFraction.getUnitType('Thiefs'), 15, 18, 1],
       ],
     };
   },

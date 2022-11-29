@@ -1,8 +1,8 @@
-import { ItemWindCrest, ItemEclipseWand, ItemMeteorSwords, ItemIceBow } from '../../items/neutral';
+import { ItemEclipseWand, ItemIceBow, ItemMeteorSwords, ItemWindCrest } from '../../items/neutral';
 import { ResourceType } from '../../resources';
-import { GenerationModel, CommonUtils } from '../../unit-types';
-import { NEUTRAL_FRACTION_UNIT_TYPES } from '../../unit-types/neutrals';
-import { StructureGeneratorModel, StuctureControl, ResourcesReward, NeutralRewardTypesEnum, ItemReward } from '../types';
+import { CommonUtils, GenerationModel } from '../../unit-types';
+import { neutralsFraction } from '../../unit-types/neutrals';
+import { ItemReward, NeutralRewardTypesEnum, ResourcesReward, StructureGeneratorModel, StuctureControl } from '../types';
 
 
 export const BanditCamp: StructureGeneratorModel = {
@@ -14,8 +14,8 @@ export const BanditCamp: StructureGeneratorModel = {
       maxUnitGroups: 2,
       minUnitGroups: 1,
       units: [
-        [NEUTRAL_FRACTION_UNIT_TYPES.Thiefs, 14, 24, 1],
-        [NEUTRAL_FRACTION_UNIT_TYPES.Gnolls, 14, 24, 3],
+        [neutralsFraction.getUnitType('Thiefs'), 14, 24, 1],
+        [neutralsFraction.getUnitType('Gnoll'), 14, 24, 3],
       ],
     } as GenerationModel;
 

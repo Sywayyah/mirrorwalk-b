@@ -1,3 +1,4 @@
+import type { Fraction } from '../fractions/types';
 import type { PlayerInstanceModel } from '../players';
 import { ResourcesModel } from '../resources';
 import { SpellInstance, SpellModel } from '../spells';
@@ -38,6 +39,9 @@ export interface UnitTypeBaseStatsModel {
 }
 
 export interface UnitBase {
+  type: string;
+
+  fraction: Fraction<any>;
   /* displayed name */
   name: string;
   /* main portrait for this unit (used during combat, hiring and so on) */

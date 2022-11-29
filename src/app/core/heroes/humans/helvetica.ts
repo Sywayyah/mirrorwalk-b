@@ -1,6 +1,6 @@
 import { ItemWindCrest } from '../../items/neutral';
 import { HasteSpell, RainOfFireSpell } from '../../spells/common';
-import { HUMANS_FRACTION_UNIT_TYPES } from '../../unit-types/humans';
+import { humansFraction } from '../../unit-types/humans';
 import { HeroBase } from '../types';
 import { createHeroModelBase, heroesDefaultResources } from '../utils';
 
@@ -18,9 +18,9 @@ export const HelveticaHero: HeroBase = createHeroModelBase({
     maxUnitGroups: 2,
     minUnitGroups: 2,
     units: [
-      [HUMANS_FRACTION_UNIT_TYPES.Archers, 12, 18, 1],
-      [HUMANS_FRACTION_UNIT_TYPES.Knights, 6, 11, 1],
-      [HUMANS_FRACTION_UNIT_TYPES.Pikemans, 20, 32, 1],
+      [humansFraction.getUnitType('Archer'), 12, 18, 1],
+      [humansFraction.getUnitType('Knight'), 6, 11, 1],
+      [humansFraction.getUnitType('Pikeman'), 20, 32, 1],
     ],
   }],
   items: [ItemWindCrest],
