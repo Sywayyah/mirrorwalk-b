@@ -21,7 +21,7 @@
 
 import { CombatActionsRef } from '../api/combat-api';
 import { Icon } from '../assets';
-import { HeroInstanceModel } from '../heroes';
+import { Hero } from '../heroes';
 import { PlayerInstanceModel } from '../players';
 import { SpellModel } from '../spells';
 import { Modifiers, UnitGroupModel } from '../unit-types';
@@ -70,7 +70,7 @@ export interface ItemBaseModel<StateType extends object = object> {
       actions: CombatActionsRef,
       events: GameEventsRef,
       ownerPlayer: PlayerInstanceModel,
-      ownerHero: HeroInstanceModel,
+      ownerHero: Hero,
       thisInstance: ItemInstanceModel<StateType>,
     }) => void,
   },

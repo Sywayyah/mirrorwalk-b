@@ -1,8 +1,7 @@
 import { DamageType } from '../../api/combat-api';
-import { getDamageParts } from '../../vfx/ui-utils';
-import { FireAnimation } from '../../vfx';
+import { FireAnimation, getDamageParts } from '../../vfx';
 import { SpellEventTypes } from '../spell-events';
-import { SpellModel, SpellActivationType } from '../types';
+import { SpellActivationType, SpellModel } from '../types';
 import { canActivateOnEnemyFn } from '../utils';
 
 export const RainOfFireSpell: SpellModel = {

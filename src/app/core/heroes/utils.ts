@@ -1,5 +1,5 @@
 import { ResourcesModel } from '../resources';
-import { HeroModel, HeroModelStats } from './types';
+import { HeroBase, HeroBaseStats } from './types';
 
 export const heroesDefaultResources: ResourcesModel = {
   gems: 0,
@@ -15,7 +15,7 @@ export const EMPTY_RESOURCES: ResourcesModel = {
   wood: 0,
 };
 
-export const createHeroModelBase: (heroConfig: Pick<HeroModel, 'name'> & HeroModelStats) => HeroModel = (
+export const createHeroModelBase: (heroConfig: Pick<HeroBase, 'name'> & HeroBaseStats) => HeroBase = (
   heroConfig,
 ) => {
   const {

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { PLAYER_COLORS } from 'src/app/core/assets';
-import { HeroModel, HERO_LEVELS_BREAKPOINTS } from 'src/app/core/heroes';
+import { HeroBase, HERO_LEVELS_BREAKPOINTS } from 'src/app/core/heroes';
 import { HelveticaHero } from 'src/app/core/heroes/humans';
 import { ItemInstanceModel } from 'src/app/core/items';
 import { PlayerInstanceModel, PlayerModel, PlayerTypeEnum } from 'src/app/core/players';
@@ -174,7 +174,7 @@ export class MwPlayersService {
 
   private createPlayerWithHero(
     color: string,
-    hero: HeroModel,
+    hero: HeroBase,
     type: PlayerTypeEnum,
   ): PlayerModel {
     const player = {

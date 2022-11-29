@@ -1,7 +1,7 @@
 import { CombatActionsRef } from '../api/combat-api';
 import { VfxApi } from '../api/vfx-api';
 import { Icon } from '../assets';
-import { HeroInstanceModel } from '../heroes';
+import { Hero } from '../heroes';
 import { ItemInstanceModel } from '../items';
 import { PlayerInstanceModel } from '../players';
 import { UnitGroupInstModel } from '../unit-types';
@@ -67,7 +67,7 @@ export interface SpellCombatRefsModel<SpellStateType> {
   spellInstance: SpellInstance<SpellStateType>;
   ownerPlayer: PlayerInstanceModel;
   ownerUnit?: UnitGroupInstModel;
-  ownerHero: HeroInstanceModel;
+  ownerHero: Hero;
   vfx: VfxApi;
 }
 

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HeroInstanceModel, HeroModel } from 'src/app/core/heroes';
+import { Hero, HeroBase } from 'src/app/core/heroes';
 import { createHeroModelBase, EMPTY_RESOURCES } from 'src/app/core/heroes/utils';
 import { SpellInstance } from 'src/app/core/spells';
 import { MwItemsService, MwSpellsService } from './';
@@ -26,22 +26,22 @@ export class MwHeroesService {
     private spellsService: MwSpellsService,
   ) { }
 
-  public addManaToHero(hero: HeroInstanceModel, mana: number): void {
+  public addManaToHero(hero: Hero, mana: number): void {
     const heroStats = hero.stats;
     const newMana = heroStats.currentMana + mana;
 
     heroStats.currentMana = newMana > heroStats.maxMana ? heroStats.maxMana : newMana;
   }
 
-  public addSpellToHero(hero: HeroInstanceModel, spell: SpellInstance): void {
+  public addSpellToHero(hero: Hero, spell: SpellInstance): void {
     hero.spells.push(spell);
   }
 
-  public addMaxManaToHero(hero: HeroInstanceModel, maxMana: number): void {
+  public addMaxManaToHero(hero: Hero, maxMana: number): void {
     hero.stats.maxMana += maxMana;
   }
 
-  public createHero(heroBase: HeroModel): HeroInstanceModel {
+  public createHero(heroBase: HeroBase): Hero {
     const heroInitState = heroBase.initialState;
     const heroBaseStats = heroInitState.stats;
 
@@ -63,7 +63,7 @@ export class MwHeroesService {
     };
   }
 
-  public createNeutralHero(): HeroInstanceModel {
+  public createNeutralHero(): Hero {
     return {
       name: null,
       experience: 0,

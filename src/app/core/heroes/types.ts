@@ -1,22 +1,12 @@
-import { ItemBaseModel, ItemInstanceModel } from '../items/types';
-import { ResourcesModel } from '../resources/types';
-import { SpellModel, SpellInstance } from '../spells';
-import { Modifiers } from '../unit-types/modifiers';
-import { GenerationModel } from '../unit-types/utils';
+import { ItemBaseModel, ItemInstanceModel } from '../items';
+import { ResourcesModel } from '../resources';
+import { SpellInstance, SpellModel } from '../spells';
+import { GenerationModel, Modifiers } from '../unit-types';
 
-
-export interface HeroInstanceStats {
-  maxMana: number;
-  currentMana: number;
-  /* these ones can be just for UI, but mods will be used in calcs */
-  baseAttack: number;
-  bonusAttack: number;
-}
-
-export interface HeroModelStats {
+export interface HeroBaseStats {
   stats: {
-      mana: number;
-      baseAttack: number;
+    mana: number;
+    baseAttack: number;
   };
   abilities: SpellModel[];
   resources: ResourcesModel;
@@ -24,31 +14,38 @@ export interface HeroModelStats {
   army: GenerationModel[];
 }
 
-export interface HeroModel {
+/* Base type for a hero */
+export interface HeroBase {
   name: string;
   initialState: {
-      stats: {
-          mana: number;
-          baseAttack: number;
-      },
-      abilities: SpellModel[],
-      resources: ResourcesModel,
-      items: ItemBaseModel[],
-      army: GenerationModel[],
+    stats: {
+      mana: number;
+      baseAttack: number;
+    },
+    abilities: SpellModel[],
+    resources: ResourcesModel,
+    items: ItemBaseModel[],
+    army: GenerationModel[],
   };
 }
 
-/* Hero model, instance more likely */
+export interface HeroStats {
+  maxMana: number;
+  currentMana: number;
+  /* these ones can be just for UI, but mods will be used in calcs */
+  baseAttack: number;
+  bonusAttack: number;
+}
 
-export interface HeroInstanceModel {
+/* Hero based on some type */
+export interface Hero {
   name: string | null;
   experience: number;
   level: number;
   freeSkillpoints: number;
-  stats: HeroInstanceStats;
-  // abilities?: AbilityTypeModel[];
+  stats: HeroStats;
   spells: SpellInstance[];
   mods: Modifiers[];
   items: ItemInstanceModel[];
-  base: HeroModel;
+  base: HeroBase;
 }
