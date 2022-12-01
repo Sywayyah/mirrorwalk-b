@@ -74,7 +74,6 @@ export class InGameApiController extends StoreClient() {
 
   @WireMethod(InitItem)
   public initItem({ item, ownerPlayer }: InitItemAction): void {
-    console.log('qweqwe');
     item.baseType.config.init({
       actions: this.createActionsApiRef(),
       events: {
