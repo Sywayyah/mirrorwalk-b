@@ -23,6 +23,10 @@
           Rework popups.
 
     Candidates for implementation:
+        Store:
+          The main idea for now is to create some mainstream state, where only main data exist
+          (locations, players, towns, current location progress, etc.), and any derived, deviated
+          subsets of data should derive from it.
         Main screen
         Dynamic and flexible descriptions
         Locations
