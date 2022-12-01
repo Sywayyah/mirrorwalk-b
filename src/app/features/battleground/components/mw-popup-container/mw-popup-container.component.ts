@@ -5,6 +5,11 @@ import { BattleStateService, MwPlayersService } from 'src/app/features/services'
 import { DisplayPopup, DisplayPopupEvent, FightEnds, FightEndsEvent, DisplayReward, NeutralStructParams } from 'src/app/features/services/events';
 import { StoreClient, WireMethod } from 'src/app/store';
 
+/*
+  todo: move this container component to shared, wire events in some controller,
+    allow to create popups from service via passing component, also revisit
+    models for popups.
+*/
 @Component({
   selector: 'mw-popup-container',
   templateUrl: './mw-popup-container.component.html',
