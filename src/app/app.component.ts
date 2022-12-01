@@ -1,9 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { HintsContainerComponent } from './feature-sandbox/components/ui-elements/hints-container/hints-container.component';
-import { CombatInteractorService } from './feature-sandbox/services';
-import { BattleController, BattleLogController, CombatController, GameController, ItemsController, PlayerController, StructuresController, UiController } from './feature-sandbox/services/controllers';
-import { InGameApiController } from './feature-sandbox/services/controllers/in-game-api.service';
-import { HintsService } from './feature-sandbox/services/hints.service';
+import { BattleController, CombatController, PlayerController, StructuresController, ItemsController, BattleLogController, UiController, GameController } from './features/services/controllers';
+import { InGameApiController } from './features/services/controllers/in-game-api.service';
+import { HintsService } from './features/services/hints.service';
+import { HintsContainerComponent } from './features/shared/components';
 
 @Component({
   selector: 'app-root',
