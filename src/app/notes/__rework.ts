@@ -19,8 +19,8 @@
           more assets in the future.
 
         Popups:
-          Extract popups container as shared component, where customizable content can be passed.
-          Rework popups.
+          For now, all popups are in battleground module, might be moved to views
+          or somewhere else.
 
     Candidates for implementation:
         Store:
@@ -63,4 +63,10 @@
           fraction itself as a separate object with it's own name, state and
           rest, but also from it will be possible to create base types for
           units.
+
+        Popups:
+          Popups container is now shared, and now there is a much more convinient
+          approach to create popups by passing component class via service
+          (there is also a base class for convinient work with popups).
+          Also, now there is a controller for popups.
 */
