@@ -18,6 +18,10 @@
           Assets should be optimized and size must be reduced, frames should become customizable,
           more assets in the future.
 
+        Popups:
+          Extract popups container as shared component, where customizable content can be passed.
+          Rework popups.
+
     Candidates for implementation:
         Main screen
         Dynamic and flexible descriptions
