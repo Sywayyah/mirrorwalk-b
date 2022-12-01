@@ -1,18 +1,22 @@
 /*
     Candidates for rework:
         Models for units (there are now 2 models, less and more detailed)
-            In general: "instance" types, also might be that "ouside combat" and
-            "in-combat" types could be useful, because some properties of in-combat
-            objet might be unused in out of combat state
+          In general: "instance" types, also might be that "ouside combat" and
+          "in-combat" types could be useful, because some properties of in-combat
+          objet might be unused in out of combat state
 
         Structures
-            Structures are currently swampy and unclear, hard to work with,
-            also gonna need to rework popups along with structures.
+          Structures are currently swampy and unclear, hard to work with,
+          also gonna need to rework popups along with structures.
 
         Fractions:
           Heroes might also be created from a fraction, also fraction
           might set up some default parameters so I won't need to specify
           some default or experimental parameters repeatedly.
+
+        Assets:
+          Assets should be optimized and size must be reduced, frames should become customizable,
+          more assets in the future.
 
     Candidates for implementation:
         Main screen
