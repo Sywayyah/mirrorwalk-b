@@ -1,7 +1,7 @@
-import { ChangeDetectorRef, Component, ComponentFactoryResolver, OnInit, Renderer2, TemplateRef, ViewChild, ViewContainerRef } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, Renderer2, TemplateRef, ViewChild, ViewContainerRef } from '@angular/core';
 import { combineLatest, fromEvent } from 'rxjs';
 import { take } from 'rxjs/operators';
-import { EffectInstRef, EffectType, Effect, EffectOptions, CustomAnimationData, VfxElemEffect, EffectPosition } from 'src/app/core/api/vfx-api';
+import { CustomAnimationData, Effect, EffectInstRef, EffectOptions, EffectPosition, EffectType, VfxElemEffect } from 'src/app/core/api/vfx-api';
 import { UnitGroupInstModel } from 'src/app/core/unit-types';
 import { FloatingMessageAnimation } from 'src/app/core/vfx';
 import { MwCardsMappingService } from 'src/app/features/services';
@@ -34,8 +34,6 @@ export class VfxLayerComponent implements OnInit {
 
   constructor(
     private vfxService: VfxService,
-    /* todo: resolve it. */
-    private componentFactoryResolver: ComponentFactoryResolver,
     private renderer: Renderer2,
     private unitsCardsMapping: MwCardsMappingService,
     public cdr: ChangeDetectorRef,
@@ -145,8 +143,7 @@ export class VfxLayerComponent implements OnInit {
       case EffectType.VfxElement:
         const vfxEffect = effect as VfxElemEffect;
 
-        const vfxComponentFactory = this.componentFactoryResolver.resolveComponentFactory(VfxElementComponent);
-        const vfxComponentRef = this.effectsContainerRef.createComponent(vfxComponentFactory);
+        const vfxComponentRef = this.effectsContainerRef.createComponent(VfxElementComponent);
 
         const vfxComponentInstance = vfxComponentRef.instance;
 
