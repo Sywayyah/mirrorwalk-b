@@ -1,0 +1,18 @@
+<div class="header">
+  <!-- {{popup.struct.type}} -->
+  {{data.struct.generator.name}}
+</div>
+
+<div>
+  <mw-unit-groups-list [unitGroups]="data.struct.guard.unitGroups"></mw-unit-groups-list>
+</div>
+
+<div>
+  <div>Gold: {{totalGoldReward}}</div>
+  <div>Experience: {{totalExpReward}}</div>
+</div>
+
+<div class="buttons">
+  <button (click)="close()">Cancel</button>
+  <button (click)="onBattleConfirmed()">Fight</button>
+</div>

@@ -6,56 +6,39 @@ export interface LossModel {
   count: number;
 };
 
-export enum PopupTypesEnum {
-  FightEnds,
-  StructResourcesReward,
-  HiringReward,
-  UpgradingReward,
-  ItemReward,
-  /* when there is a guard */
-  Prefight,
-  /* when there is no guard, just text message */
-  Preview,
-  /* scripted reward */
-  ScriptedReward,
-}
-
-export interface PopupModel<T extends PopupTypesEnum = PopupTypesEnum> {
-  type: T;
-}
-
-export interface FightEndsPopup extends PopupModel<PopupTypesEnum.FightEnds> {
+export interface FightEndsPopup {
   isWin: boolean;
   playerLosses: LossModel[];
   enemyLosses: LossModel[];
   struct: NeutralCampStructure;
 }
 
-export interface StructRewardPopup extends PopupModel<PopupTypesEnum.StructResourcesReward> {
+export interface StructRewardPopup {
   struct: NeutralCampStructure;
   selectedRewardGroup?: ResourceRewardModel[];
 }
 
-export interface StructHireRewardPopup extends PopupModel<PopupTypesEnum.HiringReward> {
+/* some of these can be united */
+export interface StructHireRewardPopup {
   struct: NeutralCampStructure;
 }
 
-export interface StructItemRewardPopup extends PopupModel<PopupTypesEnum.ItemReward> {
+export interface StructItemRewardPopup {
   struct: NeutralCampStructure;
 }
 
-export interface PrefightPopup extends PopupModel<PopupTypesEnum.Prefight> {
+export interface PrefightPopup {
   struct: NeutralCampStructure;
 }
 
-export interface PreviewPopup extends PopupModel<PopupTypesEnum.Preview> {
+export interface PreviewPopup {
   struct: NeutralSite;
 }
 
-export interface UpgradingPopup extends PopupModel<PopupTypesEnum.UpgradingReward> {
+export interface UpgradingPopup {
   struct: NeutralSite;
 }
 
-export interface ScriptedRewardPopup extends PopupModel<PopupTypesEnum.ScriptedReward> {
+export interface ScriptedRewardPopup {
   struct: NeutralCampStructure;
 }

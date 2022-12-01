@@ -1,5 +1,6 @@
+import { PopupData } from 'src/app/features/shared/components';
 import { eventsForPrefix } from 'src/app/store';
-import { DisplayPopupEvent, FightStartsEvent, InitItemAction, InitSpellAction, NeutralStructParams, PlayerEquipsItemAction, PlayerUnequipsItemAction, StructSelectedEvent } from "./types";
+import { FightStartsEvent, InitItemAction, InitSpellAction, NeutralStructParams, PlayerEquipsItemAction, PlayerUnequipsItemAction, StructSelectedEvent } from "./types";
 
 const gameEvent = eventsForPrefix('[Game]');
 
@@ -15,7 +16,7 @@ export const DisplayReward = gameEvent<NeutralStructParams>();
 
 export const StructFightConfirmed = gameEvent<NeutralStructParams>();
 
-export const DisplayPopup = gameEvent<DisplayPopupEvent>();
+export const DisplayPopup = gameEvent<PopupData>();
 
 export const PlayerGainsLevel = gameEvent();
 

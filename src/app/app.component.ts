@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { BattleController, CombatController, PlayerController, StructuresController, ItemsController, BattleLogController, UiController, GameController } from './features/services/controllers';
 import { InGameApiController } from './features/services/controllers/in-game-api.service';
+import { PopupsController } from './features/services/controllers/popups.service';
 import { HintsService } from './features/services/hints.service';
 import { HintsContainerComponent } from './features/shared/components';
 
@@ -18,6 +19,7 @@ import { HintsContainerComponent } from './features/shared/components';
     UiController,
     GameController,
     InGameApiController,
+    PopupsController,
   ],
 })
 export class AppComponent implements OnInit {
@@ -34,6 +36,7 @@ export class AppComponent implements OnInit {
     uiController: UiController,
     gameController: GameController,
     inGameApiController: InGameApiController,
+    popups: PopupsController,
     // players: MwPlayersService,
     // items: MwItemsService,
   ) {

@@ -13,4 +13,4 @@ export * from './mw-unit-group-card/mw-unit-group-card.component';
 export * from './mw-unit-groups-list/mw-unit-groups-list.component';
 export * from './unit-group-buff/unit-group-buff.component';
 export * from './unit-group-spell/unit-group-spell.component';
-export * from './mw-popup-container';
+export * from './popups';

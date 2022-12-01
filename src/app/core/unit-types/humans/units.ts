@@ -1,7 +1,6 @@
 import { AssetsImages } from '../../assets';
 import { Fractions, FractionsEnum } from '../../fractions';
 import { FirebirdHealSpell } from '../../spells/common';
-import { UnitBase } from '../types';
 
 type HUMANS_UNIT_TYPES = 'Archer'
   | 'Pikeman'
@@ -43,6 +42,7 @@ const Pikeman = humansFraction.defineUnitType('Pikeman', {
   },
   neutralReward: defaultRewards,
 });
+
 humansFraction.defineUnitType('Archer', {
   mainPortraitUrl: AssetsImages.Ranged,
   name: 'Archers',
@@ -101,7 +101,6 @@ humansFraction.defineUnitType('Cavalry', {
   name: 'Cavalry',
   mainPortraitUrl: AssetsImages.Melee,
 
-
   level: 4,
 
   baseStats: {
@@ -129,10 +128,9 @@ humansFraction.defineUnitType('Cavalry', {
   },
 });
 
-Firebird: humansFraction.defineUnitType('Firebird', {
+humansFraction.defineUnitType('Firebird', {
   name: 'Firebird',
   mainPortraitUrl: AssetsImages.Melee,
-
 
   level: 5,
 

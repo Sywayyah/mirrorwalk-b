@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { NeutralCampStructure, NeutralSite, StructureTypeEnum } from 'src/app/core/structures';
-import { PopupTypesEnum, PrefightPopup, PreviewPopup, UpgradingPopup } from 'src/app/core/ui';
-import { StructSelected, StructSelectedEvent, DisplayPopup, StructFightConfirmed, StructCompleted, NeutralStructParams, DisplayReward } from 'src/app/features/services/events';
+import { PrefightPopup, PreviewPopup, UpgradingPopup } from 'src/app/core/ui';
+import { PreFightPopupComponent, PreviewPopupComponent, UpgradeRewardPopup } from 'src/app/features/battleground/components';
+import { DisplayPopup, DisplayReward, NeutralStructParams, StructCompleted, StructFightConfirmed, StructSelected, StructSelectedEvent } from 'src/app/features/services/events';
 import { Notify, StoreClient, WireMethod } from 'src/app/store';
 
 enum ViewsEnum {
@@ -22,11 +23,12 @@ export class MwViewControlComponent extends StoreClient() {
   public playerSelectsStructure(event: StructSelectedEvent): void {
     if (event.struct.type === StructureTypeEnum.NeutralCamp) {
       const prefightPopup: PrefightPopup = {
-        type: PopupTypesEnum.Prefight,
         struct: event.struct as NeutralCampStructure,
       };
 
+
       this.events.dispatch(DisplayPopup({
+        component: PreFightPopupComponent,
         popup: prefightPopup
       }));
       return;
@@ -35,11 +37,11 @@ export class MwViewControlComponent extends StoreClient() {
     if (event.struct.type === StructureTypeEnum.NeutralSite) {
       if (event.struct.generator.onVisited) {
         const previewPopup: PreviewPopup = {
-          type: PopupTypesEnum.Preview,
           struct: event.struct as NeutralSite,
         };
 
         this.events.dispatch(DisplayPopup({
+          component: PreviewPopupComponent,
           popup: previewPopup
         }));
 
@@ -47,11 +49,11 @@ export class MwViewControlComponent extends StoreClient() {
       }
 
       const upgradingPopup: UpgradingPopup = {
-        type: PopupTypesEnum.UpgradingReward,
         struct: event.struct as NeutralSite,
       };
 
       this.events.dispatch(DisplayPopup({
+        component: UpgradeRewardPopup,
         popup: upgradingPopup,
       }));
 

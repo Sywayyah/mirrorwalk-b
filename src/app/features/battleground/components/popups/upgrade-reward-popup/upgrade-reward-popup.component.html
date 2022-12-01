@@ -1,0 +1,32 @@
+<div>
+  <div class="header">
+    {{data.struct.generator.name}}
+  </div>
+
+  <div *ngIf="data.struct.generator.description" class="description">
+    {{data.struct.generator.description}}
+  </div>
+
+  <div class="units">
+    <div *ngFor="let hiredGroupInfo of hiredGroups" class="unit-column">
+      <div>{{hiredGroupInfo.originalGroup.count}} {{hiredGroupInfo.originalGroup.type.name}}</div>
+      <div>to</div>
+      <div>{{hiredGroupInfo.count}} {{hiredGroupInfo.hire.unitType.name}}</div>
+      <input type="range" [min]="0" [max]="hiredGroupInfo.hire.maxCount"
+        (input)="updateCountForGroup(hiredGroupInfo, $event)" [value]="0">
+
+      <div>Cost:</div>
+      <div class="cost">
+        <div class="resource" *ngFor="let resource of (hiredGroupInfo.currentCost | keyvalue)">
+          <div>{{resource.key}}</div>
+          <div>{{resource.value}}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="display: flex;">
+    <button class="button" (click)="cancel()">Cancel</button>
+    <button class="button" [disabled]="!canConfirm" (click)="confirmHire()">Confirm</button>
+  </div>
+</div>
