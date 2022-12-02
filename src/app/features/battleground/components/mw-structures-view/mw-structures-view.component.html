@@ -1,38 +1,38 @@
 <div class="centered-panel">
-    <div>Structures:</div>
-    <div *ngFor="let structure of structures">
-        <ng-container [ngSwitch]="structure.type">
-            <ng-container *ngSwitchCase="structureTypes.NeutralCamp">
-                <ng-container *ngTemplateOutlet="neutralCamp; context: {structure: structure}"></ng-container>
-            </ng-container>
+  <div>Structures:</div>
+  <div *ngFor="let structure of structures">
+    <ng-container [ngSwitch]="structure.type">
+      <ng-container *ngSwitchCase="structureTypes.NeutralCamp">
+        <ng-container *ngTemplateOutlet="neutralCamp; context: {structure: structure}"></ng-container>
+      </ng-container>
 
-            <ng-container *ngSwitchCase="structureTypes.NeutralSite">
-                <ng-container *ngTemplateOutlet="neutralSite; context: {structure: structure}"></ng-container>
-            </ng-container>
-        </ng-container>
-    </div>
+      <ng-container *ngSwitchCase="structureTypes.NeutralSite">
+        <ng-container *ngTemplateOutlet="neutralSite; context: {structure: structure}"></ng-container>
+      </ng-container>
+    </ng-container>
+  </div>
 </div>
 
 <mw-player-info-panel class="player-info-panel"></mw-player-info-panel>
 
 <ng-template #neutralCamp let-structure="structure">
-    <!-- todo: For the sake of better typization, these templates should be components -->
-    <div class="structure" (click)="onStructureSelected(structure)" [class.inactive]="structure.isInactive">
-        {{structure.generator.name}}
-        <!-- {{structure.type}} -->
-        <div *ngIf="structure.reward" style="font-size: 12px;">Reward: {{structure.reward?.type}}</div>
-        <div *ngIf="structure.isDefeated">Defeated:</div>
-        <div class="guards" *ngFor="let guards of guardsMap[structure.id]">
-            <!-- Aggregate, or remove later -->
-            {{guards.type.name}}: {{guards.count}}
-        </div>
+  <!-- todo: For the sake of better typization, these templates should be components -->
+  <div class="structure" (click)="onStructureSelected(structure)" [class.inactive]="structure.isInactive">
+    {{structure.generator.name}}
+    <!-- {{structure.type}} -->
+    <div *ngIf="structure.reward" style="font-size: 12px;">Reward: {{structure.reward?.type}}</div>
+    <div *ngIf="structure.isDefeated">Defeated:</div>
+    <div class="guards" *ngFor="let guards of guardsMap[structure.id]">
+      <!-- Aggregate, or remove later -->
+      {{guards.type.name}}: {{guards.count}}
     </div>
+  </div>
 </ng-template>
 
 <ng-template #neutralSite let-structure="structure">
-    <div class="structure" (click)="onStructureSelected(structure)" [class.inactive]="structure.isInactive">
-        {{structure.generator.name}}
-        <!-- <div *ngIf="structure.reward" style="font-size: 12px;">Reward: {{structure.reward?.type}}</div> -->
-        <div *ngIf="structure.isDefeated">Defeated:</div>
-    </div>
+  <div class="structure" (click)="onStructureSelected(structure)" [class.inactive]="structure.isInactive">
+    {{structure.generator.name}}
+    <!-- <div *ngIf="structure.reward" style="font-size: 12px;">Reward: {{structure.reward?.type}}</div> -->
+    <div *ngIf="structure.isDefeated">Defeated:</div>
+  </div>
 </ng-template>

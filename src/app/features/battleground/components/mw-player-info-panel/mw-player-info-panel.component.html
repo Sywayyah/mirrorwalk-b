@@ -1,16 +1,16 @@
 <div>
-    <div class="skillpoints" *ngIf="player.hero.freeSkillpoints">
-        +{{player.hero.freeSkillpoints}} Skillpoints
+  <div class="skillpoints" *ngIf="player.hero.freeSkillpoints">
+    +{{player.hero.freeSkillpoints}} Skillpoints
+  </div>
+  <div>
+    {{player.hero.name}}, Level: {{player.hero.level}}
+    <mw-experience-bar style="width: 270px;"></mw-experience-bar>
+  </div>
+  Your units:
+  <div class="groups-container">
+    <div class="player-group-card" [style.background]="player.color" *ngFor="let group of player.unitGroups">
+      <div>{{group.type.name}}</div>
+      <div>{{group.count}}</div>
     </div>
-    <div>
-        {{player.hero.name}}, Level: {{player.hero.level}}
-        <mw-experience-bar style="width: 270px;"></mw-experience-bar>
-    </div>
-    Your units:
-    <div class="groups-container">
-        <div class="player-group-card" [style.background]="player.color" *ngFor="let group of player.unitGroups">
-            <div>{{group.type.name}}</div>
-            <div>{{group.count}}</div>
-        </div>
-    </div>
+  </div>
 </div>
