@@ -27,6 +27,10 @@
           The main idea for now is to create some mainstream state, where only main data exist
           (locations, players, towns, current location progress, etc.), and any derived, deviated
           subsets of data should derive from it.
+
+          Also, it can be used for saves. Practically, it's unlikely that I gonna need to store
+          derived things from main state in saves.
+
         Main screen
         Dynamic and flexible descriptions
         Locations
@@ -34,6 +38,10 @@
         Saves
         Categorize components
         UI optimizations, maybe more OnPush strategies
+        Horizontal orientation?
+          All units may not fit right into vertical orientation, I can try make them smaller,
+          but still, horizontal orientation might be just right for that, while also allowing
+          to showcase art more.
 
     Implemented:
         Feature modules:
