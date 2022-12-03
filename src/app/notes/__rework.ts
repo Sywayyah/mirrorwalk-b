@@ -31,6 +31,10 @@
           Also, it can be used for saves. Practically, it's unlikely that I gonna need to store
           derived things from main state in saves.
 
+          Superficial idea: store might have main data, and also there might be special events
+          that other services (or controllers) are going to listen and update/initialize other
+          services.
+
         Main screen
         Dynamic and flexible descriptions
         Locations
