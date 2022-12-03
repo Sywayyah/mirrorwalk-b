@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Type } from '@angular/core';
 import { NeutralCampStructure, NeutralRewardTypesEnum } from 'src/app/core/structures';
 import { FightEndsPopup, LossModel } from 'src/app/core/ui';
 import { StoreClient, WireMethod } from 'src/app/store';
@@ -45,43 +45,27 @@ export class PopupsController extends StoreClient() {
   public displayRewardPopup(event: NeutralStructParams): void {
     const struct = event.struct;
 
+    const popup = { struct };
+
     const structReward = struct.reward;
+
     if (structReward) {
-      switch (structReward.type) {
-        case NeutralRewardTypesEnum.Resources:
-          this.popupService.createBasicPopup({
-            popup: { struct },
-            component: ResourcesRewardPopupComponent,
-          });
+      const rewardComponentsMapping: Record<string, Type<any>> = {
+        [NeutralRewardTypesEnum.Resources]: ResourcesRewardPopupComponent,
+        [NeutralRewardTypesEnum.UnitsHire]: HiringRewardPopupComponent,
+        [NeutralRewardTypesEnum.Item]: ItemRewardPopupComponent,
+        [NeutralRewardTypesEnum.Scripted]: ScriptedRewardPopupComponent,
+      };
 
-          break;
-        case NeutralRewardTypesEnum.UnitsHire:
-          this.popupService.createPopup({
-            popup: {
-              struct,
-            },
-            component: HiringRewardPopupComponent,
-          });
+      const rewardType = structReward.type;
 
-          break;
-        case NeutralRewardTypesEnum.Item:
-          this.popupService.createPopup({
-            popup: {
-              struct,
-            },
-            component: ItemRewardPopupComponent,
-          });
+      if (rewardType in rewardComponentsMapping) {
+        const component = rewardComponentsMapping[rewardType];
 
-          break;
-        case NeutralRewardTypesEnum.Scripted:
-          this.popupService.createPopup({
-            popup: {
-              struct,
-            },
-            component: ScriptedRewardPopupComponent,
-          });
-
-          break;
+        this.popupService.createBasicPopup({
+          popup,
+          component,
+        });
       }
     }
   }
