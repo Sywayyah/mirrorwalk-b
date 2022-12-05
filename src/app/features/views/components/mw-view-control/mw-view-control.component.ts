@@ -1,8 +1,11 @@
 import { Component } from '@angular/core';
-import { DisplayReward, NeutralStructParams, StructCompleted, StructFightConfirmed } from 'src/app/features/services/events';
+import { DisplayReward, GameCreated, GameStart, NeutralStructParams, NewGameCreation, StructCompleted, StructFightConfirmed } from 'src/app/features/services/events';
 import { Notify, StoreClient, WireMethod } from 'src/app/store';
 
 enum ViewsEnum {
+  MainScreen = 'main-screen',
+  NewGame = 'new-game',
+
   Structures = 'structures',
   Battleground = 'battleground',
 }
@@ -13,8 +16,23 @@ enum ViewsEnum {
   styleUrls: ['./mw-view-control.component.scss'],
 })
 export class MwViewControlComponent extends StoreClient() {
-  public currentView: ViewsEnum = ViewsEnum.Structures;
+  public currentView: ViewsEnum = ViewsEnum.MainScreen;
   public viewTypes: typeof ViewsEnum = ViewsEnum;
+
+  @Notify(GameStart)
+  public initScreen(): void {
+    this.currentView = ViewsEnum.MainScreen;
+  }
+
+  @Notify(NewGameCreation)
+  public newGameScreen(): void {
+    this.currentView = ViewsEnum.NewGame;
+  }
+
+  @Notify(GameCreated)
+  public newGameCreated(): void {
+    this.currentView = ViewsEnum.Structures;
+  }
 
   @Notify(StructFightConfirmed)
   public playerAcceptsFight(): void {

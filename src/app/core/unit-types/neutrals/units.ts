@@ -16,7 +16,7 @@ const defaultReward = {
   experience: 0,
 };
 
-export const neutralsFraction = Fractions.createFraction<NEUTRAL_UNIT_TYPES>(FractionsEnum.Neutrals);
+export const neutralsFraction = Fractions.createFraction<NEUTRAL_UNIT_TYPES>(FractionsEnum.Neutrals, 'Neutrals');
 
 /*
   Theoretically, I can set default values for some params when creating fraction.

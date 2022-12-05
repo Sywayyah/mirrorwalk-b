@@ -1,0 +1,21 @@
+<div class="players">
+  <div class="player">
+    <div></div>
+
+    <div class="fraction">
+      <div *ngFor="let fraction of playableFractions">
+        {{fraction.title}}
+      </div>
+    </div>
+
+    <div class="hero"></div>
+
+    <div class="color"></div>
+  </div>
+</div>
+
+<div class="buttons">
+  <mw-main-button (click)="startGame()">Start game</mw-main-button>
+
+  <mw-main-button (click)="goToMainScreen()">Return</mw-main-button>
+</div>

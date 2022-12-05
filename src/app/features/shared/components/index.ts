@@ -8,4 +8,5 @@ export * from './shared-templates/shared-templates.component';
 export * from './value-bar/value-bar.component';
 export * from './vfx-element/vfx-element.component';
 export * from './vfx-layer';
+export * from './main-button/main-button.component';
 

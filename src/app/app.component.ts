@@ -2,8 +2,10 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { BattleController, CombatController, PlayerController, StructuresController, ItemsController, BattleLogController, UiController, GameController } from './features/services/controllers';
 import { InGameApiController } from './features/services/controllers/in-game-api.service';
 import { PopupsController } from './features/services/controllers/popups.service';
+import { GameStart } from './features/services/events';
 import { HintsService } from './features/services/hints.service';
 import { HintsContainerComponent } from './features/shared/components';
+import { EventsService } from './store';
 
 @Component({
   selector: 'app-root',
@@ -37,9 +39,12 @@ export class AppComponent implements OnInit {
     gameController: GameController,
     inGameApiController: InGameApiController,
     popups: PopupsController,
+    private events: EventsService,
     // players: MwPlayersService,
     // items: MwItemsService,
   ) {
+    /* listener not created at this point */
+    this.events.dispatch(GameStart({}));
     // items.initService(combat);
     // players.initPlayers();
     // players.addItemToPlayer(players.getCurrentPlayer(), items.createItem(ItemDoomstring));

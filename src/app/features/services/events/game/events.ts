@@ -4,6 +4,12 @@ import { FightStartsEvent, InitItemAction, InitSpellAction, NeutralStructParams,
 
 const gameEvent = eventsForPrefix('[Game]');
 
+export const GameStart = gameEvent();
+
+export const NewGameCreation = gameEvent();
+
+export const GameCreated = gameEvent();
+
 export const StructSelected = gameEvent<StructSelectedEvent>();
 
 export const PlayerStartsFight = gameEvent<FightStartsEvent>();

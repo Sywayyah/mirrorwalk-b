@@ -18,6 +18,14 @@ export function on<T extends object>(
   };
 }
 
+/*
+ For the future:
+  Instead of having 1 stream with many filters, there might be per-event observables map,
+  this might improve performance.
+
+  Some logging could be great.
+*/
+
 @Injectable({
   providedIn: 'root',
 })

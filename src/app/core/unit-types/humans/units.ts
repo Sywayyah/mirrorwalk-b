@@ -13,7 +13,7 @@ const defaultRewards = {
   gold: 0,
 };
 
-export const humansFraction = Fractions.createFraction<HUMANS_UNIT_TYPES>(FractionsEnum.Humans);
+export const humansFraction = Fractions.createFraction<HUMANS_UNIT_TYPES>(FractionsEnum.Humans, 'Castle');
 
 const Pikeman = humansFraction.defineUnitType('Pikeman', {
   mainPortraitUrl: AssetsImages.Melee,
