@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { PLAYER_COLORS } from 'src/app/core/assets';
 import { Fraction, Fractions, humansFraction } from 'src/app/core/fractions';
 import { Hero, HeroBase } from 'src/app/core/heroes';
 import { GameCreated, GameStart } from 'src/app/features/services/events';
@@ -22,6 +23,14 @@ export class NewGameScreenComponent {
   public selectedFraction?: Fraction<any>;
 
   public selectedHero: HeroBase | null = null;
+
+  public pickedColor: string = PLAYER_COLORS.BLUE;
+
+  public colors: string[] = [
+    PLAYER_COLORS.BLUE,
+    PLAYER_COLORS.RED,
+    PLAYER_COLORS.GREEN,
+  ];
 
   constructor(
     private events: EventsService,
@@ -51,5 +60,9 @@ export class NewGameScreenComponent {
 
   public selectHero(hero: HeroBase | null): void {
     this.selectedHero = hero;
+  }
+
+  public pickColor(color: string): void {
+    this.pickedColor = color;
   }
 }

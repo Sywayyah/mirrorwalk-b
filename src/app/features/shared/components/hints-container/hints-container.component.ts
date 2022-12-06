@@ -29,7 +29,6 @@ export class HintsContainerComponent implements OnInit {
     const elem = target.nativeElement as HTMLElement;
     const { left, top, bottom } = elem.getBoundingClientRect();
 
-    // default settings are for below
     let leftOffset = null;
     let topOffset: number | null = top + (elem.clientHeight / 2);
     let rightOffset = null;
