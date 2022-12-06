@@ -29,6 +29,7 @@ export class HintsContainerComponent implements OnInit {
     const elem = target.nativeElement as HTMLElement;
     const { left, top, bottom } = elem.getBoundingClientRect();
 
+    // default settings are for below
     let leftOffset = null;
     let topOffset: number | null = top + (elem.clientHeight / 2);
     let rightOffset = null;
@@ -48,6 +49,10 @@ export class HintsContainerComponent implements OnInit {
         bottomOffset = window.innerHeight - bottom + elem.clientHeight;
         leftOffset = left + elem.clientWidth / 2;
         break;
+      case 'below':
+        topOffset = bottom;
+        style = 'transform: translateX(-50%)';
+        leftOffset = left + elem.clientWidth / 2;
     }
 
     const hint: ElementHint = {

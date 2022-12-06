@@ -1,4 +1,4 @@
-import { neutralsFraction } from '../../unit-types/neutrals';
+import { neutralsFraction } from '../../fractions/neutrals/fraction';
 import { NeutralRewardTypesEnum, ScriptedReward, StructureGeneratorModel, StuctureControl } from '../types';
 
 export const BigCampStructure: StructureGeneratorModel = {

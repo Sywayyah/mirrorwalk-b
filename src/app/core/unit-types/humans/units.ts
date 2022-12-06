@@ -1,19 +1,13 @@
 import { AssetsImages } from '../../assets';
-import { Fractions, FractionsEnum } from '../../fractions';
+import { humansFraction } from '../../fractions/humans/fraction';
 import { FirebirdHealSpell } from '../../spells/common';
 
-type HUMANS_UNIT_TYPES = 'Archer'
-  | 'Pikeman'
-  | 'Knight'
-  | 'Cavalry'
-  | 'Firebird';
 
 const defaultRewards = {
   experience: 0,
   gold: 0,
 };
 
-export const humansFraction = Fractions.createFraction<HUMANS_UNIT_TYPES>(FractionsEnum.Humans, 'Castle');
 
 const Pikeman = humansFraction.defineUnitType('Pikeman', {
   mainPortraitUrl: AssetsImages.Melee,

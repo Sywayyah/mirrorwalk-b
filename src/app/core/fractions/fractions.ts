@@ -11,7 +11,10 @@ export const Fractions = {
     return [...this.fractionsMap.values()];
   },
 
-  createFraction<T extends string>(fractionName: string, title: string): Fraction<T> {
+  createFraction<T extends string>(fractionName: string, { icon, title }: {
+    title: string,
+    icon: string,
+  }): Fraction<T> {
     if (this.fractionsMap.has(fractionName)) {
       throw new Error(`Fraction ${fractionName} was already created.`);
     }
@@ -21,6 +24,7 @@ export const Fractions = {
       unitTypes: {},
       heroes: [],
       title,
+      icon,
       defineUnitType(unitTypeName: T, data) {
         const unitType = {
           ...data,

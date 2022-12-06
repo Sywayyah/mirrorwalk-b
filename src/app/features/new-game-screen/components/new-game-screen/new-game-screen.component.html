@@ -1,14 +1,89 @@
 <div class="players">
-  <div class="player">
-    <div></div>
-
-    <div class="fraction">
-      <div *ngFor="let fraction of playableFractions">
-        {{fraction.title}}
-      </div>
+  <div class="players-row">
+    <div class="name">
+      Player:
     </div>
 
-    <div class="hero"></div>
+    <div class="fraction">
+      Fraction:
+    </div>
+
+    <div class="hero">
+      Hero:
+    </div>
+
+    <div class="color">
+      Color:
+    </div>
+  </div>
+
+  <div class="player players-row">
+    <div class="name">Player 1</div>
+
+    <div class="fraction">
+      <mw-menu [menuBody]="fractionsMenu" [pos]="'below'">
+        <div *ngIf="selectedFraction; else randomFraction">
+          <mw-ra-icon class="item-icon" [icon]="selectedFraction.icon">
+          </mw-ra-icon>
+
+          <span class="icon-subtext">{{selectedFraction.title}}</span>
+        </div>
+
+        <ng-template #randomFraction>
+          <div>
+            <mw-ra-icon class="item-icon" icon="perspective-dice-four"></mw-ra-icon>
+
+            <span class="icon-subtext">Random</span>
+          </div>
+        </ng-template>
+      </mw-menu>
+
+      <ng-template #fractionsMenu>
+        <mw-ra-icon (click)="selectFraction()" class="item-icon" icon="perspective-dice-four">
+        </mw-ra-icon>
+
+        <mw-ra-icon *ngFor="let fraction of playableFractions" (click)="selectFraction(fraction)" class="item-icon"
+          [icon]="fraction.icon">
+        </mw-ra-icon>
+      </ng-template>
+    </div>
+
+    <div class="hero">
+      <mw-menu [menuBody]="heroesMenu" [pos]="'below'">
+        <div *ngIf="selectedHero; else randomFraction">
+          <mw-ra-icon class="item-icon" icon="aura">
+          </mw-ra-icon>
+
+          <span class="icon-subtext">{{selectedHero.name}}</span>
+        </div>
+
+        <ng-template #randomHero>
+          <div>
+            <mw-ra-icon class="item-icon" icon="perspective-dice-four"></mw-ra-icon>
+
+            <span class="icon-subtext">Random</span>
+          </div>
+        </ng-template>
+      </mw-menu>
+
+      <ng-template #heroesMenu>
+        <div style="display: flex; max-width: 200px; justify-content: center; flex-wrap: wrap;">
+          <div>
+            <mw-ra-icon (click)="selectHero(null)" class="item-icon" icon="perspective-dice-four">
+            </mw-ra-icon>
+
+            <span class="icon-subtext">Random</span>
+          </div>
+
+          <div *ngFor="let hero of heroes">
+            <mw-ra-icon (click)="selectHero(hero)" class="item-icon" icon="aura">
+            </mw-ra-icon>
+
+            <span class="icon-subtext">{{hero.name}}</span>
+          </div>
+        </div>
+      </ng-template>
+    </div>
 
     <div class="color"></div>
   </div>

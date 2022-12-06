@@ -6,6 +6,7 @@ import { GameStart } from './features/services/events';
 import { HintsService } from './features/services/hints.service';
 import { HintsContainerComponent } from './features/shared/components';
 import { EventsService } from './store';
+import './core/scripts';
 
 @Component({
   selector: 'app-root',

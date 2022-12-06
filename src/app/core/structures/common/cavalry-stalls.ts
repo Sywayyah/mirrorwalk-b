@@ -1,4 +1,4 @@
-import { humansFraction } from '../../unit-types/humans';
+import { humansFraction } from '../../fractions';
 import { StructureGeneratorModel } from '../types';
 import { createHireStructure } from '../utils';
 

@@ -9,6 +9,7 @@ export interface Fraction<T extends string> {
   name: string;
   heroes: HeroBase[];
   title: string;
+  icon: string;
   unitTypes: { [key in T]?: UnitBase };
   defineUnitType(unitTypeName: T, params: UnitTypeCreationParams): UnitBase;
   getUnitType(unitTypeName: T): UnitBase;

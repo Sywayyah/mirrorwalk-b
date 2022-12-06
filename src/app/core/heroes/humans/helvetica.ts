@@ -1,10 +1,10 @@
+import { humansFraction } from '../../fractions';
 import { ItemWindCrest } from '../../items/neutral';
 import { HasteSpell, RainOfFireSpell } from '../../spells/common';
-import { humansFraction } from '../../unit-types/humans';
 import { HeroBase } from '../types';
-import { createHeroModelBase, heroesDefaultResources } from '../utils';
+import { heroesDefaultResources } from '../utils';
 
-export const HelveticaHero: HeroBase = createHeroModelBase({
+export const HelveticaHero: HeroBase = humansFraction.createHero({
   name: 'Helvetica',
   abilities: [
     // ENCHANT_SPELL,

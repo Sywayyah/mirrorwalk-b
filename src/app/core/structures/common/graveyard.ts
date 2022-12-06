@@ -1,5 +1,5 @@
+import { neutralsFraction } from '../../fractions/neutrals/fraction';
 import { GenerationModel } from '../../unit-types';
-import { neutralsFraction } from '../../unit-types/neutrals';
 import { HiringReward, NeutralRewardTypesEnum, StructureGeneratorModel, StuctureControl, UnitUpgradeReward } from '../types';
 
 export const GraveyardStructure: StructureGeneratorModel = {

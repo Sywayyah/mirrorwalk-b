@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
-import { Fraction, Fractions } from 'src/app/core/fractions';
-import { neutralsFraction } from 'src/app/core/unit-types/neutrals';
+import { Fraction, Fractions, humansFraction } from 'src/app/core/fractions';
+import { Hero, HeroBase } from 'src/app/core/heroes';
 import { GameCreated, GameStart } from 'src/app/features/services/events';
 import { EventsService } from 'src/app/store';
 
-const nonPlayableFractions: Fraction<any>[] = [neutralsFraction];
+const nonPlayableFractions: Fraction<any>[] = [];
+// const nonPlayableFractions: Fraction<any>[] = [neutralsFraction];
 
 @Component({
   selector: 'mw-new-game-screen',
@@ -16,9 +17,17 @@ export class NewGameScreenComponent {
     .getAllFractions()
     .filter((fraction) => !nonPlayableFractions.includes(fraction));
 
+  public heroes?: HeroBase[] | null = null;
+
+  public selectedFraction?: Fraction<any>;
+
+  public selectedHero: HeroBase | null = null;
+
   constructor(
     private events: EventsService,
-  ) { }
+  ) {
+    this.selectFraction(humansFraction);
+  }
 
   public startGame(): void {
     this.events.dispatch(GameCreated({}));
@@ -26,5 +35,21 @@ export class NewGameScreenComponent {
 
   public goToMainScreen(): void {
     this.events.dispatch(GameStart({}));
+  }
+
+  public selectFraction(fraction?: Fraction<any>): void {
+    this.selectedFraction = fraction;
+    console.log(fraction);
+    if (fraction) {
+      this.heroes = fraction.getAllHeroes();
+      this.selectedHero = this.heroes[0];
+    } else {
+      this.heroes = null;
+      this.selectedHero = null;
+    }
+  }
+
+  public selectHero(hero: HeroBase | null): void {
+    this.selectedHero = hero;
   }
 }

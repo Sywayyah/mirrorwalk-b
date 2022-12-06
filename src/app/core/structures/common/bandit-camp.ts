@@ -1,7 +1,7 @@
+import { neutralsFraction } from '../../fractions/neutrals/fraction';
 import { ItemEclipseWand, ItemIceBow, ItemMeteorSwords, ItemWindCrest } from '../../items/neutral';
 import { ResourceType } from '../../resources';
 import { CommonUtils, GenerationModel } from '../../unit-types';
-import { neutralsFraction } from '../../unit-types/neutrals';
 import { ItemReward, NeutralRewardTypesEnum, ResourcesReward, StructureGeneratorModel, StuctureControl } from '../types';
 
 

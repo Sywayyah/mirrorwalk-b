@@ -1,22 +1,7 @@
 import { AssetsImages } from '../../assets';
-import { Fractions, FractionsEnum } from '../../fractions';
+import { neutralsFraction } from '../../fractions/neutrals/fraction';
 import { FrightSpell } from '../../spells/common';
 import { UnitBase } from '../types';
-
-type NEUTRAL_UNIT_TYPES =
-  'Ghosts'
-  | 'SupremeGhosts'
-  | 'Gnoll'
-  | 'Thiefs'
-  | 'ForestTrolls'
-  ;
-
-const defaultReward = {
-  gold: 0,
-  experience: 0,
-};
-
-export const neutralsFraction = Fractions.createFraction<NEUTRAL_UNIT_TYPES>(FractionsEnum.Neutrals, 'Neutrals');
 
 /*
   Theoretically, I can set default values for some params when creating fraction.

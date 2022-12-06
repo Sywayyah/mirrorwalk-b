@@ -1,10 +1,10 @@
+import { humansFraction } from '../../fractions';
 import { ItemWindCrest } from '../../items/neutral';
 import { MeteorSpell } from '../../spells/common';
-import { humansFraction } from '../../unit-types/humans';
 import { HeroBase } from '../types';
-import { createHeroModelBase, heroesDefaultResources } from '../utils';
+import { heroesDefaultResources } from '../utils';
 
-export const TaltirHero: HeroBase = createHeroModelBase({
+export const TaltirHero: HeroBase = humansFraction.createHero({
   name: 'Taltir',
   abilities: [
     MeteorSpell,
