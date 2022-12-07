@@ -85,7 +85,16 @@
       </ng-template>
     </div>
 
-    <div class="color"></div>
+    <div class="color">
+      <mw-menu [menuBody]="colorsMenu" pos="below">
+        <div style="position: relative; top: -6px;" class="color-item" [style.background]="pickedColor"></div>
+      </mw-menu>
+
+      <ng-template #colorsMenu>
+        <div *ngFor="let color of colors" class="color-item" [style.background]="color" (click)="pickColor(color)">
+        </div>
+      </ng-template>
+    </div>
   </div>
 </div>
 
