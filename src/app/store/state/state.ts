@@ -4,6 +4,7 @@ import { takeUntil } from "rxjs/operators";
 import { EventsService } from "../events/events.service";
 import { ClassMemberConfig, classMembersConfigs, classTypeMarker, ClassTypeMarkers } from "./config";
 
+/* Maybe it can be one class instead of new each time */
 
 export function StoreClient() {
   return class implements OnDestroy {

@@ -1,8 +1,10 @@
 import { Component } from '@angular/core';
 import { PLAYER_COLORS } from 'src/app/core/assets';
 import { Fraction, Fractions, humansFraction } from 'src/app/core/fractions';
-import { Hero, HeroBase } from 'src/app/core/heroes';
+import { HeroBase } from 'src/app/core/heroes';
+import { CommonUtils } from 'src/app/core/unit-types';
 import { GameCreated, GameStart } from 'src/app/features/services/events';
+import { State } from 'src/app/features/services/state.service';
 import { EventsService } from 'src/app/store';
 
 const nonPlayableFractions: Fraction<any>[] = [];
@@ -34,11 +36,18 @@ export class NewGameScreenComponent {
 
   constructor(
     private events: EventsService,
+    private state: State,
   ) {
     this.selectFraction(humansFraction);
   }
 
   public startGame(): void {
+    this.state.createdGame = {
+      fraction: this.selectedFraction || CommonUtils.randItem(this.playableFractions),
+      selectedColor: this.pickedColor,
+      selectedHero: this.selectedHero || CommonUtils.randItem(this.heroes!),
+    };
+
     this.events.dispatch(GameCreated({}));
   }
 

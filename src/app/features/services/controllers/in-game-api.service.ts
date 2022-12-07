@@ -5,9 +5,9 @@ import { GameEventsHandlers } from 'src/app/core/items';
 import { PlayerInstanceModel } from 'src/app/core/players';
 import { SpellEventHandlers, SpellInstance, SpellModel } from 'src/app/core/spells';
 import { CommonUtils, UnitGroupInstModel } from 'src/app/core/unit-types';
-import { StoreClient, WireMethod } from 'src/app/store';
+import { Notify, StoreClient, WireMethod } from 'src/app/store';
 import { VfxService } from '../../shared/components';
-import { GroupModifiersChanged, GroupSpeedChanged, InitItem, InitItemAction, InitSpell, InitSpellAction, PlayerEquipsItem, UnitHealed } from '../events';
+import { GroupModifiersChanged, GroupSpeedChanged, InitItem, InitItemAction, InitSpell, InitSpellAction, PlayerEquipsItem, PlayersInitialized, UnitHealed } from '../events';
 import { MwBattleLogService } from '../mw-battle-log.service';
 import { BattleStateService } from '../mw-battle-state.service';
 import { CombatInteractorService } from '../mw-combat-interactor.service';
@@ -29,11 +29,9 @@ export class InGameApiController extends StoreClient() {
     private itemsService: MwItemsService,
   ) {
     super();
-
-    // Keep items initialization here for a while
-    this.initPlayerItems();
   }
 
+  @Notify(PlayersInitialized)
   public initPlayerItems(): void {
     const player = this.players.getCurrentPlayer();
 

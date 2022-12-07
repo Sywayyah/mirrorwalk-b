@@ -3,9 +3,9 @@ import { BehaviorSubject } from 'rxjs';
 import { PlayerInstanceModel } from 'src/app/core/players';
 import { SpellActivationType, SpellInstance, SpellModel } from 'src/app/core/spells';
 import { UnitGroupInstModel } from 'src/app/core/unit-types';
-import { EventsService } from 'src/app/store';
+import { Notify, StoreClient } from 'src/app/store';
 import { MwPlayersService } from './';
-import { PlayerCastsInstantSpell } from './events';
+import { PlayerCastsInstantSpell, PlayersInitialized } from './events';
 
 
 export enum PlayerState {
@@ -47,9 +47,9 @@ const NULL_SPELL_INSTANCE: SpellInstance = {
 @Injectable({
   providedIn: 'root'
 })
-export class MwCurrentPlayerStateService {
+export class MwCurrentPlayerStateService extends StoreClient() {
 
-  public readonly currentPlayer: PlayerInstanceModel = this.players.getCurrentPlayer();
+  public currentPlayer!: PlayerInstanceModel;
 
   public currentSpell: SpellInstance = NULL_SPELL_INSTANCE;
 
@@ -63,8 +63,14 @@ export class MwCurrentPlayerStateService {
 
   constructor(
     private readonly players: MwPlayersService,
-    private readonly events: EventsService,
-  ) { }
+  ) {
+    super();
+  }
+
+  @Notify(PlayersInitialized)
+  public playersInit(): void {
+    this.currentPlayer = this.players.getCurrentPlayer();
+  }
 
   public resetSpellsCooldowns(): void {
     this.spellsAreOnCooldown = false;

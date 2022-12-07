@@ -2,10 +2,10 @@ import { Injectable } from '@angular/core';
 import { Hero, HeroBase } from 'src/app/core/heroes';
 import { createHeroModelBase, EMPTY_RESOURCES } from 'src/app/core/heroes/utils';
 import { SpellInstance } from 'src/app/core/spells';
-import { MwItemsService, MwSpellsService } from './';
+import { MwSpellsService } from './';
 
 const neutralHeroBase = createHeroModelBase({
-  name: 'Taltir',
+  name: 'neutral-hero',
   abilities: [],
   army: [],
   items: [],
@@ -20,9 +20,7 @@ const neutralHeroBase = createHeroModelBase({
   providedIn: 'root'
 })
 export class MwHeroesService {
-
   constructor(
-    private itemsService: MwItemsService,
     private spellsService: MwSpellsService,
   ) { }
 

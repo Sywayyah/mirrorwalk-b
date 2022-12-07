@@ -1,4 +1,6 @@
 import { Injectable } from '@angular/core';
+import { Fraction } from 'src/app/core/fractions';
+import { HeroBase } from 'src/app/core/heroes';
 import { PlayerInstanceModel } from 'src/app/core/players';
 import { StructureModel } from 'src/app/core/structures';
 
@@ -16,11 +18,10 @@ interface Feature {
   providedIn: 'root',
 })
 export class State {
-  public game!: {
-    currentPlayer: PlayerInstanceModel;
-    neutralPlayer: PlayerInstanceModel;
-    structures: StructureModel[];
-    currentStructure: StructureModel;
+  public createdGame!: {
+    selectedHero: HeroBase,
+    selectedColor: string,
+    fraction: Fraction<any>;
   };
 
   public settings: {} = {};

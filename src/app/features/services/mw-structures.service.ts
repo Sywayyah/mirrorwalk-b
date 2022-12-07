@@ -3,17 +3,19 @@ import { PlayerInstanceModel } from 'src/app/core/players';
 import { NeutralCampStructure, NeutralSite, StructureGeneratorModel, StructureModel, StructureTypeEnum } from 'src/app/core/structures';
 import { ArchersOutpostStructure, BanditCamp, BeaconOfTheUndead, BigCampStructure, CalavryStalls, GraveyardStructure, MagicRiverStructure, MountainNestStructure, WitchHutStructure } from 'src/app/core/structures/common';
 import { UnitGroupInstModel } from 'src/app/core/unit-types';
+import { Notify, StoreClient } from 'src/app/store';
 import { MwPlayersService, MwUnitGroupsService } from './';
+import { PlayersInitialized } from './events';
 
 @Injectable({
   providedIn: 'root'
 })
-export class MwStructuresService {
+export class MwStructuresService extends StoreClient() {
 
   /*
    todo: revisit this complicated structures logic, introduce maps/locations
   */
-  public neutralPlayer: PlayerInstanceModel = this.playersService.getEnemyPlayer();
+  public neutralPlayer!: PlayerInstanceModel;
 
   public structureTypes: StructureGeneratorModel[] = [
     BeaconOfTheUndead,
@@ -31,7 +33,7 @@ export class MwStructuresService {
 
   public structures: StructureModel[] = [];
 
-  public guardsMap: Record<string, UnitGroupInstModel[]>;
+  public guardsMap!: Record<string, UnitGroupInstModel[]>;
 
   public currentStruct!: StructureModel;
 
@@ -39,6 +41,13 @@ export class MwStructuresService {
     private playersService: MwPlayersService,
     private unitGroups: MwUnitGroupsService,
   ) {
+    super();
+  }
+
+  @Notify(PlayersInitialized)
+  public initStructures(): void {
+    this.neutralPlayer = this.playersService.getEnemyPlayer();
+
     this.generateStructuresByTypes();
     this.guardsMap = this.generateNewGuardsMap();
   }

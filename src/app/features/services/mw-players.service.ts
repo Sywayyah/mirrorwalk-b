@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
 import { PLAYER_COLORS } from 'src/app/core/assets';
 import { HeroBase, HERO_LEVELS_BREAKPOINTS } from 'src/app/core/heroes';
-import { HelveticaHero } from 'src/app/core/heroes/humans';
 import { ItemInstanceModel } from 'src/app/core/items';
 import { PlayerInstanceModel, PlayerModel, PlayerTypeEnum } from 'src/app/core/players';
 import { ResourcesModel } from 'src/app/core/resources';
 import { CommonUtils, UnitGroupInstModel, UnitGroupModel } from 'src/app/core/unit-types';
-import { EventsService } from 'src/app/store';
+import { Notify, StoreClient } from 'src/app/store';
 import { MwHeroesService, MwUnitGroupsService } from './';
-import { PlayerEquipsItem, PlayerGainsLevel, PlayerUnequipsItem } from './events/';
+import { GameCreated, PlayerEquipsItem, PlayerGainsLevel, PlayersInitialized, PlayerUnequipsItem } from './events/';
+import { State } from './state.service';
 
 
 // const mainPlayerGroups = GenerationUtils.createRandomArmy({
@@ -53,16 +53,31 @@ const defaultResources: ResourcesModel = {
 @Injectable({
   providedIn: 'root'
 })
-export class MwPlayersService {
+export class MwPlayersService extends StoreClient() {
 
-  public players: Map<string, PlayerInstanceModel> = new Map([
-    this.createPlayerEntry(PLAYER_IDS.Main, this.createPlayerWithHero(
-      PLAYER_COLORS.BLUE,
-      HelveticaHero,
+  public players: Map<string, PlayerInstanceModel> = new Map();
+
+  private currentPlayerId: string = PLAYER_IDS.Main;
+
+  constructor(
+    private readonly heroesService: MwHeroesService,
+    private readonly unitGroups: MwUnitGroupsService,
+    private readonly state: State,
+  ) {
+    super();
+  }
+
+  @Notify(GameCreated)
+  public initPlayersOnGameStart(): void {
+    const [mainPlayerId, mainPlayer] = this.createPlayerEntry(PLAYER_IDS.Main, this.createPlayerWithHero(
+      this.state.createdGame.selectedColor,
+      this.state.createdGame.selectedHero,
       PlayerTypeEnum.Player,
-    )),
+    ));
 
-    this.createPlayerEntry(PLAYER_IDS.Neutral, {
+    this.players.set(mainPlayerId, mainPlayer);
+
+    const [neutralPlayerId, neutralPlayer] = this.createPlayerEntry(PLAYER_IDS.Neutral, {
       color: PLAYER_COLORS.GRAY,
       type: PlayerTypeEnum.AI,
       hero: this.heroesService.createNeutralHero(),
@@ -70,16 +85,12 @@ export class MwPlayersService {
       resources: {
         ...defaultResources,
       },
-    }),
-  ]);
+    });
 
-  private currentPlayerId: string = PLAYER_IDS.Main;
+    this.players.set(neutralPlayerId, neutralPlayer);
 
-  constructor(
-    private readonly heroesService: MwHeroesService,
-    private readonly unitGroups: MwUnitGroupsService,
-    private events: EventsService,
-  ) { }
+    this.events.dispatch(PlayersInitialized({}));
+  }
 
   public getCurrentPlayer(): PlayerInstanceModel {
     return this.players.get(this.currentPlayerId) as PlayerInstanceModel;
