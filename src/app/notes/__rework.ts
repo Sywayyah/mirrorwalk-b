@@ -9,11 +9,6 @@
           Structures are currently swampy and unclear, hard to work with,
           also gonna need to rework popups along with structures.
 
-        Fractions:
-          Heroes might also be created from a fraction, also fraction
-          might set up some default parameters so I won't need to specify
-          some default or experimental parameters repeatedly.
-
         Assets:
           Assets should be optimized and size must be reduced, frames should become customizable,
           more assets in the future.
@@ -56,6 +51,8 @@
           Also, from now it is easier to introduce new screens, to declare reusable
           components and keep it all distunguished from everything else.
 
+          For now, heroes and unit groups are created from fractions.
+
         Changed project structure from dict/models to grouped related entities:
           Now it's more concise, early on it was messy and it was hard to
           keep track of what there is in the project. Also, much cleaner
@@ -81,4 +78,7 @@
           approach to create popups by passing component class via service
           (there is also a base class for convinient work with popups).
           Also, now there is a controller for popups.
+
+        Menus:
+          Now, aside from hints, there is also menu with similar api.
 */
