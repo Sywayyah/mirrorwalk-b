@@ -2,7 +2,7 @@ import { PlayerInstanceModel } from '../players';
 import { UnitBase, UnitGroupModel, UnitGroupInstModel } from './types';
 
 /* unit type, minCount, maxCount, maxGroupsOfThisType */
-type UnitModel = [UnitBase, number, number, number | void];
+type UnitModel = [unitType: UnitBase, min: number, max: number, maxOfThisType: number | void];
 
 export interface GenerationModel {
   minUnitGroups: number;
