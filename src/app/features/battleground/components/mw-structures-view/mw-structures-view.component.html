@@ -1,38 +1,22 @@
 <div class="centered-panel">
-  <div>Structures:</div>
-  <div *ngFor="let structure of structures">
-    <ng-container [ngSwitch]="structure.type">
-      <ng-container *ngSwitchCase="structureTypes.NeutralCamp">
-        <ng-container *ngTemplateOutlet="neutralCamp; context: {structure: structure}"></ng-container>
-      </ng-container>
+  <div class="map-view" style="height: 300px; width: 300px; position: absolute; left: 50%; top: 50%">
+    <div *ngFor="let struct of structsService.viewStructures">
+      <mw-ra-icon
+        [style.borderColor]="structsService.playerCurrentLocId === struct.id ? state.createdGame.selectedColor : 'rgb(90, 90, 90)'"
+        [class.disabled]="!structsService.availableStructuresMap[struct.id]" (click)="handleStructure(struct)"
+        [style.left.px]="struct.x" [style.top.px]="struct.y" class="struct-icon" [icon]="struct.icon"></mw-ra-icon>
 
-      <ng-container *ngSwitchCase="structureTypes.NeutralSite">
-        <ng-container *ngTemplateOutlet="neutralSite; context: {structure: structure}"></ng-container>
-      </ng-container>
-    </ng-container>
+      <!-- <mw-ra-icon *ngIf="playerCurrentLocId === struct.id" style="position: absolute; z-index: 70" icon="castle-flag"></mw-ra-icon> -->
+
+      <svg *ngIf="struct.svg" class="path-line" [style.left.px]="struct.svg.x" [style.top.px]="struct.svg.y"
+        [attr.width]="struct.svg.width" [attr.height]="struct.svg.height" version="1.1"
+        xmlns="http://www.w3.org/2000/svg">
+        <line class="line" stroke-dasharray="10, 13" [attr.x1]="struct.svg.ox" [attr.y1]="struct.svg.oy"
+          [attr.x2]="struct.svg.tx" [attr.y2]="struct.svg.ty">
+        </line>
+      </svg>
+    </div>
   </div>
 </div>
 
 <mw-player-info-panel class="player-info-panel"></mw-player-info-panel>
-
-<ng-template #neutralCamp let-structure="structure">
-  <!-- todo: For the sake of better typization, these templates should be components -->
-  <div class="structure" (click)="onStructureSelected(structure)" [class.inactive]="structure.isInactive">
-    {{structure.generator.name}}
-    <!-- {{structure.type}} -->
-    <div *ngIf="structure.reward" style="font-size: 12px;">Reward: {{structure.reward?.type}}</div>
-    <div *ngIf="structure.isDefeated">Defeated:</div>
-    <div class="guards" *ngFor="let guards of guardsMap[structure.id]">
-      <!-- Aggregate, or remove later -->
-      {{guards.type.name}}: {{guards.count}}
-    </div>
-  </div>
-</ng-template>
-
-<ng-template #neutralSite let-structure="structure">
-  <div class="structure" (click)="onStructureSelected(structure)" [class.inactive]="structure.isInactive">
-    {{structure.generator.name}}
-    <!-- <div *ngIf="structure.reward" style="font-size: 12px;">Reward: {{structure.reward?.type}}</div> -->
-    <div *ngIf="structure.isDefeated">Defeated:</div>
-  </div>
-</ng-template>
