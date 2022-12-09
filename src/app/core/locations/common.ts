@@ -1,5 +1,5 @@
 import { StructureGeneratorModel, StructureModel } from '../structures';
-import { ArchersOutpostStructure, BanditCamp, BeaconOfTheUndead, GraveyardStructure, MagicRiverStructure, MountainNestStructure, WitchHutStructure } from '../structures/common';
+import { ArchersOutpostStructure, BanditCamp, BeaconOfTheUndead, BigCampStructure, CalavryStalls, GraveyardStructure, MagicRiverStructure, MountainNestStructure, WitchHutStructure } from '../structures/common';
 
 /* Think more here, customizable locations, more location types (resource piles, single guards, etc.) */
 
@@ -90,6 +90,24 @@ const brBranch: StructureDescription[] = [
     pathTo: '8',
 
     struct: BanditCamp,
+  },
+  {
+    id: '22',
+    x: 170,
+    y: 141,
+    icon: 'horseshoe',
+    pathTo: '8',
+
+    struct: CalavryStalls,
+  },
+  {
+    id: '20',
+    x: 45,
+    y: 145,
+    icon: 'monster-skull',
+    pathTo: '9',
+
+    struct: BigCampStructure,
   },
 ];
 

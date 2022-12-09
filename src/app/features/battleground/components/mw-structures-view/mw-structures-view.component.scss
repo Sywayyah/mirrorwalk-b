@@ -34,10 +34,11 @@
   stroke: rgb(0, 0, 0);
   stroke-width: 5;
   stroke-dashoffset: 0;
+  opacity: 0.6;
 }
 
 .available {
-  outline: 3.3px solid #e3d069;
+  // outline: 2px solid #e3d069;
 }
 
 .struct-icon {
@@ -67,13 +68,18 @@
   filter: brightness(0.7);
 }
 
+.struct-icon:not(.disabled)~.path-line {
+  opacity: 1;
+}
+
 .struct-icon:hover~.path-line {
-  opacity: 0.6;
+  // opacity: 0.6;
 
   >.line {
     stroke-width: 7;
     animation: pathanim 2s linear infinite;
   }
+
 }
 
 .structure {
