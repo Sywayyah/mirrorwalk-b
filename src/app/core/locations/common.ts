@@ -1,5 +1,5 @@
 import { StructureGeneratorModel, StructureModel } from '../structures';
-import { BanditCamp, BeaconOfTheUndead, GraveyardStructure, MountainNestStructure } from '../structures/common';
+import { ArchersOutpostStructure, BanditCamp, BeaconOfTheUndead, GraveyardStructure, MagicRiverStructure, MountainNestStructure, WitchHutStructure } from '../structures/common';
 
 /* Think more here, customizable locations, more location types (resource piles, single guards, etc.) */
 
@@ -10,6 +10,7 @@ export interface StructureDescription {
   id: string;
   pathTo?: string;
   struct?: StructureGeneratorModel;
+  isRoot?: boolean;
 }
 
 export interface ViewStructure {
@@ -19,6 +20,8 @@ export interface ViewStructure {
   y: number;
 
   icon: string;
+
+  isRoot?: boolean;
 
   pathTo?: string;
 
@@ -59,6 +62,16 @@ const brBranch: StructureDescription[] = [
     pathTo: '2',
 
     struct: BanditCamp,
+  },
+  {
+    id: '17',
+    x: 180,
+    y: 60,
+    icon: 'book',
+    pathTo: '5',
+
+    struct: WitchHutStructure,
+
   },
   {
     id: '8',
@@ -110,6 +123,25 @@ const tlBranch: StructureDescription[] = [
 
     struct: BanditCamp,
   },
+  {
+    id: '14',
+    x: -40,
+    y: -120,
+    icon: 'incense',
+    pathTo: '6',
+
+    struct: MagicRiverStructure,
+  },
+  {
+    id: '15',
+
+    x: 50,
+    y: -110,
+    icon: 'tower',
+    pathTo: '6',
+
+    struct: ArchersOutpostStructure,
+  }
 ];
 
 const trBranch: StructureDescription[] = [
@@ -130,6 +162,7 @@ export const initialStructs: StructureDescription[] = [
     x: 0,
     y: 0,
     icon: 'campfire',
+    isRoot: true,
   },
   ...brBranch,
   ...blBranch,

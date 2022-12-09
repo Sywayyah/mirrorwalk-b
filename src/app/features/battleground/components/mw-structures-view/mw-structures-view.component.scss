@@ -36,6 +36,10 @@
   stroke-dashoffset: 0;
 }
 
+.available {
+  outline: 3.3px solid #e3d069;
+}
+
 .struct-icon {
   position: absolute;
   cursor: pointer;
@@ -68,7 +72,7 @@
 
   >.line {
     stroke-width: 7;
-    animation: pathanim 2s linear infinite ;
+    animation: pathanim 2s linear infinite;
   }
 }
 

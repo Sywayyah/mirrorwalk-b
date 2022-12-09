@@ -29,6 +29,8 @@ export class MwStructuresService extends StoreClient() {
 
   public currentStruct!: StructureModel;
 
+  public structsMap = new Map<string, ViewStructure>();
+
   constructor(
     private playersService: MwPlayersService,
     private unitGroups: MwUnitGroupsService,
@@ -41,9 +43,10 @@ export class MwStructuresService extends StoreClient() {
     this.neutralPlayer = this.playersService.getEnemyPlayer();
 
     this.viewStructures = this.createViewStructures(initialStructs);
+    this.viewStructures.forEach((struct) => this.structsMap.set(struct.id, struct));
     this.playerCurrentLocId = '1';
     this.updateParentLinks();
-    this.updateAvailableLocs();
+    this.updateAvailableStructures();
     this.guardsMap = this.generateNewGuardsMap();
   }
 
@@ -54,9 +57,9 @@ export class MwStructuresService extends StoreClient() {
     });
   }
 
-  public updateAvailableLocs(): void {
+  public updateAvailableStructures(): void {
     Object.keys(this.availableStructuresMap).forEach(structId => {
-      const childStructures = this.viewStructures.filter(struct => struct.parentStructs.has(structId));
+      const childStructures = this.viewStructures.filter(struct => [...struct.parentStructs].find(parentId => this.structsMap.get(parentId)?.visited) && struct.parentStructs.has(structId));
       childStructures.forEach(struct => this.availableStructuresMap[struct.id] = true);
     });
   }
@@ -71,16 +74,17 @@ export class MwStructuresService extends StoreClient() {
         parentStructs: new Set(),
       };
 
-      if (struct.id === '1') {
-        viewStrcuture.visited = true;
-        this.availableStructuresMap['1'] = true;
-      }
-
       const pathTo = struct.pathTo;
 
       if (struct.struct) {
         viewStrcuture.structure = this.createStructure(struct.id, struct.struct);
         console.log('view structure: ', viewStrcuture.structure);
+      }
+
+      if (struct.isRoot) {
+        viewStrcuture.isRoot = true;
+        viewStrcuture.visited = true;
+        this.availableStructuresMap[struct.id] = true;
       }
 
       if (pathTo) {
@@ -172,8 +176,4 @@ export class MwStructuresService extends StoreClient() {
 
     return guardsMap;
   }
-
-
-
-
 }
