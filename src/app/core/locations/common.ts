@@ -1,5 +1,7 @@
+import { ResourceType } from '../resources';
 import { StructureGeneratorModel, StructureModel } from '../structures';
 import { ArchersOutpostStructure, BanditCamp, BeaconOfTheUndead, BigCampStructure, CalavryStalls, GraveyardStructure, MagicRiverStructure, MountainNestStructure, WitchHutStructure } from '../structures/common';
+import { resPileStructure } from '../structures/common/resource-pile';
 
 /* Think more here, customizable locations, more location types (resource piles, single guards, etc.) */
 
@@ -64,6 +66,15 @@ const brBranch: StructureDescription[] = [
     struct: BanditCamp,
   },
   {
+    id: '51',
+    x: 140,
+    y: -10,
+    icon: 'gold-bar',
+    pathTo: '5',
+
+    struct: resPileStructure(ResourceType.Gold, 500),
+  },
+  {
     id: '17',
     x: 180,
     y: 60,
@@ -111,6 +122,17 @@ const brBranch: StructureDescription[] = [
   },
 ];
 
+const fifthBranch: StructureDescription[] = [
+  {
+    id: '50',
+    pathTo: '1',
+    x: -30,
+    y: 70,
+    icon: 'hand-saw',
+    struct: resPileStructure(ResourceType.Wood, 4),
+  }
+];
+
 const blBranch: StructureDescription[] = [
   {
     id: '3',
@@ -136,7 +158,7 @@ const tlBranch: StructureDescription[] = [
     id: '6',
     x: -60,
     y: -60,
-    icon: 'hand-saw',
+    icon: 'sword',
     pathTo: '1',
 
     struct: BanditCamp,
@@ -159,6 +181,15 @@ const tlBranch: StructureDescription[] = [
     pathTo: '6',
 
     struct: ArchersOutpostStructure,
+  },
+  {
+    id: '53',
+
+    x: 70,
+    y: -170,
+    icon: 'crystals',
+    pathTo: '15',
+    struct: resPileStructure(ResourceType.Gems, 3),
   }
 ];
 
@@ -182,6 +213,7 @@ export const initialStructs: StructureDescription[] = [
     icon: 'campfire',
     isRoot: true,
   },
+  ...fifthBranch,
   ...brBranch,
   ...blBranch,
   ...tlBranch,

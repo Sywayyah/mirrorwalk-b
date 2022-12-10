@@ -1,4 +1,5 @@
 import { PlayerInstanceModel } from '../../players';
+import { ResourceType } from '../../resources';
 import { SpellInstance, SpellModel } from '../../spells';
 import { UnitGroupInstModel, UnitBase } from '../../unit-types';
 import { SpellCreationOptions } from '../combat-api';
@@ -14,6 +15,8 @@ export interface PlayersApi {
 
   addUnitGroupToPlayer: (player: PlayerInstanceModel, unitType: UnitBase, count: number) => void;
   addExperienceToPlayer: (player: PlayerInstanceModel, xpAmount: number) => void;
+
+  addResourcesToPlayer: (player: PlayerInstanceModel, type: ResourceType, amount: number) => void;
 }
 
 export interface SpellsApi {

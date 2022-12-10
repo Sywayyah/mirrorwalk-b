@@ -3,6 +3,7 @@
     <div *ngFor="let struct of structsService.viewStructures">
       <mw-ra-icon
       [class.available]="structsService.availableStructuresMap[struct.id] && !struct.visited"
+      [class.completed]="struct.visited"
         [style.borderColor]="structsService.playerCurrentLocId === struct.id ? state.createdGame.selectedColor : 'rgb(90, 90, 90)'"
         [class.disabled]="!structsService.availableStructuresMap[struct.id]" (click)="handleStructure(struct)"
         [style.left.px]="struct.x" [style.top.px]="struct.y" class="struct-icon" [icon]="struct.icon"></mw-ra-icon>

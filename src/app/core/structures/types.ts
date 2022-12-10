@@ -20,6 +20,7 @@ interface OnVisitedParams {
 
 export interface StructureGeneratorModel {
   name: string;
+  icon?: string;
   control: StuctureControl;
   description?: string,
   /* looks good. it can be impossible to describe all possible logic data-driven,

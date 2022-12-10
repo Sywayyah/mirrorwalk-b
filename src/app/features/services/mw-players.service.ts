@@ -3,7 +3,7 @@ import { PLAYER_COLORS } from 'src/app/core/assets';
 import { HeroBase, HERO_LEVELS_BREAKPOINTS } from 'src/app/core/heroes';
 import { ItemInstanceModel } from 'src/app/core/items';
 import { PlayerInstanceModel, PlayerModel, PlayerTypeEnum } from 'src/app/core/players';
-import { ResourcesModel } from 'src/app/core/resources';
+import { ResourcesModel, ResourceType } from 'src/app/core/resources';
 import { CommonUtils, UnitGroupInstModel, UnitGroupModel } from 'src/app/core/unit-types';
 import { Notify, StoreClient } from 'src/app/store';
 import { MwHeroesService, MwUnitGroupsService } from './';
@@ -94,6 +94,14 @@ export class MwPlayersService extends StoreClient() {
 
   public getCurrentPlayer(): PlayerInstanceModel {
     return this.players.get(this.currentPlayerId) as PlayerInstanceModel;
+  }
+
+  public addResourcesToPlayer(
+    player: PlayerInstanceModel,
+    resource: ResourceType,
+    amount: number,
+  ): void {
+    player.resources[resource] += amount;
   }
 
   public getCurrentPlayerId(): string {
