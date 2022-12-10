@@ -15,8 +15,8 @@ export class StructuresController extends StoreClient() {
   @WireMethod(StructCompleted)
   public handleCompletedStructure(event: NeutralStructParams): void {
     this.structuresService.availableStructuresMap[event.struct.id] = true;
+    this.structuresService.structsMap.get(event.struct.id)!.visited = true;
     this.structuresService.playerCurrentLocId = event.struct.id;
-    this.structuresService.updateAvailableLocs();
+    this.structuresService.updateAvailableStructures();
   }
-
 }
