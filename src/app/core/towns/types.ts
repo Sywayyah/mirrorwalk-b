@@ -1,4 +1,6 @@
+import { humansFraction } from '../fractions';
 import { Resources } from '../resources';
+import { UnitBase } from '../unit-types';
 
 type CastleTownBuildings = 'town-center'
   | 'market'
@@ -11,14 +13,23 @@ type CastleTownBuildings = 'town-center'
   | 'cavalry-halls'
   | 'magic-tower';
 
-enum BuildingActivity {
+enum ActivityTypes {
   Hiring,
+}
+
+interface BuildingAcitivty<T extends ActivityTypes = ActivityTypes> {
+  type: T;
+}
+
+interface HiringActivity extends BuildingAcitivty<ActivityTypes.Hiring> {
+  hiring: { type: UnitBase, count: number, refillDaysInterval: number }[];
 }
 
 export interface Building {
   name: string;
   cost: Resources;
   upgrade?: Building;
+  activity?: BuildingAcitivty;
 }
 
 
@@ -47,9 +58,15 @@ const tavern = {
   cost: { gold: 100, wood: 2 },
 };
 
-const trainingCamp = {
+const trainingCamp: Building = {
   name: 'Training Camp',
   cost: { gold: 500 },
+  activity: {
+    type: ActivityTypes.Hiring,
+    hiring: [
+      { type: humansFraction.getUnitType('Pikeman'), count: 14, refillDaysInterval: 3 },
+    ]
+  } as HiringActivity,
 };
 
 const archersOutpost = {
