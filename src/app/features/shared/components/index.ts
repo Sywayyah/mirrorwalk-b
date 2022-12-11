@@ -10,3 +10,5 @@ export * from './vfx-element/vfx-element.component';
 export * from './vfx-layer';
 export * from './main-button/main-button.component';
 export * from './menu/menu.component';
+export * from './mw-player-info-panel/mw-player-info-panel.component';
+export * from './mw-experience-bar/mw-experience-bar.component';

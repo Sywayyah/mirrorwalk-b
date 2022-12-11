@@ -1,18 +1,16 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { SharedModule } from '../shared/shared.module';
-import { HiringRewardPopupComponent, ItemIconComponent, ItemRewardPopupComponent, MwActionHintComponent, MwBattleHeroAbilitiesComponent, MwExperienceBarComponent, MwGameboardComponent, MwHistoryLogComponent, MwItemsPanelComponent, MwPlayerInfoPanelComponent, MwPlayerResourcesComponent, MwSpellButtonComponent, MwStructuresViewComponent, MwUnitGroupCardComponent, MwUnitGroupsListComponent, PostFightRewardPopupComponent, PreFightPopupComponent, PreviewPopupComponent, ResourcesRewardPopupComponent, ScriptedRewardPopupComponent, UnitGroupBuffComponent, UnitGroupSpellComponent, UpgradeRewardPopup } from './components';
+import { HiringRewardPopupComponent, ItemIconComponent, ItemRewardPopupComponent, MwActionHintComponent, MwBattleHeroAbilitiesComponent, MwGameboardComponent, MwHistoryLogComponent, MwItemsPanelComponent, MwPlayerResourcesComponent, MwSpellButtonComponent, MwUnitGroupCardComponent, MwUnitGroupsListComponent, PostFightRewardPopupComponent, PreFightPopupComponent, PreviewPopupComponent, ResourcesRewardPopupComponent, ScriptedRewardPopupComponent, UnitGroupBuffComponent, UnitGroupSpellComponent, UpgradeRewardPopup } from './components';
 
 const components = [
   ItemIconComponent,
   MwActionHintComponent,
   MwBattleHeroAbilitiesComponent,
-  MwExperienceBarComponent,
   MwGameboardComponent,
   MwHistoryLogComponent,
   MwItemsPanelComponent,
   MwPlayerResourcesComponent,
-  MwPlayerInfoPanelComponent,
   HiringRewardPopupComponent,
   ItemRewardPopupComponent,
   PostFightRewardPopupComponent,
@@ -22,7 +20,6 @@ const components = [
   ScriptedRewardPopupComponent,
   UpgradeRewardPopup,
   MwSpellButtonComponent,
-  MwStructuresViewComponent,
   MwUnitGroupCardComponent,
   MwUnitGroupsListComponent,
   UnitGroupBuffComponent,
