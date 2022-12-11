@@ -11,11 +11,16 @@ type CastleTownBuildings = 'town-center'
   | 'cavalry-halls'
   | 'magic-tower';
 
+enum BuildingActivity {
+  Hiring,
+}
+
 export interface Building {
   name: string;
   cost: Resources;
   upgrade?: Building;
 }
+
 
 export interface TownBase<T extends string> {
   name: string;
