@@ -12,3 +12,5 @@ export interface ResourcesModel {
     [ResourceType.RedCrystals]: number;
     [ResourceType.Gems]: number;
 }
+
+export type Resources = Partial<ResourcesModel>;
