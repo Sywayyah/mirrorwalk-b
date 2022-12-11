@@ -69,10 +69,10 @@ const brBranch: StructureDescription[] = [
     id: '51',
     x: 140,
     y: -10,
-    icon: 'gold-bar',
+    icon: 'hand-saw',
     pathTo: '5',
 
-    struct: resPileStructure(ResourceType.Gold, 500),
+    struct: resPileStructure(ResourceType.Wood, 4),
   },
   {
     id: '17',
@@ -128,8 +128,8 @@ const fifthBranch: StructureDescription[] = [
     pathTo: '1',
     x: -30,
     y: 70,
-    icon: 'hand-saw',
-    struct: resPileStructure(ResourceType.Wood, 4),
+    icon: 'gold-bar',
+    struct: resPileStructure(ResourceType.Gold, 650),
   }
 ];
 

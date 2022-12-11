@@ -1,26 +1,26 @@
 .groups-container {
-    display: flex;
+  display: flex;
 }
 
 .player-group-card {
-    height: 64px;
-    width: 64px;
-    color: white;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    text-align: center;
-    border-radius: 4px;
-    font-size: 13px;
-    margin: 3px;
+  height: 64px;
+  width: 64px;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  border-radius: 4px;
+  font-size: 13px;
+  margin: 3px;
 
 }
 
 .skillpoints {
-    border: 1px solid gold;
-    padding: 3px;
-    font-size: 12px;
-    cursor: pointer;
-    margin: 3px;
-    max-width: 200px;
+  border: 1px solid gold;
+  padding: 3px;
+  font-size: 12px;
+  cursor: pointer;
+  margin: 3px;
+  max-width: 200px;
 }

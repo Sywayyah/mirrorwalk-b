@@ -6,6 +6,7 @@ import { UnitGroupInstModel } from 'src/app/core/unit-types';
 
 export type StructSelectedEvent = { struct: StructureModel };
 export type NeutralStructParams = { struct: NeutralCampStructure };
+export type NewDayParams = { day: number };
 export type FightStartsEvent = { unitGroups: UnitGroupInstModel[], players: PlayerInstanceModel[] };
 export type InitSpellAction = { spell: SpellInstance, player: PlayerInstanceModel, ownerUnit?: UnitGroupInstModel };
 export type InitItemAction = { item: ItemInstanceModel, ownerPlayer: PlayerInstanceModel };
