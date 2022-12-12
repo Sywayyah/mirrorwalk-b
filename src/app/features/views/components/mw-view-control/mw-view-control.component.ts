@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { DisplayReward, GameCreated, GameStart, NeutralStructParams, NewGameCreation, StructCompleted, StructFightConfirmed } from 'src/app/features/services/events';
+import { DisplayReward, GameCreated, GameStart, NeutralStructParams, NewGameCreation, PlayerEntersTown, PlayerLeavesTown, StructCompleted, StructFightConfirmed } from 'src/app/features/services/events';
 import { Notify, StoreClient, WireMethod } from 'src/app/store';
 
 enum ViewsEnum {
@@ -8,6 +8,7 @@ enum ViewsEnum {
 
   Structures = 'structures',
   Battleground = 'battleground',
+  Town = 'town',
 }
 
 @Component({
@@ -29,6 +30,7 @@ export class MwViewControlComponent extends StoreClient() {
     this.currentView = ViewsEnum.NewGame;
   }
 
+  @Notify(PlayerLeavesTown)
   @Notify(GameCreated)
   public newGameCreated(): void {
     this.currentView = ViewsEnum.Structures;
@@ -47,5 +49,10 @@ export class MwViewControlComponent extends StoreClient() {
     this.events.dispatch(DisplayReward({
       struct: event.struct
     }));
+  }
+
+  @Notify(PlayerEntersTown)
+  public displayTown(): void {
+    this.currentView = ViewsEnum.Town;
   }
 }

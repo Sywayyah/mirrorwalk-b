@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Fraction } from 'src/app/core/fractions';
 import { HeroBase } from 'src/app/core/heroes';
 import { defaultTravelPointsPerDay } from 'src/app/core/locations';
+import { Town } from 'src/app/core/towns';
 
 /*
   I think I want to have state parts as separated features, maybe don't want to have all
@@ -26,6 +27,7 @@ export class State {
     selectedHero: HeroBase,
     selectedColor: string,
     fraction: Fraction<any>;
+    town: Town<any>;
   };
 
   public currentGame: GameState = {

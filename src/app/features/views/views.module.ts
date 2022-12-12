@@ -5,6 +5,7 @@ import { MainScreenModule } from '../main-screen/main-screen.module';
 import { MapStructuresModule } from '../map-structures/map-structures.module';
 import { NewGameScreenModule } from '../new-game-screen/new-game-screen.module';
 import { SharedModule } from '../shared/shared.module';
+import { TownsModule } from '../towns/towns.module';
 import { MwViewControlComponent } from './components';
 
 const components = [
@@ -21,6 +22,7 @@ const components = [
     MainScreenModule,
     NewGameScreenModule,
     MapStructuresModule,
+    TownsModule,
   ],
 })
 export class ViewsModule { }

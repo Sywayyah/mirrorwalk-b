@@ -12,6 +12,10 @@ export const GameCreated = gameEvent();
 
 export const PlayersInitialized = gameEvent();
 
+export const PlayerEntersTown = gameEvent();
+
+export const PlayerLeavesTown = gameEvent();
+
 export const StructSelected = gameEvent<StructSelectedEvent>();
 
 export const PlayerStartsFight = gameEvent<FightStartsEvent>();

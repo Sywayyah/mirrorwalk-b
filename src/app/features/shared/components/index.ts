@@ -12,3 +12,4 @@ export * from './main-button/main-button.component';
 export * from './menu/menu.component';
 export * from './mw-player-info-panel/mw-player-info-panel.component';
 export * from './mw-experience-bar/mw-experience-bar.component';
+export * from './icon-btn/icon-btn.component';

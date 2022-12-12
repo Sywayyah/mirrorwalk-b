@@ -1,51 +1,9 @@
 import { ResourceType } from '../resources';
-import { StructureGeneratorModel, StructureModel } from '../structures';
 import { ArchersOutpostStructure, BanditCamp, BeaconOfTheUndead, BigCampStructure, CalavryStalls, GraveyardStructure, MagicRiverStructure, MountainNestStructure, WitchHutStructure } from '../structures/common';
 import { resPileStructure } from '../structures/common/resource-pile';
+import { StructureDescription } from './types';
 
 /* Think more here, customizable locations, more location types (resource piles, single guards, etc.) */
-
-export interface StructureDescription {
-  x: number;
-  y: number;
-  icon: string;
-  id: string;
-  pathTo?: string;
-  struct?: StructureGeneratorModel;
-  isRoot?: boolean;
-}
-
-export interface ViewStructure {
-  id: string;
-
-  x: number;
-  y: number;
-
-  icon: string;
-
-  isRoot?: boolean;
-
-  pathTo?: string;
-
-  visited?: boolean;
-  parentStructs: Set<string>;
-
-  structure?: StructureModel;
-
-  svg?: {
-    x: number;
-    y: number;
-    width: number;
-    height: number;
-
-    // origin x,y
-    ox: number;
-    oy: number;
-    // target x,y
-    tx: number;
-    ty: number;
-  }
-}
 
 const brBranch: StructureDescription[] = [
   {
@@ -187,7 +145,7 @@ const tlBranch: StructureDescription[] = [
 
     x: 70,
     y: -170,
-    icon: 'crystals',
+    icon: 'emerald',
     pathTo: '15',
     struct: resPileStructure(ResourceType.Gems, 3),
   }

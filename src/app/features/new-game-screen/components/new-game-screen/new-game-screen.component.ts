@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { PLAYER_COLORS } from 'src/app/core/assets';
 import { Fraction, Fractions, humansFraction } from 'src/app/core/fractions';
 import { HeroBase } from 'src/app/core/heroes';
+import { TownBase } from 'src/app/core/towns';
 import { CommonUtils } from 'src/app/core/unit-types';
 import { GameCreated, GameStart } from 'src/app/features/services/events';
 import { State } from 'src/app/features/services/state.service';
@@ -42,11 +43,25 @@ export class NewGameScreenComponent {
   }
 
   public startGame(): void {
+    const fraction = this.selectedFraction || CommonUtils.randItem(this.playableFractions);
+    const townBase = fraction.getTownBase() as TownBase<any>;
+
     this.state.createdGame = {
-      fraction: this.selectedFraction || CommonUtils.randItem(this.playableFractions),
+      fraction,
       selectedColor: this.pickedColor,
       selectedHero: this.selectedHero || CommonUtils.randItem(this.heroes!),
+      town: {
+        base: townBase,
+        buildings: Object.keys(townBase.availableBuildings).reduce((acc, buildingId) => {
+          return {
+            ...acc,
+            [buildingId]: { currentLevel: 0 },
+          }
+        }, {}),
+      },
     };
+
+    console.log(this.state.createdGame);
 
     this.events.dispatch(GameCreated({}));
   }

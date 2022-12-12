@@ -1,0 +1,15 @@
+<mw-icon-btn icon="sideswipe" style="padding: 0px 10px; position: fixed; bottom: 10px;"
+  (click)="leaveTown()"></mw-icon-btn>
+
+<div class="buildings">
+  <div class="building" *ngFor="let building of town.buildings | keyvalue">
+    <div class="header">
+      <!-- {{building.key}} -->
+      {{town.base.availableBuildings[building.key].levels[building.value.currentLevel].building.name}}
+    </div>
+
+    <hr style="width: 100%; border-top: 0;">
+
+    <mw-ra-icon icon="hammer"></mw-ra-icon>
+  </div>
+</div>

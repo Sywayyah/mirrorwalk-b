@@ -1,0 +1,19 @@
+.buildings {
+  display: flex;
+}
+
+.building {
+  display: flex;
+  flex-direction: column;
+  background-color: rgb(100, 100, 100);
+  color: white;
+  text-align: center;
+  margin: 5px;
+  border-radius: 8px;
+  max-width: 115px;
+  font-size: 14px;
+
+  .header {
+    padding: 10px;
+  }
+}

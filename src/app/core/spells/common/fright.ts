@@ -1,4 +1,5 @@
 import { UnitGroupInstModel } from '../../unit-types';
+import { FrightAnimation } from '../../vfx';
 import { SpellEventTypes } from '../spell-events';
 import { SpellModel, SpellActivationType } from '../types';
 import { debuffColors } from '../utils';
@@ -16,7 +17,7 @@ export const FrightSpellDebuff: SpellModel<{ frighter: UnitGroupInstModel }> = {
       name: 'Fright',
     },
     spellConfig: {
-      init({ actions, events, spellInstance }) {
+      init({ actions, events, spellInstance, vfx }) {
         events.on({
           [SpellEventTypes.SpellPlacedOnUnitGroup]({ target }) {
             const reducedDamageCMod = actions.createModifiers({
@@ -30,6 +31,9 @@ export const FrightSpellDebuff: SpellModel<{ frighter: UnitGroupInstModel }> = {
               }
             });
 
+            vfx.createEffectForUnitGroup(target, FrightAnimation, {
+              duration: 1000,
+            });
             actions.addModifiersToUnitGroup(target, reducedDamageCMod);
           },
         })

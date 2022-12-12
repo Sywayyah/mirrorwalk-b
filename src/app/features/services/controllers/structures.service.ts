@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { defaultTravelPointsCost, defaultTravelPointsPerDay } from 'src/app/core/locations';
 import { StoreClient, WireMethod } from 'src/app/store';
-import { NeutralStructParams, NewDayStarted, StructCompleted } from '../events';
+import { NeutralStructParams, NewDayStarted, PlayerEntersTown, StructCompleted } from '../events';
 import { MwStructuresService } from '../mw-structures.service';
 import { State } from '../state.service';
 
@@ -32,4 +32,5 @@ export class StructuresController extends StoreClient() {
       }));
     }
   }
+
 }
