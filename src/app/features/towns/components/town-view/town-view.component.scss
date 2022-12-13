@@ -1,5 +1,9 @@
 .buildings {
   display: flex;
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .building {
@@ -11,6 +15,7 @@
   margin: 5px;
   border-radius: 8px;
   max-width: 115px;
+  min-width: 115px;
   font-size: 14px;
 
   .header {

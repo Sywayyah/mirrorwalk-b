@@ -1,5 +1,5 @@
 import { humansFraction } from '../../fractions';
-import { ActivityTypes, Building, HiringActivity, TownBase } from '../types';
+import { ActivityTypes, BuidlingBase, HiringActivity, TownBase } from '../types';
 
 
 export type CastleTownBuildings = 'town-center'
@@ -14,23 +14,23 @@ export type CastleTownBuildings = 'town-center'
   | 'magic-tower';
 
 
-const townCenter: Building = {
+const townCenter: BuidlingBase = {
   name: 'Town Center',
 };
 
-const market: Building = {
+const market: BuidlingBase = {
   name: 'Market',
 };
 
-const magicScool: Building = {
+const magicScool: BuidlingBase = {
   name: 'Magic School',
 };
 
-const tavern: Building = {
+const tavern: BuidlingBase = {
   name: 'Tavern',
 };
 
-const trainingCamp: Building = {
+const trainingCamp: BuidlingBase = {
   name: 'Training Camp',
   activity: {
     type: ActivityTypes.Hiring,
@@ -45,17 +45,18 @@ const archersOutpost = {
 };
 
 const hallsOfKnights = {
-  name: 'Archers Outpost',
+  name: 'Halls of Knights',
 };
 
 const cavalryStalls = {
   name: 'Cavalry Stalls',
 };
 
-const magicTower: Building = {
+const magicTower: BuidlingBase = {
   name: 'Magic Tower',
 };
 
+// will be reworked, need somehow to process it in the fraction itself
 export const castleTownBase: TownBase<CastleTownBuildings> = {
   name: 'Castle',
   availableBuildings: {
@@ -64,60 +65,70 @@ export const castleTownBase: TownBase<CastleTownBuildings> = {
       levels: [
         { building: townCenter, cost: { gold: 2000 } },
       ],
+      tier: 1,
     },
     'market': {
       description: 'Allows to trade resources',
       levels: [
         { building: market, cost: { gold: 1500 } }
       ],
+      tier: 1,
     },
     "magic-school": {
       description: 'Allows you to learn spells for your hero',
       levels: [
         { building: magicScool, cost: { gold: 1500, gems: 2 } }
       ],
+      tier: 2,
     },
     'tavern': {
       description: 'Allows to hire neutral units',
       levels: [
         { building: tavern, cost: { gold: 1250 } },
       ],
+      tier: 2,
     },
     'fate-halls': {
       description: 'Allows to develop your hero',
       levels: [
         { building: { name: 'Halls of Fate' }, cost: { gold: 100 } },
       ],
+      tier: 2,
     },
     'training-camp': {
       description: 'Trains Pikemans',
       levels: [
         { building: trainingCamp, cost: { gold: 750 } }
       ],
+      tier: 1,
     },
     'archers-outpost': {
       description: 'Trains Archers',
       levels: [
         { building: archersOutpost, cost: { gold: 1100 } },
       ],
+      tier: 1,
     },
     'halls-of-knights': {
       description: 'Trains Knights',
       levels: [
         { building: hallsOfKnights, cost: { gold: 1200, wood: 3 } },
       ],
+      tier: 2,
     },
     'cavalry-halls': {
       description: 'Trains Cavalry',
       levels: [
         { building: cavalryStalls, cost: { gold: 1500, wood: 4 } },
       ],
+      tier: 3,
     },
     'magic-tower': {
       description: 'Trains Mystical Birds and Firebirds',
       levels: [
         { building: magicTower, cost: { gold: 2000, redCrystals: 2 } },
       ],
+      tier: 4,
     },
   },
 };
