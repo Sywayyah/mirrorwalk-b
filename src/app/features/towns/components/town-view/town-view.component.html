@@ -9,15 +9,20 @@
     <div class="build">
 
       <div *ngFor="let build of building.value">
-        <div class="header" (click)="handleBuildingClicked(build)">
+        <div class="header" (click)="handleBuildingClicked(build)" [class.not-built]="!build.built">
+          <mw-ra-icon [icon]="build.base.icon"></mw-ra-icon>
           {{build.currentBuilding.name}}
-          <div style="font-size: 10px;">Level {{build.currentLevel + 1}}</div>
-          <!-- <div style="font-size: 10px;">Level {{build.currentLevel + 1}}</div> -->
+          <div *ngIf="build.built; else notBuilt" style="font-size: 10px;">
+            Level {{build.currentLevel + 1}}/{{build.base.levels.length}}
+          </div>
 
+          <ng-template #notBuilt>
+            <div style="font-size: 10px;">Not built</div>
+          </ng-template>
           <hr style="width: 100%; border-top: 0;">
         </div>
       </div>
-      <mw-ra-icon icon="hammer"></mw-ra-icon>
+      <!-- <mw-ra-icon icon="hammer"></mw-ra-icon> -->
     </div>
 
 

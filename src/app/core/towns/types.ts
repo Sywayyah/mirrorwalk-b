@@ -23,6 +23,7 @@ export interface BuidlingBase {
 export interface BuildingDescription {
   description: string;
   levels: { building: BuidlingBase, cost: Resources }[];
+  icon: string;
   tier: number;
 }
 

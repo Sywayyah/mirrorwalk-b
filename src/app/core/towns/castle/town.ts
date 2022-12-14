@@ -65,6 +65,7 @@ export const castleTownBase: TownBase<CastleTownBuildings> = {
       levels: [
         { building: townCenter, cost: { gold: 2000 } },
       ],
+      icon: 'capitol',
       tier: 1,
     },
     'market': {
@@ -72,6 +73,7 @@ export const castleTownBase: TownBase<CastleTownBuildings> = {
       levels: [
         { building: market, cost: { gold: 1500 } }
       ],
+      icon: 'gavel',
       tier: 1,
     },
     "magic-school": {
@@ -79,6 +81,7 @@ export const castleTownBase: TownBase<CastleTownBuildings> = {
       levels: [
         { building: magicScool, cost: { gold: 1500, gems: 2 } }
       ],
+      icon: 'burning-book',
       tier: 2,
     },
     'tavern': {
@@ -86,6 +89,7 @@ export const castleTownBase: TownBase<CastleTownBuildings> = {
       levels: [
         { building: tavern, cost: { gold: 1250 } },
       ],
+      icon: 'hood',
       tier: 2,
     },
     'fate-halls': {
@@ -93,6 +97,7 @@ export const castleTownBase: TownBase<CastleTownBuildings> = {
       levels: [
         { building: { name: 'Halls of Fate' }, cost: { gold: 100 } },
       ],
+      icon: 'barrier',
       tier: 2,
     },
     'training-camp': {
@@ -100,6 +105,7 @@ export const castleTownBase: TownBase<CastleTownBuildings> = {
       levels: [
         { building: trainingCamp, cost: { gold: 750 } }
       ],
+      icon: 'spear-head',
       tier: 1,
     },
     'archers-outpost': {
@@ -107,6 +113,7 @@ export const castleTownBase: TownBase<CastleTownBuildings> = {
       levels: [
         { building: archersOutpost, cost: { gold: 1100 } },
       ],
+      icon: 'arrow-cluster',
       tier: 1,
     },
     'halls-of-knights': {
@@ -114,6 +121,7 @@ export const castleTownBase: TownBase<CastleTownBuildings> = {
       levels: [
         { building: hallsOfKnights, cost: { gold: 1200, wood: 3 } },
       ],
+      icon: 'crossed-swords',
       tier: 2,
     },
     'cavalry-halls': {
@@ -121,6 +129,7 @@ export const castleTownBase: TownBase<CastleTownBuildings> = {
       levels: [
         { building: cavalryStalls, cost: { gold: 1500, wood: 4 } },
       ],
+      icon: 'horseshoe',
       tier: 3,
     },
     'magic-tower': {
@@ -128,6 +137,7 @@ export const castleTownBase: TownBase<CastleTownBuildings> = {
       levels: [
         { building: magicTower, cost: { gold: 2000, redCrystals: 2 } },
       ],
+      icon: 'tower',
       tier: 4,
     },
   },

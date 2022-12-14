@@ -22,7 +22,19 @@
   .header {
     padding: 10px;
     cursor: pointer;
+    background: white;
+    margin: 5px;
+    color: black;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+
+    &.not-built {
+      background: rgb(115, 115, 115);
+      color: rgb(174, 174, 174);
+    }
   }
+
 }
 
 .build {
