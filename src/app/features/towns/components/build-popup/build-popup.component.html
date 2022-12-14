@@ -1,0 +1,12 @@
+<mw-ra-icon style="font-size: 40px;" [icon]="data.building.base.icon"></mw-ra-icon>
+
+<div>Build level 1 {{data.building.currentBuilding.name}}</div>
+
+<div>
+  {{data.building.base.description}}
+</div>
+
+<div style="display: flex; justify-content: space-around;">
+  <mw-main-button (click)="close()">Close</mw-main-button>
+  <mw-main-button (click)="build()">Build</mw-main-button>
+</div>

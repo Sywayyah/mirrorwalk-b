@@ -22,15 +22,15 @@
   .header {
     padding: 10px;
     cursor: pointer;
-    background: white;
+    // background: white;
     margin: 5px;
-    color: black;
+    color: white;
     border-radius: 20px;
     display: flex;
     flex-direction: column;
 
     &.not-built {
-      background: rgb(115, 115, 115);
+      background: rgb(115, 115, 115) !important;
       color: rgb(174, 174, 174);
     }
   }

@@ -2,7 +2,9 @@ import { Component } from '@angular/core';
 import { BuidlingBase, Building } from 'src/app/core/towns';
 import { PlayerLeavesTown } from 'src/app/features/services/events';
 import { State } from 'src/app/features/services/state.service';
+import { PopupService } from 'src/app/features/shared/components';
 import { EventsService } from 'src/app/store';
+import { BuildPopupComponent } from '../build-popup/build-popup.component';
 
 @Component({
   selector: 'mw-town-view',
@@ -13,10 +15,12 @@ export class TownViewComponent {
 
   public buildingsByTiers: Record<number, Building[]> = {};
   public town = this.state.createdGame.town;
+  public builtColor: string = this.state.createdGame.selectedColor;
 
   constructor(
     private state: State,
     private events: EventsService,
+    private popupService: PopupService,
   ) {
     this.buildingsByTiers = Object.entries(this.town.base.availableBuildings).reduce((map, [id, building]) => {
       if (!map[building.tier]) {
@@ -34,5 +38,14 @@ export class TownViewComponent {
 
   public handleBuildingClicked(building: Building): void {
     console.log('building: ', building);
+    if (!building.built) {
+      this.popupService.createBasicPopup({
+        component: BuildPopupComponent,
+        popup: {
+          building,
+        },
+      });
+    }
+
   }
 }
