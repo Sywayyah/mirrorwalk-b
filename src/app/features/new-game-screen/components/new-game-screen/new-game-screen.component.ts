@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { PLAYER_COLORS } from 'src/app/core/assets';
 import { Fraction, Fractions, humansFraction } from 'src/app/core/fractions';
 import { HeroBase } from 'src/app/core/heroes';
-import { TownBase } from 'src/app/core/towns';
+import { Building, TownBase } from 'src/app/core/towns';
 import { CommonUtils } from 'src/app/core/unit-types';
 import { GameCreated, GameStart } from 'src/app/features/services/events';
 import { State } from 'src/app/features/services/state.service';
@@ -55,7 +55,12 @@ export class NewGameScreenComponent {
         buildings: Object.keys(townBase.availableBuildings).reduce((acc, buildingId) => {
           return {
             ...acc,
-            [buildingId]: { currentLevel: 0 },
+            [buildingId]: {
+              currentLevel: 0,
+              built: false,
+              base: townBase.availableBuildings[buildingId],
+              currentBuilding: townBase.availableBuildings[buildingId].levels[0].building,
+            } as Building,
           }
         }, {}),
       },

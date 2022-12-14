@@ -13,20 +13,33 @@ export interface HiringActivity extends BuildingAcitivty<ActivityTypes.Hiring> {
   hiring: { type: UnitBase, count: number, refillDaysInterval: number }[];
 }
 
-export interface Building {
+export interface BuidlingBase {
   name: string;
   // cost: Resources;
-  upgrade?: Building;
+  upgrade?: BuidlingBase;
   activity?: BuildingAcitivty;
 }
 
+export interface BuildingDescription {
+  description: string;
+  levels: { building: BuidlingBase, cost: Resources }[];
+  tier: number;
+}
 
 export interface TownBase<T extends string> {
   name: string;
-  availableBuildings: Record<T, { description: string, levels: { building: Building, cost: Resources }[] }>;
+  availableBuildings: Record<T, BuildingDescription>;
+}
+
+export interface Building {
+  currentLevel: number;
+  built?: boolean;
+  base: BuildingDescription;
+  currentBuilding: BuidlingBase;
+
 }
 
 export interface Town<T extends string> {
   base: TownBase<T>;
-  buildings: Record<T, { currentLevel: number }>;
+  buildings: Record<T, Building>;
 }

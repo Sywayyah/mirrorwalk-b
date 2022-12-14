@@ -2,14 +2,24 @@
   (click)="leaveTown()"></mw-icon-btn>
 
 <div class="buildings">
-  <div class="building" *ngFor="let building of town.buildings | keyvalue">
-    <div class="header">
-      <!-- {{building.key}} -->
-      {{town.base.availableBuildings[building.key].levels[building.value.currentLevel].building.name}}
+  <div class="building" *ngFor="let building of buildingsByTiers | keyvalue">
+    <!-- {{building.key}} -->
+    <div>Tier {{building.key}}</div>
+
+    <div style="display: flex; flex-direction: column; height: 100%; justify-content: center;">
+
+      <div *ngFor="let build of building.value">
+        <div class="header">
+          {{build.currentBuilding.name}}
+          <div style="font-size: 10px;">Level {{build.currentLevel + 1}}</div>
+          <!-- <div style="font-size: 10px;">Level {{build.currentLevel + 1}}</div> -->
+
+          <hr style="width: 100%; border-top: 0;">
+        </div>
+      </div>
+      <mw-ra-icon icon="hammer"></mw-ra-icon>
     </div>
 
-    <hr style="width: 100%; border-top: 0;">
 
-    <mw-ra-icon icon="hammer"></mw-ra-icon>
   </div>
 </div>
