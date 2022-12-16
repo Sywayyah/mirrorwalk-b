@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormattedResource, formattedResources } from 'src/app/core/resources';
+import { FormattedResource, formattedResources, Resources } from 'src/app/core/resources';
 import { Building } from 'src/app/core/towns';
 import { MwPlayersService } from 'src/app/features/services';
 import { BasicPopup } from 'src/app/features/shared/components';
@@ -22,7 +22,7 @@ export class BuildPopupComponent extends BasicPopup<{ building: Building }> {
     super();
     const building = this.data.building;
 
-    const buildingCost = building.base.levels[building.currentLevel].cost;
+    const buildingCost = this.getBuildingCost();
     this.cost = formattedResources(buildingCost);
 
     this.missingCost = formattedResources(
@@ -35,9 +35,18 @@ export class BuildPopupComponent extends BasicPopup<{ building: Building }> {
     );
   }
 
-
   public build(): void {
     this.data.building.built = true;
+    this.players.removeResourcesFromPlayer(
+      this.players.getCurrentPlayer(),
+      this.getBuildingCost(),
+    )
     this.close();
+  }
+
+  private getBuildingCost(): Resources {
+    const building = this.data.building;
+
+    return building.base.levels[building.currentLevel].cost;
   }
 }

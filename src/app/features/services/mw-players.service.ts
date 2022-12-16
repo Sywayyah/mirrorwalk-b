@@ -104,6 +104,13 @@ export class MwPlayersService extends StoreClient() {
     player.resources[resource] += amount;
   }
 
+  public removeResourcesFromPlayer(
+    player: PlayerInstanceModel,
+    resources: Resources,
+  ): void {
+    Object.entries(resources).forEach(([res, count]) => player.resources[res as ResourceType] -= count);
+  }
+
   public playerHasResources(
     player: PlayerInstanceModel,
     resources: Resources,
