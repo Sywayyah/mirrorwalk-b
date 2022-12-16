@@ -113,6 +113,23 @@ export class MwPlayersService extends StoreClient() {
     return Object.entries(resources).every(([res, count]) => playerResources[res as ResourceType] >= count);
   }
 
+  public getMissingResources(
+    player: PlayerInstanceModel,
+    resources: Resources,
+  ): Resources {
+    const playerResources = player.resources;
+
+    return Object.entries(resources).reduce((resMap, [res, count]) => {
+      const resDiff = playerResources[res as ResourceType] - count;
+
+      if (resDiff < 0) {
+        resMap[res as ResourceType] = Math.abs(resDiff);
+      }
+
+      return resMap;
+    }, {} as Resources);
+  }
+
   public getCurrentPlayerId(): string {
     return this.currentPlayerId;
   }

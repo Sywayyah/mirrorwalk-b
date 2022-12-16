@@ -12,6 +12,14 @@
   </div>
 </div>
 
+<div *ngIf="!canBuild">
+  You don't have enough resources. Missing:
+
+  <div *ngFor="let missingRes of missingCost">
+    {{missingRes.count}} {{missingRes.resName}}
+  </div>
+</div>
+
 <div style="display: flex; justify-content: space-around;">
   <button mw-main-button (click)="close()">Close</button>
 

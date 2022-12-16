@@ -12,6 +12,7 @@ import { BasicPopup } from 'src/app/features/shared/components';
 export class BuildPopupComponent extends BasicPopup<{ building: Building }> {
 
   public cost: FormattedResource[];
+  public missingCost: FormattedResource[];
 
   public canBuild: boolean;
 
@@ -23,6 +24,10 @@ export class BuildPopupComponent extends BasicPopup<{ building: Building }> {
 
     const buildingCost = building.base.levels[building.currentLevel].cost;
     this.cost = formattedResources(buildingCost);
+
+    this.missingCost = formattedResources(
+      this.players.getMissingResources(this.players.getCurrentPlayer(), buildingCost)
+    );
 
     this.canBuild = this.players.playerHasResources(
       this.players.getCurrentPlayer(),
