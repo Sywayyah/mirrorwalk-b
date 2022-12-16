@@ -6,7 +6,14 @@
   {{data.building.base.description}}
 </div>
 
+<div>
+  <div *ngFor="let resource of cost">
+    {{resource.count}} {{resource.resName}}
+  </div>
+</div>
+
 <div style="display: flex; justify-content: space-around;">
-  <mw-main-button (click)="close()">Close</mw-main-button>
-  <mw-main-button (click)="build()">Build</mw-main-button>
+  <button mw-main-button (click)="close()">Close</button>
+
+  <button mw-main-button (click)="build()" [disabled]="!canBuild">Build</button>
 </div>

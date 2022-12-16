@@ -1,12 +1,7 @@
-import { ResourceType } from '../../resources';
+import { resourceNames, ResourceType } from '../../resources';
 import { StructureGeneratorModel, StuctureControl } from '../types';
 
-const pilesOf: Record<ResourceType, string> = {
-  [ResourceType.Gems]: 'Gems',
-  [ResourceType.Gold]: 'Gold',
-  [ResourceType.RedCrystals]: 'Red Crystals',
-  [ResourceType.Wood]: 'Wood',
-};
+
 
 export const resPileStructure = (
   resType: ResourceType,
@@ -14,9 +9,9 @@ export const resPileStructure = (
 ): StructureGeneratorModel => {
 
   return {
-    name: 'Pile of ' + pilesOf[resType],
+    name: 'Pile of ' + resourceNames[resType],
     control: StuctureControl.Neutral,
-    description: `You found a pile of resources \n\n +${amount} ${pilesOf[resType]}`,
+    description: `You found a pile of resources \n\n +${amount} ${resourceNames[resType]}`,
 
     onVisited: ({ playersApi, visitingPlayer }) => {
       playersApi.addResourcesToPlayer(

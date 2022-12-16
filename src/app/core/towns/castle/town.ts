@@ -95,7 +95,7 @@ export const castleTownBase: TownBase<CastleTownBuildings> = {
     'fate-halls': {
       description: 'Allows to develop your hero',
       levels: [
-        { building: { name: 'Halls of Fate' }, cost: { gold: 100 } },
+        { building: { name: 'Halls of Fate' }, cost: { gold: 1000 } },
       ],
       icon: 'barrier',
       tier: 2,

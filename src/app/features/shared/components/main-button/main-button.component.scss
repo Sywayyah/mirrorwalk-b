@@ -8,6 +8,9 @@
   margin: 4px;
   cursor: pointer;
   user-select: none;
+  border: none;
+  font-family: 'segoe ui';
+  font-size: 15px;
 }
 
 :host:hover {
@@ -16,4 +19,9 @@
 
 :host:active {
   background: rgb(79, 90, 126);
+}
+
+:host:disabled {
+  background: rgb(147, 158, 196);
+  color: rgb(207, 207, 207);
 }

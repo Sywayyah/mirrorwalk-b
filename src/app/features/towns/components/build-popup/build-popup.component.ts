@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
+import { FormattedResource, formattedResources } from 'src/app/core/resources';
 import { Building } from 'src/app/core/towns';
+import { MwPlayersService } from 'src/app/features/services';
 import { BasicPopup } from 'src/app/features/shared/components';
 
 @Component({
@@ -9,9 +11,23 @@ import { BasicPopup } from 'src/app/features/shared/components';
 })
 export class BuildPopupComponent extends BasicPopup<{ building: Building }> {
 
-  constructor() {
+  public cost: FormattedResource[];
+
+  public canBuild: boolean;
+
+  constructor(
+    private players: MwPlayersService,
+  ) {
     super();
-    console.log(this.data.building.base.description);
+    const building = this.data.building;
+
+    const buildingCost = building.base.levels[building.currentLevel].cost;
+    this.cost = formattedResources(buildingCost);
+
+    this.canBuild = this.players.playerHasResources(
+      this.players.getCurrentPlayer(),
+      buildingCost,
+    );
   }
 
 
