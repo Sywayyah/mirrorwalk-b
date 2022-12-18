@@ -1,11 +1,12 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { SharedModule } from '../shared/shared.module';
-import { BuildPopupComponent, TownViewComponent } from './components';
+import { BuildPopupComponent, HiringPopupComponent, TownViewComponent } from './components';
 
 const components = [
   TownViewComponent,
   BuildPopupComponent,
+  HiringPopupComponent,
 ]
 
 @NgModule({

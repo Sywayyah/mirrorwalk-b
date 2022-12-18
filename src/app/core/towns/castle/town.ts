@@ -42,6 +42,7 @@ const trainingCamp: BuidlingBase = {
 
 const archersOutpost = {
   name: 'Archers Outpost',
+
 };
 
 const hallsOfKnights = {

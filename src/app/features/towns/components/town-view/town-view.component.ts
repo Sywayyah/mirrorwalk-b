@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
-import { BuidlingBase, Building } from 'src/app/core/towns';
+import { ActivityTypes, BuidlingBase, Building, HiringActivity } from 'src/app/core/towns';
 import { PlayerLeavesTown } from 'src/app/features/services/events';
 import { State } from 'src/app/features/services/state.service';
 import { PopupService } from 'src/app/features/shared/components';
 import { EventsService } from 'src/app/store';
 import { BuildPopupComponent } from '../build-popup/build-popup.component';
+import { HiringPopupComponent } from '../hiring-popup/hiring-popup.component';
 
 @Component({
   selector: 'mw-town-view',
@@ -45,6 +46,22 @@ export class TownViewComponent {
           building,
         },
       });
+
+      return;
+    }
+
+    const activity = building.currentBuilding.activity;
+
+    if (activity) {
+      switch (activity.type) {
+        case ActivityTypes.Hiring:
+          const hiringActivity = activity as HiringActivity;
+
+          this.popupService.createBasicPopup({
+            component: HiringPopupComponent,
+            popup: {},
+          });
+      }
     }
 
   }
