@@ -35,8 +35,9 @@ const trainingCamp: BuidlingBase = {
   activity: {
     type: ActivityTypes.Hiring,
     hiring: [
-      { type: humansFraction.getUnitType('Pikeman'), count: 14, refillDaysInterval: 3 },
-    ]
+      { type: humansFraction.getUnitType('Pikeman'), growth: 14, refillDaysInterval: 3 },
+    ],
+    unitGrowthGroup: 'pikeman',
   } as HiringActivity,
 };
 

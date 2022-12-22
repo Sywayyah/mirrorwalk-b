@@ -10,7 +10,13 @@ interface BuildingAcitivty<T extends ActivityTypes = ActivityTypes> {
 }
 
 export interface HiringActivity extends BuildingAcitivty<ActivityTypes.Hiring> {
-  hiring: { type: UnitBase, count: number, refillDaysInterval: number }[];
+  hiring: {
+    type: UnitBase;
+    growth: number;
+    // optional, default is 7
+    refillDaysInterval?: number;
+  }[];
+  unitGrowthGroup: string;
 }
 
 export interface BuidlingBase {

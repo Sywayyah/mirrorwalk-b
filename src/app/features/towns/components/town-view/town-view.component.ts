@@ -59,7 +59,7 @@ export class TownViewComponent {
 
           this.popupService.createBasicPopup({
             component: HiringPopupComponent,
-            popup: {},
+            popup: { building, town: this.town, hiringActivity },
           });
       }
     }
