@@ -30,6 +30,21 @@ const tavern: BuidlingBase = {
   name: 'Tavern',
 };
 
+/*
+  Buildings might be reworked
+
+  levels, costs and labels per level might move under activities
+
+  there will be no possibility to change building type,
+  but it's unlikely that it will need to be changed.
+
+  also, additional details for activity appear for activity
+
+  and also buildings are going to be processed in some way
+  at the moment of creation. For example, units growth map
+  is going to be created from buildings with hiring activity
+  type
+*/
 const trainingCamp: BuidlingBase = {
   name: 'Training Camp',
   activity: {
