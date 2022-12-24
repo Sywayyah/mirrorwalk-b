@@ -25,12 +25,12 @@ export const Fractions = {
       heroes: [],
       title,
       icon,
-      town: null,
+      townBase: null,
       setTownBase(townBase) {
-        this.town = townBase;
+        this.townBase = townBase;
       },
       getTownBase() {
-        return this.town;
+        return this.townBase;
       },
       defineUnitType(unitTypeName: T, data) {
         const unitType = {

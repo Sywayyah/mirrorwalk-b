@@ -11,7 +11,7 @@ export interface Fraction<T extends string> {
   heroes: HeroBase[];
   title: string;
   icon: string;
-  town: TownBase<any> | null;
+  townBase: TownBase<any> | null;
   unitTypes: { [key in T]?: UnitBase };
   defineUnitType(unitTypeName: T, params: UnitTypeCreationParams): UnitBase;
   getUnitType(unitTypeName: T): UnitBase;
