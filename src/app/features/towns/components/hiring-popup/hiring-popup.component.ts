@@ -38,7 +38,10 @@ export class HiringPopupComponent extends BasicPopup<HiringPopupData> implements
 
   public canConfirm: boolean = true;
 
+  public originalCountToHire!: number;
   public countToHire!: number;
+
+  public plannedToHire: number = 0;
 
   public currentMode: HireMode = 'hire';
 
@@ -67,38 +70,48 @@ export class HiringPopupComponent extends BasicPopup<HiringPopupData> implements
 
     const activity = this.data.building.currentBuilding.activity as HiringActivity;
 
-    this.countToHire = this.data.town.unitsAvailableMap[activity.unitGrowthGroup];
+    this.originalCountToHire = this.data.town.unitsAvailableMap[activity.unitGrowthGroup];
+    this.countToHire = this.originalCountToHire;
 
-    this.hirableGroups = ([activity.hiring]).map(unit => {
-      const baseCost: Partial<ResourcesModel> = {};
-      const currentCost: Partial<ResourcesModel> = {};
+    this.hirableGroups = (!activity.upgrade
+      ? [activity.hiring]
+      : [activity.hiring, ...
+        (activity.hiring.type.upgradeDetails?.target
+          ? [{
+            growth: 10,
+            type: activity.hiring.type.upgradeDetails.target,
+          }]
+          : [])
+      ]).map(unit => {
+        const baseCost: Partial<ResourcesModel> = {};
+        const currentCost: Partial<ResourcesModel> = {};
 
-      const unitReqs = unit.type.baseRequirements;
+        const unitReqs = unit.type.baseRequirements;
 
-      const resourceTypes: ResourceType[] = [
-        ResourceType.Gems,
-        ResourceType.Gold,
-        ResourceType.RedCrystals,
-        ResourceType.Wood,
-      ];
+        const resourceTypes: ResourceType[] = [
+          ResourceType.Gems,
+          ResourceType.Gold,
+          ResourceType.RedCrystals,
+          ResourceType.Wood,
+        ];
 
-      resourceTypes.forEach(resType => {
-        if (unitReqs[resType]) {
-          baseCost[resType] = unitReqs[resType];
-          currentCost[resType] = 0;
-        }
+        resourceTypes.forEach(resType => {
+          if (unitReqs[resType]) {
+            baseCost[resType] = unitReqs[resType];
+            currentCost[resType] = 0;
+          }
+        })
+
+        return {
+          hire: {
+            maxCount: this.data.town.unitsAvailableMap[activity.unitGrowthGroup],
+            unitType: unit.type,
+          },
+          count: 0,
+          baseCost: baseCost,
+          currentCost: currentCost,
+        } as UnitGroupHireModel;
       })
-
-      return {
-        hire: {
-          maxCount: this.data.town.unitsAvailableMap[activity.unitGrowthGroup],
-          unitType: unit.type,
-        },
-        count: 0,
-        baseCost: baseCost,
-        currentCost: currentCost,
-      } as UnitGroupHireModel;
-    })
   }
 
   public setMode(mode: HireMode): void {
@@ -114,6 +127,7 @@ export class HiringPopupComponent extends BasicPopup<HiringPopupData> implements
       unit.currentCost[resource as keyof ResourcesModel] = baseCost * unit.count;
     });
 
+    this.plannedToHire = this.hirableGroups.reduce((acc, next) => acc + next.count, 0);
     this.updateCanConfirm();
   }
 

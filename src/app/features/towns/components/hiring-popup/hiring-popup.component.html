@@ -6,9 +6,11 @@
   Hire {{unitType.name}}
 </div>
 
-<div style="display: flex;" *ngIf="activity.upgrade">
-  <div class="type" [class.active]="currentMode === 'hire'" (click)="setMode('hire')">Hire: {{countToHire}}</div>
-  <div class="type" [class.active]="currentMode === 'upgrade'" (click)="setMode('upgrade')">Upgrade</div>
+<div style="display: flex;">
+  <div class="type" [class.active]="currentMode === 'hire'" (click)="setMode('hire')">Hire: {{countToHire -
+    plannedToHire}}</div>
+  <div class="type" *ngIf="activity.upgrade" [class.active]="currentMode === 'upgrade'" (click)="setMode('upgrade')">
+    Upgrade</div>
 </div>
 
 <div class="hiring-panel">
@@ -32,5 +34,6 @@
 <div style="display: flex; justify-content: space-around; width: 100%;">
   <button mw-main-button (click)="close()">Close</button>
   <button mw-main-button (click)="upgradeBuilding()" *ngIf="canBeUpgraded">Upgrade</button>
-  <button mw-main-button [disabled]="!canConfirm" (click)="confirmHire()">Hire</button>
+  <button mw-main-button [disabled]="!canConfirm || (countToHire - plannedToHire) < 0 || !countToHire"
+    (click)="confirmHire()">Hire</button>
 </div>
