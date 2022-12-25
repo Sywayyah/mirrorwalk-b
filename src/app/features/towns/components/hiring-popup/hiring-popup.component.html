@@ -39,8 +39,13 @@
 </div>
 
 <div style="display: flex; justify-content: space-around; width: 100%;">
-  <button mw-main-button (click)="close()">Close</button>
-  <button mw-main-button (click)="upgradeBuilding()" *ngIf="canBeUpgraded">Upgrade</button>
-  <button mw-main-button [disabled]="!canConfirm || (countToHire - plannedToHire) < 0"
-    (click)="confirmHire()">Hire</button>
+  <button mw-main-button (click)="close()">
+    Close
+  </button>
+  <button mw-main-button (click)="upgradeBuilding()" style="font-size: 12px;" *ngIf="canBeUpgraded">
+    Upgrade Building
+  </button>
+  <button mw-main-button [disabled]="!canConfirm || (countToHire - plannedToHire) < 0" (click)="confirmHire()">
+    Hire
+  </button>
 </div>
