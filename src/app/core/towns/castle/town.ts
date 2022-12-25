@@ -58,6 +58,7 @@ const trainingCamp: BuidlingBase = {
 
 const upgradedTrainingCamp: BuidlingBase = {
   name: 'Upg. Training Camp',
+  description: 'Allows to hire and upgrade Halberdiers',
   activity: {
     type: ActivityTypes.Hiring,
     hiring: { type: humansFraction.getUnitType('Pikeman'), growth: 10, refillDaysInterval: 3 },

@@ -31,5 +31,6 @@
 
 <div style="display: flex; justify-content: space-around; width: 100%;">
   <button mw-main-button (click)="close()">Close</button>
+  <button mw-main-button (click)="upgradeBuilding()" *ngIf="canBeUpgraded">Upgrade</button>
   <button mw-main-button [disabled]="!canConfirm" (click)="confirmHire()">Hire</button>
 </div>

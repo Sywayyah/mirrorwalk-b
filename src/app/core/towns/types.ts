@@ -26,8 +26,14 @@ export interface HiringActivity extends BuildingAcitivty<ActivityTypes.Hiring> {
 export interface BuidlingBase {
   name: string;
   // cost: Resources;
+  description?: string;
   upgrade?: BuidlingBase;
   activity?: BuildingAcitivty;
+}
+
+export interface BuildingLevel {
+  building: BuidlingBase;
+  cost: Resources;
 }
 
 export interface BuildingDescription {
