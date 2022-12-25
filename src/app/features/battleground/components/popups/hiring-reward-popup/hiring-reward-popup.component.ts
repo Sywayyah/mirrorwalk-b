@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ResourcesModel, ResourceType } from 'src/app/core/resources';
+import { Resources, ResourcesModel, ResourceType } from 'src/app/core/resources';
 import { HiringReward, HiringRewardModel } from 'src/app/core/structures';
 import { StructHireRewardPopup } from 'src/app/core/ui';
 import { MwPlayersService, MwUnitGroupsService } from 'src/app/features/services';
@@ -9,8 +9,8 @@ interface HireModel {
   hire: HiringRewardModel,
   count: number;
 
-  baseCost: Partial<ResourcesModel>;
-  currentCost: Partial<ResourcesModel>;
+  baseCost: Resources;
+  currentCost: Resources;
 }
 
 @Component({
@@ -63,7 +63,6 @@ export class HiringRewardPopupComponent extends BasicPopup<StructHireRewardPopup
 
   public updateCountForGroup(unit: HireModel, event: Event): void {
     unit.count = Number((event.target as HTMLInputElement).value);
-    const playerResources = this.playersService.getCurrentPlayer().resources;
 
     this.canConfirm = true;
 
@@ -76,13 +75,10 @@ export class HiringRewardPopupComponent extends BasicPopup<StructHireRewardPopup
 
   public confirmHire(): void {
     const currentPlayer = this.playersService.getCurrentPlayer();
-    const playerResources = currentPlayer.resources;
 
     const totalCosts = this.calcTotalCosts();
 
-    Object.entries(totalCosts).forEach(([res, amount]) => {
-      playerResources[res as keyof ResourcesModel] -= amount;
-    });
+    this.playersService.removeResourcesFromPlayer(currentPlayer, totalCosts);
 
     this.hiredGroups.forEach(group => {
       if (group.count) {
@@ -99,7 +95,7 @@ export class HiringRewardPopupComponent extends BasicPopup<StructHireRewardPopup
     this.close();
   }
 
-  private calcTotalCosts(): Partial<ResourcesModel> {
+  private calcTotalCosts(): Resources {
     return this.hiredGroups.reduce((totalCosts, unit) => {
 
       Object.entries(unit.currentCost).forEach(([resource, baseCost]: [string, number]) => {
@@ -113,16 +109,12 @@ export class HiringRewardPopupComponent extends BasicPopup<StructHireRewardPopup
       });
       return totalCosts;
 
-    }, {} as Partial<ResourcesModel>);
+    }, {} as Resources);
   }
 
   private updateCanConfirm(): void {
-    const playerResources = this.playersService.getCurrentPlayer().resources;
-
     const totalCosts = this.calcTotalCosts();
 
-    this.canConfirm = Object.entries(totalCosts).every(([res, amount]) => {
-      return playerResources[res as keyof ResourcesModel] >= amount;
-    });
+    this.canConfirm = this.playersService.playerHasResources(this.playersService.getCurrentPlayer(), totalCosts);
   }
 }

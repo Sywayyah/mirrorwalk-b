@@ -15,8 +15,11 @@ export interface HiringActivity extends BuildingAcitivty<ActivityTypes.Hiring> {
     growth: number;
     // optional, default is 7
     refillDaysInterval?: number;
+    // trainUpgraded?: boolean;
   }[];
   unitGrowthGroup: string;
+  growth: number;
+  growthIntervalDays: number;
 }
 
 export interface BuidlingBase {
@@ -46,7 +49,11 @@ export interface Building {
 
 }
 
+
+// instance
 export interface Town<T extends string> {
   base: TownBase<T>;
   buildings: Record<T, Building>;
+  growthMap: Record<string, number>;
+  unitsAvailableMap: Record<string, number>;
 }

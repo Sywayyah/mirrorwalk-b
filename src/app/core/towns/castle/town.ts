@@ -50,15 +50,40 @@ const trainingCamp: BuidlingBase = {
   activity: {
     type: ActivityTypes.Hiring,
     hiring: [
-      { type: humansFraction.getUnitType('Pikeman'), growth: 14, refillDaysInterval: 3 },
+      { type: humansFraction.getUnitType('Pikeman'), growth: 10, refillDaysInterval: 3 },
     ],
     unitGrowthGroup: 'pikeman',
+    growth: 10,
+    growthIntervalDays: 3,
   } as HiringActivity,
 };
 
+const upgradedTrainingCamp: BuidlingBase = {
+  name: 'Upg. Training Camp',
+  activity: {
+    type: ActivityTypes.Hiring,
+    hiring: [
+      { type: humansFraction.getUnitType('Pikeman'), growth: 10, refillDaysInterval: 3 },
+    ],
+    unitGrowthGroup: 'pikeman',
+    growth: 10,
+    growthIntervalDays: 3,
+  } as HiringActivity,
+  // upgrade
+}
+
 const archersOutpost = {
   name: 'Archers Outpost',
-
+  activity: {
+    type: ActivityTypes.Hiring,
+    hiring: [
+      { type: humansFraction.getUnitType('Archer'), growth: 10, refillDaysInterval: 7 },
+    ],
+    unitGrowthGroup: 'archer',
+    growth: 10,
+    growthIntervalDays: 7,
+  } as HiringActivity,
+  // upgrade
 };
 
 const hallsOfKnights = {
@@ -120,7 +145,8 @@ export const castleTownBase: TownBase<CastleTownBuildings> = {
     'training-camp': {
       description: 'Trains Pikemans',
       levels: [
-        { building: trainingCamp, cost: { gold: 750 } }
+        { building: trainingCamp, cost: { gold: 600 } },
+        { building: upgradedTrainingCamp, cost: { gold: 400, wood: 2 } },
       ],
       icon: 'spear-head',
       tier: 1,
@@ -128,7 +154,7 @@ export const castleTownBase: TownBase<CastleTownBuildings> = {
     'archers-outpost': {
       description: 'Trains Archers',
       levels: [
-        { building: archersOutpost, cost: { gold: 1100 } },
+        { building: archersOutpost, cost: { gold: 800, wood: 1 } },
       ],
       icon: 'arrow-cluster',
       tier: 1,

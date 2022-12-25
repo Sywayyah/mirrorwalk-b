@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { PLAYER_COLORS } from 'src/app/core/assets';
 import { Fraction, Fractions, humansFraction } from 'src/app/core/fractions';
 import { HeroBase } from 'src/app/core/heroes';
-import { Building, TownBase } from 'src/app/core/towns';
+import { ActivityTypes, Building, HiringActivity, TownBase } from 'src/app/core/towns';
 import { CommonUtils } from 'src/app/core/unit-types';
 import { GameCreated, GameStart } from 'src/app/features/services/events';
 import { State } from 'src/app/features/services/state.service';
@@ -46,23 +46,48 @@ export class NewGameScreenComponent {
     const fraction = this.selectedFraction || CommonUtils.randItem(this.playableFractions);
     const townBase = fraction.getTownBase() as TownBase<any>;
 
+    /* this logic is going to be moved somewhere else */
+    /* and rewapmed later */
+    const townBuildings: Record<string, Building> = Object
+      .keys(townBase.availableBuildings)
+      .reduce((acc, buildingId) => {
+        return {
+          ...acc,
+          [buildingId]: {
+            currentLevel: 0,
+            built: false,
+            base: townBase.availableBuildings[buildingId],
+            currentBuilding: townBase.availableBuildings[buildingId].levels[0].building,
+          } as Building,
+        };
+      }, {});
+
+    const hiringBuildings = Object.values(townBuildings)
+      .filter(building => building.currentBuilding.activity?.type === ActivityTypes.Hiring);
+
     this.state.createdGame = {
       fraction,
       selectedColor: this.pickedColor,
       selectedHero: this.selectedHero || CommonUtils.randItem(this.heroes!),
       town: {
         base: townBase,
-        buildings: Object.keys(townBase.availableBuildings).reduce((acc, buildingId) => {
-          return {
-            ...acc,
-            [buildingId]: {
-              currentLevel: 0,
-              built: false,
-              base: townBase.availableBuildings[buildingId],
-              currentBuilding: townBase.availableBuildings[buildingId].levels[0].building,
-            } as Building,
-          }
-        }, {}),
+        growthMap: hiringBuildings
+          .reduce((acc, hiringBuilding) => {
+            const hiringActivity = hiringBuilding.currentBuilding.activity as HiringActivity;
+
+            const growthGroup: string = hiringActivity.unitGrowthGroup;
+
+            acc[growthGroup] = hiringActivity.growth;
+
+            return acc;
+          }, {} as Record<string, number>),
+        buildings: townBuildings,
+        unitsAvailableMap: hiringBuildings.reduce((acc, hiringBuilding) => {
+          const activity = hiringBuilding.currentBuilding.activity as HiringActivity;
+
+          acc[activity.unitGrowthGroup] = activity.growth;
+          return acc;
+        }, {} as Record<string, number>),
       },
     };
 

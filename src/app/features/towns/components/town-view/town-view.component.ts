@@ -38,6 +38,7 @@ export class TownViewComponent {
   }
 
   public handleBuildingClicked(building: Building): void {
+    console.log('town --->', this.town);
     console.log('building: ', building);
     if (!building.built) {
       this.popupService.createBasicPopup({
