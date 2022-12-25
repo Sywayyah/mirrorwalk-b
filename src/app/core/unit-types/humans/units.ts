@@ -16,9 +16,9 @@ const Halberdier = humansFraction.defineUnitType('Pikeman', {
   baseStats: {
     damageInfo: {
       minDamage: 3,
-      maxDamage: 4,
+      maxDamage: 3,
     },
-    attackRating: 3,
+    attackRating: 2,
     defence: 3,
     health: 8,
     speed: 14,
@@ -43,7 +43,7 @@ const Pikeman = humansFraction.defineUnitType('Pikeman', {
 
   baseStats: {
     damageInfo: {
-      minDamage: 3,
+      minDamage: 2,
       maxDamage: 3,
     },
     attackRating: 2,
@@ -60,7 +60,7 @@ const Pikeman = humansFraction.defineUnitType('Pikeman', {
   upgradeDetails: {
     target: Halberdier,
     upgradeCost: {
-      gold: 15,
+      gold: 10,
     }
   },
   baseRequirements: {
