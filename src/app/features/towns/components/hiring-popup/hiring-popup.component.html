@@ -7,23 +7,30 @@
 </div>
 
 <div style="display: flex;">
-  <div class="type" [class.active]="currentMode === 'hire'" (click)="setMode('hire')">Hire: {{countToHire -
-    plannedToHire}}</div>
+  <div class="type" [class.active]="currentMode === 'hire'" (click)="setMode('hire')">
+    Hire: {{countToHire - plannedToHire}}
+  </div>
+
   <div class="type" *ngIf="activity.upgrade" [class.active]="currentMode === 'upgrade'" (click)="setMode('upgrade')">
-    Upgrade</div>
+    Upgrade: {{countToUpgrade - plannedToUpgrade}}
+  </div>
 </div>
 
 <div class="hiring-panel">
   <div *ngFor="let unitType of hirableGroups" class="unit-column">
     <div>{{unitType.hire.unitType.name}}</div>
+
     <div>{{unitType.count}}</div>
+
     <input type="range" [min]="0" [max]="unitType.hire.maxCount" (input)="updateCountForGroup(unitType, $event)"
       [value]="0">
 
     <div>Cost:</div>
+
     <div class="cost">
       <div class="resource" *ngFor="let resource of (unitType.currentCost | keyvalue)">
         <div>{{resource.key}}</div>
+
         <div>{{resource.value}}</div>
       </div>
     </div>
@@ -34,6 +41,6 @@
 <div style="display: flex; justify-content: space-around; width: 100%;">
   <button mw-main-button (click)="close()">Close</button>
   <button mw-main-button (click)="upgradeBuilding()" *ngIf="canBeUpgraded">Upgrade</button>
-  <button mw-main-button [disabled]="!canConfirm || (countToHire - plannedToHire) < 0 || !countToHire"
+  <button mw-main-button [disabled]="!canConfirm || (countToHire - plannedToHire) < 0"
     (click)="confirmHire()">Hire</button>
 </div>

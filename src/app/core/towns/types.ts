@@ -9,14 +9,16 @@ interface BuildingAcitivty<T extends ActivityTypes = ActivityTypes> {
   type: T;
 }
 
+export interface HiringDetails {
+  type: UnitBase;
+  growth: number;
+  // optional, default is 7
+  refillDaysInterval?: number;
+  // trainUpgraded?: boolean;
+}
+
 export interface HiringActivity extends BuildingAcitivty<ActivityTypes.Hiring> {
-  hiring: {
-    type: UnitBase;
-    growth: number;
-    // optional, default is 7
-    refillDaysInterval?: number;
-    // trainUpgraded?: boolean;
-  };
+  hiring: HiringDetails;
   unitGrowthGroup: string;
   growth: number;
   growthIntervalDays: number;

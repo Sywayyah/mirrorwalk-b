@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Fractions } from 'src/app/core/fractions';
 import { Resources, ResourcesModel, ResourceType } from 'src/app/core/resources';
-import { BuidlingBase, Building, HiringActivity, Town } from 'src/app/core/towns';
+import { BuidlingBase, Building, HiringActivity, HiringDetails, Town } from 'src/app/core/towns';
 import { UnitBase } from 'src/app/core/unit-types';
 import { MwPlayersService, MwUnitGroupsService } from 'src/app/features/services';
 import { BasicPopup, PopupService } from 'src/app/features/shared/components';
@@ -40,8 +41,10 @@ export class HiringPopupComponent extends BasicPopup<HiringPopupData> implements
 
   public originalCountToHire!: number;
   public countToHire!: number;
+  public countToUpgrade!: number;
 
   public plannedToHire: number = 0;
+  public plannedToUpgrade: number = 0;
 
   public currentMode: HireMode = 'hire';
 
@@ -73,49 +76,121 @@ export class HiringPopupComponent extends BasicPopup<HiringPopupData> implements
     this.originalCountToHire = this.data.town.unitsAvailableMap[activity.unitGrowthGroup];
     this.countToHire = this.originalCountToHire;
 
-    this.hirableGroups = (!activity.upgrade
-      ? [activity.hiring]
-      : [activity.hiring, ...
-        (activity.hiring.type.upgradeDetails?.target
-          ? [{
-            growth: 10,
-            type: activity.hiring.type.upgradeDetails.target,
-          }]
-          : [])
-      ]).map(unit => {
-        const baseCost: Partial<ResourcesModel> = {};
-        const currentCost: Partial<ResourcesModel> = {};
+    if (this.activity.upgrade) {
+      this.countToUpgrade = this.playersService.getPlayerUnitsCountOfType(
+        this.playersService.getCurrentPlayer(),
+        this.activity.hiring.type,
+      );
+    }
 
-        const unitReqs = unit.type.baseRequirements;
+    this.hirableGroups = this.getGroupsToHire().map(unit => {
+      const baseCost: Partial<ResourcesModel> = {};
+      const currentCost: Partial<ResourcesModel> = {};
 
-        const resourceTypes: ResourceType[] = [
-          ResourceType.Gems,
-          ResourceType.Gold,
-          ResourceType.RedCrystals,
-          ResourceType.Wood,
-        ];
+      const unitReqs = unit.type.baseRequirements;
 
-        resourceTypes.forEach(resType => {
-          if (unitReqs[resType]) {
-            baseCost[resType] = unitReqs[resType];
-            currentCost[resType] = 0;
-          }
-        })
+      const resourceTypes: ResourceType[] = [
+        ResourceType.Gems,
+        ResourceType.Gold,
+        ResourceType.RedCrystals,
+        ResourceType.Wood,
+      ];
 
-        return {
-          hire: {
-            maxCount: this.data.town.unitsAvailableMap[activity.unitGrowthGroup],
-            unitType: unit.type,
-          },
-          count: 0,
-          baseCost: baseCost,
-          currentCost: currentCost,
-        } as UnitGroupHireModel;
+      resourceTypes.forEach(resType => {
+        if (unitReqs[resType]) {
+          baseCost[resType] = unitReqs[resType];
+          currentCost[resType] = 0;
+        }
       })
+
+      return {
+        hire: {
+          maxCount: this.data.town.unitsAvailableMap[activity.unitGrowthGroup],
+          unitType: unit.type,
+        },
+        count: 0,
+        baseCost: baseCost,
+        currentCost: currentCost,
+      } as UnitGroupHireModel;
+    })
   }
 
   public setMode(mode: HireMode): void {
+    if (this.currentMode === mode) {
+      return;
+    }
+
+    if (mode === 'hire') {
+      this.plannedToUpgrade = 0;
+    } else {
+      this.plannedToHire = 0;
+    }
+
     this.currentMode = mode;
+
+    const activity = this.data.building.currentBuilding.activity as HiringActivity;
+
+    this.hirableGroups = this.getGroupsToHire().map(unit => {
+      const baseCost: Resources = {};
+      const currentCost: Resources = {};
+
+
+      const baseUnitType = this.activity.hiring.type;
+
+      const unitReqs = this.currentMode === 'hire'
+        ? unit.type.baseRequirements : baseUnitType.upgradeDetails!.upgradeCost!;
+
+      const resourceTypes: ResourceType[] = [
+        ResourceType.Gems,
+        ResourceType.Gold,
+        ResourceType.RedCrystals,
+        ResourceType.Wood,
+      ];
+
+      resourceTypes.forEach(resType => {
+        if (unitReqs[resType]) {
+          baseCost[resType] = unitReqs[resType];
+          currentCost[resType] = 0;
+        }
+      })
+
+      return {
+        hire: {
+          maxCount: this.currentMode === 'hire'
+            ? this.data.town.unitsAvailableMap[activity.unitGrowthGroup]
+            : this.countToUpgrade,
+          unitType: unit.type,
+        },
+        count: 0,
+        baseCost: baseCost,
+        currentCost: currentCost,
+      } as UnitGroupHireModel;
+    })
+  }
+
+  private getGroupsToHire(): HiringDetails[] {
+    const activity = this.data.building.currentBuilding.activity as HiringActivity;
+
+    if (this.currentMode === 'hire') {
+      return !activity.upgrade
+        ? [activity.hiring]
+        : [activity.hiring, ...
+          (activity.hiring.type.upgradeDetails?.target
+            ? [{
+              growth: 0,
+              type: activity.hiring.type.upgradeDetails.target,
+            }]
+            : [])
+        ];
+    } else {
+      return [...(activity.hiring.type.upgradeDetails?.target
+        ? [{
+          growth: 0,
+          type: activity.hiring.type.upgradeDetails.target,
+        }]
+        : [])];
+    }
+
   }
 
   public updateCountForGroup(unit: UnitGroupHireModel, event: Event): void {
@@ -127,7 +202,11 @@ export class HiringPopupComponent extends BasicPopup<HiringPopupData> implements
       unit.currentCost[resource as keyof ResourcesModel] = baseCost * unit.count;
     });
 
-    this.plannedToHire = this.hirableGroups.reduce((acc, next) => acc + next.count, 0);
+    if (this.currentMode === 'hire') {
+      this.plannedToHire = this.hirableGroups.reduce((acc, next) => acc + next.count, 0);
+    } else {
+      this.plannedToUpgrade = this.hirableGroups.reduce((acc, next) => acc + next.count, 0);
+    }
     this.updateCanConfirm();
   }
 
@@ -138,21 +217,40 @@ export class HiringPopupComponent extends BasicPopup<HiringPopupData> implements
 
     this.playersService.removeResourcesFromPlayer(currentPlayer, totalCosts);
 
-    this.hirableGroups.forEach(group => {
-      if (group.count) {
-        const unitGroup = this.unitsService.createUnitGroup(
-          group.hire.unitType,
-          { count: group.count },
-          currentPlayer
-        );
+    if (this.currentMode === 'hire') {
+      this.hirableGroups.forEach(group => {
+        if (group.count) {
+          const unitGroup = this.unitsService.createUnitGroup(
+            group.hire.unitType,
+            { count: group.count },
+            currentPlayer
+          );
 
-        const activity = this.data.building.currentBuilding.activity as HiringActivity;
+          const activity = this.data.building.currentBuilding.activity as HiringActivity;
 
-        this.data.town.unitsAvailableMap[activity.unitGrowthGroup] -= group.count;
+          this.data.town.unitsAvailableMap[activity.unitGrowthGroup] -= group.count;
 
-        this.playersService.addUnitGroupToTypeStack(currentPlayer, unitGroup);
-      }
-    });
+          this.playersService.addUnitGroupToTypeStack(currentPlayer, unitGroup);
+        }
+      });
+    } else {
+      this.hirableGroups.forEach(group => {
+        if (group.count) {
+          const stackOfType = currentPlayer.unitGroups.find(unitGroup => unitGroup.type === this.activity.hiring.type)!;
+
+          this.playersService.removeNUnitsFromGroup(currentPlayer, stackOfType, group.count);
+
+          const unitGroup = this.unitsService.createUnitGroup(
+            group.hire.unitType,
+            { count: group.count },
+            currentPlayer
+          );
+
+          this.playersService.addUnitGroupToTypeStack(currentPlayer, unitGroup);
+        }
+      });
+    }
+
 
     this.close();
   }
