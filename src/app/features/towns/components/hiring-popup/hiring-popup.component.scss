@@ -4,6 +4,18 @@
   align-items: center;
 }
 
+.type {
+  padding: 8px;
+  margin: 4px;
+  font-size: 12px;
+  border: 1px solid black;
+  cursor: pointer;
+}
+
+.type.active {
+  border: 1px solid gold;
+}
+
 .hiring-panel {
   display: flex;
   justify-content: center;

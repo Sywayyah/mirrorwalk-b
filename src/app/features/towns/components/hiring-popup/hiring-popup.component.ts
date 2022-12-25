@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Resources, ResourcesModel, ResourceType } from 'src/app/core/resources';
-import { Building, HiringActivity, Town } from 'src/app/core/towns';
+import { BuidlingBase, Building, HiringActivity, Town } from 'src/app/core/towns';
 import { UnitBase } from 'src/app/core/unit-types';
 import { MwPlayersService, MwUnitGroupsService } from 'src/app/features/services';
 import { BasicPopup } from 'src/app/features/shared/components';
@@ -24,6 +24,8 @@ interface UnitGroupHireModel {
   currentCost: Resources;
 }
 
+type HireMode = 'hire' | 'upgrade';
+
 @Component({
   selector: 'mw-hiring-popup',
   templateUrl: './hiring-popup.component.html',
@@ -35,11 +37,24 @@ export class HiringPopupComponent extends BasicPopup<HiringPopupData> implements
 
   public canConfirm: boolean = true;
 
+  public countToHire!: number;
+
+  public currentMode: HireMode = 'hire';
+
+  public unitType: UnitBase;
+
+  public currentBuilding: BuidlingBase;
+
+  public activity: HiringActivity;
+
   constructor(
     private playersService: MwPlayersService,
     private unitsService: MwUnitGroupsService,
   ) {
     super();
+    this.unitType = this.data.hiringActivity.hiring.type;
+    this.activity = this.data.hiringActivity;
+    this.currentBuilding = this.data.building.currentBuilding;
   }
 
   ngOnInit(): void {
@@ -47,7 +62,9 @@ export class HiringPopupComponent extends BasicPopup<HiringPopupData> implements
 
     const activity = this.data.building.currentBuilding.activity as HiringActivity;
 
-    this.hirableGroups = (activity.hiring).map(unit => {
+    this.countToHire = this.data.town.unitsAvailableMap[activity.unitGrowthGroup];
+
+    this.hirableGroups = ([activity.hiring]).map(unit => {
       const baseCost: Partial<ResourcesModel> = {};
       const currentCost: Partial<ResourcesModel> = {};
 
@@ -79,6 +96,9 @@ export class HiringPopupComponent extends BasicPopup<HiringPopupData> implements
     })
   }
 
+  public setMode(mode: HireMode): void {
+    this.currentMode = mode;
+  }
 
   public updateCountForGroup(unit: UnitGroupHireModel, event: Event): void {
     unit.count = Number((event.target as HTMLInputElement).value);

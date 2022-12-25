@@ -16,10 +16,11 @@ export interface HiringActivity extends BuildingAcitivty<ActivityTypes.Hiring> {
     // optional, default is 7
     refillDaysInterval?: number;
     // trainUpgraded?: boolean;
-  }[];
+  };
   unitGrowthGroup: string;
   growth: number;
   growthIntervalDays: number;
+  upgrade?: boolean;
 }
 
 export interface BuidlingBase {

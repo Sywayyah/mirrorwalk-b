@@ -49,9 +49,7 @@ const trainingCamp: BuidlingBase = {
   name: 'Training Camp',
   activity: {
     type: ActivityTypes.Hiring,
-    hiring: [
-      { type: humansFraction.getUnitType('Pikeman'), growth: 10, refillDaysInterval: 3 },
-    ],
+    hiring: { type: humansFraction.getUnitType('Pikeman'), growth: 10, refillDaysInterval: 3 },
     unitGrowthGroup: 'pikeman',
     growth: 10,
     growthIntervalDays: 3,
@@ -62,23 +60,19 @@ const upgradedTrainingCamp: BuidlingBase = {
   name: 'Upg. Training Camp',
   activity: {
     type: ActivityTypes.Hiring,
-    hiring: [
-      { type: humansFraction.getUnitType('Pikeman'), growth: 10, refillDaysInterval: 3 },
-    ],
+    hiring: { type: humansFraction.getUnitType('Pikeman'), growth: 10, refillDaysInterval: 3 },
     unitGrowthGroup: 'pikeman',
     growth: 10,
     growthIntervalDays: 3,
+    upgrade: true,
   } as HiringActivity,
-  // upgrade
-}
+};
 
 const archersOutpost = {
   name: 'Archers Outpost',
   activity: {
     type: ActivityTypes.Hiring,
-    hiring: [
-      { type: humansFraction.getUnitType('Archer'), growth: 10, refillDaysInterval: 7 },
-    ],
+    hiring: { type: humansFraction.getUnitType('Archer'), growth: 10, refillDaysInterval: 7 },
     unitGrowthGroup: 'archer',
     growth: 10,
     growthIntervalDays: 7,

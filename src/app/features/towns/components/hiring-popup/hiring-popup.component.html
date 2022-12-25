@@ -1,8 +1,14 @@
-Hire Pikemans
-
 <div>
-  <div class="type">Hire: 10</div>
-  <div class="type">Upgrade: 10</div>
+  {{currentBuilding.name}}
+</div>
+
+<div style="font-size: 12px;">
+  Hire {{unitType.name}}
+</div>
+
+<div style="display: flex;" *ngIf="activity.upgrade">
+  <div class="type" [class.active]="currentMode === 'hire'" (click)="setMode('hire')">Hire: {{countToHire}}</div>
+  <div class="type" [class.active]="currentMode === 'upgrade'" (click)="setMode('upgrade')">Upgrade</div>
 </div>
 
 <div class="hiring-panel">
