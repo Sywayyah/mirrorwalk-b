@@ -299,7 +299,7 @@ export class CombatInteractorService extends StoreClient() {
   public getRandomEnemyUnitGroup(): UnitGroupInstModel {
     const enemyPlayer = this.players.getEnemyPlayer()
     const enemyUnitGroups = this.battleState.heroesUnitGroupsMap.get(enemyPlayer) as UnitGroupInstModel[];
-    return CommonUtils.randItem(enemyUnitGroups);
+    return CommonUtils.randItem(enemyUnitGroups.filter(group => group.fightInfo.isAlive));
   }
 
   private getModsForUnitGroup(unitGroup: UnitGroupInstModel): Modifiers[] {
@@ -310,7 +310,6 @@ export class CombatInteractorService extends StoreClient() {
   }
 
   public addSpellToUnitGroup(target: UnitGroupInstModel, spell: SpellInstance, ownerPlayer: PlayerInstanceModel): void {
-    // console.log('add spell');
     target.spells.push(spell);
 
     this.events.dispatch(GroupSpellsChanged({
