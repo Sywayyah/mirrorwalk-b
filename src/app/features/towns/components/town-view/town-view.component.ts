@@ -45,6 +45,7 @@ export class TownViewComponent {
         component: BuildPopupComponent,
         popup: {
           building,
+          targetLevel: 1,
         },
       });
 

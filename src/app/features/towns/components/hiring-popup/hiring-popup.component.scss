@@ -2,5 +2,47 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+}
 
+.type {
+  padding: 8px;
+  margin: 4px;
+  font-size: 12px;
+  border: 1px solid black;
+  cursor: pointer;
+}
+
+.type.active {
+  border: 1px solid gold;
+}
+
+.hiring-panel {
+  display: flex;
+  justify-content: center;
+}
+
+.unit-column {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid gray;
+  padding: 10px;
+  margin: 6px;
+  width: 160px;
+  align-items: center;
+  font-size: 13px;
+}
+
+.cost {
+  display: flex;
+}
+
+.resource {
+  border: 1px solid gray;
+  border-radius: 4px;
+  padding: 7px;
+}
+
+.button {
+  margin: auto;
+  display: block;
 }

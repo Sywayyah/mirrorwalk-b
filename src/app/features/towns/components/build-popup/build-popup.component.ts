@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormattedResource, formattedResources, Resources } from 'src/app/core/resources';
-import { Building } from 'src/app/core/towns';
+import { BuidlingBase, Building, BuildingLevel } from 'src/app/core/towns';
 import { MwPlayersService } from 'src/app/features/services';
 import { BasicPopup } from 'src/app/features/shared/components';
 
@@ -9,18 +9,22 @@ import { BasicPopup } from 'src/app/features/shared/components';
   templateUrl: './build-popup.component.html',
   styleUrls: ['./build-popup.component.scss']
 })
-export class BuildPopupComponent extends BasicPopup<{ building: Building }> {
+export class BuildPopupComponent extends BasicPopup<{ building: Building, targetLevel: number }> {
 
   public cost: FormattedResource[];
   public missingCost: FormattedResource[];
 
   public canBuild: boolean;
 
+  public buildingLevel: BuildingLevel;
+
   constructor(
     private players: MwPlayersService,
   ) {
     super();
     const building = this.data.building;
+
+    this.buildingLevel = building.base.levels[this.data.targetLevel - 1];
 
     const buildingCost = this.getBuildingCost();
     this.cost = formattedResources(buildingCost);
@@ -36,7 +40,13 @@ export class BuildPopupComponent extends BasicPopup<{ building: Building }> {
   }
 
   public build(): void {
-    this.data.building.built = true;
+    if (this.data.targetLevel === 1) {
+      this.data.building.built = true;
+    } else {
+      this.data.building.currentLevel = this.data.targetLevel - 1;
+      this.data.building.currentBuilding = this.data.building.base.levels[this.data.targetLevel - 1].building;
+    }
+
     this.players.removeResourcesFromPlayer(
       this.players.getCurrentPlayer(),
       this.getBuildingCost(),
@@ -45,8 +55,8 @@ export class BuildPopupComponent extends BasicPopup<{ building: Building }> {
   }
 
   private getBuildingCost(): Resources {
-    const building = this.data.building;
+    // const building = this.data.building;
 
-    return building.base.levels[building.currentLevel].cost;
+    return this.buildingLevel.cost;
   }
 }

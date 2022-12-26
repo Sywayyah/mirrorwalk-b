@@ -4,7 +4,7 @@ import { HeroBase, HERO_LEVELS_BREAKPOINTS } from 'src/app/core/heroes';
 import { ItemInstanceModel } from 'src/app/core/items';
 import { PlayerInstanceModel, PlayerModel, PlayerTypeEnum } from 'src/app/core/players';
 import { Resources, ResourcesModel, ResourceType } from 'src/app/core/resources';
-import { CommonUtils, UnitGroupInstModel, UnitGroupModel } from 'src/app/core/unit-types';
+import { CommonUtils, UnitBase, UnitGroupInstModel, UnitGroupModel } from 'src/app/core/unit-types';
 import { Notify, StoreClient } from 'src/app/store';
 import { MwHeroesService, MwUnitGroupsService } from './';
 import { GameCreated, PlayerEquipsItem, PlayerGainsLevel, PlayersInitialized, PlayerUnequipsItem } from './events/';
@@ -145,6 +145,10 @@ export class MwPlayersService extends StoreClient() {
     return this.getUnitGroupsOfPlayer(this.getEnemyPlayer().id).includes(unitGroup);
   }
 
+  public getPlayerUnitsCountOfType(player: PlayerInstanceModel, unitType: UnitBase): number {
+    return player.unitGroups.reduce((totalCount, nextUnitGroupType) => totalCount + (nextUnitGroupType.type === unitType ? nextUnitGroupType.count : 0), 0);
+  }
+
   public addExperienceToPlayer(playerId: string, experience: number): void {
     const player = this.getPlayerById(playerId);
     const playerHero = player.hero;
@@ -191,6 +195,7 @@ export class MwPlayersService extends StoreClient() {
     }
   }
 
+  /* todo: rework this method later, allow to check several stacks */
   public removeNUnitsFromGroup(player: PlayerModel, unitGroup: UnitGroupModel, count: number): void {
     unitGroup.count -= count;
 

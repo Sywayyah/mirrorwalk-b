@@ -8,6 +8,33 @@ const defaultRewards = {
   gold: 0,
 };
 
+const Halberdier = humansFraction.defineUnitType('Pikeman', {
+  mainPortraitUrl: AssetsImages.Melee,
+  name: 'Harbeldier',
+  level: 1,
+
+  baseStats: {
+    damageInfo: {
+      minDamage: 3,
+      maxDamage: 3,
+    },
+    attackRating: 2,
+    defence: 3,
+    health: 8,
+    speed: 14,
+  },
+  defaultModifiers: {
+    counterattacks: true,
+  },
+  minQuantityPerStack: 5,
+  defaultTurnsPerRound: 1,
+
+  baseRequirements: {
+    gold: 75,
+    redCrystals: 0,
+  },
+  neutralReward: defaultRewards,
+});
 
 const Pikeman = humansFraction.defineUnitType('Pikeman', {
   mainPortraitUrl: AssetsImages.Melee,
@@ -16,7 +43,7 @@ const Pikeman = humansFraction.defineUnitType('Pikeman', {
 
   baseStats: {
     damageInfo: {
-      minDamage: 3,
+      minDamage: 2,
       maxDamage: 3,
     },
     attackRating: 2,
@@ -30,6 +57,12 @@ const Pikeman = humansFraction.defineUnitType('Pikeman', {
   minQuantityPerStack: 5,
   defaultTurnsPerRound: 1,
 
+  upgradeDetails: {
+    target: Halberdier,
+    upgradeCost: {
+      gold: 10,
+    }
+  },
   baseRequirements: {
     gold: 60,
     redCrystals: 0,

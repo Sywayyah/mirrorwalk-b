@@ -17,6 +17,7 @@ export interface Fraction<T extends string> {
   getUnitType(unitTypeName: T): UnitBase;
   createHero(config: Pick<HeroBase, 'name'> & HeroBaseStats): HeroBase;
   getAllHeroes(): HeroBase[];
+  findBaseUnitType(upgradedType: UnitBase): UnitBase;
   getTownBase(): TownBase<any> | null;
   setTownBase(townBase: TownBase<any>): void;
 }

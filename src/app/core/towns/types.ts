@@ -9,24 +9,33 @@ interface BuildingAcitivty<T extends ActivityTypes = ActivityTypes> {
   type: T;
 }
 
+export interface HiringDetails {
+  type: UnitBase;
+  growth: number;
+  // optional, default is 7
+  refillDaysInterval?: number;
+  // trainUpgraded?: boolean;
+}
+
 export interface HiringActivity extends BuildingAcitivty<ActivityTypes.Hiring> {
-  hiring: {
-    type: UnitBase;
-    growth: number;
-    // optional, default is 7
-    refillDaysInterval?: number;
-    // trainUpgraded?: boolean;
-  }[];
+  hiring: HiringDetails;
   unitGrowthGroup: string;
   growth: number;
   growthIntervalDays: number;
+  upgrade?: boolean;
 }
 
 export interface BuidlingBase {
   name: string;
   // cost: Resources;
+  description?: string;
   upgrade?: BuidlingBase;
   activity?: BuildingAcitivty;
+}
+
+export interface BuildingLevel {
+  building: BuidlingBase;
+  cost: Resources;
 }
 
 export interface BuildingDescription {
