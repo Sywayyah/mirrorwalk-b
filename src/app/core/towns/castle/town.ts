@@ -55,6 +55,14 @@ const trainingCamp: BuidlingBase = {
     /*
       todo: for now, I think, it's better to keep production rate at 7 days by default.
       It might provide a better strategic planning in general.
+
+      And also, might make more use for buildings that increase your production rate.
+      For instance, if player completed archers outpost location, it might give a chance
+      that Archers Outpost in the town is going to have a slight increase in growth.
+
+      Same thing for Firebirds. Firebirds are valuable units and player might lose them
+      sometimes, hence that, player migth want to complete some locations that will
+      increase growth of Firebirds, like, "increases Firebirds growth in your town by 1".
      */
     growthIntervalDays: 7,
   } as HiringActivity,
@@ -148,6 +156,8 @@ export const castleTownBase: TownBase<CastleTownBuildings> = {
          todo: High cost on early buildings makes them hard to use.
           For now I'll lower their cost, but I can think of either lowering units cost,
           or increasing resources/think of new resource types in general.
+
+          In general, keep buildings prices low, units are already expensive enough.
          */
 
         /*
