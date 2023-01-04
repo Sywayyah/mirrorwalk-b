@@ -80,7 +80,34 @@ humansFraction.defineUnitType('Archer', {
       minDamage: 3,
       maxDamage: 4,
     },
-    attackRating: 3,
+    /*
+      This might actually be a fun change. Archers might have two attacks and
+      high base damage, but low attack rating. So, they might be less efficient
+      against high defence unit types, but still have potential if their attack
+      rating is invested into. There even might be some penalty, like archers
+      are only getting 50% of additional attack rating. Some other units, on
+      the other hand, might get increased bonus to attack rating, or something
+      additional happening based on their attack rating.
+
+      There also could be some modifiers that increase the efficiency of the
+      attack itself. For now, attack is affecting damage basing on difference
+      between attack and defence. If attack is higher than def, then damage
+      will be increased by 5% per each point of difference, and reduced by 3%
+      otherwise.
+
+      These percent characteristics themselves might be affected somehow, for
+      instance, if enemy has greater attack then knight's defence, then
+      enemy will get not 5% bonus damage per each point of difference, but 3.5%.
+
+      This could make Knights more efficient against units with high attack.
+
+      Attack rating might even get negative (although, I'm not sure if it should
+      affect damage in that case, or units might have attack rating penalty points,
+      so if Archers have 5 attack rating penalty points, then player will need to
+      increase their attack rating by at least 5, until any new points will have
+      effect, only 6-th point will make difference).
+    */
+    attackRating: 1,
     defence: 3,
     health: 8,
     speed: 21,

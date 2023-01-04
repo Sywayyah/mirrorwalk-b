@@ -1,6 +1,22 @@
-import { humansFraction } from '../../fractions';
+import { humansFraction, HUMANS_UNIT_TYPES } from '../../fractions';
 import { ActivityTypes, BuidlingBase, HiringActivity, TownBase } from '../types';
 
+
+function createHiringActivity(
+  unitType: HUMANS_UNIT_TYPES,
+  growth: number,
+  unitGrowthGroup: string,
+  upgrade: boolean = false,
+): HiringActivity {
+  return {
+    type: ActivityTypes.Hiring,
+    hiring: { type: humansFraction.getUnitType(unitType), growth, refillDaysInterval: 7 },
+    unitGrowthGroup,
+    growth,
+    growthIntervalDays: 7,
+    upgrade,
+  } as HiringActivity;
+}
 
 export type CastleTownBuildings = 'town-center'
   | 'market'
@@ -47,62 +63,33 @@ const tavern: BuidlingBase = {
 */
 const trainingCamp: BuidlingBase = {
   name: 'Training Camp',
-  activity: {
-    type: ActivityTypes.Hiring,
-    hiring: { type: humansFraction.getUnitType('Pikeman'), growth: 10, refillDaysInterval: 7 },
-    unitGrowthGroup: 'pikeman',
-    growth: 10,
-    /*
-      todo: for now, I think, it's better to keep production rate at 7 days by default.
-      It might provide a better strategic planning in general.
-
-      And also, might make more use for buildings that increase your production rate.
-      For instance, if player completed archers outpost location, it might give a chance
-      that Archers Outpost in the town is going to have a slight increase in growth.
-
-      Same thing for Firebirds. Firebirds are valuable units and player might lose them
-      sometimes, hence that, player migth want to complete some locations that will
-      increase growth of Firebirds, like, "increases Firebirds growth in your town by 1".
-     */
-    growthIntervalDays: 7,
-  } as HiringActivity,
+  activity: createHiringActivity('Pikeman', 12, 'pikeman'),
 };
 
 const upgradedTrainingCamp: BuidlingBase = {
   name: 'Upg. Training Camp',
   description: 'Allows to hire and upgrade Halberdiers',
-  activity: {
-    type: ActivityTypes.Hiring,
-    hiring: { type: humansFraction.getUnitType('Pikeman'), growth: 10, refillDaysInterval: 7 },
-    unitGrowthGroup: 'pikeman',
-    growth: 10,
-    growthIntervalDays: 7,
-    upgrade: true,
-  } as HiringActivity,
+  activity: createHiringActivity('Pikeman', 12, 'pikeman', true),
 };
 
 const archersOutpost = {
   name: 'Archers Outpost',
-  activity: {
-    type: ActivityTypes.Hiring,
-    hiring: { type: humansFraction.getUnitType('Archer'), growth: 10, refillDaysInterval: 7 },
-    unitGrowthGroup: 'archer',
-    growth: 10,
-    growthIntervalDays: 7,
-  } as HiringActivity,
-  // upgrade
+  activity: createHiringActivity('Archer', 10, 'archers'),
 };
 
 const hallsOfKnights = {
   name: 'Halls of Knights',
+  activity: createHiringActivity('Knight', 7, 'knights'),
 };
 
 const cavalryStalls = {
   name: 'Cavalry Stalls',
+  activity: createHiringActivity('Cavalry', 3, 'cavalry'),
 };
 
 const magicTower: BuidlingBase = {
   name: 'Magic Tower',
+  activity: createHiringActivity('Firebird', 1, 'firebirds'),
 };
 
 // will be reworked, need somehow to process it in the fraction itself
@@ -210,6 +197,19 @@ export const castleTownBase: TownBase<CastleTownBuildings> = {
           And also, then early buildings can be not very expensive, because building
           points becomes most valuable thing early on.
         */
+        /*
+         Extending original idea, some buildings might have a random chance of being
+         constructed from the beginning (might also depend on hero).
+
+         Heroes might also have different start for building points. Strong mages
+         might have less points for training buildings, but may start with Magic School
+         constructed.
+
+         Also, players might choose what they are going to invest into by looking at
+         the map first, because sometimes there might be, for example, 2 locations
+         that increase Firebirds growth in the town, which will give an ability to
+         produce more Firebirds than usually would be allowed.
+        */
         { building: trainingCamp, cost: { gold: 300 } },
         { building: upgradedTrainingCamp, cost: { gold: 150, wood: 1 } },
       ],
@@ -227,7 +227,7 @@ export const castleTownBase: TownBase<CastleTownBuildings> = {
     'halls-of-knights': {
       description: 'Trains Knights',
       levels: [
-        { building: hallsOfKnights, cost: { gold: 1200, wood: 3 } },
+        { building: hallsOfKnights, cost: { gold: 500, wood: 2 } },
       ],
       icon: 'crossed-swords',
       tier: 2,
@@ -235,7 +235,7 @@ export const castleTownBase: TownBase<CastleTownBuildings> = {
     'cavalry-halls': {
       description: 'Trains Cavalry',
       levels: [
-        { building: cavalryStalls, cost: { gold: 1500, wood: 4 } },
+        { building: cavalryStalls, cost: { gold: 575, wood: 2 } },
       ],
       icon: 'horseshoe',
       tier: 3,
@@ -243,7 +243,7 @@ export const castleTownBase: TownBase<CastleTownBuildings> = {
     'magic-tower': {
       description: 'Trains Mystical Birds and Firebirds',
       levels: [
-        { building: magicTower, cost: { gold: 2000, redCrystals: 2 } },
+        { building: magicTower, cost: { gold: 625, wood: 1 } },
       ],
       icon: 'tower',
       tier: 4,
