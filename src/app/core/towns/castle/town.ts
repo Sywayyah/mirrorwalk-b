@@ -52,7 +52,11 @@ const trainingCamp: BuidlingBase = {
     hiring: { type: humansFraction.getUnitType('Pikeman'), growth: 10, refillDaysInterval: 3 },
     unitGrowthGroup: 'pikeman',
     growth: 10,
-    growthIntervalDays: 3,
+    /*
+      todo: for now, I think, it's better to keep production rate at 7 days by default.
+      It might provide a better strategic planning in general.
+     */
+    growthIntervalDays: 7,
   } as HiringActivity,
 };
 
@@ -64,7 +68,7 @@ const upgradedTrainingCamp: BuidlingBase = {
     hiring: { type: humansFraction.getUnitType('Pikeman'), growth: 10, refillDaysInterval: 3 },
     unitGrowthGroup: 'pikeman',
     growth: 10,
-    growthIntervalDays: 3,
+    growthIntervalDays: 7,
     upgrade: true,
   } as HiringActivity,
 };
