@@ -144,8 +144,64 @@ export const castleTownBase: TownBase<CastleTownBuildings> = {
     'training-camp': {
       description: 'Trains Pikemans',
       levels: [
-        { building: trainingCamp, cost: { gold: 600 } },
-        { building: upgradedTrainingCamp, cost: { gold: 400, wood: 2 } },
+        /*
+         todo: High cost on early buildings makes them hard to use.
+          For now I'll lower their cost, but I can think of either lowering units cost,
+          or increasing resources/think of new resource types in general.
+         */
+
+        /*
+          Building points idea:
+
+          Also what I think of: Buildings might get prerequisites later on, like
+          some building can only be built after certain buildings are constructed.
+
+          But could there be something as building points, that restrict player
+          from building more than given amount of training buildings in this town?
+
+          For example, Castle heroes are going to start with 2 building points.
+          Some heroes might start with 3 points (talents might have effect there).
+          Building points are gained every new week. So, player will have to choose,
+          which unit types he is going to invest into.
+
+          Also, some other buildings might require building points, so, for instance,
+          a player will might need to decide, which special building he might want
+          to build: Magic School, because it provides better spells and recharges
+          your mana, or Town Center level 2 that brings you money each day.
+
+          For example, some player might want to get building that will restore
+          his mana daily as early as possible, so he will be looking for strategies
+          to do so.
+
+          But regardless, I like the idea of having points, because it defines an
+          investment, a certain build. Player might take some risks, sell items,
+          all in order to build something important.
+
+          Also, this will give more meaning to new towns. When player enters new
+          town, it might have lower amount of building points at the beginning.
+          New town will allow to reinforce player's investments, for instance
+          increase production rate of some unit by spending new precious building points
+          into production building for this unit type. Or it will open possibility for
+          player to build something player cannot yet build in his town, because there
+          are not enough building points.
+
+          Also it might make it simpler for player to think about building his town,
+          because he will only have a couple of points to spare at the beginning,
+          while getting +1 point only at the beginning of the next week.
+
+          There also might be some mechanic to gain points from the map.. like,
+          visiting Builders Guild will grant to player building point, might also be
+          in exchange for some resources.
+
+          In general, it feels like a fun and interesting idea, rather than
+          just having buildings in required order. People might come up with cool ideas
+          and try to squeeze out early resources to get something strong early.
+
+          And also, then early buildings can be not very expensive, because building
+          points becomes most valuable thing early on.
+        */
+        { building: trainingCamp, cost: { gold: 300 } },
+        { building: upgradedTrainingCamp, cost: { gold: 150, wood: 1 } },
       ],
       icon: 'spear-head',
       tier: 1,
@@ -153,7 +209,7 @@ export const castleTownBase: TownBase<CastleTownBuildings> = {
     'archers-outpost': {
       description: 'Trains Archers',
       levels: [
-        { building: archersOutpost, cost: { gold: 800, wood: 1 } },
+        { building: archersOutpost, cost: { gold: 420, wood: 2 } },
       ],
       icon: 'arrow-cluster',
       tier: 1,
