@@ -49,7 +49,7 @@ const trainingCamp: BuidlingBase = {
   name: 'Training Camp',
   activity: {
     type: ActivityTypes.Hiring,
-    hiring: { type: humansFraction.getUnitType('Pikeman'), growth: 10, refillDaysInterval: 3 },
+    hiring: { type: humansFraction.getUnitType('Pikeman'), growth: 10, refillDaysInterval: 7 },
     unitGrowthGroup: 'pikeman',
     growth: 10,
     /*
@@ -65,7 +65,7 @@ const upgradedTrainingCamp: BuidlingBase = {
   description: 'Allows to hire and upgrade Halberdiers',
   activity: {
     type: ActivityTypes.Hiring,
-    hiring: { type: humansFraction.getUnitType('Pikeman'), growth: 10, refillDaysInterval: 3 },
+    hiring: { type: humansFraction.getUnitType('Pikeman'), growth: 10, refillDaysInterval: 7 },
     unitGrowthGroup: 'pikeman',
     growth: 10,
     growthIntervalDays: 7,
