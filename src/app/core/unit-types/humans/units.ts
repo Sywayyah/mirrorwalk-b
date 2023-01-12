@@ -147,7 +147,9 @@ humansFraction.defineUnitType('Knight', {
   minQuantityPerStack: 2,
   defaultTurnsPerRound: 1,
 
-  baseRequirements: {},
+  baseRequirements: {
+    gold: 100,
+  },
   neutralReward: defaultRewards,
 });
 
