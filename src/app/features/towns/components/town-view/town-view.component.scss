@@ -10,7 +10,7 @@
 .building {
   display: flex;
   flex-direction: column;
-  background-color: rgb(100, 100, 100);
+  background-color: rgb(65, 69, 78);
   color: white;
   text-align: center;
   margin: 5px;
@@ -30,7 +30,7 @@
     flex-direction: column;
 
     &.not-built {
-      background: rgb(115, 115, 115) !important;
+      background: rgb(85 89 103) !important;
       color: rgb(174, 174, 174);
     }
   }

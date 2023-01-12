@@ -1,5 +1,5 @@
 <div *ngIf="popupsService.popups.length" class="overlay"></div>
 
 <div *ngIf="popupsService.popups.length" class="popups-container">
-  <mw-popup-wrapper *ngFor="let popup of popupsService.popups" class="popup" [popupData]="popup"></mw-popup-wrapper>
+  <mw-popup-wrapper *ngFor="let popup of popupsService.popups" [ngClass]="popup.class" class="popup" [popupData]="popup"></mw-popup-wrapper>
 </div>

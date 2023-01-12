@@ -47,6 +47,7 @@ export class TownViewComponent {
           building,
           targetLevel: 1,
         },
+        class: 'dark'
       });
 
       return;
@@ -62,6 +63,7 @@ export class TownViewComponent {
           this.popupService.createBasicPopup({
             component: HiringPopupComponent,
             popup: { building, town: this.town, hiringActivity },
+            // class: 'dark',
           });
       }
     }

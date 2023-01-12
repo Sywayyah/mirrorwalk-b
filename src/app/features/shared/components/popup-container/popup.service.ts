@@ -4,6 +4,7 @@ import { BasicPopup } from './basic-popup';
 export interface PopupData {
   popup: object;
   component: Type<any>;
+  class?: string;
 }
 
 @Injectable({
@@ -20,6 +21,7 @@ export class PopupService {
   public createBasicPopup<T extends object>(params: {
     popup: T;
     component: Type<BasicPopup<T>>;
+    class?: string;
   }): void {
     this.createPopup(params);
   }

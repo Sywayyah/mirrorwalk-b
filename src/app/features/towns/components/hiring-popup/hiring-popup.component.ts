@@ -263,6 +263,7 @@ export class HiringPopupComponent extends BasicPopup<HiringPopupData> implements
         building: this.data.building,
         targetLevel: 2,
       },
+      class: 'dark',
     });
   }
 
