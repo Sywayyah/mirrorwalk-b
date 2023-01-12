@@ -63,6 +63,7 @@ const tavern: BuidlingBase = {
 */
 const trainingCamp: BuidlingBase = {
   name: 'Training Camp',
+  description: 'Allows to train Pikemans that can be upgraded.',
   activity: createHiringActivity('Pikeman', 12, 'pikeman'),
 };
 

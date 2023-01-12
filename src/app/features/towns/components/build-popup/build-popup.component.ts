@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormattedResource, formattedResources, Resources } from 'src/app/core/resources';
-import { BuidlingBase, Building, BuildingLevel } from 'src/app/core/towns';
+import { Building, BuildingLevel } from 'src/app/core/towns';
 import { MwPlayersService } from 'src/app/features/services';
 import { BasicPopup } from 'src/app/features/shared/components';
 
@@ -12,11 +12,12 @@ import { BasicPopup } from 'src/app/features/shared/components';
 export class BuildPopupComponent extends BasicPopup<{ building: Building, targetLevel: number }> {
 
   public cost: FormattedResource[];
-  public missingCost: FormattedResource[];
+  // public missingCost: FormattedResource[];
 
   public canBuild: boolean;
 
   public buildingLevel: BuildingLevel;
+  public missingCostMap: Resources;
 
   constructor(
     private players: MwPlayersService,
@@ -29,9 +30,8 @@ export class BuildPopupComponent extends BasicPopup<{ building: Building, target
     const buildingCost = this.getBuildingCost();
     this.cost = formattedResources(buildingCost);
 
-    this.missingCost = formattedResources(
-      this.players.getMissingResources(this.players.getCurrentPlayer(), buildingCost)
-    );
+    this.missingCostMap = this.players.getMissingResources(this.players.getCurrentPlayer(), buildingCost);
+    // this.missingCost = formattedResources(this.missingCostMap);
 
     this.canBuild = this.players.playerHasResources(
       this.players.getCurrentPlayer(),

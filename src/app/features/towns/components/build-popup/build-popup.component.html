@@ -1,6 +1,7 @@
-<mw-ra-icon style="font-size: 40px;" [icon]="data.building.base.icon"></mw-ra-icon>
 
-<div>Build level {{data.targetLevel}} {{data.building.currentBuilding.name}}</div>
+<div>Build: {{data.building.currentBuilding.name}}, level {{data.targetLevel}}</div>
+
+<mw-ra-icon style="font-size: 40px; margin: 8px 0;" [icon]="data.building.base.icon"></mw-ra-icon>
 
 <div>
   {{buildingLevel.building.description}}
@@ -9,18 +10,22 @@
 <div>
   <div *ngFor="let resource of cost">
     {{resource.count}} {{resource.resName}}
+
+    <span *ngIf="missingCostMap[resource.type]">
+      (<span style="color: red;">-{{missingCostMap[resource.type]}}</span>)
+    </span>
   </div>
 </div>
 
 <div *ngIf="!canBuild">
-  You don't have enough resources. Missing:
-
+  You don't have enough resources.
+<!--
   <div *ngFor="let missingRes of missingCost">
     {{missingRes.count}} {{missingRes.resName}}
-  </div>
+  </div> -->
 </div>
 
-<div style="display: flex; justify-content: space-around;">
+<div style="display: flex; justify-content: space-around; margin-top: 10px;">
   <button mw-main-button (click)="close()">Close</button>
 
   <button mw-main-button (click)="build()" [disabled]="!canBuild">Build</button>

@@ -8,13 +8,15 @@ export const resourceNames: Record<ResourceType, string> = {
 } as const;
 
 export interface FormattedResource {
-  resName: string;
+  resName: ResourceType;
+  type: ResourceType;
   count: number;
 }
 
-export function formattedResources(resources: Resources): { resName: string, count: number }[] {
+export function formattedResources(resources: Resources): FormattedResource[] {
   return Object.entries(resources).map(([res, count]: [string, number]) => ({
     resName: resourceNames[res as ResourceType],
+    type: res as ResourceType,
     count: count,
-  }));
+  })) as FormattedResource[];
 }
