@@ -1,4 +1,25 @@
-/* 
+/*
+    Implementable ideas:
+      * Summoning units. I created Fire Elementals, now I need to provide action
+        for summoning and handle some mechanics, for instance, cleanup summoned units
+        after fight is over.
+
+        Also, there might be some additional actions performed when certain units are
+        summoned. For example, when summoning Fire Elements, it may deal 15-25 damage
+        to all enemy units.
+
+      * Fire Elements can be used as a guard in some locations.
+
+      * Spells dynamic descriptions
+
+    Desirable ideas:
+      * Markets, so player can trade resources. ALso, Markets may have different levels,
+        and they might allow to cell/buy more types of resources, or reduce trading costs
+        in some fractions.
+
+*/
+
+/*
     Short ideas of things to add
 
     Add: Items, which can introduce individual cooldowns to spells. For example
@@ -7,7 +28,7 @@
 
 
     Add structure: Beacon of Ghosts. Allows to upgrade ghosts and ghost-mages.
-    
+
     Add: Locations with prices. For example, some location may suggest some
       reward for a price. For example, Witch Guild could give you Eclipse Wand
       for 1000 gold and 3 gems. Such locations may not spend movement points.
@@ -20,14 +41,14 @@
 
     Add: item which allows to cast Enchant-like spell, so casters can increase
       their damage output within the same round.
-    
+
     Add: item which allows to instantly cast Enchant agains all enemies.
 
     Idea: Dueling. Dueling can reduce enemy's damage when he is attacking other than
       someone he's dueling now.
 
     Idea: There could be some ways to not only learn abilities, but also masteries
-      at the same time. For example, visiting Witch Hut can grant a hero both 
+      at the same time. For example, visiting Witch Hut can grant a hero both
       Enchant and some Mastery, that allows to cast is instantly against all enemies.
 
       And it also could be the only way to achieve this Mastery, would be no other ways,
@@ -35,7 +56,7 @@
 
     Idea: Materies can require costly rare resources, like Crystals. But they may also
         do something like, learning some big mastery increases your level by 2, but
-        doesn't give spell points. And current experience is erased, experience bar 
+        doesn't give spell points. And current experience is erased, experience bar
         becomes empty.
 
 */
