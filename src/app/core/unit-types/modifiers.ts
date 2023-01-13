@@ -28,6 +28,7 @@ export interface ModifiersModel {
     isRanged: boolean;
     counterattacks: boolean;
     isGhost: boolean;
+    isSummon: boolean;
 }
 
 export type Modifiers = Partial<ModifiersModel>;

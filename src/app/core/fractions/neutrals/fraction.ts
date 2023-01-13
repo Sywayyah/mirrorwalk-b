@@ -6,6 +6,8 @@ export type NEUTRAL_UNIT_TYPES =
   | 'Gnoll'
   | 'Thiefs'
   | 'ForestTrolls'
+
+  | 'FireElemental'
   ;
 
 const defaultReward = {
