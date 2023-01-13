@@ -17,6 +17,11 @@
         and they might allow to cell/buy more types of resources, or reduce trading costs
         in some fractions.
 
+    Just ideas:
+      * There can be items (shields mostly) that reduce received damage if you are not
+        making the first move in the battle. Also, there can be units (could be slow)
+        that receive reduced damage until they make move in the current round.
+
 */
 
 /*
