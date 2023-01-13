@@ -16,6 +16,9 @@ export const BigCampStructure: StructureGeneratorModel = {
   },
   control: StuctureControl.Neutral,
   generateReward: () => {
+    // return {
+    //   type: NeutralRewardTypesEnum.NoReward,
+    // }
     return {
       type: NeutralRewardTypesEnum.Scripted,
       description: 'Big camp is defeated! \n\n +450 Experience',

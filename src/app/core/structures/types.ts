@@ -82,6 +82,8 @@ export enum NeutralRewardTypesEnum {
   Mines = 'mines',
   UnitsUpgrade = 'upgrading',
   Scripted = 'scripted',
+
+  NoReward = 'no-reward',
 }
 
 export interface NeutralRewardModel<T extends NeutralRewardTypesEnum = NeutralRewardTypesEnum> {
@@ -118,4 +120,7 @@ export interface UnitUpgradeReward extends NeutralRewardModel<NeutralRewardTypes
 export interface ScriptedReward extends NeutralRewardModel<NeutralRewardTypesEnum.Scripted> {
   description: string;
   onAccept: (apiRefs: OnVisitedParams) => void,
+}
+
+export interface NoReward extends NeutralRewardModel<NeutralRewardTypesEnum.NoReward> {
 }
