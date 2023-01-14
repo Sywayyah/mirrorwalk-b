@@ -1,14 +1,12 @@
 import { Injectable } from '@angular/core';
-import { PLAYER_COLORS } from 'src/app/core/assets';
 import { HeroBase, HERO_LEVELS_BREAKPOINTS } from 'src/app/core/heroes';
 import { ItemInstanceModel } from 'src/app/core/items';
 import { PlayerInstanceModel, PlayerModel, PlayerTypeEnum } from 'src/app/core/players';
 import { Resources, ResourcesModel, ResourceType } from 'src/app/core/resources';
 import { CommonUtils, UnitBase, UnitGroupInstModel, UnitGroupModel } from 'src/app/core/unit-types';
-import { Notify, StoreClient } from 'src/app/store';
+import { StoreClient } from 'src/app/store';
 import { MwHeroesService, MwUnitGroupsService } from './';
-import { GameCreated, PlayerEquipsItem, PlayerGainsLevel, PlayersInitialized, PlayerUnequipsItem } from './events/';
-import { State } from './state.service';
+import { PlayerEquipsItem, PlayerGainsLevel, PlayerUnequipsItem } from './events/';
 
 
 // const mainPlayerGroups = GenerationUtils.createRandomArmy({
@@ -49,7 +47,6 @@ const defaultResources: ResourcesModel = {
 }
 
 
-
 @Injectable({
   providedIn: 'root'
 })
@@ -62,34 +59,8 @@ export class MwPlayersService extends StoreClient() {
   constructor(
     private readonly heroesService: MwHeroesService,
     private readonly unitGroups: MwUnitGroupsService,
-    private readonly state: State,
   ) {
     super();
-  }
-
-  @Notify(GameCreated)
-  public initPlayersOnGameStart(): void {
-    const [mainPlayerId, mainPlayer] = this.createPlayerEntry(PLAYER_IDS.Main, this.createPlayerWithHero(
-      this.state.createdGame.selectedColor,
-      this.state.createdGame.selectedHero,
-      PlayerTypeEnum.Player,
-    ));
-
-    this.players.set(mainPlayerId, mainPlayer);
-
-    const [neutralPlayerId, neutralPlayer] = this.createPlayerEntry(PLAYER_IDS.Neutral, {
-      color: PLAYER_COLORS.GRAY,
-      type: PlayerTypeEnum.AI,
-      hero: this.heroesService.createNeutralHero(),
-      unitGroups: [],
-      resources: {
-        ...defaultResources,
-      },
-    });
-
-    this.players.set(neutralPlayerId, neutralPlayer);
-
-    this.events.dispatch(PlayersInitialized({}));
   }
 
   public getCurrentPlayer(): PlayerInstanceModel {
@@ -216,20 +187,12 @@ export class MwPlayersService extends StoreClient() {
     this.events.dispatch(PlayerUnequipsItem({ player, item }));
   }
 
-  private createPlayer(id: string, playerInfo: PlayerModel): PlayerInstanceModel {
-    const player: PlayerInstanceModel = {
-      id,
-      ...playerInfo,
-    };
 
-    return player;
-  }
-
-  private createPlayerEntry(id: string, playerInfo: PlayerModel): [string, PlayerInstanceModel] {
+  public createPlayerEntry(id: string, playerInfo: PlayerModel): [string, PlayerInstanceModel] {
     return [id, this.createPlayer(id, playerInfo)];
   }
 
-  private createPlayerWithHero(
+  public createPlayerWithHero(
     color: string,
     hero: HeroBase,
     type: PlayerTypeEnum,
@@ -240,6 +203,15 @@ export class MwPlayersService extends StoreClient() {
       resources: hero.initialState.resources,
       type,
       unitGroups: this.unitGroups.createUnitGroupFromGenModel(hero.initialState.army[0]),
+    };
+
+    return player;
+  }
+
+  private createPlayer(id: string, playerInfo: PlayerModel): PlayerInstanceModel {
+    const player: PlayerInstanceModel = {
+      id,
+      ...playerInfo,
     };
 
     return player;

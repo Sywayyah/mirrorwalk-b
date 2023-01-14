@@ -1,34 +1,16 @@
 <div class="columns-wrapper">
   <div class="columns">
     <div class="column">
-      <mw-unit-group-card
-          class="card"
-          *ngFor="let unitGroup of mainPlayerUnitGroups"
-          mwSpellTarget
-          [spellTargetUnitGroup]="unitGroup"
-          mwUnitEventsCursor
-          side="left"
-          [playerInfo]="mainPlayerInfo"
-          [unitGroup]="unitGroup"
-          (cardReady)="onCardReady(unitGroup, $event)"
-          (groupDies)="onGroupDies(unitGroup)"
-          >
+      <mw-unit-group-card class="card" *ngFor="let unitGroup of mainPlayerUnitGroups" mwSpellTarget
+        [spellTargetUnitGroup]="unitGroup" mwUnitEventsCursor side="left" [playerInfo]="mainPlayerInfo"
+        [unitGroup]="unitGroup" (groupDies)="onGroupDies(unitGroup)">
       </mw-unit-group-card>
     </div>
-  
+
     <div class="column">
-      <mw-unit-group-card
-          class="card"
-          *ngFor="let unitGroup of neutralPlayerGroups"
-          mwSpellTarget
-          [spellTargetUnitGroup]="unitGroup"
-          mwUnitEventsCursor
-          side="right"
-          [playerInfo]="neutralPlayerInfo"
-          [unitGroup]="unitGroup"
-          (cardReady)="onCardReady(unitGroup, $event)"
-          (groupDies)="onGroupDies(unitGroup)"
-          >
+      <mw-unit-group-card class="card" *ngFor="let unitGroup of neutralPlayerGroups" mwSpellTarget
+        [spellTargetUnitGroup]="unitGroup" mwUnitEventsCursor side="right" [playerInfo]="neutralPlayerInfo"
+        [unitGroup]="unitGroup" (groupDies)="onGroupDies(unitGroup)">
       </mw-unit-group-card>
     </div>
   </div>
@@ -39,10 +21,7 @@
 </div>
 
 <div class="queue-panel">
-  <div 
-    *ngFor="let group of fightQueue"
-    [style.background]="group.ownerPlayerRef!.color"
-    class="queue-card">
+  <div *ngFor="let group of fightQueue" [style.background]="group.ownerPlayerRef!.color" class="queue-card">
     <div>{{group.type.name}}</div>
     <div>{{group.count}}</div>
     <div>turns: {{group.turnsLeft}}</div>

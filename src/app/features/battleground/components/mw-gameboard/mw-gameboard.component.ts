@@ -10,7 +10,7 @@ import { StoreClient, WireMethod } from 'src/app/store';
 import { MwUnitGroupCardComponent } from '../mw-unit-group-card/mw-unit-group-card.component';
 
 @Component({
-  selector: 'mw-mw-gameboard',
+  selector: 'mw-gameboard',
   templateUrl: './mw-gameboard.component.html',
   styleUrls: ['./mw-gameboard.component.scss'],
 })
@@ -47,10 +47,6 @@ export class MwGameboardComponent extends StoreClient() implements OnInit, After
     this.neutralPlayerInfo = this.mwNeutralPlayer.getPlayerInfo();
 
     this.fightQueue = this.mwBattleState.getFightQueue();
-  }
-
-  public onCardReady(unitGroup: UnitGroupInstModel, cardRef: MwUnitGroupCardComponent): void {
-    // this.cardsMapping.register(unitGroup, cardRef);
   }
 
   public onGroupDies(unitGroup: UnitGroupInstModel): void {

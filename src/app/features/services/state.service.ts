@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Fraction } from 'src/app/core/fractions';
 import { HeroBase } from 'src/app/core/heroes';
 import { defaultTravelPointsPerDay } from 'src/app/core/locations';
+import { PlayerInstanceModel } from 'src/app/core/players';
 import { Town } from 'src/app/core/towns';
 
 /*
@@ -24,8 +25,8 @@ interface GameState {
 })
 export class State {
   public createdGame!: {
-    selectedHero: HeroBase,
-    selectedColor: string,
+    selectedHero: HeroBase;
+    selectedColor: string;
     fraction: Fraction<any>;
     town: Town<any>;
   };
@@ -36,4 +37,14 @@ export class State {
   };
 
   public settings: {} = {};
+
+  public gameState!: {
+    players: PlayerInstanceModel[];
+  };
+
+  /* State for when battle starts */
+  public currentBattleState!: {
+    currentPlayer: PlayerInstanceModel;
+    enemyPlayer: PlayerInstanceModel;
+  };
 }

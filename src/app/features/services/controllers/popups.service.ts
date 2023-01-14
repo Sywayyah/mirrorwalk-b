@@ -22,7 +22,6 @@ export class PopupsController extends StoreClient() {
 
   @WireMethod(DisplayPopup)
   public displayPopup(event: PopupData): void {
-    console.log('does it happen?')
     this.popupService.createPopup(event);
   }
 
