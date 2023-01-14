@@ -32,7 +32,7 @@ export class ResourcesRewardPopupComponent extends BasicPopup<StructRewardPopup>
 
     if (popup.selectedRewardGroup) {
       popup.selectedRewardGroup.forEach(selectedReward => {
-        this.playersService.addResourcesToPlayer(this.playersService.getCurrentPlayer(), selectedReward.type, selectedReward.count);
+        this.playersService.addResourceToPlayer(this.playersService.getCurrentPlayer(), selectedReward.type, selectedReward.count);
       })
     }
   }

@@ -1,6 +1,7 @@
 import { ResourceType } from '../resources';
 import { ArchersOutpostStructure, BanditCamp, BeaconOfTheUndead, BigCampStructure, CalavryStalls, GraveyardStructure, MagicRiverStructure, MountainNestStructure, WitchHutStructure } from '../structures/common';
-import { resPileStructure } from '../structures/common/resource-pile';
+import { FireRingStructure } from '../structures/common/guard-location';
+import { resourcesPileStructure, resPileStructure } from '../structures/common/resource-pile';
 import { StructureDescription } from './types';
 
 /* Think more here, customizable locations, more location types (resource piles, single guards, etc.) */
@@ -78,6 +79,15 @@ const brBranch: StructureDescription[] = [
 
     struct: BigCampStructure,
   },
+  {
+    id: '23',
+    x: 75,
+    y: 190,
+    icon: 'mine-wagon',
+    pathTo: '20',
+
+    struct: resourcesPileStructure({ gold: 450, wood: 1, redCrystals: 1, gems: 1 }),
+  },
 ];
 
 const fifthBranch: StructureDescription[] = [
@@ -148,7 +158,16 @@ const tlBranch: StructureDescription[] = [
     icon: 'emerald',
     pathTo: '15',
     struct: resPileStructure(ResourceType.Gems, 3),
-  }
+  },
+  {
+    id: '54',
+
+    x: 125,
+    y: -160,
+    icon: 'fire-ring',
+    pathTo: '15',
+    struct: FireRingStructure,
+  },
 ];
 
 const trBranch: StructureDescription[] = [

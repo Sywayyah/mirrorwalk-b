@@ -71,12 +71,16 @@ export class MwPlayersService extends StoreClient() {
     return this.playersMap.get(this.currentPlayerId) as PlayerInstanceModel;
   }
 
-  public addResourcesToPlayer(
+  public addResourceToPlayer(
     player: PlayerInstanceModel,
     resource: ResourceType,
     amount: number,
   ): void {
     player.resources[resource] += amount;
+  }
+
+  public addResourcesToPlayer(player: PlayerInstanceModel, resources: Resources): void {
+    Object.entries(resources).forEach(([res, count]) => player.resources[res as ResourceType] += count);
   }
 
   public removeResourcesFromPlayer(

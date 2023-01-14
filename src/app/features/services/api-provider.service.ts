@@ -33,12 +33,13 @@ export class ApiProvider {
       addMaxManaToPlayer: (player, mana) => {
         this.heroes.addMaxManaToHero(player.hero, mana);
       },
-      addResourcesToPlayer: (player, type, amount) => this.playersService.addResourcesToPlayer(player, type, amount),
+      giveResourceToPlayer: (player, type, amount) => this.playersService.addResourceToPlayer(player, type, amount),
       addSpellToPlayerHero: (player, spell) => {
         this.heroes.addSpellToHero(player.hero, spell);
       },
       getCurrentPlayer: () => this.playersService.getCurrentPlayer(),
       getCurrentPlayerUnitGroups: () => this.playersService.getUnitGroupsOfPlayer(this.playersService.getCurrentPlayer().id),
+      giveResourcesToPlayer: (player, resources) => this.playersService.addResourcesToPlayer(player, resources),
     };
   }
 
