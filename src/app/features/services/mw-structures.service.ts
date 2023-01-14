@@ -40,7 +40,7 @@ export class MwStructuresService extends StoreClient() {
 
   @Notify(PlayersInitialized)
   public initStructures(): void {
-    this.neutralPlayer = this.playersService.getEnemyPlayer();
+    this.neutralPlayer = this.playersService.getNeutralPlayer();
 
     this.viewStructures = this.createViewStructures(initialStructs);
     this.viewStructures.forEach((struct) => this.structsMap.set(struct.id, struct));

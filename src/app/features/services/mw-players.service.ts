@@ -7,6 +7,7 @@ import { CommonUtils, UnitBase, UnitGroupInstModel, UnitGroupModel } from 'src/a
 import { StoreClient } from 'src/app/store';
 import { MwHeroesService, MwUnitGroupsService } from './';
 import { PlayerEquipsItem, PlayerGainsLevel, PlayerUnequipsItem } from './events/';
+import { State } from './state.service';
 
 
 // const mainPlayerGroups = GenerationUtils.createRandomArmy({
@@ -52,19 +53,22 @@ const defaultResources: ResourcesModel = {
 })
 export class MwPlayersService extends StoreClient() {
 
-  public players: Map<string, PlayerInstanceModel> = new Map();
+  private get playersMap(): Map<string, PlayerInstanceModel> {
+    return this.state.gameState.playersMap;
+  };
 
   private currentPlayerId: string = PLAYER_IDS.Main;
 
   constructor(
     private readonly heroesService: MwHeroesService,
     private readonly unitGroups: MwUnitGroupsService,
+    private readonly state: State,
   ) {
     super();
   }
 
   public getCurrentPlayer(): PlayerInstanceModel {
-    return this.players.get(this.currentPlayerId) as PlayerInstanceModel;
+    return this.playersMap.get(this.currentPlayerId) as PlayerInstanceModel;
   }
 
   public addResourcesToPlayer(
@@ -137,15 +141,20 @@ export class MwPlayersService extends StoreClient() {
   }
 
   public getPlayerById(playerId: string): PlayerInstanceModel {
-    return this.players.get(playerId) as PlayerInstanceModel;
+    return this.playersMap.get(playerId) as PlayerInstanceModel;
+  }
+
+  public getNeutralPlayer(): PlayerInstanceModel {
+    return this.playersMap.get(PLAYER_IDS.Neutral)!;
   }
 
   public getEnemyPlayer(): PlayerInstanceModel {
-    return this.players.get(PLAYER_IDS.Neutral) as PlayerInstanceModel;
+    /* Might be changed */
+    return this.getNeutralPlayer();
   }
 
   public getUnitGroupsOfPlayer(playerId: string): UnitGroupInstModel[] {
-    const player = this.players.get(playerId) as PlayerInstanceModel;
+    const player = this.playersMap.get(playerId) as PlayerInstanceModel;
     return player.unitGroups.map((unitGroup: UnitGroupModel) => {
       unitGroup.ownerPlayerRef = player;
 

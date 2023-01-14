@@ -3,7 +3,7 @@ import { PLAYER_COLORS } from 'src/app/core/assets';
 import { heroesDefaultResources } from 'src/app/core/heroes';
 import { PlayerTypeEnum } from 'src/app/core/players';
 import { Notify, StoreClient, WireMethod } from 'src/app/store';
-import { FightStarts, FightStartsEvent, GameCreated, PlayersInitialized, PlayerStartsFight, StructFightConfirmed, StructSelected, StructSelectedEvent } from '../events';
+import { FightStarts, FightStartsEvent, GameCreated, NeutralStructParams, PlayersInitialized, PlayerStartsFight, StructFightConfirmed, StructSelected, StructSelectedEvent } from '../events';
 import { BattleStateService } from '../mw-battle-state.service';
 import { MwHeroesService } from '../mw-heroes.service';
 import { MwPlayersService, PLAYER_IDS } from '../mw-players.service';
@@ -26,13 +26,18 @@ export class GameController extends StoreClient() {
 
   @Notify(GameCreated)
   public initPlayersOnGameStart(): void {
+    /*
+       For now, I can see some good overall tendency.
+
+       There is a global store, source of truth, then there
+       are some services, that interact with it and have some util
+       methods.
+     */
     const [mainPlayerId, mainPlayer] = this.players.createPlayerEntry(PLAYER_IDS.Main, this.players.createPlayerWithHero(
       this.state.createdGame.selectedColor,
       this.state.createdGame.selectedHero,
       PlayerTypeEnum.Player,
     ));
-
-    this.players.players.set(mainPlayerId, mainPlayer);
 
     const [neutralPlayerId, neutralPlayer] = this.players.createPlayerEntry(PLAYER_IDS.Neutral, {
       color: PLAYER_COLORS.GRAY,
@@ -44,18 +49,25 @@ export class GameController extends StoreClient() {
       },
     });
 
-    this.players.players.set(neutralPlayerId, neutralPlayer);
-
     this.state.gameState = {
       players: [mainPlayer, neutralPlayer],
+      currentPlayer: mainPlayer,
+      playersMap: new Map([
+        [mainPlayerId, mainPlayer],
+        [neutralPlayerId, neutralPlayer],
+      ]),
     };
 
     this.events.dispatch(PlayersInitialized({}));
   }
 
-  @Notify(StructFightConfirmed)
-  public initFight(): void {
+  @WireMethod(StructFightConfirmed)
+  public initFight(event: NeutralStructParams): void {
 
+    this.state.currentBattleState = {
+      currentPlayer: this.state.gameState.currentPlayer,
+      enemyPlayer: event.struct.guard,
+    };
   }
 
   @WireMethod(PlayerStartsFight)

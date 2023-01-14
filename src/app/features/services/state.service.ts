@@ -40,6 +40,8 @@ export class State {
 
   public gameState!: {
     players: PlayerInstanceModel[];
+    currentPlayer: PlayerInstanceModel;
+    playersMap: Map<string, PlayerInstanceModel>;
   };
 
   /* State for when battle starts */
