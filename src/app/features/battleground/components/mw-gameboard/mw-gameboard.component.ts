@@ -19,7 +19,7 @@ export class MwGameboardComponent extends StoreClient() implements OnInit, After
   public neutralPlayerGroups!: UnitGroupInstModel[];
 
   public mainPlayerInfo!: PlayerInstanceModel;
-  public neutralPlayerInfo!: PlayerInstanceModel;
+  public enemyPlayerInfo!: PlayerInstanceModel;
 
   public fightQueue!: UnitGroupInstModel[];
 
@@ -44,9 +44,9 @@ export class MwGameboardComponent extends StoreClient() implements OnInit, After
     this.neutralPlayerGroups = this.mwNeutralPlayer.getUnitGroups();
 
     this.mainPlayerInfo = this.mwPlayerState.getPlayerInfo();
-    this.neutralPlayerInfo = this.mwNeutralPlayer.getPlayerInfo();
+    this.enemyPlayerInfo = this.mwNeutralPlayer.getPlayerInfo();
 
-    this.fightQueue = this.mwBattleState.getFightQueue();
+    /* Rework this. Try to implement summons */
   }
 
   public onGroupDies(unitGroup: UnitGroupInstModel): void {
@@ -68,7 +68,7 @@ export class MwGameboardComponent extends StoreClient() implements OnInit, After
     this.combatInteractor.onBattleBegins();
 
     this.events.dispatch(PlayerStartsFight({
-      players: [this.mainPlayerInfo, this.neutralPlayerInfo],
+      players: [this.mainPlayerInfo, this.enemyPlayerInfo],
       unitGroups: [...this.mainPlayerUnitGroups, ...this.neutralPlayerGroups],
     }));
 
@@ -78,7 +78,7 @@ export class MwGameboardComponent extends StoreClient() implements OnInit, After
       takeUntil(this.destroyed$),
     ).subscribe(() => {
       this.mainPlayerUnitGroups = this.mwBattleState.heroesUnitGroupsMap.get(this.mainPlayerInfo) as UnitGroupInstModel[];
-      this.neutralPlayerGroups = this.mwBattleState.heroesUnitGroupsMap.get(this.neutralPlayerInfo) as UnitGroupInstModel[];
+      this.neutralPlayerGroups = this.mwBattleState.heroesUnitGroupsMap.get(this.enemyPlayerInfo) as UnitGroupInstModel[];
       this.updateFightQueue();
     });
   }

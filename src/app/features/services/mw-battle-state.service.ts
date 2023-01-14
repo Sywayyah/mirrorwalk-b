@@ -18,8 +18,8 @@ export class BattleStateService {
   public battleEvent$: Subject<void> = new BehaviorSubject<void>(undefined);
 
   public heroesUnitGroupsMap: Map<PlayerModel, UnitGroupInstModel[]> = new Map();
-  public currentGroupTurnsLeft: number = 0;
 
+  public currentGroupTurnsLeft: number = 0;
   public round: number = 1;
 
   public hintMessage$: BehaviorSubject<ActionHintModel | null> = new BehaviorSubject<ActionHintModel | null>(null);

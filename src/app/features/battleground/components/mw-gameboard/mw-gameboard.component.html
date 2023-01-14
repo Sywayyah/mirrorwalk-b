@@ -9,7 +9,7 @@
 
     <div class="column">
       <mw-unit-group-card class="card" *ngFor="let unitGroup of neutralPlayerGroups" mwSpellTarget
-        [spellTargetUnitGroup]="unitGroup" mwUnitEventsCursor side="right" [playerInfo]="neutralPlayerInfo"
+        [spellTargetUnitGroup]="unitGroup" mwUnitEventsCursor side="right" [playerInfo]="enemyPlayerInfo"
         [unitGroup]="unitGroup" (groupDies)="onGroupDies(unitGroup)">
       </mw-unit-group-card>
     </div>
