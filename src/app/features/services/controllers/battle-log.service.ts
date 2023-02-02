@@ -27,6 +27,8 @@ export class BattleLogController extends StoreClient() {
     this.battleLog.logDealtDamageMessage({
       attacked: attackedGroup.type,
       attackedPlayer: attackedGroup.ownerPlayerRef,
+      attackersNumber: attackingGroup.count,
+      attackedNumber: attackingGroup.count,
       attacker: attackingGroup.type,
       attackingPlayer: attackingGroup.ownerPlayerRef,
       damage,

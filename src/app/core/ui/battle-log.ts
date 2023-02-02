@@ -25,6 +25,8 @@ export interface DealtDamageMessage extends HistoryLogModel<HistoryLogTypesEnum.
   attackedPlayer: PlayerModel;
   attacker: UnitBase;
   attacked: UnitBase;
+  attackersNumber: number;
+  attackedNumber: number;
   losses: number;
   damage: number;
 }
