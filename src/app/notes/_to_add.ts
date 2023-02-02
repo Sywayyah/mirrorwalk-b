@@ -9,6 +9,8 @@
 */
 /*
     Implementable ideas:
+      * Descriptions to heroes/locations on the map?
+
       * Summoning units. I created Fire Elementals, now I need to provide action
         for summoning and handle some mechanics, for instance, cleanup summoned units
         after fight is over.
