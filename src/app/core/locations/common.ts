@@ -79,15 +79,7 @@ const brBranch: StructureDescription[] = [
 
     struct: BigCampStructure,
   },
-  {
-    id: '23',
-    x: 75,
-    y: 190,
-    icon: 'mine-wagon',
-    pathTo: '20',
 
-    struct: resourcesPileStructure({ gold: 450, wood: 1, redCrystals: 1, gems: 1 }),
-  },
 ];
 
 const fifthBranch: StructureDescription[] = [
@@ -98,7 +90,8 @@ const fifthBranch: StructureDescription[] = [
     y: 70,
     icon: 'gold-bar',
     struct: resPileStructure(ResourceType.Gold, 650),
-  }
+  },
+
 ];
 
 const blBranch: StructureDescription[] = [
@@ -118,6 +111,33 @@ const blBranch: StructureDescription[] = [
     icon: 'mountains',
     pathTo: '3',
     struct: MountainNestStructure,
+  },
+  {
+    id: 'left-2',
+    x: -130,
+    y: 55,
+    icon: 'sword',
+    pathTo: '3',
+
+    struct: BanditCamp,
+  },
+  {
+    id: '54',
+
+    x: -190,
+    y: 20,
+    icon: 'fire-ring',
+    pathTo: 'left-2',
+    struct: FireRingStructure,
+  },
+  {
+    id: 'left-3',
+    x: -190,
+    y: 90,
+    icon: 'mine-wagon',
+    pathTo: 'left-2',
+
+    struct: resourcesPileStructure({ gold: 450, redCrystals: 1, gems: 1 }),
   },
 ];
 
@@ -159,15 +179,7 @@ const tlBranch: StructureDescription[] = [
     pathTo: '15',
     struct: resPileStructure(ResourceType.Gems, 3),
   },
-  {
-    id: '54',
 
-    x: 125,
-    y: -160,
-    icon: 'fire-ring',
-    pathTo: '15',
-    struct: FireRingStructure,
-  },
 ];
 
 const trBranch: StructureDescription[] = [
