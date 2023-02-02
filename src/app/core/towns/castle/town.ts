@@ -38,8 +38,8 @@ const market: BuidlingBase = {
   name: 'Market',
 };
 
-const magicScool: BuidlingBase = {
-  name: 'Magic School',
+const highTower: BuidlingBase = {
+  name: 'High Tower',
 };
 
 const tavern: BuidlingBase = {
@@ -116,7 +116,7 @@ export const castleTownBase: TownBase<CastleTownBuildings> = {
     "magic-school": {
       description: 'Allows you to learn spells for your hero',
       levels: [
-        { building: magicScool, cost: { gold: 1500, gems: 2 } }
+        { building: highTower, cost: { gold: 1500, gems: 2 } }
       ],
       icon: 'burning-book',
       tier: 2,
