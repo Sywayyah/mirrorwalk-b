@@ -141,6 +141,6 @@ export class BattleController extends StoreClient() {
 
   @Notify(GroupSpeedChanged)
   public updateFightQueryDueToSpeedChange(): void {
-    this.battleState.resortFightQuery();
+    this.battleState.resortFightQueue();
   }
 }

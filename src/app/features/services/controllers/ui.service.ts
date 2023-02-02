@@ -5,6 +5,7 @@ import { UnitGroupInstModel } from 'src/app/core/unit-types';
 import { StoreClient, WireMethod } from 'src/app/store';
 import { GroupAttacked, HoverTypeEnum, PlayerCastsInstantSpell, PlayerClicksAllyGroup, PlayerClicksAllyGroupEvent, PlayerClicksEnemyGroup, PlayerClicksEnemyGroupEvent, PlayerHoversCardEvent, PlayerHoversGroupCard, PlayerTargetsInstantSpellEvent, PlayerTargetsSpell, PlayerTargetsSpellEvent } from '../events';
 import { BattleStateService } from '../mw-battle-state.service';
+import { MwCardsMappingService } from '../mw-cards-mapping.service';
 import { CombatInteractorService } from '../mw-combat-interactor.service';
 import { MwCurrentPlayerStateService, PlayerState } from '../mw-current-player-state.service';
 
@@ -15,6 +16,7 @@ export class UiController extends StoreClient() {
     private combatInteractor: CombatInteractorService,
     private battleState: BattleStateService,
     private curPlayerState: MwCurrentPlayerStateService,
+    private cardsMapping: MwCardsMappingService,
   ) {
     super();
   }
@@ -120,6 +122,5 @@ export class UiController extends StoreClient() {
       }
     );
   }
-
 
 }

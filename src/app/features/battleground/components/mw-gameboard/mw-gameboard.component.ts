@@ -4,7 +4,7 @@ import { PlayerInstanceModel } from 'src/app/core/players';
 import { UnitGroupInstModel } from 'src/app/core/unit-types';
 import { getDamageParts } from 'src/app/core/vfx';
 import { BattleStateService, CombatInteractorService, MwCardsMappingService, MwNeutralPlayerService, MwPlayerStateService } from 'src/app/features/services';
-import { GroupDamagedByGroup, GroupDamagedByGroupEvent, PlayerStartsFight } from 'src/app/features/services/events';
+import { GroupDamagedByGroup, GroupDamagedByGroupEvent, PlayerStartsFight, UnitSummoned, UnitSummonedEvent } from 'src/app/features/services/events';
 import { VfxService } from 'src/app/features/shared/components';
 import { StoreClient, WireMethod } from 'src/app/store';
 import { MwUnitGroupCardComponent } from '../mw-unit-group-card/mw-unit-group-card.component';
@@ -74,17 +74,12 @@ export class MwGameboardComponent extends StoreClient() implements OnInit, After
 
     this.updateFightQueue();
 
+    // todo: optimize some day
     this.events.eventStream$.pipe(
       takeUntil(this.destroyed$),
     ).subscribe(() => {
-      this.mainPlayerUnitGroups = this.mwBattleState.heroesUnitGroupsMap.get(this.mainPlayerInfo) as UnitGroupInstModel[];
-      this.neutralPlayerGroups = this.mwBattleState.heroesUnitGroupsMap.get(this.enemyPlayerInfo) as UnitGroupInstModel[];
-      this.updateFightQueue();
+      this.updatePlayersUnitGroupsToShow();
     });
-  }
-
-  private updateFightQueue() {
-    this.fightQueue = this.mwBattleState.getFightQueue();
   }
 
   @WireMethod(GroupDamagedByGroup)
@@ -92,6 +87,25 @@ export class MwGameboardComponent extends StoreClient() implements OnInit, After
     /* previous solution was stacking because of no unsubscribe. */
     const isRanged = event.attackingGroup.type.defaultModifiers?.isRanged;
     this.vfx.createFloatingMessageForUnitGroup(event.attackedGroup, getDamageParts(event.damage, event.loss, isRanged));
+  }
+
+  @WireMethod(UnitSummoned)
+  public registerSummonedUnit(event: UnitSummonedEvent): void {
+    this.updatePlayersUnitGroupsToShow();
+
+    this.cd.detectChanges();
+
+    this.cardsMapping.register(event.unitGroup, this.cards.find(cardComponent => cardComponent.unitGroup === event.unitGroup)!);
+  }
+
+  private updatePlayersUnitGroupsToShow(): void {
+    this.mainPlayerUnitGroups = this.mwBattleState.heroesUnitGroupsMap.get(this.mainPlayerInfo) as UnitGroupInstModel[];
+    this.neutralPlayerGroups = this.mwBattleState.heroesUnitGroupsMap.get(this.enemyPlayerInfo) as UnitGroupInstModel[];
+    this.updateFightQueue();
+  }
+
+  private updateFightQueue() {
+    this.fightQueue = this.mwBattleState.getFightQueue();
   }
 }
 

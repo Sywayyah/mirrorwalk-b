@@ -7,7 +7,7 @@ export type NEUTRAL_UNIT_TYPES =
   | 'Thiefs'
   | 'ForestTrolls'
 
-  | 'FireElemental'
+  | 'FireSpirits'
   ;
 
 const defaultReward = {

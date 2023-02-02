@@ -10,7 +10,7 @@ export const FireRingStructure: StructureGeneratorModel = {
       maxUnitGroups: 3,
       minUnitGroups: 3,
       units: [
-        [neutralsFraction.getUnitType('FireElemental'), 7, 9, 3],
+        [neutralsFraction.getUnitType('FireSpirits'), 7, 9, 3],
       ],
     };
   },

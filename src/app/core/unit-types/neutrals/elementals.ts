@@ -2,8 +2,8 @@ import { AssetsImages } from '../../assets';
 import { neutralsFraction } from '../../fractions/neutrals/fraction';
 
 
-neutralsFraction.defineUnitType('FireElemental', {
-  name: 'Fire Elementals',
+neutralsFraction.defineUnitType('FireSpirits', {
+  name: 'Fire Spirits',
   mainPortraitUrl: AssetsImages.Melee,
   baseRequirements: {},
   baseStats: {

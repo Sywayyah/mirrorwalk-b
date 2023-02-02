@@ -4,10 +4,10 @@ import { EffectType, VfxElemEffect } from 'src/app/core/api/vfx-api';
 import { GameEventsHandlers } from 'src/app/core/items';
 import { PlayerInstanceModel } from 'src/app/core/players';
 import { SpellEventHandlers, SpellInstance, SpellModel } from 'src/app/core/spells';
-import { CommonUtils, UnitGroupInstModel } from 'src/app/core/unit-types';
+import { CommonUtils, UnitBase, UnitGroupInstModel } from 'src/app/core/unit-types';
 import { Notify, StoreClient, WireMethod } from 'src/app/store';
 import { VfxService } from '../../shared/components';
-import { GroupModifiersChanged, GroupSpeedChanged, InitItem, InitItemAction, InitSpell, InitSpellAction, PlayerEquipsItem, PlayersInitialized, UnitHealed } from '../events';
+import { GroupModifiersChanged, GroupSpeedChanged, InitItem, InitItemAction, InitSpell, InitSpellAction, PlayerEquipsItem, PlayersInitialized, UnitHealed, UnitSummoned } from '../events';
 import { MwBattleLogService } from '../mw-battle-log.service';
 import { BattleStateService } from '../mw-battle-state.service';
 import { CombatInteractorService } from '../mw-combat-interactor.service';
@@ -89,6 +89,11 @@ export class InGameApiController extends StoreClient() {
 
   private createActionsApiRef(): CombatActionsRef {
     return {
+      summonUnitsForPlayer: (ownerPlayer: PlayerInstanceModel, unitType: UnitBase, unitNumber: number) => {
+        const summonedUnitGroup = this.battleState.summonUnitForPlayer(ownerPlayer, unitType, unitNumber);
+        this.events.dispatch(UnitSummoned({ unitGroup: summonedUnitGroup }));
+        return summonedUnitGroup;
+      },
       dealDamageTo: (target, damage, damageType, postActionFn) => {
         this.combatInteractor.dealDamageTo(target, damage, damageType, postActionFn);
       },
@@ -143,6 +148,9 @@ export class InGameApiController extends StoreClient() {
       },
       getUnitGroupsOfPlayer: (player) => {
         return this.battleState.heroesUnitGroupsMap.get(player) as UnitGroupInstModel[];
+      },
+      getAliveUnitGroupsOfPlayer: (player) => {
+        return this.battleState.getAliveUnitsOfPlayer(player);
       },
       getRandomEnemyPlayerGroup: () => {
         return this.combatInteractor.getRandomEnemyUnitGroup();

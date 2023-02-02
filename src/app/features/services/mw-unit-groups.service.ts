@@ -142,6 +142,8 @@ export class MwUnitGroupsService {
 
     if (unitGroupDefaultSpells) {
       unitGroupInst.spells = unitGroupDefaultSpells.map(spell => this.spells.createSpellInstance(spell));
+    } else {
+      unitGroupInst.spells = [];
     }
 
     return unitGroup;

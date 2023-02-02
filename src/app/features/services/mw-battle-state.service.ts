@@ -137,14 +137,29 @@ export class BattleStateService {
     return unitGroup.count * unitGroup.type.baseStats.damageInfo.maxDamage;
   }
 
-  public resortFightQuery(): void {
+  public resortFightQueue(): void {
     this.fightQueue = [this.fightQueue[0], ...this.sortUnitsBySpeed(this.fightQueue.slice(1))];
   }
+
 
   public getAliveUnitsOfPlayer(player: PlayerInstanceModel): UnitGroupInstModel[] {
     return (this.heroesUnitGroupsMap.get(player) as UnitGroupInstModel[]).filter(
       unitGroup => unitGroup.fightInfo.isAlive,
     );
+  }
+
+  public summonUnitForPlayer(ownerPlayer: PlayerInstanceModel, unitType: UnitBase, unitNumber: number): UnitGroupInstModel {
+    const summonedUnitGroup = this.units.createUnitGroup(unitType, { count: unitNumber }, ownerPlayer) as UnitGroupInstModel;
+
+    const playerUnitGroups = this.heroesUnitGroupsMap.get(ownerPlayer)!;
+
+    playerUnitGroups.push(summonedUnitGroup as UnitGroupInstModel);
+
+    this.units.addModifierToUnitGroup(summonedUnitGroup, { isSummon: true });
+
+    this.resortFigthQueueWithNewUnits();
+
+    return summonedUnitGroup;
   }
 
   public registerPlayerUnitLoss(attackedGroup: UnitGroupInstModel, unitLoss: number): void {
@@ -219,5 +234,18 @@ export class BattleStateService {
         unitGroup.turnsLeft = unitGroup.type.defaultTurnsPerRound;
       })
     });
+  }
+
+  // Resorts units so that current unit remains on top, the rest are all alive units with turns left sorted by their speed.
+  private resortFigthQueueWithNewUnits(): void {
+    this.fightQueue = [this.fightQueue[0], ...this.sortUnitsBySpeed(this.getAllAliveUnitsWithTurnsExcept(this.fightQueue[0]))];
+  }
+
+  private getAllAliveUnitsWithTurnsExcept(unit: UnitGroupInstModel): UnitGroupInstModel[] {
+    return this.getAllAliveUnitsExcept(this.fightQueue[0]).filter(unitGroup => unitGroup.turnsLeft);
+  }
+
+  private getAllAliveUnitsExcept(unit: UnitGroupInstModel): UnitGroupInstModel[] {
+    return [...this.heroesUnitGroupsMap.values()].flat().filter(unitGroup => unitGroup.fightInfo.isAlive && unitGroup !== unit);
   }
 }

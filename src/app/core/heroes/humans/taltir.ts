@@ -1,6 +1,7 @@
 import { humansFraction } from '../../fractions';
 import { ItemWindCrest } from '../../items/neutral';
 import { MeteorSpell, PoisonCloudSpell } from '../../spells/common';
+import { SummonFireSpiritsSpell } from '../../spells/common/summon-fire-spirits';
 import { HeroBase } from '../types';
 import { heroesDefaultResources } from '../utils';
 
@@ -8,6 +9,7 @@ export const TaltirHero: HeroBase = humansFraction.createHero({
   name: 'Taltir',
   abilities: [
     MeteorSpell,
+    SummonFireSpiritsSpell,
   ],
   army: [{
     maxUnitGroups: 2,

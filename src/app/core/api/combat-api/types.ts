@@ -1,6 +1,6 @@
 import { PlayerInstanceModel } from '../../players';
 import { DefaultSpellStateType, SpellInstance } from '../../spells';
-import { Modifiers, UnitGroupInstModel } from '../../unit-types';
+import { Modifiers, UnitBase, UnitGroupInstModel } from '../../unit-types';
 import { SpellsApi } from '../game-api';
 
 export interface PostDamageInfo {
@@ -20,6 +20,8 @@ export interface SpellCreationOptions<T = DefaultSpellStateType> {
 }
 
 export interface CombatActionsRef extends SpellsApi {
+  summonUnitsForPlayer(ownerPlayer: PlayerInstanceModel, unitType: UnitBase, unitNumber: number): UnitGroupInstModel;
+
   dealDamageTo: (
     target: UnitGroupInstModel,
     damage: number,
@@ -41,6 +43,8 @@ export interface CombatActionsRef extends SpellsApi {
   ) => void;
 
   getUnitGroupsOfPlayer: (player: PlayerInstanceModel) => UnitGroupInstModel[];
+
+  getAliveUnitGroupsOfPlayer: (player: PlayerInstanceModel) => UnitGroupInstModel[];
 
   getRandomEnemyPlayerGroup: () => UnitGroupInstModel;
 
