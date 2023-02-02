@@ -244,7 +244,7 @@ export const castleTownBase: TownBase<CastleTownBuildings> = {
     'magic-tower': {
       description: 'Trains Mystical Birds and Firebirds',
       levels: [
-        { building: magicTower, cost: { gold: 625, wood: 1 } },
+        { building: magicTower, cost: { gold: 625, wood: 1, gems: 1 } },
       ],
       icon: 'tower',
       tier: 4,
