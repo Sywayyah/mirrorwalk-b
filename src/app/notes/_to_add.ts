@@ -1,4 +1,13 @@
 /*
+  Possible cool ideas:
+    Styles. Characters may have styles, like Taltir. He can have Style A and
+      Style B. In Style A, he has meteor and Fire Spirits, that die in the
+      end of the round, but may cause additional effects.
+
+      in Styles B, his Fire Spirits may remain during battles, also
+      having more effects or even spells, like splash damage.
+*/
+/*
     Implementable ideas:
       * Summoning units. I created Fire Elementals, now I need to provide action
         for summoning and handle some mechanics, for instance, cleanup summoned units
