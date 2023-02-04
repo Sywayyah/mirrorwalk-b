@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MwPlayersService } from 'src/app/features/services';
+import { State } from 'src/app/features/services/state.service';
 import { BasicPopup } from 'src/app/features/shared/components';
 
 @Component({
@@ -11,8 +12,11 @@ export class HeroPopupComponent extends BasicPopup<{}> implements OnInit {
 
   private currentPlayer = this.playersService.getCurrentPlayer();
 
+  public hero = this.currentPlayer.hero;
+
   constructor(
     private readonly playersService: MwPlayersService,
+    private readonly state: State,
   ) {
     super();
 

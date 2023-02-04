@@ -1,3 +1,23 @@
+<div class="hero-panel">
+  <div class="items">
+    <div>
+      Your items:
+    </div>
+
+    <div style="display: flex; flex-direction: column;">
+      <mw-item-icon *ngFor="let item of hero.items" [item]="item" hintPos="after"></mw-item-icon>
+    </div>
+  </div>
+
+  <div class="info">
+    <div>{{hero.base.name}}</div>
+    <div>Level {{hero.level}}</div>
+
+    <mw-experience-bar style="width: 270px;"></mw-experience-bar>
+  </div>
+
+</div>
+
 <div class="buttons">
   <button mw-main-button (click)="close()">Close</button>
 </div>

@@ -53,11 +53,11 @@ export interface GameEventsRef {
 
 
 export enum ItemType {
-  Weapon,
-  Headgear,
-  Armor,
-  Boots,
-  Shield
+  Weapon = 'Weapon',
+  Headgear = 'Headgear',
+  Armor = 'Armor',
+  Boots = 'Boots',
+  Shield = 'Shield',
 }
 
 export interface ItemBaseModel<StateType extends object = object> {
