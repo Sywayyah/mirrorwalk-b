@@ -6,7 +6,9 @@ mw-item-icon-base {
   max-width: 233px;
   width: 200px;
   display: flex;
+  flex-wrap: wrap;
   padding: 6px;
+  justify-content: center;
 }
 
 .no-items {

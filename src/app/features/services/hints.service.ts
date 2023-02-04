@@ -18,6 +18,10 @@ export class HintsService {
   );
 
   constructor() {
+    // Some glitch with menu + hover hints inside.. happens sometimes
+    // Menu also starts to close on hover, and hints are closing shortly
+    // after opened
+    // I found reason - click itself.
     this.clickOutsideMenu$.subscribe((event) => {
       const target = event.target as HTMLElement;
       const targetedMenu = target.closest('.menu-hint');
