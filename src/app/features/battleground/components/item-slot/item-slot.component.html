@@ -1,19 +1,20 @@
 <mw-menu [menuBody]="itemsMenuBody" pos="below">
   <div *ngIf="isEquipped; else isUnequipped">
-    <mw-item-icon [item]="equippedItem!" hintPos="after"></mw-item-icon>
+    <mw-item-icon class="hoverable" [item]="equippedItem!" hintPos="after"></mw-item-icon>
   </div>
 
   <ng-template #isUnequipped>
-    <mw-item-icon-base bgColor="white" itemColor="gray" [icon]="slotInfo.icon"></mw-item-icon-base>
+    <mw-item-icon-base class="hoverable" bgColor="white" itemColor="gray" [icon]="slotInfo.icon"></mw-item-icon-base>
   </ng-template>
 </mw-menu>
 
 <ng-template #itemsMenuBody>
   <ng-container *ngIf="availableItemsForSlot.length; else noItemsForSlot">
     <div class="items-menu">
-      <mw-item-icon-base bgColor="white" itemColor="gray" icon="cancel" (click)="unequipSlot()"></mw-item-icon-base>
+      <mw-item-icon-base class="hoverable" bgColor="white" itemColor="gray" icon="cancel"
+        (click)="unequipSlot()"></mw-item-icon-base>
 
-      <mw-item-icon *ngFor="let item of availableItemsForSlot" [item]="item" hintPos="above"
+      <mw-item-icon *ngFor="let item of availableItemsForSlot" class="hoverable" [item]="item" hintPos="above"
         (click)="equipItem(item)"></mw-item-icon>
     </div>
   </ng-container>
