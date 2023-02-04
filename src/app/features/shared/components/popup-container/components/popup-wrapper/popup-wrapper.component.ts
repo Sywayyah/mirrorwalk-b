@@ -22,7 +22,7 @@ export class PopupWrapperComponent implements OnInit {
     this.injector = Injector.create({
       providers: [
         /* provide close(), do I need abstract class? */
-        { provide: POPUP_REF, useValue: { data: this.popupData.popup, close: () => { this.popups.removePopup(this.popupData) } } },
+        { provide: POPUP_REF, useValue: { data: this.popupData.data, close: () => { this.popups.removePopup(this.popupData) } } },
       ]
     });
   }

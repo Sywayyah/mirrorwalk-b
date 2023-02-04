@@ -1,10 +1,11 @@
 import { Injectable, Type } from '@angular/core';
 import { NeutralCampStructure, NeutralRewardTypesEnum, NeutralSite, StructureTypeEnum } from 'src/app/core/structures';
 import { FightEndsPopup, LossModel, PrefightPopup, PreviewPopup, UpgradingPopup } from 'src/app/core/ui';
-import { StoreClient, WireMethod } from 'src/app/store';
+import { Notify, StoreClient, WireMethod } from 'src/app/store';
 import { HiringRewardPopupComponent, ItemRewardPopupComponent, PostFightRewardPopupComponent, PreFightPopupComponent, PreviewPopupComponent, ResourcesRewardPopupComponent, ScriptedRewardPopupComponent, UpgradeRewardPopup } from '../../battleground/components';
+import { HeroPopupComponent } from '../../battleground/components/hero-popup/hero-popup.component';
 import { PopupData, PopupService } from '../../shared/components';
-import { DisplayPopup, DisplayReward, FightEnds, FightEndsEvent, NeutralStructParams, StructSelected, StructSelectedEvent } from '../events';
+import { DisplayPopup, DisplayReward, FightEnds, FightEndsEvent, NeutralStructParams, PlayerOpensHeroInfo, StructSelected, StructSelectedEvent } from '../events';
 import { BattleStateService } from '../mw-battle-state.service';
 import { MwPlayersService } from '../mw-players.service';
 
@@ -25,6 +26,13 @@ export class PopupsController extends StoreClient() {
     this.popupService.createPopup(event);
   }
 
+  @Notify(PlayerOpensHeroInfo)
+  public openHeroInfo(): void {
+    this.popupService.createPopup({
+      component: HeroPopupComponent,
+      data: {},
+    })
+  }
 
   @WireMethod(StructSelected)
   public playerSelectsStructure(event: StructSelectedEvent): void {
@@ -36,7 +44,7 @@ export class PopupsController extends StoreClient() {
 
       this.events.dispatch(DisplayPopup({
         component: PreFightPopupComponent,
-        popup: prefightPopup
+        data: prefightPopup
       }));
       return;
     }
@@ -49,7 +57,7 @@ export class PopupsController extends StoreClient() {
 
         this.events.dispatch(DisplayPopup({
           component: PreviewPopupComponent,
-          popup: previewPopup
+          data: previewPopup
         }));
 
         return;
@@ -61,7 +69,7 @@ export class PopupsController extends StoreClient() {
 
       this.events.dispatch(DisplayPopup({
         component: UpgradeRewardPopup,
-        popup: upgradingPopup,
+        data: upgradingPopup,
       }));
 
     }
@@ -77,7 +85,7 @@ export class PopupsController extends StoreClient() {
     };
 
     this.popupService.createPopup({
-      popup: fightEndsPopup,
+      data: fightEndsPopup,
       component: PostFightRewardPopupComponent,
     });
   }
@@ -86,7 +94,7 @@ export class PopupsController extends StoreClient() {
   public displayRewardPopup(event: NeutralStructParams): void {
     const struct = event.struct;
 
-    const popup = { struct };
+    const data = { struct };
 
     const structReward = struct.reward;
 
@@ -104,7 +112,7 @@ export class PopupsController extends StoreClient() {
         const component = rewardComponentsMapping[rewardType];
 
         this.popupService.createBasicPopup({
-          popup,
+          data,
           component,
         });
       }

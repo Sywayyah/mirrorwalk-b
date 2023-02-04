@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { PlayerInstanceModel } from 'src/app/core/players';
 import { MwPlayersService } from 'src/app/features/services';
+import { PlayerOpensHeroInfo } from 'src/app/features/services/events';
 import { State } from 'src/app/features/services/state.service';
+import { EventsService } from 'src/app/store';
 
 @Component({
   selector: 'mw-player-info-panel',
@@ -15,9 +17,14 @@ export class MwPlayerInfoPanelComponent implements OnInit {
   constructor(
     private players: MwPlayersService,
     public state: State,
+    private events: EventsService,
   ) { }
 
   public ngOnInit(): void {
+  }
+
+  public openPlayerInfo(): void {
+    this.events.dispatch(PlayerOpensHeroInfo({}));
   }
 
 }

@@ -1,8 +1,9 @@
-import { ItemBaseModel, GameEventTypes } from '..';
+import { ItemBaseModel, GameEventTypes, ItemType } from '..';
 import { WindBlessBuff } from '../../spells/common';
 
 export const ItemWindCrest: ItemBaseModel = {
   name: 'Wind Crest',
+  type: ItemType.Headgear,
   staticMods: {
     playerBonusAttack: 2,
   },

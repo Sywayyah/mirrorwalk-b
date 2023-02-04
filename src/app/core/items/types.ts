@@ -51,9 +51,19 @@ export interface GameEventsRef {
   on: (handlers: GameEventsHandlers) => void;
 }
 
+
+export enum ItemType {
+  Weapon,
+  Headgear,
+  Armor,
+  Boots,
+  Shield
+}
+
 export interface ItemBaseModel<StateType extends object = object> {
   defaultState?: StateType;
 
+  type: ItemType;
   name: string;
   icon: Icon;
   staticMods: Modifiers;
