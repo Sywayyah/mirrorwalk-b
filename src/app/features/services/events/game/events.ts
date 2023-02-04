@@ -40,6 +40,8 @@ export const InitSpell = gameEvent<InitSpellAction>();
 
 export const InitItem = gameEvent<InitItemAction>();
 
+export const PlayerReceivesItem = gameEvent<PlayerEquipsItemAction>();
+
 export const PlayerEquipsItem = gameEvent<PlayerEquipsItemAction>();
 
 export const PlayerUnequipsItem = gameEvent<PlayerUnequipsItemAction>();

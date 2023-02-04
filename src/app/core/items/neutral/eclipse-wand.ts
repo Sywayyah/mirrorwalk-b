@@ -1,9 +1,9 @@
 import { EnchantBuff } from '../../spells/common';
-import { ItemBaseModel, GameEventTypes, ItemType } from '../types';
+import { ItemBaseModel, GameEventTypes, ItemSlotType } from '../types';
 
 export const ItemEclipseWand: ItemBaseModel<{}> = {
   name: 'Eclipse Wand',
-  type: ItemType.Weapon,
+  slotType: ItemSlotType.Weapon,
   staticMods: {
   },
   icon: {

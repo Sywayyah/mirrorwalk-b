@@ -6,7 +6,7 @@ import { Resources, ResourcesModel, ResourceType } from 'src/app/core/resources'
 import { CommonUtils, UnitBase, UnitGroupInstModel, UnitGroupModel } from 'src/app/core/unit-types';
 import { StoreClient } from 'src/app/store';
 import { MwHeroesService, MwUnitGroupsService } from './';
-import { PlayerEquipsItem, PlayerGainsLevel, PlayerUnequipsItem } from './events/';
+import { PlayerGainsLevel, PlayerReceivesItem, PlayerUnequipsItem } from './events/';
 import { State } from './state.service';
 
 
@@ -193,7 +193,7 @@ export class MwPlayersService extends StoreClient() {
   }
 
   public addItemToPlayer(player: PlayerInstanceModel, item: ItemInstanceModel): void {
-    this.events.dispatch(PlayerEquipsItem({ player, item }));
+    this.events.dispatch(PlayerReceivesItem({ player, item }));
   }
 
   public removeItemFromPlayer(player: PlayerInstanceModel, item: ItemInstanceModel): void {

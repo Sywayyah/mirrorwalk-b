@@ -7,7 +7,7 @@ import { SpellEventHandlers, SpellInstance, SpellModel } from 'src/app/core/spel
 import { CommonUtils, UnitBase, UnitGroupInstModel } from 'src/app/core/unit-types';
 import { Notify, StoreClient, WireMethod } from 'src/app/store';
 import { VfxService } from '../../shared/components';
-import { GroupModifiersChanged, GroupSpeedChanged, InitItem, InitItemAction, InitSpell, InitSpellAction, PlayerEquipsItem, PlayersInitialized, UnitHealed, UnitSummoned } from '../events';
+import { GroupModifiersChanged, GroupSpeedChanged, InitItem, InitItemAction, InitSpell, InitSpellAction, PlayerReceivesItem, PlayersInitialized, UnitHealed, UnitSummoned } from '../events';
 import { MwBattleLogService } from '../mw-battle-log.service';
 import { BattleStateService } from '../mw-battle-state.service';
 import { CombatInteractorService } from '../mw-combat-interactor.service';
@@ -36,7 +36,7 @@ export class InGameApiController extends StoreClient() {
     const player = this.players.getCurrentPlayer();
 
     player.hero.base.initialState.items.forEach(item => {
-      this.events.dispatch(PlayerEquipsItem({ player, item: this.itemsService.createItem(item) }));
+      this.events.dispatch(PlayerReceivesItem({ player, item: this.itemsService.createItem(item) }));
     });
   }
 

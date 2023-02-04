@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { CommonUtils } from 'src/app/core/unit-types';
-import { StoreClient, Notify, WireMethod } from 'src/app/store';
-import { FightNextRoundStarts, FightStarts, PlayerEquipsItem, PlayerEquipsItemAction, PlayerUnequipsItem, PlayerUnequipsItemAction } from '../events';
+import { Notify, StoreClient, WireMethod } from 'src/app/store';
+import { FightNextRoundStarts, FightStarts, PlayerEquipsItem, PlayerEquipsItemAction, PlayerReceivesItem, PlayerUnequipsItem, PlayerUnequipsItemAction } from '../events';
 import { MwCurrentPlayerStateService } from '../mw-current-player-state.service';
 import { MwItemsService } from '../mw-items.service';
 import { MwSpellsService } from '../mw-spells.service';
@@ -23,18 +23,35 @@ export class PlayerController extends StoreClient() {
     this.curPlayerState.resetSpellsCooldowns();
   }
 
+  @WireMethod(PlayerReceivesItem)
+  public addItemToPlayer({ item, player }: PlayerEquipsItemAction): void {
+    const hero = player.hero;
+
+    hero.items.push(item);
+
+    // if slot was unequipped, equip it with this received item.
+    if (!hero.inventory.isSlotEquipped(item.baseType.slotType)) {
+      this.events.dispatch(PlayerEquipsItem({ item, player }));
+    }
+  }
+
   @WireMethod(PlayerEquipsItem)
   public equipItem({ item, player }: PlayerEquipsItemAction): void {
-    player.hero.items.push(item);
-    player.hero.mods.push(item.baseType.staticMods);
+    const hero = player.hero;
 
-    if (item.baseType.staticMods.playerBonusAttack) {
+    hero.inventory.equipItem(item);
+
+    hero.mods.push(item.baseType.staticMods);
+
+    const itemBase = item.baseType;
+
+    if (itemBase.staticMods.playerBonusAttack) {
       /* todo: rethink this. modifiers array can be better */
-      player.hero.stats.bonusAttack += item.baseType.staticMods.playerBonusAttack;
+      hero.stats.bonusAttack += itemBase.staticMods.playerBonusAttack;
     }
 
-    if (item.baseType.bonusAbilities) {
-      item.baseType.bonusAbilities.forEach((spellConfig) => {
+    if (itemBase.bonusAbilities) {
+      itemBase.bonusAbilities.forEach((spellConfig) => {
         const spellInstance = this.spellsService.createSpellInstance(
           spellConfig.spell,
           { initialLevel: spellConfig.level },
@@ -42,7 +59,7 @@ export class PlayerController extends StoreClient() {
 
         spellInstance.sourceInfo.item = item;
 
-        player.hero.spells.push(spellInstance);
+        hero.spells.push(spellInstance);
       });
     }
 
@@ -51,8 +68,9 @@ export class PlayerController extends StoreClient() {
 
   @WireMethod(PlayerUnequipsItem)
   public unequipItem({ player, item }: PlayerUnequipsItemAction): void {
-    CommonUtils.removeItem(player.hero.items, item);
     CommonUtils.removeItem(player.hero.mods, item.baseType.staticMods);
+
+    player.hero.inventory.unequipSlot(item.baseType.slotType);
 
     if (item.baseType.staticMods.playerBonusAttack) {
       player.hero.stats.bonusAttack -= item.baseType.staticMods.playerBonusAttack;

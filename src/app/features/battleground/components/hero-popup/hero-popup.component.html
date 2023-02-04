@@ -5,7 +5,7 @@
     </div>
 
     <div style="display: flex; flex-direction: column;">
-      <mw-item-icon *ngFor="let item of hero.items" [item]="item" hintPos="after"></mw-item-icon>
+      <mw-item-slot *ngFor="let itemSlot of itemSlots" [itemSlot]="itemSlot"></mw-item-slot>
     </div>
   </div>
 

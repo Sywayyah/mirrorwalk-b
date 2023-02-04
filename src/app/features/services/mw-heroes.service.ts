@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Hero, HeroBase } from 'src/app/core/heroes';
 import { createHeroModelBase, EMPTY_RESOURCES } from 'src/app/core/heroes/utils';
+import { InventoryItems } from 'src/app/core/items/inventory';
 import { SpellInstance } from 'src/app/core/spells';
 import { MwSpellsService } from './';
 
@@ -57,6 +58,7 @@ export class MwHeroesService {
         currentMana: heroBaseStats.mana,
         maxMana: heroBaseStats.mana,
       },
+      inventory: new InventoryItems(),
       base: heroBase,
     };
   }
@@ -75,6 +77,7 @@ export class MwHeroesService {
       freeSkillpoints: 0,
       spells: [],
       mods: [],
+      inventory: new InventoryItems(),
       items: [],
       base: neutralHeroBase,
     };

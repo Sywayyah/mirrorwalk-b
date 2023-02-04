@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { HintsService } from 'src/app/features/services/hints.service';
 import { ElementHint, HintAttachment } from '../hints-container/hints-container.component';
 
@@ -7,7 +7,7 @@ import { ElementHint, HintAttachment } from '../hints-container/hints-container.
   templateUrl: './hover-hint.component.html',
   styleUrls: ['./hover-hint.component.scss']
 })
-export class HoverHintComponent implements OnInit {
+export class HoverHintComponent implements OnInit, OnDestroy {
 
   @Input() public hintBody!: TemplateRef<ElementRef>;
   /* todo: improve transition and overall logic of this component later */
@@ -28,6 +28,10 @@ export class HoverHintComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+  }
+
+  ngOnDestroy(): void {
+    this.onMouseLeave();
   }
 
   public onMouseEnter(): void {

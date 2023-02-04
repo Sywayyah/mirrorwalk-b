@@ -1,9 +1,9 @@
-import { ItemBaseModel, ItemType } from '..';
+import { ItemBaseModel, ItemSlotType } from '..';
 import { FrostArrowSpell } from '../../spells/common';
 
 export const ItemIceBow: ItemBaseModel<{}> = {
   name: 'Ice Bow',
-  type: ItemType.Weapon,
+  slotType: ItemSlotType.Weapon,
   description: () => 'Bow which radiates cold, grants +1 to Attack and level 1 Frost Arrow',
   icon: {
     icon: 'frozen-arrow',

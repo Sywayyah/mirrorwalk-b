@@ -1,28 +1,24 @@
 <mw-hover-hint [hintBody]="hint" [xPos]="hintPos">
-    <div class="player-item item-icon"
-        [ngStyle]="{ 'color': item.baseType.icon.iconClr , 'background': item.baseType.icon.bgClr }">
-        <!-- {{item.baseType.name}} -->
-        <!-- <i class="ra" [class]="'ra-' + item.baseType.icon.icon"></i> -->
-        <mw-ra-icon [icon]="item.baseType.icon.icon"></mw-ra-icon>
-    </div>
+  <mw-item-icon-base [icon]="item.baseType.icon.icon" [itemColor]="item.baseType.icon.iconClr"
+    [bgColor]="item.baseType.icon.bgClr"></mw-item-icon-base>
 
-    <ng-template #hint>
-        <div style="max-width: 200px;">
-            <div style="display: flex">
-                <div class="tooltip-icon"
-                    [ngStyle]="{ 'color': item.baseType.icon.iconClr , 'background': item.baseType.icon.bgClr }">
-                    <!-- <i class="ra" [class]="'ra-' + item.baseType.icon.icon"></i> -->
-                    <mw-ra-icon [icon]="item.baseType.icon.icon"></mw-ra-icon>
+  <ng-template #hint>
+    <div style="max-width: 200px;">
+      <div style="display: flex">
+        <div class="tooltip-icon"
+          [ngStyle]="{ 'color': item.baseType.icon.iconClr , 'background': item.baseType.icon.bgClr }">
+          <!-- <i class="ra" [class]="'ra-' + item.baseType.icon.icon"></i> -->
+          <mw-ra-icon [icon]="item.baseType.icon.icon"></mw-ra-icon>
 
-                </div>
-                <div style="padding: 4px 8px 8px; font-size: 14px">
-                    {{item.baseType.name}}
-                    <div style="font-size: 9px; color: gray;">{{item.baseType.type}}</div>
-                </div>
-            </div>
-            <div style="padding: 0 8px 8px; font-size: 13px;">
-                {{item.currentDescription}}
-            </div>
         </div>
-    </ng-template>
+        <div style="padding: 4px 8px 8px; font-size: 14px">
+          {{item.baseType.name}}
+          <div style="font-size: 9px; color: gray;">{{item.baseType.slotType}}</div>
+        </div>
+      </div>
+      <div style="padding: 0 8px 8px; font-size: 13px;">
+        {{item.currentDescription}}
+      </div>
+    </div>
+  </ng-template>
 </mw-hover-hint>
