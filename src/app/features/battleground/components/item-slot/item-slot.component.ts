@@ -54,6 +54,10 @@ export class ItemSlotComponent extends StoreClient() implements OnChanges {
       return;
     }
 
+    if (this.equippedItem) {
+      this.unequipSlot();
+    }
+
     this.events.dispatch(PlayerEquipsItem({
       item: item,
       player: this.playersService.getCurrentPlayer(),
