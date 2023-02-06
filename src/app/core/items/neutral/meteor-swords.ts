@@ -1,8 +1,9 @@
-import { ItemBaseModel } from '..';
+import { ItemBaseModel, ItemSlotType } from '..';
 import { MeteorSpell } from '../../spells/common';
 
 export const ItemMeteorSwords: ItemBaseModel<{}> = {
   name: 'Meteor Swords',
+  slotType: ItemSlotType.Weapon,
   staticMods: {
     playerBonusAttack: 2,
   },

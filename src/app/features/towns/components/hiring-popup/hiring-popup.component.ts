@@ -259,7 +259,7 @@ export class HiringPopupComponent extends BasicPopup<HiringPopupData> implements
     this.close();
     this.popupService.createBasicPopup({
       component: BuildPopupComponent,
-      popup: {
+      data: {
         building: this.data.building,
         targetLevel: 2,
       },

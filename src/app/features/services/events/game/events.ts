@@ -16,6 +16,8 @@ export const PlayerEntersTown = gameEvent();
 
 export const PlayerLeavesTown = gameEvent();
 
+export const PlayerOpensHeroInfo = gameEvent();
+
 export const StructSelected = gameEvent<StructSelectedEvent>();
 
 export const PlayerStartsFight = gameEvent<FightStartsEvent>();
@@ -37,6 +39,8 @@ export const PlayerGainsLevel = gameEvent();
 export const InitSpell = gameEvent<InitSpellAction>();
 
 export const InitItem = gameEvent<InitItemAction>();
+
+export const PlayerReceivesItem = gameEvent<PlayerEquipsItemAction>();
 
 export const PlayerEquipsItem = gameEvent<PlayerEquipsItemAction>();
 

@@ -1,4 +1,5 @@
 import { ItemBaseModel, ItemInstanceModel } from '../items';
+import type { InventoryItems } from '../items/inventory';
 import { ResourcesModel } from '../resources';
 import { SpellInstance, SpellModel } from '../spells';
 import { GenerationModel, Modifiers } from '../unit-types';
@@ -48,4 +49,5 @@ export interface Hero {
   mods: Modifiers[];
   items: ItemInstanceModel[];
   base: HeroBase;
+  inventory: InventoryItems;
 }

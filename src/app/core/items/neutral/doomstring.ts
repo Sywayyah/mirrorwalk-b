@@ -1,7 +1,8 @@
-import { ItemBaseModel } from '../types';
+import { ItemBaseModel, ItemSlotType } from '../types';
 
 export const ItemDoomstring: ItemBaseModel<{}> = {
   name: 'Doomstring',
+  slotType: ItemSlotType.Weapon,
   staticMods: {
     playerBonusAttack: 2,
   },

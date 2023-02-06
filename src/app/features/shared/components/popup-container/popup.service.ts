@@ -2,7 +2,7 @@ import { Injectable, Type } from '@angular/core';
 import { BasicPopup } from './basic-popup';
 
 export interface PopupData {
-  popup: object;
+  data: object;
   component: Type<any>;
   class?: string;
 }
@@ -19,7 +19,7 @@ export class PopupService {
   }
 
   public createBasicPopup<T extends object>(params: {
-    popup: T;
+    data: T;
     component: Type<BasicPopup<T>>;
     class?: string;
   }): void {

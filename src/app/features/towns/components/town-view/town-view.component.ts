@@ -43,7 +43,7 @@ export class TownViewComponent {
     if (!building.built) {
       this.popupService.createBasicPopup({
         component: BuildPopupComponent,
-        popup: {
+        data: {
           building,
           targetLevel: 1,
         },
@@ -62,7 +62,7 @@ export class TownViewComponent {
 
           this.popupService.createBasicPopup({
             component: HiringPopupComponent,
-            popup: { building, town: this.town, hiringActivity },
+            data: { building, town: this.town, hiringActivity },
             // class: 'dark',
           });
       }
