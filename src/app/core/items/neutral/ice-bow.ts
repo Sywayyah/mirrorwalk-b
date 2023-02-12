@@ -15,7 +15,7 @@ export const ItemIceBow: ItemBaseModel<{}> = {
     return {
       descriptions: [
         itemStatsDescr(thisItem),
-        spellDescrElem('Bow which radiates cold, grants +1 to Attack and level 1 Frost Arrow'),
+        spellDescrElem('Bow which radiates cold, grants level 1 Frost Arrow'),
       ],
     };
   },

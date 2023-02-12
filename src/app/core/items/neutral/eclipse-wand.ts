@@ -11,7 +11,6 @@ export const ItemEclipseWand: ItemBaseModel<{}> = {
     icon: 'crystal-wand',
   },
   defaultState: {},
-  // description: () => 'At the beginning of the battle, applies level 1 Enchant to all enemy groups.',
   description({ thisItem }) {
     return {
       descriptions: [

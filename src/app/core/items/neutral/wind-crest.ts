@@ -11,6 +11,14 @@ export const ItemWindCrest: ItemBaseModel = {
   icon: {
     icon: 'feather-wing',
   },
+  description({ thisItem }) {
+    return {
+      descriptions: [
+        itemStatsDescr(thisItem),
+        spellDescrElem('At the beginning of the fight, grants Wind Blessing (level 1) effect to your ranged units for 1 round.'),
+      ],
+    };
+  },
   config: {
     init: ({
       actions, events, ownerPlayer,
@@ -29,14 +37,5 @@ export const ItemWindCrest: ItemBaseModel = {
         }
       })
     },
-  },
-
-  description({ thisItem }) {
-    return {
-      descriptions: [
-        itemStatsDescr(thisItem),
-        spellDescrElem('At the beginning of the fight, grants Wind Blessing (level 1) effect to your ranged units for 1 round.'),
-      ],
-    };
   },
 }
