@@ -31,9 +31,13 @@
           services.
 
         Main screen
+          + Basic main screen is implemented
         Dynamic and flexible descriptions
+          + Basic implementation for spells and items, can be used in many other places
         Locations
+          + Basic implementations for chained locations and map view
         Towns
+          + Basic implementation of towns
         Saves
         Categorize components
         UI optimizations, maybe more OnPush strategies
