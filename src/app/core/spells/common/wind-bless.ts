@@ -1,5 +1,5 @@
 import { Colors } from '../../assets';
-import { spellDescrElem } from '../../ui';
+import { spellPlainDescription } from '../../ui';
 import { Modifiers, UnitGroupInstModel } from '../../unit-types';
 import { SpellEventTypes } from '../spell-events';
 import { SpellActivationType, SpellModel } from '../types';
@@ -22,11 +22,7 @@ export const WindBlessBuff: SpellModel<State> = {
   activationType: SpellActivationType.Buff,
 
   getDescription() {
-    return {
-      descriptions: [
-        spellDescrElem(`Increases attack of ranged units by ${attackBonus}.`),
-      ],
-    }
+    return spellPlainDescription(`Increases attack of ranged units by ${attackBonus}.`);
   },
   type: {
     spellInfo: {
