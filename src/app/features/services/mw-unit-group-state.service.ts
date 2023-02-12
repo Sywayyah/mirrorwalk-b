@@ -24,6 +24,8 @@ export interface DetailedDamageInfo extends DamageInfo {
   minUnitCountLoss: number;
   maxUnitCountLoss: number;
 
+  originalAttackersCount: number;
+  originalAttackedCount: number;
 }
 
 export interface FinalDamageInfo {
@@ -103,6 +105,9 @@ export class MwUnitGroupStateService {
     const damageInfoDetails: DetailedDamageInfo = {
       ...damageInfo,
       attacked: attackedGroup,
+
+      originalAttackedCount: attackedGroup.count,
+      originalAttackersCount: attackingGroup.count,
 
       enemyCanCounterattack: canAttackedCounterAttack,
 

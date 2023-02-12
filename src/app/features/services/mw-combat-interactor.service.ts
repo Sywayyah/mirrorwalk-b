@@ -170,6 +170,8 @@ export class CombatInteractorService extends StoreClient() {
         attackedGroup: attacked,
         loss: finalDamageInfo.finalUnitLoss,
         damage: finalDamageInfo.finalDamage,
+        attackedCount: attackDetails.originalAttackedCount,
+        attackersCount: attackDetails.originalAttackersCount,
       }));
     } else {
       this.events.dispatch(GroupCounterAttacked({

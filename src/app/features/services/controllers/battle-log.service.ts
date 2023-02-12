@@ -23,12 +23,14 @@ export class BattleLogController extends StoreClient() {
     attackedGroup,
     damage,
     loss,
+    attackedCount,
+    attackersCount,
   }: GroupDamagedByGroupEvent): void {
     this.battleLog.logDealtDamageMessage({
       attacked: attackedGroup.type,
       attackedPlayer: attackedGroup.ownerPlayerRef,
-      attackersNumber: attackingGroup.count,
-      attackedNumber: attackedGroup.count,
+      attackersNumber: attackersCount,
+      attackedNumber: attackedCount,
       attacker: attackingGroup.type,
       attackingPlayer: attackingGroup.ownerPlayerRef,
       damage,
