@@ -18,7 +18,9 @@ export class ItemDescriptionComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    this.descriptions = [];
+    this.descriptions = this.item.baseType.description({
+      thisItem: this.item,
+    }).descriptions;
   }
 
 }

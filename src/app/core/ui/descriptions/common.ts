@@ -1,4 +1,4 @@
-import { SpellDescription } from '../../spells';
+import type { SpellDescription } from '../../spells';
 import { DescHtmlElement, DescriptionElementType } from './types';
 
 export function spellDescrElem(text: string): DescHtmlElement {

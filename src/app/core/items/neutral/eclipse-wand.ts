@@ -1,4 +1,5 @@
 import { EnchantBuff } from '../../spells/common';
+import { spellDescrElem } from '../../ui';
 import { ItemBaseModel, GameEventTypes, ItemSlotType } from '../types';
 
 export const ItemEclipseWand: ItemBaseModel<{}> = {
@@ -10,7 +11,14 @@ export const ItemEclipseWand: ItemBaseModel<{}> = {
     icon: 'crystal-wand',
   },
   defaultState: {},
-  description: () => 'At the beginning of the battle, applies level 1 Enchant to all enemy groups.',
+  // description: () => 'At the beginning of the battle, applies level 1 Enchant to all enemy groups.',
+  description({ thisItem }) {
+    return {
+      descriptions: [
+        spellDescrElem('At the beginning of the battle, applies level 1 Enchant to all enemy groups.')
+      ],
+    };
+  },
   config: {
     init: ({ actions, events, ownerPlayer }) => {
 

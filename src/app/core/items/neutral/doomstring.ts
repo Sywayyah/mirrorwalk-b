@@ -1,3 +1,4 @@
+import { itemStatsDescr } from '../../ui';
 import { ItemBaseModel, ItemSlotType } from '../types';
 
 export const ItemDoomstring: ItemBaseModel<{}> = {
@@ -10,7 +11,14 @@ export const ItemDoomstring: ItemBaseModel<{}> = {
     icon: 'crossbow',
   },
   defaultState: {},
-  description: () => '+2 to Attack.',
+  description: ({ thisItem }) => {
+    return {
+      descriptions: [
+        itemStatsDescr(thisItem),
+        // spellDescrElem('+2 to Attack'),
+      ],
+    };
+  },
   config: {
     init: () => { },
   }

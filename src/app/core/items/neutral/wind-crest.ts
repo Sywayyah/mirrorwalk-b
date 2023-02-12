@@ -1,5 +1,6 @@
-import { ItemBaseModel, GameEventTypes, ItemSlotType } from '..';
+import { GameEventTypes, ItemBaseModel, ItemSlotType } from '..';
 import { WindBlessBuff } from '../../spells/common';
+import { itemStatsDescr, spellDescrElem } from '../../ui';
 
 export const ItemWindCrest: ItemBaseModel = {
   name: 'Wind Crest',
@@ -29,7 +30,13 @@ export const ItemWindCrest: ItemBaseModel = {
       })
     },
   },
-  description: (item) => {
-    return '+2 Attack. At the beginning of the fight, grants Wind Blessing (level 1) effect to your ranged units for 1 round.';
+
+  description({ thisItem }) {
+    return {
+      descriptions: [
+        itemStatsDescr(thisItem),
+        spellDescrElem('At the beginning of the fight, grants Wind Blessing (level 1) effect to your ranged units for 1 round.'),
+      ],
+    };
   },
 }

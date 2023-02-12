@@ -29,7 +29,7 @@ export class MwItemsService {
 
     return {
       baseType: itemBase,
-      currentDescription: itemBase.description(itemBase),
+      currentDescription: '',
       state: itemBase.defaultState,
     } as unknown as ItemInstanceModel;
   }

@@ -1,6 +1,6 @@
 
 /*
-    I'm uncertain of what items model should consist of.
+    I'm uncertain of what items model should consist.
     Because of that, I feel like I need arrays.
 
     Anyways, it's not thought through completely.
@@ -24,6 +24,7 @@ import { Icon } from '../assets';
 import { Hero } from '../heroes';
 import { PlayerInstanceModel } from '../players';
 import { SpellModel } from '../spells';
+import { DescriptionElement } from '../ui';
 import { Modifiers, UnitGroupModel } from '../unit-types';
 
 
@@ -60,6 +61,14 @@ export enum ItemSlotType {
   Shield = 'Shield',
 }
 
+export interface ItemDescriptionData<T extends object> {
+  thisItem: ItemInstanceModel<T>;
+}
+
+export interface ItemDescription {
+  descriptions: DescriptionElement[];
+}
+
 export interface ItemBaseModel<StateType extends object = object> {
   defaultState?: StateType;
 
@@ -74,7 +83,7 @@ export interface ItemBaseModel<StateType extends object = object> {
   /* And description can be built like this */
   // description: (item: ItemModel) => object[];
   /* Description can indeed return an array of objects, as for spells, but for now.. keep it simple */
-  description: (item: ItemBaseModel<StateType>) => string;
+  description: (item: ItemDescriptionData<StateType>) => ItemDescription;
   config: {
     init: (combatRefs: {
       actions: CombatActionsRef,
