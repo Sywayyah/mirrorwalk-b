@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { PLAYER_COLORS } from 'src/app/core/assets';
 import { Fraction, Fractions, humansFraction } from 'src/app/core/fractions';
+import { neutralsFraction } from 'src/app/core/fractions/neutrals/fraction';
 import { HeroBase } from 'src/app/core/heroes';
 import { ActivityTypes, Building, HiringActivity, TownBase } from 'src/app/core/towns';
 import { CommonUtils } from 'src/app/core/unit-types';
@@ -8,8 +9,8 @@ import { GameCreated, GameStart } from 'src/app/features/services/events';
 import { State } from 'src/app/features/services/state.service';
 import { EventsService } from 'src/app/store';
 
-const nonPlayableFractions: Fraction<any>[] = [];
-// const nonPlayableFractions: Fraction<any>[] = [neutralsFraction];
+// const nonPlayableFractions: Fraction<any>[] = [];
+const nonPlayableFractions: Fraction<any>[] = [neutralsFraction];
 
 @Component({
   selector: 'mw-new-game-screen',
