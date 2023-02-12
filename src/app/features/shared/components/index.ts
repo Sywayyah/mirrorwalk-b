@@ -13,3 +13,6 @@ export * from './menu/menu.component';
 export * from './mw-player-info-panel/mw-player-info-panel.component';
 export * from './mw-experience-bar/mw-experience-bar.component';
 export * from './icon-btn/icon-btn.component';
+export * from './description/description.component';
+export * from './item-description/item-description.component';
+export * from './spell-description/spell-description.component';

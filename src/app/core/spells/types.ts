@@ -4,6 +4,7 @@ import { Icon } from '../assets';
 import { Hero } from '../heroes';
 import { ItemInstanceModel } from '../items';
 import { PlayerInstanceModel } from '../players';
+import { DescriptionElement } from '../ui/descriptions';
 import { UnitGroupInstModel } from '../unit-types';
 import { SpellEventHandlers } from './spell-events';
 
@@ -22,12 +23,27 @@ export enum SpellActivationType {
 
 export type DefaultSpellStateType = unknown;
 
+export interface SpellDescriptionData<SpellStateType = DefaultSpellStateType> {
+  thisSpell: SpellModel<SpellStateType>;
+  spellInstance: SpellInstance<SpellStateType>;
+  ownerPlayer: PlayerInstanceModel;
+  ownerUnit?: UnitGroupInstModel;
+  ownerHero: Hero;
+}
+
+export interface SpellDescription {
+  descriptions: DescriptionElement[]
+}
+
 export interface SpellModel<SpellStateType = DefaultSpellStateType> {
   name: string;
   // level: number;
   activationType: SpellActivationType;
 
+  /** @deprecated possibly deprecated */
   description?: string;
+
+  getDescription(data: SpellDescriptionData<SpellStateType>): { descriptions: DescriptionElement[] };
 
   type: SpellTypeModel<SpellStateType>;
 

@@ -1,17 +1,25 @@
 import { DamageType } from '../../api/combat-api';
+import { spellDescrElem } from '../../ui';
 import { SpellEventTypes } from '../spell-events';
 import { SpellActivationType, SpellModel } from '../types';
 import { debuffColors } from '../utils';
 
+const intervalDamage = 65;
 
 export const PoisonCloudDebuff: SpellModel<undefined | { debuffRoundsLeft: number }> = {
-  activationType: SpellActivationType.Debuff,
   name: 'Poisoned',
+  activationType: SpellActivationType.Debuff,
   icon: {
     icon: 'poison-cloud',
     ...debuffColors,
   },
-  description: 'Poison deals 65 damage at the beginning of each round.',
+  getDescription(data) {
+    return {
+      descriptions: [
+        spellDescrElem(`Poison deals ${intervalDamage} damage at the beginning of each round.`),
+      ],
+    }
+  },
   type: {
     spellInfo: {
       name: 'Poisoned'
@@ -55,12 +63,18 @@ export const PoisonCloudDebuff: SpellModel<undefined | { debuffRoundsLeft: numbe
 };
 
 export const PoisonCloudSpell: SpellModel = {
+  name: 'Poison Cloud',
   activationType: SpellActivationType.Target,
   icon: {
     icon: 'poison-cloud',
   },
-  name: 'Poison Cloud',
-  description: 'Poisons target, which takes damage at the beginning of each round. Lasts 2 rounds.',
+  getDescription(data) {
+    return {
+      descriptions: [
+        spellDescrElem(`Poisons target, which takes ${intervalDamage} damage at the beginning of each round. Lasts 2 rounds.`),
+      ],
+    }
+  },
   type: {
     spellInfo: {
       name: 'Poison Cloud',

@@ -21,6 +21,11 @@ export const NULL_SPELL: SpellModel = {
   activationType: SpellActivationType.Instant,
   name: '',
   icon: { icon: '' },
+  getDescription(data) {
+    return {
+      descriptions: [],
+    }
+  },
   type: {
     spellInfo: {
       name: '',

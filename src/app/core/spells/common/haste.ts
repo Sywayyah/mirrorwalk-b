@@ -1,7 +1,8 @@
 import { EffectAnimation } from '../../api/vfx-api';
+import { spellDescrElem } from '../../ui';
 import { createAnimation, getIconElement, getPlainAppearanceFrames, getPlainBlurFrames, getReversePulseKeyframes } from '../../vfx';
 import { SpellEventTypes } from '../spell-events';
-import { SpellModel, SpellActivationType } from '../types';
+import { SpellActivationType, SpellModel } from '../types';
 import { buffColors, canActivateOnAllyFn } from '../utils';
 
 const icon = 'boot-stomp';
@@ -42,6 +43,7 @@ const HasteAnimation: EffectAnimation = createAnimation([
   ]
 ]);
 
+const speedBonus = 5;
 
 
 export const HasteBuff: SpellModel = {
@@ -51,7 +53,13 @@ export const HasteBuff: SpellModel = {
     icon: icon,
     ...buffColors,
   },
-  description: 'Unit group is speeded up by 5.',
+  getDescription() {
+    return {
+      descriptions: [
+        spellDescrElem(`Unit group is speeded up by ${speedBonus}.`),
+      ],
+    }
+  },
   type: {
     spellInfo: {
       name: 'Haste',
@@ -63,7 +71,7 @@ export const HasteBuff: SpellModel = {
 
       init: ({ events, actions, vfx }) => {
         const mods = actions.createModifiers({
-          unitGroupSpeedBonus: 5,
+          unitGroupSpeedBonus: speedBonus,
         });
 
         events.on({
@@ -79,11 +87,17 @@ export const HasteBuff: SpellModel = {
 
 export const HasteSpell: SpellModel = {
   name: 'Haste',
+  activationType: SpellActivationType.Target,
   icon: {
     icon: icon,
   },
-  activationType: SpellActivationType.Target,
-  description: 'Target unit group is speeding up by 5.',
+  getDescription() {
+    return {
+      descriptions: [
+        spellDescrElem(`Target unit group is speeding up by ${speedBonus}.`),
+      ],
+    }
+  },
   type: {
     spellInfo: {
       name: 'Haste',

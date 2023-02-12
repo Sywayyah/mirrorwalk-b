@@ -1,18 +1,25 @@
 import { DamageType } from '../../api/combat-api';
+import { spellDescrElem } from '../../ui';
 import { FireAnimation, getDamageParts } from '../../vfx';
 import { SpellEventTypes } from '../spell-events';
 import { SpellActivationType, SpellModel } from '../types';
 import { canActivateOnEnemyFn } from '../utils';
 
+const baseDamage = 65;
+
 export const RainOfFireSpell: SpellModel = {
   name: 'Rain of Fire',
+  activationType: SpellActivationType.Target,
   icon: {
-    // iconClr: 'rgb(244 162 124)',
-
     icon: 'fire',
   },
-  activationType: SpellActivationType.Target,
-  description: 'Deals average damage to the target',
+  getDescription({ ownerHero }) {
+    return {
+      descriptions: [
+        spellDescrElem(`Deals ${baseDamage} (${ownerHero.level * baseDamage}) damage per each Hero Level to the target.`),
+      ],
+    }
+  },
   type: {
     spellInfo: {
       name: 'Rain of Fire',
@@ -30,8 +37,7 @@ export const RainOfFireSpell: SpellModel = {
               duration: 850,
             });
 
-
-            const damage = 65 * ownerHero.level;
+            const damage = baseDamage * ownerHero.level;
 
             actions.dealDamageTo(
               event.target,

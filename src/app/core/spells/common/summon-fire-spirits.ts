@@ -1,17 +1,24 @@
 import { DamageType } from '../../api/combat-api';
 import { neutralsFraction } from '../../fractions/neutrals/fraction';
+import { spellDescrElem } from '../../ui';
 import { FireAnimation } from '../../vfx';
 import { SpellEventTypes } from '../spell-events';
 import { SpellActivationType, SpellModel } from '../types';
 import { logDamage } from '../utils';
 
 export const SummonFireSpiritsSpell: SpellModel = {
+  name: 'Summon Fire Spirits',
   activationType: SpellActivationType.Instant,
-  description: 'Summons 4 Fire Spirits that fight on your side.',
   icon: {
     icon: 'aura',
   },
-  name: 'Summon Fire Spirits',
+  getDescription(data) {
+    return {
+      descriptions: [
+        spellDescrElem(`Summons ${4} Fire Spirits that fight on your side.`),
+      ],
+    }
+  },
   type: {
     spellConfig: {
       getManaCost() { return 3; },

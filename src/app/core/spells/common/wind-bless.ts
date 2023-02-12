@@ -1,13 +1,16 @@
 import { Colors } from '../../assets';
-import { UnitGroupInstModel, Modifiers } from '../../unit-types';
+import { spellDescrElem } from '../../ui';
+import { Modifiers, UnitGroupInstModel } from '../../unit-types';
 import { SpellEventTypes } from '../spell-events';
-import { SpellModel, SpellActivationType } from '../types';
+import { SpellActivationType, SpellModel } from '../types';
 
 type State = {
   roundsLeft: number,
   target: UnitGroupInstModel,
   mods: Modifiers,
 };
+
+const attackBonus = 2;
 
 export const WindBlessBuff: SpellModel<State> = {
   name: 'Wind Bless',
@@ -17,7 +20,14 @@ export const WindBlessBuff: SpellModel<State> = {
     iconClr: Colors.DefautlBuffClr,
   },
   activationType: SpellActivationType.Buff,
-  description: 'Increases attack of ranged units by 2.',
+
+  getDescription() {
+    return {
+      descriptions: [
+        spellDescrElem(`Increases attack of ranged units by ${attackBonus}.`),
+      ],
+    }
+  },
   type: {
     spellInfo: {
       name: 'Wind Bless',
@@ -27,7 +37,7 @@ export const WindBlessBuff: SpellModel<State> = {
         events.on({
           [SpellEventTypes.SpellPlacedOnUnitGroup]: (event) => {
             const mods = actions.createModifiers({
-              unitGroupBonusAttack: 2,
+              unitGroupBonusAttack: attackBonus,
             });
 
             spellInstance.state = {

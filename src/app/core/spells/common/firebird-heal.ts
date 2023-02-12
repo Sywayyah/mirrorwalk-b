@@ -1,4 +1,5 @@
 import { EffectAnimation } from '../../api/vfx-api';
+import { spellDescrElem } from '../../ui';
 import { createAnimation, getIconElement, getPlainAppearanceFrames, getPlainBlurFrames, getReversePulseKeyframes, getHealParts } from '../../vfx';
 import { SpellEventTypes } from '../spell-events';
 import { SpellModel, SpellActivationType } from '../types';
@@ -46,11 +47,19 @@ const healPerBird = 13;
 
 export const FirebirdHealSpell: SpellModel = {
   name: 'Heal',
+  activationType: SpellActivationType.Target,
   icon: {
     icon: icon,
   },
-  activationType: SpellActivationType.Target,
-  description: `Heals friendly unit by ${healPerBird} per each Firebird in current group.`,
+  getDescription(data) {
+    const ownerUnit  = data.ownerUnit!;
+
+    return {
+      descriptions: [
+        spellDescrElem(`Heals friendly unit group by ${healPerBird} (${ownerUnit.count * healPerBird}) per each ${ownerUnit.type.name} in current group.`),
+      ],
+    }
+  },
   type: {
     spellInfo: {
       name: 'Heal',

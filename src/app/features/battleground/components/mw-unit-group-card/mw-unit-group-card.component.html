@@ -49,7 +49,7 @@
       </div>
 
       <div class="column-data">
-        <mw-unit-group-buff *ngFor="let ability of effects" [buff]="ability"></mw-unit-group-buff>
+        <mw-unit-group-buff *ngFor="let ability of effects" [buff]="ability" [ownerUnit]="unitGroup"></mw-unit-group-buff>
       </div>
     </div>
   </div>

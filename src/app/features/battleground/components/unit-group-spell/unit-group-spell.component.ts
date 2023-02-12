@@ -1,5 +1,6 @@
 import { Component, Input, OnChanges } from '@angular/core';
 import { Icon } from 'src/app/core/assets';
+import { Hero } from 'src/app/core/heroes';
 import { SpellActivationType, SpellInstance, SpellModel } from 'src/app/core/spells';
 import { UnitGroupInstModel } from 'src/app/core/unit-types';
 import { TypedChanges } from 'src/app/core/utils';
@@ -23,6 +24,9 @@ export class UnitGroupSpellComponent implements OnChanges {
 
   @Input()
   public spell!: SpellInstance;
+
+  @Input()
+  public hero!: Hero;
 
   public baseType!: SpellModel;
 

@@ -19,6 +19,7 @@
   </div>
 
   <div style="padding: 4px; font-size: 13px; max-width: 240px;">
-    <div>{{spell.description}}</div>
+    <mw-spell-description [spell]="spell" [player]="owner.ownerPlayerRef" [ownerUnit]="owner"
+      [hero]="hero"></mw-spell-description>
   </div>
 </ng-template>

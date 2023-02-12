@@ -1,7 +1,9 @@
+import { spellDescrElem } from '../../ui';
 import { SpellEventTypes } from '../spell-events';
-import { SpellModel, SpellActivationType } from '../types';
-import { debuffColors, canActivateOnEnemyFn } from '../utils';
+import { SpellActivationType, SpellModel } from '../types';
+import { canActivateOnEnemyFn, debuffColors } from '../utils';
 
+const slowingBy = 4;
 
 export const KneelingLightDebuff: SpellModel = {
   name: 'Slowed',
@@ -10,7 +12,13 @@ export const KneelingLightDebuff: SpellModel = {
     icon: 'sunbeams',
     ...debuffColors,
   },
-  description: 'Unit group is slowed down by 3',
+  getDescription(data) {
+    return {
+      descriptions: [
+        spellDescrElem(`Unit group is slowed down by ${slowingBy}.`),
+      ],
+    }
+  },
   type: {
     spellInfo: {
       name: 'Slowed',
@@ -22,7 +30,7 @@ export const KneelingLightDebuff: SpellModel = {
 
       init: ({ events, actions, vfx }) => {
         const mods = actions.createModifiers({
-          unitGroupSpeedBonus: -3,
+          unitGroupSpeedBonus: -slowingBy,
         });
 
         events.on({
@@ -42,8 +50,16 @@ export const KneelingLight: SpellModel = {
     // iconClr: 'rgb(235 142 178)',
     icon: 'sunbeams',
   },
+
+  getDescription(data) {
+    return {
+      descriptions: [
+        spellDescrElem(`Makes light so heavy for the enemy target that it loses ${slowingBy} speed.`),
+      ],
+    }
+  },
   activationType: SpellActivationType.Target,
-  description: 'Makes light so heavy for the enemy target that it loses 3 speed.',
+  description: `Makes light so heavy for the enemy target that it loses ${slowingBy} speed.`,
   type: {
     spellInfo: {
       name: 'Kneeling light',

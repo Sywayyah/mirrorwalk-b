@@ -22,9 +22,10 @@
         </div>
       </div>
 
-      <div *ngIf="spell.description" style=" font-size: 12px; padding: 4px;">
-        {{spell.description}}
+      <div style=" font-size: 12px; padding: 4px;">
+        <mw-spell-description [spell]="spell" [player]="player" [hero]="hero"></mw-spell-description>
       </div>
+
     </div>
   </ng-template>
 </mw-hover-hint>

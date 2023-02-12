@@ -1,7 +1,10 @@
+import { spellDescrElem } from '../../ui';
 import { EnchantAnimation } from '../../vfx';
 import { SpellEventTypes } from '../spell-events';
 import { SpellModel, SpellActivationType } from '../types';
 import { debuffColors, canActivateOnEnemyFn } from '../utils';
+
+const damageIncreasePercent = 17;
 
 export const EnchantBuff: SpellModel = {
   name: 'Enchanted',
@@ -10,7 +13,13 @@ export const EnchantBuff: SpellModel = {
     icon: 'fire-ring',
     ...debuffColors,
   },
-  description: 'Incoming magic damage is increased by 17%.',
+  getDescription() {
+    return {
+      descriptions: [
+        spellDescrElem(`Incoming magic damage is increased by ${damageIncreasePercent}%.`),
+      ],
+    }
+  },
   type: {
     spellInfo: {
       name: 'Enchanted',
@@ -22,7 +31,7 @@ export const EnchantBuff: SpellModel = {
 
       init: ({ events, actions, vfx }) => {
         const mods = actions.createModifiers({
-          amplifiedTakenMagicDamage: 0.17
+          amplifiedTakenMagicDamage: damageIncreasePercent / 100,
         });
 
         events.on({
@@ -38,12 +47,17 @@ export const EnchantBuff: SpellModel = {
 
 export const EnchantSpell: SpellModel = {
   name: 'Enchant',
+  activationType: SpellActivationType.Target,
   icon: {
-    // iconClr: 'rgb(235 142 178)',
     icon: 'fire-ring',
   },
-  activationType: SpellActivationType.Target,
-  description: 'Enchants an enemy, increases incoming magic damage by 17%.',
+  getDescription() {
+    return {
+      descriptions: [
+        spellDescrElem(`Enchants an enemy to receive increased magic damage by ${damageIncreasePercent}%`),
+      ],
+    }
+  },
   type: {
     spellInfo: {
       name: 'Enchant',

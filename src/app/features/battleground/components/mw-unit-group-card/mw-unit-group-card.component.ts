@@ -21,8 +21,10 @@ export class MwUnitGroupCardComponent extends StoreClient() implements UIUnitPro
 
   @Input()
   public unitGroup!: UnitGroupInstModel;
+
   @Input()
   public playerInfo!: PlayerModel;
+
   @Input()
   public side: 'left' | 'right' = 'left';
 

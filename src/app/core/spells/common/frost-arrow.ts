@@ -1,5 +1,6 @@
 import { DamageType } from '../../api/combat-api';
 import { EffectAnimation } from '../../api/vfx-api';
+import { spellDescrElem } from '../../ui';
 import { createAnimation, getIconElement, getPlainAppearanceFrames, getPlainBlurFrames, getReversePulseKeyframes, getDamageParts } from '../../vfx';
 import { SpellEventTypes } from '../spell-events';
 import { SpellModel, SpellActivationType } from '../types';
@@ -43,6 +44,8 @@ export const FrozenAnimation: EffectAnimation = createAnimation([
   ]
 ]);
 
+const slow = 4;
+
 export const FrozenArrowDebuff: SpellModel = {
   name: 'Freeze',
   activationType: SpellActivationType.Debuff,
@@ -51,7 +54,13 @@ export const FrozenArrowDebuff: SpellModel = {
     ...debuffColors,
     bgClr: '#a9bee2',
   },
-  description: 'Unit group is slowed down by 4.',
+  getDescription(data) {
+    return {
+      descriptions: [
+        spellDescrElem(`Unit group is slowed down by ${slow}.`),
+      ],
+    }
+  },
   type: {
     spellInfo: {
       name: 'Freeze',
@@ -63,14 +72,14 @@ export const FrozenArrowDebuff: SpellModel = {
 
       init: ({ events, actions, vfx, thisSpell }) => {
         const mods = actions.createModifiers({
-          unitGroupSpeedBonus: -4,
+          unitGroupSpeedBonus: -slow,
         });
 
         events.on({
           [SpellEventTypes.SpellPlacedOnUnitGroup]: ({ target }) => {
             vfx.createEffectForUnitGroup(target, FrozenAnimation, { duration: 800 });
             actions.addModifiersToUnitGroup(target, mods);
-            actions.historyLog(`${target.type.name} receives ${thisSpell.name} debuff and gets slowed by 4.`);
+            actions.historyLog(`${target.type.name} receives ${thisSpell.name} debuff and gets slowed by ${slow}.`);
           },
         })
       }
@@ -80,11 +89,17 @@ export const FrozenArrowDebuff: SpellModel = {
 
 export const FrostArrowSpell: SpellModel = {
   name: 'Frost Arrow',
+  activationType: SpellActivationType.Target,
   icon: {
     icon: 'frozen-arrow',
   },
-  activationType: SpellActivationType.Target,
-  description: 'Deals 40 magic damage and slows enemy by 4.',
+  getDescription(data) {
+    return {
+      descriptions: [
+        spellDescrElem(`Deals 40 magic damage and slows enemy by ${slow}.`),
+      ],
+    }
+  },
   type: {
     spellInfo: {
       name: 'Frost Arrow',

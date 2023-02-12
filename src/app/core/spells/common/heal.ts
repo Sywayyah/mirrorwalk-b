@@ -45,11 +45,15 @@ const HealAnimation: EffectAnimation = createAnimation([
 
 export const HealSpell: SpellModel = {
   name: 'Heal',
+  activationType: SpellActivationType.Target,
   icon: {
     icon: icon,
   },
-  activationType: SpellActivationType.Target,
-  description: 'Heals friendly unit by 10 per each unit in current group',
+  getDescription(data) {
+    return {
+      descriptions: [],
+    }
+  },
   type: {
     spellInfo: {
       name: 'Heal',

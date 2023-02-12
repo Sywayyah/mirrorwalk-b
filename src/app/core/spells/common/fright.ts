@@ -1,16 +1,25 @@
+import { spellDescrElem } from '../../ui';
 import { UnitGroupInstModel } from '../../unit-types';
 import { FrightAnimation } from '../../vfx';
 import { SpellEventTypes } from '../spell-events';
 import { SpellModel, SpellActivationType } from '../types';
 import { debuffColors } from '../utils';
 
+const damageDecreasePercent = 0.25;
+
 export const FrightSpellDebuff: SpellModel<{ frighter: UnitGroupInstModel }> = {
   name: 'Fright',
   activationType: SpellActivationType.Debuff,
-  description: 'This unit group is frightened, dealing 25% less damage to the one who scared it.',
   icon: {
     icon: 'batwings',
     ...debuffColors,
+  },
+  getDescription() {
+    return {
+      descriptions: [
+        spellDescrElem(`This unit group is frightened, dealing ${damageDecreasePercent}% less damage to the one who scared it.`),
+      ],
+    }
   },
   type: {
     spellInfo: {
@@ -24,7 +33,7 @@ export const FrightSpellDebuff: SpellModel<{ frighter: UnitGroupInstModel }> = {
               attackConditionalModifiers(params) {
                 if (params.attacked === spellInstance.state?.frighter) {
                   return {
-                    baseDamagePercentModifier: -0.25,
+                    baseDamagePercentModifier: -(damageDecreasePercent / 100),
                   };
                 }
                 return {};
@@ -48,9 +57,15 @@ export const FrightSpellDebuff: SpellModel<{ frighter: UnitGroupInstModel }> = {
 export const FrightSpell: SpellModel = {
   name: 'Fright',
   activationType: SpellActivationType.Passive,
-  description: 'Scares enemy group on attack, reducing damage against this group by 25%.',
   icon: {
     icon: 'batwings',
+  },
+  getDescription(data) {
+    return {
+      descriptions: [
+        spellDescrElem(`Scares enemy group on attack, reducing damage against this group by ${damageDecreasePercent}%.`),
+      ],
+    }
   },
   type: {
     spellInfo: {
