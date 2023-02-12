@@ -44,7 +44,9 @@ export const FrozenAnimation: EffectAnimation = createAnimation([
   ]
 ]);
 
+const magicDamage = 40;
 const slow = 4;
+const attackPenalty = 3;
 
 export const FrozenArrowDebuff: SpellModel = {
   name: 'Freeze',
@@ -57,7 +59,7 @@ export const FrozenArrowDebuff: SpellModel = {
   getDescription(data) {
     return {
       descriptions: [
-        spellDescrElem(`Unit group is slowed down by ${slow}.`),
+        spellDescrElem(`Unit group is slowed down by ${slow}, attack rating reduced by ${attackPenalty}.`),
       ],
     }
   },
@@ -73,13 +75,14 @@ export const FrozenArrowDebuff: SpellModel = {
       init: ({ events, actions, vfx, thisSpell }) => {
         const mods = actions.createModifiers({
           unitGroupSpeedBonus: -slow,
+          unitGroupBonusAttack: -attackPenalty,
         });
 
         events.on({
           [SpellEventTypes.SpellPlacedOnUnitGroup]: ({ target }) => {
             vfx.createEffectForUnitGroup(target, FrozenAnimation, { duration: 800 });
             actions.addModifiersToUnitGroup(target, mods);
-            actions.historyLog(`${target.type.name} receives ${thisSpell.name} debuff and gets slowed by ${slow}.`);
+            actions.historyLog(`${target.type.name} receives ${thisSpell.name} debuff, slowed by ${slow} and gains -${attackPenalty} attack rating penalty.`);
           },
         })
       }
@@ -96,7 +99,7 @@ export const FrostArrowSpell: SpellModel = {
   getDescription(data) {
     return {
       descriptions: [
-        spellDescrElem(`Deals 40 magic damage and slows enemy by ${slow}.`),
+        spellDescrElem(`Deals 40 magic damage, slows enemy by ${slow} and reduces attack rating by ${attackPenalty}.`),
       ],
     }
   },
