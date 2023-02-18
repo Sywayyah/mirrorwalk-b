@@ -14,6 +14,7 @@ export interface ModifiersModel {
     amplifiedTakenMagicDamage: number;
 
     playerBonusAttack: number;
+    playerBonusDefence: number;
 
     /* unit group bonuses */
     unitGroupBonusAttack: number;
