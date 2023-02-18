@@ -17,15 +17,18 @@ export class SettingsPopupComponent extends BasicPopup<{}> implements OnInit {
   ngOnInit(): void {
   }
 
-
   public loadScript(): void {
     /* Basic implementation for scripts loading! With that, there can be mods and resource packs. */
     // src/app/mods/mod
     /*
+      Important note: loading scripts by file protocol does seem to be impossible because
+        of security policies.
+    */
+    /*
       it doesn't seem to work with dynamic values, for example from variable or input
       because likely webpack excludes unused imports
 
-      now the big question is how game can be modded. Simplest way would be to clone 
+      now the big question is how game can be modded. Simplest way would be to clone
       repo and change whatever. But then the question, does it make sense to have
       resource packs of any kind.
 
@@ -44,6 +47,15 @@ export class SettingsPopupComponent extends BasicPopup<{}> implements OnInit {
       // import(this.textElem.nativeElement.value).then((data) => {
       console.log('loaded script successfully!', data);
     });
+  }
+
+  public loadScriptByPath(): void {
+    var myScript = document.createElement('script');
+    myScript.setAttribute('src', this.textElem.nativeElement.value);
+    document.head.appendChild(myScript);
+    // import(this.textElem.nativeElement.value).then((module) => {
+      // console.log(module, 'loaded successfully!');
+    // });
   }
 
 }
