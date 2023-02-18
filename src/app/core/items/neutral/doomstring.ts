@@ -15,7 +15,6 @@ export const ItemDoomstring: ItemBaseModel<{}> = {
     return {
       descriptions: [
         itemStatsDescr(thisItem),
-        // spellDescrElem('+2 to Attack'),
       ],
     };
   },
