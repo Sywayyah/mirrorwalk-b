@@ -23,4 +23,11 @@ export class MainScreenComponent implements OnInit {
   public openSettings(): void {
     console.log('open settings');
   }
+
+  public loadScript(): void {
+    /* Basic implementation for scripts loading! With that, there can be mods and resource packs. */
+    import('src/app/mods/mod').then((data) => {
+      console.log('loaded script successfully!', data);
+    });
+  }
 }

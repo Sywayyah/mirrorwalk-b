@@ -17,4 +17,9 @@
 
     And as an advantage, this system may allow resource packs instead of
     hardcoding and providing dependencies by code.
+
+    & Also, considering the topic of resource packs, dynamic imports might
+    be an idea to load dynamic packs.
+
+  Images can be jpg or have high compression level png.
 */
