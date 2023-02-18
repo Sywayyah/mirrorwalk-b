@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, forwardRef, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, ElementRef, EventEmitter, forwardRef, Input, OnDestroy, OnInit, Output, Renderer2 } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { PlayerModel } from 'src/app/core/players';
@@ -56,6 +56,7 @@ export class MwUnitGroupCardComponent extends StoreClient() implements UIUnitPro
     private playersService: MwPlayersService,
     private readonly unitsService: MwUnitGroupStateService,
     private readonly units: MwUnitGroupsService,
+    private readonly renderer: Renderer2,
   ) {
     super();
   }
@@ -65,6 +66,15 @@ export class MwUnitGroupCardComponent extends StoreClient() implements UIUnitPro
     this.isEnemyCard = this.playersService.getCurrentPlayer() !== this.playerInfo;
     this.initialCount = this.unitGroup.count;
     this.cardReady.next(this);
+
+    /* Self-animating for summoned units.  */
+    // In future, this approach is most likely going to change, I might introduce
+    // some animating container, that will be able to animate any given element.
+    // Which is going to be useful for fight queue as well.
+    const isSummoned = this.unitGroup.modifiers.find(mod => mod.isSummon);
+    if (isSummoned) {
+      this.renderer.addClass(this.hostElem.nativeElement, 'summoned');
+    }
 
     this.updateSpellsAndEffects();
     this.modsForUi = this.units.calcUiMods(this.unitGroup);
