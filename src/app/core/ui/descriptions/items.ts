@@ -25,7 +25,7 @@ export function itemStatsDescr(item: ItemInstanceModel): DescHtmlElement {
     }
 
     return getItemModHtmlElem(`${modValue} ${modName}`);
-  }).join();
+  }).join('');
 
   return {
     type: DescriptionElementType.FreeHtml,

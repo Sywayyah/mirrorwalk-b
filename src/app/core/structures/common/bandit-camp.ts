@@ -57,32 +57,4 @@ export const BanditCamp: StructureGeneratorModel = {
   },
 };
 
-export const ThiefsLair: StructureGeneratorModel = {
-  name: 'Bandit Camp',
-  control: StuctureControl.Neutral,
 
-  generateGuard: () => {
-    const guard = {
-      maxUnitGroups: 3,
-      minUnitGroups: 3,
-      units: [
-        [neutralsFraction.getUnitType('Thiefs'), 12, 14, 2],
-        [neutralsFraction.getUnitType('Gnoll'), 14, 24, 3],
-      ],
-    } as GenerationModel;
-
-    return guard;
-  },
-
-  generateReward: () => {
-    const itemReward: ItemReward = {
-      type: NeutralRewardTypesEnum.Item,
-      itemGroups: [
-        [IrtonPlateItem],
-        [BlackLichSwordItem],
-      ]
-    };
-
-    return itemReward;
-  },
-};
