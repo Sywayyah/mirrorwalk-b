@@ -12,10 +12,10 @@ export const BlackLichSwordItem: ItemBaseModel = {
   icon: {
     icon: 'bat-sword',
   },
-  description(item) {
+  description({ thisItem }) {
     return {
       descriptions: [
-        itemStatsDescr(item.thisItem),
+        itemStatsDescr(thisItem),
       ],
     };
   },

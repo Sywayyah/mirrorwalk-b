@@ -84,7 +84,7 @@ export interface ItemBaseModel<StateType extends object = object> {
   /* And description can be built like this */
   // description: (item: ItemModel) => object[];
   /* Description can indeed return an array of objects, as for spells, but for now.. keep it simple */
-  description: (item: ItemDescriptionData<StateType>) => ItemDescription;
+  description: (itemData: ItemDescriptionData<StateType>) => ItemDescription;
   config: {
     init: (combatRefs: {
       actions: CombatActionsRef,

@@ -1,3 +1,4 @@
+import { itemStatsDescr } from '../../ui';
 import { ItemBaseModel, ItemSlotType } from '../types';
 
 
@@ -10,9 +11,11 @@ export const IrtonPlateItem: ItemBaseModel = {
   staticMods: {
     playerBonusDefence: 2,
   },
-  description(item) {
+  description({ thisItem }) {
     return {
-      descriptions: [],
+      descriptions: [
+        itemStatsDescr(thisItem),
+      ],
     }
   },
   config: { init() { } },
