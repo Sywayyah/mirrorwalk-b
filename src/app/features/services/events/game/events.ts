@@ -8,6 +8,8 @@ export const GameStart = gameEvent();
 
 export const NewGameCreation = gameEvent();
 
+export const OpenSettings = gameEvent();
+
 export const GameCreated = gameEvent();
 
 export const PlayersInitialized = gameEvent();

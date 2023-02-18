@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { NewGameCreation } from 'src/app/features/services/events';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { NewGameCreation, OpenSettings } from 'src/app/features/services/events';
 import { EventsService } from 'src/app/store';
 
 @Component({
@@ -8,7 +8,6 @@ import { EventsService } from 'src/app/store';
   styleUrls: ['./main-screen.component.scss']
 })
 export class MainScreenComponent implements OnInit {
-
   constructor(
     private events: EventsService,
   ) { }
@@ -21,13 +20,6 @@ export class MainScreenComponent implements OnInit {
   }
 
   public openSettings(): void {
-    console.log('open settings');
-  }
-
-  public loadScript(): void {
-    /* Basic implementation for scripts loading! With that, there can be mods and resource packs. */
-    import('src/app/mods/mod').then((data) => {
-      console.log('loaded script successfully!', data);
-    });
+    this.events.dispatch(OpenSettings({}));
   }
 }
