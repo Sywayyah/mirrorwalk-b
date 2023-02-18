@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { InventoryItems, ItemInstanceModel } from 'src/app/core/items';
+import { ItemInstanceModel } from 'src/app/core/items';
 import { PlayerInstanceModel } from 'src/app/core/players';
 import { MwPlayersService } from 'src/app/features/services';
 

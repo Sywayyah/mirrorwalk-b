@@ -56,6 +56,7 @@ export interface GameEventsRef {
 export enum ItemSlotType {
   Weapon = 'Weapon',
   Headgear = 'Headgear',
+  Amulet = 'Amulet',
   Armor = 'Armor',
   Boots = 'Boots',
   Shield = 'Shield',

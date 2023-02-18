@@ -15,6 +15,7 @@ export class InventoryItems {
   private static slotTypes: ItemSlotType[] = [
     ItemSlotType.Weapon,
     ItemSlotType.Armor,
+    ItemSlotType.Amulet,
     ItemSlotType.Headgear,
     ItemSlotType.Shield,
     ItemSlotType.Boots,
@@ -23,6 +24,7 @@ export class InventoryItems {
   private static extendedSlotsMap: Map<ItemSlotType, ExtendedSlotType> = new Map([
     [ItemSlotType.Weapon, { slotType: ItemSlotType.Weapon, name: 'Weapon', icon: 'sword', }],
     [ItemSlotType.Armor, { slotType: ItemSlotType.Armor, name: 'Armor', icon: 'vest', }],
+    [ItemSlotType.Amulet, { slotType: ItemSlotType.Amulet, name: 'Amulet', icon: 'gem-pendant', }],
     [ItemSlotType.Headgear, { slotType: ItemSlotType.Headgear, name: 'Headgear', icon: 'knight-helmet', }],
     [ItemSlotType.Shield, { slotType: ItemSlotType.Shield, name: 'Shield', icon: 'shield', }],
     [ItemSlotType.Boots, { slotType: ItemSlotType.Boots, name: 'Boots', icon: 'boot-stomp', }],
