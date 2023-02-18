@@ -8,7 +8,6 @@ export interface ExtendedSlotType {
 }
 
 export class InventoryItems {
-
   private inventoryItemsMap: Map<ItemSlotType, ItemInstanceModel> = new Map();
 
   private equipedItemsSet: Set<ItemInstanceModel> = new Set();
@@ -78,6 +77,10 @@ export class InventoryItems {
 
   public isSlotEquipped(slotType: ItemSlotType): boolean {
     return this.inventoryItemsMap.has(slotType);
+  }
+
+  public getEquippedItems(): ItemInstanceModel[] {
+    return [...this.equipedItemsSet];
   }
 
   private getItemSlotType(item: ItemInstanceModel<object>): ItemSlotType {

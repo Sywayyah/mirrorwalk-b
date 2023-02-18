@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { InventoryItems, ItemInstanceModel } from 'src/app/core/items';
 import { PlayerInstanceModel } from 'src/app/core/players';
 import { MwPlayersService } from 'src/app/features/services';
 
@@ -10,6 +11,7 @@ import { MwPlayersService } from 'src/app/features/services';
 export class MwItemsPanelComponent implements OnInit {
 
   public currentPlayer!: PlayerInstanceModel;
+  public equippedItems!: ItemInstanceModel[];
 
   constructor(
     private readonly players: MwPlayersService,
@@ -17,6 +19,7 @@ export class MwItemsPanelComponent implements OnInit {
 
   ngOnInit(): void {
     this.currentPlayer = this.players.getCurrentPlayer();
+    this.equippedItems = this.currentPlayer.hero.inventory.getEquippedItems();
   }
 
 }
