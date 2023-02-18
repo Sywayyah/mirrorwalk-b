@@ -21,5 +21,7 @@
     & Also, considering the topic of resource packs, dynamic imports might
     be an idea to load dynamic packs.
 
+    & Also, registries can be used for resources and assets.
+
   Images can be jpg or have high compression level png.
 */
