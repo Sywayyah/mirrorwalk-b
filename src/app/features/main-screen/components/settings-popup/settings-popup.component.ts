@@ -23,6 +23,10 @@ export class SettingsPopupComponent extends BasicPopup<{}> implements OnInit {
     /*
       Important note: loading scripts by file protocol does seem to be impossible because
         of security policies.
+
+      Another important note: Even if script is going to be loaded from http, probably the
+      only effective way it will be able to communicate with current script is
+      via global window object.
     */
     /*
       it doesn't seem to work with dynamic values, for example from variable or input
@@ -52,9 +56,10 @@ export class SettingsPopupComponent extends BasicPopup<{}> implements OnInit {
   public loadScriptByPath(): void {
     var myScript = document.createElement('script');
     myScript.setAttribute('src', this.textElem.nativeElement.value);
+    myScript.setAttribute('type', 'module');
     document.head.appendChild(myScript);
     // import(this.textElem.nativeElement.value).then((module) => {
-      // console.log(module, 'loaded successfully!');
+    // console.log(module, 'loaded successfully!');
     // });
   }
 
