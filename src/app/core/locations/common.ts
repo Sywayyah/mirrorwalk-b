@@ -1,5 +1,5 @@
 import { ResourceType } from '../resources';
-import { ArchersOutpostStructure, BanditCamp, BeaconOfTheUndead, BigCampStructure, CalavryStalls, GraveyardStructure, MagicRiverStructure, MountainNestStructure, WitchHutStructure } from '../structures/common';
+import { ArchersOutpostStructure, BanditCamp, BeaconOfTheUndead, BigCampStructure, CalavryStalls, GraveyardStructure, MagicRiverStructure, MountainNestStructure, ThiefsLair, WitchHutStructure } from '../structures/common';
 import { FireRingStructure } from '../structures/common/guard-location';
 import { resourcesPileStructure, resPileStructure } from '../structures/common/resource-pile';
 import { StructureDescription } from './types';
@@ -120,6 +120,15 @@ const blBranch: StructureDescription[] = [
     pathTo: '3',
 
     struct: BanditCamp,
+  },
+  {
+    id: 'left-5',
+    x: -120,
+    y: -10,
+    icon: 'campfire',
+    pathTo: 'left-2',
+
+    struct: ThiefsLair,
   },
   {
     id: '54',

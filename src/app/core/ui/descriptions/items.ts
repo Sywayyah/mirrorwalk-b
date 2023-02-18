@@ -9,7 +9,8 @@ function getItemModHtmlElem(text: string): string {
 const numMod = (num: number) => `${num >= 0 ? '+' : '-'}${num}`;
 
 const modsFormatters: { [K in keyof Modifiers]: (val: ModifiersModel[K]) => string } = {
-  playerBonusAttack: (val) => `${numMod(val)} Attack Rating`,
+  playerBonusAttack: val => `${numMod(val)} Attack Rating`,
+  playerBonusDefence: val => `${numMod(val)} Defence`,
 };
 
 

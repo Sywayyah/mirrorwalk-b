@@ -1,5 +1,7 @@
 import { neutralsFraction } from '../../fractions/neutrals/fraction';
 import { ItemEclipseWand, ItemIceBow, ItemMeteorSwords, ItemWindCrest } from '../../items/neutral';
+import { BlackLichSwordItem } from '../../items/neutral/black-lich-sword';
+import { IrtonPlateItem } from '../../items/neutral/irton-plate';
 import { ResourceType } from '../../resources';
 import { CommonUtils, GenerationModel } from '../../unit-types';
 import { ItemReward, NeutralRewardTypesEnum, ResourcesReward, StructureGeneratorModel, StuctureControl } from '../types';
@@ -52,5 +54,35 @@ export const BanditCamp: StructureGeneratorModel = {
 
       return itemReward;
     }
+  },
+};
+
+export const ThiefsLair: StructureGeneratorModel = {
+  name: 'Bandit Camp',
+  control: StuctureControl.Neutral,
+
+  generateGuard: () => {
+    const guard = {
+      maxUnitGroups: 3,
+      minUnitGroups: 3,
+      units: [
+        [neutralsFraction.getUnitType('Thiefs'), 12, 14, 2],
+        [neutralsFraction.getUnitType('Gnoll'), 14, 24, 3],
+      ],
+    } as GenerationModel;
+
+    return guard;
+  },
+
+  generateReward: () => {
+    const itemReward: ItemReward = {
+      type: NeutralRewardTypesEnum.Item,
+      itemGroups: [
+        [IrtonPlateItem],
+        [BlackLichSwordItem],
+      ]
+    };
+
+    return itemReward;
   },
 };

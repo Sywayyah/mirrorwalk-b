@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Modifiers, UnitGroupModel } from 'src/app/core/unit-types';
 import { CommonUtils } from 'src/app/core/unit-types/utils';
+import { MwUnitGroupsService } from './mw-unit-groups.service';
 
 export interface DamageInfo {
   attacker: UnitGroupModel;
@@ -43,7 +44,9 @@ export interface FinalDamageInfo {
 })
 export class MwUnitGroupStateService {
 
-  constructor() { }
+  constructor(
+    private units: MwUnitGroupsService,
+  ) { }
 
   public getUnitGroupTotalHp(unitGroup: UnitGroupModel): number {
     return (unitGroup.count - 1) * unitGroup.type.baseStats.health + (unitGroup.tailUnitHp ?? 0);
@@ -78,14 +81,19 @@ export class MwUnitGroupStateService {
     };
   }
 
-  public getDetailedAttackInfo(attackingGroup: UnitGroupModel, attackedGroup: UnitGroupModel, mods: Modifiers[] = []): DetailedDamageInfo {
+  public getDetailedAttackInfo(
+    attackingGroup: UnitGroupModel,
+    attackedGroup: UnitGroupModel,
+    attackingMods: Modifiers[] = [],
+    attackedMods: Modifiers[] = [],
+  ): DetailedDamageInfo {
     const attackerUnitType = attackingGroup.type;
     const attackedUnitType = attackedGroup.type;
 
     const attackerBaseStats = attackerUnitType.baseStats;
     const attackedBaseStats = attackedUnitType.baseStats;
 
-    const attackBonus = mods
+    const attackRatingBonus = attackingMods
       // .filter(mod => mod.playerBonusAttack)
       .reduce((bonusAttack, nextMod) => bonusAttack +
         (nextMod.playerBonusAttack ?? 0) +
@@ -93,7 +101,15 @@ export class MwUnitGroupStateService {
         0
       );
 
-    const attackSupperiority = (attackerBaseStats.attackRating + attackBonus) - attackedBaseStats.defence;
+    const targetDefenceBonus = attackedMods.reduce(
+      (totalBonusDef, nextMod) => (nextMod.playerBonusDefence ?? 0) + totalBonusDef,
+      0,
+    );
+
+    const totalAttack = attackerBaseStats.attackRating + attackRatingBonus;
+    const totalTargetDefence = attackedBaseStats.defence + targetDefenceBonus;
+
+    const attackSupperiority = totalAttack - totalTargetDefence;
 
     const damageInfo = this.getUnitGroupDamage(attackingGroup, attackSupperiority);
 

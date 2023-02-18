@@ -149,6 +149,7 @@ export class CombatInteractorService extends StoreClient() {
       attacker,
       attacked,
       this.getModsForUnitGroup(attacker),
+      this.getModsForUnitGroup(attacked),
     );
 
     const damageInfo = this.unitState.getFinalDamageInfoFromDamageDetailedInfo(attackDetails);
@@ -223,6 +224,7 @@ export class CombatInteractorService extends StoreClient() {
       currentUnitGroup,
       target,
       this.getModsForUnitGroup(currentUnitGroup),
+      this.getModsForUnitGroup(target),
     );
 
     const attackActionInfo: AttackActionHintInfo = {

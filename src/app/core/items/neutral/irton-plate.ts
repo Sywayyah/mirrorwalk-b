@@ -6,7 +6,7 @@ export const IrtonPlateItem: ItemBaseModel = {
   name: 'Irton Plate',
   slotType: ItemSlotType.Armor,
   icon: {
-    icon: 'west',
+    icon: 'vest',
   },
   staticMods: {
     playerBonusDefence: 2,
