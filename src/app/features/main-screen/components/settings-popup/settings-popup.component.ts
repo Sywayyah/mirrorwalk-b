@@ -35,6 +35,9 @@ export class SettingsPopupComponent extends BasicPopup<{}> implements OnInit {
 
         Although it might be not so convenient, and not everything might be
         possible with that approach, but still.
+
+        One thing that bothers the most is that it seems to be not very easy
+        to include multiple files with this.
     */
 
     /*
@@ -56,7 +59,7 @@ export class SettingsPopupComponent extends BasicPopup<{}> implements OnInit {
       Also, there can be a possible advantage of having resourcepacks: resources loading, so
       instead of loading everything all at once, this process can be distributed.
     */
-    import('src/app/mods/mod').then((data) => {
+    import('src/app/playground/mod').then((data) => {
       // import(this.textElem.nativeElement.value).then((data) => {
       console.log('loaded script successfully!', data);
     });

@@ -1,6 +1,7 @@
-import { humansFraction } from '../core/fractions';
-import { PhoenixShieldItem } from '../core/items/neutral/phoenix-shield';
+// import { humansFraction } from '../core/fractions';
+// import { PhoenixShieldItem } from '../core/items/neutral/phoenix-shield';
 
+const humansFraction = window.mw.humansFraction;
 //
 
 humansFraction.createHero({
@@ -15,7 +16,7 @@ humansFraction.createHero({
     ],
   }],
   items: [
-    PhoenixShieldItem,
+    // PhoenixShieldItem,
   ],
   resources: {
     gold: 1250,
