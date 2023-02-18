@@ -38,6 +38,12 @@ export class SettingsPopupComponent extends BasicPopup<{}> implements OnInit {
 
         One thing that bothers the most is that it seems to be not very easy
         to include multiple files with this.
+
+      Important note #4: In addition to #3. Theoretically, files limitation can
+        be overcome with zip archives and JSZip library. It looks like
+        people pretty much use it for uploading images and stuff like that,
+        JsZip itself seems to have pretty convincing api, for example
+        ability to navigate inside folder, stuff like that.
     */
 
     /*
@@ -68,6 +74,7 @@ export class SettingsPopupComponent extends BasicPopup<{}> implements OnInit {
   public loadScriptByPath(): void {
     var input = document.createElement('input');
     input.type = 'file';
+    input.multiple = true;
 
     input.onchange = e => {
       var file = (e as any).target.files[0];
