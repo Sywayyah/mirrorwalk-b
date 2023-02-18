@@ -10,3 +10,6 @@ export const humansFraction = Fractions.createFraction<HUMANS_UNIT_TYPES>(Fracti
   title: 'Castle',
   icon: 'castle-emblem',
 });
+
+/* just to test dynamically loaded scripts */
+(window as any).mw = { humansFraction };
