@@ -14,6 +14,7 @@ const neutralHeroBase = createHeroModelBase({
   stats: {
     mana: 0,
     baseAttack: 0,
+    baseDefence: 0,
   },
 });
 
@@ -55,6 +56,8 @@ export class MwHeroesService {
       stats: {
         baseAttack: heroBaseStats.baseAttack,
         bonusAttack: 0,
+        baseDefence: heroBaseStats.baseDefence,
+        bonusDefence: 0,
         currentMana: heroBaseStats.mana,
         maxMana: heroBaseStats.mana,
       },
@@ -72,7 +75,9 @@ export class MwHeroesService {
         maxMana: 5,
         currentMana: 1,
         baseAttack: 0,
+        baseDefence: 0,
         bonusAttack: 0,
+        bonusDefence: 0,
       },
       freeSkillpoints: 0,
       spells: [],

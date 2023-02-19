@@ -31,5 +31,6 @@ export const HelveticaHero: HeroBase = humansFraction.createHero({
   stats: {
     mana: 15,
     baseAttack: 1,
+    baseDefence: 0,
   },
 });
