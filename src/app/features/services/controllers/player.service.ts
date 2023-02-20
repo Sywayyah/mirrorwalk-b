@@ -50,6 +50,10 @@ export class PlayerController extends StoreClient() {
       hero.stats.bonusAttack += itemBase.staticMods.playerBonusAttack;
     }
 
+    if (itemBase.staticMods.playerBonusDefence) {
+      hero.stats.bonusDefence += itemBase.staticMods.playerBonusDefence;
+    }
+
     if (itemBase.bonusAbilities) {
       itemBase.bonusAbilities.forEach((spellConfig) => {
         const spellInstance = this.spellsService.createSpellInstance(
@@ -75,6 +79,11 @@ export class PlayerController extends StoreClient() {
     if (item.baseType.staticMods.playerBonusAttack) {
       player.hero.stats.bonusAttack -= item.baseType.staticMods.playerBonusAttack;
     }
+
+    if (item.baseType.staticMods.playerBonusDefence) {
+      player.hero.stats.bonusDefence -= item.baseType.staticMods.playerBonusDefence;
+    }
+
 
     player.hero.spells = player.hero.spells.filter(spell => spell.sourceInfo.item !== item);
   }

@@ -1,5 +1,6 @@
 import { humansFraction } from '../../fractions';
 import { ItemWindCrest } from '../../items/neutral';
+import { IrtonPlateItem } from '../../items/neutral/irton-plate';
 import { MeteorSpell, PoisonCloudSpell } from '../../spells/common';
 import { SummonFireSpiritsSpell } from '../../spells/common/summon-fire-spirits';
 import { HeroBase } from '../types';
@@ -20,11 +21,12 @@ export const TaltirHero: HeroBase = humansFraction.createHero({
       [humansFraction.getUnitType('Pikeman'), 25, 30, 1],
     ],
   }],
-  items: [ItemWindCrest],
+  items: [IrtonPlateItem],
   resources: heroesDefaultResources,
   stats: {
     mana: 14,
     baseAttack: 2,
+    baseDefence: 3,
   },
 });
 
@@ -49,5 +51,6 @@ export const VeasinHero: HeroBase = humansFraction.createHero({
   stats: {
     mana: 20,
     baseAttack: 1,
+    baseDefence: 2,
   },
 });

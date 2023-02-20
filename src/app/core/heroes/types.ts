@@ -8,6 +8,7 @@ export interface HeroBaseStats {
   stats: {
     mana: number;
     baseAttack: number;
+    baseDefence: number;
   };
   abilities: SpellModel[];
   resources: ResourcesModel;
@@ -22,6 +23,7 @@ export interface HeroBase {
     stats: {
       mana: number;
       baseAttack: number;
+      baseDefence: number;
     },
     abilities: SpellModel[],
     resources: ResourcesModel,
@@ -36,6 +38,8 @@ export interface HeroStats {
   /* these ones can be just for UI, but mods will be used in calcs */
   baseAttack: number;
   bonusAttack: number;
+  baseDefence: number;
+  bonusDefence: number;
 }
 
 /* Hero based on some type */

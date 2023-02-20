@@ -25,6 +25,7 @@ humansFraction.createHero({
   stats: {
     baseAttack: 2,
     mana: 15,
+    baseDefence: 1,
   }
 })
 export const someValue = 5;

@@ -1,34 +1,44 @@
 <div>
-    <div class="resource-info-row">
-        <div>Gold:</div>
-        <div>{{currentPlayer.resources.gold}}</div>
-    </div>
-    <div class="resource-info-row">
-        <div>Wood:</div>
-        <div>{{currentPlayer.resources.wood}}</div>
-    </div>
-    <div class="resource-info-row">
-        <div>Red Crystals:</div>
-        <div>{{currentPlayer.resources.redCrystals}}</div>
-    </div>
-    <div class="resource-info-row">
-        <div>Gems:</div>
-        <div>{{currentPlayer.resources.gems}}</div>
-    </div>
+  <div class="resource-info-row">
+    <div>Gold:</div>
+    <div>{{currentPlayer.resources.gold}}</div>
+  </div>
+  <div class="resource-info-row">
+    <div>Wood:</div>
+    <div>{{currentPlayer.resources.wood}}</div>
+  </div>
+  <div class="resource-info-row">
+    <div>Red Crystals:</div>
+    <div>{{currentPlayer.resources.redCrystals}}</div>
+  </div>
+  <div class="resource-info-row">
+    <div>Gems:</div>
+    <div>{{currentPlayer.resources.gems}}</div>
+  </div>
 
-    <div class="resource-info-row">
-        <div>Mana:</div>
-        <div>{{currentPlayer.hero.stats.currentMana}}/{{currentPlayer.hero.stats.maxMana}}</div>
+  <div class="resource-info-row">
+    <div>Mana:</div>
+    <div>{{currentPlayer.hero.stats.currentMana}}/{{currentPlayer.hero.stats.maxMana}}</div>
+  </div>
+
+  <div class="resource-info-row">
+    <div>Attack:</div>
+    <div>
+      {{currentPlayer.hero.stats.baseAttack}}
+      <span *ngIf="currentPlayer.hero.stats.bonusAttack">
+        <!-- pipe for pos/neg values, or directive with ::before -->
+        (+{{currentPlayer.hero.stats.bonusAttack}})
+      </span>
     </div>
-    
-    <div class="resource-info-row">
-        <div>Attack:</div>
-        <div>
-            {{currentPlayer.hero.stats.baseAttack}}
-            <span *ngIf="currentPlayer.hero.stats.bonusAttack">
-                <!-- pipe for pos/neg values, or directive with ::before -->
-                (+{{currentPlayer.hero.stats.bonusAttack}})
-            </span>
-        </div>
+  </div>
+
+  <div class="resource-info-row">
+    <div>Defence:</div>
+    <div>
+      {{currentPlayer.hero.stats.baseDefence}}
+      <span *ngIf="currentPlayer.hero.stats.bonusDefence">
+        (+{{currentPlayer.hero.stats.bonusDefence}})
+      </span>
     </div>
+  </div>
 </div>
