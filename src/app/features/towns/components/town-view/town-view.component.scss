@@ -1,0 +1,45 @@
+.buildings {
+  display: flex;
+  flex-direction: row;
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.building {
+  display: flex;
+  flex-direction: column;
+  background-color: rgb(65, 69, 78);
+  color: white;
+  text-align: center;
+  margin: 5px;
+  border-radius: 8px;
+  // max-width: 115px;
+  // min-width: 115px;
+  font-size: 14px;
+
+  .header {
+    padding: 10px;
+    cursor: pointer;
+    // background: white;
+    margin: 5px;
+    color: white;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+
+    &.not-built {
+      background: rgb(85 89 103) !important;
+      color: rgb(174, 174, 174);
+    }
+  }
+
+}
+
+.build {
+  display: flex;
+  flex-direction: column;
+  // height: 100%;
+  justify-content: center;
+}

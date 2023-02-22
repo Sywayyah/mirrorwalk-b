@@ -1,0 +1,23 @@
+<div class="hero-panel">
+  <div class="items">
+    <div>
+      Your items:
+    </div>
+
+    <div style="display: flex; flex-direction: column;">
+      <mw-item-slot *ngFor="let itemSlot of itemSlots" [itemSlot]="itemSlot"></mw-item-slot>
+    </div>
+  </div>
+
+  <div class="info">
+    <div>{{hero.base.name}}</div>
+    <div>Level {{hero.level}}</div>
+
+    <mw-experience-bar style="width: 270px;"></mw-experience-bar>
+  </div>
+
+</div>
+
+<div class="buttons">
+  <button mw-main-button (click)="close()">Close</button>
+</div>

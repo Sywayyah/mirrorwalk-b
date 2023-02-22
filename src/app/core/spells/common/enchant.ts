@@ -1,0 +1,91 @@
+import { spellDescrElem } from '../../ui';
+import { EnchantAnimation } from '../../vfx';
+import { SpellEventTypes } from '../spell-events';
+import { SpellModel, SpellActivationType } from '../types';
+import { debuffColors, canActivateOnEnemyFn } from '../utils';
+
+const damageIncreasePercent = 17;
+
+export const EnchantBuff: SpellModel = {
+  name: 'Enchanted',
+  activationType: SpellActivationType.Debuff,
+  icon: {
+    icon: 'fire-ring',
+    ...debuffColors,
+  },
+  getDescription() {
+    return {
+      descriptions: [
+        spellDescrElem(`Incoming magic damage is increased by ${damageIncreasePercent}%.`),
+      ],
+    }
+  },
+  type: {
+    spellInfo: {
+      name: 'Enchanted',
+    },
+    spellConfig: {
+      getManaCost(spellInst) {
+        return 0;
+      },
+
+      init: ({ events, actions, vfx }) => {
+        const mods = actions.createModifiers({
+          amplifiedTakenMagicDamage: damageIncreasePercent / 100,
+        });
+
+        events.on({
+          [SpellEventTypes.SpellPlacedOnUnitGroup]: (event) => {
+            vfx.createEffectForUnitGroup(event.target, EnchantAnimation, { duration: 1000 });
+            actions.addModifiersToUnitGroup(event.target, mods);
+          },
+        })
+      }
+    }
+  },
+};
+
+export const EnchantSpell: SpellModel = {
+  name: 'Enchant',
+  activationType: SpellActivationType.Target,
+  icon: {
+    icon: 'fire-ring',
+  },
+  getDescription() {
+    return {
+      descriptions: [
+        spellDescrElem(`Enchants an enemy to receive increased magic damage by ${damageIncreasePercent}%`),
+      ],
+    }
+  },
+  type: {
+    spellInfo: {
+      name: 'Enchant',
+    },
+    spellConfig: {
+      targetCastConfig: {
+        canActivate: canActivateOnEnemyFn,
+      },
+      getManaCost(spellInst) {
+        const manaCosts: Record<number, number> = {
+          1: 2,
+          2: 2,
+          3: 3,
+          4: 3,
+        };
+
+        return manaCosts[spellInst.currentLevel];
+      },
+
+      init: ({ events, actions, ownerPlayer }) => {
+        events.on({
+          [SpellEventTypes.PlayerTargetsSpell]: (event) => {
+            const enchantDebuff = actions.createSpellInstance(EnchantBuff);
+            actions.addSpellToUnitGroup(event.target, enchantDebuff, ownerPlayer);
+            actions.historyLog('Enemy is enchanted');
+          },
+        });
+      },
+    },
+  },
+};

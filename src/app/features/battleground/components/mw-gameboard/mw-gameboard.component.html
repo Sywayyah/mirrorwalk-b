@@ -1,0 +1,40 @@
+<div class="columns-wrapper">
+  <div class="columns">
+    <div class="column">
+      <mw-unit-group-card class="card" *ngFor="let unitGroup of mainPlayerUnitGroups" mwSpellTarget
+        [spellTargetUnitGroup]="unitGroup" mwUnitEventsCursor side="left" [playerInfo]="mainPlayerInfo"
+        [unitGroup]="unitGroup" (groupDies)="onGroupDies(unitGroup)">
+      </mw-unit-group-card>
+    </div>
+
+    <div class="column">
+      <mw-unit-group-card class="card" *ngFor="let unitGroup of neutralPlayerGroups" mwSpellTarget
+        [spellTargetUnitGroup]="unitGroup" mwUnitEventsCursor side="right" [playerInfo]="enemyPlayerInfo"
+        [unitGroup]="unitGroup" (groupDies)="onGroupDies(unitGroup)">
+      </mw-unit-group-card>
+    </div>
+  </div>
+</div>
+
+<div class="abilities-panel">
+  <mw-battle-hero-abilities></mw-battle-hero-abilities>
+</div>
+
+<div class="queue-panel">
+  <div *ngFor="let group of fightQueue" [style.background]="group.ownerPlayerRef!.color" class="queue-card">
+    <div>{{group.type.name}}</div>
+    <div>{{group.count}}</div>
+    <div>turns: {{group.turnsLeft}}</div>
+  </div>
+</div>
+
+<mw-action-hint class="hint-panel"></mw-action-hint>
+
+<div class="history-log-panel">
+  <mw-history-log></mw-history-log>
+</div>
+
+<div class="items-panel">
+  Items:
+  <mw-items-panel></mw-items-panel>
+</div>

@@ -1,0 +1,24 @@
+.header {
+    text-align: center;
+    padding-bottom: 16px;
+}
+
+.losses-container {
+    display: flex;
+    justify-content: center;
+}
+
+.loss-card {
+    width: 72px;
+    height: 72px;
+    background-color: gray;
+    border-radius: 6px;
+    color: white;
+    margin: 4px;
+    text-align: center;
+    padding: 12px 0;
+    font-size: 13px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+}

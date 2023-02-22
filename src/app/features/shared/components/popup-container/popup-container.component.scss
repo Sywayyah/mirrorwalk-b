@@ -1,0 +1,48 @@
+@keyframes overlay-appear {
+  0% {
+      background-color: rgba(0, 0, 0, 0);
+  }
+
+  100% {
+      background-color: rgba(0, 0, 0, 0.655);
+  }
+}
+
+.popups-container {
+  left: 0;
+  z-index: 9200;
+  top: 0;
+  position: fixed;
+  height: 100%;
+  width: 100%;
+}
+
+.overlay {
+  left: 0;
+  top: 0;
+  z-index: 4000;
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0);
+  animation: overlay-appear 1s;
+  animation-fill-mode: forwards;
+}
+
+.popup {
+  position: absolute;
+  display: block;
+  // height: 240px;
+  padding: 16px;
+  min-width: 400px;
+  left: 50%;
+  z-index: 9500;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+}
+
+.dark {
+  // background-color: #3b3b42;
+  background-color: #484852;
+}

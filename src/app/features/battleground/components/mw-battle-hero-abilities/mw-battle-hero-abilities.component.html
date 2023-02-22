@@ -1,0 +1,16 @@
+<div>
+  {{curPlayerState.playerCurrentState}}
+</div>
+
+
+<div class="abilities-list">
+  <div class="cd-icon">
+    <mw-ra-icon icon="hourglass" *ngIf=" curPlayerState.spellsAreOnCooldown"></mw-ra-icon>
+  </div>
+
+  <mw-spell-button *ngFor="let spell of currentPlayer.hero.spells" [spell]="spell" [player]="currentPlayer"
+    [hero]="currentPlayer.hero"
+    [disabled]="currentPlayer.hero.stats.currentMana < spell.currentManaCost || curPlayerState.spellsAreOnCooldown"
+    [isActive]="curPlayerState.currentSpell === spell" (clicked)="onAbilityClick(spell)">
+  </mw-spell-button>
+</div>
