@@ -1,0 +1,27 @@
+:host {
+  display: block;
+  max-width: 100%;
+  padding: 10px;
+  background: rgb(100, 120, 187);
+  color: white;
+  text-align: center;
+  margin: 4px;
+  cursor: pointer;
+  user-select: none;
+  border: none;
+  font-family: 'segoe ui';
+  font-size: 15px;
+}
+
+:host:hover {
+  background: rgb(90, 103, 147);
+}
+
+:host:active {
+  background: rgb(79, 90, 126);
+}
+
+:host:disabled {
+  background: rgb(147, 158, 196);
+  color: rgb(207, 207, 207);
+}

@@ -1,0 +1,56 @@
+<div *ngIf="(hint$ | async) as actionHint">
+  <ng-container [ngSwitch]="actionHint.type">
+    <ng-container *ngSwitchCase="hintActionTypes.OnHoverEnemyCard">
+      <ng-container *ngTemplateOutlet="simple; context: { hint: actionHint }"></ng-container>
+    </ng-container>
+
+    <ng-container *ngSwitchCase="hintActionTypes.OnTargetSpell">
+      <ng-container *ngTemplateOutlet="onTargetSpell; context: { hint: actionHint }"></ng-container>
+    </ng-container>
+  </ng-container>
+</div>
+
+<ng-template #simple let-hint="hint">
+  <span>Attack</span>
+  <span [style.color]="hint.attackedGroup.ownerPlayerRef.color">
+    {{hint.attackedGroup.type.name}}
+  </span>
+  <span>
+    dealing
+  </span>
+  <span>
+    {{hint.minDamage}}<ng-container *ngIf="!hint.noDamageSpread">-{{hint.maxDamage}}</ng-container>
+  </span>
+  <span>
+    damage, killing
+  </span>
+  <span>
+    {{hint.minCountLoss}}<ng-container *ngIf="!hint.noLossSpread">-{{hint.maxCountLoss}}</ng-container>
+  </span>
+  <span>
+    units
+  </span>
+  <!-- <span *ngIf="hint.attackSuperiority">
+    (superiority: {{hint.attackSuperiority}})
+  </span> -->
+</ng-template>
+
+<ng-template #onTargetSpell let-hint="hint">
+  <div>
+    <span>
+      Cast
+    </span>
+    <span>
+      {{hint.spell.name}}
+    </span>
+    <span>
+      on
+    </span>
+    <span>
+      {{hint.target.type.name}}
+    </span>
+  </div>
+  <div>
+    Press RMB to cancel
+  </div>
+</ng-template>

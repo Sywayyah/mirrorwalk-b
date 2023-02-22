@@ -1,0 +1,9 @@
+<div #elem (click)="onClick()">
+  <ng-content></ng-content>
+</div>
+
+<ng-template #generalHint>
+  <div class="hint menu-hint" [ngClass]="showHintAnimation ? 'show-hint' : 'hide-hint'" [style.transition.s]="transition">
+    <ng-container *ngTemplateOutlet="menuBody"></ng-container>
+  </div>
+</ng-template>

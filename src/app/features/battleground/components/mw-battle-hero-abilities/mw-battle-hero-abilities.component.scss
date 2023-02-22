@@ -1,0 +1,14 @@
+.abilities-list {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  width: 56px;
+}
+
+.cd-icon {
+  position: absolute;
+  top: 50%;
+  left: -27px;
+  margin-top: -25%;
+  font-size: 24px;
+}

@@ -1,0 +1,14 @@
+mw-description {
+  > .spell-descr {
+    font-size: 13px;
+  }
+
+  .item-mods {
+    padding: 5px;
+    padding-top: 0;
+
+    > .item-mod {
+      font-size: 12px;
+    }
+  }
+}

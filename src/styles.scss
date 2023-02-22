@@ -1,5 +1,34 @@
 /* You can add global styles to this file, and also import other style files */
 
+// Was timely replaced with <link> in index.html
+// $ra-font-path: '../node_modules/rpg-awesome/scss/_variables';
+// @import url('../node_modules/rpg-awesome/css/rpg-awesome.css');
+
 body {
     font-family: 'Segoe UI';
+}
+
+.cannot-target .card {
+    cursor: not-allowed !important;
+}
+
+.icon-label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.tooltip-icon {
+    height: 32px;
+    width: 32px;
+    overflow: hidden;
+    font-size: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mod-text {
+    font-weight: 600;
+    text-shadow: 1px 1px rgba(0, 0, 0, 0.334);
 }

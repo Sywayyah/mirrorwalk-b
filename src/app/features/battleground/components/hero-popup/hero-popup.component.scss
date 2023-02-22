@@ -1,0 +1,22 @@
+.buttons {
+  margin-top: 16px;
+  display: flex;
+  justify-content: end;
+}
+
+:host {
+  width: 500px;
+}
+
+.hero-panel {
+  display: flex;
+}
+
+.items {
+  margin-right: 16px;
+  font-size: 10px;
+}
+
+.info {
+  font-size: 12px;
+}

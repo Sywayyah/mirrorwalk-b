@@ -1,0 +1,4 @@
+<!-- <div>{{currentPlayer.hero.experience}}-{{xpToNextLevel}}-{{currentPlayer.hero.experience / xpToNextLevel * 100}}%</div> -->
+<div class="experience-bar">
+  <div class="experience-progress" [style.width.%]="currentPlayer.hero.experience / xpToNextLevel * 100"></div>
+</div>

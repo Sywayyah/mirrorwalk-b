@@ -1,0 +1,9 @@
+.resource-info-row {
+    display: flex;
+    justify-content: space-between;
+    margin: 2px;
+}
+
+:host {
+    font-size: 12px;
+}
