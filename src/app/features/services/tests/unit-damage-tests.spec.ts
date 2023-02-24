@@ -8,6 +8,9 @@ import { MwPlayersService } from '../mw-players.service';
 import { MwUnitGroupStateService } from '../mw-unit-group-state.service';
 import { MwUnitGroupsService } from '../mw-unit-groups.service';
 
+/*
+  Unit type with no armor, attack rating and no damage range.
+*/
 const testUnitTypeNoArmorNoRating: UnitBase = {
   name: 'Test Unit (No Armor/Attack Rating)',
   type: 'test-plain-stats',
