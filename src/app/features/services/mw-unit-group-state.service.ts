@@ -31,10 +31,12 @@ export interface DetailedDamageInfo extends DamageInfo {
 
 export interface FinalDamageInfo {
   finalDamage: number;
+
   /* unit loss adjusted so it can't be higher than count of attacked units */
   finalUnitLoss: number;
-  /* not adjusted value */
+  /* not adjusted value, may exceed the amount of units left in target group */
   finalTotalUnitLoss: number;
+
   tailHpLeft: number;
   isDamageFatal: boolean;
 }
