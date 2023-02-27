@@ -69,7 +69,7 @@ export class NewGameScreenComponent {
     this.state.createdGame = {
       fraction,
       selectedColor: this.pickedColor,
-      selectedHero: this.selectedHero || CommonUtils.randItem(this.heroes!),
+      selectedHero: this.selectedHero || CommonUtils.randItem(fraction.heroes),
       town: {
         base: townBase,
         growthMap: hiringBuildings
