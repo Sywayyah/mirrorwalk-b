@@ -6,6 +6,25 @@
 
       in Styles B, his Fire Spirits may remain during battles, also
       having more effects or even spells, like splash damage.
+
+    Legendary units. Heroes might have specialties, and based on them + some
+      other factors, player might unlock legendary units. For instance,
+      player might unlock legendary upgrade for Firebirds and Mystical Birds:
+      Phoenix. Phoenix will cost significantly more than either of previous,
+      but will have top-tier stats, for instance, 10% all res, +20% fire res,
+      increased armor, damage and hp, and additional +50% damage to dragons.
+      Many creatures can have this form, and it may surpass the top-tier
+      units of that town.
+
+    Units to add + AI:
+      Swamp Prince. An big amphibian creature dwelling near swamps (level 3),
+      normal damage is below average among that tier, but this creature
+      can cast Fire Ball (3-5 fire damage per unit in group), manacost: 3.
+      Manapool: 5. Restores 1 mana each turn.
+
+    Skeleton Mage. May have average stats of level 4 unit, but also
+      affect mana regen of allied unit groups, so can make casters more
+      effective.
 */
 /*
     Implementable ideas:

@@ -32,5 +32,13 @@
     It might introduce more apporaches to do things. But also might
     be useful to implement different game modes.
 
+  Constants config. Along with Triggers, I might provide constants
+    object in order to override/tweak some values for different modes.
+
+    (So, like, different game modes can provide their own values)
+
+    For instance, in some game mode there might be different value
+    for attack rating/armor.
+
   Images can be jpg or have high compression level png.
 */
