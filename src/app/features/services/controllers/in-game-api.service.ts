@@ -167,7 +167,7 @@ export class InGameApiController extends StoreClient() {
 
         this.events.dispatch(UnitHealed({
           target: unit,
-          healedUnitsCount: healInfo.healedUnitsCount,
+          healedUnitsCount: healInfo.revivedUnitsCount,
         }));
       }
     };
