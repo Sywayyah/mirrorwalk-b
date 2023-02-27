@@ -87,6 +87,10 @@ export class MwUnitGroupsService {
     return unitGroup.type.baseStats.speed + speedBonusFromMods;
   }
 
+  /*
+   This might be theoretically split into a data function and executing function,
+     in the same manner as damage functions.
+   */
   public healUnit(unit: UnitGroupInstModel, healValue: number): HealingInfo {
     const singleUnitHealth = unit.type.baseStats.health;
 

@@ -19,7 +19,7 @@ export const ItemMeteorSwords: ItemBaseModel<{}> = {
     return {
       descriptions: [
         itemStatsDescr(thisItem),
-        spellDescrElem('Two large black swords with an astronomical map depicted in gold on the blade. Grants level 1 Meteor ability.'),
+        spellDescrElem('Two large black swords with an astronomical map depicted in gold on the blade. Grants Level 1 Meteor ability.'),
       ],
     };
   },

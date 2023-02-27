@@ -32,6 +32,12 @@
     It might introduce more apporaches to do things. But also might
     be useful to implement different game modes.
 
+  Structures. The further it gets, the more I start to think
+    about having programmable behaviors rather than declarative.
+    I feel like locations can have lots of different variants,
+    revisitable, hirable, stuff like that. Not sure if declarative
+    apporach can take care of all that effectively...
+
   Constants config. Along with Triggers, I might provide constants
     object in order to override/tweak some values for different modes.
 
