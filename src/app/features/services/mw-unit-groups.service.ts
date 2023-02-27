@@ -12,6 +12,10 @@ export interface UIModsModel {
   speed: number,
   attack: number;
 }
+export interface HealingInfo {
+  revivedUnitsCount: number;
+  totalHealedHp: number;
+}
 
 @Injectable({
   providedIn: 'root'
@@ -83,41 +87,68 @@ export class MwUnitGroupsService {
     return unitGroup.type.baseStats.speed + speedBonusFromMods;
   }
 
-  public healUnit(unit: UnitGroupInstModel, healValue: number): { healedUnitsCount: number } {
+  public healUnit(unit: UnitGroupInstModel, healValue: number): HealingInfo {
     const singleUnitHealth = unit.type.baseStats.health;
 
-    const healedUnitsCount = Math.floor(healValue / singleUnitHealth);
+    let fullyRevivedUnitsCount = Math.floor(healValue / singleUnitHealth);
 
-    let fullHealedUnitsCount = healedUnitsCount * singleUnitHealth;
+    let fullHealValueWithoutTail = fullyRevivedUnitsCount * singleUnitHealth;
 
-    let healValueTail = healValue - fullHealedUnitsCount;
+    let healValueTail = healValue - fullHealValueWithoutTail;
 
-    if (unit.tailUnitHp) {
-      const combinedTails = healValueTail + unit.tailUnitHp;
+    const initialUnitsCount = unit.fightInfo.initialCount;
 
-      if (combinedTails > singleUnitHealth) {
-        fullHealedUnitsCount + 1;
-      }
+    const currentUnitsCount = unit.count;
 
-      healValueTail = combinedTails - singleUnitHealth;
+    const totalUnitsLoss = initialUnitsCount - currentUnitsCount;
+
+    // singleUnitHealth only if tail is undefined, think about it later
+    const currentTailHp = unit.tailUnitHp || singleUnitHealth;
+
+    const lossTailHp = singleUnitHealth - currentTailHp;
+
+    const totalHpLoss = (totalUnitsLoss * singleUnitHealth) + lossTailHp;
+
+    // if no losses or no heal value, do nothing and return 0
+    if (totalHpLoss === 0 || healValue <= 0) {
+      return {
+        revivedUnitsCount: 0,
+        totalHealedHp: 0,
+      };
     }
 
-    unit.count += fullHealedUnitsCount;
-    unit.tailUnitHp = healValueTail;
+    unit.fightInfo.isAlive = true;
 
-    const initialCount = unit.fightInfo.initialCount;
-
-    if (unit.count >= initialCount) {
-      unit.count = initialCount;
+    // if heal is greater than overall loss, heal out to max
+    if (healValue > totalHpLoss) {
       unit.tailUnitHp = singleUnitHealth;
+      unit.count = initialUnitsCount;
+
+      return {
+        revivedUnitsCount: totalUnitsLoss,
+        totalHealedHp: totalHpLoss,
+      };
     }
 
-    if (!unit.fightInfo.isAlive) {
-      unit.fightInfo.isAlive = true;
+    let unitsToRevive = fullyRevivedUnitsCount;
+
+    // if heal of tail exceeds tail loss
+    if (healValueTail > lossTailHp) {
+      unitsToRevive += 1;
+      unit.tailUnitHp = (currentTailHp + healValueTail) - singleUnitHealth;
+    } else {
+      if (unit.tailUnitHp === 0 && healValueTail === 0 && unitsToRevive > 0) {
+        unit.tailUnitHp = singleUnitHealth;
+      } else {
+        unit.tailUnitHp! += healValueTail;
+      }
     }
+
+    unit.count += unitsToRevive;
 
     return {
-      healedUnitsCount: fullHealedUnitsCount,
+      revivedUnitsCount: unitsToRevive,
+      totalHealedHp: healValue,
     };
   }
 
