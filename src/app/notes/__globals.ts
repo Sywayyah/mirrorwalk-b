@@ -8,8 +8,8 @@
     somehow processed with pipes or anything else.
 
 
-  Thinking about items, spells, heroes, etc, I started to think also about
-    registires. There might be registries per each type of entity, and every
+  Registries. Thinking about items, spells, heroes, etc, I started to think also
+    about registires. There might be registries per each type of entity, and every
     entity is going to be resolved by some string id.
 
     As a disadvantage, this system might introduce errors of something missing
@@ -22,6 +22,15 @@
     be an idea to load dynamic packs.
 
     & Also, registries can be used for resources and assets.
+
+  Triggers. Considering I need some flexibility and there might be
+    more than 1 game modes, I may want to introduce triggers.
+
+    In some sense, I can introduce them anyways. If anything, I'll
+    be able to transfer logic to triggers.
+
+    It might introduce more apporaches to do things. But also might
+    be useful to implement different game modes.
 
   Images can be jpg or have high compression level png.
 */

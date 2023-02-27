@@ -34,6 +34,7 @@ export class PostFightRewardPopupComponent extends BasicPopup<FightEndsPopup> im
   public onContinue(popup: FightEndsPopup): void {
     this.close();
 
+    /* Add redirection to main menu, something */
     this.players.addExperienceToPlayer(this.players.getCurrentPlayerId(), this.totalExperienceReward);
     const currentPlayer = this.players.getCurrentPlayer();
     const playerResources = currentPlayer.resources;

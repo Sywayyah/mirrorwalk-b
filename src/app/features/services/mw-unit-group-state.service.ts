@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Modifiers, UnitGroupModel } from 'src/app/core/unit-types';
+import { Modifiers, UnitGroupInstModel, UnitGroupModel } from 'src/app/core/unit-types';
 import { CommonUtils } from 'src/app/core/unit-types/utils';
 import { MwUnitGroupsService } from './mw-unit-groups.service';
 
@@ -31,10 +31,12 @@ export interface DetailedDamageInfo extends DamageInfo {
 
 export interface FinalDamageInfo {
   finalDamage: number;
+
   /* unit loss adjusted so it can't be higher than count of attacked units */
   finalUnitLoss: number;
-  /* not adjusted value */
+  /* not adjusted value, may exceed the amount of units left in target group */
   finalTotalUnitLoss: number;
+
   tailHpLeft: number;
   isDamageFatal: boolean;
 }
@@ -48,8 +50,20 @@ export class MwUnitGroupStateService {
     private units: MwUnitGroupsService,
   ) { }
 
+  public getTailUnitHealth(unitGroup: UnitGroupModel): number {
+    const { tailUnitHp } = unitGroup;
+
+    if (tailUnitHp === 0) {
+      return 0;
+    }
+
+    if (tailUnitHp === undefined) return unitGroup.type.baseStats.health;
+
+    return tailUnitHp;
+  }
+
   public getUnitGroupTotalHp(unitGroup: UnitGroupModel): number {
-    return (unitGroup.count - 1) * unitGroup.type.baseStats.health + (unitGroup.tailUnitHp ?? 0);
+    return (unitGroup.count - 1) * unitGroup.type.baseStats.health + this.getTailUnitHealth(unitGroup);
   }
 
   public getUnitGroupDamage(unitGroup: UnitGroupModel, attackSuperiority: number = 0): DamageInfo {
@@ -140,6 +154,20 @@ export class MwUnitGroupStateService {
     return this.getFinalDamageInfo(damageInfo.attacked, rolledMultipliedDamage);
   }
 
+  /*
+    Tail Hp basic idea:
+      Given ug of 5 units, base hp 10
+      tail hp is going to be 10
+
+      Deal 5 damage -> ug count will still be 5, tail hp === 5
+
+      Deal 5 more damage -> ug count goes down by one, tail hp is 10 again
+
+      So, it will always represent the hp of the tail unit group,
+      and while there is at least one unit, it cannot be 0
+
+      It becomes 0 only when the full group is defeated.
+  */
   public getFinalDamageInfo(target: UnitGroupModel, damage: number): FinalDamageInfo {
     const attackedGroup = target;
     const targetBaseStats = attackedGroup.type.baseStats;
@@ -149,34 +177,42 @@ export class MwUnitGroupStateService {
     const targetGroupTotalHealth = this.getUnitGroupTotalHp(attackedGroup);
 
     const targetGroupHealthAfterDamage = targetGroupTotalHealth - damage;
+    const isDamageFatal = damage >= targetGroupTotalHealth;
 
-    const newTailHp = targetGroupHealthAfterDamage % targetBaseStats.health;
-    const newUnitsCount = Math.floor(targetGroupHealthAfterDamage / targetBaseStats.health)
-      + (newTailHp ? 1 : 0);
+    const targetNewTailHp = targetGroupHealthAfterDamage % targetBaseStats.health;
+
+    const finalTargetTailHp = isDamageFatal
+      ? 0
+      :
+      targetNewTailHp === 0
+        ? targetBaseStats.health
+        : targetNewTailHp;
+
+    const newUnitsCount = Math.ceil(targetGroupHealthAfterDamage / targetBaseStats.health);
 
     /* second line of this calc is to deal damage when tail hp is less than damage */
     /*  need to think this logic through */
     const unitLoss = previousUnitCount - newUnitsCount;
     // + ((attackedGroup.tailUnitHp && (attackedGroup.tailUnitHp <= damage)) ? 1 : 0);
 
-    console.log(`final damage to ${attackedGroup.type.name},
-          current tail: ${attackedGroup.tailUnitHp}
-          total target hp: ${targetGroupTotalHealth}
-          count ${attackedGroup.count}
+    // console.log(`final damage to ${attackedGroup.type.name},
+    //       current tail: ${attackedGroup.tailUnitHp}
+    //       total target hp: ${targetGroupTotalHealth}
+    //       count ${attackedGroup.count}
 
-          final damage ${damage}
-          final target group health ${targetGroupHealthAfterDamage}
-          new hp tail ${newTailHp}
-          unit loss ${unitLoss}
-          `
-    );
+    //       final damage ${damage}
+    //       final target group health ${targetGroupHealthAfterDamage}
+    //       new hp tail ${newTailHp}
+    //       unit loss ${unitLoss}
+    //       `
+    // );
 
     return {
       finalDamage: damage,
       finalUnitLoss: unitLoss > target.count ? target.count : unitLoss,
       finalTotalUnitLoss: unitLoss,
-      tailHpLeft: newTailHp,
-      isDamageFatal: target.count <= unitLoss,
+      tailHpLeft: finalTargetTailHp,
+      isDamageFatal: damage >= targetGroupTotalHealth,
     };
   }
 
