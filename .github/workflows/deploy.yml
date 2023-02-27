@@ -1,0 +1,35 @@
+name: Build and Deploy
+
+on:
+  push:
+    branches:
+      - master
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    concurrency: ci-${{github.ref}}
+    steps:
+        - name: Checkout
+          uses: actions/checkout@v2
+          
+        - name: Configure Node
+          uses: actions/setup-node@v1
+          with:
+            node-version: '16.15.0'
+            
+        - name: Install and Build
+          run: |
+            npm ci
+            npm run build
+            
+        - name: Deploy
+          uses: cpina/github-action-push-to-another-repository@main
+          env:
+            SSH_DEPLOY_KEY: ${{ secrets.SSH_DEPLOY_KEY }}
+          with:
+            source-directory: 'dist/MirrorWalk'
+            destination-github-username: 'Sywayyah'
+            destination-repository-name: 'sywayyah.github.io'
+            target-branch: main
+            target-directory: docs
+          
