@@ -169,6 +169,8 @@ export class InGameApiController extends StoreClient() {
           target: unit,
           healedUnitsCount: healInfo.revivedUnitsCount,
         }));
+
+        return healInfo;
       }
     };
   }

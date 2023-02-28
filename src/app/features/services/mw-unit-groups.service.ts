@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { HealingInfo } from 'src/app/core/api/combat-api';
 import { PlayerInstanceModel } from 'src/app/core/players';
 import { CommonUtils, GenerationModel, Modifiers, ModifiersModel, UnitBase, UnitGroupInstModel, UnitGroupModel, UnitsUtils } from 'src/app/core/unit-types';
 import { MwSpellsService } from './mw-spells.service';
@@ -11,10 +12,6 @@ export type KeysMatching<T extends object, V> = {
 export interface UIModsModel {
   speed: number,
   attack: number;
-}
-export interface HealingInfo {
-  revivedUnitsCount: number;
-  totalHealedHp: number;
 }
 
 @Injectable({
