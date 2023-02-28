@@ -6,6 +6,7 @@ import { SpellModel, SpellActivationType } from '../types';
 import { debuffColors } from '../utils';
 
 const damageDecreasePercent = 0.25;
+const uiPercent = damageDecreasePercent * 100;
 
 export const FrightSpellDebuff: SpellModel<{ frighter: UnitGroupInstModel }> = {
   name: 'Fright',
@@ -17,7 +18,7 @@ export const FrightSpellDebuff: SpellModel<{ frighter: UnitGroupInstModel }> = {
   getDescription() {
     return {
       descriptions: [
-        spellDescrElem(`This unit group is frightened, dealing ${damageDecreasePercent}% less damage to the one who scared it.`),
+        spellDescrElem(`This unit group is frightened, dealing ${uiPercent}% less damage to the one who scared it.`),
       ],
     }
   },
@@ -63,7 +64,7 @@ export const FrightSpell: SpellModel = {
   getDescription(data) {
     return {
       descriptions: [
-        spellDescrElem(`Scares enemy group on attack, reducing damage against this group by ${damageDecreasePercent}%.`),
+        spellDescrElem(`Scares enemy group on attack, reducing damage against this group by ${uiPercent}%.`),
       ],
     }
   },

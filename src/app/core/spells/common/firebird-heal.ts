@@ -1,5 +1,5 @@
 import { EffectAnimation } from '../../api/vfx-api';
-import { spellDescrElem } from '../../ui';
+import { spellDescrElem, spellStatElem, spellStatsElem } from '../../ui';
 import { createAnimation, getIconElement, getPlainAppearanceFrames, getPlainBlurFrames, getReversePulseKeyframes, getHealParts } from '../../vfx';
 import { SpellEventTypes } from '../spell-events';
 import { SpellModel, SpellActivationType } from '../types';
@@ -43,7 +43,8 @@ const HealAnimation: EffectAnimation = createAnimation([
   ]
 ]);
 
-const healPerBird = 13;
+/* Maybe make it ranged */
+const healPerBird = 17;
 
 export const FirebirdHealSpell: SpellModel = {
   name: 'Heal',
@@ -52,11 +53,24 @@ export const FirebirdHealSpell: SpellModel = {
     icon: icon,
   },
   getDescription(data) {
-    const ownerUnit  = data.ownerUnit!;
+    const ownerUnit = data.ownerUnit!;
+
+    const unitsCount = ownerUnit.count;
+
+    const unitName = ownerUnit.type.name;
+
+    const totalHeal = unitsCount * healPerBird;
 
     return {
+      /* Think about description */
       descriptions: [
-        spellDescrElem(`Heals friendly unit group by ${healPerBird} (${ownerUnit.count * healPerBird}) per each ${ownerUnit.type.name} in current group.`),
+        spellDescrElem(`Heals friendly unit group by ${totalHeal}. Heal increases per each Firebird in current group.`),
+        spellStatsElem([
+          spellStatElem(`Total Heal:`, `${totalHeal} (${unitsCount} units)`),
+          spellStatElem(`Heal per Firebird:`, `${healPerBird}`),
+          // `Total Heal: ${totalHeal} (${unitsCount} units)`,
+          // `Heal per ${unitName}: ${healPerBird}`,
+        ]),
       ],
     }
   },
@@ -71,26 +85,21 @@ export const FirebirdHealSpell: SpellModel = {
       getManaCost(spellInst) {
         return 4;
       },
-
       init: ({ events, actions, ownerUnit, vfx }) => {
         events.on({
           [SpellEventTypes.PlayerTargetsSpell]: (event) => {
             const casterUnit = ownerUnit!;
 
             const healValue = casterUnit.count * healPerBird;
-            const originalCount = event.target.count;
             const healedUnit = event.target;
+            const healedUnitName = healedUnit.type.name;
 
-
-            actions.healUnit(healedUnit, healValue);
+            const healDetails = actions.healUnit(healedUnit, healValue);
 
             vfx.createEffectForUnitGroup(healedUnit, HealAnimation, { duration: 800 });
 
-            const newCount = event.target.count;
 
-            const healedUnitName = healedUnit.type.name;
-
-            const healedCount = newCount - originalCount;
+            const healedCount = healDetails.revivedUnitsCount;
 
             actions.historyLog(`${casterUnit.count} ${casterUnit.type.name} heal ${healedUnitName} by ${healValue}.`);
             actions.historyLog(`${healedCount} of ${healedUnitName} are brought back to life.`);

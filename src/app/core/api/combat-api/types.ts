@@ -19,6 +19,11 @@ export interface SpellCreationOptions<T = DefaultSpellStateType> {
   state?: T;
 }
 
+export interface HealingInfo {
+  revivedUnitsCount: number;
+  totalHealedHp: number;
+}
+
 export interface CombatActionsRef extends SpellsApi {
   summonUnitsForPlayer(ownerPlayer: PlayerInstanceModel, unitType: UnitBase, unitNumber: number): UnitGroupInstModel;
 
@@ -58,5 +63,5 @@ export interface CombatActionsRef extends SpellsApi {
 
   removeModifiresFromUnitGroup: (target: UnitGroupInstModel, modifiers: Modifiers) => void;
 
-  healUnit: (unit: UnitGroupInstModel, healValue: number) => void;
+  healUnit: (unit: UnitGroupInstModel, healValue: number) => HealingInfo;
 }
