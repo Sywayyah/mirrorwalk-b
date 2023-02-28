@@ -62,7 +62,7 @@ export const FirebirdHealSpell: SpellModel = {
     const totalHeal = unitsCount * healPerBird;
 
     return {
-      /* Think about description */
+      /* Think about description, maybe units abilities don't need stats descriptions */
       descriptions: [
         spellDescrElem(`Heals friendly unit group by ${totalHeal}. Heal increases per each Firebird in current group.`),
         spellStatsElem([
