@@ -25,10 +25,12 @@ export const createHeroModelBase: (heroConfig: Pick<HeroBase, 'name'> & HeroBase
     name,
     resources,
     stats,
+    generalDescription,
   } = heroConfig;
 
   return {
     name,
+    generalDescription,
     initialState: {
       abilities,
       army,

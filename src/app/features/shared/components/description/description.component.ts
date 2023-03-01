@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnChanges, ViewEncapsulation } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { DescHtmlElement, DescriptionElement, DescriptionElementType } from 'src/app/core/ui/descriptions';
 
@@ -7,8 +7,9 @@ import { DescHtmlElement, DescriptionElement, DescriptionElementType } from 'src
   templateUrl: './description.component.html',
   styleUrls: ['./description.component.scss'],
   encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DescriptionComponent implements OnInit {
+export class DescriptionComponent implements OnChanges {
 
   @Input()
   public descriptions!: DescriptionElement[];
@@ -19,7 +20,7 @@ export class DescriptionComponent implements OnInit {
     private domSanitizer: DomSanitizer,
   ) { }
 
-  ngOnInit(): void {
+  ngOnChanges(): void {
     this.processedDescriptions = this.descriptions.map((descr) => {
 
       if (descr.type === DescriptionElementType.FreeHtml) {

@@ -6,6 +6,18 @@ import { StructureDescription } from './types';
 
 /* Think more here, customizable locations, more location types (resource piles, single guards, etc.) */
 
+/*
+ I think it is going to be much better if map is going to be created purely in programmatic way
+  rather than trying to create a declarative approach for every possible case, because
+  logic of map generation might be not very straight-forwards and differ in different game modes.
+
+  But within this programmatic approach, any other sub-approaches can be used, declarative or not.
+
+ LowRiskLock - location with not very risky enemies that might unlock your way towards some branches.
+
+ LowRiskStack - this might be a low-risk location. While enemies aren't that dangerous here,
+  it provides a corresponding reward (e.g. +100 xp or 350 gold).
+*/
 const brBranch: StructureDescription[] = [
   {
     id: '2',

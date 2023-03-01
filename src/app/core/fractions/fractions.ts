@@ -60,10 +60,12 @@ export const Fractions = {
           name,
           resources,
           stats,
+          generalDescription,
         } = heroConfig;
 
         const newHero = {
           name,
+          generalDescription,
           initialState: {
             abilities,
             army,

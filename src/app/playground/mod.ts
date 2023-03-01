@@ -1,9 +1,11 @@
 import { humansFraction } from '../core/fractions';
 import { PhoenixShieldItem } from '../core/items/neutral/phoenix-shield';
+import { heroDescrElem } from '../core/ui';
 
 
 humansFraction.createHero({
   name: 'Ironsight',
+  generalDescription: heroDescrElem(`Ironsight makes great use of his increased combat stats and strong army.`),
   abilities: [],
   army: [{
     minUnitGroups: 2,
