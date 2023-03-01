@@ -3,10 +3,12 @@ import { Hero, HeroBase } from 'src/app/core/heroes';
 import { createHeroModelBase, EMPTY_RESOURCES } from 'src/app/core/heroes/utils';
 import { InventoryItems } from 'src/app/core/items/inventory';
 import { SpellInstance } from 'src/app/core/spells';
+import { heroDescrElem } from 'src/app/core/ui';
 import { MwSpellsService } from './';
 
 const neutralHeroBase = createHeroModelBase({
   name: 'neutral-hero',
+  generalDescription: heroDescrElem(''),
   abilities: [],
   army: [],
   items: [],

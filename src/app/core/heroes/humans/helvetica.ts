@@ -1,11 +1,13 @@
 import { humansFraction } from '../../fractions';
 import { ItemWindCrest } from '../../items/neutral';
 import { HasteSpell, RainOfFireSpell } from '../../spells/common';
+import { heroDescrElem } from '../../ui';
 import { HeroBase } from '../types';
 import { heroesDefaultResources } from '../utils';
 
 export const HelveticaHero: HeroBase = humansFraction.createHero({
   name: 'Helvetica',
+  generalDescription: heroDescrElem(`Helvetica is the mage who supports her own army with offensive fire spells as well as increasing their speed.`),
   abilities: [
     // ENCHANT_SPELL,
     RainOfFireSpell,

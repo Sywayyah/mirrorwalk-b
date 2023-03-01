@@ -2,6 +2,7 @@ import { ItemBaseModel, ItemInstanceModel } from '../items';
 import type { InventoryItems } from '../items/inventory';
 import { ResourcesModel } from '../resources';
 import { SpellInstance, SpellModel } from '../spells';
+import { DescriptionElement } from '../ui';
 import { GenerationModel, Modifiers } from '../unit-types';
 
 export interface HeroBaseStats {
@@ -11,6 +12,7 @@ export interface HeroBaseStats {
     baseDefence: number;
   };
   abilities: SpellModel[];
+  generalDescription: DescriptionElement;
   resources: ResourcesModel;
   items: ItemBaseModel[];
   army: GenerationModel[];
@@ -19,6 +21,7 @@ export interface HeroBaseStats {
 /* Base type for a hero */
 export interface HeroBase {
   name: string;
+  generalDescription: DescriptionElement;
   initialState: {
     stats: {
       mana: number;

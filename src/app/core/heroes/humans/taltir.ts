@@ -3,11 +3,14 @@ import { ItemWindCrest } from '../../items/neutral';
 import { IrtonPlateItem } from '../../items/neutral/irton-plate';
 import { MeteorSpell, PoisonCloudSpell } from '../../spells/common';
 import { SummonFireSpiritsSpell } from '../../spells/common/summon-fire-spirits';
+import { heroDescrElem } from '../../ui';
 import { HeroBase } from '../types';
 import { heroesDefaultResources } from '../utils';
 
 export const TaltirHero: HeroBase = humansFraction.createHero({
   name: 'Taltir',
+  generalDescription: heroDescrElem(`Taltir specializes at utilizing Fire Spells, summoning devastating Meteors and Fire Spirits that aid his army.`),
+
   abilities: [
     MeteorSpell,
     SummonFireSpiritsSpell,
@@ -33,6 +36,7 @@ export const TaltirHero: HeroBase = humansFraction.createHero({
 /* Poison Assassin hero, might become a hero of Garden */
 export const VeasinHero: HeroBase = humansFraction.createHero({
   name: 'Veasin',
+  generalDescription: heroDescrElem(`Veasin makes use of poison abilities, weakening enemies and dealing damage over time.`),
   abilities: [
     PoisonCloudSpell,
   ],

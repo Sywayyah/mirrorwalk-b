@@ -1,6 +1,13 @@
 import type { SpellDescription } from '../../spells';
 import { DescHtmlElement, DescriptionElementType } from './types';
 
+export function heroDescrElem(text: string): DescHtmlElement {
+  return {
+    type: DescriptionElementType.FreeHtml,
+    htmlContent: text,
+  }
+}
+
 export function spellDescrElem(text: string): DescHtmlElement {
   return {
     type: DescriptionElementType.FreeHtml,

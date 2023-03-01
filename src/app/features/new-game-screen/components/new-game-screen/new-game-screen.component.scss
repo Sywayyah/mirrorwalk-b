@@ -1,7 +1,21 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100vh;
+}
+
+.main-container {
+  margin: 8px;
+  display: flex;
+  flex-grow: 1;
+}
+
+.bottom-container {
+  display: flex;
+}
+
 .players {
-  position: fixed;
-  left: 0;
-  top: 0;
   width: 100%;
   height: 200px;
   padding: 20px;
@@ -68,13 +82,47 @@
 }
 
 .buttons {
-  position: fixed;
-  right: 0;
-  bottom: 0;
   padding: 20px;
   display: flex;
+  margin-left: auto;
 }
 
 .player {
   display: flex;
+}
+
+.right-panel {
+  flex: 0.1 0 300px;
+  padding: 10px;
+  font-size: 14px;
+  text-align: center;
+
+  .hero-description {
+    padding-top: 16px;
+
+    .hero-icon {
+      font-size: 20px;
+    }
+
+    .hero-stats {
+      display: flex;
+
+      .column {
+        font-size: 13px;
+        flex: 1 0 100px;
+        text-align: left;
+        padding-left: 53px;
+      }
+    }
+
+    .description {
+      font-size: 12px;
+      margin-top: 8px;
+      font-size: 12px;
+      margin-top: 8px;
+      padding: 6px 20px;
+      border-top: 1px solid gainsboro;
+    }
+  }
+
 }
