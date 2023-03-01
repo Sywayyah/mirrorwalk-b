@@ -32,29 +32,3 @@ export const TaltirHero: HeroBase = humansFraction.createHero({
     baseDefence: 3,
   },
 });
-
-/* Poison Assassin hero, might become a hero of Garden */
-export const VeasinHero: HeroBase = humansFraction.createHero({
-  name: 'Veasin',
-  generalDescription: heroDescrElem(`Veasin makes use of poison abilities, weakening enemies and dealing damage over time.`),
-  abilities: [
-    PoisonCloudSpell,
-  ],
-  army: [{
-    maxUnitGroups: 2,
-    minUnitGroups: 2,
-    units: [
-      [humansFraction.getUnitType('Knight'), 6, 11, 2],
-      [humansFraction.getUnitType('Archer'), 6, 11, 2],
-    ],
-  }],
-  items: [
-    ItemWindCrest,
-  ],
-  resources: heroesDefaultResources,
-  stats: {
-    mana: 20,
-    baseAttack: 1,
-    baseDefence: 2,
-  },
-});
