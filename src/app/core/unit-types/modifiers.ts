@@ -14,11 +14,13 @@ export interface ModifiersModel {
   // increases taken magic damage by percent
   amplifiedTakenMagicDamage: number;
 
+  // player bonuses
   playerBonusAttack: number;
   playerBonusDefence: number;
 
   /* unit group bonuses */
   unitGroupBonusAttack: number;
+  unitGroupBonusDefence: number;
 
   /* unit speed bonus */
   unitGroupSpeedBonus: number;

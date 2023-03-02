@@ -28,7 +28,7 @@ import { heroesDefaultResources } from '../utils';
 */
 export const VeasinHero: HeroBase = humansFraction.createHero({
   name: 'Veasin',
-  generalDescription: heroDescrElem(`Veasin makes use of poison abilities, weakening enemies and dealing damage over time.`),
+  generalDescription: heroDescrElem(`Veasin makes use of her poison abilities, weakening enemies and dealing damage over time.`),
   abilities: [
     PoisonCloudSpell,
   ],
@@ -36,6 +36,7 @@ export const VeasinHero: HeroBase = humansFraction.createHero({
     maxUnitGroups: 2,
     minUnitGroups: 2,
     units: [
+      [humansFraction.getUnitType('Cavalry'), 3, 5, 1],
       [humansFraction.getUnitType('Knight'), 6, 11, 2],
       [humansFraction.getUnitType('Archer'), 6, 11, 2],
     ],
@@ -43,9 +44,14 @@ export const VeasinHero: HeroBase = humansFraction.createHero({
   items: [
     ItemWindCrest,
   ],
-  resources: heroesDefaultResources,
+  resources: {
+    gold: 1500,
+    wood: 2,
+    gems: 0,
+    redCrystals: 0,
+  },
   stats: {
-    mana: 20,
+    mana: 14,
     baseAttack: 2,
     baseDefence: 2,
   },

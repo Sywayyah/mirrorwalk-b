@@ -1,10 +1,87 @@
 import { DamageType } from '../../api/combat-api';
-import { spellDescrElem } from '../../ui';
+import { EffectAnimation } from '../../api/vfx-api';
+import { spellDescrElem, strPercent } from '../../ui';
+import { CommonUtils } from '../../unit-types';
+import { createAnimation, getDamageParts, getIconElement, getPlainBlurFrames, getReversePulseKeyframes } from '../../vfx';
 import { SpellEventTypes } from '../spell-events';
 import { SpellActivationType, SpellModel } from '../types';
-import { debuffColors } from '../utils';
+import { canActivateOnEnemyFn, debuffColors } from '../utils';
 
-const intervalDamage = 65;
+const damageReduction = 0.20;
+const uiPercent = strPercent(damageReduction);
+
+const defenceReduction = 5;
+
+const intervalDamage = 30;
+
+const minInitDamage = 30;
+const maxInitDamage = 45;
+
+const roundsDuration = 2;
+
+
+const icon = 'bomb-explosion';
+
+const commonStyles = {
+  fontSize: '64px',
+  color: 'rgb(200 244 124)',
+};
+
+const PoisonCloudAnimation: EffectAnimation = createAnimation([
+  [
+    getIconElement(icon, 'fire-main'),
+    [
+      {
+        opacity: '0',
+        transform: 'translate(-50%, -50%) scale(0.8)',
+      },
+      {
+        opacity: '1',
+        offset: 0.25,
+        transform: 'translate(-50%, -50%)  scale(1.2)',
+      },
+      {
+        opacity: '1',
+        offset: 0.35,
+        transform: 'translate(-50%, -50%)  scale(1.6)',
+      },
+      {
+        offset: 0.76,
+        opacity: '0',
+        transform: 'translate(-50%, -50%)  scale(1.9)',
+      },
+      {
+        opacity: '0',
+        transform: 'translate(-50%, -50%)  scale(2.1)',
+      },
+    ],
+    {
+      ...commonStyles,
+      opacity: '1',
+    },
+  ],
+  [
+    getIconElement(icon, 'fire-blur'),
+    getPlainBlurFrames(),
+    {
+      ...commonStyles,
+      filter: 'blur(6px)',
+      opacity: '1',
+      mixBlendMode: 'hard-light'
+    }
+  ],
+  [
+    getIconElement(icon, 'fire-pulse'),
+    getReversePulseKeyframes(),
+    {
+      ...commonStyles,
+      opacity: '0.2',
+      transform: 'translate(-50%, -50%) scale(1)',
+      mixBlendMode: 'hard-light'
+    },
+  ]
+]);
+
 
 export const PoisonCloudDebuff: SpellModel<undefined | { debuffRoundsLeft: number }> = {
   name: 'Poisoned',
@@ -16,7 +93,7 @@ export const PoisonCloudDebuff: SpellModel<undefined | { debuffRoundsLeft: numbe
   getDescription(data) {
     return {
       descriptions: [
-        spellDescrElem(`Poison deals ${intervalDamage} damage at the beginning of each round.`),
+        spellDescrElem(`Defence is lowered by ${defenceReduction} and takes ${intervalDamage} damage at the beginning of next round. Rounds left: ${data.spellInstance.state?.debuffRoundsLeft}.`),
       ],
     }
   },
@@ -28,29 +105,55 @@ export const PoisonCloudDebuff: SpellModel<undefined | { debuffRoundsLeft: numbe
       getManaCost(spellInst) {
         return 0;
       },
-      init({ events, actions, thisSpell, spellInstance }) {
+      init({ events, actions, thisSpell, spellInstance, vfx }) {
         events.on({
           [SpellEventTypes.SpellPlacedOnUnitGroup]: ({ target }) => {
             const debuffData = {
-              debuffRoundsLeft: 2,
+              debuffRoundsLeft: roundsDuration,
             };
-
             spellInstance.state = debuffData;
 
+            const modifiers = actions.createModifiers({
+              // baseDamagePercentModifier: -damageReduction,
+              unitGroupBonusDefence: -defenceReduction,
+            });
+
+            vfx.createEffectForUnitGroup(target, PoisonCloudAnimation);
+
+            actions.addModifiersToUnitGroup(target, modifiers);
 
             actions.historyLog(`${target.type.name} gets negative effect "${thisSpell.name}"`);
+
+            actions.dealDamageTo(target, CommonUtils.randIntInRange(minInitDamage, maxInitDamage), DamageType.Magic, (damageInfo) => {
+              actions.historyLog(`${thisSpell.name} deals ${damageInfo.finalDamage} damage to ${target.type.name}, ${damageInfo.unitLoss} units perish`);
+
+              vfx.createFloatingMessageForUnitGroup(
+                target,
+                getDamageParts(damageInfo.finalDamage, damageInfo.unitLoss),
+                { duration: 1000 },
+              );
+            });
 
             events.on({
               [SpellEventTypes.NewRoundBegins]: (event) => {
 
-                actions.dealDamageTo(target, 65, DamageType.Magic, (damageInfo) => {
+                actions.dealDamageTo(target, intervalDamage, DamageType.Magic, (damageInfo) => {
                   actions.historyLog(`Poison deals ${damageInfo.finalDamage} damage to ${target.type.name}, ${damageInfo.unitLoss} units perish`);
+
+                  vfx.createEffectForUnitGroup(target, PoisonCloudAnimation);
+
+                  vfx.createFloatingMessageForUnitGroup(
+                    target,
+                    getDamageParts(damageInfo.finalDamage, damageInfo.unitLoss),
+                    { duration: 1000 },
+                  );
                 });
 
                 debuffData.debuffRoundsLeft--;
 
                 if (!debuffData.debuffRoundsLeft) {
                   actions.removeSpellFromUnitGroup(target, spellInstance);
+                  actions.removeModifiresFromUnitGroup(target, modifiers);
                 }
               }
             });
@@ -71,7 +174,7 @@ export const PoisonCloudSpell: SpellModel = {
   getDescription(data) {
     return {
       descriptions: [
-        spellDescrElem(`Poisons target, which takes ${intervalDamage} damage at the beginning of each round. Lasts 2 rounds.`),
+        spellDescrElem(`Poisons target, reduces defence by ${defenceReduction} and deals initial damage of ${minInitDamage}-${maxInitDamage}. Target takes ${intervalDamage} damage at the beginning of each round. Lasts 2 rounds.`),
       ],
     }
   },
@@ -80,12 +183,15 @@ export const PoisonCloudSpell: SpellModel = {
       name: 'Poison Cloud',
     },
     spellConfig: {
+      targetCastConfig: {
+        canActivate: canActivateOnEnemyFn,
+      },
       getManaCost(spellInst) {
         const manaCosts: Record<number, number> = {
-          1: 2,
-          2: 2,
-          3: 3,
-          4: 3,
+          1: 3,
+          2: 3,
+          3: 4,
+          4: 5,
         };
 
         return manaCosts[spellInst.currentLevel];
@@ -94,7 +200,7 @@ export const PoisonCloudSpell: SpellModel = {
       init({ events, actions, ownerPlayer, ownerHero, thisSpell }) {
         events.on({
           [SpellEventTypes.PlayerTargetsSpell]: event => {
-            actions.historyLog(`${ownerHero.name} applies "${thisSpell.name}" against ${event.target.type.name}`);
+            actions.historyLog(`${ownerHero.name} casts "${thisSpell.name}" against ${event.target.type.name}`);
 
             const poisonDebuffInstance = actions.createSpellInstance(PoisonCloudDebuff);
 
