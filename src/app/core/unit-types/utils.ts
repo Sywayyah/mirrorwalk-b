@@ -36,7 +36,11 @@ export const CommonUtils = {
 
   randBoolean(): boolean {
     return Math.random() > 0.5;
-  }
+  },
+
+  chanceRoll(chance: number): boolean {
+    return Math.random() < chance;
+  },
 
 };
 
