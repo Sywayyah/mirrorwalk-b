@@ -64,27 +64,32 @@ export class CombatInteractorService extends StoreClient() {
       case DamageType.PhysicalAttack:
 
         if (options.attackerUnit) {
+          console.log('attacker?', options.attackerUnit);
+
           const attackerUnitMods = this.unitGroupModifiersMap.get(options.attackerUnit);
 
           if (attackerUnitMods) {
-            const conditionalCombatModifiers = attackerUnitMods.map(mod => {
+            // all modifiers mixed (normal/conditional)
+            const combatModifiers = attackerUnitMods.map(mod => {
               if (mod.attackConditionalModifiers) {
-                const generatedMods = mod.attackConditionalModifiers({
+                const conditionalModifiers = mod.attackConditionalModifiers({
                   attacked: target,
                 });
 
-                return generatedMods;
+                return conditionalModifiers;
               }
 
               return mod;
             });
 
-            const damagePercentMod = conditionalCombatModifiers
+            const damagePercentMod = combatModifiers
               .filter(mod => mod.baseDamagePercentModifier)
               .reduce((acc, next) => acc + (next.baseDamagePercentModifier as number), 0);
 
+            console.log('original final damage', finalDamage);
             console.log(`damage reduced by ${damagePercentMod}%`);
             finalDamage = finalDamage + finalDamage * damagePercentMod;
+            console.log(`final damage ${finalDamage}`);
           }
         }
 

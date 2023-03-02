@@ -116,7 +116,9 @@ export class MwUnitGroupStateService {
       );
 
     const targetDefenceBonus = attackedMods.reduce(
-      (totalBonusDef, nextMod) => (nextMod.playerBonusDefence ?? 0) + totalBonusDef,
+      (totalBonusDef, nextMod) => (nextMod.playerBonusDefence ?? 0) +
+        (nextMod?.unitGroupBonusDefence ?? 0) +
+        totalBonusDef,
       0,
     );
 

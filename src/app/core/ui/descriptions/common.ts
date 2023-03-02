@@ -1,6 +1,10 @@
 import type { SpellDescription } from '../../spells';
 import { DescHtmlElement, DescriptionElementType } from './types';
 
+export function strPercent(num: number): string {
+  return `${Math.floor(num * 100)}$`;
+}
+
 export function heroDescrElem(text: string): DescHtmlElement {
   return {
     type: DescriptionElementType.FreeHtml,

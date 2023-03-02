@@ -1,4 +1,4 @@
-<div *ngIf="(hint$ | async) as actionHint">
+<div *ngIf="(hint$ | async) as actionHint" style="text-align: center;">
   <ng-container [ngSwitch]="actionHint.type">
     <ng-container *ngSwitchCase="hintActionTypes.OnHoverEnemyCard">
       <ng-container *ngTemplateOutlet="simple; context: { hint: actionHint }"></ng-container>
