@@ -26,6 +26,13 @@ import { heroesDefaultResources } from '../utils';
   There can be items that improve masteries, like Phoenix Shield may increase
   your Fire Mastery by 1.
 */
+/*
+  As much as I want Veasin to weaken enemies, Poison Cloud looks way to complicated
+   for a starting skill in it's base form. I might split defence/attack lowering into
+   a separate spell, like Corrosion.
+
+  And with that, Veasing is also going to have 2 starting spells.
+*/
 export const VeasinHero: HeroBase = humansFraction.createHero({
   name: 'Veasin',
   generalDescription: heroDescrElem(`Veasin makes use of her poison abilities, weakening enemies and dealing damage over time.`),
