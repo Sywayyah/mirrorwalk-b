@@ -86,10 +86,8 @@ export class CombatInteractorService extends StoreClient() {
               .filter(mod => mod.baseDamagePercentModifier)
               .reduce((acc, next) => acc + (next.baseDamagePercentModifier as number), 0);
 
-            console.log('original final damage', finalDamage);
             console.log(`damage reduced by ${damagePercentMod}%`);
-            finalDamage = finalDamage + finalDamage * damagePercentMod;
-            console.log(`final damage ${finalDamage}`);
+            finalDamage = Math.round(finalDamage + finalDamage * damagePercentMod);
           }
         }
 
@@ -334,6 +332,10 @@ export class CombatInteractorService extends StoreClient() {
     target.spells.splice(spellIndex, 1);
 
     this.spellsHandlersMap.delete(spell);
+
+    this.events.dispatch(GroupSpellsChanged({
+      unitGroup: target,
+    }));
   }
 
   private initSpell(spell: SpellInstance, player: PlayerInstanceModel, ownerUnitGroup?: UnitGroupInstModel): void {

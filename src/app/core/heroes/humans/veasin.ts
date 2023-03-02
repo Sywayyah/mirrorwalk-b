@@ -3,6 +3,7 @@
 import { humansFraction } from '../../fractions';
 import { ItemWindCrest } from '../../items/neutral';
 import { PoisonCloudSpell } from '../../spells/common';
+import { CorrosiveFogSpell } from '../../spells/common/corrosive-fog';
 import { heroDescrElem } from '../../ui';
 import { HeroBase } from '../types';
 import { heroesDefaultResources } from '../utils';
@@ -29,7 +30,7 @@ import { heroesDefaultResources } from '../utils';
 /*
   As much as I want Veasin to weaken enemies, Poison Cloud looks way to complicated
    for a starting skill in it's base form. I might split defence/attack lowering into
-   a separate spell, like Corrosion.
+   a separate spell, like Corrosive Fog.
 
   And with that, Veasing is also going to have 2 starting spells.
 */
@@ -38,6 +39,7 @@ export const VeasinHero: HeroBase = humansFraction.createHero({
   generalDescription: heroDescrElem(`Veasin makes use of her poison abilities, weakening enemies and dealing damage over time.`),
   abilities: [
     PoisonCloudSpell,
+    CorrosiveFogSpell,
   ],
   army: [{
     maxUnitGroups: 2,
