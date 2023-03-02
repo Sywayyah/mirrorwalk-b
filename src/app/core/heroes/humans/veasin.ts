@@ -45,7 +45,7 @@ export const VeasinHero: HeroBase = humansFraction.createHero({
     ItemWindCrest,
   ],
   resources: {
-    gold: 1500,
+    gold: 1100,
     wood: 2,
     gems: 0,
     redCrystals: 0,
