@@ -2,7 +2,7 @@ import type { SpellDescription } from '../../spells';
 import { DescHtmlElement, DescriptionElementType } from './types';
 
 export function strPercent(num: number): string {
-  return `${num * 100}$`;
+  return `${Math.floor(num * 100)}$`;
 }
 
 export function heroDescrElem(text: string): DescHtmlElement {
