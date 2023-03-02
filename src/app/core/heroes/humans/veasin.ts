@@ -3,6 +3,7 @@
 import { humansFraction } from '../../fractions';
 import { ItemWindCrest } from '../../items/neutral';
 import { PoisonCloudSpell } from '../../spells/common';
+import { CorrosiveFogSpell } from '../../spells/common/corrosive-fog';
 import { heroDescrElem } from '../../ui';
 import { HeroBase } from '../types';
 import { heroesDefaultResources } from '../utils';
@@ -26,11 +27,19 @@ import { heroesDefaultResources } from '../utils';
   There can be items that improve masteries, like Phoenix Shield may increase
   your Fire Mastery by 1.
 */
+/*
+  As much as I want Veasin to weaken enemies, Poison Cloud looks way to complicated
+   for a starting skill in it's base form. I might split defence/attack lowering into
+   a separate spell, like Corrosive Fog.
+
+  And with that, Veasing is also going to have 2 starting spells.
+*/
 export const VeasinHero: HeroBase = humansFraction.createHero({
   name: 'Veasin',
   generalDescription: heroDescrElem(`Veasin makes use of her poison abilities, weakening enemies and dealing damage over time.`),
   abilities: [
     PoisonCloudSpell,
+    CorrosiveFogSpell,
   ],
   army: [{
     maxUnitGroups: 2,
@@ -38,14 +47,14 @@ export const VeasinHero: HeroBase = humansFraction.createHero({
     units: [
       [humansFraction.getUnitType('Cavalry'), 3, 5, 1],
       [humansFraction.getUnitType('Knight'), 6, 11, 2],
-      [humansFraction.getUnitType('Archer'), 6, 11, 2],
+      [humansFraction.getUnitType('Archer'), 6, 11, 1],
     ],
   }],
   items: [
     ItemWindCrest,
   ],
   resources: {
-    gold: 1500,
+    gold: 1100,
     wood: 2,
     gems: 0,
     redCrystals: 0,

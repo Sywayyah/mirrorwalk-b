@@ -1,7 +1,6 @@
-import { DamageType } from '../../api/combat-api';
 import { EffectAnimation } from '../../api/vfx-api';
 import { spellDescrElem, strPercent } from '../../ui';
-import { createAnimation, getDamageParts, getIconElement, getPlainBlurFrames, getReversePulseKeyframes } from '../../vfx';
+import { createAnimation, getIconElement, getPlainBlurFrames, getReversePulseKeyframes } from '../../vfx';
 import { SpellEventTypes } from '../spell-events';
 import { SpellActivationType, SpellModel } from '../types';
 import { canActivateOnEnemyFn, debuffColors } from '../utils';
@@ -11,22 +10,16 @@ const uiPercent = strPercent(damageReduction);
 
 const defenceReduction = 5;
 
-const intervalDamage = 30;
-
-const minInitDamage = 30;
-const maxInitDamage = 45;
-
 const roundsDuration = 2;
 
-
-const icon = 'bomb-explosion';
+const icon = 'cracked-shield';
 
 const commonStyles = {
   fontSize: '64px',
-  color: 'rgb(172 202 120)',
+  color: 'rgb(220 145 129)',
 };
 
-const PoisonCloudAnimation: EffectAnimation = createAnimation([
+const CorrosiveFogAnimation: EffectAnimation = createAnimation([
   [
     getIconElement(icon, 'fire-main'),
     [
@@ -82,23 +75,23 @@ const PoisonCloudAnimation: EffectAnimation = createAnimation([
 ]);
 
 
-export const PoisonCloudDebuff: SpellModel<undefined | { debuffRoundsLeft: number }> = {
-  name: 'Poisoned',
+export const CorrosiveFogDebuff: SpellModel<undefined | { debuffRoundsLeft: number }> = {
+  name: 'Corrosion',
   activationType: SpellActivationType.Debuff,
   icon: {
-    icon: 'poison-cloud',
+    icon: 'cracked-shield',
     ...debuffColors,
   },
   getDescription(data) {
     return {
       descriptions: [
-        spellDescrElem(`Takes ${intervalDamage} damage at the beginning of round. Rounds left: ${data.spellInstance.state?.debuffRoundsLeft}.`),
+        spellDescrElem(`Defence is lowered by ${defenceReduction}, damage by ${uiPercent}. Rounds left: ${data.spellInstance.state?.debuffRoundsLeft}.`),
       ],
     }
   },
   type: {
     spellInfo: {
-      name: 'Poisoned'
+      name: 'Corrosion'
     },
     spellConfig: {
       getManaCost(spellInst) {
@@ -112,37 +105,24 @@ export const PoisonCloudDebuff: SpellModel<undefined | { debuffRoundsLeft: numbe
             };
             spellInstance.state = debuffData;
 
-            // const modifiers = actions.createModifiers({
-            //   // baseDamagePercentModifier: -damageReduction,
-            //   unitGroupBonusDefence: -defenceReduction,
-            // });
+            const modifiers = actions.createModifiers({
+              baseDamagePercentModifier: -damageReduction,
+              unitGroupBonusDefence: -defenceReduction,
+            });
 
-            vfx.createEffectForUnitGroup(target, PoisonCloudAnimation);
+            vfx.createEffectForUnitGroup(target, CorrosiveFogAnimation);
 
-            // actions.addModifiersToUnitGroup(target, modifiers);
+            actions.addModifiersToUnitGroup(target, modifiers);
 
             actions.historyLog(`${target.type.name} gets negative effect "${thisSpell.name}"`);
 
             events.on({
               [SpellEventTypes.NewRoundBegins]: (event) => {
-
-                actions.dealDamageTo(target, intervalDamage, DamageType.Magic, (damageInfo) => {
-                  actions.historyLog(`Poison deals ${damageInfo.finalDamage} damage to ${target.type.name}, ${damageInfo.unitLoss} units perish`);
-
-                  vfx.createEffectForUnitGroup(target, PoisonCloudAnimation);
-
-                  vfx.createFloatingMessageForUnitGroup(
-                    target,
-                    getDamageParts(damageInfo.finalDamage, damageInfo.unitLoss),
-                    { duration: 1000 },
-                  );
-                });
-
                 debuffData.debuffRoundsLeft--;
 
                 if (!debuffData.debuffRoundsLeft) {
                   actions.removeSpellFromUnitGroup(target, spellInstance);
-                  // actions.removeModifiresFromUnitGroup(target, modifiers);
+                  actions.removeModifiresFromUnitGroup(target, modifiers);
                 }
               }
             });
@@ -154,22 +134,22 @@ export const PoisonCloudDebuff: SpellModel<undefined | { debuffRoundsLeft: numbe
   }
 };
 
-export const PoisonCloudSpell: SpellModel = {
-  name: 'Poison Cloud',
+export const CorrosiveFogSpell: SpellModel = {
+  name: 'Corrosive Fog',
   activationType: SpellActivationType.Target,
   icon: {
-    icon: 'poison-cloud',
+    icon: 'cracked-shield',
   },
   getDescription(data) {
     return {
       descriptions: [
-        spellDescrElem(`Poisons target, at the beginning of each round, target takes ${intervalDamage} damage. Lasts 2 rounds.`),
+        spellDescrElem(`Surrounds an enemy with corrosive fog, reducing defence by ${defenceReduction} and outgoing damage by ${uiPercent}. Lasts ${roundsDuration} rounds.`),
       ],
     }
   },
   type: {
     spellInfo: {
-      name: 'Poison Cloud',
+      name: 'Corrosive Fog',
     },
     spellConfig: {
       targetCastConfig: {
@@ -177,10 +157,10 @@ export const PoisonCloudSpell: SpellModel = {
       },
       getManaCost(spellInst) {
         const manaCosts: Record<number, number> = {
-          1: 3,
-          2: 3,
-          3: 4,
-          4: 5,
+          1: 2,
+          2: 2,
+          3: 3,
+          4: 4,
         };
 
         return manaCosts[spellInst.currentLevel];
@@ -191,7 +171,7 @@ export const PoisonCloudSpell: SpellModel = {
           [SpellEventTypes.PlayerTargetsSpell]: event => {
             actions.historyLog(`${ownerHero.name} casts "${thisSpell.name}" against ${event.target.type.name}`);
 
-            const poisonDebuffInstance = actions.createSpellInstance(PoisonCloudDebuff);
+            const poisonDebuffInstance = actions.createSpellInstance(CorrosiveFogDebuff);
 
             actions.addSpellToUnitGroup(event.target, poisonDebuffInstance, ownerPlayer);
           }
