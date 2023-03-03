@@ -60,7 +60,7 @@ export const VeasinHero: HeroBase = humansFraction.createHero({
     redCrystals: 0,
   },
   stats: {
-    mana: 14,
+    mana: 17,
     baseAttack: 2,
     baseDefence: 2,
   },
