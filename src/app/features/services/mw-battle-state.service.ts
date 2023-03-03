@@ -71,13 +71,16 @@ export class BattleStateService {
     }
 
     if (!this.fightQueue.length) {
+      const newRound = this.round + 1;
+
+      this.events.dispatch(FightNextRoundStarts({
+        round: newRound,
+      }));
+
       this.resetFightQueue();
       this.resetGroupsTurnsLeft();
 
-      this.round++;
-      this.events.dispatch(FightNextRoundStarts({
-        round: this.round,
-      }));
+      this.round = newRound;
       return;
     }
 

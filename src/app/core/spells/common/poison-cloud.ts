@@ -1,20 +1,18 @@
 import { DamageType } from '../../api/combat-api';
 import { EffectAnimation } from '../../api/vfx-api';
-import { spellDescrElem, strPercent } from '../../ui';
+import { spellDescrElem } from '../../ui';
+import { CommonUtils } from '../../unit-types';
 import { createAnimation, getDamageParts, getIconElement, getPlainBlurFrames, getReversePulseKeyframes } from '../../vfx';
 import { SpellEventTypes } from '../spell-events';
 import { SpellActivationType, SpellModel } from '../types';
 import { canActivateOnEnemyFn, debuffColors } from '../utils';
 
-const damageReduction = 0.14;
-const uiPercent = strPercent(damageReduction);
+const attackReduction = 5;
 
-const defenceReduction = 5;
+const minDamage = 34;
+const maxDamage = 46;
 
-const intervalDamage = 30;
-
-const minInitDamage = 30;
-const maxInitDamage = 45;
+const uiDamage = `${minDamage}-${maxDamage}`;
 
 const roundsDuration = 2;
 
@@ -92,7 +90,7 @@ export const PoisonCloudDebuff: SpellModel<undefined | { debuffRoundsLeft: numbe
   getDescription(data) {
     return {
       descriptions: [
-        spellDescrElem(`Takes ${intervalDamage} damage at the beginning of round. Rounds left: ${data.spellInstance.state?.debuffRoundsLeft}.`),
+        spellDescrElem(`Takes ${uiDamage} damage at the beginning of round, attack rating is lowered by ${attackReduction}. Rounds left: ${data.spellInstance.state?.debuffRoundsLeft}.`),
       ],
     }
   },
@@ -112,21 +110,20 @@ export const PoisonCloudDebuff: SpellModel<undefined | { debuffRoundsLeft: numbe
             };
             spellInstance.state = debuffData;
 
-            // const modifiers = actions.createModifiers({
-            //   // baseDamagePercentModifier: -damageReduction,
-            //   unitGroupBonusDefence: -defenceReduction,
-            // });
+            const modifiers = actions.createModifiers({
+              unitGroupBonusAttack: -attackReduction,
+            });
 
             vfx.createEffectForUnitGroup(target, PoisonCloudAnimation);
 
-            // actions.addModifiersToUnitGroup(target, modifiers);
+            actions.addModifiersToUnitGroup(target, modifiers);
 
             actions.historyLog(`${target.type.name} gets negative effect "${thisSpell.name}"`);
 
             events.on({
               [SpellEventTypes.NewRoundBegins]: (event) => {
 
-                actions.dealDamageTo(target, intervalDamage, DamageType.Magic, (damageInfo) => {
+                actions.dealDamageTo(target, CommonUtils.randIntInRange(minDamage, maxDamage), DamageType.Magic, (damageInfo) => {
                   actions.historyLog(`Poison deals ${damageInfo.finalDamage} damage to ${target.type.name}, ${damageInfo.unitLoss} units perish`);
 
                   vfx.createEffectForUnitGroup(target, PoisonCloudAnimation);
@@ -142,7 +139,7 @@ export const PoisonCloudDebuff: SpellModel<undefined | { debuffRoundsLeft: numbe
 
                 if (!debuffData.debuffRoundsLeft) {
                   actions.removeSpellFromUnitGroup(target, spellInstance);
-                  // actions.removeModifiresFromUnitGroup(target, modifiers);
+                  actions.removeModifiresFromUnitGroup(target, modifiers);
                 }
               }
             });
@@ -163,7 +160,7 @@ export const PoisonCloudSpell: SpellModel = {
   getDescription(data) {
     return {
       descriptions: [
-        spellDescrElem(`Poisons target, at the beginning of each round, target takes ${intervalDamage} damage. Lasts 2 rounds.`),
+        spellDescrElem(`Poisons target, lowering attack rating by ${attackReduction} and dealing ${uiDamage} damage at the beginning of each round. Lasts 2 rounds.`),
       ],
     }
   },
@@ -177,7 +174,7 @@ export const PoisonCloudSpell: SpellModel = {
       },
       getManaCost(spellInst) {
         const manaCosts: Record<number, number> = {
-          1: 3,
+          1: 2,
           2: 3,
           3: 4,
           4: 5,
