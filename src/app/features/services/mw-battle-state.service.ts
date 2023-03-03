@@ -79,9 +79,12 @@ export class BattleStateService {
       this.events.dispatch(FightNextRoundStarts({
         round: this.round,
       }));
+      return;
     }
 
     const firstUnitGroup = this.fightQueue[0];
+    const previousPlayer = this.currentPlayer;
+    this.currentPlayer = firstUnitGroup.ownerPlayerRef;
     this.currentUnitGroup = firstUnitGroup;
     this.currentGroupTurnsLeft = this.currentUnitGroup.type.defaultTurnsPerRound;
 
