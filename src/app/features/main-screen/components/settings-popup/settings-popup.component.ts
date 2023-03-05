@@ -1,4 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { UnitsOrientation } from 'src/app/core/ui';
+import { State } from 'src/app/features/services/state.service';
 import { BasicPopup } from 'src/app/features/shared/components';
 
 @Component({
@@ -10,11 +12,32 @@ export class SettingsPopupComponent extends BasicPopup<{}> implements OnInit {
   // @ViewChild('scriptPath')
   // public textElem!: ElementRef;
 
-  constructor() {
+  public orientation = UnitsOrientation;
+
+  public orientationOptions = [
+    {
+      label: 'Vertical',
+      value: UnitsOrientation.Vertical,
+    },
+    {
+      label: 'Horizontal',
+      value: UnitsOrientation.Horizontal,
+    },
+  ];
+
+  public settings = this.state.settings;
+
+  constructor(
+    private state: State,
+  ) {
     super();
   }
 
   ngOnInit(): void {
+  }
+
+  public setOrientation(orientation: UnitsOrientation): void {
+    this.state.settings.orientation = orientation;
   }
 
   public loadScript(): void {
@@ -44,6 +67,8 @@ export class SettingsPopupComponent extends BasicPopup<{}> implements OnInit {
         people pretty much use it for uploading images and stuff like that,
         JsZip itself seems to have pretty convincing api, for example
         ability to navigate inside folder, stuff like that.
+
+      Important note #5: Theoretically, I can try to play with Webpack imports.
     */
 
     /*
