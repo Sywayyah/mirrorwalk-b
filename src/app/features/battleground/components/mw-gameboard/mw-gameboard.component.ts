@@ -1,10 +1,12 @@
 import { AfterViewInit, ChangeDetectorRef, Component, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 import { PlayerInstanceModel } from 'src/app/core/players';
+import { UnitsOrientation } from 'src/app/core/ui';
 import { UnitGroupInstModel } from 'src/app/core/unit-types';
 import { getDamageParts } from 'src/app/core/vfx';
 import { BattleStateService, CombatInteractorService, MwCardsMappingService, MwNeutralPlayerService, MwPlayerStateService } from 'src/app/features/services';
 import { GroupDamagedByGroup, GroupDamagedByGroupEvent, PlayerStartsFight, UnitSummoned, UnitSummonedEvent } from 'src/app/features/services/events';
+import { State } from 'src/app/features/services/state.service';
 import { VfxService } from 'src/app/features/shared/components';
 import { StoreClient, WireMethod } from 'src/app/store';
 import { MwUnitGroupCardComponent } from '../mw-unit-group-card/mw-unit-group-card.component';
@@ -26,6 +28,10 @@ export class MwGameboardComponent extends StoreClient() implements OnInit, After
   @ViewChildren(MwUnitGroupCardComponent)
   public cards!: QueryList<MwUnitGroupCardComponent>;
 
+  public settings = this.state.settings;
+
+  public orientation = UnitsOrientation;
+
   constructor(
     public readonly mwPlayerState: MwPlayerStateService,
     public readonly mwBattleState: BattleStateService,
@@ -34,6 +40,7 @@ export class MwGameboardComponent extends StoreClient() implements OnInit, After
     private readonly combatInteractor: CombatInteractorService,
     private readonly vfx: VfxService,
     private readonly cd: ChangeDetectorRef,
+    private readonly state: State,
   ) {
     super();
   }

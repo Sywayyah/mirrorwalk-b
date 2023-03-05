@@ -6,6 +6,22 @@
   width: 100%;
   display: flex;
   align-items: center;
+
+  &.horizontal {
+    top: 90px;
+    height: 65%;
+  }
+
+  &.horizontal .columns {
+    flex-direction: column-reverse;
+
+    >.column {
+      flex-direction: row;
+      height: auto;
+      justify-content: space-evenly;
+      width: 100%;
+    }
+  }
 }
 
 .columns {
@@ -15,6 +31,8 @@
   justify-content: space-between;
   margin: auto;
   align-items: center;
+
+
 }
 
 .column {
@@ -22,6 +40,7 @@
   flex-direction: column;
   height: 100%;
   justify-content: center;
+
 }
 
 .card {

@@ -2,10 +2,13 @@
   0% {
     opacity: 0;
     height: 0;
+    width: 0px;
   }
+
   100% {
     opacity: 100%;
     height: 100px;
+    width: 115px;
   }
 }
 
@@ -14,9 +17,9 @@
 }
 
 .card-top {
-    display: flex;
-    position: relative;
-    transition: 0.5s;
+  display: flex;
+  position: relative;
+  transition: 0.5s;
 }
 
 /* brightness can be used to make element darker */
@@ -24,99 +27,125 @@
 // filter: brightness(0.65);
 // }
 .portrait {
-    height: 130px;
-    width: 127px;
+  height: 130px;
+  width: 127px;
 }
 
 .portrait-container {
-    position: absolute;
-    // z-index: 1000;
-    top: -25px;
-    user-select: none;
+  position: absolute;
+  // z-index: 1000;
+  top: -25px;
+  user-select: none;
+}
+
+/* invert enemy's card */
+.card-left .portrait {
+  transform: scaleX(-1);
 }
 
 $portrait-offset: 70%;
 
-.card-left .portrait-container {
+/* image offset */
+:host-context(.vertical) {
+  .card-left .portrait-container {
     right: $portrait-offset;
-}
+  }
 
-.card-left .portrait {
-    transform: scaleX(-1);
-}
-
-.card-right .portrait-container {
+  .card-right .portrait-container {
     left: $portrait-offset;
+  }
+}
+
+:host-context(.horizontal) {
+  .portrait-container {
+    z-index: -1;
+    left: 0;
+    right: 0;
+    top: -94px;
+    left: -10px;
+  }
 }
 
 .health-bar {
-    position: relative;
-    border-radius: 2px;
-    // border: 1px solid whitesmoke;
-    overflow: hidden;
+  position: relative;
+  border-radius: 2px;
+  // border: 1px solid whitesmoke;
+  overflow: hidden;
 
-    top: -42px;
-    width: 37px;
+  top: -42px;
+  width: 37px;
 }
 
 .card-left .health-bar {
-    left: 48px;
+  left: 48px;
 }
 
 .card-right .health-bar {
-    right: -41px;
+  right: -41px;
 }
 
 .card-left {
-    text-align: right;
+  text-align: right;
 }
 
 .card-right {
-    text-align: left;
+  text-align: left;
 }
 
 .card-wrapper {
-    position: relative;
+  position: relative;
 }
+
+// positioning of abilities and buffs
 
 .abilities {
-    position: absolute;
-    font-size: 12px;
-    top: 0;
-    display: flex;
+  position: absolute;
+  font-size: 12px;
+  top: 0;
+  display: flex;
 }
 
-.abilities.left {
+:host-context(.vertical) {
+  .abilities.left {
     right: 171%;
     flex-direction: row-reverse;
+  }
+
+  .abilities.right {
+    left: 171%;
+  }
 }
 
-.abilities.right {
-    left: 171%;
+:host-context(.horizontal) {
+  .abilities {
+    top: -62%;
+    left: -42px;
+    flex-direction: column;
+  }
 }
 
 .card {
-    display: block;
-    width: 115px;
-    height: 100px;
-    border-radius: 6px;
-    align-items: center;
-    box-sizing: border-box;
-    font-size: 13px;
-    padding: 4px 15px 0;
-    color: white;
-    border: 3px solid transparent;
-    // cursor: pointer;
-    user-select: none;
+  display: block;
+  width: 115px;
+  height: 100px;
+  border-radius: 6px;
+  align-items: center;
+  box-sizing: border-box;
+  font-size: 13px;
+  padding: 4px 15px 0;
+  color: white;
+  border: 3px solid transparent;
+  // cursor: pointer;
+  user-select: none;
 }
 
 .card.current-group {
-    border: 3px solid gold;
+  border: 3px solid gold;
 }
 
 .hovered-enemy {
-    border: 3px solid rgba(240, 113, 113, 0.906);
-    // cursor: pointer;
+  border: 3px solid rgba(240, 113, 113, 0.906);
+  // cursor: pointer;
 }
 
 .column-data {
@@ -126,7 +155,7 @@ $portrait-offset: 70%;
 }
 
 :host {
-    position: relative;
+  position: relative;
 }
 
 $shadow: rgba(0, 0, 0, 0.721);
@@ -139,47 +168,46 @@ $inactive-offset: 32px;
 
 /* todo: rework template, css and units themselves someday */
 .card-top {
-    transition: 0.5s;
-    /* shadows are experimental */
-    filter: brightness(100%) drop-shadow(0 0 0 $shadow);
-}
+  transition: 0.5s;
+  /* shadows are experimental */
+  filter: brightness(100%) drop-shadow(0 0 0 $shadow);
 
-.card-top.active {
+  &.active {
     filter: brightness(100%) drop-shadow(2px 4px 6px $shadow);
     transform: scale($active-scale);
-}
+  }
 
-.card-top.active.card-left {
-    filter: brightness(100%) drop-shadow(2px 4px 6px $shadow);
-    transform: scale($active-scale) translateX($active-offset);
-}
-
-.card-top.active.card-right {
-    filter: brightness(100%) drop-shadow(2px 4px 6px $shadow);
-    transform: scale($active-scale) translateX(-$active-offset);
-}
-
-.card-top.inactive {
+  &.inactive {
     filter: brightness(85%) drop-shadow(0 0 0 $shadow);
-}
+  }
 
-.card-top.inactive.card-left {
-    transform: scale(1) translateX(-$inactive-offset);
-}
-
-.card-top.inactive.card-right {
-    transform: scale(1) translateX($inactive-offset);
-}
-
-.card-top.defeated {
+  &.defeated {
     filter: brightness(55%) drop-shadow(0 0 0 $shadow);
+  }
 }
 
+:host-context(.vertical) .card-top {
+  &.active.card-left {
+    transform: scale($active-scale) translateX($active-offset);
+  }
 
-.card-top.defeated.card-left {
+  &.active.card-right {
+    transform: scale($active-scale) translateX(-$active-offset);
+  }
+
+  &.inactive.card-left {
     transform: scale(1) translateX(-$inactive-offset);
-}
+  }
 
-.card-top.defeated.card-right {
+  &.inactive.card-right {
     transform: scale(1) translateX($inactive-offset);
+  }
+
+  &.defeated.card-left {
+    transform: scale(1) translateX(-$inactive-offset);
+  }
+
+  &.defeated.card-right {
+    transform: scale(1) translateX($inactive-offset);
+  }
 }
