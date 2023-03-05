@@ -1,4 +1,5 @@
-import { GamePreparationFinished, PrepareGameEvent } from '../events';
+import { structsPreset1 } from '../../locations';
+import { GamePreparationFinished, PrepareGameEvent } from '../events/events';
 import { TriggersRegistry } from '../registry';
 import { DefaultGameModes } from '../types';
 
@@ -9,8 +10,8 @@ TriggersRegistry.register(PrepareGameEvent, {
       return;
     }
 
-    console.log('Triggers Registry: events');
+    console.log('Structures are prepared.');
 
-    events.dispatch(GamePreparationFinished({}));
+    events.dispatch(GamePreparationFinished({ structures: structsPreset1 }));
   },
 });

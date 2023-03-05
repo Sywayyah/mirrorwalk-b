@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
-import { initialStructs, StructureDescription, ViewStructure } from 'src/app/core/locations';
+import { StructureDescription, ViewStructure } from 'src/app/core/locations';
 import { PlayerInstanceModel } from 'src/app/core/players';
 import { NeutralCampStructure, NeutralSite, StructureGeneratorModel, StructureModel, StructureTypeEnum } from 'src/app/core/structures';
+import { GamePreparationFinished, GamePreparedEvent } from 'src/app/core/triggers';
 import { UnitGroupInstModel } from 'src/app/core/unit-types';
-import { Notify, StoreClient } from 'src/app/store';
+import { StoreClient, WireMethod } from 'src/app/store';
 import { MwPlayersService, MwUnitGroupsService } from './';
-import { PlayersInitialized } from './events';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +17,7 @@ export class MwStructuresService extends StoreClient() {
   */
   public neutralPlayer!: PlayerInstanceModel;
 
-  public initialStructs: StructureDescription[] = initialStructs;
+  public initialStructs: StructureDescription[] = [];
 
   public playerCurrentLocId!: string;
 
@@ -38,11 +38,11 @@ export class MwStructuresService extends StoreClient() {
     super();
   }
 
-  @Notify(PlayersInitialized)
-  public initStructures(): void {
+  @WireMethod(GamePreparationFinished)
+  public initStructures(event: GamePreparedEvent): void {
     this.neutralPlayer = this.playersService.getNeutralPlayer();
 
-    this.viewStructures = this.createViewStructures(initialStructs);
+    this.viewStructures = this.createViewStructures(event.structures);
     this.viewStructures.forEach((struct) => this.structsMap.set(struct.id, struct));
     this.playerCurrentLocId = '1';
     this.updateParentLinks();
