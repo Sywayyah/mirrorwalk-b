@@ -1,10 +1,11 @@
 import { EffectAnimation } from '../../api/vfx-api';
-import { spellDescrElem, spellStatElem, spellStatsElem } from '../../ui';
-import { createAnimation, getIconElement, getPlainAppearanceFrames, getPlainBlurFrames, getReversePulseKeyframes, getHealParts } from '../../vfx';
+import { spellDescrElem } from '../../ui';
+import { createAnimation, getHealParts, getIconElement, getPlainAppearanceFrames, getPlainBlurFrames, getReversePulseKeyframes } from '../../vfx';
 import { SpellEventTypes } from '../spell-events';
-import { SpellModel, SpellActivationType } from '../types';
+import { SpellActivationType, SpellModel } from '../types';
 import { canActivateOnAllyFn } from '../utils';
 
+// Theoretically, I can increase heal value along with manacost
 const icon = 'hospital-cross';
 
 const commonStyles = {
@@ -66,10 +67,10 @@ export const FirebirdHealSpell: SpellModel = {
       descriptions: [
         spellDescrElem(`Heals friendly unit group by ${totalHeal}. Heal increases by ${healPerBird} per each Firebird in current group.`),
         // spellStatsElem([
-          // spellStatElem(`Total Heal:`, `${totalHeal} (${unitsCount} units)`),
-          // spellStatElem(`Heal per Firebird:`, `${healPerBird}`),
-          // `Total Heal: ${totalHeal} (${unitsCount} units)`,
-          // `Heal per ${unitName}: ${healPerBird}`,
+        // spellStatElem(`Total Heal:`, `${totalHeal} (${unitsCount} units)`),
+        // spellStatElem(`Heal per Firebird:`, `${healPerBird}`),
+        // `Total Heal: ${totalHeal} (${unitsCount} units)`,
+        // `Heal per ${unitName}: ${healPerBird}`,
         // ]),
       ],
     }
@@ -83,7 +84,7 @@ export const FirebirdHealSpell: SpellModel = {
         canActivate: canActivateOnAllyFn,
       },
       getManaCost(spellInst) {
-        return 4;
+        return 2;
       },
       init: ({ events, actions, ownerUnit, vfx }) => {
         events.on({
