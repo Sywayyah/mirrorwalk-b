@@ -42,12 +42,14 @@ export class MwStructuresService extends StoreClient() {
   public initStructures(event: GamePreparedEvent): void {
     this.neutralPlayer = this.playersService.getNeutralPlayer();
 
-    this.viewStructures = this.createViewStructures(event.structures);
+    this.initialStructs = event.structures;
+    this.viewStructures = this.createViewStructures(this.initialStructs);
     this.viewStructures.forEach((struct) => this.structsMap.set(struct.id, struct));
     this.playerCurrentLocId = '1';
     this.updateParentLinks();
     this.updateAvailableStructures();
     this.guardsMap = this.generateNewGuardsMap();
+    console.log(this.guardsMap);
   }
 
   public updateParentLinks(): void {
