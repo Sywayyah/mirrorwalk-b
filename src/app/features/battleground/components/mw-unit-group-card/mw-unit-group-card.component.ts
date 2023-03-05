@@ -6,6 +6,7 @@ import { SpellActivationType, SpellInstance } from 'src/app/core/spells';
 import { UnitGroupInstModel } from 'src/app/core/unit-types';
 import { UIModsModel, BattleStateService, MwPlayersService, MwUnitGroupStateService, MwUnitGroupsService } from 'src/app/features/services';
 import { GroupModifiersChanged, GroupSpellsChanged, PlayerHoversGroupCard, HoverTypeEnum } from 'src/app/features/services/events';
+import { HintAttachment } from 'src/app/features/shared/components';
 import { PROVIDE_UI_UNIT_GROUP, UIUnitProvider } from 'src/app/features/shared/directives';
 import { StoreClient } from 'src/app/store';
 
@@ -48,6 +49,8 @@ export class MwUnitGroupCardComponent extends StoreClient() implements UIUnitPro
   public spells: SpellInstance[] = [];
   public effects: SpellInstance[] = [];
 
+  public spellsHintsPosition!: HintAttachment;
+
   private destroy$: Subject<void> = new Subject();
 
   constructor(
@@ -62,6 +65,7 @@ export class MwUnitGroupCardComponent extends StoreClient() implements UIUnitPro
   }
 
   public ngOnInit(): void {
+    this.spellsHintsPosition = this.side === 'left' ? 'above' : 'below';
     this.isGroupMelee = !this.unitsService.isUnitGroupRanged(this.unitGroup);
     this.isEnemyCard = this.playersService.getCurrentPlayer() !== this.playerInfo;
     this.initialCount = this.unitGroup.count;

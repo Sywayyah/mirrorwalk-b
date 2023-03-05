@@ -1,4 +1,4 @@
-<mw-hover-hint [hintBody]="buffHint" [xPos]="'above'">
+<mw-hover-hint [hintBody]="buffHint" [xPos]="hintPos">
   <div (click)="onSpellClick($event)" [ngClass]="{ 'disabled': onCooldown || disabled }">
     <mw-ra-icon class="spell-icon" [icon]="spell.baseType.icon.icon"
       [ngStyle]="{ 'color': spell.baseType.icon.iconClr , 'background': spell.baseType.icon.bgClr }">
@@ -14,7 +14,9 @@
     <div style="padding: 4px; font-size: 14px;">
       <div>{{baseType.name}}</div>
       <div style="font-size: 12px;">Level {{spell.currentLevel}}</div>
-      <div style="font-size: 12px;">Mana Cost: {{spell.currentManaCost}}</div>
+      <div style="font-size: 12px;" *ngIf="!isPassive">
+        Mana Cost: {{spell.currentManaCost}}
+      </div>
     </div>
   </div>
 
