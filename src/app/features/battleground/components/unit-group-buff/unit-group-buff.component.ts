@@ -4,6 +4,7 @@ import { PlayerInstanceModel } from 'src/app/core/players';
 import { SpellInstance, SpellModel } from 'src/app/core/spells';
 import { UnitGroupInstModel } from 'src/app/core/unit-types';
 import { TypedChanges } from 'src/app/core/utils';
+import { HintAttachment } from 'src/app/features/shared/components';
 
 @Component({
   selector: 'mw-unit-group-buff',
@@ -17,6 +18,9 @@ export class UnitGroupBuffComponent implements OnChanges {
 
   @Input()
   public ownerUnit!: UnitGroupInstModel;
+
+  @Input()
+  public hintPos: HintAttachment = 'above';
 
   public baseType!: SpellModel;
 

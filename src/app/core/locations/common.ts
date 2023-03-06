@@ -215,7 +215,7 @@ const trBranch: StructureDescription[] = [
   },
 ];
 
-export const initialStructs: StructureDescription[] = [
+export const structsPreset1: StructureDescription[] = [
   {
     id: '1',
     x: 0,

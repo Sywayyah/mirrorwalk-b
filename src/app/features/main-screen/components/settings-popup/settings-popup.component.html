@@ -1,14 +1,28 @@
+<div style="margin-bottom: 20px;">
+  <div>
+    Units Orientation
+  </div>
 
-<!-- <input type="file" name="" id="" #scriptPath> -->
+  <ng-container *ngFor="let orientOption of orientationOptions">
+    <div>
+      <input [id]="'orient-' + orientOption.value" type="radio" name="orientation" [value]="orientOption.value"
+        (click)="setOrientation(orientOption.value)" [checked]="settings.orientation === orientOption.value">
+
+      <label [for]="'orient-' + orientOption.value">{{orientOption.label}}</label>
+    </div>
+  </ng-container>
+
+</div>
 
 <button mw-main-button (click)="loadScriptByPath()">
   Load Script By Path
 </button>
 
-<br>
-
 <button mw-main-button (click)="loadScript()">
   Load Mod
 </button>
+
+<br>
+
 
 <button mw-main-button (click)="close()">Close</button>

@@ -4,6 +4,7 @@ import { HeroBase } from 'src/app/core/heroes';
 import { defaultTravelPointsPerDay } from 'src/app/core/locations';
 import { PlayerInstanceModel } from 'src/app/core/players';
 import { Town } from 'src/app/core/towns';
+import { UnitsOrientation } from 'src/app/core/ui';
 
 /*
   I think I want to have state parts as separated features, maybe don't want to have all
@@ -36,7 +37,12 @@ export class State {
     travelPoints: defaultTravelPointsPerDay,
   };
 
-  public settings: {} = {};
+  public settings: {
+    orientation: UnitsOrientation,
+  } = {
+    // Wire it to localStorage I suppose
+    orientation: UnitsOrientation.Vertical,
+  };
 
   public gameState!: {
     players: PlayerInstanceModel[];

@@ -7,6 +7,7 @@ import { HintsService } from './features/services/hints.service';
 import { HintsContainerComponent } from './features/shared/components';
 import { EventsService } from './store';
 import './core/scripts';
+import { MwTriggersService } from './features/services';
 
 @Component({
   selector: 'app-root',
@@ -23,6 +24,7 @@ import './core/scripts';
     GameController,
     InGameApiController,
     PopupsController,
+    MwTriggersService,
   ],
 })
 export class AppComponent implements OnInit {
@@ -40,6 +42,7 @@ export class AppComponent implements OnInit {
     gameController: GameController,
     inGameApiController: InGameApiController,
     popups: PopupsController,
+    triggers: MwTriggersService,
     private events: EventsService,
     // players: MwPlayersService,
     // items: MwItemsService,

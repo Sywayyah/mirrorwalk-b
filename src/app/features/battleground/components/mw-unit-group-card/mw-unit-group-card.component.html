@@ -41,15 +41,15 @@
     <!-- #4f52bd -->
     <!-- "linear-gradient(180deg, rgba(255,77,93,1) 0%, rgba(129,25,25,1) 100%)" -->
     <!-- rgb(201, 45, 45) -->
-    <div class="abilities" [ngClass]="side === 'left' ? 'left' : 'right'">
+    <div class="abilities" [ngClass]="side">
       <div class="column-data">
-        <mw-unit-group-spell *ngFor="let spell of spells" [spell]="spell" [owner]="unitGroup"
+        <mw-unit-group-spell *ngFor="let spell of spells" [hintPos]="spellsHintsPosition" [spell]="spell" [owner]="unitGroup"
           [onCooldown]="unitGroup.fightInfo.spellsOnCooldown" [currentUnit]="attackingUnitGroup">
         </mw-unit-group-spell>
       </div>
 
       <div class="column-data">
-        <mw-unit-group-buff *ngFor="let ability of effects" [buff]="ability" [ownerUnit]="unitGroup"></mw-unit-group-buff>
+        <mw-unit-group-buff [hintPos]="spellsHintsPosition" *ngFor="let ability of effects" [buff]="ability" [ownerUnit]="unitGroup"></mw-unit-group-buff>
       </div>
     </div>
   </div>

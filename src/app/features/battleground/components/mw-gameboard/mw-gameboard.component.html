@@ -1,5 +1,5 @@
-<div class="columns-wrapper">
-  <div class="columns">
+<div class="columns-wrapper" [ngClass]="settings.orientation === orientation.Horizontal ? 'horizontal' : 'vertical'">
+  <div  class="columns">
     <div class="column">
       <mw-unit-group-card class="card" *ngFor="let unitGroup of mainPlayerUnitGroups" mwSpellTarget
         [spellTargetUnitGroup]="unitGroup" mwUnitEventsCursor side="left" [playerInfo]="mainPlayerInfo"
