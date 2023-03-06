@@ -1,4 +1,14 @@
 /*
+  Self-animating containers.
+    There can be a container, and items. This container is going to provide
+    a service, so children items can access it and communicate with
+    container. For instance, service may dispatch command according to which
+    item is going to animate it's own disappearance, but this item cannot be
+    removed right away, because animation will fail. But with service,
+    item can receive an event from container so that it needs to animate
+    it's own disappearance, and when it's done, item can use service to remove
+    itself.
+
   I18n. I was thinking about I18n, and I think I came up with some solution.
     Considering that I already have lots of places with plain strings and
     I actually want to keep things plain for further development and other
