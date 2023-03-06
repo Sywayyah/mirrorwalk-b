@@ -5,6 +5,7 @@ import { SpellActivationType, SpellInstance, SpellModel } from 'src/app/core/spe
 import { UnitGroupInstModel } from 'src/app/core/unit-types';
 import { TypedChanges } from 'src/app/core/utils';
 import { MwCurrentPlayerStateService, PlayerState } from 'src/app/features/services';
+import { HintAttachment } from 'src/app/features/shared/components';
 
 @Component({
   selector: 'mw-unit-group-spell',
@@ -18,6 +19,9 @@ export class UnitGroupSpellComponent implements OnChanges {
 
   @Input()
   public onCooldown: boolean | undefined = false;
+
+  @Input()
+  public hintPos: HintAttachment = 'above';
 
   @Input()
   public owner!: UnitGroupInstModel;
@@ -34,11 +38,15 @@ export class UnitGroupSpellComponent implements OnChanges {
 
   public disabled: boolean | undefined;
 
+  public isPassive: boolean = false;
+
   constructor(
     private readonly curPlayerState: MwCurrentPlayerStateService,
   ) { }
 
   public ngOnChanges(changes: TypedChanges<this>): void {
+    this.isPassive = this.spell.baseType.activationType === SpellActivationType.Passive;
+
     if (changes.spell) {
       this.baseType = this.spell.baseType;
       this.icon = this.baseType.icon;

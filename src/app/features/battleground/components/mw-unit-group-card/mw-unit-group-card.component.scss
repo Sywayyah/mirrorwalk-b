@@ -211,3 +211,29 @@ $inactive-offset: 32px;
     transform: scale(1) translateX($inactive-offset);
   }
 }
+
+:host-context(.horizontal) .card-top {
+  &.active.card-left {
+    transform: scale($active-scale) translateY(-$active-offset);
+  }
+
+  &.active.card-right {
+    transform: scale($active-scale) translateY($active-offset);
+  }
+
+  &.inactive.card-left {
+    transform: scale(1) translateY($inactive-offset);
+  }
+
+  &.inactive.card-right {
+    transform: scale(1) translateY(-$inactive-offset);
+  }
+
+  &.defeated.card-left {
+    transform: scale(1) translateY($inactive-offset);
+  }
+
+  &.defeated.card-right {
+    transform: scale(1) translateY(-$inactive-offset);
+  }
+}
