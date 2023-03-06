@@ -3,7 +3,7 @@ import { ViewStructure } from 'src/app/core/locations';
 import { PlayerInstanceModel } from 'src/app/core/players';
 import { NeutralCampStructure } from 'src/app/core/structures';
 import { MwPlayersService, MwStructuresService } from 'src/app/features/services';
-import { PlayerEntersTown, StructSelected } from 'src/app/features/services/events';
+import { PlayerEntersTown, PlayerOpensHeroInfo, StructSelected } from 'src/app/features/services/events';
 import { State } from 'src/app/features/services/state.service';
 import { EventsService } from 'src/app/store';
 
@@ -55,5 +55,9 @@ export class MwStructuresViewComponent {
 
   public goToTown(): void {
     this.events.dispatch(PlayerEntersTown({}));
+  }
+
+  public openPlayerInfo(): void {
+    this.events.dispatch(PlayerOpensHeroInfo({}));
   }
 }
