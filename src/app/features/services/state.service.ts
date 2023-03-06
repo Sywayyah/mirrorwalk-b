@@ -40,7 +40,8 @@ export class State {
   public settings: {
     orientation: UnitsOrientation,
   } = {
-    orientation: UnitsOrientation.Horizontal,
+    // Wire it to localStorage I suppose
+    orientation: UnitsOrientation.Vertical,
   };
 
   public gameState!: {
