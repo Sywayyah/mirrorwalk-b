@@ -2,6 +2,7 @@ import { Directive, HostListener, Input, OnDestroy } from '@angular/core';
 import { ActionHintTypeEnum, CustomHtmlActionHint } from 'src/app/core/ui';
 import { ActionHintService } from '../../services/mw-action-hint.service';
 
+// Maybe some animation can be provided.
 @Directive({
   selector: '[mwActionHint]',
 })
