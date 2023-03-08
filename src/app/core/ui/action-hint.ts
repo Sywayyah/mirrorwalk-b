@@ -1,13 +1,20 @@
+import { SafeHtml } from '@angular/platform-browser';
 import { SpellInstance } from 'src/app/core/spells';
 import { UnitGroupModel, UnitGroupInstModel } from 'src/app/core/unit-types';
 
 export enum ActionHintTypeEnum {
   OnHoverEnemyCard = 'on-hover-enemy-card',
-  OnTargetSpell = 'on-target-spell'
+  OnTargetSpell = 'on-target-spell',
+  CustomHtml = 'custom-html',
 }
 
 export interface ActionHintModel<T extends ActionHintTypeEnum = ActionHintTypeEnum> {
   type: T;
+}
+
+export interface CustomHtmlActionHint extends ActionHintModel<ActionHintTypeEnum.CustomHtml> {
+  html: string;
+  safeHtml: SafeHtml;
 }
 
 export interface AttackActionHintInfo extends ActionHintModel<ActionHintTypeEnum.OnHoverEnemyCard> {

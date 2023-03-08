@@ -1,4 +1,9 @@
 /*
+  Features.
+    Maybe there can be some feature class that can be used to describe
+    features in the state. It can be configured in any way, also
+    decorators will be available.
+
   Self-animating containers.
     There can be a container, and items. This container is going to provide
     a service, so children items can access it and communicate with

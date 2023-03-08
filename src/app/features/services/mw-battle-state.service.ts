@@ -21,9 +21,6 @@ export class BattleStateService {
 
   public currentGroupTurnsLeft: number = 0;
   public round: number = 1;
-
-  public hintMessage$: BehaviorSubject<ActionHintModel | null> = new BehaviorSubject<ActionHintModel | null>(null);
-
   public playerLosses: Record<string, Map<UnitBase, number>> = {};
 
   private playersRivalryMap: Map<PlayerModel, PlayerModel> = new Map();

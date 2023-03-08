@@ -1,5 +1,4 @@
 export * from './item-icon/item-icon.component';
-export * from './mw-action-hint/mw-action-hint.component';
 export * from './mw-battle-hero-abilities/mw-battle-hero-abilities.component';
 export * from './mw-gameboard/mw-gameboard.component';
 export * from './mw-history-log/mw-history-log.component';
