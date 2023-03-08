@@ -1,5 +1,7 @@
-<mw-icon-btn icon="sideswipe" style="padding: 0px 10px; position: fixed; top: 50%"
+<mw-icon-btn mwActionHint="Return to Map" icon="sideswipe" style="padding: 0px 10px; position: fixed; top: 50%"
   (click)="leaveTown()"></mw-icon-btn>
+
+<mw-action-hint></mw-action-hint>
 
 <div class="buildings">
   <div class="building" *ngFor="let building of buildingsByTiers | keyvalue">

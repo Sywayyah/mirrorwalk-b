@@ -26,6 +26,6 @@
 <mw-action-hint></mw-action-hint>
 
 <div class="player-actions">
-  <mw-icon-btn mwActionHint="Go to Castle" (click)="goToTown()" style="padding: 0 20px" [icon]="state.createdGame.fraction.icon"></mw-icon-btn>
+  <mw-icon-btn mwActionHint="Go to {{state.createdGame.fraction.title}}" (click)="goToTown()" style="padding: 0 20px" [icon]="state.createdGame.fraction.icon"></mw-icon-btn>
   <mw-icon-btn mwActionHint="Inspect Hero" (click)="openPlayerInfo()" style="padding: 0 20px" icon="aura"></mw-icon-btn>
 </div>
