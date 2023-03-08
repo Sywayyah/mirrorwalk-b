@@ -2,9 +2,9 @@ import { Injectable } from '@angular/core';
 import { SpellEventTypes } from 'src/app/core/spells';
 import { ActionHintTypeEnum, SpellTargetActionHint } from 'src/app/core/ui';
 import { UnitGroupInstModel } from 'src/app/core/unit-types';
-import { StoreClient, WireMethod } from 'src/app/store';
-import { GroupAttacked, HoverTypeEnum, PlayerCastsInstantSpell, PlayerClicksAllyGroup, PlayerClicksAllyGroupEvent, PlayerClicksEnemyGroup, PlayerClicksEnemyGroupEvent, PlayerHoversCardEvent, PlayerHoversGroupCard, PlayerTargetsInstantSpellEvent, PlayerTargetsSpell, PlayerTargetsSpellEvent } from '../events';
-import { BattleStateService } from '../mw-battle-state.service';
+import { Notify, StoreClient, WireMethod } from 'src/app/store';
+import { FightEnds, GroupAttacked, HoverTypeEnum, PlayerCastsInstantSpell, PlayerClicksAllyGroup, PlayerClicksAllyGroupEvent, PlayerClicksEnemyGroup, PlayerClicksEnemyGroupEvent, PlayerHoversCardEvent, PlayerHoversGroupCard, PlayerTargetsInstantSpellEvent, PlayerTargetsSpell, PlayerTargetsSpellEvent, PlayerTurnStartEvent, RoundPlayerTurnStarts } from '../events';
+import { ActionHintService } from '../mw-action-hint.service';
 import { MwCardsMappingService } from '../mw-cards-mapping.service';
 import { CombatInteractorService } from '../mw-combat-interactor.service';
 import { MwCurrentPlayerStateService, PlayerState } from '../mw-current-player-state.service';
@@ -14,7 +14,7 @@ export class UiController extends StoreClient() {
 
   constructor(
     private combatInteractor: CombatInteractorService,
-    private battleState: BattleStateService,
+    private actionHint: ActionHintService,
     private curPlayerState: MwCurrentPlayerStateService,
     private cardsMapping: MwCardsMappingService,
   ) {
@@ -78,7 +78,7 @@ export class UiController extends StoreClient() {
             spell: this.curPlayerState.currentSpell,
             target: event.hoveredCard as UnitGroupInstModel,
           };
-          this.battleState.hintMessage$.next(spellTargetHint);
+          this.actionHint.hintMessage$.next(spellTargetHint);
         }
         break;
       case HoverTypeEnum.AllyCard:
@@ -90,14 +90,27 @@ export class UiController extends StoreClient() {
             target: event.hoveredCard as UnitGroupInstModel,
           };
 
-          this.battleState.hintMessage$.next(spellTargetHint);
+          this.actionHint.hintMessage$.next(spellTargetHint);
         }
         break;
       case HoverTypeEnum.Unhover:
-        this.battleState.hintMessage$.next(null);
+        this.actionHint.hintMessage$.next(null);
     }
   }
 
+  @WireMethod(RoundPlayerTurnStarts)
+  public disableActionHintOnEnemyTurn(event: PlayerTurnStartEvent): void {
+    if (event.currentPlayer !== this.curPlayerState.currentPlayer) {
+      this.actionHint.disableActionHint$.next(true);
+    } else {
+      this.actionHint.disableActionHint$.next(false);
+    }
+  }
+
+  @Notify(FightEnds)
+  public enableActionHint(): void {
+    this.actionHint.disableActionHint$.next(false);
+  }
 
   @WireMethod(PlayerTargetsSpell)
   public playerTargetsSpell(event: PlayerTargetsSpellEvent): void {

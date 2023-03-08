@@ -22,7 +22,10 @@
 
 <mw-player-info-panel class="player-info-panel"></mw-player-info-panel>
 
+<!-- maybe move it to some kind of ui overlay eventually.. -->
+<mw-action-hint></mw-action-hint>
+
 <div class="player-actions">
-  <mw-icon-btn (click)="goToTown()" style="padding: 0 20px" [icon]="state.createdGame.fraction.icon"></mw-icon-btn>
-  <mw-icon-btn (click)="openPlayerInfo()" style="padding: 0 20px" icon="aura"></mw-icon-btn>
+  <mw-icon-btn mwActionHint="Go to Castle" (click)="goToTown()" style="padding: 0 20px" [icon]="state.createdGame.fraction.icon"></mw-icon-btn>
+  <mw-icon-btn mwActionHint="Inspect Hero" (click)="openPlayerInfo()" style="padding: 0 20px" icon="aura"></mw-icon-btn>
 </div>

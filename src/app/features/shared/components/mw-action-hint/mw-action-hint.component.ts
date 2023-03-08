@@ -1,10 +1,15 @@
 import { Component, OnInit } from '@angular/core';
+import { DomSanitizer } from '@angular/platform-browser';
 import { BehaviorSubject, combineLatest, Subject } from 'rxjs';
 import { map, takeUntil, tap } from 'rxjs/operators';
-import { ActionHintModel, ActionHintTypeEnum } from 'src/app/core/ui';
-import { BattleStateService, MwPlayersService } from 'src/app/features/services';
-import { RoundPlayerTurnStarts } from 'src/app/features/services/events';
+import { ActionHintModel, ActionHintTypeEnum, CustomHtmlActionHint } from 'src/app/core/ui';
+import { MwPlayersService } from 'src/app/features/services';
+import { ActionHintService } from 'src/app/features/services/mw-action-hint.service';
 import { EventsService } from 'src/app/store';
+
+function isHtmlHint(actionHint: ActionHintModel): actionHint is CustomHtmlActionHint {
+  return actionHint.type === ActionHintTypeEnum.CustomHtml;
+}
 
 @Component({
   selector: 'mw-action-hint',
@@ -20,17 +25,24 @@ export class MwActionHintComponent implements OnInit {
   private destroyed$ = new Subject<void>();
 
   constructor(
-    public readonly mwBattleState: BattleStateService,
+    // public readonly mwBattleState: BattleStateService,
     public readonly players: MwPlayersService,
     public events: EventsService,
+    public readonly actionHintService: ActionHintService,
+    public readonly domSanitizer: DomSanitizer,
   ) {
+    // need to revisit this logic. it was designed mostly for battleground.
     combineLatest([
-      this.events.onEvent(RoundPlayerTurnStarts),
-      this.mwBattleState.hintMessage$,
+      this.actionHintService.disableActionHint$,
+      this.actionHintService.hintMessage$,
     ]).pipe(
-      map(([playerTurnEvent, actionHint]) => {
-        if (playerTurnEvent.currentPlayer !== this.players.getCurrentPlayer()) {
+      map(([disabled, actionHint]) => {
+        if (disabled) {
           return null;
+        }
+
+        if (actionHint && isHtmlHint(actionHint)) {
+          actionHint.safeHtml = this.domSanitizer.bypassSecurityTrustHtml(actionHint.html);
         }
 
         return actionHint;

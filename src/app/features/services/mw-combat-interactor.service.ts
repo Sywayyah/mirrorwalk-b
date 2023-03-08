@@ -8,6 +8,7 @@ import { CommonUtils } from 'src/app/core/unit-types/utils';
 import { StoreClient } from 'src/app/store';
 import { BattleStateService, FinalDamageInfo, MwPlayersService, MwUnitGroupsService, MwUnitGroupStateService } from './';
 import { CombatAttackInteraction, CombatInteractionEnum, CombatInteractionStateEvent, GroupCounterAttacked, GroupDamagedByGroup, GroupDies, GroupSpellsChanged, GroupTakesDamage, InitSpell, PlayerHoversCardEvent } from './events';
+import { ActionHintService } from './mw-action-hint.service';
 
 
 @Injectable({
@@ -20,6 +21,7 @@ export class CombatInteractorService extends StoreClient() {
 
   constructor(
     private readonly battleState: BattleStateService,
+    private readonly actionHint: ActionHintService,
     private readonly players: MwPlayersService,
     private readonly unitState: MwUnitGroupStateService,
     private readonly units: MwUnitGroupsService,
@@ -218,7 +220,7 @@ export class CombatInteractorService extends StoreClient() {
   public setDamageHintMessageOnCardHover(event: PlayerHoversCardEvent): void {
     const actionHint: AttackActionHintInfo = this.getTargetAttackActionInfo(event.hoveredCard as UnitGroupInstModel);
 
-    this.battleState.hintMessage$.next(actionHint);
+    this.actionHint.hintMessage$.next(actionHint);
   }
 
   public getTargetAttackActionInfo(target: UnitGroupInstModel): AttackActionHintInfo {
