@@ -42,12 +42,6 @@ export class BattleController extends StoreClient() {
     }
   }
 
-  @Notify(RoundPlayerCountinuesAttacking)
-  public processAiPlayer(): void {
-    if (this.battleState.currentPlayer.type === PlayerTypeEnum.AI) {
-      this.battleState.processAiPlayer();
-    }
-  }
 
   @Notify(RoundGroupTurnEnds)
   public updateQueueOnGroupTurnEnd(): void {
@@ -122,13 +116,20 @@ export class BattleController extends StoreClient() {
     }
   }
 
+  @Notify(RoundPlayerCountinuesAttacking)
+  public processAiPlayer(): void {
+    if (this.battleState.currentPlayer.type === PlayerTypeEnum.AI && this.enemyHasAnyLivingUnits()) {
+      this.battleState.processAiPlayer();
+    }
+  }
+
   @WireMethod(RoundGroupSpendsTurn)
   public checkControlWhenGroupRunsOutOfTurns({
     groupHasMoreTurns,
     groupPlayer,
     groupStillAlive,
   }: RoundGroupSpendsTurnEvent): void {
-    if (groupPlayer.type === PlayerTypeEnum.AI && groupHasMoreTurns && groupStillAlive) {
+    if (groupPlayer.type === PlayerTypeEnum.AI && groupHasMoreTurns && groupStillAlive && this.enemyHasAnyLivingUnits()) {
       this.battleState.processAiPlayer();
     }
 
@@ -143,4 +144,9 @@ export class BattleController extends StoreClient() {
   public updateFightQueryDueToSpeedChange(): void {
     this.battleState.resortFightQueue();
   }
+
+  private enemyHasAnyLivingUnits(): boolean {
+    return this.battleState.playerHasAnyAliveUnits(this.battleState.getEnemyOfPlayer(this.battleState.currentPlayer));
+  }
+
 }

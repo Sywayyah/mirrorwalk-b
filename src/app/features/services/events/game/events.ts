@@ -28,6 +28,8 @@ export const FightStarts = gameEvent();
 
 export const StructCompleted = gameEvent<NeutralStructParams>();
 
+export const ShowGameOverPopup = gameEvent();
+
 export const NewDayStarted = gameEvent<NewDayParams>();
 
 export const DisplayReward = gameEvent<NeutralStructParams>();

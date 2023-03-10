@@ -7,13 +7,10 @@ import { MwPlayersService, PLAYER_IDS } from './mw-players.service';
   providedIn: 'root'
 })
 export class MwNeutralPlayerService {
-
-  private neutralPlayer: PlayerInstanceModel = this.playersService.getEnemyPlayer();
-
   constructor(private readonly playersService: MwPlayersService) { }
 
   public getPlayerInfo(): PlayerInstanceModel {
-    return this.neutralPlayer;
+    return this.playersService.getEnemyPlayer();
   }
 
   public getUnitGroups(): UnitGroupInstModel[] {

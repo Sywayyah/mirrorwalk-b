@@ -1,8 +1,8 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ResourceType } from 'src/app/core/resources';
 import { FightEndsPopup } from 'src/app/core/ui';
 import { MwPlayersService } from 'src/app/features/services';
-import { GameStart, StructCompleted } from 'src/app/features/services/events';
+import { ShowGameOverPopup, StructCompleted } from 'src/app/features/services/events';
 import { BasicPopup } from 'src/app/features/shared/components';
 import { EventsService } from 'src/app/store';
 
@@ -32,6 +32,14 @@ export class PostFightRewardPopupComponent extends BasicPopup<FightEndsPopup> im
 
 
   public onContinue(popup: FightEndsPopup): void {
+    if (!popup.isWin) {
+      this.close();
+
+      this.events.dispatch(ShowGameOverPopup());
+
+      return;
+    }
+
     this.close();
 
     /* Add defeat scenario, show defeat popup, return to main screen. */
@@ -42,6 +50,6 @@ export class PostFightRewardPopupComponent extends BasicPopup<FightEndsPopup> im
 
     this.events.dispatch(StructCompleted({
       struct: popup.struct,
-    }))
+    }));
   }
 }

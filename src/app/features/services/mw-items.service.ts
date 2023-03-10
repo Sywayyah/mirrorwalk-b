@@ -5,6 +5,9 @@ import { PlayerInstanceModel } from 'src/app/core/players';
 import { EventsService } from 'src/app/store';
 import { InitItem } from './events';
 
+/* Unregister All items and spell handlers when Game was over... */
+/*  And not only when game is over, but also when fight is over/item gets unregistered, something like that */
+
 @Injectable({
   providedIn: 'root'
 })

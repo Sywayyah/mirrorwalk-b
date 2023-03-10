@@ -7,14 +7,12 @@ import { MwPlayersService, PLAYER_IDS } from './mw-players.service';
   providedIn: 'root',
 })
 export class MwPlayerStateService {
-  private mainPlayer: PlayerInstanceModel = this.playersService.getCurrentPlayer();
-
   constructor(
     private playersService: MwPlayersService,
   ) { }
 
   public getPlayerInfo(): PlayerInstanceModel {
-    return this.mainPlayer;
+    return this.playersService.getCurrentPlayer();
   }
 
   public getUnitGroups(): UnitGroupInstModel[] {

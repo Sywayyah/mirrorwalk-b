@@ -5,8 +5,8 @@ import { DefaultGameModes } from '../types';
 
 TriggersRegistry.register(PrepareGameEvent, {
   // supply some more api here
-  fn: (data: { gameMode: DefaultGameModes }, { events }) => {
-    if (data.gameMode !== DefaultGameModes.Normal) {
+  fn: (event: { gameMode: DefaultGameModes }, { events }) => {
+    if (event.gameMode !== DefaultGameModes.Normal) {
       return;
     }
 

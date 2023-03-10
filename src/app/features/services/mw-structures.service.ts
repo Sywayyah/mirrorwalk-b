@@ -173,7 +173,6 @@ export class MwStructuresService extends StoreClient() {
           ) as UnitGroupInstModel[]
           : [];
       }
-
     });
 
     return guardsMap;

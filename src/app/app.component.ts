@@ -48,7 +48,7 @@ export class AppComponent implements OnInit {
     // items: MwItemsService,
   ) {
     /* listener not created at this point */
-    this.events.dispatch(GameStart({}));
+    this.events.dispatch(GameStart());
     // items.initService(combat);
     // players.initPlayers();
     // players.addItemToPlayer(players.getCurrentPlayer(), items.createItem(ItemDoomstring));
