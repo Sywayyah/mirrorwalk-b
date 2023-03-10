@@ -5,8 +5,8 @@ import { Notify, StoreClient, WireMethod } from 'src/app/store';
 import { HiringRewardPopupComponent, ItemRewardPopupComponent, PostFightRewardPopupComponent, PreFightPopupComponent, PreviewPopupComponent, ResourcesRewardPopupComponent, ScriptedRewardPopupComponent, UpgradeRewardPopup } from '../../battleground/components';
 import { HeroPopupComponent } from '../../battleground/components/hero-popup/hero-popup.component';
 import { SettingsPopupComponent } from '../../main-screen/components';
-import { PopupData, PopupService } from '../../shared/components';
-import { DisplayPopup, DisplayReward, FightEnds, FightEndsEvent, NeutralStructParams, OpenSettings, PlayerOpensHeroInfo, StructSelected, StructSelectedEvent } from '../events';
+import { GameOverPopupComponent, PopupData, PopupService } from '../../shared/components';
+import { DisplayPopup, DisplayReward, FightEnds, FightEndsEvent, NeutralStructParams, OpenSettings, PlayerOpensHeroInfo, ShowGameOverPopup, StructSelected, StructSelectedEvent } from '../events';
 import { BattleStateService } from '../mw-battle-state.service';
 import { MwPlayersService } from '../mw-players.service';
 
@@ -39,6 +39,14 @@ export class PopupsController extends StoreClient() {
   public openSettings(): void {
     this.popupService.createBasicPopup({
       component: SettingsPopupComponent,
+      data: {},
+    });
+  }
+
+  @Notify(ShowGameOverPopup)
+  public showGameOverPopup(): void {
+    this.popupService.createBasicPopup({
+      component: GameOverPopupComponent,
       data: {},
     });
   }

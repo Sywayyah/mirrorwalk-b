@@ -7,7 +7,7 @@ export interface EventInfo {
 
 export interface EventType<T extends object = {}> {
   __info: EventInfo;
-  (props: T): T & EventInfo;
+  (props?: T): T & EventInfo;
 }
 
 let eventId: number = 0;
@@ -20,7 +20,7 @@ export function eventType<T extends object = {}>(
     __name: name,
   };
 
-  const event = function eventFn(data: T) {
+  const event = function eventFn(data: T = {} as any) {
     return {
       ...eventInfo,
       ...data,

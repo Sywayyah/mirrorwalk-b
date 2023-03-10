@@ -1,7 +1,7 @@
 import { inject } from '@angular/core';
 import { PopupRef, POPUP_REF } from './injection-tokens';
 
-export abstract class BasicPopup<T> {
+export abstract class BasicPopup<T extends object = object> {
   protected popup: PopupRef<T> = inject(POPUP_REF);
 
   protected data: T = this.popup.data;

@@ -56,8 +56,9 @@ export const UnitsUtils = {
   createRandomArmy(options: GenerationModel): UnitGroupModel[] {
     const groupsToGenerateCount = CommonUtils.randIntInRange(options.minUnitGroups, options.maxUnitGroups);
     const generatedGroups = [];
+    const unitsToGenerate = [...options.units];
 
-    const unitsMap = options.units.reduce((unitGroupsMap, description) => {
+    const unitsMap = unitsToGenerate.reduce((unitGroupsMap, description) => {
       const [unitType, min, max, maxGroupsOfThisType = Infinity] = description;
       unitGroupsMap.set(description, {
         unitType,
@@ -74,7 +75,7 @@ export const UnitsUtils = {
     console.log('Units Map ->>', unitsMap);
 
     for (let i = 0; i < groupsToGenerateCount; i++) {
-      const randUnitDescr = CommonUtils.randItem(options.units);
+      const randUnitDescr = CommonUtils.randItem(unitsToGenerate);
       const unit = unitsMap.get(randUnitDescr)!;
       const unitType = unit.unitType;
 
@@ -92,10 +93,11 @@ export const UnitsUtils = {
       generatedGroups.push(newUnitGroup);
 
       unit.created++;
+
       if (unit.created >= unit.maxGroupsOfThisType) {
         console.log('this unit was generated max times')
         unitsMap.delete(randUnitDescr);
-        options.units = options.units.filter(item => item !== randUnitDescr);
+        CommonUtils.removeItem(unitsToGenerate, randUnitDescr)
       }
     }
 

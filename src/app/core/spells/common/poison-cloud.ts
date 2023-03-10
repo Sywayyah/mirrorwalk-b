@@ -7,6 +7,7 @@ import { SpellEventTypes } from '../spell-events';
 import { SpellActivationType, SpellModel } from '../types';
 import { canActivateOnEnemyFn, debuffColors } from '../utils';
 
+/* In general.. this skill might reduce speed. Or maybe even a chance to skip attack */
 const attackReduction = 5;
 
 const minDamage = 34;

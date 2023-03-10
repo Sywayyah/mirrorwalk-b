@@ -146,6 +146,10 @@ export class BattleStateService {
     );
   }
 
+  public playerHasAnyAliveUnits(player: PlayerInstanceModel): boolean {
+    return this.getAliveUnitsOfPlayer(player).length !== 0;
+  }
+
   public summonUnitForPlayer(ownerPlayer: PlayerInstanceModel, unitType: UnitBase, unitNumber: number): UnitGroupInstModel {
     const summonedUnitGroup = this.units.createUnitGroup(unitType, { count: unitNumber }, ownerPlayer) as UnitGroupInstModel;
 

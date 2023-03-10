@@ -17,4 +17,4 @@ export * from './spell-description/spell-description.component';
 export * from './value-bar/value-bar.component';
 export * from './vfx-element/vfx-element.component';
 export * from './vfx-layer';
-
+export * from './game-over-popup/game-over-popup.component';
