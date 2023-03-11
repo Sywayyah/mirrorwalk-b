@@ -3,7 +3,6 @@ import { ItemWindCrest } from '../../items/neutral';
 import { HasteSpell, RainOfFireSpell } from '../../spells/common';
 import { heroDescrElem } from '../../ui';
 import { HeroBase } from '../types';
-import { heroesDefaultResources } from '../utils';
 
 export const HelveticaHero: HeroBase = humansFraction.createHero({
   name: 'Helvetica',
@@ -27,7 +26,9 @@ export const HelveticaHero: HeroBase = humansFraction.createHero({
   }],
   items: [ItemWindCrest],
   resources: {
-    ...heroesDefaultResources,
+    gems: 0,
+    gold: 750,
+    redCrystals: 0,
     wood: 4,
   },
   stats: {
