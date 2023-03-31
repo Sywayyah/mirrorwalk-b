@@ -1,8 +1,7 @@
 import { spellDescrElem } from '../../ui';
 import { UnitGroupInstModel } from '../../unit-types';
 import { FrightAnimation } from '../../vfx';
-import { SpellEventTypes } from '../spell-events';
-import { SpellModel, SpellActivationType } from '../types';
+import { SpellActivationType, SpellModel } from '../types';
 import { debuffColors } from '../utils';
 
 const damageDecreasePercent = 0.25;
@@ -29,7 +28,7 @@ export const FrightSpellDebuff: SpellModel<{ frighter: UnitGroupInstModel }> = {
     spellConfig: {
       init({ actions, events, spellInstance, vfx }) {
         events.on({
-          [SpellEventTypes.SpellPlacedOnUnitGroup]({ target }) {
+          SpellPlacedOnUnitGroup({ target }) {
             const reducedDamageCMod = actions.createModifiers({
               attackConditionalModifiers(params) {
                 if (params.attacked === spellInstance.state?.frighter) {
@@ -75,7 +74,7 @@ export const FrightSpell: SpellModel = {
     spellConfig: {
       init({ actions, events, ownerPlayer, ownerUnit }) {
         events.on({
-          [SpellEventTypes.UnitGroupAttacks]({ attacked, attacker }) {
+          UnitGroupAttacks({ attacked, attacker }) {
             if (ownerUnit !== attacker) {
               return;
             }

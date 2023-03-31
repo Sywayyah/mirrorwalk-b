@@ -1,9 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Fraction } from 'src/app/core/fractions';
 import { HeroBase } from 'src/app/core/heroes';
+import { ItemInstanceModel } from 'src/app/core/items';
 import { defaultTravelPointsPerDay } from 'src/app/core/locations';
 import { PlayerInstanceModel } from 'src/app/core/players';
+import { SpellInstance } from 'src/app/core/spells';
 import { Town } from 'src/app/core/towns';
+import { RefEventTriggersRegistry } from 'src/app/core/triggers';
 import { UnitsOrientation } from 'src/app/core/ui';
 
 /*
@@ -40,9 +43,9 @@ export class State {
   public settings: {
     orientation: UnitsOrientation,
   } = {
-    // Wire it to localStorage I suppose
-    orientation: UnitsOrientation.Vertical,
-  };
+      // Wire it to localStorage I suppose
+      orientation: UnitsOrientation.Vertical,
+    };
 
   public gameState!: {
     players: PlayerInstanceModel[];
@@ -55,4 +58,12 @@ export class State {
     currentPlayer: PlayerInstanceModel;
     enemyPlayer: PlayerInstanceModel;
   };
+
+  public eventHandlers: {
+    spells: RefEventTriggersRegistry<SpellInstance>,
+    items: RefEventTriggersRegistry<ItemInstanceModel>,
+  } = {
+      spells: new RefEventTriggersRegistry<SpellInstance>(),
+      items: new RefEventTriggersRegistry<ItemInstanceModel>(),
+    };
 }

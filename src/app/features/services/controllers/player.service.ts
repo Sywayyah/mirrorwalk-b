@@ -5,6 +5,7 @@ import { FightNextRoundStarts, FightStarts, PlayerEquipsItem, PlayerEquipsItemAc
 import { MwCurrentPlayerStateService } from '../mw-current-player-state.service';
 import { MwItemsService } from '../mw-items.service';
 import { MwSpellsService } from '../mw-spells.service';
+import { State } from '../state.service';
 
 @Injectable()
 export class PlayerController extends StoreClient() {
@@ -13,6 +14,7 @@ export class PlayerController extends StoreClient() {
     private curPlayerState: MwCurrentPlayerStateService,
     private itemsService: MwItemsService,
     private spellsService: MwSpellsService,
+    private state: State,
   ) {
     super();
   }
@@ -84,7 +86,7 @@ export class PlayerController extends StoreClient() {
       player.hero.stats.bonusDefence -= item.baseType.staticMods.playerBonusDefence;
     }
 
-
     player.hero.spells = player.hero.spells.filter(spell => spell.sourceInfo.item !== item);
+    this.state.eventHandlers.items.removeAllHandlersForRef(item);
   }
 }

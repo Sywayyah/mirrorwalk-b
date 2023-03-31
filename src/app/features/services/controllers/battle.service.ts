@@ -2,11 +2,12 @@ import { Injectable } from '@angular/core';
 import { PlayerTypeEnum } from 'src/app/core/players';
 import { NeutralCampStructure } from 'src/app/core/structures';
 import { Notify, StoreClient, WireMethod } from 'src/app/store';
-import { FightEnds, FightNextRoundStarts, FightStarts, GroupDamagedByGroup, GroupDamagedByGroupEvent, GroupDies, GroupSpeedChanged, GroupTakesDamage, GroupTakesDamageEvent, PlayerTurnStartEvent, RoundGroupSpendsTurn, RoundGroupSpendsTurnEvent, RoundGroupTurnEnds, RoundPlayerCountinuesAttacking, RoundPlayerTurnStarts, UnitHealed, UnitHealedEvent } from '../events';
+import { CleanUpHandlersOnFightEnd, FightEnds, FightNextRoundStarts, FightStarts, GroupDamagedByGroup, GroupDamagedByGroupEvent, GroupDies, GroupSpeedChanged, GroupTakesDamage, GroupTakesDamageEvent, PlayerTurnStartEvent, RoundGroupSpendsTurn, RoundGroupSpendsTurnEvent, RoundGroupTurnEnds, RoundPlayerCountinuesAttacking, RoundPlayerTurnStarts, UnitHealed, UnitHealedEvent } from '../events';
 import { BattleStateService } from '../mw-battle-state.service';
 import { MwCurrentPlayerStateService, PlayerState } from '../mw-current-player-state.service';
 import { MwPlayersService } from '../mw-players.service';
 import { MwStructuresService } from '../mw-structures.service';
+import { State } from '../state.service';
 
 @Injectable()
 export class BattleController extends StoreClient() {
@@ -15,6 +16,7 @@ export class BattleController extends StoreClient() {
     private curPlayerState: MwCurrentPlayerStateService,
     private strucuresService: MwStructuresService,
     private playersService: MwPlayersService,
+    private state: State,
   ) {
     super();
   }
@@ -143,6 +145,18 @@ export class BattleController extends StoreClient() {
   @Notify(GroupSpeedChanged)
   public updateFightQueryDueToSpeedChange(): void {
     this.battleState.resortFightQueue();
+  }
+
+  @Notify(FightEnds)
+  public cleanUpHandlersOnFightEnd(): void {
+    this.events.dispatch(CleanUpHandlersOnFightEnd());
+  }
+
+  @Notify(CleanUpHandlersOnFightEnd)
+  public cleanUpHandlers(): void {
+    this.state.eventHandlers.spells.removeAllHandlers();
+    // need to think about items, they are being initialized outsize of combat
+    // this.state.eventHandlers.items.removeAllHandlers();
   }
 
   private enemyHasAnyLivingUnits(): boolean {

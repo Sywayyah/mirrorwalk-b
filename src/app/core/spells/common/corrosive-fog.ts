@@ -1,7 +1,6 @@
 import { EffectAnimation } from '../../api/vfx-api';
 import { spellDescrElem, strPercent } from '../../ui';
 import { createAnimation, getIconElement, getPlainBlurFrames, getReversePulseKeyframes } from '../../vfx';
-import { SpellEventTypes } from '../spell-events';
 import { SpellActivationType, SpellModel } from '../types';
 import { canActivateOnEnemyFn, debuffColors } from '../utils';
 
@@ -99,7 +98,7 @@ export const CorrosiveFogDebuff: SpellModel<undefined | { debuffRoundsLeft: numb
       },
       init({ events, actions, thisSpell, spellInstance, vfx }) {
         events.on({
-          [SpellEventTypes.SpellPlacedOnUnitGroup]: ({ target }) => {
+          SpellPlacedOnUnitGroup({ target }) {
             const debuffData = {
               debuffRoundsLeft: roundsDuration,
             };
@@ -117,7 +116,7 @@ export const CorrosiveFogDebuff: SpellModel<undefined | { debuffRoundsLeft: numb
             actions.historyLog(`${target.type.name} gets negative effect "${thisSpell.name}"`);
 
             events.on({
-              [SpellEventTypes.NewRoundBegins]: (event) => {
+              NewRoundBegins(event) {
                 debuffData.debuffRoundsLeft--;
 
                 if (!debuffData.debuffRoundsLeft) {
@@ -168,7 +167,7 @@ export const CorrosiveFogSpell: SpellModel = {
 
       init({ events, actions, ownerPlayer, ownerHero, thisSpell }) {
         events.on({
-          [SpellEventTypes.PlayerTargetsSpell]: event => {
+          PlayerTargetsSpell(event) {
             actions.historyLog(`${ownerHero.name} casts "${thisSpell.name}" against ${event.target.type.name}`);
 
             const poisonDebuffInstance = actions.createSpellInstance(CorrosiveFogDebuff);

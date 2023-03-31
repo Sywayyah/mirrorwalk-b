@@ -1,4 +1,4 @@
-import { GameEventTypes, ItemBaseModel, ItemSlotType } from '..';
+import { ItemBaseModel, ItemSlotType } from '..';
 import { WindBlessBuff } from '../../spells/common';
 import { itemStatsDescr, spellDescrElem } from '../../ui';
 
@@ -25,7 +25,7 @@ export const ItemWindCrest: ItemBaseModel = {
       actions, events, ownerPlayer,
     }) => {
       events.on({
-        [GameEventTypes.NewRoundBegins]: event => {
+        NewRoundBegins(event) {
           if (event.round === 0) {
             actions.getUnitGroupsOfPlayer(ownerPlayer)
               .filter(unitGroup => unitGroup.type.defaultModifiers?.isRanged)

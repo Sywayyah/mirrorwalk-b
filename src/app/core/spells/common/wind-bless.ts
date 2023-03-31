@@ -1,7 +1,6 @@
 import { Colors } from '../../assets';
 import { spellPlainDescription } from '../../ui';
 import { Modifiers, UnitGroupInstModel } from '../../unit-types';
-import { SpellEventTypes } from '../spell-events';
 import { SpellActivationType, SpellModel } from '../types';
 
 type State = {
@@ -31,7 +30,7 @@ export const WindBlessBuff: SpellModel<State> = {
     spellConfig: {
       init: ({ events, actions, spellInstance }) => {
         events.on({
-          [SpellEventTypes.SpellPlacedOnUnitGroup]: (event) => {
+          SpellPlacedOnUnitGroup(event) {
             const mods = actions.createModifiers({
               unitGroupBonusAttack: attackBonus,
             });
@@ -45,7 +44,7 @@ export const WindBlessBuff: SpellModel<State> = {
 
             actions.addModifiersToUnitGroup(event.target, mods);
           },
-          [SpellEventTypes.NewRoundBegins]: (event) => {
+          NewRoundBegins(event) {
             const state = spellInstance.state as State;
 
             if (!(--state.roundsLeft)) {

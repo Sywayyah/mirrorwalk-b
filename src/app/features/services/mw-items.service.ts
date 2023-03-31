@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Colors } from 'src/app/core/assets';
-import { GameEventsHandlers, GameEventsMapping, ItemBaseModel, ItemInstanceModel } from 'src/app/core/items';
+import { ItemBaseModel, ItemInstanceModel } from 'src/app/core/items';
 import { PlayerInstanceModel } from 'src/app/core/players';
-import { EventsService } from 'src/app/store';
+import { EventInfo, EventsService } from 'src/app/store';
 import { InitItem } from './events';
+import { State } from './state.service';
 
 /* Unregister All items and spell handlers when Game was over... */
 /*  And not only when game is over, but also when fight is over/item gets unregistered, something like that */
@@ -13,10 +14,10 @@ import { InitItem } from './events';
 })
 export class MwItemsService {
 
-  public itemsHandlersMap: Map<ItemInstanceModel, GameEventsHandlers> = new Map();
 
   constructor(
     private events: EventsService,
+    private state: State,
   ) { }
 
   public createItem<T extends object>(itemBase: ItemBaseModel<T>): ItemInstanceModel {
@@ -44,20 +45,15 @@ export class MwItemsService {
     }));
   }
 
-  public triggerEventForAllItemsHandlers<T extends keyof GameEventsHandlers>(
-    eventType: T,
-    data: GameEventsMapping[T],
-  ): void {
-    this.itemsHandlersMap.forEach(spellHandlers => {
-      (spellHandlers?.[eventType] as (arg: GameEventsMapping[T]) => void)?.(data);
-    });
+  // Later may limit events only to item events
+  public triggerEventForAllItemsHandlers(event: EventInfo): void {
+    this.state.eventHandlers.items.triggerAllHandlersByEvent(event);
   }
 
-  public triggerEventForItemHandlers<T extends keyof GameEventsHandlers>(
-    spell: ItemInstanceModel,
-    eventType: T,
-    data: GameEventsMapping[T],
+  public triggerEventForItemHandlers(
+    item: ItemInstanceModel,
+    event: EventInfo,
   ): void {
-    (this.itemsHandlersMap.get(spell)?.[eventType] as (arg: GameEventsMapping[T]) => void)?.(data);
+    this.state.eventHandlers.items.triggerRefEventHandlers(item, event);
   }
 }

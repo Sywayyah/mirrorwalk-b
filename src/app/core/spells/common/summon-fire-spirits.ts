@@ -1,10 +1,7 @@
-import { DamageType } from '../../api/combat-api';
 import { neutralsFraction } from '../../fractions/neutrals/fraction';
 import { spellDescrElem } from '../../ui';
 import { FireAnimation } from '../../vfx';
-import { SpellEventTypes } from '../spell-events';
 import { SpellActivationType, SpellModel } from '../types';
-import { logDamage } from '../utils';
 
 export const SummonFireSpiritsSpell: SpellModel = {
   name: 'Summon Fire Spirits',
@@ -24,7 +21,7 @@ export const SummonFireSpiritsSpell: SpellModel = {
       getManaCost() { return 3; },
       init({ actions, ownerHero, ownerPlayer, events, vfx, thisSpell }) {
         events.on({
-          [SpellEventTypes.PlayerCastsInstantSpell]: () => {
+          PlayerCastsInstantSpell() {
             const summonedUnitGroup = actions.summonUnitsForPlayer(ownerPlayer, neutralsFraction.getUnitType('FireSpirits'), 4);
 
             vfx.createEffectForUnitGroup(summonedUnitGroup, FireAnimation, { duration: 1000 });

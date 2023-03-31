@@ -26,30 +26,13 @@ import { PlayerInstanceModel } from '../players';
 import { SpellModel } from '../spells';
 import { DescriptionElement } from '../ui';
 import { Modifiers, UnitGroupModel } from '../unit-types';
+import { ItemsEventsRef } from './item-events';
 
 
 export interface ItemRequirementModel<T extends object> {
   type: string;
   value?: number | string | boolean;
   isRequirementMet?: (item: ItemBaseModel<T>, unitGroup: UnitGroupModel) => boolean;
-}
-
-export enum GameEventTypes {
-  NewRoundBegins,
-}
-
-export interface GameEventNewRoundBegins {
-  round: number;
-}
-
-export interface GameEventsMapping {
-  [GameEventTypes.NewRoundBegins]: GameEventNewRoundBegins;
-}
-
-export type GameEventsHandlers = { [K in keyof GameEventsMapping]?: (target: GameEventsMapping[K]) => void };
-
-export interface GameEventsRef {
-  on: (handlers: GameEventsHandlers) => void;
 }
 
 
@@ -88,7 +71,7 @@ export interface ItemBaseModel<StateType extends object = object> {
   config: {
     init: (combatRefs: {
       actions: CombatActionsRef,
-      events: GameEventsRef,
+      events: ItemsEventsRef,
       ownerPlayer: PlayerInstanceModel,
       ownerHero: Hero,
       thisInstance: ItemInstanceModel<StateType>,

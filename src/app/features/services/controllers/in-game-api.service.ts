@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { CombatActionsRef, SpellCreationOptions } from 'src/app/core/api/combat-api';
 import { EffectType, VfxElemEffect } from 'src/app/core/api/vfx-api';
-import { GameEventsHandlers } from 'src/app/core/items';
+import { ItemsEventsHandlers, ItemsEvents, ItemEventTypes } from 'src/app/core/items';
 import { PlayerInstanceModel } from 'src/app/core/players';
-import { SpellEventHandlers, SpellInstance, SpellModel } from 'src/app/core/spells';
+import { SpellEventHandlers, SpellEvents, SpellEventTypes, SpellInstance, SpellModel } from 'src/app/core/spells';
 import { CommonUtils, UnitBase, UnitGroupInstModel } from 'src/app/core/unit-types';
 import { Notify, StoreClient, WireMethod } from 'src/app/store';
 import { VfxService } from '../../shared/components';
@@ -15,6 +15,7 @@ import { MwItemsService } from '../mw-items.service';
 import { MwPlayersService } from '../mw-players.service';
 import { MwSpellsService } from '../mw-spells.service';
 import { MwUnitGroupsService } from '../mw-unit-groups.service';
+import { State } from '../state.service';
 
 @Injectable()
 export class InGameApiController extends StoreClient() {
@@ -27,6 +28,7 @@ export class InGameApiController extends StoreClient() {
     private battleLog: MwBattleLogService,
     private players: MwPlayersService,
     private itemsService: MwItemsService,
+    private state: State,
   ) {
     super();
   }
@@ -46,9 +48,12 @@ export class InGameApiController extends StoreClient() {
       actions: this.createActionsApiRef(),
       events: {
         on: (handlers: SpellEventHandlers) => {
-          const spellHandlers = this.combatInteractor.spellsHandlersMap.get(spell) ?? {};
+          Object.entries(handlers).forEach(([eventName, handler]) => {
+            const event = SpellEvents.getEventByName(eventName as SpellEventTypes);
 
-          this.combatInteractor.spellsHandlersMap.set(spell, { ...spellHandlers, ...handlers });
+            // any for now
+            this.state.eventHandlers.spells.registerHandlerByRef(spell, event as any, handler as any);
+          });
         },
       },
       vfx: {
@@ -75,10 +80,13 @@ export class InGameApiController extends StoreClient() {
     item.baseType.config.init({
       actions: this.createActionsApiRef(),
       events: {
-        on: (newEventHandlers: GameEventsHandlers) => {
-          const prevEventHandlers = this.itemsService.itemsHandlersMap.get(item) ?? {};
+        on: (newEventHandlers: ItemsEventsHandlers) => {
+          Object.entries(newEventHandlers).forEach(([eventName, handler]) => {
+            const event = ItemsEvents.getEventByName(eventName as ItemEventTypes);
 
-          this.itemsService.itemsHandlersMap.set(item, { ...prevEventHandlers, ...newEventHandlers });
+            // any as well
+            this.state.eventHandlers.items.registerHandlerByRef(item, event as any, handler);
+          });
         }
       },
       ownerHero: ownerPlayer.hero,

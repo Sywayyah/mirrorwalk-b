@@ -1,22 +1,21 @@
 import { Injectable } from '@angular/core';
 import { DamageType, PostDamageInfo } from 'src/app/core/api/combat-api/types';
 import { PlayerInstanceModel, PlayerModel } from 'src/app/core/players';
-import { SpellActivationType, SpellEventHandlers, SpellEventsMapping, SpellEventTypes, SpellInstance } from 'src/app/core/spells';
-import { AttackActionHintInfo, ActionHintTypeEnum } from 'src/app/core/ui';
+import { SpellActivationType, SpellEventHandlers, SpellEventType, SpellInstance, spellEvents } from 'src/app/core/spells';
+import { ActionHintTypeEnum, AttackActionHintInfo } from 'src/app/core/ui';
 import { Modifiers, UnitGroupInstModel } from 'src/app/core/unit-types';
 import { CommonUtils } from 'src/app/core/unit-types/utils';
-import { StoreClient } from 'src/app/store';
-import { BattleStateService, FinalDamageInfo, MwPlayersService, MwUnitGroupsService, MwUnitGroupStateService } from './';
+import { EventInfo, StoreClient } from 'src/app/store';
+import { BattleStateService, FinalDamageInfo, MwPlayersService, MwUnitGroupStateService, MwUnitGroupsService } from './';
 import { CombatAttackInteraction, CombatInteractionEnum, CombatInteractionStateEvent, GroupCounterAttacked, GroupDamagedByGroup, GroupDies, GroupSpellsChanged, GroupTakesDamage, InitSpell, PlayerHoversCardEvent } from './events';
 import { ActionHintService } from './mw-action-hint.service';
+import { State } from './state.service';
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class CombatInteractorService extends StoreClient() {
-
-  public spellsHandlersMap: Map<SpellInstance, SpellEventHandlers> = new Map();
   public unitGroupModifiersMap: Map<UnitGroupInstModel, Modifiers[]> = new Map();
 
   constructor(
@@ -25,6 +24,7 @@ export class CombatInteractorService extends StoreClient() {
     private readonly players: MwPlayersService,
     private readonly unitState: MwUnitGroupStateService,
     private readonly units: MwUnitGroupsService,
+    private readonly state: State
   ) {
     super();
     /* Dispell buffs and debuffs when location is left. May change in future. */
@@ -145,10 +145,10 @@ export class CombatInteractorService extends StoreClient() {
     const attacker = !isCounterattack ? attackingGroup : attackedGroup;
     const attacked = !isCounterattack ? attackedGroup : attackingGroup;
 
-    this.triggerEventForAllSpellsHandler(SpellEventTypes.UnitGroupAttacks, {
+    this.triggerEventForAllSpellsHandler(spellEvents.UnitGroupAttacks({
       attacked,
       attacker,
-    });
+    }));
 
     const attackDetails = this.unitState.getDetailedAttackInfo(
       attacker,
@@ -279,14 +279,12 @@ export class CombatInteractorService extends StoreClient() {
     this.units.clearUnitModifiers(target);
   }
 
-  public triggerEventForAllSpellsHandler<T extends keyof SpellEventHandlers>(eventType: T, data: SpellEventsMapping[T]): void {
-    this.spellsHandlersMap.forEach(spellHandlers => {
-      (spellHandlers?.[eventType] as (arg: SpellEventsMapping[T]) => void)?.(data);
-    });
+  public triggerEventForAllSpellsHandler(event: EventInfo): void {
+    this.state.eventHandlers.spells.triggerAllHandlersByEvent(event);
   }
 
-  public triggerEventForSpellHandler<T extends keyof SpellEventHandlers>(spell: SpellInstance, eventType: T, data: SpellEventsMapping[T]): void {
-    (this.spellsHandlersMap.get(spell)?.[eventType] as (arg: SpellEventsMapping[T]) => void)?.(data);
+  public triggerEventForSpellHandler<T extends keyof SpellEventHandlers>(spell: SpellInstance, event: SpellEventType<T>): void {
+    this.state.eventHandlers.spells.triggerRefEventHandlers(spell, event);
   }
 
   public initAllUnitGroupSpells(): void {
@@ -326,14 +324,14 @@ export class CombatInteractorService extends StoreClient() {
     }));
 
     this.initSpell(spell, ownerPlayer);
-    this.triggerEventForSpellHandler(spell, SpellEventTypes.SpellPlacedOnUnitGroup, { target: target });
+    this.triggerEventForSpellHandler(spell, spellEvents.SpellPlacedOnUnitGroup({ target }));
   }
 
   public removeSpellFromUnitGroup(target: UnitGroupInstModel, spell: SpellInstance): void {
     const spellIndex = target.spells.indexOf(spell);
     target.spells.splice(spellIndex, 1);
 
-    this.spellsHandlersMap.delete(spell);
+    this.state.eventHandlers.spells.removeAllHandlersForRef(spell);
 
     this.events.dispatch(GroupSpellsChanged({
       unitGroup: target,
