@@ -1,5 +1,4 @@
 import { spellDescrElem } from '../../ui';
-import { SpellEventTypes } from '../spell-events';
 import { SpellActivationType, SpellModel } from '../types';
 import { canActivateOnEnemyFn, debuffColors } from '../utils';
 
@@ -34,7 +33,7 @@ export const KneelingLightDebuff: SpellModel = {
         });
 
         events.on({
-          [SpellEventTypes.SpellPlacedOnUnitGroup]: (event) => {
+          SpellPlacedOnUnitGroup(event) {
             // vfx.createEffectForUnitGroup(event.target, EnchantAnimation, { duration: 1000 });
             actions.addModifiersToUnitGroup(event.target, mods);
           },
@@ -81,7 +80,7 @@ export const KneelingLight: SpellModel = {
 
       init: ({ events, actions, ownerPlayer }) => {
         events.on({
-          [SpellEventTypes.PlayerTargetsSpell]: (event) => {
+          PlayerTargetsSpell(event) {
             const enchantDebuff = actions.createSpellInstance(KneelingLightDebuff);
             actions.addSpellToUnitGroup(event.target, enchantDebuff, ownerPlayer);
           },

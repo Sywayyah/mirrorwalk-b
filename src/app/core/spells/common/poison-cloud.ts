@@ -3,7 +3,6 @@ import { EffectAnimation } from '../../api/vfx-api';
 import { spellDescrElem } from '../../ui';
 import { CommonUtils } from '../../unit-types';
 import { createAnimation, getDamageParts, getIconElement, getPlainBlurFrames, getReversePulseKeyframes } from '../../vfx';
-import { SpellEventTypes } from '../spell-events';
 import { SpellActivationType, SpellModel } from '../types';
 import { canActivateOnEnemyFn, debuffColors } from '../utils';
 
@@ -105,7 +104,7 @@ export const PoisonCloudDebuff: SpellModel<undefined | { debuffRoundsLeft: numbe
       },
       init({ events, actions, thisSpell, spellInstance, vfx }) {
         events.on({
-          [SpellEventTypes.SpellPlacedOnUnitGroup]: ({ target }) => {
+          SpellPlacedOnUnitGroup({ target }) {
             const debuffData = {
               debuffRoundsLeft: roundsDuration,
             };
@@ -122,7 +121,7 @@ export const PoisonCloudDebuff: SpellModel<undefined | { debuffRoundsLeft: numbe
             actions.historyLog(`${target.type.name} gets negative effect "${thisSpell.name}"`);
 
             events.on({
-              [SpellEventTypes.NewRoundBegins]: (event) => {
+              NewRoundBegins(event) {
 
                 actions.dealDamageTo(target, CommonUtils.randIntInRange(minDamage, maxDamage), DamageType.Magic, (damageInfo) => {
                   actions.historyLog(`Poison deals ${damageInfo.finalDamage} damage to ${target.type.name}, ${damageInfo.unitLoss} units perish`);
@@ -186,7 +185,7 @@ export const PoisonCloudSpell: SpellModel = {
 
       init({ events, actions, ownerPlayer, ownerHero, thisSpell }) {
         events.on({
-          [SpellEventTypes.PlayerTargetsSpell]: event => {
+          PlayerTargetsSpell(event) {
             actions.historyLog(`${ownerHero.name} casts "${thisSpell.name}" against ${event.target.type.name}`);
 
             const poisonDebuffInstance = actions.createSpellInstance(PoisonCloudDebuff);

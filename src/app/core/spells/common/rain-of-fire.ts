@@ -1,7 +1,6 @@
 import { DamageType } from '../../api/combat-api';
 import { spellDescrElem } from '../../ui';
 import { FireAnimation, getDamageParts } from '../../vfx';
-import { SpellEventTypes } from '../spell-events';
 import { SpellActivationType, SpellModel } from '../types';
 import { canActivateOnEnemyFn } from '../utils';
 
@@ -31,7 +30,7 @@ export const RainOfFireSpell: SpellModel = {
       init: ({ events, actions, thisSpell, ownerHero, vfx }) => {
 
         events.on({
-          [SpellEventTypes.PlayerTargetsSpell]: (event) => {
+          PlayerTargetsSpell(event) {
 
             vfx.createEffectForUnitGroup(event.target, FireAnimation, {
               duration: 850,

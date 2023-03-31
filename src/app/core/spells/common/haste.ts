@@ -1,7 +1,6 @@
 import { EffectAnimation } from '../../api/vfx-api';
 import { spellDescrElem } from '../../ui';
 import { createAnimation, getIconElement, getPlainAppearanceFrames, getPlainBlurFrames, getReversePulseKeyframes } from '../../vfx';
-import { SpellEventTypes } from '../spell-events';
 import { SpellActivationType, SpellModel } from '../types';
 import { buffColors, canActivateOnAllyFn } from '../utils';
 
@@ -75,7 +74,7 @@ export const HasteBuff: SpellModel = {
         });
 
         events.on({
-          [SpellEventTypes.SpellPlacedOnUnitGroup]: (event) => {
+          SpellPlacedOnUnitGroup(event) {
             vfx.createEffectForUnitGroup(event.target, HasteAnimation, { duration: 800 });
             actions.addModifiersToUnitGroup(event.target, mods);
           },
@@ -119,7 +118,7 @@ export const HasteSpell: SpellModel = {
 
       init: ({ events, actions, ownerPlayer }) => {
         events.on({
-          [SpellEventTypes.PlayerTargetsSpell]: (event) => {
+          PlayerTargetsSpell(event) {
             const enchantDebuff = actions.createSpellInstance(HasteBuff);
             actions.addSpellToUnitGroup(event.target, enchantDebuff, ownerPlayer);
           },

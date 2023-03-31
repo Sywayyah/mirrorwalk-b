@@ -1,8 +1,7 @@
 import { spellDescrElem } from '../../ui';
 import { EnchantAnimation } from '../../vfx';
-import { SpellEventTypes } from '../spell-events';
-import { SpellModel, SpellActivationType } from '../types';
-import { debuffColors, canActivateOnEnemyFn } from '../utils';
+import { SpellActivationType, SpellModel } from '../types';
+import { canActivateOnEnemyFn, debuffColors } from '../utils';
 
 const damageIncreasePercent = 17;
 
@@ -35,7 +34,7 @@ export const EnchantBuff: SpellModel = {
         });
 
         events.on({
-          [SpellEventTypes.SpellPlacedOnUnitGroup]: (event) => {
+          SpellPlacedOnUnitGroup(event) {
             vfx.createEffectForUnitGroup(event.target, EnchantAnimation, { duration: 1000 });
             actions.addModifiersToUnitGroup(event.target, mods);
           },
@@ -79,7 +78,7 @@ export const EnchantSpell: SpellModel = {
 
       init: ({ events, actions, ownerPlayer }) => {
         events.on({
-          [SpellEventTypes.PlayerTargetsSpell]: (event) => {
+          PlayerTargetsSpell(event) {
             const enchantDebuff = actions.createSpellInstance(EnchantBuff);
             actions.addSpellToUnitGroup(event.target, enchantDebuff, ownerPlayer);
             actions.historyLog('Enemy is enchanted');

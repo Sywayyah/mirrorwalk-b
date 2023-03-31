@@ -1,6 +1,5 @@
 import { ItemInstanceModel, ItemSlotType } from "./types";
 
-
 export interface ExtendedSlotType {
   icon: string;
   name: string;

@@ -36,7 +36,9 @@ export class EventsService {
     this.eventStream$.next(event);
   }
 
-  constructor() { }
+  constructor() {
+    // this.eventStream$.subscribe(event => console.log('[Event]:', event));
+  }
 
   public onEvent<T extends object>(event: EventType<T>): Observable<T> {
     return this.eventStream$.pipe(

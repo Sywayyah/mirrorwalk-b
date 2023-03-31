@@ -39,6 +39,6 @@ export const RoundPlayerCountinuesAttacking = battleEvent();
 
 export const FightNextRoundStarts = battleEvent<NextRoundStarts>();
 
-export const FightEnds = battleEvent<FightEndsEvent>();
+export const FightEnds = battleEvent<FightEndsEvent>('Fight Ends');
 
 export const UnitHealed = battleEvent<UnitHealedEvent>();

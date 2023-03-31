@@ -1,7 +1,6 @@
 import { EffectAnimation } from '../../api/vfx-api';
 import { spellDescrElem } from '../../ui';
 import { createAnimation, getHealParts, getIconElement, getPlainAppearanceFrames, getPlainBlurFrames, getReversePulseKeyframes } from '../../vfx';
-import { SpellEventTypes } from '../spell-events';
 import { SpellActivationType, SpellModel } from '../types';
 import { canActivateOnAllyFn } from '../utils';
 
@@ -88,7 +87,7 @@ export const FirebirdHealSpell: SpellModel = {
       },
       init: ({ events, actions, ownerUnit, vfx }) => {
         events.on({
-          [SpellEventTypes.PlayerTargetsSpell]: (event) => {
+          PlayerTargetsSpell(event) {
             const casterUnit = ownerUnit!;
 
             const healValue = casterUnit.count * healPerBird;

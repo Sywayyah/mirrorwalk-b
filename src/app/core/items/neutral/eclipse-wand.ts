@@ -1,6 +1,6 @@
 import { EnchantBuff } from '../../spells/common';
 import { spellDescrElem } from '../../ui';
-import { ItemBaseModel, GameEventTypes, ItemSlotType } from '../types';
+import { ItemBaseModel, ItemSlotType } from '../types';
 
 export const ItemEclipseWand: ItemBaseModel<{}> = {
   name: 'Eclipse Wand',
@@ -22,7 +22,7 @@ export const ItemEclipseWand: ItemBaseModel<{}> = {
     init: ({ actions, events, ownerPlayer }) => {
 
       events.on({
-        [GameEventTypes.NewRoundBegins]: event => {
+        NewRoundBegins(event) {
           if (event.round === 0) {
             const enemyPlayer = actions.getEnemyPlayer();
             const enemyUnitGroups = actions.getUnitGroupsOfPlayer(enemyPlayer);

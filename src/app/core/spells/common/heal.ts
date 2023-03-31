@@ -1,6 +1,5 @@
 import { EffectAnimation } from '../../api/vfx-api';
 import { createAnimation, getHealParts, getIconElement, getPlainAppearanceFrames, getPlainBlurFrames, getReversePulseKeyframes } from '../../vfx';
-import { SpellEventTypes } from '../spell-events';
 import { SpellActivationType, SpellModel } from '../types';
 import { canActivateOnAllyFn } from '../utils';
 
@@ -75,7 +74,7 @@ export const HealSpell: SpellModel = {
 
       init: ({ events, actions, ownerPlayer, ownerUnit, vfx }) => {
         events.on({
-          [SpellEventTypes.PlayerTargetsSpell]: (event) => {
+          PlayerTargetsSpell(event) {
 
             const healValue = 64;
             const originalCount = event.target.count;

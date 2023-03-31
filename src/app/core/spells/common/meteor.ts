@@ -2,7 +2,6 @@ import { DamageType } from '../../api/combat-api';
 import { spellDescrElem } from '../../ui';
 import { CommonUtils } from '../../unit-types';
 import { createFireAnimation, getDamageParts } from '../../vfx';
-import { SpellEventTypes } from '../spell-events';
 import { SpellActivationType, SpellModel } from '../types';
 
 const minDamage = 82;
@@ -39,7 +38,7 @@ export const MeteorSpell: SpellModel = {
 
       init({ events, actions, thisSpell, ownerHero, vfx }) {
         events.on({
-          [SpellEventTypes.PlayerCastsInstantSpell]: event => {
+          PlayerCastsInstantSpell(event) {
             const randomEnemyGroup = actions.getRandomEnemyPlayerGroup();
 
             const countBeforeDamage = randomEnemyGroup.count;

@@ -1,10 +1,9 @@
 import { DamageType } from '../../api/combat-api';
 import { EffectAnimation } from '../../api/vfx-api';
 import { spellDescrElem } from '../../ui';
-import { createAnimation, getIconElement, getPlainAppearanceFrames, getPlainBlurFrames, getReversePulseKeyframes, getDamageParts } from '../../vfx';
-import { SpellEventTypes } from '../spell-events';
-import { SpellModel, SpellActivationType } from '../types';
-import { debuffColors, canActivateOnEnemyFn } from '../utils';
+import { createAnimation, getDamageParts, getIconElement, getPlainAppearanceFrames, getPlainBlurFrames, getReversePulseKeyframes } from '../../vfx';
+import { SpellActivationType, SpellModel } from '../types';
+import { canActivateOnEnemyFn, debuffColors } from '../utils';
 
 const icon = 'frost-emblem';
 
@@ -79,7 +78,7 @@ export const FrozenArrowDebuff: SpellModel = {
         });
 
         events.on({
-          [SpellEventTypes.SpellPlacedOnUnitGroup]: ({ target }) => {
+          SpellPlacedOnUnitGroup({ target }) {
             vfx.createEffectForUnitGroup(target, FrozenAnimation, { duration: 800 });
             actions.addModifiersToUnitGroup(target, mods);
             actions.historyLog(`${target.type.name} receives ${thisSpell.name} debuff, slowed by ${slow} and gains -${attackPenalty} attack rating penalty.`);
@@ -124,7 +123,7 @@ export const FrostArrowSpell: SpellModel = {
 
       init: ({ events, actions, ownerPlayer, ownerHero, thisSpell, vfx }) => {
         events.on({
-          [SpellEventTypes.PlayerTargetsSpell]: (event) => {
+          PlayerTargetsSpell: (event) => {
             const enchantDebuff = actions.createSpellInstance(FrozenArrowDebuff);
             // not sure about ownerPlayer
             actions.addSpellToUnitGroup(event.target, enchantDebuff, ownerPlayer);
