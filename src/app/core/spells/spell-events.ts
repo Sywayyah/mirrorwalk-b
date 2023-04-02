@@ -4,30 +4,30 @@ import { PlayerInstanceModel } from '../players';
 import { UnitGroupInstModel } from '../unit-types';
 import { SpellInstance } from './types';
 
-export const spellEvents = {
-  PlayerTargetsSpell: createEventType<{ target: UnitGroupInstModel }>(''),
-  SpellPlacedOnUnitGroup: createEventType<{ target: UnitGroupInstModel }>(''),
-  NewRoundBegins: createEventType<{ round: number }>(''),
-  PlayerCastsInstantSpell: createEventType<{ player: PlayerInstanceModel, spell: SpellInstance }>(''),
-  UnitGroupAttacks: createEventType<{
-    attacker: UnitGroupInstModel;
-    attacked: UnitGroupInstModel;
-  }>(''),
-};
 
-export const SpellEvents = createEventsGroup({
+export const SpellEventsGroup = createEventsGroup({
   prefix: 'Spells',
-  events: spellEvents,
+  events: {
+    PlayerTargetsSpell: createEventType<{ target: UnitGroupInstModel }>(''),
+    SpellPlacedOnUnitGroup: createEventType<{ target: UnitGroupInstModel }>(''),
+    NewRoundBegins: createEventType<{ round: number }>(''),
+    PlayerCastsInstantSpell: createEventType<{ player: PlayerInstanceModel, spell: SpellInstance }>(''),
+    UnitGroupAttacks: createEventType<{
+      attacker: UnitGroupInstModel;
+      attacked: UnitGroupInstModel;
+    }>(''),
+  },
 });
 
+export const SpellEvents = SpellEventsGroup.events;
 
 // generalize it
-export type SpellEventTypes = keyof typeof spellEvents;
-export type SpellEvents = typeof spellEvents[SpellEventTypes];
+export type SpellEventTypes = keyof typeof SpellEvents;
+export type SpellEvents = typeof SpellEvents[SpellEventTypes];
 
-export type SpellEventType<K extends SpellEventTypes> = ReturnType<typeof spellEvents[K]>;
+export type SpellEventType<K extends SpellEventTypes> = ReturnType<typeof SpellEvents[K]>;
 
-export type SpellEventHandlers = { [K in SpellEventTypes]?: (target: ReturnType<typeof spellEvents[K]>) => void };
+export type SpellEventHandlers = { [K in keyof typeof SpellEvents]?: (target: ReturnType<typeof SpellEvents[K]>) => void };
 
 
 // batch creation? grouped events? is it going to be useful? Gonna have to consider a couple of things

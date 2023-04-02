@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { spellEvents } from 'src/app/core/spells';
+import { SpellEvents } from 'src/app/core/spells';
 import { Notify, StoreClient, WireMethod } from 'src/app/store';
 import { CombatAttackInteraction, CombatInteractionEnum, CombatInteractionStateEvent, FightNextRoundStarts, FightStarts, GroupAttacked, GroupAttackedEvent, GroupDies, GroupDiesEvent, NextRoundStarts, RoundGroupSpendsTurn, StructCompleted } from '../events';
 import { CombatInteractorService } from '../mw-combat-interactor.service';
@@ -57,7 +57,7 @@ export class CombatController extends StoreClient() {
   @WireMethod(FightNextRoundStarts)
   public resetCooldownsAndEmitNewRoundEventToSpells(event: NextRoundStarts): void {
     this.combatInteractor.triggerEventForAllSpellsHandler(
-      spellEvents.NewRoundBegins({ round: event.round }),
+      SpellEvents.NewRoundBegins({ round: event.round }),
     );
 
     this.combatInteractor.resetAllUnitGroupsCooldowns();
