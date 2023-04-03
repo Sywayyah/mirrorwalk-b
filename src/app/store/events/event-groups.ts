@@ -1,4 +1,4 @@
-import { createEventType, EventType } from './events';
+import { EventType } from './events';
 
 type EventGroupList = Record<string | number, EventType<any>>;
 
@@ -15,9 +15,6 @@ export function createEventsGroup<T extends EventGroupList>({ events, prefix }: 
 
   Object.entries(events).forEach(([eventName, event]) => {
     event.__info.__name = `${prefix}:${eventName}, ${event.__info.__name}`;
-    // event.toString = function () {
-    //   return `[${prefix}] Event:${eventName}`;
-    // };
   });
 
   return {
@@ -26,8 +23,12 @@ export function createEventsGroup<T extends EventGroupList>({ events, prefix }: 
   };
 }
 
-export type KeysOfEventGroup<T extends EventGroup<any>> = keyof T['events'];
+// hmm, maybe some complex type can be returned, and then indexed access be used...
+export type EventNames<T extends EventGroup<any>> = keyof T['events'];
 export type EventsOfGroup<T extends EventGroup<any>> = T['events'][keyof T['events']];
+export type EventTypeByName<T extends EventGroup<any>, K extends keyof T['events']> = ReturnType<T['events'][K]>;
+
+export type EventHandlersMap<T extends EventGroup<any>> = { [K in keyof T['events']]?: (target: ReturnType<T['events'][K]>) => void };
 
 // Api tests:
 

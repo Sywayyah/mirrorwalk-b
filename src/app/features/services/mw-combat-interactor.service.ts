@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { DamageType, PostDamageInfo } from 'src/app/core/api/combat-api/types';
 import { PlayerInstanceModel, PlayerModel } from 'src/app/core/players';
-import { SpellActivationType, SpellEventHandlers, SpellEventType, SpellInstance, SpellEvents } from 'src/app/core/spells';
+import { SpellActivationType, SpellEventHandlers, SpellEventTypeByName, SpellInstance, SpellEvents, SpellEventNames } from 'src/app/core/spells';
 import { ActionHintTypeEnum, AttackActionHintInfo } from 'src/app/core/ui';
 import { Modifiers, UnitGroupInstModel } from 'src/app/core/unit-types';
 import { CommonUtils } from 'src/app/core/unit-types/utils';
@@ -283,7 +283,7 @@ export class CombatInteractorService extends StoreClient() {
     this.state.eventHandlers.spells.triggerAllHandlersByEvent(event);
   }
 
-  public triggerEventForSpellHandler<T extends keyof SpellEventHandlers>(spell: SpellInstance, event: SpellEventType<T>): void {
+  public triggerEventForSpellHandler<T extends SpellEventNames>(spell: SpellInstance, event: SpellEventTypeByName<T>): void {
     this.state.eventHandlers.spells.triggerRefEventHandlers(spell, event);
   }
 

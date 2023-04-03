@@ -1,5 +1,5 @@
 import { createEventType } from 'src/app/store';
-import { createEventsGroup } from 'src/app/store/events/event-groups';
+import { EventTypeByName, EventHandlersMap, EventNames, createEventsGroup } from 'src/app/store/events/event-groups';
 import { PlayerInstanceModel } from '../players';
 import { UnitGroupInstModel } from '../unit-types';
 import { SpellInstance } from './types';
@@ -21,13 +21,12 @@ export const SpellEventsGroup = createEventsGroup({
 
 export const SpellEvents = SpellEventsGroup.events;
 
-// generalize it
-export type SpellEventTypes = keyof typeof SpellEvents;
-export type SpellEvents = typeof SpellEvents[SpellEventTypes];
 
-export type SpellEventType<K extends SpellEventTypes> = ReturnType<typeof SpellEvents[K]>;
+export type SpellGroupType = typeof SpellEventsGroup;
 
-export type SpellEventHandlers = { [K in keyof typeof SpellEvents]?: (target: ReturnType<typeof SpellEvents[K]>) => void };
+export type SpellEventNames = EventNames<SpellGroupType>;
+export type SpellEventTypeByName<K extends SpellEventNames> = EventTypeByName<SpellGroupType, K>;
+export type SpellEventHandlers = EventHandlersMap<SpellGroupType>;
 
 
 // batch creation? grouped events? is it going to be useful? Gonna have to consider a couple of things
