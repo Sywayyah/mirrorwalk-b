@@ -38,7 +38,7 @@ export const KneelingLightDebuff: SpellModel = {
               unitGroupSpeedBonus: -(targetSpeed * (slowingPercent / 100)),
             });
 
-            vfx.createEffectForUnitGroup(event.target, gainedDebuffAnimation('sunbeams', 'rgb(219, 235, 169)'), {
+            vfx.createEffectForUnitGroup(event.target, gainedDebuffAnimation('sunbeams', 'rgb(227, 240, 113)'), {
               duration: 1000,
             });
             actions.addModifiersToUnitGroup(event.target, mods);
