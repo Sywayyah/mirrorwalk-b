@@ -16,7 +16,7 @@ export const TriggersEventGroup = createEventsGroup({
   },
 });
 
-export const TriggerEvents = TriggersEventGroup.events;
+export const Triggers = TriggersEventGroup.events;
 
 /*
 export const PrepareGameEvent = createTriggerEvent<{ gameMode: DefaultGameModes }>(

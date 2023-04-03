@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { PLAYER_COLORS } from 'src/app/core/assets';
 import { heroesDefaultResources } from 'src/app/core/heroes';
 import { PlayerTypeEnum } from 'src/app/core/players';
-import { DefaultGameModes, TriggerEvents } from 'src/app/core/triggers';
+import { DefaultGameModes, Triggers as Triggers } from 'src/app/core/triggers';
 import { Notify, StoreClient, WireMethod } from 'src/app/store';
 import { FightStarts, FightStartsEvent, GameCreated, NeutralStructParams, PlayersInitialized, PlayerStartsFight, StructFightConfirmed, StructSelected, StructSelectedEvent } from '../events';
 import { BattleStateService } from '../mw-battle-state.service';
@@ -60,7 +60,7 @@ export class GameController extends StoreClient() {
     };
 
     this.events.dispatch(PlayersInitialized({}));
-    this.events.dispatch(TriggerEvents.PrepareGameEvent({ gameMode: DefaultGameModes.Normal }));
+    this.events.dispatch(Triggers.PrepareGameEvent({ gameMode: DefaultGameModes.Normal }));
   }
 
   @WireMethod(StructFightConfirmed)
