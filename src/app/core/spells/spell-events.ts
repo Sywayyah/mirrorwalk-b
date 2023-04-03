@@ -1,5 +1,4 @@
-import { createEventType } from 'src/app/store';
-import { EventTypeByName, EventHandlersMap, EventNames, createEventsGroup } from 'src/app/store/events/event-groups';
+import { EventHandlersMap, EventNames, EventTypeByName, createEventType, createEventsGroup } from 'src/app/store';
 import { PlayerInstanceModel } from '../players';
 import { UnitGroupInstModel } from '../unit-types';
 import { SpellInstance } from './types';
