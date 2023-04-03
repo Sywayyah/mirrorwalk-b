@@ -26,7 +26,7 @@ import { PlayerInstanceModel } from '../players';
 import { SpellModel } from '../spells';
 import { DescriptionElement } from '../ui';
 import { Modifiers, UnitGroupModel } from '../unit-types';
-import { ItemsEventsRef } from './item-events';
+import { ItemsEventsHandlers } from './item-events';
 
 
 export interface ItemRequirementModel<T extends object> {
@@ -51,6 +51,10 @@ export interface ItemDescriptionData<T extends object> {
 
 export interface ItemDescription {
   descriptions: DescriptionElement[];
+}
+
+export interface ItemsEventsRef {
+  on: (handlers: ItemsEventsHandlers) => void;
 }
 
 export interface ItemBaseModel<StateType extends object = object> {

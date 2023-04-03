@@ -82,6 +82,52 @@ const getBwDefaultStyles = () => {
   };
 };
 
+export function gainedDebuffAnimation(icon: string, color: string): EffectAnimation {
+  return createAnimation([
+    [
+      getIconElement(icon, 'bw-1'),
+      getReversePulseKeyframes(),
+      getBwDefaultStyles(),
+    ],
+    [
+      getIconElement(icon, 'bw-2'),
+      getReversePulseKeyframes(0.2),
+      getBwDefaultStyles(),
+    ],
+    [
+      getIconElement(icon, 'bw-3'),
+      getReversePulseKeyframes(0.4),
+      getBwDefaultStyles(),
+    ],
+    [
+      getIconElement(icon, 'bw-blur'),
+      [
+        {
+          filter: 'blur(10px)',
+        },
+        {
+          filter: 'blur(10px)',
+          offset: 0.4,
+          opacity: 1,
+        },
+        {
+          filter: 'blur(0px)',
+          opacity: 0,
+          transform: 'translate(-50%, -50%) scale(1)',
+
+        }
+      ],
+      {
+        transform: 'translate(-50%, -50%) scale(1.5)',
+        fontSize: '64px',
+        color,
+        filter: 'blur(6px)',
+        opacity: '0',
+        mixBlendMode: 'hard-light'
+      },
+    ],
+  ]);
+}
 
 export const FrightAnimation: EffectAnimation = createAnimation([
   [

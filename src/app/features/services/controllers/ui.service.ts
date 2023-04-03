@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { spellEvents } from 'src/app/core/spells';
+import { SpellEvents } from 'src/app/core/spells';
 import { ActionHintTypeEnum, SpellTargetActionHint } from 'src/app/core/ui';
 import { UnitGroupInstModel } from 'src/app/core/unit-types';
 import { Notify, StoreClient, WireMethod } from 'src/app/store';
@@ -116,7 +116,7 @@ export class UiController extends StoreClient() {
   public playerTargetsSpell(event: PlayerTargetsSpellEvent): void {
     this.combatInteractor.triggerEventForSpellHandler(
       event.spell,
-      spellEvents.PlayerTargetsSpell({
+      SpellEvents.PlayerTargetsSpell({
         target: event.target,
       }),
     );
@@ -129,7 +129,7 @@ export class UiController extends StoreClient() {
   public playerUsesInstantSpell(event: PlayerTargetsInstantSpellEvent): void {
     this.combatInteractor.triggerEventForSpellHandler(
       event.spell,
-      spellEvents.PlayerCastsInstantSpell({
+      SpellEvents.PlayerCastsInstantSpell({
         player: event.player,
         spell: event.spell,
       }),

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { DamageType, PostDamageInfo } from 'src/app/core/api/combat-api/types';
 import { PlayerInstanceModel, PlayerModel } from 'src/app/core/players';
-import { SpellActivationType, SpellEventHandlers, SpellEventType, SpellInstance, spellEvents } from 'src/app/core/spells';
+import { SpellActivationType, SpellEventHandlers, SpellEventTypeByName, SpellInstance, SpellEvents, SpellEventNames } from 'src/app/core/spells';
 import { ActionHintTypeEnum, AttackActionHintInfo } from 'src/app/core/ui';
 import { Modifiers, UnitGroupInstModel } from 'src/app/core/unit-types';
 import { CommonUtils } from 'src/app/core/unit-types/utils';
@@ -145,7 +145,7 @@ export class CombatInteractorService extends StoreClient() {
     const attacker = !isCounterattack ? attackingGroup : attackedGroup;
     const attacked = !isCounterattack ? attackedGroup : attackingGroup;
 
-    this.triggerEventForAllSpellsHandler(spellEvents.UnitGroupAttacks({
+    this.triggerEventForAllSpellsHandler(SpellEvents.UnitGroupAttacks({
       attacked,
       attacker,
     }));
@@ -283,7 +283,7 @@ export class CombatInteractorService extends StoreClient() {
     this.state.eventHandlers.spells.triggerAllHandlersByEvent(event);
   }
 
-  public triggerEventForSpellHandler<T extends keyof SpellEventHandlers>(spell: SpellInstance, event: SpellEventType<T>): void {
+  public triggerEventForSpellHandler<T extends SpellEventNames>(spell: SpellInstance, event: SpellEventTypeByName<T>): void {
     this.state.eventHandlers.spells.triggerRefEventHandlers(spell, event);
   }
 
@@ -324,7 +324,7 @@ export class CombatInteractorService extends StoreClient() {
     }));
 
     this.initSpell(spell, ownerPlayer);
-    this.triggerEventForSpellHandler(spell, spellEvents.SpellPlacedOnUnitGroup({ target }));
+    this.triggerEventForSpellHandler(spell, SpellEvents.SpellPlacedOnUnitGroup({ target }));
   }
 
   public removeSpellFromUnitGroup(target: UnitGroupInstModel, spell: SpellInstance): void {

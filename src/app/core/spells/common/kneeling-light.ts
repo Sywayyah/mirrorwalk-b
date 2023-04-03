@@ -1,8 +1,10 @@
 import { spellDescrElem } from '../../ui';
+import { Modifiers } from '../../unit-types';
+import { FrightAnimation, gainedDebuffAnimation } from '../../vfx';
 import { SpellActivationType, SpellModel } from '../types';
 import { canActivateOnEnemyFn, debuffColors } from '../utils';
 
-const slowingBy = 4;
+const slowingPercent = 50;
 
 export const KneelingLightDebuff: SpellModel = {
   name: 'Slowed',
@@ -14,7 +16,7 @@ export const KneelingLightDebuff: SpellModel = {
   getDescription(data) {
     return {
       descriptions: [
-        spellDescrElem(`Unit group is slowed down by ${slowingBy}.`),
+        spellDescrElem(`Unit group is slowed down by ${slowingPercent}%.`),
       ],
     }
   },
@@ -28,13 +30,17 @@ export const KneelingLightDebuff: SpellModel = {
       },
 
       init: ({ events, actions, vfx }) => {
-        const mods = actions.createModifiers({
-          unitGroupSpeedBonus: -slowingBy,
-        });
-
         events.on({
           SpellPlacedOnUnitGroup(event) {
-            // vfx.createEffectForUnitGroup(event.target, EnchantAnimation, { duration: 1000 });
+            const targetSpeed = event.target.type.baseStats.speed;
+
+            const mods: Modifiers = actions.createModifiers({
+              unitGroupSpeedBonus: -(targetSpeed * (slowingPercent / 100)),
+            });
+
+            vfx.createEffectForUnitGroup(event.target, gainedDebuffAnimation('sunbeams', 'rgb(227, 240, 113)'), {
+              duration: 1000,
+            });
             actions.addModifiersToUnitGroup(event.target, mods);
           },
         })
@@ -53,12 +59,11 @@ export const KneelingLight: SpellModel = {
   getDescription(data) {
     return {
       descriptions: [
-        spellDescrElem(`Makes light so heavy for the enemy target that it loses ${slowingBy} speed.`),
+        spellDescrElem(`Makes light so heavy for the enemy target that it loses ${slowingPercent}% of the speed.`),
       ],
     }
   },
   activationType: SpellActivationType.Target,
-  description: `Makes light so heavy for the enemy target that it loses ${slowingBy} speed.`,
   type: {
     spellInfo: {
       name: 'Kneeling light',

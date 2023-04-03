@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { CombatActionsRef, SpellCreationOptions } from 'src/app/core/api/combat-api';
 import { EffectType, VfxElemEffect } from 'src/app/core/api/vfx-api';
-import { ItemsEventsHandlers, ItemsEvents, ItemEventTypes } from 'src/app/core/items';
+import { ItemsEventsHandlers, ItemsEventsGroup, ItemEventNames } from 'src/app/core/items';
 import { PlayerInstanceModel } from 'src/app/core/players';
-import { SpellEventHandlers, SpellEvents, SpellEventTypes, SpellInstance, SpellModel } from 'src/app/core/spells';
+import { SpellEventHandlers, SpellEventsGroup, SpellEventNames, SpellInstance, SpellModel } from 'src/app/core/spells';
 import { CommonUtils, UnitBase, UnitGroupInstModel } from 'src/app/core/unit-types';
 import { Notify, StoreClient, WireMethod } from 'src/app/store';
 import { VfxService } from '../../shared/components';
@@ -49,7 +49,7 @@ export class InGameApiController extends StoreClient() {
       events: {
         on: (handlers: SpellEventHandlers) => {
           Object.entries(handlers).forEach(([eventName, handler]) => {
-            const event = SpellEvents.getEventByName(eventName as SpellEventTypes);
+            const event = SpellEventsGroup.getEventByName(eventName as SpellEventNames);
 
             // any for now
             this.state.eventHandlers.spells.registerHandlerByRef(spell, event as any, handler as any);
@@ -82,7 +82,7 @@ export class InGameApiController extends StoreClient() {
       events: {
         on: (newEventHandlers: ItemsEventsHandlers) => {
           Object.entries(newEventHandlers).forEach(([eventName, handler]) => {
-            const event = ItemsEvents.getEventByName(eventName as ItemEventTypes);
+            const event = ItemsEventsGroup.getEventByName(eventName as ItemEventNames);
 
             // any as well
             this.state.eventHandlers.items.registerHandlerByRef(item, event as any, handler);

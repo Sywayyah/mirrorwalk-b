@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { StructureDescription, ViewStructure } from 'src/app/core/locations';
 import { PlayerInstanceModel } from 'src/app/core/players';
 import { NeutralCampStructure, NeutralSite, StructureGeneratorModel, StructureModel, StructureTypeEnum } from 'src/app/core/structures';
-import { GamePreparationFinished, GamePreparedEvent } from 'src/app/core/triggers';
+import { GamePreparedEvent, Triggers } from 'src/app/core/triggers';
 import { UnitGroupInstModel } from 'src/app/core/unit-types';
 import { StoreClient, WireMethod } from 'src/app/store';
 import { MwPlayersService, MwUnitGroupsService } from './';
@@ -38,7 +38,7 @@ export class MwStructuresService extends StoreClient() {
     super();
   }
 
-  @WireMethod(GamePreparationFinished)
+  @WireMethod(Triggers.GamePreparationFinished)
   public initStructures(event: GamePreparedEvent): void {
     this.neutralPlayer = this.playersService.getNeutralPlayer();
 

@@ -1,9 +1,9 @@
 import { structsPreset1 } from '../../locations';
-import { GamePreparationFinished, PrepareGameEvent } from '../events/events';
+import { Triggers } from '../events/events';
 import { TriggersRegistry } from '../registry';
 import { DefaultGameModes } from '../types';
 
-TriggersRegistry.register(PrepareGameEvent, {
+TriggersRegistry.register(Triggers.PrepareGameEvent, {
   // supply some more api here
   fn: (event: { gameMode: DefaultGameModes }, { events }) => {
     if (event.gameMode !== DefaultGameModes.Normal) {
@@ -12,6 +12,6 @@ TriggersRegistry.register(PrepareGameEvent, {
 
     console.log('Structures are prepared.');
 
-    events.dispatch(GamePreparationFinished({ structures: structsPreset1 }));
+    events.dispatch(Triggers.GamePreparationFinished({ structures: structsPreset1 }));
   },
 });
