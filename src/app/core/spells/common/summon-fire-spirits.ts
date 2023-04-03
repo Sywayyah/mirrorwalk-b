@@ -3,6 +3,8 @@ import { spellDescrElem } from '../../ui';
 import { FireAnimation } from '../../vfx';
 import { SpellActivationType, SpellModel } from '../types';
 
+const unitCount = 4;
+
 export const SummonFireSpiritsSpell: SpellModel = {
   name: 'Summon Fire Spirits',
   activationType: SpellActivationType.Instant,
@@ -12,7 +14,7 @@ export const SummonFireSpiritsSpell: SpellModel = {
   getDescription(data) {
     return {
       descriptions: [
-        spellDescrElem(`Summons ${4} Fire Spirits that fight on your side.`),
+        spellDescrElem(`Summons ${unitCount} Fire Spirits that fight on your side.`),
       ],
     }
   },
@@ -22,7 +24,7 @@ export const SummonFireSpiritsSpell: SpellModel = {
       init({ actions, ownerHero, ownerPlayer, events, vfx, thisSpell }) {
         events.on({
           PlayerCastsInstantSpell() {
-            const summonedUnitGroup = actions.summonUnitsForPlayer(ownerPlayer, neutralsFraction.getUnitType('FireSpirits'), 4);
+            const summonedUnitGroup = actions.summonUnitsForPlayer(ownerPlayer, neutralsFraction.getUnitType('FireSpirits'), unitCount);
 
             vfx.createEffectForUnitGroup(summonedUnitGroup, FireAnimation, { duration: 1000 });
 
