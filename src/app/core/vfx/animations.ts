@@ -1,6 +1,6 @@
 import { EffectAnimation } from '../api/vfx-api';
-import { createFireAnimation } from './templates';
-import { createAnimation, getIconElement, getReversePulseKeyframes, getCustomizableElement, getPlainAppearanceFrames, getPlainBlurFrames, getPlainPulseFrames } from './utils';
+import { frontStackingBuffAnimation, simpleConvergentBuffAnimation } from './templates';
+import { createAnimation, getCustomizableElement, getIconElement, getPlainAppearanceFrames, getPlainBlurFrames, getPlainPulseFrames } from './utils';
 
 export const LightningAnimation: EffectAnimation = createAnimation([
   [
@@ -67,112 +67,12 @@ export const LightningAnimation: EffectAnimation = createAnimation([
   ],
 ]);
 
-export const FireAnimation: EffectAnimation = createFireAnimation('fire');
+export const FireAnimation: EffectAnimation = simpleConvergentBuffAnimation('fire');
 
 
-const getBwDefaultStyles = () => {
-  // const transform = 'translate(-50%, -100%) scale(1)';
-  const transform = 'translate(-50%, -50%) scale(3)';
 
-  return {
-    transform: transform,
-    fontSize: '64px',
-    color: 'rgb(213 197 223)',
-    opacity: '0',
-  };
-};
 
-export function gainedDebuffAnimation(icon: string, color: string): EffectAnimation {
-  return createAnimation([
-    [
-      getIconElement(icon, 'bw-1'),
-      getReversePulseKeyframes(),
-      getBwDefaultStyles(),
-    ],
-    [
-      getIconElement(icon, 'bw-2'),
-      getReversePulseKeyframes(0.2),
-      getBwDefaultStyles(),
-    ],
-    [
-      getIconElement(icon, 'bw-3'),
-      getReversePulseKeyframes(0.4),
-      getBwDefaultStyles(),
-    ],
-    [
-      getIconElement(icon, 'bw-blur'),
-      [
-        {
-          filter: 'blur(10px)',
-        },
-        {
-          filter: 'blur(10px)',
-          offset: 0.4,
-          opacity: 1,
-        },
-        {
-          filter: 'blur(0px)',
-          opacity: 0,
-          transform: 'translate(-50%, -50%) scale(1)',
-
-        }
-      ],
-      {
-        transform: 'translate(-50%, -50%) scale(1.5)',
-        fontSize: '64px',
-        color,
-        filter: 'blur(6px)',
-        opacity: '0',
-        mixBlendMode: 'hard-light'
-      },
-    ],
-  ]);
-}
-
-export const FrightAnimation: EffectAnimation = createAnimation([
-  [
-    getIconElement('batwings', 'bw-1'),
-    getReversePulseKeyframes(),
-    getBwDefaultStyles(),
-  ],
-  [
-    getIconElement('batwings', 'bw-2'),
-    getReversePulseKeyframes(0.2),
-    getBwDefaultStyles(),
-  ],
-  [
-    getIconElement('batwings', 'bw-3'),
-    getReversePulseKeyframes(0.4),
-    getBwDefaultStyles(),
-  ],
-  [
-    getIconElement('batwings', 'bw-blur'),
-    [
-      {
-        filter: 'blur(10px)',
-      },
-      {
-        filter: 'blur(10px)',
-        offset: 0.4,
-        opacity: 1,
-      },
-      {
-        filter: 'blur(0px)',
-        opacity: 0,
-        transform: 'translate(-50%, -50%) scale(1)',
-
-      }
-    ],
-    {
-      transform: 'translate(-50%, -50%) scale(1.5)',
-      fontSize: '64px',
-      color: 'rgba(218, 137, 204, 0.78)',
-      filter: 'blur(6px)',
-      opacity: '0',
-      mixBlendMode: 'hard-light'
-    },
-  ],
-]);
+export const FrightAnimation: EffectAnimation = frontStackingBuffAnimation('batwings', 'rgba(218, 137, 204, 0.78)');
 
 export const FloatingMessageAnimation: EffectAnimation = createAnimation([
   [

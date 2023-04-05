@@ -1,7 +1,7 @@
 import { DamageType } from '../../api/combat-api';
 import { spellDescrElem } from '../../ui';
 import { CommonUtils } from '../../unit-types';
-import { createFireAnimation, getDamageParts } from '../../vfx';
+import { simpleConvergentBuffAnimation, getDamageParts } from '../../vfx';
 import { SpellActivationType, SpellModel } from '../types';
 
 const minDamage = 82;
@@ -45,7 +45,7 @@ export const MeteorSpell: SpellModel = {
 
             vfx.createEffectForUnitGroup(
               randomEnemyGroup,
-              createFireAnimation('burning-meteor'),
+              simpleConvergentBuffAnimation('burning-meteor'),
               { duration: 1000 },
             );
 

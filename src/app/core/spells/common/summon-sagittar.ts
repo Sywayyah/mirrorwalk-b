@@ -1,6 +1,6 @@
 import { constellationFraction } from '../../fractions/constellation/fraction';
 import { spellDescrElem } from '../../ui';
-import { FireAnimation } from '../../vfx';
+import { FireAnimation, simpleConvergentBuffAnimation } from '../../vfx';
 import { SpellActivationType, SpellModel } from '../types';
 
 const unitCount = 4;
@@ -9,7 +9,7 @@ export const SummonSagittarSpell: SpellModel = {
   name: 'Summon Sagittar',
   activationType: SpellActivationType.Instant,
   icon: {
-    icon: 'sagittarius',
+    icon: 'arrow-cluster',
   },
   getDescription(data) {
     return {
@@ -26,7 +26,7 @@ export const SummonSagittarSpell: SpellModel = {
           PlayerCastsInstantSpell() {
             const summonedUnitGroup = actions.summonUnitsForPlayer(ownerPlayer, constellationFraction.getUnitType('Sagittar'), unitCount);
 
-            vfx.createEffectForUnitGroup(summonedUnitGroup, FireAnimation, { duration: 1000 });
+            vfx.createEffectForUnitGroup(summonedUnitGroup, simpleConvergentBuffAnimation('arrow-cluster', 'rgb(190, 190, 231)'), { duration: 1000 });
           },
         })
       },

@@ -5,31 +5,32 @@
 // @import url('../node_modules/rpg-awesome/css/rpg-awesome.css');
 
 body {
-    font-family: 'Segoe UI';
-    margin: 0;
+  font-family: 'Segoe UI';
+  margin: 0;
+  // color: rgb(190, 190, 231);
 }
 
 .cannot-target .card {
-    cursor: not-allowed !important;
+  cursor: not-allowed !important;
 }
 
 .icon-label {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .tooltip-icon {
-    height: 32px;
-    width: 32px;
-    overflow: hidden;
-    font-size: 28px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  height: 32px;
+  width: 32px;
+  overflow: hidden;
+  font-size: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .mod-text {
-    font-weight: 600;
-    text-shadow: 1px 1px rgba(0, 0, 0, 0.334);
+  font-weight: 600;
+  text-shadow: 1px 1px rgba(0, 0, 0, 0.334);
 }
