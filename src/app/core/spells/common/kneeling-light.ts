@@ -1,16 +1,17 @@
 import { spellDescrElem } from '../../ui';
 import { Modifiers } from '../../unit-types';
-import { FrightAnimation, gainedDebuffAnimation } from '../../vfx';
+import { frontStackingBuffAnimation } from '../../vfx';
 import { SpellActivationType, SpellModel } from '../types';
 import { canActivateOnEnemyFn, debuffColors } from '../utils';
 
 const slowingPercent = 50;
+const spellIcon = 'player-despair';
 
 export const KneelingLightDebuff: SpellModel = {
   name: 'Slowed',
   activationType: SpellActivationType.Debuff,
   icon: {
-    icon: 'sunbeams',
+    icon: spellIcon,
     ...debuffColors,
   },
   getDescription(data) {
@@ -38,7 +39,7 @@ export const KneelingLightDebuff: SpellModel = {
               unitGroupSpeedBonus: -(targetSpeed * (slowingPercent / 100)),
             });
 
-            vfx.createEffectForUnitGroup(event.target, gainedDebuffAnimation('sunbeams', 'rgb(227, 240, 113)'), {
+            vfx.createEffectForUnitGroup(event.target, frontStackingBuffAnimation('player-despair', 'rgb(227, 240, 113)'), {
               duration: 1000,
             });
             actions.addModifiersToUnitGroup(event.target, mods);
@@ -53,7 +54,7 @@ export const KneelingLight: SpellModel = {
   name: 'Kneeling Light',
   icon: {
     // iconClr: 'rgb(235 142 178)',
-    icon: 'sunbeams',
+    icon: spellIcon,
   },
 
   getDescription(data) {
