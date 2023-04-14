@@ -1,4 +1,5 @@
 import { structsPreset1 } from '../../locations';
+import { LevelMap } from '../../maps';
 import { Triggers } from '../events/events';
 import { TriggersRegistry } from '../registry';
 import { DefaultGameModes } from '../types';
@@ -12,6 +13,11 @@ TriggersRegistry.register(Triggers.PrepareGameEvent, {
 
     console.log('Structures are prepared.');
 
-    events.dispatch(Triggers.GamePreparationFinished({ structures: structsPreset1 }));
+    const gameMap = new LevelMap({
+      mapDimensions: { heightInCells: 11, widthInCells: 22 },
+      structures: structsPreset1,
+    });
+
+    events.dispatch(Triggers.GamePreparationFinished({ map: gameMap }));
   },
 });

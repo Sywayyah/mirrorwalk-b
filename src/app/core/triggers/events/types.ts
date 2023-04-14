@@ -1,5 +1,5 @@
-import { StructureDescription } from '../../locations';
+import { LevelMap } from '../../maps';
 
 export interface GamePreparedEvent {
-  structures: StructureDescription[];
+  map: LevelMap;
 }
