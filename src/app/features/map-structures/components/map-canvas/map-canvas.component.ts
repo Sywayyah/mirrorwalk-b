@@ -2,9 +2,9 @@ import { Component, ElementRef, EventEmitter, NgZone, OnInit, Output, Renderer2,
 import { fromEvent, merge } from 'rxjs';
 import { map, switchMap, take, takeUntil } from 'rxjs/operators';
 import { CELL_SIZE, LevelMap } from 'src/app/core/maps';
-import { MapPanCameraCenterTo } from 'src/app/features/services/events';
+import { MapPanCameraCenterTo, PanMapCameraCenterAction } from 'src/app/features/services/events';
 import { State } from 'src/app/features/services/state.service';
-import { StoreClient } from 'src/app/store';
+import { StoreClient, WireMethod } from 'src/app/store';
 
 export interface MapDragEvent {
   finalPosX: number;
@@ -20,18 +20,32 @@ export class MapCanvasComponent extends StoreClient() implements OnInit {
   @ViewChild('mapCanvas', { static: true })
   public mapCanvasRef!: ElementRef;
 
+  @ViewChild('underlay', { static: true })
+  public underlayRef!: ElementRef;
+
   @Output()
   public mapDragEvent = new EventEmitter<MapDragEvent>();
 
   private canvasElem!: HTMLCanvasElement;
   private canvasCtx!: CanvasRenderingContext2D;
 
+  private underlayElem!: HTMLElement;
+
+  private hostElem!: HTMLElement;
+
   private currentMap: LevelMap = this.state.mapsState.currentMap;
+
+  private windowWidth = 0;
+  private windowHeight = 0;
+
+  private windowWidthHalf = 0;
+  private windowHeightHalf = 0;
 
   private mapTotalWidth = 0;
   private mapTotalHeight = 0;
 
   constructor(
+    private readonly hostRef: ElementRef,
     private readonly state: State,
     private readonly ngZone: NgZone,
     private readonly renderer: Renderer2,
@@ -40,37 +54,41 @@ export class MapCanvasComponent extends StoreClient() implements OnInit {
   }
 
   ngOnInit(): void {
+    this.hostElem = this.hostRef.nativeElement;
+
     this.canvasElem = this.mapCanvasRef.nativeElement;
     this.canvasCtx = this.canvasElem.getContext('2d')!;
 
+    this.underlayElem = this.underlayRef.nativeElement;
+
+    this.setupWindowResizeListener();
     this.renderMapCellsGrid();
     this.setUpMapDragging();
     this.resetCanvasPosition();
-    // ideally, this should be underlying elem, not body
-    // document.querySelector('body')!.style.background = 'gainsboro';
+    this.initUnderlaySize();
+  }
 
-    // Basic camera pan
-    this.events.onEvent(MapPanCameraCenterTo).pipe(this.untilDestroyed).subscribe((event) => {
-      console.log(`[Map View]: Pan camera center to`, event);
+  @WireMethod(MapPanCameraCenterTo)
+  public panCameraCenterTo(action: PanMapCameraCenterAction): void {
+    console.log(`[Map View]: Pan camera center to`, action);
 
-      const screenWidthHalf = window.innerWidth / 2;
-      const screenHeightHalf = window.innerHeight / 2;
+    const finalPosX = -(action.x - this.windowWidthHalf);
+    const finalPosY = -(action.y - this.windowHeightHalf);
 
-      const finalPosX = -(event.x - screenWidthHalf);
-      const finalPosY = -(event.y - screenHeightHalf);
+    this.setMapElementsPosition(finalPosX, finalPosY);
 
-      this.panCamera(finalPosX, finalPosY);
+    this.mapDragEvent.emit({ finalPosX, finalPosY });
+  }
 
-      this.mapDragEvent.emit({ finalPosX, finalPosY });
-    });
+  private initUnderlaySize(): void {
+    // this.renderer.setStyle(this.underlayElem, 'width', `${}`);
   }
 
   private setUpMapDragging(): void {
     this.ngZone.runOutsideAngular(() => {
-      fromEvent(this.canvasElem, 'mousedown').pipe(
+      fromEvent(this.hostElem, 'mousedown').pipe(
         switchMap((mouseDown) => {
           const mouseDownEvent = mouseDown as MouseEvent;
-          console.log(this.canvasElem.style.left)
           const mapPosX = parseInt(this.canvasElem.style.left);
           const mapPosY = parseInt(this.canvasElem.style.top);
 
@@ -90,9 +108,8 @@ export class MapCanvasComponent extends StoreClient() implements OnInit {
         }),
         this.untilDestroyed,
       ).subscribe(mouseDragEvent => {
-        // can be calculated on window resize event and stored as props
-        const screenWidthHalf = window.innerWidth / 2;
-        const screenHeightHalf = window.innerHeight / 2;
+        const screenWidthHalf = this.windowWidthHalf;
+        const screenHeightHalf = this.windowHeightHalf;
 
         const targetPosX = mouseDragEvent.mapPosX + mouseDragEvent.xDragOffset;
         const targetPosY = mouseDragEvent.mapPosY + mouseDragEvent.yDragOffset;
@@ -113,16 +130,12 @@ export class MapCanvasComponent extends StoreClient() implements OnInit {
           finalPosY = -(this.mapTotalHeight - screenHeightHalf);
         }
 
+        this.state.mapsState.cameraCenterPos.x = finalPosX * -1 + screenWidthHalf;
+        this.state.mapsState.cameraCenterPos.y = finalPosY * -1 + screenHeightHalf;
 
-        // todo: these are seem to be coordinates of top-left corner for now
-        //  these might better represent center of camera
-        this.state.mapsState.cameraPos.x = finalPosX;
-        this.state.mapsState.cameraPos.y = finalPosY;
+        this.setMapElementsPosition(finalPosX, finalPosY);
 
-        this.panCamera(finalPosX, finalPosY);
-
-        // interestingly enough. It looks like having emit inside
-        //  run outside Angular doesn't cause CD to trigger.
+        // Emit from ngZone.runOutsideAngular doesn't trigger cd and markForCheck
         this.mapDragEvent.emit({
           finalPosX,
           finalPosY,
@@ -131,7 +144,7 @@ export class MapCanvasComponent extends StoreClient() implements OnInit {
     });
   }
 
-  private panCamera(x: number, y: number): void {
+  private setMapElementsPosition(x: number, y: number): void {
     this.renderer.setStyle(this.canvasElem, 'left', `${x}px`);
     this.renderer.setStyle(this.canvasElem, 'top', `${y}px`);
   }
@@ -169,5 +182,26 @@ export class MapCanvasComponent extends StoreClient() implements OnInit {
     canvas2d.lineWidth = 0.5;
     canvas2d.strokeStyle = "gray";
     canvas2d.stroke();
+  }
+
+  private setupWindowResizeListener(): void {
+    this.updateWindowSizeData();
+
+    this.ngZone.runOutsideAngular(() => {
+      fromEvent(window, 'resize').pipe(this.untilDestroyed).subscribe(() => {
+        this.updateWindowSizeData();
+
+        const cameraState = this.state.mapsState.cameraCenterPos;
+        this.panCameraCenterTo(cameraState);
+      });
+    });
+  }
+
+  private updateWindowSizeData(): void {
+    this.windowWidth = window.innerWidth;
+    this.windowHeight = window.innerHeight;
+
+    this.windowWidthHalf = this.windowWidth / 2;
+    this.windowHeightHalf = this.windowHeight / 2;
   }
 }

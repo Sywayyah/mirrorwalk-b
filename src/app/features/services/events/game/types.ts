@@ -13,4 +13,4 @@ export type InitItemAction = { item: ItemInstanceModel, ownerPlayer: PlayerInsta
 export type PlayerEquipsItemAction = { player: PlayerInstanceModel, item: ItemInstanceModel };
 export type PlayerUnequipsItemAction = { player: PlayerInstanceModel, item: ItemInstanceModel };
 
-export type PanMapCameraAction = { x: number; y: number; };
+export type PanMapCameraCenterAction = { x: number; y: number; };

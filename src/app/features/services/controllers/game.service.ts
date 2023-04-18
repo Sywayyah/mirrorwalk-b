@@ -31,7 +31,7 @@ export class GameController extends StoreClient() {
     this.state.mapsState = {
       currentMap: event.map,
       maps: [event.map],
-      cameraPos: {
+      cameraCenterPos: {
         x: 0,
         y: 0,
         cameraInitialized: false,

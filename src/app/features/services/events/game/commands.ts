@@ -1,5 +1,5 @@
 import { eventsForPrefix } from 'src/app/store';
-import { PanMapCameraAction } from './types';
+import { PanMapCameraCenterAction } from './types';
 
 
 const commands = eventsForPrefix('[Commands]');
@@ -9,4 +9,4 @@ const commands = eventsForPrefix('[Commands]');
 export const CleanUpHandlersOnFightEnd = commands('Clear spells and items registries on fight end');
 
 // Maybe create Map events.
-export const MapPanCameraCenterTo = commands<PanMapCameraAction>('Pan camera on the map');
+export const MapPanCameraCenterTo = commands<PanMapCameraCenterAction>('Pan camera on the map');
