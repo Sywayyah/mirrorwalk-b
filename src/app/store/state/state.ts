@@ -44,7 +44,7 @@ export function StoreClient() {
           case 'wire':
             this.events.onEvent(event)
               .pipe(
-                this.untilDestroyed.bind(self),
+                this.untilDestroyed,
               )
               .subscribe(val => {
                 method.apply(this, [val]);
@@ -53,7 +53,7 @@ export function StoreClient() {
           case 'notify':
             this.events.onEvent(event)
               .pipe(
-                this.untilDestroyed.bind(self),
+                this.untilDestroyed,
               )
               .subscribe(() => {
                 method.apply(this);
@@ -75,7 +75,7 @@ export function StoreClient() {
       this.plainSubscriptions.unsubscribe();
     }
 
-    public untilDestroyed<T>(source$: Observable<T>): Observable<T> {
+    public untilDestroyed = <T>(source$: Observable<T>): Observable<T> => {
       return source$.pipe(
         takeUntil(this.destroyed$),
       );

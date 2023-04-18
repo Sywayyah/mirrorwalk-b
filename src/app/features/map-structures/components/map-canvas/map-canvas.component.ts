@@ -2,10 +2,9 @@ import { Component, ElementRef, EventEmitter, NgZone, OnInit, Output, Renderer2,
 import { fromEvent, merge } from 'rxjs';
 import { map, switchMap, take, takeUntil } from 'rxjs/operators';
 import { CELL_SIZE, LevelMap } from 'src/app/core/maps';
-import { MwStructuresService } from 'src/app/features/services';
-import { MapPanCamera } from 'src/app/features/services/events';
+import { MapPanCameraCenterTo } from 'src/app/features/services/events';
 import { State } from 'src/app/features/services/state.service';
-import { EventsService } from 'src/app/store';
+import { StoreClient } from 'src/app/store';
 
 export interface MapDragEvent {
   finalPosX: number;
@@ -17,7 +16,7 @@ export interface MapDragEvent {
   templateUrl: './map-canvas.component.html',
   styleUrls: ['./map-canvas.component.scss']
 })
-export class MapCanvasComponent implements OnInit {
+export class MapCanvasComponent extends StoreClient() implements OnInit {
   @ViewChild('mapCanvas', { static: true })
   public mapCanvasRef!: ElementRef;
 
@@ -36,9 +35,9 @@ export class MapCanvasComponent implements OnInit {
     private readonly state: State,
     private readonly ngZone: NgZone,
     private readonly renderer: Renderer2,
-    private readonly structsService: MwStructuresService,
-    private readonly events: EventsService,
-  ) { }
+  ) {
+    super();
+  }
 
   ngOnInit(): void {
     this.canvasElem = this.mapCanvasRef.nativeElement;
@@ -50,22 +49,20 @@ export class MapCanvasComponent implements OnInit {
     // ideally, this should be underlying elem, not body
     // document.querySelector('body')!.style.background = 'gainsboro';
 
-    this.events.onEvent(MapPanCamera).subscribe((event) => {
-      this.panCamera(event.x, event.y);
-      this.mapDragEvent.emit({ finalPosX: event.x, finalPosY: event.y });
+    // Basic camera pan
+    this.events.onEvent(MapPanCameraCenterTo).pipe(this.untilDestroyed).subscribe((event) => {
+      console.log(`[Map View]: Pan camera center to`, event);
+
+      const screenWidthHalf = window.innerWidth / 2;
+      const screenHeightHalf = window.innerHeight / 2;
+
+      const finalPosX = -(event.x - screenWidthHalf);
+      const finalPosY = -(event.y - screenHeightHalf);
+
+      this.panCamera(finalPosX, finalPosY);
+
+      this.mapDragEvent.emit({ finalPosX, finalPosY });
     });
-
-    const startingStruct = this.structsService.viewStructures.find(struct => struct.id === '1');
-
-    if (startingStruct) {
-      console.log('----->', startingStruct.x, startingStruct.y);
-      // setTimeout(() => {
-      //   this.events.dispatch(MapPanCamera({ x: startingStruct.x, y: startingStruct.y }));
-      // }, 0);
-    } else {
-      throw new Error('Cannot find location with Id 1 to Pan Camera automatically');
-    }
-
   }
 
   private setUpMapDragging(): void {
@@ -91,6 +88,7 @@ export class MapCanvasComponent implements OnInit {
             takeUntil(merge(fromEvent(window, 'mouseup'), fromEvent(window, 'onfocusout')).pipe(take(1)))
           );
         }),
+        this.untilDestroyed,
       ).subscribe(mouseDragEvent => {
         // can be calculated on window resize event and stored as props
         const screenWidthHalf = window.innerWidth / 2;
@@ -116,6 +114,8 @@ export class MapCanvasComponent implements OnInit {
         }
 
 
+        // todo: these are seem to be coordinates of top-left corner for now
+        //  these might better represent center of camera
         this.state.mapsState.cameraPos.x = finalPosX;
         this.state.mapsState.cameraPos.y = finalPosY;
 
