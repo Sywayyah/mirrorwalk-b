@@ -61,11 +61,10 @@ export class MapCanvasComponent extends StoreClient() implements OnInit {
 
     this.underlayElem = this.underlayRef.nativeElement;
 
-    this.setupWindowResizeListener();
+    this.setupWindowResizingHandling();
     this.renderMapCellsGrid();
     this.setUpMapDragging();
     this.resetCanvasPosition();
-    this.initUnderlaySize();
   }
 
   @WireMethod(MapPanCameraCenterTo)
@@ -80,9 +79,6 @@ export class MapCanvasComponent extends StoreClient() implements OnInit {
     this.mapDragEvent.emit({ finalPosX, finalPosY });
   }
 
-  private initUnderlaySize(): void {
-    // this.renderer.setStyle(this.underlayElem, 'width', `${}`);
-  }
 
   private setUpMapDragging(): void {
     this.ngZone.runOutsideAngular(() => {
@@ -92,7 +88,7 @@ export class MapCanvasComponent extends StoreClient() implements OnInit {
           const mapPosX = parseInt(this.canvasElem.style.left);
           const mapPosY = parseInt(this.canvasElem.style.top);
 
-          return fromEvent(this.canvasElem, 'mousemove').pipe(
+          return fromEvent(window, 'mousemove').pipe(
             map((mouseMove) => {
               const mouseMoveEvent = mouseMove as MouseEvent;
 
@@ -184,12 +180,14 @@ export class MapCanvasComponent extends StoreClient() implements OnInit {
     canvas2d.stroke();
   }
 
-  private setupWindowResizeListener(): void {
+  private setupWindowResizingHandling(): void {
     this.updateWindowSizeData();
+    this.updateUnderlaySize();
 
     this.ngZone.runOutsideAngular(() => {
       fromEvent(window, 'resize').pipe(this.untilDestroyed).subscribe(() => {
         this.updateWindowSizeData();
+        this.updateUnderlaySize();
 
         const cameraState = this.state.mapsState.cameraCenterPos;
         this.panCameraCenterTo(cameraState);
@@ -203,5 +201,10 @@ export class MapCanvasComponent extends StoreClient() implements OnInit {
 
     this.windowWidthHalf = this.windowWidth / 2;
     this.windowHeightHalf = this.windowHeight / 2;
+  }
+
+  private updateUnderlaySize(): void {
+    this.renderer.setStyle(this.underlayElem, 'width', `${this.windowWidth}px`);
+    this.renderer.setStyle(this.underlayElem, 'height', `${this.windowHeight}px`);
   }
 }
