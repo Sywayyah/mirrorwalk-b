@@ -2,9 +2,9 @@ import { Injectable } from '@angular/core';
 import { PLAYER_COLORS } from 'src/app/core/assets';
 import { heroesDefaultResources } from 'src/app/core/heroes';
 import { PlayerTypeEnum } from 'src/app/core/players';
-import { DefaultGameModes, Triggers as Triggers } from 'src/app/core/triggers';
+import { DefaultGameModes, GamePreparedEvent, Triggers } from 'src/app/core/triggers';
 import { Notify, StoreClient, WireMethod } from 'src/app/store';
-import { FightStarts, FightStartsEvent, GameCreated, NeutralStructParams, PlayersInitialized, PlayerStartsFight, StructFightConfirmed, StructSelected, StructSelectedEvent } from '../events';
+import { FightStarts, FightStartsEvent, GameCreated, NeutralStructParams, PlayerStartsFight, PlayersInitialized, StructFightConfirmed, StructSelected, StructSelectedEvent } from '../events';
 import { BattleStateService } from '../mw-battle-state.service';
 import { MwHeroesService } from '../mw-heroes.service';
 import { MwPlayersService, PLAYER_IDS } from '../mw-players.service';
@@ -23,6 +23,19 @@ export class GameController extends StoreClient() {
     private state: State,
   ) {
     super();
+  }
+
+  @WireMethod(Triggers.GamePreparationFinished)
+  public initializeGameMap(event: GamePreparedEvent): void {
+    this.structuresService.initStructures(event);
+    this.state.mapsState = {
+      currentMap: event.map,
+      maps: [event.map],
+      cameraPos: {
+        x: 0,
+        y: 0,
+      }
+    };
   }
 
   @Notify(GameCreated)

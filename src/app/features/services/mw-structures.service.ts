@@ -2,15 +2,14 @@ import { Injectable } from '@angular/core';
 import { StructureDescription, ViewStructure } from 'src/app/core/locations';
 import { PlayerInstanceModel } from 'src/app/core/players';
 import { NeutralCampStructure, NeutralSite, StructureGeneratorModel, StructureModel, StructureTypeEnum } from 'src/app/core/structures';
-import { GamePreparedEvent, Triggers } from 'src/app/core/triggers';
+import { GamePreparedEvent } from 'src/app/core/triggers';
 import { UnitGroupInstModel } from 'src/app/core/unit-types';
-import { StoreClient, WireMethod } from 'src/app/store';
 import { MwPlayersService, MwUnitGroupsService } from './';
 
 @Injectable({
   providedIn: 'root'
 })
-export class MwStructuresService extends StoreClient() {
+export class MwStructuresService {
 
   /*
    todo: revisit this complicated structures logic, introduce maps/locations
@@ -34,15 +33,12 @@ export class MwStructuresService extends StoreClient() {
   constructor(
     private playersService: MwPlayersService,
     private unitGroups: MwUnitGroupsService,
-  ) {
-    super();
-  }
+  ) { }
 
-  @WireMethod(Triggers.GamePreparationFinished)
   public initStructures(event: GamePreparedEvent): void {
     this.neutralPlayer = this.playersService.getNeutralPlayer();
 
-    this.initialStructs = event.structures;
+    this.initialStructs = event.map.structures;
     this.viewStructures = this.createViewStructures(this.initialStructs);
     this.viewStructures.forEach((struct) => this.structsMap.set(struct.id, struct));
     this.playerCurrentLocId = '1';

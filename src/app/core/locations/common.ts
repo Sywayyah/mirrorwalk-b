@@ -18,19 +18,25 @@ import { StructureDescription } from './types';
  LowRiskStack - this might be a low-risk location. While enemies aren't that dangerous here,
   it provides a corresponding reward (e.g. +100 xp or 350 gold).
 */
+const shift = 476;
+
+function loc(location: number): number {
+  return location + shift;
+}
+
 const brBranch: StructureDescription[] = [
   {
     id: '2',
-    x: 60,
-    y: 30,
+    x: loc(60),
+    y: loc(30),
     icon: 'tombstone',
     pathTo: '1',
     struct: GraveyardStructure,
   },
   {
     id: '5',
-    x: 120,
-    y: 40,
+    x: loc(120),
+    y: loc(40),
     icon: 'sword',
     pathTo: '2',
 
@@ -38,8 +44,8 @@ const brBranch: StructureDescription[] = [
   },
   {
     id: '51',
-    x: 140,
-    y: -10,
+    x: loc(140),
+    y: loc(-10),
     icon: 'hand-saw',
     pathTo: '5',
 
@@ -47,8 +53,8 @@ const brBranch: StructureDescription[] = [
   },
   {
     id: '17',
-    x: 180,
-    y: 60,
+    x: loc(180),
+    y: loc(60),
     icon: 'book',
     pathTo: '5',
 
@@ -57,8 +63,8 @@ const brBranch: StructureDescription[] = [
   },
   {
     id: '8',
-    x: 120,
-    y: 90,
+    x: loc(120),
+    y: loc(90),
     icon: 'sword',
     pathTo: '2',
 
@@ -66,8 +72,8 @@ const brBranch: StructureDescription[] = [
   },
   {
     id: '9',
-    x: 40,
-    y: 80,
+    x: loc(40),
+    y: loc(80),
     icon: 'sword',
     pathTo: '8',
 
@@ -75,8 +81,8 @@ const brBranch: StructureDescription[] = [
   },
   {
     id: '22',
-    x: 170,
-    y: 141,
+    x: loc(170),
+    y: loc(141),
     icon: 'horseshoe',
     pathTo: '8',
 
@@ -84,8 +90,8 @@ const brBranch: StructureDescription[] = [
   },
   {
     id: '20',
-    x: 45,
-    y: 145,
+    x: loc(45),
+    y: loc(145),
     icon: 'monster-skull',
     pathTo: '9',
 
@@ -98,8 +104,8 @@ const fifthBranch: StructureDescription[] = [
   {
     id: '50',
     pathTo: '1',
-    x: -30,
-    y: 70,
+    x: loc(-30),
+    y: loc(70),
     icon: 'gold-bar',
     struct: resPileStructure(ResourceType.Gold, 650),
   },
@@ -109,8 +115,8 @@ const fifthBranch: StructureDescription[] = [
 const blBranch: StructureDescription[] = [
   {
     id: '3',
-    x: -70,
-    y: 10,
+    x: loc(-70),
+    y: loc(10),
     icon: 'sword',
     pathTo: '1',
 
@@ -118,16 +124,16 @@ const blBranch: StructureDescription[] = [
   },
   {
     id: '12',
-    x: -120,
-    y: -100,
+    x: loc(-120),
+    y: loc(-100),
     icon: 'mountains',
     pathTo: '3',
     struct: MountainNestStructure,
   },
   {
     id: 'left-2',
-    x: -130,
-    y: 55,
+    x: loc(-130),
+    y: loc(55),
     icon: 'sword',
     pathTo: '3',
 
@@ -135,8 +141,8 @@ const blBranch: StructureDescription[] = [
   },
   {
     id: 'left-5',
-    x: -120,
-    y: -10,
+    x: loc(-120),
+    y: loc(-10),
     icon: 'campfire',
     pathTo: 'left-2',
 
@@ -145,16 +151,16 @@ const blBranch: StructureDescription[] = [
   {
     id: '54',
 
-    x: -190,
-    y: 20,
+    x: loc(-190),
+    y: loc(20),
     icon: 'fire-ring',
     pathTo: 'left-2',
     struct: FireRingStructure,
   },
   {
     id: 'left-3',
-    x: -190,
-    y: 90,
+    x: loc(-190),
+    y: loc(90),
     icon: 'mine-wagon',
     pathTo: 'left-2',
 
@@ -165,8 +171,8 @@ const blBranch: StructureDescription[] = [
 const tlBranch: StructureDescription[] = [
   {
     id: '6',
-    x: -60,
-    y: -60,
+    x: loc(-60),
+    y: loc(-60),
     icon: 'sword',
     pathTo: '1',
 
@@ -174,8 +180,8 @@ const tlBranch: StructureDescription[] = [
   },
   {
     id: '14',
-    x: -40,
-    y: -120,
+    x: loc(-40),
+    y: loc(-120),
     icon: 'incense',
     pathTo: '6',
 
@@ -184,8 +190,8 @@ const tlBranch: StructureDescription[] = [
   {
     id: '15',
 
-    x: 50,
-    y: -110,
+    x: loc(50),
+    y: loc(-110),
     icon: 'tower',
     pathTo: '6',
 
@@ -194,8 +200,8 @@ const tlBranch: StructureDescription[] = [
   {
     id: '53',
 
-    x: 70,
-    y: -170,
+    x: loc(70),
+    y: loc(-170),
     icon: 'emerald',
     pathTo: '15',
     struct: resPileStructure(ResourceType.Gems, 3),
@@ -206,8 +212,8 @@ const tlBranch: StructureDescription[] = [
 const trBranch: StructureDescription[] = [
   {
     id: '4',
-    x: 60,
-    y: -30,
+    x: loc(60),
+    y: loc(-30),
     icon: 'lighthouse',
     pathTo: '1',
 
@@ -218,8 +224,8 @@ const trBranch: StructureDescription[] = [
 export const structsPreset1: StructureDescription[] = [
   {
     id: '1',
-    x: 0,
-    y: 0,
+    x: loc(0),
+    y: loc(0),
     icon: 'campfire',
     isRoot: true,
   },

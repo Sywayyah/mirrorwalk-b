@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, Renderer2, ViewChild } from '@angular/core';
 import { ViewStructure } from 'src/app/core/locations';
 import { PlayerInstanceModel } from 'src/app/core/players';
 import { NeutralCampStructure } from 'src/app/core/structures';
@@ -6,6 +6,7 @@ import { MwPlayersService, MwStructuresService } from 'src/app/features/services
 import { PlayerEntersTown, PlayerOpensHeroInfo, StructSelected } from 'src/app/features/services/events';
 import { State } from 'src/app/features/services/state.service';
 import { EventsService } from 'src/app/store';
+import { MapDragEvent } from '../map-canvas/map-canvas.component';
 
 /* Rewamp this a bit later, along with service and the rest */
 /*  Check more cases, stuff like that */
@@ -17,6 +18,9 @@ import { EventsService } from 'src/app/store';
   styleUrls: ['./mw-structures-view.component.scss'],
 })
 export class MwStructuresViewComponent {
+  @ViewChild('locationsContainer')
+  public locationsRef!: ElementRef;
+
   public player: PlayerInstanceModel;
 
   constructor(
@@ -24,10 +28,17 @@ export class MwStructuresViewComponent {
     private events: EventsService,
     public state: State,
     public readonly structsService: MwStructuresService,
+    private readonly renderer: Renderer2,
   ) {
     this.player = this.playersService.getCurrentPlayer();
   }
 
+  public updateLocationsPosition(event: MapDragEvent): void {
+    const locationsElem = this.locationsRef.nativeElement;
+
+    this.renderer.setStyle(locationsElem, 'left', `${event.finalPosX}px`);
+    this.renderer.setStyle(locationsElem, 'top', `${event.finalPosY}px`);
+  }
 
   public handleStructure(struct: ViewStructure): void {
     if (!this.structsService.availableStructuresMap[struct.id] || !struct.structure || struct.structure?.isInactive) {

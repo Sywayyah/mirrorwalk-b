@@ -12,3 +12,5 @@ export type InitSpellAction = { spell: SpellInstance, player: PlayerInstanceMode
 export type InitItemAction = { item: ItemInstanceModel, ownerPlayer: PlayerInstanceModel };
 export type PlayerEquipsItemAction = { player: PlayerInstanceModel, item: ItemInstanceModel };
 export type PlayerUnequipsItemAction = { player: PlayerInstanceModel, item: ItemInstanceModel };
+
+export type PanMapCameraAction = { x: number; y: number; };

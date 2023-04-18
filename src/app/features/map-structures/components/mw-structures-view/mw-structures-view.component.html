@@ -1,24 +1,25 @@
-<div class="centered-panel">
-  <div class="map-view" style="height: 300px; width: 300px; position: absolute; left: 50%; top: 50%">
-    <div *ngFor="let struct of structsService.viewStructures">
-      <mw-ra-icon [class.available]="structsService.availableStructuresMap[struct.id] && !struct.visited"
-        [class.completed]="struct.visited"
-        [style.borderColor]="structsService.playerCurrentLocId === struct.id ? state.createdGame.selectedColor : 'rgb(90, 90, 90)'"
-        [class.disabled]="!structsService.availableStructuresMap[struct.id]" (click)="handleStructure(struct)"
-        [style.left.px]="struct.x" [style.top.px]="struct.y" class="struct-icon" [icon]="struct.icon"></mw-ra-icon>
+<mw-map-canvas *ngIf="state.settings.mapDebug" (mapDragEvent)="updateLocationsPosition($event)"></mw-map-canvas>
 
-      <!-- <mw-ra-icon *ngIf="playerCurrentLocId === struct.id" style="position: absolute; z-index: 70" icon="castle-flag"></mw-ra-icon> -->
+<div #locationsContainer class="map-view">
+  <div *ngFor="let struct of structsService.viewStructures">
+    <mw-ra-icon [class.available]="structsService.availableStructuresMap[struct.id] && !struct.visited"
+      [class.completed]="struct.visited"
+      [style.borderColor]="structsService.playerCurrentLocId === struct.id ? state.createdGame.selectedColor : 'rgb(90, 90, 90)'"
+      [class.disabled]="!structsService.availableStructuresMap[struct.id]" (click)="handleStructure(struct)"
+      [style.left.px]="struct.x" [style.top.px]="struct.y" class="struct-icon" [icon]="struct.icon"></mw-ra-icon>
 
-      <svg *ngIf="struct.svg" class="path-line" [style.left.px]="struct.svg.x" [style.top.px]="struct.svg.y"
-        [attr.width]="struct.svg.width" [attr.height]="struct.svg.height" version="1.1"
-        xmlns="http://www.w3.org/2000/svg">
-        <line class="line" stroke-dasharray="10, 13" [attr.x1]="struct.svg.ox" [attr.y1]="struct.svg.oy"
-          [attr.x2]="struct.svg.tx" [attr.y2]="struct.svg.ty">
-        </line>
-      </svg>
-    </div>
+    <!-- <mw-ra-icon *ngIf="playerCurrentLocId === struct.id" style="position: absolute; z-index: 70" icon="castle-flag"></mw-ra-icon> -->
+
+    <svg *ngIf="struct.svg" class="path-line" [style.left.px]="struct.svg.x" [style.top.px]="struct.svg.y"
+      [attr.width]="struct.svg.width" [attr.height]="struct.svg.height" version="1.1"
+      xmlns="http://www.w3.org/2000/svg">
+      <line class="line" stroke-dasharray="10, 13" [attr.x1]="struct.svg.ox" [attr.y1]="struct.svg.oy"
+        [attr.x2]="struct.svg.tx" [attr.y2]="struct.svg.ty">
+      </line>
+    </svg>
   </div>
 </div>
+
 
 <mw-player-info-panel class="player-info-panel"></mw-player-info-panel>
 
@@ -26,6 +27,7 @@
 <mw-action-hint></mw-action-hint>
 
 <div class="player-actions">
-  <mw-icon-btn mwActionHint="Go to {{state.createdGame.fraction.title}}" (click)="goToTown()" style="padding: 0 20px" [icon]="state.createdGame.fraction.icon"></mw-icon-btn>
+  <mw-icon-btn mwActionHint="Go to {{state.createdGame.fraction.title}}" (click)="goToTown()" style="padding: 0 20px"
+    [icon]="state.createdGame.fraction.icon"></mw-icon-btn>
   <mw-icon-btn mwActionHint="Inspect Hero" (click)="openPlayerInfo()" style="padding: 0 20px" icon="aura"></mw-icon-btn>
 </div>
