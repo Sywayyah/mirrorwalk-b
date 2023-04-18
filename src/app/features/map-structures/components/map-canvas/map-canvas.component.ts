@@ -61,9 +61,9 @@ export class MapCanvasComponent extends StoreClient() implements OnInit {
 
     this.underlayElem = this.underlayRef.nativeElement;
 
-    this.setupWindowResizingHandling();
     this.renderMapCellsGrid();
-    this.setUpMapDragging();
+    this.setupWindowResizingHandling();
+    this.setupMapDragging();
     this.resetCanvasPosition();
   }
 
@@ -80,7 +80,7 @@ export class MapCanvasComponent extends StoreClient() implements OnInit {
   }
 
 
-  private setUpMapDragging(): void {
+  private setupMapDragging(): void {
     this.ngZone.runOutsideAngular(() => {
       fromEvent(this.hostElem, 'mousedown').pipe(
         switchMap((mouseDown) => {
@@ -118,7 +118,6 @@ export class MapCanvasComponent extends StoreClient() implements OnInit {
         } else if (targetPosX < -(this.mapTotalWidth - screenWidthHalf)) {
           finalPosX = -(this.mapTotalWidth - screenWidthHalf);
         }
-
 
         if (targetPosY > screenHeightHalf) {
           finalPosY = screenHeightHalf;
