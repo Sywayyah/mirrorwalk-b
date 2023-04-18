@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { defaultTravelPointsCost, defaultTravelPointsPerDay } from 'src/app/core/locations';
 import { StoreClient, WireMethod } from 'src/app/store';
-import { MapPanCamera, NeutralStructParams, NewDayStarted, PanMapCameraAction, PlayerEntersTown, StructCompleted } from '../events';
+import { MapPanCameraCenterTo, NeutralStructParams, NewDayStarted, PanMapCameraAction, PlayerEntersTown, StructCompleted } from '../events';
 import { MwStructuresService } from '../mw-structures.service';
 import { State } from '../state.service';
 
@@ -33,7 +33,7 @@ export class StructuresController extends StoreClient() {
     }
   }
 
-  @WireMethod(MapPanCamera)
+  @WireMethod(MapPanCameraCenterTo)
   public panMapCamera(action: PanMapCameraAction): void {
     this.state.mapsState.cameraPos.x = action.x;
     this.state.mapsState.cameraPos.y = action.y;

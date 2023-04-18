@@ -9,4 +9,4 @@ const commands = eventsForPrefix('[Commands]');
 export const CleanUpHandlersOnFightEnd = commands('Clear spells and items registries on fight end');
 
 // Maybe create Map events.
-export const MapPanCamera = commands<PanMapCameraAction>('Pan camera on the map');
+export const MapPanCameraCenterTo = commands<PanMapCameraAction>('Pan camera on the map');

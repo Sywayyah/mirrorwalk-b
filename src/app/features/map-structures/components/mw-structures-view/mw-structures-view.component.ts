@@ -3,7 +3,7 @@ import { ViewStructure } from 'src/app/core/locations';
 import { PlayerInstanceModel } from 'src/app/core/players';
 import { NeutralCampStructure } from 'src/app/core/structures';
 import { MwPlayersService, MwStructuresService } from 'src/app/features/services';
-import { PlayerEntersTown, PlayerOpensHeroInfo, StructSelected } from 'src/app/features/services/events';
+import { MapPanCameraCenterTo, PlayerEntersTown, PlayerOpensHeroInfo, StructSelected } from 'src/app/features/services/events';
 import { State } from 'src/app/features/services/state.service';
 import { EventsService } from 'src/app/store';
 import { MapDragEvent } from '../map-canvas/map-canvas.component';
@@ -31,6 +31,22 @@ export class MwStructuresViewComponent {
     private readonly renderer: Renderer2,
   ) {
     this.player = this.playersService.getCurrentPlayer();
+  }
+
+  public ngAfterViewInit(): void {
+    if (this.state.mapsState.cameraPos.cameraInitialized) {
+      return;
+    }
+
+    const startingStruct = this.structsService.viewStructures.find(struct => struct.id === '1');
+
+    if (startingStruct) {
+      this.events.dispatch(MapPanCameraCenterTo({ x: startingStruct.x, y: startingStruct.y }));
+    } else {
+      console.warn(`[Map View]: Couldn't find location with id "1" to pan camera center on game start`);
+    }
+
+    this.state.mapsState.cameraPos.cameraInitialized = true;
   }
 
   public updateLocationsPosition(event: MapDragEvent): void {

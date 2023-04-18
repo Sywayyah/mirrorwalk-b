@@ -34,6 +34,7 @@ export class GameController extends StoreClient() {
       cameraPos: {
         x: 0,
         y: 0,
+        cameraInitialized: false,
       }
     };
   }
