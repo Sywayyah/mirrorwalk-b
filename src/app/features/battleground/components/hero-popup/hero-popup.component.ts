@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { InventoryItems } from 'src/app/core/items';
 import { MwPlayersService } from 'src/app/features/services';
 import { State } from 'src/app/features/services/state.service';
@@ -9,7 +9,7 @@ import { BasicPopup } from 'src/app/features/shared/components';
   templateUrl: './hero-popup.component.html',
   styleUrls: ['./hero-popup.component.scss']
 })
-export class HeroPopupComponent extends BasicPopup<{}> implements OnInit {
+export class HeroPopupComponent extends BasicPopup<{}> {
 
   private currentPlayer = this.playersService.getCurrentPlayer();
 
@@ -23,8 +23,4 @@ export class HeroPopupComponent extends BasicPopup<{}> implements OnInit {
   ) {
     super();
   }
-
-  ngOnInit(): void {
-  }
-
 }

@@ -22,17 +22,19 @@
       <div class="name">Player 1</div>
 
       <div class="fraction">
-        <mw-menu [menuBody]="fractionsMenu" [pos]="'below'">
+        <mw-menu [menuBody]="fractionsMenu"
+                 [pos]="'below'">
           <div *ngIf="selectedFraction; else randomFraction">
-            <mw-ra-icon class="item-icon" [icon]="selectedFraction.icon">
-            </mw-ra-icon>
+            <mw-ra-icon class="item-icon"
+                        [icon]="selectedFraction.icon" />
 
             <span class="icon-subtext">{{selectedFraction.title}}</span>
           </div>
 
           <ng-template #randomFraction>
             <div>
-              <mw-ra-icon class="item-icon" icon="perspective-dice-four"></mw-ra-icon>
+              <mw-ra-icon class="item-icon"
+                          icon="perspective-dice-four" />
 
               <span class="icon-subtext">Random</span>
             </div>
@@ -40,27 +42,31 @@
         </mw-menu>
 
         <ng-template #fractionsMenu>
-          <mw-ra-icon (click)="selectFraction()" class="item-icon" icon="perspective-dice-four">
-          </mw-ra-icon>
+          <mw-ra-icon (click)="selectFraction()"
+                      class="item-icon"
+                      icon="perspective-dice-four" />
 
-          <mw-ra-icon *ngFor="let fraction of playableFractions" (click)="selectFraction(fraction)" class="item-icon"
-            [icon]="fraction.icon">
-          </mw-ra-icon>
+          <mw-ra-icon *ngFor="let fraction of playableFractions"
+                      (click)="selectFraction(fraction)"
+                      class="item-icon"
+                      [icon]="fraction.icon" />
         </ng-template>
       </div>
 
       <div class="hero">
-        <mw-menu [menuBody]="heroesMenu" [pos]="'below'">
+        <mw-menu [menuBody]="heroesMenu"
+                 [pos]="'below'">
           <div *ngIf="selectedHero; else randomFraction">
-            <mw-ra-icon class="item-icon" icon="aura">
-            </mw-ra-icon>
+            <mw-ra-icon class="item-icon"
+                        icon="aura" />
 
             <span class="icon-subtext">{{selectedHero.name}}</span>
           </div>
 
           <ng-template #randomHero>
             <div>
-              <mw-ra-icon class="item-icon" icon="perspective-dice-four"></mw-ra-icon>
+              <mw-ra-icon class="item-icon"
+                          icon="perspective-dice-four" />
 
               <span class="icon-subtext">Random</span>
             </div>
@@ -70,15 +76,17 @@
         <ng-template #heroesMenu>
           <div style="display: flex; max-width: 200px; justify-content: center; flex-wrap: wrap;">
             <div>
-              <mw-ra-icon (click)="selectHero(null)" class="item-icon" icon="perspective-dice-four">
-              </mw-ra-icon>
+              <mw-ra-icon (click)="selectHero(null)"
+                          class="item-icon"
+                          icon="perspective-dice-four" />
 
               <span class="icon-subtext">Random</span>
             </div>
 
             <div *ngFor="let hero of heroes">
-              <mw-ra-icon (click)="selectHero(hero)" class="item-icon" icon="aura">
-              </mw-ra-icon>
+              <mw-ra-icon (click)="selectHero(hero)"
+                          class="item-icon"
+                          icon="aura" />
 
               <span class="icon-subtext">{{hero.name}}</span>
             </div>
@@ -87,12 +95,21 @@
       </div>
 
       <div class="color">
-        <mw-menu [menuBody]="colorsMenu" pos="below">
-          <div style="position: relative; top: -6px;" class="color-item" [style.background]="pickedColor"></div>
+        <mw-menu [menuBody]="colorsMenu"
+                 pos="below">
+
+          <div style="position: relative; top: -6px;"
+               class="color-item"
+               [style.background]="pickedColor">
+          </div>
+
         </mw-menu>
 
         <ng-template #colorsMenu>
-          <div *ngFor="let color of colors" class="color-item" [style.background]="color" (click)="pickColor(color)">
+          <div *ngFor="let color of colors"
+               class="color-item"
+               [style.background]="color"
+               (click)="pickColor(color)">
           </div>
         </ng-template>
       </div>
@@ -108,20 +125,27 @@
           {{selectedHero.name}}
         </div>
 
-        <mw-ra-icon class="hero-icon" icon="aura"></mw-ra-icon>
+        <mw-ra-icon class="hero-icon"
+                    icon="aura" />
 
         <div class="hero-stats">
           <div class="column">
             <div>
-              <mw-ra-icon icon="sword"></mw-ra-icon> {{selectedHero.initialState.stats.baseAttack}}
+              <mw-ra-icon icon="sword" />
+
+              {{selectedHero.initialState.stats.baseAttack}}
             </div>
 
             <div>
-              <mw-ra-icon icon="shield"></mw-ra-icon> {{selectedHero.initialState.stats.baseDefence}}
+              <mw-ra-icon icon="shield" />
+
+              {{selectedHero.initialState.stats.baseDefence}}
             </div>
 
             <div>
-              <mw-ra-icon icon="crystal-ball"></mw-ra-icon> {{selectedHero.initialState.stats.mana}}
+              <mw-ra-icon icon="crystal-ball" />
+
+              {{selectedHero.initialState.stats.mana}}
             </div>
           </div>
 
@@ -138,7 +162,7 @@
         </div>
 
         <div class="description">
-          <mw-description [descriptions]="[selectedHero.generalDescription]"></mw-description>
+          <mw-description [descriptions]="[selectedHero.generalDescription]" />
         </div>
       </div>
     </div>
@@ -146,7 +170,8 @@
     <ng-template #randomHeroDescr>
       <div>
         <div>Random Hero</div>
-        <mw-ra-icon class="hero-icon" icon="perspective-dice-four"></mw-ra-icon>
+        <mw-ra-icon class="hero-icon"
+                    icon="perspective-dice-four" />
 
         <div class="description">
           <span *ngIf="selectedFraction; else allRandomHero">
@@ -164,8 +189,14 @@
 
 <div class="bottom-container">
   <div class="buttons">
-    <button mw-main-button (click)="startGame()">Start game</button>
+    <button mw-main-button
+            (click)="startGame()">
+      Start game
+    </button>
 
-    <button mw-main-button (click)="goToMainScreen()">Return</button>
+    <button mw-main-button
+            (click)="goToMainScreen()">
+      Return
+    </button>
   </div>
 </div>

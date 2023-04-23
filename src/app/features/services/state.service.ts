@@ -60,8 +60,13 @@ export class State {
   public mapsState!: {
     maps: LevelMap[];
     currentMap: LevelMap;
-    cameraCenterPos: { x: number; y: number; cameraInitialized: boolean; };
-  }
+  };
+
+  public mapCamera: { x: number; y: number; cameraInitialized: boolean; } = {
+    cameraInitialized: false,
+    x: 0,
+    y: 0,
+  };
 
   /* State for when battle starts */
   public currentBattleState!: {

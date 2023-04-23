@@ -35,7 +35,7 @@ export class StructuresController extends StoreClient() {
 
   @WireMethod(MapPanCameraCenterTo)
   public panMapCamera(action: PanMapCameraCenterAction): void {
-    this.state.mapsState.cameraCenterPos.x = action.x;
-    this.state.mapsState.cameraCenterPos.y = action.y;
+    this.state.mapCamera.x = action.x;
+    this.state.mapCamera.y = action.y;
   }
 }

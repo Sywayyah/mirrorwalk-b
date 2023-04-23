@@ -1,4 +1,4 @@
-import { Component, ElementRef, Renderer2, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Renderer2, ViewChild } from '@angular/core';
 import { ViewStructure } from 'src/app/core/locations';
 import { PlayerInstanceModel } from 'src/app/core/players';
 import { NeutralCampStructure } from 'src/app/core/structures';
@@ -17,7 +17,7 @@ import { MapDragEvent } from '../map-canvas/map-canvas.component';
   templateUrl: './mw-structures-view.component.html',
   styleUrls: ['./mw-structures-view.component.scss'],
 })
-export class MwStructuresViewComponent {
+export class MwStructuresViewComponent implements AfterViewInit {
   @ViewChild('locationsContainer')
   public locationsRef!: ElementRef;
 
@@ -34,10 +34,10 @@ export class MwStructuresViewComponent {
   }
 
   public ngAfterViewInit(): void {
-    if (this.state.mapsState.cameraCenterPos.cameraInitialized) {
+    if (this.state.mapCamera.cameraInitialized) {
       // reset camera position for now
       // todo: maybe reset camera to location visited by the player..
-      const { x, y } = this.state.mapsState.cameraCenterPos;
+      const { x, y } = this.state.mapCamera;
 
       this.events.dispatch(MapPanCameraCenterTo({ x, y }));
       return;
@@ -51,7 +51,7 @@ export class MwStructuresViewComponent {
       console.warn(`[Map View]: Couldn't find location with id "1" to pan camera center on game start`);
     }
 
-    this.state.mapsState.cameraCenterPos.cameraInitialized = true;
+    this.state.mapCamera.cameraInitialized = true;
   }
 
   public updateLocationsPosition(event: MapDragEvent): void {

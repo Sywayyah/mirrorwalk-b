@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { UnitGroupModel } from 'src/app/core/unit-types';
 
 @Component({
@@ -6,13 +6,8 @@ import { UnitGroupModel } from 'src/app/core/unit-types';
   templateUrl: './mw-unit-groups-list.component.html',
   styleUrls: ['./mw-unit-groups-list.component.scss']
 })
-export class MwUnitGroupsListComponent implements OnInit {
-
+export class MwUnitGroupsListComponent {
   @Input() public unitGroups!: UnitGroupModel[];
 
   constructor() { }
-
-  ngOnInit(): void {
-  }
-
 }

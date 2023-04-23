@@ -2,7 +2,7 @@ import { Injectable, Type } from '@angular/core';
 import { NeutralCampStructure, NeutralRewardTypesEnum, NeutralSite, StructureTypeEnum } from 'src/app/core/structures';
 import { FightEndsPopup, LossModel, PrefightPopup, PreviewPopup, UpgradingPopup } from 'src/app/core/ui';
 import { Notify, StoreClient, WireMethod } from 'src/app/store';
-import { HiringRewardPopupComponent, ItemRewardPopupComponent, PostFightRewardPopupComponent, PreFightPopupComponent, PreviewPopupComponent, ResourcesRewardPopupComponent, ScriptedRewardPopupComponent, UpgradeRewardPopup } from '../../battleground/components';
+import { HiringRewardPopupComponent, ItemRewardPopupComponent, PostFightRewardPopupComponent, PreFightPopupComponent, PreviewPopupComponent, ResourcesRewardPopupComponent, ScriptedRewardPopupComponent, UpgradeRewardPopupComponent } from '../../battleground/components';
 import { HeroPopupComponent } from '../../battleground/components/hero-popup/hero-popup.component';
 import { SettingsPopupComponent } from '../../main-screen/components';
 import { GameOverPopupComponent, PopupData, PopupService } from '../../shared/components';
@@ -85,7 +85,7 @@ export class PopupsController extends StoreClient() {
       };
 
       this.events.dispatch(DisplayPopup({
-        component: UpgradeRewardPopup,
+        component: UpgradeRewardPopupComponent,
         data: upgradingPopup,
       }));
 

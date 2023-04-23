@@ -4,7 +4,8 @@
   <div>
     <div style="text-align: center;">Player's Losses</div>
     <div class="losses-container">
-      <div class="loss-card" *ngFor="let playerLoss of data.playerLosses">
+      <div class="loss-card"
+           *ngFor="let playerLoss of data.playerLosses">
         <span>{{ playerLoss.type.name }}</span>
         <span>{{ playerLoss.count }}</span>
       </div>
@@ -14,7 +15,8 @@
   <div>
     <div style="text-align: center;">Enemy's Losses</div>
     <div class="losses-container">
-      <div class="loss-card" *ngFor="let playerLoss of data.enemyLosses">
+      <div class="loss-card"
+           *ngFor="let playerLoss of data.enemyLosses">
         <span>{{ playerLoss.type.name }}</span>
         <span>{{ playerLoss.count }}</span>
       </div>
@@ -27,6 +29,9 @@
   </div>
 
   <div>
-    <button style="margin: auto; display: block;" (click)="onContinue(data)">Continue</button>
+    <button style="margin: auto; display: block;"
+            (click)="onContinue(data)">
+      Continue
+    </button>
   </div>
 </div>

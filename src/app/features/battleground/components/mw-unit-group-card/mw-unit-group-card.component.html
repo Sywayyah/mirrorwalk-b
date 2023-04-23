@@ -1,61 +1,76 @@
 <div class="card-top"
-  [class.active]="mwBattleStateService.currentPlayer === playerInfo && attackingUnitGroup === unitGroup"
-  [ngClass]="side === 'left' ? 'card-left' : 'card-right'"
-  [class.inactive]="!unitGroup.turnsLeft && unitGroup.fightInfo.isAlive" [class.defeated]="!unitGroup.fightInfo.isAlive"
-  (mouseenter)="onCardHover(true)" (mouseleave)="onCardHover(false)">
+     [class.active]="mwBattleStateService.currentPlayer === playerInfo && attackingUnitGroup === unitGroup"
+     [ngClass]="side === 'left' ? 'card-left' : 'card-right'"
+     [class.inactive]="!unitGroup.turnsLeft && unitGroup.fightInfo.isAlive"
+     [class.defeated]="!unitGroup.fightInfo.isAlive"
+     (mouseenter)="onCardHover(true)"
+     (mouseleave)="onCardHover(false)">
 
   <div class="card-wrapper">
     <div [style.background]="playerInfo.color"
-      [class.current-group]="mwBattleStateService.currentPlayer === playerInfo && attackingUnitGroup === unitGroup"
-      [class.hovered-enemy]="isCardHovered && isEnemyCard && canCurrentPlayerAttack" class="card">
+         [class.current-group]="mwBattleStateService.currentPlayer === playerInfo && attackingUnitGroup === unitGroup"
+         [class.hovered-enemy]="isCardHovered && isEnemyCard && canCurrentPlayerAttack"
+         class="card">
       <div style="padding-bottom: 3px; font-weight: 500; white-space: nowrap;">
         {{ unitGroup.type.name }}
         ({{ unitGroup.count }})
       </div>
+
       <div style="font-size: 12px;">
         <div>
           <mw-ra-icon icon="spinning-sword"></mw-ra-icon>
           ({{unitGroup.turnsLeft}}/{{unitGroup.type.defaultTurnsPerRound}})
         </div>
+
         <div>
-          <mw-ra-icon icon="sword" *ngIf="isGroupMelee; else rangedIcon"></mw-ra-icon>
+          <mw-ra-icon icon="sword"
+                      *ngIf="isGroupMelee; else rangedIcon" />
           <ng-template #rangedIcon>
-            <mw-ra-icon icon="crossbow"></mw-ra-icon>
+            <mw-ra-icon icon="crossbow" />
           </ng-template>
+
           {{ unitGroup.type.baseStats.damageInfo.maxDamage * unitGroup.count }}
         </div>
+
         <div>
-          <mw-ra-icon icon="feather-wing"></mw-ra-icon>
+          <mw-ra-icon icon="feather-wing" />
           {{ unitGroup.type.baseStats.speed }}<span [mwNumberModifier]="modsForUi.speed"></span>
         </div>
+
         <!-- this info will have to be updated -->
         <div>
-          <mw-ra-icon icon="health"></mw-ra-icon>
+          <mw-ra-icon icon="health" />
           {{ unitGroup.type.baseStats.health * (unitGroup.count - 1) + (unitGroup.tailUnitHp ?? 0) }}
         </div>
-
       </div>
-
     </div>
 
     <!-- #4f52bd -->
     <!-- "linear-gradient(180deg, rgba(255,77,93,1) 0%, rgba(129,25,25,1) 100%)" -->
     <!-- rgb(201, 45, 45) -->
-    <div class="abilities" [ngClass]="side">
+    <div class="abilities"
+         [ngClass]="side">
       <div class="column-data">
-        <mw-unit-group-spell *ngFor="let spell of spells" [hintPos]="spellsHintsPosition" [spell]="spell" [owner]="unitGroup"
-          [onCooldown]="unitGroup.fightInfo.spellsOnCooldown" [currentUnit]="attackingUnitGroup">
-        </mw-unit-group-spell>
+        <mw-unit-group-spell *ngFor="let spell of spells"
+                             [hintPos]="spellsHintsPosition"
+                             [spell]="spell"
+                             [owner]="unitGroup"
+                             [onCooldown]="unitGroup.fightInfo.spellsOnCooldown"
+                             [currentUnit]="attackingUnitGroup" />
       </div>
 
       <div class="column-data">
-        <mw-unit-group-buff [hintPos]="spellsHintsPosition" *ngFor="let ability of effects" [buff]="ability" [ownerUnit]="unitGroup"></mw-unit-group-buff>
+        <mw-unit-group-buff [hintPos]="spellsHintsPosition"
+                            *ngFor="let ability of effects"
+                            [buff]="ability"
+                            [ownerUnit]="unitGroup" />
       </div>
     </div>
   </div>
 
   <div class="portrait-container">
-    <img src="../assets/{{unitGroup.type.mainPortraitUrl}}" class="portrait">
+    <img src="../assets/{{unitGroup.type.mainPortraitUrl}}"
+         class="portrait">
     <!-- can be customizable (on/off), also some highlight can be implemented -->
     <!--
             I'm not really sure if I want to have this bar. The latest value is what matters.

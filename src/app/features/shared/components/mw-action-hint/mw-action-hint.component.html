@@ -1,24 +1,27 @@
-<div *ngIf="(hint$ | async) as actionHint" style="text-align: center;">
+<div *ngIf="(hint$ | async) as actionHint"
+     style="text-align: center;">
   <ng-container [ngSwitch]="actionHint.type">
     <ng-container *ngSwitchCase="hintActionTypes.OnHoverEnemyCard">
-      <ng-container *ngTemplateOutlet="simple; context: { hint: actionHint }"></ng-container>
+      <ng-container *ngTemplateOutlet="simple; context: { hint: actionHint }" />
     </ng-container>
 
     <ng-container *ngSwitchCase="hintActionTypes.OnTargetSpell">
-      <ng-container *ngTemplateOutlet="onTargetSpell; context: { hint: actionHint }"></ng-container>
+      <ng-container *ngTemplateOutlet="onTargetSpell; context: { hint: actionHint }" />
     </ng-container>
 
     <ng-container *ngSwitchCase="hintActionTypes.CustomHtml">
-      <ng-container *ngTemplateOutlet="customHtml; context: { hint: actionHint }"></ng-container>
+      <ng-container *ngTemplateOutlet="customHtml; context: { hint: actionHint }" />
     </ng-container>
   </ng-container>
 </div>
 
-<ng-template #customHtml let-hint="hint">
+<ng-template #customHtml
+             let-hint="hint">
   <div [innerHTML]="hint.safeHtml"></div>
 </ng-template>
 
-<ng-template #simple let-hint="hint">
+<ng-template #simple
+             let-hint="hint">
   <span>Attack</span>
   <span [style.color]="hint.attackedGroup.ownerPlayerRef.color">
     {{hint.attackedGroup.type.name}}
@@ -43,7 +46,8 @@
   </span> -->
 </ng-template>
 
-<ng-template #onTargetSpell let-hint="hint">
+<ng-template #onTargetSpell
+             let-hint="hint">
   <div>
     <span>
       Cast
