@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
-import { BehaviorSubject, combineLatest, Subject } from 'rxjs';
+import { BehaviorSubject, Subject, combineLatest } from 'rxjs';
 import { map, takeUntil, tap } from 'rxjs/operators';
 import { ActionHintModel, ActionHintTypeEnum, CustomHtmlActionHint } from 'src/app/core/ui';
 import { MwPlayersService } from 'src/app/features/services';
@@ -16,7 +16,7 @@ function isHtmlHint(actionHint: ActionHintModel): actionHint is CustomHtmlAction
   templateUrl: './mw-action-hint.component.html',
   styleUrls: ['./mw-action-hint.component.scss']
 })
-export class MwActionHintComponent implements OnInit {
+export class MwActionHintComponent implements OnDestroy {
 
   public hintActionTypes: typeof ActionHintTypeEnum = ActionHintTypeEnum;
 
@@ -50,9 +50,6 @@ export class MwActionHintComponent implements OnInit {
       tap(actionHint => this.hint$.next(actionHint)),
       takeUntil(this.destroyed$),
     ).subscribe();
-  }
-
-  public ngOnInit(): void {
   }
 
   public ngOnDestroy(): void {

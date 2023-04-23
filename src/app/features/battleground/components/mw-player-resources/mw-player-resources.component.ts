@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { PlayerInstanceModel } from 'src/app/core/players';
 import { MwPlayersService } from 'src/app/features/services';
 
@@ -7,15 +7,12 @@ import { MwPlayersService } from 'src/app/features/services';
   templateUrl: './mw-player-resources.component.html',
   styleUrls: ['./mw-player-resources.component.scss']
 })
-export class MwPlayerResourcesComponent implements OnInit {
+export class MwPlayerResourcesComponent {
 
   public currentPlayer: PlayerInstanceModel = this.playersService.getCurrentPlayer();
 
   constructor(
     private readonly playersService: MwPlayersService,
   ) { }
-
-  ngOnInit(): void {
-  }
 
 }

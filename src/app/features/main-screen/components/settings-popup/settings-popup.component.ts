@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component } from '@angular/core';
 import { UnitsOrientation } from 'src/app/core/ui';
 import { State } from 'src/app/features/services/state.service';
 import { BasicPopup } from 'src/app/features/shared/components';
@@ -8,7 +8,7 @@ import { BasicPopup } from 'src/app/features/shared/components';
   templateUrl: './settings-popup.component.html',
   styleUrls: ['./settings-popup.component.scss']
 })
-export class SettingsPopupComponent extends BasicPopup<{}> implements OnInit {
+export class SettingsPopupComponent extends BasicPopup<{}> {
   // @ViewChild('scriptPath')
   // public textElem!: ElementRef;
 
@@ -31,9 +31,6 @@ export class SettingsPopupComponent extends BasicPopup<{}> implements OnInit {
     private state: State,
   ) {
     super();
-  }
-
-  ngOnInit(): void {
   }
 
   public setOrientation(orientation: UnitsOrientation): void {

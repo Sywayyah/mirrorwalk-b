@@ -1,4 +1,4 @@
-import { Component, ElementRef, Renderer2, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Renderer2, ViewChild } from '@angular/core';
 import { ViewStructure } from 'src/app/core/locations';
 import { PlayerInstanceModel } from 'src/app/core/players';
 import { NeutralCampStructure } from 'src/app/core/structures';
@@ -17,7 +17,7 @@ import { MapDragEvent } from '../map-canvas/map-canvas.component';
   templateUrl: './mw-structures-view.component.html',
   styleUrls: ['./mw-structures-view.component.scss'],
 })
-export class MwStructuresViewComponent {
+export class MwStructuresViewComponent implements AfterViewInit {
   @ViewChild('locationsContainer')
   public locationsRef!: ElementRef;
 

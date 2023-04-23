@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { PreviewPopup } from 'src/app/core/ui';
 import { MwPlayersService } from 'src/app/features/services';
 import { ApiProvider } from 'src/app/features/services/api-provider.service';
@@ -9,16 +9,13 @@ import { BasicPopup } from 'src/app/features/shared/components';
   templateUrl: './preview-popup.component.html',
   styleUrls: ['./preview-popup.component.scss']
 })
-export class PreviewPopupComponent extends BasicPopup<PreviewPopup> implements OnInit {
+export class PreviewPopupComponent extends BasicPopup<PreviewPopup> {
 
   constructor(
     private players: MwPlayersService,
     private apiProvider: ApiProvider,
   ) {
     super();
-  }
-
-  ngOnInit(): void {
   }
 
   public closePopup(): void {

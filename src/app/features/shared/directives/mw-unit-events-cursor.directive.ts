@@ -1,4 +1,4 @@
-import { Directive, ElementRef, Inject, InjectionToken, NgZone, Renderer2 } from '@angular/core';
+import { Directive, ElementRef, Inject, InjectionToken, NgZone, OnInit, Renderer2 } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 import { UnitGroupInstModel } from 'src/app/core/unit-types';
 import { SpellCastCursorAnimation, StaticCursorAnimation } from 'src/app/core/vfx';
@@ -16,7 +16,7 @@ export const PROVIDE_UI_UNIT_GROUP: InjectionToken<string> = new InjectionToken(
 @Directive({
   selector: '[mwUnitEventsCursor]'
 })
-export class MwUnitEventsCursorDirective extends MwCustomCursorDirective {
+export class MwUnitEventsCursorDirective extends MwCustomCursorDirective implements OnInit {
   private unitGroup!: UnitGroupInstModel;
 
   constructor(

@@ -22,7 +22,7 @@ interface UpgradeModel {
   templateUrl: './upgrade-reward-popup.component.html',
   styleUrls: ['./upgrade-reward-popup.component.scss']
 })
-export class UpgradeRewardPopup extends BasicPopup<UpgradingPopup> implements OnInit {
+export class UpgradeRewardPopupComponent extends BasicPopup<UpgradingPopup> implements OnInit {
 
   public hiredGroups!: UpgradeModel[];
 

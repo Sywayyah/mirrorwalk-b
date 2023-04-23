@@ -7,7 +7,7 @@ import { ElementHint, HintAttachment } from '../hints-container/hints-container.
   templateUrl: './hover-hint.component.html',
   styleUrls: ['./hover-hint.component.scss']
 })
-export class HoverHintComponent implements OnInit, OnDestroy {
+export class HoverHintComponent implements OnDestroy {
 
   @Input() public hintBody!: TemplateRef<ElementRef>;
   /* todo: improve transition and overall logic of this component later */
@@ -26,9 +26,6 @@ export class HoverHintComponent implements OnInit, OnDestroy {
   constructor(
     private readonly hintsService: HintsService,
   ) { }
-
-  ngOnInit(): void {
-  }
 
   ngOnDestroy(): void {
     this.onMouseLeave();

@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ViewChild } from '@angular/core';
 import { VfxElementComponent } from '../vfx-element/vfx-element.component';
 import { CursorService } from './cursor.service';
 
@@ -7,7 +7,7 @@ import { CursorService } from './cursor.service';
   templateUrl: './custom-cursor.component.html',
   styleUrls: ['./custom-cursor.component.scss']
 })
-export class CustomCursorComponent implements OnInit {
+export class CustomCursorComponent {
 
   @ViewChild('customCursorRef', { static: false })
   public customCursorRef!: VfxElementComponent;
@@ -19,11 +19,7 @@ export class CustomCursorComponent implements OnInit {
   constructor(
     private cursor: CursorService,
     public cdr: ChangeDetectorRef,
-  ) { 
+  ) {
     this.cursor.registerCursorComponent(this);
   }
-
-  ngOnInit(): void {
-  }
-
 }

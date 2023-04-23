@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, TemplateRef } from '@angular/core';
+import { Component, ElementRef, TemplateRef } from '@angular/core';
 
 export type HintAttachment = 'before' | 'after' | 'above' | 'below';
 
@@ -17,13 +17,11 @@ export interface ElementHint {
   templateUrl: './hints-container.component.html',
   styleUrls: ['./hints-container.component.scss']
 })
-export class HintsContainerComponent implements OnInit {
+export class HintsContainerComponent {
   public hints: ElementHint[] = [];
 
   constructor() { }
 
-  ngOnInit(): void {
-  }
 
   public createHint(target: ElementRef, template: TemplateRef<ElementRef>, pos: HintAttachment): ElementHint {
     const elem = target.nativeElement as HTMLElement;

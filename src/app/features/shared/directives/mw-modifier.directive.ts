@@ -1,9 +1,9 @@
-import { Directive, ElementRef, Input, Renderer2 } from '@angular/core';
+import { Directive, ElementRef, Input, OnChanges, OnDestroy, Renderer2 } from '@angular/core';
 
 @Directive({
   selector: '[mwNumberModifier]'
 })
-export class NumberModifierDirective {
+export class NumberModifierDirective implements OnDestroy, OnChanges {
 
   @Input('mwNumberModifier')
   public value!: number;

@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, TemplateRef, ViewChild } from '@angular/core';
 import { HintsService } from 'src/app/features/services/hints.service';
 import { ElementHint, HintAttachment } from '../hints-container/hints-container.component';
 
@@ -7,7 +7,7 @@ import { ElementHint, HintAttachment } from '../hints-container/hints-container.
   templateUrl: './menu.component.html',
   styleUrls: ['./menu.component.scss']
 })
-export class MenuComponent implements OnInit {
+export class MenuComponent {
   @Input()
   public menuBody!: TemplateRef<ElementRef>;
 
@@ -37,9 +37,6 @@ export class MenuComponent implements OnInit {
     public host: ElementRef,
     private hintsService: HintsService,
   ) { }
-
-  ngOnInit(): void {
-  }
 
   public onClick(): void {
     if (this.disabled) {
