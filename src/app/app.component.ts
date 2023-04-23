@@ -1,61 +1,53 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { BattleController, CombatController, PlayerController, StructuresController, ItemsController, BattleLogController, UiController, GameController } from './features/services/controllers';
+import { Component, OnInit, ViewChild, inject } from '@angular/core';
+import './core/scripts';
+import { MwTriggersService } from './features/services';
+import { BattleController, BattleLogController, CombatController, GameController, ItemsController, PlayerController, StructuresController, UiController } from './features/services/controllers';
 import { InGameApiController } from './features/services/controllers/in-game-api.service';
 import { PopupsController } from './features/services/controllers/popups.service';
 import { GameStart } from './features/services/events';
 import { HintsService } from './features/services/hints.service';
 import { HintsContainerComponent } from './features/shared/components';
 import { EventsService } from './store';
-import './core/scripts';
-import { MwTriggersService } from './features/services';
+
+const GlobalServices = [
+  // logic controllers
+  BattleController,
+  CombatController,
+  PlayerController,
+  StructuresController,
+  ItemsController,
+  BattleLogController,
+  UiController,
+  GameController,
+  InGameApiController,
+  PopupsController,
+
+  MwTriggersService,
+];
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
-  providers: [
-    BattleController,
-    CombatController,
-    PlayerController,
-    StructuresController,
-    ItemsController,
-    BattleLogController,
-    UiController,
-    GameController,
-    InGameApiController,
-    PopupsController,
-    MwTriggersService,
-  ],
+  providers: GlobalServices,
 })
 export class AppComponent implements OnInit {
   @ViewChild('hintsContainer', { static: true }) public hintsContainer!: HintsContainerComponent;
 
   constructor(
     private readonly hintsService: HintsService,
-    battleController: BattleController,
-    combatController: CombatController,
-    playerController: PlayerController,
-    battleLogController: BattleLogController,
-    itemsController: ItemsController,
-    structureController: StructuresController,
-    uiController: UiController,
-    gameController: GameController,
-    inGameApiController: InGameApiController,
-    popups: PopupsController,
-    triggers: MwTriggersService,
     private events: EventsService,
-    // players: MwPlayersService,
-    // items: MwItemsService,
   ) {
-    /* listener not created at this point */
+    this.injectGlobalServices();
+
     this.events.dispatch(GameStart());
-    // items.initService(combat);
-    // players.initPlayers();
-    // players.addItemToPlayer(players.getCurrentPlayer(), items.createItem(ItemDoomstring));
-    // players.addItemToPlayer(players.getCurrentPlayer(), items.createItem(ItemWindCrest));
   }
 
   public ngOnInit(): void {
     this.hintsService.containerRef = this.hintsContainer;
+  }
+
+  private injectGlobalServices(): void {
+    GlobalServices.forEach(service => inject(service as any));
   }
 }

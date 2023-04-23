@@ -18,7 +18,7 @@
 
       <div style="font-size: 12px;">
         <div>
-          <mw-ra-icon icon="spinning-sword"></mw-ra-icon>
+          <mw-ra-icon icon="spinning-sword" />
           ({{unitGroup.turnsLeft}}/{{unitGroup.type.defaultTurnsPerRound}})
         </div>
 
@@ -34,7 +34,9 @@
 
         <div>
           <mw-ra-icon icon="feather-wing" />
-          {{ unitGroup.type.baseStats.speed }}<span [mwNumberModifier]="modsForUi.speed"></span>
+          {{ unitGroup.type.baseStats.speed }}
+
+          <span [mwNumberModifier]="modsForUi.speed"></span>
         </div>
 
         <!-- this info will have to be updated -->
