@@ -4,8 +4,7 @@
        [ngClass]="{ 'disabled': onCooldown || disabled }">
     <mw-ra-icon class="spell-icon"
                 [icon]="spell.baseType.icon.icon"
-                [ngStyle]="{ 'color': spell.baseType.icon.iconClr , 'background': spell.baseType.icon.bgClr }">
-    </mw-ra-icon>
+                [ngStyle]="{ 'color': spell.baseType.icon.iconClr , 'background': spell.baseType.icon.bgClr }" />
   </div>
 </mw-hover-hint>
 
@@ -13,8 +12,7 @@
   <div style="display: flex">
     <mw-ra-icon [icon]="icon.icon"
                 class="hint-icon"
-                [ngStyle]="{ 'color': icon.iconClr , 'background': icon.bgClr }">
-    </mw-ra-icon>
+                [ngStyle]="{ 'color': icon.iconClr , 'background': icon.bgClr }" />
 
     <div style="padding: 4px; font-size: 14px;">
       <div>{{baseType.name}}</div>
@@ -30,7 +28,6 @@
     <mw-spell-description [spell]="spell"
                           [player]="owner.ownerPlayerRef"
                           [ownerUnit]="owner"
-                          [hero]="hero">
-    </mw-spell-description>
+                          [hero]="hero" />
   </div>
 </ng-template>

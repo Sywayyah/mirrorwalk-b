@@ -1,6 +1,8 @@
 <div class="list">
-    <div *ngFor="let group of unitGroups" class="group" [style.background]="group.ownerPlayerRef?.color">
-        <div>{{group.type.name}}</div>
-        <div>{{group.count}}</div>
-    </div>
+  <div *ngFor="let group of unitGroups"
+       class="group"
+       [style.background]="group.ownerPlayerRef?.color">
+    <div>{{group.type.name}}</div>
+    <div>{{group.count}}</div>
+  </div>
 </div>

@@ -1,27 +1,30 @@
 <div class="history-panel">
   History:
-  <div class="history-log" #historyLog>
+  <div class="history-log"
+       #historyLog>
     <div *ngFor="let historyEntry of battleLogService.history">
       <ng-container [ngSwitch]="historyEntry.type">
         <div *ngSwitchCase="types.SimpleMsg">
-          <ng-container *ngTemplateOutlet="simple; context: { log: historyEntry }"></ng-container>
+          <ng-container *ngTemplateOutlet="simple; context: { log: historyEntry }" />
         </div>
         <div *ngSwitchCase="types.RoundInfoMsg">
-          <ng-container *ngTemplateOutlet="roundInfoMsg; context: { log: historyEntry }"></ng-container>
+          <ng-container *ngTemplateOutlet="roundInfoMsg; context: { log: historyEntry }" />
         </div>
         <div *ngSwitchCase="types.DealtDamageMsg">
-          <ng-container *ngTemplateOutlet="dealtDamageLog; context: { log: historyEntry }"></ng-container>
+          <ng-container *ngTemplateOutlet="dealtDamageLog; context: { log: historyEntry }" />
         </div>
       </ng-container>
     </div>
   </div>
 </div>
 
-<ng-template #simple let-log="log">
+<ng-template #simple
+             let-log="log">
   {{log.message}}
 </ng-template>
 
-<ng-template #dealtDamageLog let-log="log">
+<ng-template #dealtDamageLog
+             let-log="log">
   <div>
     <span [style.color]="log.attackingPlayer.color">{{log.attackersNumber}} {{log.attacker.name}}</span>
     deal {{log.damage}} damage to
@@ -30,7 +33,8 @@
   </div>
 </ng-template>
 
-<ng-template #roundInfoMsg let-log="log">
+<ng-template #roundInfoMsg
+             let-log="log">
   <div style="padding: 8px; text-align: center;">
     {{log.message}}
   </div>

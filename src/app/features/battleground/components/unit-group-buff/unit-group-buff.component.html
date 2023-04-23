@@ -2,19 +2,18 @@
                [xPos]="hintPos">
   <mw-ra-icon class="buff-icon"
               [icon]="icon.icon"
-              [ngStyle]="{ 'color': icon.iconClr , 'background': icon.bgClr }">
-  </mw-ra-icon>
+              [ngStyle]="{ 'color': icon.iconClr , 'background': icon.bgClr }" />
 </mw-hover-hint>
 
 <ng-template #buffHint>
   <div style="display: flex">
     <mw-ra-icon [icon]="icon.icon"
                 class="hint-icon"
-                [ngStyle]="{ 'color': icon.iconClr , 'background': icon.bgClr }">
-    </mw-ra-icon>
+                [ngStyle]="{ 'color': icon.iconClr , 'background': icon.bgClr }" />
 
     <div style="padding: 4px; font-size: 14px;">
       <div>{{baseType.name}}</div>
+
       <div>Level {{buff.currentLevel}}</div>
     </div>
   </div>
@@ -23,6 +22,6 @@
     <mw-spell-description [ownerUnit]="ownerUnit"
                           [hero]="ownerUnit.ownerPlayerRef.hero"
                           [player]="ownerUnit.ownerPlayerRef"
-                          [spell]="buff"></mw-spell-description>
+                          [spell]="buff" />
   </div>
 </ng-template>

@@ -9,11 +9,13 @@
        (click)="setSelectedGroup(items)">
     <mw-item-icon *ngFor="let item of items"
                   [item]="item"
-                  [hintPos]="'above'"></mw-item-icon>
+                  [hintPos]="'above'" />
   </div>
 </div>
 
 <div style="display: flex; justify-content: center; padding-top: 18px">
   <button [disabled]="!selectedGroup"
-          (click)="onSubmit()">Submit</button>
+          (click)="onSubmit()">
+    Submit
+  </button>
 </div>

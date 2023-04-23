@@ -5,7 +5,8 @@
     </div>
 
     <div style="display: flex; flex-direction: column;">
-      <mw-item-slot *ngFor="let itemSlot of itemSlots" [itemSlot]="itemSlot"></mw-item-slot>
+      <mw-item-slot *ngFor="let itemSlot of itemSlots"
+                    [itemSlot]="itemSlot" />
     </div>
   </div>
 
@@ -13,11 +14,14 @@
     <div>{{hero.base.name}}</div>
     <div>Level {{hero.level}}</div>
 
-    <mw-experience-bar style="width: 270px;"></mw-experience-bar>
+    <mw-experience-bar style="width: 270px;" />
   </div>
 
 </div>
 
 <div class="buttons">
-  <button mw-main-button (click)="close()">Close</button>
+  <button mw-main-button
+          (click)="close()">
+    Close
+  </button>
 </div>
