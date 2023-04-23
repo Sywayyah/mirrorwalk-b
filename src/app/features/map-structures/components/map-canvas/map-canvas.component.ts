@@ -125,8 +125,8 @@ export class MapCanvasComponent extends StoreClient() implements OnInit {
           finalPosY = -(this.mapTotalHeight - screenHeightHalf);
         }
 
-        this.state.mapsState.cameraCenterPos.x = finalPosX * -1 + screenWidthHalf;
-        this.state.mapsState.cameraCenterPos.y = finalPosY * -1 + screenHeightHalf;
+        this.state.mapCamera.x = finalPosX * -1 + screenWidthHalf;
+        this.state.mapCamera.y = finalPosY * -1 + screenHeightHalf;
 
         this.setMapElementsPosition(finalPosX, finalPosY);
 
@@ -188,8 +188,7 @@ export class MapCanvasComponent extends StoreClient() implements OnInit {
         this.updateWindowSizeData();
         this.updateUnderlaySize();
 
-        const cameraState = this.state.mapsState.cameraCenterPos;
-        this.panCameraCenterTo(cameraState);
+        this.panCameraCenterTo(this.state.mapCamera);
       });
     });
   }

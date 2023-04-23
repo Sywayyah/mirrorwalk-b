@@ -34,10 +34,10 @@ export class MwStructuresViewComponent {
   }
 
   public ngAfterViewInit(): void {
-    if (this.state.mapsState.cameraCenterPos.cameraInitialized) {
+    if (this.state.mapCamera.cameraInitialized) {
       // reset camera position for now
       // todo: maybe reset camera to location visited by the player..
-      const { x, y } = this.state.mapsState.cameraCenterPos;
+      const { x, y } = this.state.mapCamera;
 
       this.events.dispatch(MapPanCameraCenterTo({ x, y }));
       return;
@@ -51,7 +51,7 @@ export class MwStructuresViewComponent {
       console.warn(`[Map View]: Couldn't find location with id "1" to pan camera center on game start`);
     }
 
-    this.state.mapsState.cameraCenterPos.cameraInitialized = true;
+    this.state.mapCamera.cameraInitialized = true;
   }
 
   public updateLocationsPosition(event: MapDragEvent): void {
