@@ -1,24 +1,29 @@
 <div class="effect">
-    <ng-container #container></ng-container>
+  <ng-container #container />
 </div>
 
 <!-- Plain icon VFX -->
-<ng-template #iconSfx let-icon="icon">
-    <mw-ra-icon [icon]="icon"></mw-ra-icon>
+<ng-template #iconSfx
+             let-icon="icon">
+  <mw-ra-icon [icon]="icon" />
 </ng-template>
 
 <!-- customizable composed VFX -->
-<ng-template #customizableVfx let-data="data">
-    <div style="text-shadow: 1px 1px #4e4e4e; z-index: 10000;">
-        <div *ngFor="let part of data.parts" [ngSwitch]="part.type" [style.color]="part.color">
-            <ng-container *ngSwitchCase="'plainPart'">
-                <ng-container *ngTemplateOutlet="plainDamagePart; context: { part: part }"></ng-container>
-            </ng-container>
-        </div>
+<ng-template #customizableVfx
+             let-data="data">
+  <div style="text-shadow: 1px 1px #4e4e4e; z-index: 10000;">
+    <div *ngFor="let part of data.parts"
+         [ngSwitch]="part.type"
+         [style.color]="part.color">
+      <ng-container *ngSwitchCase="'plainPart'">
+        <ng-container *ngTemplateOutlet="plainDamagePart; context: { part: part }" />
+      </ng-container>
     </div>
+  </div>
 </ng-template>
 
-<ng-template #plainDamagePart let-part="part">
-    <mw-ra-icon [icon]="part.icon"></mw-ra-icon>
-    <span>{{part.text}}</span>
+<ng-template #plainDamagePart
+             let-part="part">
+  <mw-ra-icon [icon]="part.icon" />
+  <span>{{part.text}}</span>
 </ng-template>
