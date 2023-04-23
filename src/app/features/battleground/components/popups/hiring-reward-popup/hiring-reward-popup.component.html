@@ -4,15 +4,20 @@
   </div>
 
   <div class="units">
-    <div *ngFor="let unitType of hiredGroups" class="unit-column">
+    <div *ngFor="let unitType of hiredGroups"
+         class="unit-column">
       <div>{{unitType.hire.unitType.name}}</div>
       <div>{{unitType.count}}</div>
-      <input type="range" [min]="0" [max]="unitType.hire.maxCount" (input)="updateCountForGroup(unitType, $event)"
-        [value]="0">
+      <input type="range"
+             [min]="0"
+             [max]="unitType.hire.maxCount"
+             (input)="updateCountForGroup(unitType, $event)"
+             [value]="0">
 
       <div>Cost:</div>
       <div class="cost">
-        <div class="resource" *ngFor="let resource of (unitType.currentCost | keyvalue)">
+        <div class="resource"
+             *ngFor="let resource of (unitType.currentCost | keyvalue)">
           <div>{{resource.key}}</div>
           <div>{{resource.value}}</div>
         </div>
@@ -21,6 +26,8 @@
   </div>
 
   <div>
-    <button class="button" [disabled]="!canConfirm" (click)="confirmHire()">Confirm</button>
+    <button class="button"
+            [disabled]="!canConfirm"
+            (click)="confirmHire()">Confirm</button>
   </div>
 </div>

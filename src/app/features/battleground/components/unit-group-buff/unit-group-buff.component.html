@@ -1,11 +1,16 @@
-<mw-hover-hint [hintBody]="buffHint" [xPos]="hintPos">
-  <mw-ra-icon class="buff-icon" [icon]="icon.icon" [ngStyle]="{ 'color': icon.iconClr , 'background': icon.bgClr }">
+<mw-hover-hint [hintBody]="buffHint"
+               [xPos]="hintPos">
+  <mw-ra-icon class="buff-icon"
+              [icon]="icon.icon"
+              [ngStyle]="{ 'color': icon.iconClr , 'background': icon.bgClr }">
   </mw-ra-icon>
 </mw-hover-hint>
 
 <ng-template #buffHint>
   <div style="display: flex">
-    <mw-ra-icon [icon]="icon.icon" class="hint-icon" [ngStyle]="{ 'color': icon.iconClr , 'background': icon.bgClr }">
+    <mw-ra-icon [icon]="icon.icon"
+                class="hint-icon"
+                [ngStyle]="{ 'color': icon.iconClr , 'background': icon.bgClr }">
     </mw-ra-icon>
 
     <div style="padding: 4px; font-size: 14px;">
@@ -15,7 +20,9 @@
   </div>
 
   <div style="padding: 4px; font-size: 13px; max-width: 240px;">
-    <mw-spell-description [ownerUnit]="ownerUnit" [hero]="ownerUnit.ownerPlayerRef.hero"
-      [player]="ownerUnit.ownerPlayerRef" [spell]="buff"></mw-spell-description>
+    <mw-spell-description [ownerUnit]="ownerUnit"
+                          [hero]="ownerUnit.ownerPlayerRef.hero"
+                          [player]="ownerUnit.ownerPlayerRef"
+                          [spell]="buff"></mw-spell-description>
   </div>
 </ng-template>

@@ -3,12 +3,17 @@
 </div>
 
 <div class="reward-container">
-  <div class="items-group" *ngFor="let items of itemGroups" [class.selected]="items === selectedGroup"
-    (click)="setSelectedGroup(items)">
-    <mw-item-icon *ngFor="let item of items" [item]="item" [hintPos]="'above'"></mw-item-icon>
+  <div class="items-group"
+       *ngFor="let items of itemGroups"
+       [class.selected]="items === selectedGroup"
+       (click)="setSelectedGroup(items)">
+    <mw-item-icon *ngFor="let item of items"
+                  [item]="item"
+                  [hintPos]="'above'"></mw-item-icon>
   </div>
 </div>
 
 <div style="display: flex; justify-content: center; padding-top: 18px">
-  <button [disabled]="!selectedGroup" (click)="onSubmit()">Submit</button>
+  <button [disabled]="!selectedGroup"
+          (click)="onSubmit()">Submit</button>
 </div>

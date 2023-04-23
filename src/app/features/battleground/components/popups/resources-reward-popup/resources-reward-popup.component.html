@@ -3,10 +3,13 @@
 </div>
 
 <div class="reources-rewards">
-  <div class="resource-column" *ngFor="let resourceGroup of resourceGroups"
-    (click)="setCurrentReward(data, resourceGroup)" [class.selected]="data.selectedRewardGroup === resourceGroup">
+  <div class="resource-column"
+       *ngFor="let resourceGroup of resourceGroups"
+       (click)="setCurrentReward(data, resourceGroup)"
+       [class.selected]="data.selectedRewardGroup === resourceGroup">
 
-    <div class="resource-card" *ngFor="let resource of resourceGroup">
+    <div class="resource-card"
+         *ngFor="let resource of resourceGroup">
       <div>
         {{resource.type}}
       </div>
@@ -17,6 +20,8 @@
   </div>
 </div>
 
-<button style="margin: auto; display: block;" [disabled]="!data.selectedRewardGroup" (click)="confirmResources(data)">
+<button style="margin: auto; display: block;"
+        [disabled]="!data.selectedRewardGroup"
+        (click)="confirmResources(data)">
   Confirm
 </button>

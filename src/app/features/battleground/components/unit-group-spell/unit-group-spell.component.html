@@ -1,27 +1,36 @@
-<mw-hover-hint [hintBody]="buffHint" [xPos]="hintPos">
-  <div (click)="onSpellClick($event)" [ngClass]="{ 'disabled': onCooldown || disabled }">
-    <mw-ra-icon class="spell-icon" [icon]="spell.baseType.icon.icon"
-      [ngStyle]="{ 'color': spell.baseType.icon.iconClr , 'background': spell.baseType.icon.bgClr }">
+<mw-hover-hint [hintBody]="buffHint"
+               [xPos]="hintPos">
+  <div (click)="onSpellClick($event)"
+       [ngClass]="{ 'disabled': onCooldown || disabled }">
+    <mw-ra-icon class="spell-icon"
+                [icon]="spell.baseType.icon.icon"
+                [ngStyle]="{ 'color': spell.baseType.icon.iconClr , 'background': spell.baseType.icon.bgClr }">
     </mw-ra-icon>
   </div>
 </mw-hover-hint>
 
 <ng-template #buffHint>
   <div style="display: flex">
-    <mw-ra-icon [icon]="icon.icon" class="hint-icon" [ngStyle]="{ 'color': icon.iconClr , 'background': icon.bgClr }">
+    <mw-ra-icon [icon]="icon.icon"
+                class="hint-icon"
+                [ngStyle]="{ 'color': icon.iconClr , 'background': icon.bgClr }">
     </mw-ra-icon>
 
     <div style="padding: 4px; font-size: 14px;">
       <div>{{baseType.name}}</div>
       <div style="font-size: 12px;">Level {{spell.currentLevel}}</div>
-      <div style="font-size: 12px;" *ngIf="!isPassive">
+      <div style="font-size: 12px;"
+           *ngIf="!isPassive">
         Mana Cost: {{spell.currentManaCost}}
       </div>
     </div>
   </div>
 
   <div style="padding: 4px; font-size: 13px; max-width: 240px;">
-    <mw-spell-description [spell]="spell" [player]="owner.ownerPlayerRef" [ownerUnit]="owner"
-      [hero]="hero"></mw-spell-description>
+    <mw-spell-description [spell]="spell"
+                          [player]="owner.ownerPlayerRef"
+                          [ownerUnit]="owner"
+                          [hero]="hero">
+    </mw-spell-description>
   </div>
 </ng-template>
