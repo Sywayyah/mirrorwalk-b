@@ -21,8 +21,7 @@
 
     <!-- <mw-ra-icon *ngIf="playerCurrentLocId === struct.id" style="position: absolute; z-index: 70" icon="castle-flag"></mw-ra-icon> -->
 
-    <svg
-      *ngIf="struct.svg"
+    <svg *ngIf="struct.svg"
       class="path-line"
       [style.left.px]="struct.svg.x"
       [style.top.px]="struct.svg.y"
@@ -49,14 +48,12 @@
 <mw-action-hint></mw-action-hint>
 
 <div class="player-actions">
-  <mw-icon-btn
-    mwActionHint="Go to {{state.createdGame.fraction.title}}"
+  <mw-icon-btn mwActionHint="Go to {{state.createdGame.fraction.title}}"
     (click)="goToTown()"
     style="padding: 0 20px"
     [icon]="state.createdGame.fraction.icon">
   </mw-icon-btn>
-  <mw-icon-btn
-    mwActionHint="Inspect Hero"
+  <mw-icon-btn mwActionHint="Inspect Hero"
     (click)="openPlayerInfo()"
     style="padding: 0 20px"
     icon="aura">

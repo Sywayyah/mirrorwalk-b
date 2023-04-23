@@ -1,9 +1,13 @@
-<div #elem (mouseenter)="onMouseEnter()" (mouseleave)="onMouseLeave()">
-    <ng-content></ng-content>
+<div #elem
+     (mouseenter)="onMouseEnter()"
+     (mouseleave)="onMouseLeave()">
+  <ng-content></ng-content>
 </div>
 
 <ng-template #generalHint>
-    <div class="hint" [ngClass]="showHintAnimation ? 'show-hint' : 'hide-hint'" [style.transition.s]="transition">
-        <ng-container *ngTemplateOutlet="hintBody"></ng-container>
-    </div>
+  <div class="hint"
+       [ngClass]="showHintAnimation ? 'show-hint' : 'hide-hint'"
+       [style.transition.s]="transition">
+    <ng-container *ngTemplateOutlet="hintBody"></ng-container>
+  </div>
 </ng-template>
