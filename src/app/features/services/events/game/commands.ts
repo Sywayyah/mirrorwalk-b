@@ -2,7 +2,7 @@ import { eventsForPrefix } from 'src/app/store';
 import { PanMapCameraCenterAction } from './types';
 
 
-const commands = eventsForPrefix('[Commands]');
+const commands = eventsForPrefix('[GameCommands]');
 
 // It feels rather like a semantic event, doesn't feel exactly like command
 //  or regular event

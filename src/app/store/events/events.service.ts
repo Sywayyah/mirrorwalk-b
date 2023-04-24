@@ -33,6 +33,7 @@ export class EventsService {
   public eventStream$ = new Subject<EventInfo>();
 
   public dispatch(event: EventInfo): void {
+    // console.log(`  ${event.__name}`, event);
     this.eventStream$.next(event);
   }
 
