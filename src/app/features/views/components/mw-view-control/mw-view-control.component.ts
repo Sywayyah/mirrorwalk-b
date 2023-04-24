@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component } from '@angular/core';
-import { DisplayReward, GameCreated, GameStart, NeutralStructParams, NewGameCreation, PlayerEntersTown, PlayerLeavesTown, StructCompleted, StructFightConfirmed } from 'src/app/features/services/events';
+import { DisplayReward, GameCreated, GameOpenMainScreen, GameStarted, NeutralStructParams, NewGameCreation, PlayerEntersTown, PlayerLeavesTown, StructCompleted, StructFightConfirmed } from 'src/app/features/services/events';
 import { Notify, StoreClient, WireMethod } from 'src/app/store';
 
 enum ViewsEnum {
@@ -24,7 +24,7 @@ export class MwViewControlComponent extends StoreClient() {
     super();
   }
 
-  @Notify(GameStart)
+  @Notify(GameOpenMainScreen)
   public initScreen(): void {
     this.currentView = ViewsEnum.MainScreen;
   }

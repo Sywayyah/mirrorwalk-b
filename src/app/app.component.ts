@@ -1,10 +1,10 @@
-import { Component, OnInit, ViewChild, inject } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild, inject } from '@angular/core';
 import './core/scripts';
 import { MwTriggersService } from './features/services';
 import { BattleController, BattleLogController, CombatController, GameController, ItemsController, PlayerController, StructuresController, UiController } from './features/services/controllers';
 import { InGameApiController } from './features/services/controllers/in-game-api.service';
 import { PopupsController } from './features/services/controllers/popups.service';
-import { GameStart } from './features/services/events';
+import { GameStarted } from './features/services/events';
 import { HintsService } from './features/services/hints.service';
 import { HintsContainerComponent } from './features/shared/components';
 import { EventsService } from './store';
@@ -31,7 +31,7 @@ const GlobalServices = [
   styleUrls: ['./app.component.scss'],
   providers: GlobalServices,
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, AfterViewInit {
   @ViewChild('hintsContainer', { static: true }) public hintsContainer!: HintsContainerComponent;
 
   constructor(
@@ -39,12 +39,14 @@ export class AppComponent implements OnInit {
     private events: EventsService,
   ) {
     this.injectGlobalServices();
-
-    this.events.dispatch(GameStart());
   }
 
   public ngOnInit(): void {
     this.hintsService.containerRef = this.hintsContainer;
+  }
+
+  public ngAfterViewInit(): void {
+    this.events.dispatch(GameStarted());
   }
 
   private injectGlobalServices(): void {
