@@ -1,7 +1,6 @@
 import { AfterViewInit, Component, ElementRef, Renderer2, ViewChild } from '@angular/core';
 import { ViewStructure } from 'src/app/core/locations';
 import { PlayerInstanceModel } from 'src/app/core/players';
-import { NeutralCampStructure } from 'src/app/core/structures';
 import { MwPlayersService, MwStructuresService } from 'src/app/features/services';
 import { MapPanCameraCenterTo, PlayerEntersTown, PlayerOpensHeroInfo, StructSelected } from 'src/app/features/services/events';
 import { State } from 'src/app/features/services/state.service';
@@ -61,7 +60,7 @@ export class MwStructuresViewComponent implements AfterViewInit {
     this.renderer.setStyle(locationsElem, 'top', `${event.finalPosY}px`);
   }
 
-  public handleStructure(struct: ViewStructure): void {
+  public onStructureSelected(struct: ViewStructure): void {
     if (!this.structsService.availableStructuresMap[struct.id] || !struct.structure || struct.structure?.isInactive) {
       return;
     }
@@ -73,23 +72,11 @@ export class MwStructuresViewComponent implements AfterViewInit {
     }));
   }
 
-  public onStructureSelected(struct: NeutralCampStructure): void {
-    if (struct.isInactive) {
-      return;
-    }
-
-    this.playersService.getEnemyPlayer().unitGroups = this.structsService.guardsMap[struct.id];
-
-    this.events.dispatch(StructSelected({
-      struct
-    }));
-  }
-
   public goToTown(): void {
-    this.events.dispatch(PlayerEntersTown({}));
+    this.events.dispatch(PlayerEntersTown());
   }
 
   public openPlayerInfo(): void {
-    this.events.dispatch(PlayerOpensHeroInfo({}));
+    this.events.dispatch(PlayerOpensHeroInfo());
   }
 }

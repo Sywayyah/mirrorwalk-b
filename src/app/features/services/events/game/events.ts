@@ -4,11 +4,8 @@ import { FightStartsEvent, InitItemAction, InitSpellAction, NeutralStructParams,
 
 const gameEvent = eventsForPrefix('[Game]');
 
-export const GameStart = gameEvent();
+export const GameStarted = gameEvent();
 
-export const NewGameCreation = gameEvent();
-
-export const OpenSettings = gameEvent();
 
 export const GameCreated = gameEvent();
 

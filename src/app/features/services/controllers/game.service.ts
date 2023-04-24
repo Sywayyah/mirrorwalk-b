@@ -4,7 +4,7 @@ import { heroesDefaultResources } from 'src/app/core/heroes';
 import { PlayerTypeEnum } from 'src/app/core/players';
 import { DefaultGameModes, GamePreparedEvent, Triggers } from 'src/app/core/triggers';
 import { Notify, StoreClient, WireMethod } from 'src/app/store';
-import { FightStarts, FightStartsEvent, GameCreated, NeutralStructParams, PlayerStartsFight, PlayersInitialized, StructFightConfirmed, StructSelected, StructSelectedEvent } from '../events';
+import { FightStarts, FightStartsEvent, GameCreated, GameOpenMainScreen, GameOpenMapStructuresScreen, GameStarted, NeutralStructParams, PlayerLeavesTown, PlayerStartsFight, PlayersInitialized, StructFightConfirmed, StructSelected, StructSelectedEvent } from '../events';
 import { BattleStateService } from '../mw-battle-state.service';
 import { MwHeroesService } from '../mw-heroes.service';
 import { MwPlayersService, PLAYER_IDS } from '../mw-players.service';
@@ -23,6 +23,11 @@ export class GameController extends StoreClient() {
     private state: State,
   ) {
     super();
+  }
+
+  @Notify(GameStarted)
+  public openMainScreenOnGameStart(): void {
+    this.events.dispatch(GameOpenMainScreen());
   }
 
   @WireMethod(Triggers.GamePreparationFinished)
@@ -70,11 +75,16 @@ export class GameController extends StoreClient() {
 
     this.events.dispatch(PlayersInitialized({}));
     this.events.dispatch(Triggers.PrepareGameEvent({ gameMode: DefaultGameModes.Normal }));
+    this.events.dispatch(GameOpenMapStructuresScreen());
+  }
+
+  @Notify(PlayerLeavesTown)
+  public openMapScreenWhenPlayerLeavesTown(): void {
+    this.events.dispatch(GameOpenMapStructuresScreen());
   }
 
   @WireMethod(StructFightConfirmed)
   public initFight(event: NeutralStructParams): void {
-
     this.state.currentBattleState = {
       currentPlayer: this.state.gameState.currentPlayer,
       enemyPlayer: event.struct.guard,

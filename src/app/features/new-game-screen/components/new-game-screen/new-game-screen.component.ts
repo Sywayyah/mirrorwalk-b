@@ -5,7 +5,7 @@ import { neutralsFraction } from 'src/app/core/fractions/neutrals/fraction';
 import { HeroBase } from 'src/app/core/heroes';
 import { ActivityTypes, Building, HiringActivity, TownBase } from 'src/app/core/towns';
 import { CommonUtils } from 'src/app/core/unit-types';
-import { GameCreated, GameStart } from 'src/app/features/services/events';
+import { GameCreated, GameOpenMainScreen } from 'src/app/features/services/events';
 import { State } from 'src/app/features/services/state.service';
 import { EventsService } from 'src/app/store';
 
@@ -97,8 +97,8 @@ export class NewGameScreenComponent {
     this.events.dispatch(GameCreated({}));
   }
 
-  public goToMainScreen(): void {
-    this.events.dispatch(GameStart({}));
+  public returnToMainScreen(): void {
+    this.events.dispatch(GameOpenMainScreen());
   }
 
   public selectFraction(fraction?: Fraction<any>): void {
