@@ -85,7 +85,6 @@ export class GameController extends StoreClient() {
 
   @WireMethod(StructFightConfirmed)
   public initFight(event: NeutralStructParams): void {
-
     this.state.currentBattleState = {
       currentPlayer: this.state.gameState.currentPlayer,
       enemyPlayer: event.struct.guard,
