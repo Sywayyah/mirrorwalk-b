@@ -6,9 +6,6 @@ const gameEvent = eventsForPrefix('[Game]');
 
 export const GameStarted = gameEvent();
 
-export const NewGameCreation = gameEvent();
-
-export const OpenSettings = gameEvent();
 
 export const GameCreated = gameEvent();
 

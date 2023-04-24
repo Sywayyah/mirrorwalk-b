@@ -20,3 +20,9 @@ export const MapPanCameraCenterTo = commands<PanMapCameraCenterAction>('Pan came
   While commands can be like an instruction for the app.
 */
 export const GameOpenMainScreen = commands('Open Main Screen');
+
+export const OpenNewGameScreen = commands('Open New Game Screen');
+
+export const OpenSettings = commands('Open Game settings');
+
+export const GameOpenMapStructuresScreen = commands('Open map structures screen');

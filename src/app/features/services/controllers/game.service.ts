@@ -4,7 +4,7 @@ import { heroesDefaultResources } from 'src/app/core/heroes';
 import { PlayerTypeEnum } from 'src/app/core/players';
 import { DefaultGameModes, GamePreparedEvent, Triggers } from 'src/app/core/triggers';
 import { Notify, StoreClient, WireMethod } from 'src/app/store';
-import { FightStarts, FightStartsEvent, GameCreated, GameOpenMainScreen, GameStarted, NeutralStructParams, PlayerStartsFight, PlayersInitialized, StructFightConfirmed, StructSelected, StructSelectedEvent } from '../events';
+import { FightStarts, FightStartsEvent, GameCreated, GameOpenMainScreen, GameOpenMapStructuresScreen, GameStarted, NeutralStructParams, PlayerLeavesTown, PlayerStartsFight, PlayersInitialized, StructFightConfirmed, StructSelected, StructSelectedEvent } from '../events';
 import { BattleStateService } from '../mw-battle-state.service';
 import { MwHeroesService } from '../mw-heroes.service';
 import { MwPlayersService, PLAYER_IDS } from '../mw-players.service';
@@ -75,6 +75,12 @@ export class GameController extends StoreClient() {
 
     this.events.dispatch(PlayersInitialized({}));
     this.events.dispatch(Triggers.PrepareGameEvent({ gameMode: DefaultGameModes.Normal }));
+    this.events.dispatch(GameOpenMapStructuresScreen());
+  }
+
+  @Notify(PlayerLeavesTown)
+  public openMapScreenWhenPlayerLeavesTown(): void {
+    this.events.dispatch(GameOpenMapStructuresScreen());
   }
 
   @WireMethod(StructFightConfirmed)

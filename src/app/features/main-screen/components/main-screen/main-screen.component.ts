@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NewGameCreation, OpenSettings } from 'src/app/features/services/events';
+import { OpenNewGameScreen, OpenSettings } from 'src/app/features/services/events';
 import { EventsService } from 'src/app/store';
 
 @Component({
@@ -12,8 +12,8 @@ export class MainScreenComponent {
     private events: EventsService,
   ) { }
 
-  public newGame(): void {
-    this.events.dispatch(NewGameCreation({}));
+  public openNewGameScreen(): void {
+    this.events.dispatch(OpenNewGameScreen({}));
   }
 
   public openSettings(): void {
