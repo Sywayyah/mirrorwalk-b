@@ -18,9 +18,12 @@ export interface ModifiersModel {
   playerBonusAttack: number;
   playerBonusDefence: number;
 
+
   /* unit group bonuses */
   unitGroupBonusAttack: number;
   unitGroupBonusDefence: number;
+
+  resistAll: number;
 
   /* unit speed bonus */
   unitGroupSpeedBonus: number;

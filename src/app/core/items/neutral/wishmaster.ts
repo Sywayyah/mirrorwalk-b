@@ -1,4 +1,3 @@
-import { WindBlessBuff } from '../../spells/common';
 import { itemStatsDescr, spellDescrElem } from '../../ui';
 import { ItemBaseModel, ItemSlotType } from '../types';
 
@@ -9,6 +8,7 @@ export const WishmasterItem: ItemBaseModel = {
   staticMods: {
     playerBonusAttack: 8,
     playerBonusDefence: 7,
+    resistAll: 30,
   },
   icon: {
     icon: 'feather-wing',
