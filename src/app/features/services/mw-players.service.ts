@@ -141,7 +141,8 @@ export class MwPlayersService extends StoreClient() {
       playerHero.freeSkillpoints++;
       playerHero.experience = playerHero.experience - currentXpToNextLevel;
 
-      this.events.dispatch(PlayerLevelsUp({}));
+      // theoretically, overstacked skillpoints can be sent here
+      this.events.dispatch(PlayerLevelsUp({ newLevel: playerHero.level, hero: playerHero }));
     }
   }
 

@@ -1,0 +1,41 @@
+.title {
+  font-size: 16px;
+  text-align: center;
+}
+
+.sub-title {
+  font-size: 13px;
+  text-align: center;
+}
+
+.rewards {
+  display: flex;
+  padding-top: 10px;
+  width: 100%;
+  justify-content: center;
+}
+
+.reward {
+  display: flex;
+  width: 120px;
+  height: 80px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid gray;
+  flex-direction: column;
+  margin: 10px;
+  cursor: pointer;
+  user-select: none;
+
+  &.active {
+    border: 1px solid gold;
+  }
+
+  mw-ra-icon {
+    font-size: 30px;
+  }
+
+  .reward-title {
+    font-size: 13px;
+  }
+}

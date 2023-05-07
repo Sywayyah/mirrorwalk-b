@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { CustomCursorComponent, DescriptionComponent, GameOverPopupComponent, HintsContainerComponent, HoverHintComponent, IconBtnComponent, ItemDescriptionComponent, MainButtonComponent, MenuComponent, MwActionHintComponent, MwExperienceBarComponent, MwPlayerInfoPanelComponent, MwRaIconComponent, PopupContainerComponent, PopupWrapperComponent, SharedTemplateDirective, SharedTemplatesComponent, SpellDescriptionComponent, ValueBarComponent, VfxElementComponent, VfxLayerComponent } from './components';
+import { CustomCursorComponent, DescriptionComponent, GameOverPopupComponent, HintsContainerComponent, HoverHintComponent, IconBtnComponent, ItemDescriptionComponent, MainButtonComponent, MenuComponent, MwActionHintComponent, MwExperienceBarComponent, MwPlayerInfoPanelComponent, MwRaIconComponent, PopupContainerComponent, PopupWrapperComponent, RewardPopupComponent, SharedTemplateDirective, SharedTemplatesComponent, SpellDescriptionComponent, ValueBarComponent, VfxElementComponent, VfxLayerComponent } from './components';
 import { MwActionHintDirective, MwCustomCursorDirective, MwSpellTargetDirective, MwUnitEventsCursorDirective, NumberModifierDirective } from './directives';
 
 const directives = [
@@ -34,6 +34,7 @@ const components = [
   MwPlayerInfoPanelComponent,
   MwExperienceBarComponent,
   IconBtnComponent,
+  RewardPopupComponent,
 ];
 
 @NgModule({

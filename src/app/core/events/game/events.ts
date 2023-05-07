@@ -1,6 +1,6 @@
 import { PopupData } from 'src/app/features/shared/components';
 import { eventsForPrefix } from 'src/app/store';
-import { FightStartsEvent, InitItemAction, InitSpellAction, NeutralStructParams, NewDayParams, PlayerEquipsItemAction, PlayerUnequipsItemAction, StructSelectedEvent } from "./types";
+import { FightStartsEvent, InitItemAction, InitSpellAction, NeutralStructParams, NewDayParams, PlayerEquipsItemAction, PlayerLevelsUpEvent, PlayerUnequipsItemAction, StructSelectedEvent } from "./types";
 
 const gameEvent = eventsForPrefix('[GameEvents]');
 
@@ -44,4 +44,4 @@ export const PlayerEquipsItem = gameEvent<PlayerEquipsItemAction>();
 
 export const PlayerUnequipsItem = gameEvent<PlayerUnequipsItemAction>();
 
-export const PlayerLevelsUp = gameEvent();
+export const PlayerLevelsUp = gameEvent<PlayerLevelsUpEvent>();
