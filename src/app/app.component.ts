@@ -1,10 +1,10 @@
 import { AfterViewInit, Component, OnInit, ViewChild, inject } from '@angular/core';
+import { GameStarted } from './core/events';
 import './core/scripts';
 import { MwTriggersService } from './features/services';
 import { BattleController, BattleLogController, CombatController, GameController, ItemsController, PlayerController, StructuresController, UiController } from './features/services/controllers';
 import { InGameApiController } from './features/services/controllers/in-game-api.service';
 import { PopupsController } from './features/services/controllers/popups.service';
-import { GameStarted } from './features/services/events';
 import { HintsService } from './features/services/hints.service';
 import { HintsContainerComponent } from './features/shared/components';
 import { EventsService } from './store';

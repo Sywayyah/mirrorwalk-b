@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
+import { MapPanCameraCenterTo, NeutralStructParams, NewDayStarted, PanMapCameraCenterAction, StructCompleted } from 'src/app/core/events';
 import { defaultTravelPointsCost, defaultTravelPointsPerDay } from 'src/app/core/locations';
 import { StoreClient, WireMethod } from 'src/app/store';
-import { MapPanCameraCenterTo, NeutralStructParams, NewDayStarted, PanMapCameraCenterAction, PlayerEntersTown, StructCompleted } from '../events';
 import { MwStructuresService } from '../mw-structures.service';
 import { State } from '../state.service';
 

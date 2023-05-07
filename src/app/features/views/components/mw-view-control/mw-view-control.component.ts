@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component } from '@angular/core';
-import { DisplayReward, GameOpenMainScreen, GameOpenMapStructuresScreen, NeutralStructParams, OpenNewGameScreen, PlayerEntersTown, PlayerLeavesTown, StructCompleted, StructFightConfirmed } from 'src/app/features/services/events';
+import { DisplayReward, GameOpenMainScreen, GameOpenMapStructuresScreen, NeutralStructParams, OpenNewGameScreen, PlayerEntersTown, StructCompleted, StructFightConfirmed } from 'src/app/core/events';
 import { Notify, StoreClient, WireMethod } from 'src/app/store';
 
 enum ViewsEnum {

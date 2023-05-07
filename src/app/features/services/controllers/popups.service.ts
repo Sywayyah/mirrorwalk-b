@@ -1,4 +1,5 @@
 import { Injectable, Type } from '@angular/core';
+import { DisplayPopup, DisplayReward, FightEnds, FightEndsEvent, NeutralStructParams, OpenSettings, PlayerOpensHeroInfo, ShowGameOverPopup, StructSelected, StructSelectedEvent } from 'src/app/core/events';
 import { NeutralCampStructure, NeutralRewardTypesEnum, NeutralSite, StructureTypeEnum } from 'src/app/core/structures';
 import { FightEndsPopup, LossModel, PrefightPopup, PreviewPopup, UpgradingPopup } from 'src/app/core/ui';
 import { Notify, StoreClient, WireMethod } from 'src/app/store';
@@ -6,7 +7,6 @@ import { HiringRewardPopupComponent, ItemRewardPopupComponent, PostFightRewardPo
 import { HeroPopupComponent } from '../../battleground/components/hero-popup/hero-popup.component';
 import { SettingsPopupComponent } from '../../main-screen/components';
 import { GameOverPopupComponent, PopupData, PopupService } from '../../shared/components';
-import { DisplayPopup, DisplayReward, FightEnds, FightEndsEvent, NeutralStructParams, OpenSettings, PlayerOpensHeroInfo, ShowGameOverPopup, StructSelected, StructSelectedEvent } from '../events';
 import { BattleStateService } from '../mw-battle-state.service';
 import { MwPlayersService } from '../mw-players.service';
 
