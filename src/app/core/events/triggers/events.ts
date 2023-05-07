@@ -1,6 +1,5 @@
 import { createEventsGroup, eventsForPrefix } from 'src/app/store';
-import { DefaultGameModes } from '../types';
-import { GamePreparedEvent } from './types';
+import { DefaultGameModes, GamePreparedEvent } from './types';
 
 const createTriggerEvent = eventsForPrefix('[Triggers]');
 

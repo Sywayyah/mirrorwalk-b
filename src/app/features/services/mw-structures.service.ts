@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { StructureDescription, ViewStructure } from 'src/app/core/locations';
 import { PlayerInstanceModel } from 'src/app/core/players';
 import { NeutralCampStructure, NeutralSite, StructureGeneratorModel, StructureModel, StructureTypeEnum } from 'src/app/core/structures';
-import { GamePreparedEvent } from 'src/app/core/triggers';
+import { GamePreparedEvent } from 'src/app/core/events';
 import { UnitGroupInstModel } from 'src/app/core/unit-types';
 import { MwPlayersService, MwUnitGroupsService } from './';
 

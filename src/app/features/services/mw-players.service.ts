@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { PlayerGainsLevel, PlayerReceivesItem, PlayerUnequipsItem } from 'src/app/core/events';
+import { PlayerLevelsUp, PlayerReceivesItem, PlayerUnequipsItem } from 'src/app/core/events';
 import { HERO_LEVELS_BREAKPOINTS, HeroBase } from 'src/app/core/heroes';
 import { ItemInstanceModel } from 'src/app/core/items';
 import { PlayerInstanceModel, PlayerModel, PlayerTypeEnum } from 'src/app/core/players';
@@ -140,7 +140,7 @@ export class MwPlayersService extends StoreClient() {
       playerHero.freeSkillpoints++;
       playerHero.experience = playerHero.experience - currentXpToNextLevel;
 
-      this.events.dispatch(PlayerGainsLevel({}));
+      this.events.dispatch(PlayerLevelsUp({}));
     }
   }
 

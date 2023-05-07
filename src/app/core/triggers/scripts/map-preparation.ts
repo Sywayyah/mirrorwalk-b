@@ -1,8 +1,7 @@
+import { DefaultGameModes, Triggers } from '../../events';
 import { structsPreset1 } from '../../locations';
 import { LevelMap } from '../../maps';
-import { Triggers } from '../events/events';
 import { TriggersRegistry } from '../registry';
-import { DefaultGameModes } from '../types';
 
 TriggersRegistry.register(Triggers.PrepareGameEvent, {
   // supply some more api here
