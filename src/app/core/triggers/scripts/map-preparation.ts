@@ -31,22 +31,24 @@ TriggersRegistry.register(PlayerLevelsUp, {
       title: `You reached level ${event.newLevel}`,
       subTitle: 'Choose your reward',
       rewards: [
-        ...event.hero.base.initialState.abilities.map((ability) => {
-          return {
-            display: {
-              icon: ability.icon.icon,
-              title: `+1 to ${ability.name}`
-            },
-            onSumbit: () => {
-              const spell = event.hero.spells.find(spell => spell.baseType === ability);
+        // for now, bring native abilities of hero to next level
+        ...event.hero.spells
+          .filter(spell => event.hero.base.initialState.abilities.includes(spell.baseType))
+          .map((spell) => {
+            return {
+              display: {
+                icon: spell.baseType.icon.icon,
+                title: `${spell.name} Level ${spell.currentLevel + 1}`
+              },
+              onSumbit: () => {
+                // extract into some api
+                if (spell) {
+                  spell.currentLevel += 1;
+                }
+              },
+            };
+          }),
 
-              // extract into some api
-              if (spell) {
-                spell.currentLevel += 1;
-              }
-            },
-          };
-        }),
         {
           display: {
             icon: 'crystal-ball',
