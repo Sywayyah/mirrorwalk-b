@@ -23,27 +23,44 @@ TriggersRegistry.register(Triggers.PrepareGameEvent, {
 
 
 TriggersRegistry.register(PlayerLevelsUp, {
-  fn: (event, { events }) => {
+  fn: (event, { events, players }) => {
 
+    // subcategories for rewards?
+    // popups are overstacking
     events.dispatch(DisplayPlayerRewardPopup({
       title: `You reached level ${event.newLevel}`,
       subTitle: 'Choose your reward',
-      rewards: event.hero.base.initialState.abilities.map((ability) => {
-        return {
+      rewards: [
+        ...event.hero.base.initialState.abilities.map((ability) => {
+          return {
+            display: {
+              icon: ability.icon.icon,
+              title: `+1 to ${ability.name}`
+            },
+            onSumbit: () => {
+              const spell = event.hero.spells.find(spell => spell.baseType === ability);
+
+              // extract into some api
+              if (spell) {
+                spell.currentLevel += 1;
+              }
+            },
+          };
+        }),
+        {
           display: {
-            icon: ability.icon.icon,
-            title: `+1 to ${ability.name}`
+            icon: 'crystal-ball',
+            title: '+4 to Max/Current Mana'
           },
           onSumbit: () => {
-            const spell = event.hero.spells.find(spell => spell.baseType === ability);
+            const currentPlayer = players.getCurrentPlayer();
 
-            // extract into some api
-            if (spell) {
-              spell.currentLevel += 1;
-            }
+            const manaBonus = 4;
+            players.addMaxManaToPlayer(currentPlayer, manaBonus);
+            players.addManaToPlayer(currentPlayer, manaBonus);
           },
-        };
-      }),
+        }
+      ],
     }));
 
   },
