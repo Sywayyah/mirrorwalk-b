@@ -1,21 +1,15 @@
 import { AssetsImages } from '../../assets';
 import { neutralsFraction } from '../../fractions/neutrals/fraction';
+import { createStats } from '../utils';
 
 
 neutralsFraction.defineUnitType('FireSpirits', {
   name: 'Fire Spirits',
   mainPortraitUrl: AssetsImages.Melee,
   baseRequirements: {},
-  baseStats: {
-    attackRating: 3,
-    damageInfo: {
-      minDamage: 9,
-      maxDamage: 13,
-    },
-    defence: 3,
-    health: 17,
-    speed: 18,
-  },
+
+  baseStats: createStats([[9, 13], 3, 3, 17, 18]),
+
   neutralReward: {
     experience: 10,
     gold: 15,
