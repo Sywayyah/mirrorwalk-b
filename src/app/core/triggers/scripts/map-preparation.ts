@@ -1,8 +1,7 @@
+import { DefaultGameModes, DisplayPlayerRewardPopup, PlayerLevelsUp, Triggers } from '../../events';
 import { structsPreset1 } from '../../locations';
 import { LevelMap } from '../../maps';
-import { Triggers } from '../events/events';
 import { TriggersRegistry } from '../registry';
-import { DefaultGameModes } from '../types';
 
 TriggersRegistry.register(Triggers.PrepareGameEvent, {
   // supply some more api here
@@ -19,5 +18,50 @@ TriggersRegistry.register(Triggers.PrepareGameEvent, {
     });
 
     events.dispatch(Triggers.GamePreparationFinished({ map: gameMap }));
+  },
+});
+
+
+TriggersRegistry.register(PlayerLevelsUp, {
+  fn: (event, { events, players }) => {
+
+    // subcategories for rewards?
+    // popups are overstacking
+    events.dispatch(DisplayPlayerRewardPopup({
+      title: `You reached level ${event.newLevel}`,
+      subTitle: 'Choose your reward',
+      rewards: [
+        ...event.hero.base.initialState.abilities.map((ability) => {
+          return {
+            display: {
+              icon: ability.icon.icon,
+              title: `+1 to ${ability.name}`
+            },
+            onSumbit: () => {
+              const spell = event.hero.spells.find(spell => spell.baseType === ability);
+
+              // extract into some api
+              if (spell) {
+                spell.currentLevel += 1;
+              }
+            },
+          };
+        }),
+        {
+          display: {
+            icon: 'crystal-ball',
+            title: '+4 to Max/Current Mana'
+          },
+          onSumbit: () => {
+            const currentPlayer = players.getCurrentPlayer();
+
+            const manaBonus = 4;
+            players.addMaxManaToPlayer(currentPlayer, manaBonus);
+            players.addManaToPlayer(currentPlayer, manaBonus);
+          },
+        }
+      ],
+    }));
+
   },
 });

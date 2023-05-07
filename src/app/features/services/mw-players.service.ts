@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
-import { HeroBase, HERO_LEVELS_BREAKPOINTS } from 'src/app/core/heroes';
+import { PlayerLevelsUp, PlayerReceivesItem, PlayerUnequipsItem } from 'src/app/core/events';
+import { HERO_LEVELS_BREAKPOINTS, HeroBase } from 'src/app/core/heroes';
 import { ItemInstanceModel } from 'src/app/core/items';
 import { PlayerInstanceModel, PlayerModel, PlayerTypeEnum } from 'src/app/core/players';
-import { Resources, ResourcesModel, ResourceType } from 'src/app/core/resources';
+import { ResourceType, Resources, ResourcesModel } from 'src/app/core/resources';
 import { CommonUtils, UnitBase, UnitGroupInstModel, UnitGroupModel } from 'src/app/core/unit-types';
 import { StoreClient } from 'src/app/store';
 import { MwHeroesService, MwUnitGroupsService } from './';
-import { PlayerGainsLevel, PlayerReceivesItem, PlayerUnequipsItem } from './events/';
 import { State } from './state.service';
 
 
@@ -135,12 +135,14 @@ export class MwPlayersService extends StoreClient() {
 
     const currentXpToNextLevel = HERO_LEVELS_BREAKPOINTS[playerHero.level + 1];
 
+    // handle overstacked level
     if (currentXpToNextLevel <= playerHero.experience) {
       playerHero.level++;
       playerHero.freeSkillpoints++;
       playerHero.experience = playerHero.experience - currentXpToNextLevel;
 
-      this.events.dispatch(PlayerGainsLevel({}));
+      // theoretically, overstacked skillpoints can be sent here
+      this.events.dispatch(PlayerLevelsUp({ newLevel: playerHero.level, hero: playerHero }));
     }
   }
 

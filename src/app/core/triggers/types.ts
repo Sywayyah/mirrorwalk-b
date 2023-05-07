@@ -1,13 +1,11 @@
 import { EventInfo } from 'src/app/store';
-
-export enum DefaultGameModes {
-  Normal = 'normal',
-}
+import { PlayersApi } from '../api/game-api';
 
 export interface GameApi {
   events: {
     dispatch(event: EventInfo): void;
-  }
+  },
+  players: PlayersApi,
 }
 
 export type Trigger<T> = {

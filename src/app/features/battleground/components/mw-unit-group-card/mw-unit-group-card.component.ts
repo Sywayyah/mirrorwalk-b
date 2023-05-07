@@ -1,11 +1,11 @@
 import { Component, ElementRef, EventEmitter, forwardRef, Input, OnDestroy, OnInit, Output, Renderer2 } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { GroupModifiersChanged, GroupSpellsChanged, HoverTypeEnum, PlayerHoversGroupCard } from 'src/app/core/events';
 import { PlayerModel } from 'src/app/core/players';
 import { SpellActivationType, SpellInstance } from 'src/app/core/spells';
 import { UnitGroupInstModel } from 'src/app/core/unit-types';
-import { UIModsModel, BattleStateService, MwPlayersService, MwUnitGroupStateService, MwUnitGroupsService } from 'src/app/features/services';
-import { GroupModifiersChanged, GroupSpellsChanged, PlayerHoversGroupCard, HoverTypeEnum } from 'src/app/features/services/events';
+import { BattleStateService, MwPlayersService, MwUnitGroupsService, MwUnitGroupStateService, UIModsModel } from 'src/app/features/services';
 import { HintAttachment } from 'src/app/features/shared/components';
 import { PROVIDE_UI_UNIT_GROUP, UIUnitProvider } from 'src/app/features/shared/directives';
 import { StoreClient } from 'src/app/store';

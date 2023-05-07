@@ -1,13 +1,16 @@
 import { Injectable } from '@angular/core';
 import { TriggersRegistry } from 'src/app/core/triggers';
 import { StoreClient } from 'src/app/store';
+import { ApiProvider } from './api-provider.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MwTriggersService extends StoreClient() {
 
-  constructor() {
+  constructor(
+    private readonly apiProvider: ApiProvider,
+  ) {
     super();
     this.initTriggersFromTriggersRegistry();
   }
@@ -23,7 +26,8 @@ export class MwTriggersService extends StoreClient() {
                 dispatch: (event) => {
                   this.events.dispatch(event);
                 }
-              }
+              },
+              players: this.apiProvider.getPlayerApi(),
             });
         })
       });

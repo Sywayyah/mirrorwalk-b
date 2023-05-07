@@ -1,0 +1,23 @@
+<div class="title">{{data.title}}</div>
+
+<div class="sub-title">{{data.subTitle}}</div>
+
+<div class="rewards">
+  <div class="reward"
+       *ngFor="let reward of data.rewards"
+       [class.active]="reward === activeReward"
+       (click)="setActiveReward(reward)">
+
+    <mw-ra-icon [icon]="reward.display.icon" />
+
+    <div class="reward-title">{{reward.display.title}}</div>
+
+  </div>
+</div>
+
+<div style="display: flex; justify-content: center;">
+  <button [disabled]="!activeReward"
+          (click)="acceptReward()">
+    Accept
+  </button>
+</div>

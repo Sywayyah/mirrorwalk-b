@@ -1,5 +1,5 @@
 import { eventsForPrefix } from 'src/app/store';
-import { PanMapCameraCenterAction } from './types';
+import { DisplayPlayerRewardAction, PanMapCameraCenterAction } from './types';
 
 
 const commands = eventsForPrefix('[GameCommands]');
@@ -26,3 +26,5 @@ export const OpenNewGameScreen = commands('Open New Game Screen');
 export const OpenSettings = commands('Open Game settings');
 
 export const GameOpenMapStructuresScreen = commands('Open map structures screen');
+
+export const DisplayPlayerRewardPopup = commands<DisplayPlayerRewardAction>();

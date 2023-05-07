@@ -1,8 +1,8 @@
 import { Component, ElementRef, EventEmitter, NgZone, OnInit, Output, Renderer2, ViewChild } from '@angular/core';
 import { fromEvent, merge } from 'rxjs';
 import { map, switchMap, take, takeUntil } from 'rxjs/operators';
+import { MapPanCameraCenterTo, PanMapCameraCenterAction } from 'src/app/core/events';
 import { CELL_SIZE, LevelMap } from 'src/app/core/maps';
-import { MapPanCameraCenterTo, PanMapCameraCenterAction } from 'src/app/features/services/events';
 import { State } from 'src/app/features/services/state.service';
 import { StoreClient, WireMethod } from 'src/app/store';
 

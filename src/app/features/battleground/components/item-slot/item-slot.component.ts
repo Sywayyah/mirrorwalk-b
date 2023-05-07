@@ -1,9 +1,9 @@
 import { Component, Input, OnChanges } from '@angular/core';
+import { PlayerEquipsItem, PlayerUnequipsItem } from 'src/app/core/events';
 import { Hero } from 'src/app/core/heroes';
 import { ExtendedSlotType, InventoryItems, ItemInstanceModel, ItemSlotType } from 'src/app/core/items';
 import { TypedChanges } from 'src/app/core/utils';
 import { MwPlayersService } from 'src/app/features/services';
-import { PlayerEquipsItem, PlayerUnequipsItem } from 'src/app/features/services/events';
 import { StoreClient } from 'src/app/store';
 
 @Component({

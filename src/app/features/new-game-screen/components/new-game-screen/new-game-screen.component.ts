@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
 import { PLAYER_COLORS } from 'src/app/core/assets';
+import { GameCreated, GameOpenMainScreen } from 'src/app/core/events';
 import { Fraction, Fractions, humansFraction } from 'src/app/core/fractions';
 import { neutralsFraction } from 'src/app/core/fractions/neutrals/fraction';
 import { HeroBase } from 'src/app/core/heroes';
 import { ActivityTypes, Building, HiringActivity, TownBase } from 'src/app/core/towns';
 import { CommonUtils } from 'src/app/core/unit-types';
-import { GameCreated, GameOpenMainScreen } from 'src/app/features/services/events';
 import { State } from 'src/app/features/services/state.service';
 import { EventsService } from 'src/app/store';
 

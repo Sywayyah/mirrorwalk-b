@@ -1,8 +1,8 @@
 import { AfterViewInit, Component, ElementRef, Renderer2, ViewChild } from '@angular/core';
+import { MapPanCameraCenterTo, PlayerEntersTown, PlayerOpensHeroInfo, StructSelected } from 'src/app/core/events';
 import { ViewStructure } from 'src/app/core/locations';
 import { PlayerInstanceModel } from 'src/app/core/players';
 import { MwPlayersService, MwStructuresService } from 'src/app/features/services';
-import { MapPanCameraCenterTo, PlayerEntersTown, PlayerOpensHeroInfo, StructSelected } from 'src/app/features/services/events';
 import { State } from 'src/app/features/services/state.service';
 import { EventsService } from 'src/app/store';
 import { MapDragEvent } from '../map-canvas/map-canvas.component';
