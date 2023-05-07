@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Colors } from 'src/app/core/assets';
+import { InitItem } from 'src/app/core/events';
 import { ItemBaseModel, ItemInstanceModel } from 'src/app/core/items';
 import { PlayerInstanceModel } from 'src/app/core/players';
 import { EventInfo, EventsService } from 'src/app/store';
-import { InitItem } from './events';
 import { State } from './state.service';
 
 /* Unregister All items and spell handlers when Game was over... */

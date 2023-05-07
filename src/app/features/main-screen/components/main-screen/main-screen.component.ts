@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { OpenNewGameScreen, OpenSettings } from 'src/app/features/services/events';
+import { OpenNewGameScreen, OpenSettings } from 'src/app/core/events';
 import { EventsService } from 'src/app/store';
 
 @Component({

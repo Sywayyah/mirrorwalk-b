@@ -12,10 +12,10 @@ export const RainOfFireSpell: SpellModel = {
   icon: {
     icon: 'fire',
   },
-  getDescription({ ownerHero }) {
+  getDescription({ ownerHero, spellInstance }) {
     return {
       descriptions: [
-        spellDescrElem(`Deals ${baseDamage} (${ownerHero.level * baseDamage}) damage per each Hero Level to the target.`),
+        spellDescrElem(`Deals ${baseDamage} (${baseDamage * spellInstance.currentLevel}) damage per level to the target.`),
       ],
     }
   },
@@ -27,7 +27,7 @@ export const RainOfFireSpell: SpellModel = {
       targetCastConfig: {
         canActivate: canActivateOnEnemyFn,
       },
-      init: ({ events, actions, thisSpell, ownerHero, vfx }) => {
+      init: ({ events, actions, thisSpell, ownerHero, vfx, spellInstance }) => {
 
         events.on({
           PlayerTargetsSpell(event) {
@@ -36,7 +36,7 @@ export const RainOfFireSpell: SpellModel = {
               duration: 850,
             });
 
-            const damage = baseDamage * ownerHero.level;
+            const damage = baseDamage * spellInstance.currentLevel;
 
             actions.dealDamageTo(
               event.target,

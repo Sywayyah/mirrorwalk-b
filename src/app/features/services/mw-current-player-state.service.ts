@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { PlayerCastsInstantSpell, PlayersInitialized } from 'src/app/core/events';
 import { PlayerInstanceModel } from 'src/app/core/players';
 import { SpellActivationType, SpellInstance, SpellModel } from 'src/app/core/spells';
 import { UnitGroupInstModel } from 'src/app/core/unit-types';
 import { Notify, StoreClient } from 'src/app/store';
 import { MwPlayersService } from './';
-import { PlayerCastsInstantSpell, PlayersInitialized } from './events';
 
 
 export enum PlayerState {

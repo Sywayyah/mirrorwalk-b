@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
+import { FightEnds, FightEndsEvent, FightNextRoundStarts, FightStarts, GroupDamagedByGroup, GroupDamagedByGroupEvent, NextRoundStarts, PlayerTurnStartEvent, RoundPlayerTurnStarts } from 'src/app/core/events';
 import { Notify, StoreClient, WireMethod } from 'src/app/store';
-import { FightEnds, FightEndsEvent, FightNextRoundStarts, FightStarts, GroupDamagedByGroup, GroupDamagedByGroupEvent, NextRoundStarts, PlayerTurnStartEvent, RoundPlayerTurnStarts } from '../events';
 import { MwBattleLogService } from '../mw-battle-log.service';
 
 @Injectable()

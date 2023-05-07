@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { ShowGameOverPopup, StructCompleted } from 'src/app/core/events';
 import { ResourceType } from 'src/app/core/resources';
 import { FightEndsPopup } from 'src/app/core/ui';
 import { MwPlayersService } from 'src/app/features/services';
-import { ShowGameOverPopup, StructCompleted } from 'src/app/features/services/events';
 import { BasicPopup } from 'src/app/features/shared/components';
 import { EventsService } from 'src/app/store';
 

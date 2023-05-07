@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { StructFightConfirmed } from 'src/app/core/events';
 import { PrefightPopup } from 'src/app/core/ui';
-import { StructFightConfirmed } from 'src/app/features/services/events';
 import { BasicPopup } from 'src/app/features/shared/components';
 import { EventsService } from 'src/app/store';
 

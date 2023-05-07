@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { ActivityTypes, BuidlingBase, Building, HiringActivity } from 'src/app/core/towns';
-import { PlayerLeavesTown } from 'src/app/features/services/events';
+import { PlayerLeavesTown } from 'src/app/core/events';
+import { ActivityTypes, Building, HiringActivity } from 'src/app/core/towns';
 import { State } from 'src/app/features/services/state.service';
 import { PopupService } from 'src/app/features/shared/components';
 import { EventsService } from 'src/app/store';

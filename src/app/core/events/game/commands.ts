@@ -1,8 +1,8 @@
 import { eventsForPrefix } from 'src/app/store';
-import { PanMapCameraCenterAction } from './types';
+import { DisplayPlayerRewardAction, PanMapCameraCenterAction } from './types';
 
 
-const commands = eventsForPrefix('[Commands]');
+const commands = eventsForPrefix('[GameCommands]');
 
 // It feels rather like a semantic event, doesn't feel exactly like command
 //  or regular event
@@ -26,3 +26,5 @@ export const OpenNewGameScreen = commands('Open New Game Screen');
 export const OpenSettings = commands('Open Game settings');
 
 export const GameOpenMapStructuresScreen = commands('Open map structures screen');
+
+export const DisplayPlayerRewardPopup = commands<DisplayPlayerRewardAction>();
