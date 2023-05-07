@@ -135,6 +135,7 @@ export class MwPlayersService extends StoreClient() {
 
     const currentXpToNextLevel = HERO_LEVELS_BREAKPOINTS[playerHero.level + 1];
 
+    // handle overstacked level
     if (currentXpToNextLevel <= playerHero.experience) {
       playerHero.level++;
       playerHero.freeSkillpoints++;

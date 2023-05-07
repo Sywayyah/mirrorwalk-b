@@ -6,7 +6,6 @@ const gameEvent = eventsForPrefix('[GameEvents]');
 
 export const GameStarted = gameEvent();
 
-
 export const GameCreated = gameEvent();
 
 export const PlayersInitialized = gameEvent();

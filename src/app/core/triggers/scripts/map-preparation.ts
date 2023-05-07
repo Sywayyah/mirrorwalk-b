@@ -1,4 +1,4 @@
-import { DefaultGameModes, Triggers } from '../../events';
+import { DefaultGameModes, PlayerLevelsUp, Triggers } from '../../events';
 import { structsPreset1 } from '../../locations';
 import { LevelMap } from '../../maps';
 import { TriggersRegistry } from '../registry';
@@ -19,4 +19,8 @@ TriggersRegistry.register(Triggers.PrepareGameEvent, {
 
     events.dispatch(Triggers.GamePreparationFinished({ map: gameMap }));
   },
+});
+
+TriggersRegistry.register(PlayerLevelsUp, {
+  fn: (event, { events }) => { console.log('Player gained level') },
 });
