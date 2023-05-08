@@ -4,6 +4,9 @@
       but also deals the lower bound of this damage to your random group.
       Base Manacost: 3
 
+    Whip of Astral Fire: an item that might convert half of the damage
+    from Firestorm to magical damage.
+
   Hellish creatures might have items that reduce or increase their
     Fire resists, like armor that gives +10%, but helm that
     reduces -15%.
