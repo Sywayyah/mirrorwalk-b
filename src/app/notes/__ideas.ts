@@ -1,4 +1,13 @@
 /*
+  IDEA: Some town/hero upgrades may require objectives on the map.
+    For instance, most of fractions might not have direct access to
+    the market, you would need to find market location on the map.
+    But some fractions might access them without such requirements.
+
+    It might also be applied to the development of the character.
+    Some skills might be discovered after some locations on the
+    map are visited.
+
   Fire-themed ideas:
     Firestorm: Deals 40 fire damage +20-40 additional damage,
       but also deals the lower bound of this damage to your random group.
