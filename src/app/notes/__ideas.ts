@@ -8,6 +8,21 @@
     Some skills might be discovered after some locations on the
     map are visited.
 
+  IDEA: Stats-based abilities. For instance, Veasin's poison
+    might deal more damage per each point of attack.
+
+    Or units might respond with damage = half of attack + half of
+    defence * 1.
+
+  IDEA: Some heroes might have special effects on their army to
+    compensate some strong sides, for instance, hero might start
+    with -10% fire resist.
+
+    Some characters might have a passive ability that reduces
+    the fire resistance of your army by 8%, then by 1% per each
+    level, but also enemy's resistance by 4% per level, so
+    starting from level 3 it becomes somewhat efficient.
+
   Fire-themed ideas:
     Firestorm: Deals 40 fire damage +20-40 additional damage,
       but also deals the lower bound of this damage to your random group.
