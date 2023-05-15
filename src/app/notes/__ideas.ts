@@ -8,6 +8,8 @@
     Some skills might be discovered after some locations on the
     map are visited.
 
+  HERO: Satris.
+
   IDEA: Stats-based abilities. For instance, Veasin's poison
     might deal more damage per each point of attack.
 
