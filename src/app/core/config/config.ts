@@ -1,5 +1,5 @@
 
 // basic config
-export const Config = {
+export const CONFIG = {
   logEvents: false,
 } as const;
