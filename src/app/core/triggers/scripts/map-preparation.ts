@@ -38,7 +38,7 @@ TriggersRegistry.register(PlayerLevelsUp, {
             return {
               display: {
                 icon: spell.baseType.icon.icon,
-                title: `${spell.name} Level ${spell.currentLevel + 1}`
+                title: `Level ${spell.currentLevel + 1} ${spell.name}`
               },
               onSumbit: () => {
                 // extract into some api
