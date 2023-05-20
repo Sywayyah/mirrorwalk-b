@@ -45,6 +45,7 @@ export function createEventType<T extends object = {}>(
   return eventType;
 }
 
+// Might get less used with groups.
 export function eventsForPrefix(prefix: string): typeof createEventType {
   return (name?: string) => createEventType(`${prefix} ${name}`);
 }

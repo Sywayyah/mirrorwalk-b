@@ -38,7 +38,7 @@ export class EventsService {
   }
 
   constructor() {
-    this.eventStream$.subscribe(event => console.log('[Event]:', event));
+    this.eventStream$.subscribe(event => console.log(`[${event.__eventType.__name}]`, event));
   }
 
   public onEvent<T extends object>(eventType: EventType<T>): Observable<T> {

@@ -1,8 +1,8 @@
-import { eventsForPrefix } from 'src/app/store';
+import { createEventType } from 'src/app/store';
 import { DisplayPlayerRewardAction, PanMapCameraCenterAction } from './types';
 
 
-const commands = eventsForPrefix('[GameCommands]');
+const commands = createEventType;
 
 // It feels rather like a semantic event, doesn't feel exactly like command
 //  or regular event
