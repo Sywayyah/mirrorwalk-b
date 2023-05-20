@@ -14,8 +14,8 @@ export function createEventsGroup<T extends EventGroupList>({ events, prefix }: 
 }): EventGroup<T> {
 
   Object.entries(events).forEach(([eventName, event]) => {
-    console.dir(event);
     const description = event.__typeInfo.__name;
+
     event.__typeInfo.__name = `${prefix}:${eventName}` + (description ? `, ${description}` : '');
   });
 

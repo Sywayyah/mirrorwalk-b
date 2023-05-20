@@ -2,6 +2,7 @@ import { Injectable } from "@angular/core";
 import { Observable, Subject } from "rxjs";
 import { filter } from "rxjs/operators";
 import { EventData, EventType } from "./events";
+import { Config } from 'src/app/core/config';
 
 interface HandlerDescriber<T extends object = object> {
   eventType: EventType<T>,
@@ -38,7 +39,10 @@ export class EventsService {
   }
 
   constructor() {
-    this.eventStream$.subscribe(event => console.log(`[${event.__eventType.__name}]`, event));
+    // rethink events logging later on
+    if (Config.logEvents) {
+      this.eventStream$.subscribe(event => console.log(`[${event.__eventType.__name}]`, event));
+    }
   }
 
   public onEvent<T extends object>(eventType: EventType<T>): Observable<T> {
