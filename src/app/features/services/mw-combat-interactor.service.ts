@@ -6,7 +6,7 @@ import { SpellActivationType, SpellEventNames, SpellEventTypeByName, SpellEvents
 import { ActionHintTypeEnum, AttackActionHintInfo } from 'src/app/core/ui';
 import { Modifiers, UnitGroupInstModel } from 'src/app/core/unit-types';
 import { CommonUtils } from 'src/app/core/unit-types/utils';
-import { EventInfo, StoreClient } from 'src/app/store';
+import { EventData, EventMetadataInfo, StoreClient } from 'src/app/store';
 import { BattleStateService, FinalDamageInfo, MwPlayersService, MwUnitGroupStateService, MwUnitGroupsService } from './';
 import { ActionHintService } from './mw-action-hint.service';
 import { State } from './state.service';
@@ -279,7 +279,7 @@ export class CombatInteractorService extends StoreClient() {
     this.units.clearUnitModifiers(target);
   }
 
-  public triggerEventForAllSpellsHandler(event: EventInfo): void {
+  public triggerEventForAllSpellsHandler(event: EventData): void {
     this.state.eventHandlers.spells.triggerAllHandlersByEvent(event);
   }
 

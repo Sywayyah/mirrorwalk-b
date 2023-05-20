@@ -1,9 +1,9 @@
-import { EventInfo } from 'src/app/store';
+import { EventData } from 'src/app/store';
 import { PlayersApi } from '../api/game-api';
 
 export interface GameApi {
   events: {
-    dispatch(event: EventInfo): void;
+    dispatch(event: EventData): void;
   },
   players: PlayersApi,
 }

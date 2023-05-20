@@ -1,10 +1,10 @@
 import { Injectable } from "@angular/core";
 import { Observable, Subject } from "rxjs";
 import { filter } from "rxjs/operators";
-import { EventInfo, EventType } from "./events";
+import { EventData, EventType } from "./events";
 
 interface HandlerDescriber<T extends object = object> {
-  event: EventType<T>,
+  eventType: EventType<T>,
   fn: (data: T) => void,
 }
 
@@ -13,7 +13,7 @@ export function on<T extends object>(
   handler: (data: T) => void
 ): HandlerDescriber<T> {
   return {
-    event: eventType,
+    eventType: eventType,
     fn: handler,
   };
 }
@@ -30,20 +30,20 @@ export function on<T extends object>(
   providedIn: 'root',
 })
 export class EventsService {
-  public eventStream$ = new Subject<EventInfo>();
+  public eventStream$ = new Subject<EventData>();
 
-  public dispatch(event: EventInfo): void {
+  public dispatch(event: EventData): void {
     // console.log(`  ${event.__name}`, event);
     this.eventStream$.next(event);
   }
 
   constructor() {
-    // this.eventStream$.subscribe(event => console.log('[Event]:', event));
+    this.eventStream$.subscribe(event => console.log('[Event]:', event));
   }
 
-  public onEvent<T extends object>(event: EventType<T>): Observable<T> {
+  public onEvent<T extends object>(eventType: EventType<T>): Observable<T> {
     return this.eventStream$.pipe(
-      filter((e) => e.__id === event.__info.__id),
+      filter((e) => e.__eventType.__id === eventType.__typeInfo.__id),
     ) as Observable<T>;
   }
 
@@ -53,14 +53,14 @@ export class EventsService {
   //   on(UnitAttacks, ({ target }) => { }),
   // );
 
-  public events(...listeners: HandlerDescriber<any>[]): Observable<EventInfo> {
+  public events(...listeners: HandlerDescriber<any>[]): Observable<EventData> {
     const handlersByIdsMap = new Map();
 
-    listeners.forEach((listener) => handlersByIdsMap.set(listener.event.__info.__id, listener.fn));
+    listeners.forEach((listener) => handlersByIdsMap.set(listener.eventType.__typeInfo.__id, listener.fn));
 
     return this.eventStream$.pipe(
       filter((event) => {
-        const handlerFn = handlersByIdsMap.get(event.__id);
+        const handlerFn = handlersByIdsMap.get(event.__eventType.__id);
 
         if (handlerFn) {
           handlerFn(event);
