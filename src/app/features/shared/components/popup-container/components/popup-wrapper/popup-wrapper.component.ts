@@ -12,6 +12,9 @@ export class PopupWrapperComponent implements OnInit {
   @Input()
   public popupData!: PopupData;
 
+  @Input()
+  public isInactive = false;
+
   public injector!: Injector;
 
   constructor(

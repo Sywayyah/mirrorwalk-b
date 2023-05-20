@@ -4,8 +4,9 @@
 
 <div *ngIf="popupsService.popups.length"
      class="popups-container">
-  <mw-popup-wrapper *ngFor="let popup of popupsService.popups"
+  <mw-popup-wrapper *ngFor="let popup of popupsService.popups; let last = last"
                     [ngClass]="popup.class"
                     class="popup"
-                    [popupData]="popup" />
+                    [popupData]="popup"
+                    [isInactive]="!last" />
 </div>
