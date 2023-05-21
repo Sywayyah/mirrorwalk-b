@@ -1,6 +1,20 @@
 import { getEntries } from '../utils/common';
 import { Modifiers, ModifiersModel } from './modifiers';
 
+/*
+  Attention: this doesn't seem to fit the modifiers idea completely, so
+  this is a V1 attempt.
+
+  I don't feel like having recursive data structure is good.
+
+  But also, it doesn't seem to fit the entire idea. One class doens't seem
+  to be sufficient, way to many unrelated responsibilities.
+
+  And also, abstract class doesn't seem to be suitable for all this.
+
+  This is why I'm moving to V2, the idea with ModsRef and ModsRefGroup
+*/
+
 export type KeysMatching<T extends object, V> = {
   [K in keyof T]-?: T[K] extends V ? K : never
 }[keyof T];
@@ -163,9 +177,9 @@ class ModifiersGroup extends AbstractModifiers {
   }
 }
 
-const a: AbstractModifiers = ModifiersGroup.createFromMods({ amplifiedTakenMagicDamage: 0 });
+const a: AbstractModifiers = ModifiersGroup.createFromMods({ amplifiedTakenMagicDamagePercent: 0 });
 
-const b = a.getModValue('amplifiedTakenMagicDamage');
+const b = a.getModValue('amplifiedTakenMagicDamagePercent');
 const c = a.getModValue('counterattacks');
 const d = a.getModValue('isGhost');
 const e = a.getAllMods();

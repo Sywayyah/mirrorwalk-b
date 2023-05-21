@@ -11,7 +11,7 @@ export interface ModifiersModel {
   baseDamagePercentModifier: number;
 
   // increases taken magic damage by percent
-  amplifiedTakenMagicDamage: number;
+  amplifiedTakenMagicDamagePercent: number;
 
   // player bonuses
   playerBonusAttack: number;
@@ -39,6 +39,7 @@ export interface ModifiersModel {
 
 export type Modifiers = Partial<ModifiersModel>;
 
+export type ModName = keyof ModifiersModel;
 
 /* Work in progress. This container can potentially aggregate combined values with
   no need for recalc the array of Modifiers.

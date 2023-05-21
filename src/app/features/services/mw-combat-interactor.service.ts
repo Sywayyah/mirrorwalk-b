@@ -53,10 +53,10 @@ export class CombatInteractorService extends StoreClient() {
 
         if (targetGroupModifiers) {
           const amplifiedMagicDamageMods = targetGroupModifiers
-            .filter(mods => mods.amplifiedTakenMagicDamage);
+            .filter(mods => mods.amplifiedTakenMagicDamagePercent);
 
           amplifiedMagicDamageMods.forEach(mod => {
-            finalDamage += damage * (mod.amplifiedTakenMagicDamage as number);
+            finalDamage += damage * (mod.amplifiedTakenMagicDamagePercent as number);
           });
 
           finalDamage = Math.round(finalDamage);
