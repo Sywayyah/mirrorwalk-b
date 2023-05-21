@@ -64,4 +64,20 @@ describe('Test mods cases', () => {
 
     expect(refsGroup.getModValue('resistAll')).toBe(10);
   });
+
+  it('is a test scenario #3 (booleans)', () => {
+    const refWithBool = ModsRef.fromMods({ isRanged: true });
+
+    expect(refWithBool.getModValue('isRanged')).toBe(true);
+
+    const refsGroup = ModsRefsGroup.empty();
+
+    refsGroup.addModsRef(refWithBool);
+
+    expect(refsGroup.getModValue('isRanged')).toBe(true);
+
+    refsGroup.removeModsRef(refWithBool);
+
+    expect(refsGroup.getModValue('isRanged')).toBe(null);
+  });
 });
