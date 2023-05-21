@@ -1,6 +1,11 @@
 import { getEntries, hasProp } from '../utils/common';
 import { BoolModNames, ModName, Modifiers, ModifiersModel, NumModNames } from './modifiers';
 
+/* New modifiers system */
+// todo:
+//  - maybe introduce interfaces
+//  - should values get updated dynamically? ideally not.
+
 class ModValueUpdater {
   private readonly modsObject: Modifiers;
 
@@ -168,6 +173,12 @@ export class ModsRefsGroup {
 
   getModValue<K extends ModName>(modName: K): ModifiersModel[K] | null {
     return this.cachedModValues[modName] || null;
+  }
+
+  getAllModValues<K extends keyof ModifiersModel>(modName: K): (ModifiersModel[K][]) | [] {
+    return this.modsRefs
+      .filter(mod => mod.hasMod(modName))
+      .map((mod) => mod.getModValue(modName) as ModifiersModel[K]);
   }
 
   private processModsRef(modsRef: ModsRef, removing?: boolean): void {

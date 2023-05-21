@@ -42,11 +42,15 @@ describe('Test mods cases', () => {
     refsGroup.addModsRef(refA);
     refsGroup.addModsRef(refB);
 
+    expect(refsGroup.getAllModValues('resistAll')).toEqual([10, 5]);
+
     expect(refsGroup.getModValue('resistAll')).toBe(15);
 
     const negativeResistRef = ModsRef.fromMods({ resistAll: -5 });
 
     refsGroup.addModsRef(negativeResistRef);
+
+    expect(refsGroup.getAllModValues('resistAll')).toEqual([10, 5, -5]);
 
     expect(refsGroup.getModValue('resistAll')).toBe(10);
 
