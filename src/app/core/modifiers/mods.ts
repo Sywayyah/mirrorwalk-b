@@ -5,6 +5,9 @@ import { BoolModNames, ModName, Modifiers, ModifiersModel, NumModNames } from '.
 // todo:
 //  - maybe introduce interfaces
 //  - should values get updated dynamically? ideally not.
+//  - ideally, mods shouldn't change dynamically.
+//  - maybe some updated$ stream can be introduced to the group
+//  - combining groups has basic implementation.
 
 class ModValueUpdater {
   private readonly modsObject: Modifiers;
@@ -123,6 +126,10 @@ export class ModsRefsGroup {
 
   private readonly valueUpdater: ModValueUpdater;
 
+  private readonly subGroups: Set<ModsRefsGroup> = new Set();
+
+  private readonly parentGroups: Set<ModsRefsGroup> = new Set();
+
   private constructor() {
     this.valueUpdater = ModValueUpdater.fromObject(this.cachedModValues);
   }
@@ -157,6 +164,7 @@ export class ModsRefsGroup {
   addModsRef(modsRef: ModsRef): void {
     this.modsRefs.push(modsRef);
     this.processModsRef(modsRef);
+    this.parentGroups.forEach((parentGroup) => parentGroup.addModsRef(modsRef));
   }
 
   removeModsRef(modsRef: ModsRef): void {
@@ -165,6 +173,7 @@ export class ModsRefsGroup {
     this.modsRefs.splice(modsRefIndex, 1);
 
     this.processModsRef(modsRef, true);
+    this.parentGroups.forEach((parentGroup) => parentGroup.removeModsRef(modsRef));
   }
 
   getAllRefs(): ModsRef[] {
@@ -179,6 +188,18 @@ export class ModsRefsGroup {
     return this.modsRefs
       .filter(mod => mod.hasMod(modName))
       .map((mod) => mod.getModValue(modName) as ModifiersModel[K]);
+  }
+
+  attachGroup(modsRefGroup: ModsRefsGroup): void {
+    this.subGroups.add(modsRefGroup);
+    modsRefGroup.parentGroups.add(this);
+    modsRefGroup.getAllRefs().forEach(modRef => this.addModsRef(modRef));
+  }
+
+  detachGroup(modsRefGroup: ModsRefsGroup): void {
+    this.subGroups.delete(modsRefGroup);
+    modsRefGroup.parentGroups.delete(this);
+    modsRefGroup.getAllRefs().forEach(modRef => this.removeModsRef(modRef));
   }
 
   private processModsRef(modsRef: ModsRef, removing?: boolean): void {
@@ -201,5 +222,4 @@ export class ModsRefsGroup {
       }
     });
   }
-
 }

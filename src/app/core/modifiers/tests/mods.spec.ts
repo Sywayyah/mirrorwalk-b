@@ -80,4 +80,39 @@ describe('Test mods cases', () => {
 
     expect(refsGroup.getModValue('isRanged')).toBe(null);
   });
+
+  it('is a test scenario #4 (Combined Groups)', () => {
+    const refWithBool = ModsRef.fromMods({ isRanged: true });
+    const refWithNum = ModsRef.fromMods({ resistAll: 10 });
+
+    const refsGroupA = ModsRefsGroup.empty();
+    const refsGroupB = ModsRefsGroup.empty();
+
+    refsGroupA.addModsRef(refWithBool);
+    refsGroupB.addModsRef(refWithNum);
+
+    const groupsCombined = ModsRefsGroup.empty();
+
+    groupsCombined.attachGroup(refsGroupA);
+    groupsCombined.attachGroup(refsGroupB);
+
+    expect(groupsCombined.getModValue('isRanged')).toBe(true);
+    expect(groupsCombined.getModValue('resistAll')).toBe(10);
+
+    const refWithNum2 = ModsRef.fromMods({ resistAll: 15 });
+
+    refsGroupB.addModsRef(refWithNum2);
+
+    expect(groupsCombined.getModValue('resistAll')).toBe(25);
+
+    // removing group with resists completely
+    groupsCombined.detachGroup(refsGroupB);
+
+    expect(groupsCombined.getModValue('resistAll')).toBe(null);
+
+    // Bring mods group back
+    groupsCombined.attachGroup(refsGroupB);
+
+    expect(groupsCombined.getModValue('resistAll')).toBe(25);
+  });
 });
