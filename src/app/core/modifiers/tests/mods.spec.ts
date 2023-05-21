@@ -1,4 +1,5 @@
-import { ModsRef, ModsRefsGroup } from '../mods';
+import { ModsRefsGroup } from '../mods-group';
+import { ModsRef } from '../mods-ref';
 
 describe('Test mods cases', () => {
   it('is a test scenario #1 (ModsRef)', () => {
