@@ -1,5 +1,5 @@
 import { constellationFraction } from '../../fractions/constellation/fraction';
-import { ItemWindCrest } from '../../items/neutral';
+import { WishmasterItem } from '../../items/neutral';
 import { KneelingLight, RainOfFireSpell } from '../../spells/common';
 import { SummonSagittarSpell } from '../../spells/common/summon-sagittar';
 import { heroDescrElem } from '../../ui';
@@ -39,7 +39,8 @@ constellationFraction.createHero({
   ],
   generalDescription: heroDescrElem(`Blackbird is a hero who specializes at Astral and Fire magic, as well as Summoning.`),
   items: [
-    ItemWindCrest,
+    // ItemWindCrest,
+    WishmasterItem,
   ],
   stats: {
     baseAttack: 2,

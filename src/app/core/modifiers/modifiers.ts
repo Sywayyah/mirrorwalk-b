@@ -1,5 +1,5 @@
-import { hasProp } from '../utils/common';
-import { UnitGroupInstModel } from './types';
+import { UnitGroupInstModel } from '../unit-types/types';
+import { KeysMatching } from '../utils';
 
 
 export interface ConditionalModifierParamsModel {
@@ -12,7 +12,7 @@ export interface ModifiersModel {
   baseDamagePercentModifier: number;
 
   // increases taken magic damage by percent
-  amplifiedTakenMagicDamage: number;
+  amplifiedTakenMagicDamagePercent: number;
 
   // player bonuses
   playerBonusAttack: number;
@@ -40,26 +40,6 @@ export interface ModifiersModel {
 
 export type Modifiers = Partial<ModifiersModel>;
 
-
-/* Work in progress. This container can potentially aggregate combined values with
-  no need for recalc the array of Modifiers.
-*/
-
-export class ModsContainer {
-  /** Aggregated values for certain mods to avoid recalculation. */
-  private aggregatedMods: Modifiers = {};
-
-  private appliedModifiers: Modifiers[] = [];
-
-  // private appliedModifiersSet: Modifiers[] = [];
-
-  public addMods(mods: Modifiers): Modifiers {
-    for (const modProp in mods) {
-      if (hasProp(mods, modProp)) {
-        const element = mods[modProp];
-
-      }
-    }
-    return mods;
-  }
-}
+export type ModName = keyof ModifiersModel;
+export type NumModNames = KeysMatching<ModifiersModel, number>;
+export type BoolModNames = KeysMatching<ModifiersModel, boolean>;

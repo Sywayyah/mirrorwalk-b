@@ -1,3 +1,9 @@
 export function hasProp<T extends object>(obj: T, prop: any): prop is keyof T {
   return Object.prototype.hasOwnProperty.call(obj, prop);
 }
+
+export type Entries<T> = {
+  [K in keyof T]-?: [K, T[K]];
+}[keyof T][];
+
+export const getEntries = <T extends object>(obj: T) => Object.entries(obj) as Entries<T>;

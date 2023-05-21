@@ -1,9 +1,9 @@
 import { PlayerModel } from 'src/app/core/players';
-import { eventsForPrefix } from 'src/app/store';
+import { createEventType } from 'src/app/store';
 import { props } from "../common";
 import { CombatInteractionStateEvent, FightEndsEvent, GroupAttackedEvent, GroupDamagedByGroupEvent, GroupDiesEvent, GroupTakesDamageEvent, NextRoundStarts, PlayerTargetsInstantSpellEvent, PlayerTargetsSpellEvent, PlayerTurnStartEvent, RoundGroupSpendsTurnEvent, UnitHealedEvent, UnitSummonedEvent } from "./types";
 
-const battleEvent = eventsForPrefix('[Battle]');
+const battleEvent = createEventType;
 
 export const PlayerTargetsSpell = battleEvent<PlayerTargetsSpellEvent>('');
 

@@ -30,7 +30,7 @@ export const EnchantBuff: SpellModel = {
 
       init: ({ events, actions, vfx }) => {
         const mods = actions.createModifiers({
-          amplifiedTakenMagicDamage: damageIncreasePercent / 100,
+          amplifiedTakenMagicDamagePercent: damageIncreasePercent / 100,
         });
 
         events.on({

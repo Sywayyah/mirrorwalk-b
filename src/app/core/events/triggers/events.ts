@@ -1,7 +1,7 @@
-import { eventsForPrefix } from 'src/app/store';
+import { createEventType } from 'src/app/store';
 import { DefaultGameModes, GamePreparedEvent } from './types';
 
-const createTriggerEvent = eventsForPrefix('[Triggers]');
+const createTriggerEvent = createEventType;
 
 export const PrepareGameEvent = createTriggerEvent<{ gameMode: DefaultGameModes }>(
   'Player started new game, waiting for GamePreparationFinished event to prepare the map.',

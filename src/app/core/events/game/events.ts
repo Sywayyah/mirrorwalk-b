@@ -1,8 +1,8 @@
 import { PopupData } from 'src/app/features/shared/components';
-import { eventsForPrefix } from 'src/app/store';
+import { createEventType } from 'src/app/store';
 import { FightStartsEvent, InitItemAction, InitSpellAction, NeutralStructParams, NewDayParams, PlayerEquipsItemAction, PlayerLevelsUpEvent, PlayerUnequipsItemAction, StructSelectedEvent } from "./types";
 
-const gameEvent = eventsForPrefix('[GameEvents]');
+const gameEvent = createEventType;
 
 export const GameStarted = gameEvent();
 

@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Modifiers, UnitGroupInstModel, UnitGroupModel } from 'src/app/core/unit-types';
+import { UnitGroupModel } from 'src/app/core/unit-types';
 import { CommonUtils } from 'src/app/core/unit-types/utils';
 import { MwUnitGroupsService } from './mw-unit-groups.service';
+import { Modifiers } from 'src/app/core/modifiers';
 
 export interface DamageInfo {
   attacker: UnitGroupModel;

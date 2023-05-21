@@ -1,4 +1,4 @@
-import { EventInfo, EventType } from 'src/app/store';
+import { EventMetadataInfo, EventType, EventData } from 'src/app/store';
 
 // this is going to replace { Spell/Item: { Event: Handler } } and some other possible things in the future.
 export class RefEventTriggersRegistry<T> {
@@ -21,23 +21,23 @@ export class RefEventTriggersRegistry<T> {
     }
   }
 
-  public triggerAllHandlersByEvent(event: EventInfo): void {
+  public triggerAllHandlersByEvent(event: EventData): void {
     this.triggerMapsByRefsMap.forEach((refTriggersMap) => {
       refTriggersMap.forEach((triggers, eventType) => triggers.forEach(trigger => {
-        if (eventType === event.__type) {
+        if (eventType === event.__eventType.__type) {
           trigger(event);
         }
       }));
     });
   }
 
-  public triggerRefEventHandlers(ref: T, event: EventInfo): void {
+  public triggerRefEventHandlers(ref: T, event: EventData): void {
     const refTriggersMap = this.triggerMapsByRefsMap.get(ref);
 
     if (refTriggersMap) {
       refTriggersMap.forEach((triggers, eventType) => {
         triggers.forEach(trigger => {
-          if (eventType === event.__type) {
+          if (eventType === event.__eventType.__type) {
             trigger(event);
           }
         });

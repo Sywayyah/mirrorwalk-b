@@ -1,5 +1,5 @@
+import { Modifiers } from '../../modifiers';
 import { spellDescrElem } from '../../ui';
-import { Modifiers } from '../../unit-types';
 import { frontStackingBuffAnimation } from '../../vfx';
 import { SpellActivationType, SpellModel } from '../types';
 import { canActivateOnEnemyFn, debuffColors } from '../utils';

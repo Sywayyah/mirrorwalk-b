@@ -1,14 +1,14 @@
 import { itemStatsDescr, spellDescrElem } from '../../ui';
 import { ItemBaseModel, ItemSlotType } from '../types';
 
-// Resist +30% to all.
+// Resist +15% to all.
 export const WishmasterItem: ItemBaseModel = {
   name: 'Wishmaster',
   slotType: ItemSlotType.Headgear,
   staticMods: {
     playerBonusAttack: 8,
     playerBonusDefence: 7,
-    resistAll: 30,
+    resistAll: 15,
   },
   icon: {
     icon: 'feather-wing',

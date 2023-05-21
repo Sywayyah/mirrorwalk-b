@@ -23,8 +23,8 @@ export class MwTriggersService extends StoreClient() {
             data,
             {
               events: {
-                dispatch: (event) => {
-                  this.events.dispatch(event);
+                dispatch: (eventData) => {
+                  this.events.dispatch(eventData);
                 }
               },
               players: this.apiProvider.getPlayerApi(),

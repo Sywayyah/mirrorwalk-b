@@ -1,6 +1,7 @@
 import { Colors } from '../../assets';
+import { Modifiers } from '../../modifiers';
 import { spellPlainDescription } from '../../ui';
-import { Modifiers, UnitGroupInstModel } from '../../unit-types';
+import { UnitGroupInstModel } from '../../unit-types';
 import { SpellActivationType, SpellModel } from '../types';
 
 type State = {

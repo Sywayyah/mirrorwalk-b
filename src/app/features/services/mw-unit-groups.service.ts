@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HealingInfo } from 'src/app/core/api/combat-api';
+import { Modifiers, ModifiersModel } from 'src/app/core/modifiers';
 import { PlayerInstanceModel } from 'src/app/core/players';
-import { CommonUtils, GenerationModel, Modifiers, ModifiersModel, UnitBase, UnitGroupInstModel, UnitGroupModel, UnitsUtils } from 'src/app/core/unit-types';
+import { CommonUtils, GenerationModel, UnitBase, UnitGroupInstModel, UnitGroupModel, UnitsUtils } from 'src/app/core/unit-types';
 import { MwSpellsService } from './mw-spells.service';
 
 

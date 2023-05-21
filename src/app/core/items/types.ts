@@ -22,10 +22,11 @@
 import { CombatActionsRef } from '../api/combat-api';
 import { Icon } from '../assets';
 import { Hero } from '../heroes';
+import { Modifiers } from '../modifiers';
 import { PlayerInstanceModel } from '../players';
 import { SpellModel } from '../spells';
 import { DescriptionElement } from '../ui';
-import { Modifiers, UnitGroupModel } from '../unit-types';
+import { UnitGroupModel } from '../unit-types';
 import { ItemsEventsHandlers } from './item-events';
 
 

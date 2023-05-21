@@ -2,7 +2,7 @@ import type { Fraction } from '../fractions/types';
 import type { PlayerInstanceModel } from '../players';
 import { ResourcesModel } from '../resources';
 import { SpellInstance, SpellModel } from '../spells';
-import { Modifiers } from './modifiers';
+import { Modifiers } from '../modifiers/modifiers';
 
 interface RequirementModel extends Partial<ResourcesModel> {
   /* heroLevel?: number;

@@ -3,7 +3,7 @@ import { Colors } from 'src/app/core/assets';
 import { InitItem } from 'src/app/core/events';
 import { ItemBaseModel, ItemInstanceModel } from 'src/app/core/items';
 import { PlayerInstanceModel } from 'src/app/core/players';
-import { EventInfo, EventsService } from 'src/app/store';
+import { EventData, EventsService } from 'src/app/store';
 import { State } from './state.service';
 
 /* Unregister All items and spell handlers when Game was over... */
@@ -46,13 +46,13 @@ export class MwItemsService {
   }
 
   // Later may limit events only to item events
-  public triggerEventForAllItemsHandlers(event: EventInfo): void {
+  public triggerEventForAllItemsHandlers(event: EventData): void {
     this.state.eventHandlers.items.triggerAllHandlersByEvent(event);
   }
 
   public triggerEventForItemHandlers(
     item: ItemInstanceModel,
-    event: EventInfo,
+    event: EventData,
   ): void {
     this.state.eventHandlers.items.triggerRefEventHandlers(item, event);
   }
