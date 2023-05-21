@@ -43,8 +43,3 @@ export type Modifiers = Partial<ModifiersModel>;
 export type ModName = keyof ModifiersModel;
 export type NumModNames = KeysMatching<ModifiersModel, number>;
 export type BoolModNames = KeysMatching<ModifiersModel, boolean>;
-
-
-/* Work in progress. This container can potentially aggregate combined values with
-  no need for recalc the array of Modifiers.
-*/

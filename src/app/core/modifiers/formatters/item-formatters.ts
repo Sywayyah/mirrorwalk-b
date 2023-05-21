@@ -1,4 +1,4 @@
-import { Modifiers, ModifiersModel } from './modifiers';
+import { Modifiers, ModifiersModel } from '../modifiers';
 
 export const numMod = (num: number) => `${num >= 0 ? '+' : '-'}${num}`;
 

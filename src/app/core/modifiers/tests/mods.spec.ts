@@ -99,6 +99,7 @@ describe('Test mods cases', () => {
     expect(groupsCombined.getModValue('isRanged')).toBe(true);
     expect(groupsCombined.getModValue('resistAll')).toBe(10);
 
+    // add mods dynamically to the nested group
     const refWithNum2 = ModsRef.fromMods({ resistAll: 15 });
 
     refsGroupB.addModsRef(refWithNum2);

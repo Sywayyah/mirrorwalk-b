@@ -7,8 +7,16 @@ import { BoolModNames, ModName, Modifiers, ModifiersModel, NumModNames } from '.
 //  - should values get updated dynamically? ideally not.
 //  - ideally, mods shouldn't change dynamically.
 //  - maybe some updated$ stream can be introduced to the group
-//  - combining groups has basic implementation.
+//  - combining groups now has basic implementation.
 
+
+/**
+ * This class controls how different modifiers should stack upon each other,
+ * how they should be cleared, etc.
+ *
+ * Most numeric modifiers are stacking additively.
+ * Most boolean values represent statuses.
+ */
 class ModValueUpdater {
   private readonly modsObject: Modifiers;
 
@@ -76,6 +84,12 @@ class ModValueUpdater {
   }
 }
 
+/**
+ * This class represents a wrapper over object with Modifiers.
+ *
+ * Whenever you want to create modifiers, instance of this class
+ * should be created. Can be used with ModsRefsGroup.
+ */
 export class ModsRef {
   private readonly mods: Modifiers;
 
@@ -118,7 +132,13 @@ export class ModsRef {
   }
 }
 
-
+/**
+ * This class can aggregate multiple `ModsRef`, and retrieve combined mod values.
+ * It also can combine values from other groups using `attachGroup` method.
+ * Use `detachGroup` to detach attached groups.
+ *
+ * The way attaching works is by sharing all of `ModsRef`s with parent groups.
+ */
 export class ModsRefsGroup {
   private readonly modsRefs: ModsRef[] = [];
 
