@@ -19,6 +19,11 @@ abstract class AbstractModifiers {
 // Recursive structure like modifiers group might seem a little intimidating.
 // It might seem as something that is a little hard to manage, develop, etc.
 
+// Or, in theory, it can be combined. Some service might be responsible for
+// storing modifiers, but it will attach these ModGroups to entities, so
+// it can be pretty ok.
+
+
 class ModifiersGroup extends AbstractModifiers {
   // also, might be something like 'root' mods, a.k.a. own mods.
   // And static method to create instances
@@ -50,13 +55,14 @@ class ModifiersGroup extends AbstractModifiers {
   }
 
   // For now, getting all values is recalculating, this might be alright to have it like this.
+  // for now, no deep lookup
   getModValues<K extends keyof ModifiersModel>(modName: K): (ModifiersModel[K][]) | [] {
-    // Actually.. this might be required to be handled recursively..
     return this.modGroups
       .filter(mod => !!mod.getModValue(modName))
       .map((mod) => mod.getModValue(modName) as ModifiersModel[K]);
   }
 
+  // only self, no deep recalc.
   fullRecalc(): void {
     for (const modName in this.cachedModValues) {
       delete this.cachedModValues[modName as keyof Modifiers];
