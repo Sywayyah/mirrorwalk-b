@@ -16,6 +16,9 @@ abstract class AbstractModifiers {
 // Think about this: Could it be better if mods where just managed by composition?
 // What if I can just attach mods to certain things via maps?
 
+// Recursive structure like modifiers group might seem a little intimidating.
+// It might seem as something that is a little hard to manage, develop, etc.
+
 class ModifiersGroup extends AbstractModifiers {
   // also, might be something like 'root' mods, a.k.a. own mods.
   // And static method to create instances
@@ -25,17 +28,21 @@ class ModifiersGroup extends AbstractModifiers {
   // along with creating from passed mods, there might also be some
   // options, like 'no-stacking'.
 
+  // Implement own mods somehow.
+  private ownMods!: Modifiers;
+
   private readonly modGroups: AbstractModifiers[] = [];
 
   // Holds all values calculated
   private readonly cachedModValues: Modifiers = {};
 
-  private constructor() {
+  private constructor(ownMods: Modifiers) {
     super();
+    this.ownMods = ownMods;
   }
 
   static createFromMods(ownMods?: Modifiers): ModifiersGroup {
-    return new ModifiersGroup();
+    return new ModifiersGroup(ownMods || {});
   }
 
   getModValue<K extends keyof ModifiersModel>(modName: K): ModifiersModel[K] | null {
