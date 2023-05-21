@@ -1,5 +1,5 @@
-import { KeysMatching } from './container';
-import { ModName, Modifiers, ModifiersModel } from './modifiers';
+import { getEntries, hasProp } from '../utils/common';
+import { BoolModNames, ModName, Modifiers, ModifiersModel, NumModNames } from './modifiers';
 
 class ModValueUpdater {
   private readonly modsObject: Modifiers;
@@ -34,7 +34,7 @@ class ModValueUpdater {
   addValue<K extends ModName>(modName: K, val: ModifiersModel[K]): void {
     if (typeof val === 'number') {
       // handle most of numeric values additively
-      this.addNumericModValue(modName as KeysMatching<ModifiersModel, number>, val);
+      this.addNumericModValue(modName as NumModNames, val);
       return;
     }
 
@@ -57,7 +57,7 @@ class ModValueUpdater {
     delete this.modsObject[modName];
   }
 
-  private addNumericModValue(modifierProp: KeysMatching<ModifiersModel, number>, val: number): void {
+  private addNumericModValue(modifierProp: NumModNames, val: number): void {
     const finalValue = this.modsObject[modifierProp];
 
     this.modsObject[modifierProp] = typeof finalValue === 'undefined'
@@ -96,10 +96,20 @@ export class ModsRef {
     this.valuesUpdater.addValue(modName, val);
   }
 
+  hasMod(modName: ModName): boolean {
+    return hasProp(this.mods, modName);
+  }
+
   clearMod(modName: ModName): void {
     this.valuesUpdater.clearValue(modName);
   }
+
+
+  getMods(): Modifiers {
+    return this.mods;
+  }
 }
+
 
 export class ModsRefsGroup {
   private readonly modsRefs: ModsRef[] = [];
@@ -119,17 +129,66 @@ export class ModsRefsGroup {
     return new ModsRefsGroup();
   }
 
-  addModsRef(modRef: ModsRef): void {
-    this.modsRefs.push(modRef);
+  getCalcNumModValue<K extends NumModNames>(modName: K): number | null {
+    const refsWithNumericMod = this.modsRefs.filter(modsRef => modsRef.hasMod(modName));
+
+    if (!refsWithNumericMod.length) {
+      return null;
+    }
+
+    return refsWithNumericMod.reduce((acc, next) => acc + (next.getModValue(modName) as number), 0);
+  }
+
+  getCalcBoolNumModValue<K extends BoolModNames>(modName: K): boolean | null {
+    const refsWithBoolMod = this.modsRefs.filter(modsRef => modsRef.hasMod(modName));
+
+    if (!refsWithBoolMod.length) {
+      return null;
+    }
+
+    return refsWithBoolMod.some(modsRef => modsRef.getModValue(modName));
+  }
+
+  addModsRef(modsRef: ModsRef): void {
+    this.modsRefs.push(modsRef);
+    this.processModsRef(modsRef);
   }
 
   removeModsRef(modsRef: ModsRef): void {
     const modsRefIndex = this.modsRefs.indexOf(modsRef);
 
     this.modsRefs.splice(modsRefIndex, 1);
+
+    this.processModsRef(modsRef, true);
   }
 
   getAllRefs(): ModsRef[] {
     return this.modsRefs;
   }
+
+  getModValue<K extends ModName>(modName: K): ModifiersModel[K] | null {
+    return this.cachedModValues[modName] || null;
+  }
+
+  private processModsRef(modsRef: ModsRef, removing?: boolean): void {
+    getEntries(modsRef.getMods()).forEach(([modName, modValue]) => {
+      // most numeric values are added additively
+      if (typeof modValue === 'number') {
+        this.valueUpdater.addValue(modName, removing ? -modValue : modValue);
+        return;
+      }
+
+      // most boolean values are statuses
+      if (typeof modValue === 'boolean') {
+        if (!removing) {
+          if (!this.cachedModValues[modName] && modValue) {
+            this.cachedModValues[modName] = true;
+          }
+        } else {
+          this.cachedModValues[modName] = this.getCalcBoolNumModValue(modName) || undefined;
+        }
+      }
+    });
+  }
+
 }

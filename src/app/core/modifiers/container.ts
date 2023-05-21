@@ -1,3 +1,4 @@
+import { KeysMatching } from '../utils';
 import { getEntries } from '../utils/common';
 import { Modifiers, ModifiersModel } from './modifiers';
 
@@ -15,9 +16,6 @@ import { Modifiers, ModifiersModel } from './modifiers';
   This is why I'm moving to V2, the idea with ModsRef and ModsRefGroup
 */
 
-export type KeysMatching<T extends object, V> = {
-  [K in keyof T]-?: T[K] extends V ? K : never
-}[keyof T];
 
 abstract class AbstractModifiers {
   abstract getModValue<K extends keyof ModifiersModel>(modName: K): ModifiersModel[K] | null;

@@ -11,3 +11,8 @@ export type TypedChange<T> = {
 export type TypedChanges<T> = SimpleChanges & {
     [P in keyof T]?: TypedChange<T[P]>;
 };
+
+
+export type KeysMatching<T extends object, V> = {
+    [K in keyof T]-?: T[K] extends V ? K : never
+}[keyof T];

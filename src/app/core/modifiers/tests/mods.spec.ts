@@ -1,7 +1,7 @@
 import { ModsRef, ModsRefsGroup } from '../mods';
 
 describe('Test mods cases', () => {
-  it('is a basic test', () => {
+  it('is a test scenario #1 (ModsRef)', () => {
     const ref = ModsRef.fromMods({ amplifiedTakenMagicDamagePercent: 0.15 });
 
     expect(ref.getModValue('amplifiedTakenMagicDamagePercent')).toBe(0.15);
@@ -31,12 +31,33 @@ describe('Test mods cases', () => {
     ref.clearMod('resistAll');
 
     expect(ref.getModValue('resistAll')).toBe(null);
+  });
 
-    const refGroup = ModsRefsGroup.empty();
+  it('is a test scenario #2 (ModsRefGroup)', () => {
+    const refA = ModsRef.fromMods({ resistAll: 10 });
+    const refB = ModsRef.fromMods({ resistAll: 5 });
 
-    refGroup.addModsRef(ref);
+    const refsGroup = ModsRefsGroup.empty();
 
-    refGroup.removeModsRef(ref);
+    refsGroup.addModsRef(refA);
+    refsGroup.addModsRef(refB);
 
+    expect(refsGroup.getModValue('resistAll')).toBe(15);
+
+    const negativeResistRef = ModsRef.fromMods({ resistAll: -5 });
+
+    refsGroup.addModsRef(negativeResistRef);
+
+    expect(refsGroup.getModValue('resistAll')).toBe(10);
+
+    refsGroup.removeModsRef(refB);
+
+    expect(refsGroup.getCalcNumModValue('resistAll')).toBe(5);
+
+    expect(refsGroup.getModValue('resistAll')).toBe(5);
+
+    refsGroup.removeModsRef(negativeResistRef);
+
+    expect(refsGroup.getModValue('resistAll')).toBe(10);
   });
 });
