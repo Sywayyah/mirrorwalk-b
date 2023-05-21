@@ -1,9 +1,10 @@
 import { ItemBaseModel, ItemInstanceModel } from '../items';
 import type { InventoryItems } from '../items/inventory';
+import { Modifiers } from '../modifiers';
 import { ResourcesModel } from '../resources';
 import { SpellInstance, SpellModel } from '../spells';
 import { DescriptionElement } from '../ui';
-import { GenerationModel, Modifiers } from '../unit-types';
+import { GenerationModel } from '../unit-types';
 
 export interface HeroBaseStats {
   stats: {

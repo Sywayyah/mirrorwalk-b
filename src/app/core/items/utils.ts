@@ -1,5 +1,5 @@
+import { Modifiers } from '../modifiers';
 import { itemStatsDescr } from '../ui';
-import { Modifiers } from '../unit-types';
 import { ItemBaseModel, ItemSlotType } from './types';
 
 export function createItem({ name, icon, slot, stats }: {

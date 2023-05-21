@@ -1,6 +1,7 @@
+import { Modifiers } from '../../modifiers';
 import { PlayerInstanceModel } from '../../players';
 import { DefaultSpellStateType, SpellInstance } from '../../spells';
-import { Modifiers, UnitBase, UnitGroupInstModel } from '../../unit-types';
+import { UnitBase, UnitGroupInstModel } from '../../unit-types';
 import { SpellsApi } from '../game-api';
 
 export interface PostDamageInfo {

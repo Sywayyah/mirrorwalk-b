@@ -1,17 +1,10 @@
 import type { ItemInstanceModel } from '../../items';
-import { Modifiers, ModifiersModel } from '../../unit-types';
+import { modsFormatters } from '../../modifiers';
 import { DescHtmlElement, DescriptionElementType } from './types';
 
 function getItemModHtmlElem(text: string): string {
   return `<div class="item-mod">${text}</div>`;
 }
-
-const numMod = (num: number) => `${num >= 0 ? '+' : '-'}${num}`;
-
-const modsFormatters: { [K in keyof Modifiers]: (val: ModifiersModel[K]) => string } = {
-  playerBonusAttack: val => `${numMod(val)} Attack Rating`,
-  playerBonusDefence: val => `${numMod(val)} Defence`,
-};
 
 
 export function itemStatsDescr(item: ItemInstanceModel): DescHtmlElement {
