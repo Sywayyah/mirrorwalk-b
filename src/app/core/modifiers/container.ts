@@ -8,7 +8,8 @@ export type KeysMatching<T extends object, V> = {
 abstract class AbstractModifiers {
   abstract getModValue<K extends keyof ModifiersModel>(modName: K): ModifiersModel[K] | null;
   abstract getModValues<K extends keyof ModifiersModel>(modName: K): (ModifiersModel[K][]) | [];
-  abstract addMods(mods: AbstractModifiers): void;
+  abstract addModsRef(mods: AbstractModifiers): void;
+  abstract removeModsByRef(mods: AbstractModifiers): void;
   abstract fullRecalc(): void;
   abstract getAllMods(): Modifiers;
 }
@@ -69,20 +70,28 @@ class ModifiersGroup extends AbstractModifiers {
     }
 
     this.modGroups.forEach((mod) => {
-      this.addMods(mod);
+      this.addModsRef(mod);
     });
   }
 
-  addMods(mods: AbstractModifiers): void {
+  addModsRef(mods: AbstractModifiers): void {
     this.modGroups.push(mods);
-    this.processMods(mods);
+    this.processAddedMods(mods);
+  }
+
+  removeModsByRef(modsRef: AbstractModifiers): void {
+    const modIndex = this.modGroups.indexOf(modsRef);
+
+    this.modGroups.splice(modIndex, 1);
+
+    this.processRemovedMods(modsRef);
   }
 
   getAllMods(): Modifiers {
     return this.cachedModValues;
   }
 
-  private processMods(mods: AbstractModifiers): void {
+  private processAddedMods(mods: AbstractModifiers): void {
     const modsMap = mods.getAllMods();
 
     getEntries(modsMap).forEach(([modName, modValue]) => {
@@ -103,11 +112,32 @@ class ModifiersGroup extends AbstractModifiers {
     });
   }
 
+  private processRemovedMods(mods: AbstractModifiers): void {
+    const modsMap = mods.getAllMods();
+
+    getEntries(modsMap).forEach(([modName, modValue]) => {
+      if (typeof modValue === 'number') {
+        this.removeNumericModValue(modName, modValue);
+        return;
+      }
+
+      if (typeof modValue === 'boolean') {
+        this.removeBooleanStatusModValue(modName, modValue);
+      }
+    });
+  }
+
   // Most numeric values are simply stacking additively.
   private addNumericModValue(modifierProp: KeysMatching<ModifiersModel, number>, val: number): void {
     const finalValue = this.cachedModValues[modifierProp];
 
     this.cachedModValues[modifierProp] = typeof finalValue === 'undefined' ? val : finalValue + val;
+  }
+
+  private removeNumericModValue(modifierProp: KeysMatching<ModifiersModel, number>, val: number): void {
+    const finalValue = this.cachedModValues[modifierProp];
+
+    this.cachedModValues[modifierProp] = typeof finalValue === 'undefined' ? val : finalValue - val;
   }
 
   // Most of boolean values are representing some status.
@@ -120,6 +150,16 @@ class ModifiersGroup extends AbstractModifiers {
     if (val) {
       this.cachedModValues[modifierProp] = val;
     }
+  }
+
+  private removeBooleanStatusModValue(modifierProp: KeysMatching<ModifiersModel, boolean>, val: boolean): void {
+    const statusModValues = this.getModValues(modifierProp) as boolean[];
+
+    if (statusModValues.includes(true)) {
+      return;
+    }
+
+    this.cachedModValues[modifierProp] = false;
   }
 }
 
