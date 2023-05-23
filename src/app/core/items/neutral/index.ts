@@ -1,7 +1,10 @@
+export * from './black-lich-sword';
 export * from './doomstring';
 export * from './eclipse-wand';
 export * from './ice-bow';
+export * from './irton-plate';
+export * from './lifeform';
 export * from './meteor-swords';
 export * from './wind-crest';
 export * from './wishmaster';
-
+export * from './rising-sun';

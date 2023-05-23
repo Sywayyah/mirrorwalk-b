@@ -7,6 +7,7 @@ export const BlackLichSwordItem: ItemBaseModel = {
   slotType: ItemSlotType.Weapon,
   staticMods: {
     playerBonusAttack: 3,
+    lifesteal: 10,
     /* Vampirism mod, maybe -1-2 to Defence */
   },
   icon: {

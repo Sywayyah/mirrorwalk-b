@@ -8,7 +8,7 @@ export const WishmasterItem: ItemBaseModel = {
   staticMods: {
     playerBonusAttack: 8,
     playerBonusDefence: 7,
-    resistAll: 15,
+    resistAll: 13,
   },
   icon: {
     icon: 'feather-wing',

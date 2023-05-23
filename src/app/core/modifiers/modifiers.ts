@@ -23,6 +23,10 @@ export interface ModifiersModel {
   unitGroupBonusAttack: number;
   unitGroupBonusDefence: number;
 
+  // to be implemented
+  lifesteal: number;
+
+  // to be implemented
   resistAll: number;
 
   /* unit speed bonus */
