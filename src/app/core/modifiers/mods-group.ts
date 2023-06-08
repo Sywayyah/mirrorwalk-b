@@ -40,6 +40,14 @@ export class ModsRefsGroup {
     return new ModsRefsGroup();
   }
 
+  static withRefs(modRefs: ModsRef[]): ModsRefsGroup {
+    const newGroup = new ModsRefsGroup();
+
+    modRefs.forEach(modRef => newGroup.addModsRef(modRef));
+
+    return newGroup;
+  }
+
   getCalcNumModValue<K extends NumModNames>(modName: K): number | null {
     const refsWithNumericMod = this.modsRefs.filter(modsRef => modsRef.hasMod(modName));
 
