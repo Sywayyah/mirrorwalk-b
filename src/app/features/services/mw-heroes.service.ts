@@ -3,7 +3,6 @@ import { Hero, HeroBase } from 'src/app/core/heroes';
 import { EMPTY_RESOURCES, createHeroModelBase } from 'src/app/core/heroes/utils';
 import { Spell } from 'src/app/core/spells';
 import { heroDescrElem } from 'src/app/core/ui';
-import { MwSpellsService } from './';
 import { GameObjectsManager } from './game-objects-manager.service';
 
 const neutralHeroBase = createHeroModelBase({
@@ -25,7 +24,6 @@ const neutralHeroBase = createHeroModelBase({
 })
 export class MwHeroesService {
   constructor(
-    private spellsService: MwSpellsService,
     private gameObjectsManager: GameObjectsManager,
   ) { }
 
