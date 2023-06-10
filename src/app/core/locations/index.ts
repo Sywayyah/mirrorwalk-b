@@ -1,3 +1,3 @@
 export * from './types';
-export * from './common';
+export * from './preset1';
 export * from './config';
