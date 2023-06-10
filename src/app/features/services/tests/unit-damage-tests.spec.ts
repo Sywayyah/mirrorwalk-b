@@ -1,8 +1,8 @@
 import { TestBed } from '@angular/core/testing';
 import { TaltirHero } from 'src/app/core/heroes/humans';
 import { InventoryItems } from 'src/app/core/items';
-import { PlayerInstanceModel, PlayerTypeEnum } from 'src/app/core/players';
-import { UnitBase, UnitGroupInstModel } from 'src/app/core/unit-types';
+import { Player, PlayerTypeEnum } from 'src/app/core/players';
+import { UnitBaseType, UnitGroup } from 'src/app/core/unit-types';
 import { CombatInteractorService } from '../mw-combat-interactor.service';
 import { MwPlayersService } from '../mw-players.service';
 import { MwUnitGroupStateService } from '../mw-unit-group-state.service';

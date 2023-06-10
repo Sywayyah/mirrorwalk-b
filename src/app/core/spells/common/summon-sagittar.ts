@@ -1,11 +1,11 @@
 import { constellationFraction } from '../../fractions/constellation/fraction';
 import { spellDescrElem } from '../../ui';
 import { FireAnimation, simpleConvergentBuffAnimation } from '../../vfx';
-import { SpellActivationType, SpellModel } from '../types';
+import { SpellActivationType, SpellBaseType } from '../types';
 
 const unitCount = 4;
 
-export const SummonSagittarSpell: SpellModel = {
+export const SummonSagittarSpell: SpellBaseType = {
   name: 'Summon Sagittar',
   activationType: SpellActivationType.Instant,
   icon: {

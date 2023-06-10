@@ -1,6 +1,6 @@
 import { Injectable, Type } from '@angular/core';
 import { DisplayPlayerRewardAction, DisplayPlayerRewardPopup, DisplayPopup, DisplayReward, FightEnds, FightEndsEvent, NeutralStructParams, OpenSettings, PlayerOpensHeroInfo, ShowGameOverPopup, StructSelected, StructSelectedEvent } from 'src/app/core/events';
-import { NeutralCampStructure, NeutralRewardTypesEnum, NeutralSite, StructureTypeEnum } from 'src/app/core/structures';
+import { NeutralRewardTypesEnum, StructureTypeEnum } from 'src/app/core/structures';
 import { FightEndsPopup, LossModel, PrefightPopup, PreviewPopup, UpgradingPopup } from 'src/app/core/ui';
 import { Notify, StoreClient, WireMethod } from 'src/app/store';
 import { HiringRewardPopupComponent, ItemRewardPopupComponent, PostFightRewardPopupComponent, PreFightPopupComponent, PreviewPopupComponent, ResourcesRewardPopupComponent, ScriptedRewardPopupComponent, UpgradeRewardPopupComponent } from '../../battleground/components';
@@ -63,7 +63,7 @@ export class PopupsController extends StoreClient() {
   public playerSelectsStructure(event: StructSelectedEvent): void {
     if (event.struct.type === StructureTypeEnum.NeutralCamp) {
       const prefightPopup: PrefightPopup = {
-        struct: event.struct as NeutralCampStructure,
+        struct: event.struct,
       };
 
 
@@ -77,7 +77,7 @@ export class PopupsController extends StoreClient() {
     if (event.struct.type === StructureTypeEnum.NeutralSite) {
       if (event.struct.generator.onVisited) {
         const previewPopup: PreviewPopup = {
-          struct: event.struct as NeutralSite,
+          struct: event.struct,
         };
 
         this.events.dispatch(DisplayPopup({
@@ -89,7 +89,7 @@ export class PopupsController extends StoreClient() {
       }
 
       const upgradingPopup: UpgradingPopup = {
-        struct: event.struct as NeutralSite,
+        struct: event.struct,
       };
 
       this.events.dispatch(DisplayPopup({
@@ -106,7 +106,7 @@ export class PopupsController extends StoreClient() {
       isWin: event.win,
       playerLosses: this.getPlayerLosses(this.playersService.getCurrentPlayerId()),
       enemyLosses: this.getPlayerLosses(this.playersService.getEnemyPlayer().id),
-      struct: event.struct as NeutralCampStructure,
+      struct: event.struct,
     };
 
     this.popupService.createPopup({

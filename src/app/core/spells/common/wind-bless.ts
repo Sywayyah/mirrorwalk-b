@@ -1,18 +1,18 @@
 import { Colors } from '../../assets';
 import { Modifiers } from '../../modifiers';
 import { spellPlainDescription } from '../../ui';
-import { UnitGroupInstModel } from '../../unit-types';
-import { SpellActivationType, SpellModel } from '../types';
+import { UnitGroup } from '../../unit-types';
+import { SpellActivationType, SpellBaseType } from '../types';
 
 type State = {
   roundsLeft: number,
-  target: UnitGroupInstModel,
+  target: UnitGroup,
   mods: Modifiers,
 };
 
 const attackBonus = 2;
 
-export const WindBlessBuff: SpellModel<State> = {
+export const WindBlessBuff: SpellBaseType<State> = {
   name: 'Wind Bless',
   icon: {
     icon: 'feather-wing',

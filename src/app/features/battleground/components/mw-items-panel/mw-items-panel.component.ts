@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ItemInstanceModel } from 'src/app/core/items';
-import { PlayerInstanceModel } from 'src/app/core/players';
+import { ItemObject } from 'src/app/core/items';
+import { Player } from 'src/app/core/players';
 import { MwPlayersService } from 'src/app/features/services';
 
 @Component({
@@ -10,8 +10,8 @@ import { MwPlayersService } from 'src/app/features/services';
 })
 export class MwItemsPanelComponent implements OnInit {
 
-  public currentPlayer!: PlayerInstanceModel;
-  public equippedItems!: ItemInstanceModel[];
+  public currentPlayer!: Player;
+  public equippedItems!: ItemObject[];
 
   constructor(
     private readonly players: MwPlayersService,

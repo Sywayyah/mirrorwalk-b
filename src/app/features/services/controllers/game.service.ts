@@ -9,6 +9,7 @@ import { MwHeroesService } from '../mw-heroes.service';
 import { MwPlayersService, PLAYER_IDS } from '../mw-players.service';
 import { MwStructuresService } from '../mw-structures.service';
 import { State } from '../state.service';
+import { UnitGroup } from 'src/app/core/unit-types';
 
 
 @Injectable()
@@ -40,20 +41,16 @@ export class GameController extends StoreClient() {
 
   @Notify(GameCreated)
   public initPlayersOnGameStart(): void {
-    /*
-       For now, I can see some good overall tendency.
+    const mainPlayer = this.players.createPlayer(
+      PLAYER_IDS.Main,
+      this.players.createPlayerWithHero(
+        this.state.createdGame.selectedColor,
+        this.state.createdGame.selectedHero,
+        PlayerTypeEnum.Player,
+      ),
+    );
 
-       There is a global store, source of truth, then there
-       are some services, that interact with it and have some util
-       methods.
-     */
-    const [mainPlayerId, mainPlayer] = this.players.createPlayerEntry(PLAYER_IDS.Main, this.players.createPlayerWithHero(
-      this.state.createdGame.selectedColor,
-      this.state.createdGame.selectedHero,
-      PlayerTypeEnum.Player,
-    ));
-
-    const [neutralPlayerId, neutralPlayer] = this.players.createPlayerEntry(PLAYER_IDS.Neutral, {
+    const neutralPlayer = this.players.createPlayer(PLAYER_IDS.Neutral, {
       color: PLAYER_COLORS.GRAY,
       type: PlayerTypeEnum.AI,
       hero: this.heroesService.createNeutralHero(),
@@ -67,8 +64,8 @@ export class GameController extends StoreClient() {
       players: [mainPlayer, neutralPlayer],
       currentPlayer: mainPlayer,
       playersMap: new Map([
-        [mainPlayerId, mainPlayer],
-        [neutralPlayerId, neutralPlayer],
+        [mainPlayer.id, mainPlayer],
+        [neutralPlayer.id, neutralPlayer],
       ]),
     };
 
@@ -86,7 +83,8 @@ export class GameController extends StoreClient() {
   public initFight(event: NeutralStructParams): void {
     this.state.currentBattleState = {
       currentPlayer: this.state.gameState.currentPlayer,
-      enemyPlayer: event.struct.guard,
+      // player should be defined, but it needs to be revisited later on
+      enemyPlayer: event.struct.guard!,
     };
   }
 

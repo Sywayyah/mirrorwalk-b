@@ -2,8 +2,9 @@ import { Injectable } from '@angular/core';
 import { SpellCreationOptions } from 'src/app/core/api/combat-api';
 import { Colors } from 'src/app/core/assets';
 import { Modifiers } from 'src/app/core/modifiers';
-import { SpellInstance, SpellModel } from 'src/app/core/spells';
-import { UnitGroupInstModel } from 'src/app/core/unit-types';
+import { Spell, SpellBaseType } from 'src/app/core/spells';
+import { UnitGroup } from 'src/app/core/unit-types';
+import { GameObjectsManager } from './game-objects-manager.service';
 
 
 @Injectable({
@@ -11,12 +12,14 @@ import { UnitGroupInstModel } from 'src/app/core/unit-types';
 })
 export class MwSpellsService {
 
-  constructor() { }
+  constructor(
+    private gameObjectManager: GameObjectsManager,
+  ) { }
 
   public createSpellInstance<T>(
-    spell: SpellModel<T>,
+    spell: SpellBaseType<T>,
     options: SpellCreationOptions<T> = {},
-  ): SpellInstance<T> {
+  ): Spell<T> {
     const initialLevel: number = options.initialLevel ?? 1;
     const spellIcon = spell.icon;
 
@@ -28,17 +31,11 @@ export class MwSpellsService {
       spellIcon.iconClr = Colors.DefaultItemIconClr;
     }
 
-    const spellInstance: SpellInstance<T> = {
-      currentLevel: initialLevel,
-      currentManaCost: 0,
-      description: spell.description ?? '',
-      name: spell.type.spellInfo.name,
-      baseType: spell,
-      state: options.state ?? null,
-      sourceInfo: {},
-    };
-
-    spellInstance.currentManaCost = spell.type.spellConfig.getManaCost(spellInstance);
+    const spellInstance = this.gameObjectManager.createNewGameObject(Spell<T>, {
+      spellBaseType: spell,
+      initialLevel: initialLevel,
+      state: options.state,
+    });
 
     return spellInstance;
   }
@@ -47,7 +44,7 @@ export class MwSpellsService {
     return modifiers;
   }
 
-  public canSpellBeCastOnUnit(spell: SpellInstance, unitGroup: UnitGroupInstModel, isEnemy: boolean): boolean {
+  public canSpellBeCastOnUnit(spell: Spell, unitGroup: UnitGroup, isEnemy: boolean): boolean {
     const spellConfig = spell.baseType.type.spellConfig;
 
     const canActivateFn = spellConfig.targetCastConfig?.canActivate;

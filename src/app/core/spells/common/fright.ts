@@ -1,13 +1,13 @@
 import { spellDescrElem } from '../../ui';
-import { UnitGroupInstModel } from '../../unit-types';
+import { UnitGroup } from '../../unit-types';
 import { FrightAnimation } from '../../vfx';
-import { SpellActivationType, SpellModel } from '../types';
+import { SpellActivationType, SpellBaseType } from '../types';
 import { debuffColors } from '../utils';
 
 const damageDecreasePercent = 0.25;
 const uiPercent = damageDecreasePercent * 100;
 
-export const FrightSpellDebuff: SpellModel<{ frighter: UnitGroupInstModel }> = {
+export const FrightSpellDebuff: SpellBaseType<{ frighter: UnitGroup }> = {
   name: 'Fright',
   activationType: SpellActivationType.Debuff,
   icon: {
@@ -54,7 +54,7 @@ export const FrightSpellDebuff: SpellModel<{ frighter: UnitGroupInstModel }> = {
   },
 };
 
-export const FrightSpell: SpellModel = {
+export const FrightSpell: SpellBaseType = {
   name: 'Fright',
   activationType: SpellActivationType.Passive,
   icon: {

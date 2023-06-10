@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
-import { StructureDescription, ViewStructure } from 'src/app/core/locations';
-import { PlayerInstanceModel } from 'src/app/core/players';
-import { NeutralCampStructure, NeutralSite, StructureGeneratorModel, StructureModel, StructureTypeEnum } from 'src/app/core/structures';
+import { StructureDescription, ViewStructure, START_LOC_ID } from 'src/app/core/locations';
+import { Player } from 'src/app/core/players';
+import { StructureGeneratorModel, StructureModel, StructureTypeEnum } from 'src/app/core/structures';
 import { GamePreparedEvent } from 'src/app/core/events';
-import { UnitGroupInstModel } from 'src/app/core/unit-types';
+import { UnitGroup } from 'src/app/core/unit-types';
 import { MwPlayersService, MwUnitGroupsService } from './';
+import { GameObjectsManager } from './game-objects-manager.service';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +15,7 @@ export class MwStructuresService {
   /*
    todo: revisit this complicated structures logic, introduce maps/locations
   */
-  public neutralPlayer!: PlayerInstanceModel;
+  public neutralPlayer!: Player;
 
   public initialStructs: StructureDescription[] = [];
 
@@ -24,7 +25,7 @@ export class MwStructuresService {
 
   public availableStructuresMap: Record<string, true> = {};
 
-  public guardsMap!: Record<string, UnitGroupInstModel[]>;
+  public guardsMap!: Record<string, UnitGroup[]>;
 
   public currentStruct!: StructureModel;
 
@@ -33,6 +34,7 @@ export class MwStructuresService {
   constructor(
     private playersService: MwPlayersService,
     private unitGroups: MwUnitGroupsService,
+    private gameObjectsManager: GameObjectsManager,
   ) { }
 
   public initStructures(event: GamePreparedEvent): void {
@@ -41,11 +43,11 @@ export class MwStructuresService {
     this.initialStructs = event.map.structures;
     this.viewStructures = this.createViewStructures(this.initialStructs);
     this.viewStructures.forEach((struct) => this.structsMap.set(struct.id, struct));
-    this.playerCurrentLocId = '1';
+    this.playerCurrentLocId = START_LOC_ID;
     this.updateParentLinks();
     this.updateAvailableStructures();
     this.guardsMap = this.generateNewGuardsMap();
-    console.log(this.guardsMap);
+    console.log('guardsMap', this.guardsMap);
   }
 
   public updateParentLinks(): void {
@@ -121,34 +123,29 @@ export class MwStructuresService {
 
   private createStructure(structId: string, structureType: StructureGeneratorModel): StructureModel {
     if (structureType.generateGuard && structureType.generateReward) {
-      const newStructure: NeutralCampStructure = {
-        id: structId,
+      const newStructure = this.gameObjectsManager.createNewGameObject(StructureModel, {
         generator: structureType,
+        guardingPlayer: this.neutralPlayer,
         type: StructureTypeEnum.NeutralCamp,
-        reward: structureType.generateReward(),
-        guard: this.neutralPlayer,
-      };
+      }, structId);
 
       return newStructure;
     }
 
     if (!structureType.generateGuard && structureType.generateReward) {
-      const newStructure: NeutralSite = {
-        id: structId,
+      const newStructure = this.gameObjectsManager.createNewGameObject(StructureModel, {
         generator: structureType,
         type: StructureTypeEnum.NeutralSite,
-        reward: structureType.generateReward(),
-      };
+      }, structId);
 
       return newStructure;
     }
 
     if (structureType.onVisited) {
-      const neutralSiteStructure: NeutralSite = {
-        id: structId,
+      const neutralSiteStructure = this.gameObjectsManager.createNewGameObject(StructureModel, {
         generator: structureType,
         type: StructureTypeEnum.NeutralSite,
-      };
+      }, structId);
 
       return neutralSiteStructure;
     }
@@ -157,8 +154,8 @@ export class MwStructuresService {
     return null as any;
   }
 
-  private generateNewGuardsMap(): Record<string, UnitGroupInstModel[]> {
-    const guardsMap: Record<string, UnitGroupInstModel[]> = {};
+  private generateNewGuardsMap(): Record<string, UnitGroup[]> {
+    const guardsMap: Record<string, UnitGroup[]> = {};
 
     this.initialStructs.forEach(struct => {
       if (struct.struct) {
@@ -166,7 +163,7 @@ export class MwStructuresService {
           ? this.unitGroups.createUnitGroupFromGenModelForPlayer(
             struct.struct.generateGuard(),
             this.neutralPlayer,
-          ) as UnitGroupInstModel[]
+          ) as UnitGroup[]
           : [];
       }
     });

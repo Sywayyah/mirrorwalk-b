@@ -1,10 +1,10 @@
-import { UnitGroupInstModel } from '../unit-types/types';
+import { UnitGroup } from '../unit-types/types';
 import { KeysMatching } from '../utils';
 
 
 export interface ConditionalModifierParamsModel {
   // attacker: UnitGroupInstModel;
-  attacked: UnitGroupInstModel;
+  attacked: UnitGroup;
 }
 
 export interface ModifiersModel {

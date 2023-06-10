@@ -1,13 +1,15 @@
 import { Injectable } from '@angular/core';
 import { CombatActionsRef, SpellCreationOptions } from 'src/app/core/api/combat-api';
 import { EffectType, VfxElemEffect } from 'src/app/core/api/vfx-api';
-import { GroupModifiersChanged, GroupSpeedChanged, InitItem, InitItemAction, InitSpell, InitSpellAction, PlayerReceivesItem, PlayersInitialized, UnitHealed, UnitSummoned } from 'src/app/core/events';
+import { GroupModifiersChanged, GroupSpeedChanged, InitGameObjectApi, InitGameObjectApiParams, InitItem, InitItemAction, InitSpell, InitSpellAction, PlayerReceivesItem, PlayersInitialized, UnitHealed, UnitSummoned } from 'src/app/core/events';
+import { GameObjectApi } from 'src/app/core/game-objects';
 import { ItemEventNames, ItemsEventsGroup, ItemsEventsHandlers } from 'src/app/core/items';
-import { PlayerInstanceModel } from 'src/app/core/players';
-import { SpellEventHandlers, SpellEventNames, SpellEventsGroup, SpellInstance, SpellModel } from 'src/app/core/spells';
-import { CommonUtils, UnitBase, UnitGroupInstModel } from 'src/app/core/unit-types';
+import { Player } from 'src/app/core/players';
+import { SpellEventHandlers, SpellEventNames, SpellEventsGroup, Spell, SpellBaseType } from 'src/app/core/spells';
+import { CommonUtils, UnitBaseType, UnitGroup } from 'src/app/core/unit-types';
 import { Notify, StoreClient, WireMethod } from 'src/app/store';
 import { VfxService } from '../../shared/components';
+import { ApiProvider } from '../api-provider.service';
 import { MwBattleLogService } from '../mw-battle-log.service';
 import { BattleStateService } from '../mw-battle-state.service';
 import { CombatInteractorService } from '../mw-combat-interactor.service';
@@ -28,6 +30,7 @@ export class InGameApiController extends StoreClient() {
     private battleLog: MwBattleLogService,
     private players: MwPlayersService,
     private itemsService: MwItemsService,
+    private apiProvider: ApiProvider,
     private state: State,
   ) {
     super();
@@ -95,9 +98,18 @@ export class InGameApiController extends StoreClient() {
     });
   }
 
+  @WireMethod(InitGameObjectApi)
+  public initializeGameObjectApi(params: InitGameObjectApiParams): void {
+    // hack in order to rewrite a private readonly field
+    const gameObject = params.gameObject as unknown as { api: GameObjectApi };
+
+    // unify api in some way later
+    gameObject.api = { spells: this.apiProvider.getSpellsApi() };
+  }
+
   private createActionsApiRef(): CombatActionsRef {
     return {
-      summonUnitsForPlayer: (ownerPlayer: PlayerInstanceModel, unitType: UnitBase, unitNumber: number) => {
+      summonUnitsForPlayer: (ownerPlayer: Player, unitType: UnitBaseType, unitNumber: number) => {
         const summonedUnitGroup = this.battleState.summonUnitForPlayer(ownerPlayer, unitType, unitNumber);
         this.events.dispatch(UnitSummoned({ unitGroup: summonedUnitGroup }));
         return summonedUnitGroup;
@@ -105,8 +117,8 @@ export class InGameApiController extends StoreClient() {
       dealDamageTo: (target, damage, damageType, postActionFn) => {
         this.combatInteractor.dealDamageTo(target, damage, damageType, postActionFn);
       },
-      createSpellInstance: <T>(spell: SpellModel<T>, options?: SpellCreationOptions<T>) => {
-        return this.spellsService.createSpellInstance(spell, options);
+      createSpellInstance: <T>(spellBase: SpellBaseType<T>, options?: SpellCreationOptions<T>) => {
+        return this.spellsService.createSpellInstance(spellBase, options);
       },
       addModifiersToUnitGroup: (target, modifiers) => {
 
@@ -148,14 +160,14 @@ export class InGameApiController extends StoreClient() {
         }));
       },
       /* dark magic of types, just so it can work */
-      addSpellToUnitGroup: <T>(target: UnitGroupInstModel, spell: SpellInstance<T>, ownerPlayer: PlayerInstanceModel) => {
-        this.combatInteractor.addSpellToUnitGroup(target, spell as SpellInstance, ownerPlayer);
+      addSpellToUnitGroup: <T>(target: UnitGroup, spell: Spell<T>, ownerPlayer: Player) => {
+        this.combatInteractor.addSpellToUnitGroup(target, spell as Spell, ownerPlayer);
       },
       removeSpellFromUnitGroup: (target, spell) => {
-        this.combatInteractor.removeSpellFromUnitGroup(target, spell as SpellInstance);
+        this.combatInteractor.removeSpellFromUnitGroup(target, spell as Spell);
       },
       getUnitGroupsOfPlayer: (player) => {
-        return this.battleState.heroesUnitGroupsMap.get(player) as UnitGroupInstModel[];
+        return this.battleState.heroesUnitGroupsMap.get(player) as UnitGroup[];
       },
       getAliveUnitGroupsOfPlayer: (player) => {
         return this.battleState.getAliveUnitsOfPlayer(player);

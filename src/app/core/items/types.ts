@@ -1,39 +1,19 @@
-
-/*
-    I'm uncertain of what items model should consist.
-    Because of that, I feel like I need arrays.
-
-    Anyways, it's not thought through completely.
-        It will most surely require implementing new systems.
-
-    Especially for active abilities.
-
-    Also probably need to figure out more clearly the
-        stats of the units, and which systems I want to have
-        for them
-
-    Idea, Item: If army has unit of level 9, all gain bonus
-
-    Important: I think, it makes more sense for now to make
-        gameplay and main stats more interesting
-
-*/
-
 import { CombatActionsRef } from '../api/combat-api';
 import { Icon } from '../assets';
+import { GameObject } from '../game-objects';
 import { Hero } from '../heroes';
 import { Modifiers } from '../modifiers';
-import { PlayerInstanceModel } from '../players';
-import { SpellModel } from '../spells';
+import { Player } from '../players';
+import { SpellBaseType } from '../spells';
 import { DescriptionElement } from '../ui';
-import { UnitGroupModel } from '../unit-types';
+import { UnitGroup } from '../unit-types';
 import { ItemsEventsHandlers } from './item-events';
 
 
 export interface ItemRequirementModel<T extends object> {
   type: string;
   value?: number | string | boolean;
-  isRequirementMet?: (item: ItemBaseModel<T>, unitGroup: UnitGroupModel) => boolean;
+  isRequirementMet?: (item: ItemBaseModel<T>, unitGroup: UnitGroup) => boolean;
 }
 
 
@@ -47,7 +27,7 @@ export enum ItemSlotType {
 }
 
 export interface ItemDescriptionData<T extends object> {
-  thisItem: ItemInstanceModel<T>;
+  thisItem: ItemObject<T>;
 }
 
 export interface ItemDescription {
@@ -65,31 +45,36 @@ export interface ItemBaseModel<StateType extends object = object> {
   name: string;
   icon: Icon;
   staticMods: Modifiers;
-  /* Item can have reqs I think */
+
+  /* There could be some requirements: */
   // requirements: ItemRequirementModel[],
-  /* As well as modifiers */
-  // modifiers: ItemStatsModel[];
-  /* And description can be built like this */
-  // description: (item: ItemModel) => object[];
-  /* Description can indeed return an array of objects, as for spells, but for now.. keep it simple */
+
   description: (itemData: ItemDescriptionData<StateType>) => ItemDescription;
   config: {
     init: (combatRefs: {
       actions: CombatActionsRef,
       events: ItemsEventsRef,
-      ownerPlayer: PlayerInstanceModel,
+      ownerPlayer: Player,
       ownerHero: Hero,
-      thisInstance: ItemInstanceModel<StateType>,
+      thisInstance: ItemObject<StateType>,
     }) => void,
   },
-  /* todo: Spells by items can also have a separate coolrown queue */
-  bonusAbilities?: { spell: SpellModel, level: number }[];
-  /* Item class? */
-  /* Active abilities? This will require an entire system */
+  bonusAbilities?: { spell: SpellBaseType, level: number }[];
 }
 
-export interface ItemInstanceModel<T extends object = object> {
-  currentDescription: string; // string for now
-  baseType: ItemBaseModel<T>;
-  state: T;
+export interface ItemCreationParams<T extends object = object> {
+  itemBase: ItemBaseModel<T>;
+  state?: T;
+}
+
+export class ItemObject<T extends object = object> extends GameObject<ItemCreationParams<T>> {
+  public static readonly categoryId: string = 'item';
+
+  public baseType!: ItemBaseModel<T>;
+  public state?: T;
+
+  create(params: ItemCreationParams<T>): void {
+    this.baseType = params.itemBase;
+    this.state = params.state;
+  }
 }

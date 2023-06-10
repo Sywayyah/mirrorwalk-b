@@ -1,9 +1,9 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { Hero } from 'src/app/core/heroes';
-import { PlayerInstanceModel } from 'src/app/core/players';
-import { SpellInstance } from 'src/app/core/spells';
+import { Player } from 'src/app/core/players';
+import { Spell } from 'src/app/core/spells';
 import { DescriptionElement } from 'src/app/core/ui/descriptions';
-import { UnitGroupInstModel } from 'src/app/core/unit-types';
+import { UnitGroup } from 'src/app/core/unit-types';
 
 @Component({
   selector: 'mw-spell-description',
@@ -14,16 +14,16 @@ import { UnitGroupInstModel } from 'src/app/core/unit-types';
 export class SpellDescriptionComponent implements OnInit {
 
   @Input()
-  public spell!: SpellInstance;
+  public spell!: Spell;
 
   @Input()
   public hero!: Hero;
 
   @Input()
-  public player!: PlayerInstanceModel;
+  public player!: Player;
 
   @Input()
-  public ownerUnit?: UnitGroupInstModel;
+  public ownerUnit?: UnitGroup;
 
   public descriptions!: DescriptionElement[];
 

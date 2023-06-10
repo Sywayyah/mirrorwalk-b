@@ -2,7 +2,7 @@ import { ChangeDetectorRef, Component, OnInit, Renderer2, TemplateRef, ViewChild
 import { combineLatest, fromEvent } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { CustomAnimationData, Effect, EffectInstRef, EffectOptions, EffectPosition, EffectType, VfxElemEffect } from 'src/app/core/api/vfx-api';
-import { UnitGroupInstModel } from 'src/app/core/unit-types';
+import { UnitGroup } from 'src/app/core/unit-types';
 import { FloatingMessageAnimation } from 'src/app/core/vfx';
 import { MwCardsMappingService } from 'src/app/features/services';
 import { VfxElementComponent } from '../vfx-element/vfx-element.component';
@@ -58,7 +58,7 @@ export class VfxLayerComponent implements OnInit {
   }
 
   public createVfxForUnitGroup(
-    unitGroup: UnitGroupInstModel,
+    unitGroup: UnitGroup,
     effect: Effect<EffectType>,
     options: EffectOptions
   ): void {
@@ -82,7 +82,7 @@ export class VfxLayerComponent implements OnInit {
 
   /* in theory, createVfxForUnitGroup can be reused */
   public createFloatingMessageForUnitGroup(
-    unitGroup: UnitGroupInstModel,
+    unitGroup: UnitGroup,
     data: CustomAnimationData,
     options: EffectOptions = {},
   ): void {

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
-import { PlayerInstanceModel } from 'src/app/core/players';
-import { SpellInstance } from 'src/app/core/spells';
-import { MwCurrentPlayerStateService, MwPlayersService, PlayerState } from 'src/app/features/services';
+import { Player, PlayerState } from 'src/app/core/players';
+import { Spell } from 'src/app/core/spells';
+import { MwCurrentPlayerStateService, MwPlayersService } from 'src/app/features/services';
 
 @Component({
   selector: 'mw-battle-hero-abilities',
@@ -10,14 +10,14 @@ import { MwCurrentPlayerStateService, MwPlayersService, PlayerState } from 'src/
 })
 export class MwBattleHeroAbilitiesComponent {
 
-  public currentPlayer: PlayerInstanceModel = this.players.getCurrentPlayer();
+  public currentPlayer: Player = this.players.getCurrentPlayer();
 
   constructor(
     private readonly players: MwPlayersService,
     public readonly curPlayerState: MwCurrentPlayerStateService,
   ) { }
 
-  public onAbilityClick(spell: SpellInstance) {
+  public onAbilityClick(spell: Spell) {
     if (spell.currentManaCost > this.currentPlayer.hero.stats.currentMana || this.curPlayerState.spellsAreOnCooldown) {
       return;
     }

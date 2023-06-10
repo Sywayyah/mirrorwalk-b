@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Hero, HeroBase } from 'src/app/core/heroes';
-import { createHeroModelBase, EMPTY_RESOURCES } from 'src/app/core/heroes/utils';
-import { InventoryItems } from 'src/app/core/items/inventory';
-import { SpellInstance } from 'src/app/core/spells';
+import { EMPTY_RESOURCES, createHeroModelBase } from 'src/app/core/heroes/utils';
+import { Spell } from 'src/app/core/spells';
 import { heroDescrElem } from 'src/app/core/ui';
 import { MwSpellsService } from './';
+import { GameObjectsManager } from './game-objects-manager.service';
 
 const neutralHeroBase = createHeroModelBase({
   name: 'neutral-hero',
@@ -26,6 +26,7 @@ const neutralHeroBase = createHeroModelBase({
 export class MwHeroesService {
   constructor(
     private spellsService: MwSpellsService,
+    private gameObjectsManager: GameObjectsManager,
   ) { }
 
   public addManaToHero(hero: Hero, mana: number): void {
@@ -35,7 +36,7 @@ export class MwHeroesService {
     heroStats.currentMana = newMana > heroStats.maxMana ? heroStats.maxMana : newMana;
   }
 
-  public addSpellToHero(hero: Hero, spell: SpellInstance): void {
+  public addSpellToHero(hero: Hero, spell: Spell): void {
     hero.spells.push(spell);
   }
 
@@ -44,49 +45,54 @@ export class MwHeroesService {
   }
 
   public createHero(heroBase: HeroBase): Hero {
-    const heroInitState = heroBase.initialState;
-    const heroBaseStats = heroInitState.stats;
+    // const heroInitState = heroBase.initialState;
+    // const heroBaseStats = heroInitState.stats;
 
-    return {
-      experience: 0,
-      freeSkillpoints: 0,
-      items: [],
-      level: 1,
-      mods: [],
-      name: heroBase.name,
-      spells: heroInitState.abilities.map(spell => this.spellsService.createSpellInstance(spell)),
-      stats: {
-        baseAttack: heroBaseStats.baseAttack,
-        bonusAttack: 0,
-        baseDefence: heroBaseStats.baseDefence,
-        bonusDefence: 0,
-        currentMana: heroBaseStats.mana,
-        maxMana: heroBaseStats.mana,
-      },
-      inventory: new InventoryItems(),
-      base: heroBase,
-    };
+    return this.gameObjectsManager.createNewGameObject(Hero, {
+      heroBase,
+    });
+
+    // return {
+    //   experience: 0,
+    //   freeSkillpoints: 0,
+    //   items: [],
+    //   level: 1,
+    //   mods: [],
+    //   name: heroBase.name,
+    //   spells: heroInitState.abilities.map(spell => this.spellsService.createSpellInstance(spell)),
+    //   stats: {
+    //     baseAttack: heroBaseStats.baseAttack,
+    //     bonusAttack: 0,
+    //     baseDefence: heroBaseStats.baseDefence,
+    //     bonusDefence: 0,
+    //     currentMana: heroBaseStats.mana,
+    //     maxMana: heroBaseStats.mana,
+    //   },
+    //   inventory: new InventoryItems(),
+    //   base: heroBase,
+    // };
   }
 
   public createNeutralHero(): Hero {
-    return {
-      name: null,
-      experience: 0,
-      level: 0,
-      stats: {
-        maxMana: 5,
-        currentMana: 1,
-        baseAttack: 0,
-        baseDefence: 0,
-        bonusAttack: 0,
-        bonusDefence: 0,
-      },
-      freeSkillpoints: 0,
-      spells: [],
-      mods: [],
-      inventory: new InventoryItems(),
-      items: [],
-      base: neutralHeroBase,
-    };
+    return this.gameObjectsManager.createNewGameObject(Hero, { heroBase: neutralHeroBase });
+    // return {
+    //   name: null,
+    //   experience: 0,
+    //   level: 0,
+    //   stats: {
+    //     maxMana: 5,
+    //     currentMana: 1,
+    //     baseAttack: 0,
+    //     baseDefence: 0,
+    //     bonusAttack: 0,
+    //     bonusDefence: 0,
+    //   },
+    //   freeSkillpoints: 0,
+    //   spells: [],
+    //   mods: [],
+    //   inventory: new InventoryItems(),
+    //   items: [],
+    //   base: neutralHeroBase,
+    // };
   }
 }

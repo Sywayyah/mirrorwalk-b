@@ -1,6 +1,6 @@
 import { Directive, HostListener, Input, OnInit } from '@angular/core';
 import { HoverTypeEnum, PlayerClicksAllyGroup, PlayerClicksEnemyGroup, PlayerHoversGroupCard } from 'src/app/core/events';
-import { UnitGroupInstModel } from 'src/app/core/unit-types';
+import { UnitGroup } from 'src/app/core/unit-types';
 import { EventsService } from 'src/app/store';
 import { BattleStateService, MwCurrentPlayerStateService, MwPlayersService } from '../../services';
 
@@ -12,7 +12,7 @@ import { BattleStateService, MwCurrentPlayerStateService, MwPlayersService } fro
 })
 export class MwSpellTargetDirective implements OnInit {
 
-  @Input() public spellTargetUnitGroup!: UnitGroupInstModel;
+  @Input() public spellTargetUnitGroup!: UnitGroup;
 
   private isEnemyCard: boolean = false;
 

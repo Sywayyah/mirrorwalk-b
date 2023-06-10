@@ -1,26 +1,55 @@
+import { GameObject } from '../game-objects';
 import { Hero } from '../heroes';
 import { ResourcesModel } from '../resources';
-import { UnitGroupModel } from '../unit-types';
+import { UnitGroup } from '../unit-types';
 
 export enum PlayerTypeEnum {
   Player = 'Player',
   AI = 'AI',
 }
 
-/* todo: seems reasonable to have heroes and players models as well */
-export interface PlayerModel {
+export enum PlayerState {
+  /* player makes his move */
+  Normal = 'normal',
+
+  /* player targets a spell */
+  SpellTargeting = 'spell-targeting',
+
+  /* enemy now makes his turn, player waits */
+  WaitsForTurn = 'waits-for-turn',
+}
+
+export interface PlayerCreationModel {
   color: string;
 
-  /* resources can be stored separately in theory. */
   resources: ResourcesModel;
 
   type: PlayerTypeEnum;
 
   hero: Hero;
 
-  unitGroups: UnitGroupModel[];
+  unitGroups: UnitGroup[];
 }
 
-export interface PlayerInstanceModel extends PlayerModel {
-  id: string;
+export class Player extends GameObject<PlayerCreationModel> {
+  public static readonly categoryId: string = 'player';
+
+  public color!: string;
+
+  /* resources can be stored separately in theory. */
+  public resources!: ResourcesModel;
+
+  public type!: PlayerTypeEnum;
+
+  public hero!: Hero;
+
+  public unitGroups!: UnitGroup[];
+
+  create({ color, hero, resources, type, unitGroups }: PlayerCreationModel): void {
+    this.color = color;
+    this.resources = resources;
+    this.type = type;
+    this.unitGroups = unitGroups;
+    this.hero = hero;
+  }
 }

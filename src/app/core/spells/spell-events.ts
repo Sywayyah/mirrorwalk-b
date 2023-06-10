@@ -1,19 +1,19 @@
 import { EventHandlersMap, EventNames, EventTypeByName, createEventType, createEventsGroup } from 'src/app/store';
-import { PlayerInstanceModel } from '../players';
-import { UnitGroupInstModel } from '../unit-types';
-import { SpellInstance } from './types';
+import { Player } from '../players';
+import { UnitGroup } from '../unit-types';
+import { Spell } from './types';
 
 
 export const SpellEventsGroup = createEventsGroup({
   prefix: 'Spells',
   events: {
-    PlayerTargetsSpell: createEventType<{ target: UnitGroupInstModel }>(''),
-    SpellPlacedOnUnitGroup: createEventType<{ target: UnitGroupInstModel }>(''),
+    PlayerTargetsSpell: createEventType<{ target: UnitGroup }>(''),
+    SpellPlacedOnUnitGroup: createEventType<{ target: UnitGroup }>(''),
     NewRoundBegins: createEventType<{ round: number }>(''),
-    PlayerCastsInstantSpell: createEventType<{ player: PlayerInstanceModel, spell: SpellInstance }>(''),
+    PlayerCastsInstantSpell: createEventType<{ player: Player, spell: Spell }>(''),
     UnitGroupAttacks: createEventType<{
-      attacker: UnitGroupInstModel;
-      attacked: UnitGroupInstModel;
+      attacker: UnitGroup;
+      attacked: UnitGroup;
     }>(''),
   },
 });

@@ -1,11 +1,11 @@
-import { TaltirHero } from 'src/app/core/heroes/humans';
-import { InventoryItems } from 'src/app/core/items';
-import { PlayerInstanceModel, PlayerTypeEnum } from 'src/app/core/players';
-import { UnitBase, UnitGroupInstModel } from 'src/app/core/unit-types';
+import { Player, PlayerTypeEnum } from 'src/app/core/players';
+import { UnitBaseType, UnitGroup } from 'src/app/core/unit-types';
 import { MwUnitGroupStateService } from '../mw-unit-group-state.service';
 import { MwUnitGroupsService } from '../mw-unit-groups.service';
+import { Hero, createHeroModelBase } from 'src/app/core/heroes';
+import { DescriptionElementType } from 'src/app/core/ui';
 
-export const testUnitTypeNoArmorNoRating: UnitBase = {
+export const testUnitTypeNoArmorNoRating: UnitBaseType = {
   name: 'Test Unit (No Armor/Attack Rating)',
   type: 'test-plain-stats',
   baseRequirements: {},
@@ -33,49 +33,48 @@ export const testUnitTypeNoArmorNoRating: UnitBase = {
   upgraded: false,
 };
 
-export const player: PlayerInstanceModel = {
-  color: '',
-  hero: {
-    base: TaltirHero,
-    experience: 0,
-    freeSkillpoints: 1,
-    inventory: new InventoryItems(),
+const hero = new Hero('0');
+
+hero.create({
+  heroBase: createHeroModelBase({
+    abilities: [],
+    army: [],
+    generalDescription: { type: DescriptionElementType.FreeHtml },
     items: [],
-    level: 0,
-    mods: [],
     name: '',
-    spells: [],
+    resources: {
+      gems: 0,
+      gold: 0,
+      redCrystals: 0,
+      wood: 0,
+    },
     stats: {
       baseAttack: 0,
       baseDefence: 0,
-      bonusAttack: 0,
-      bonusDefence: 0,
-      currentMana: 0,
-      maxMana: 0,
+      mana: 0,
     },
-  },
-  id: '1',
-  resources: {
-    gems: 0,
-    gold: 0,
-    redCrystals: 0,
-    wood: 0,
-  },
+  }),
+});
+
+export const player = new Player('0');
+
+player.create({
+  color: '',
+  hero: hero,
+  resources: { gems: 0, gold: 0, redCrystals: 0, wood: 0 },
   type: PlayerTypeEnum.Player,
   unitGroups: [],
-};
+});
 
 export const getCommonFunctions = (services: () => { unitsService: MwUnitGroupsService, unitState: MwUnitGroupStateService }) => {
-
-  // const { unitState, unitsService } = services();
 
   const createTestUnitGroup = (count: number) => services().unitsService.createUnitGroup(
     testUnitTypeNoArmorNoRating,
     { count },
     player
-  ) as UnitGroupInstModel;
+  ) as UnitGroup;
 
-  const getDamageDetails = (attacker: UnitGroupInstModel, attacked: UnitGroupInstModel) => {
+  const getDamageDetails = (attacker: UnitGroup, attacked: UnitGroup) => {
     const damageDetails = services().unitState.getDetailedAttackInfo(attacker, attacked, [], []);
 
     const damageFinalDetails = services().unitState.getFinalDamageInfoFromDamageDetailedInfo(damageDetails);

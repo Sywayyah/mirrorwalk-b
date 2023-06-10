@@ -1,10 +1,11 @@
 import { Component, Input, OnChanges } from '@angular/core';
 import { Icon } from 'src/app/core/assets';
 import { Hero } from 'src/app/core/heroes';
-import { SpellActivationType, SpellInstance, SpellModel } from 'src/app/core/spells';
-import { UnitGroupInstModel } from 'src/app/core/unit-types';
+import { PlayerState } from 'src/app/core/players';
+import { SpellActivationType, Spell, SpellBaseType } from 'src/app/core/spells';
+import { UnitGroup } from 'src/app/core/unit-types';
 import { TypedChanges } from 'src/app/core/utils';
-import { MwCurrentPlayerStateService, PlayerState } from 'src/app/features/services';
+import { MwCurrentPlayerStateService } from 'src/app/features/services';
 import { HintAttachment } from 'src/app/features/shared/components';
 
 @Component({
@@ -15,7 +16,7 @@ import { HintAttachment } from 'src/app/features/shared/components';
 export class UnitGroupSpellComponent implements OnChanges {
 
   @Input()
-  public currentUnit!: UnitGroupInstModel;
+  public currentUnit!: UnitGroup;
 
   @Input()
   public onCooldown: boolean | undefined = false;
@@ -24,15 +25,15 @@ export class UnitGroupSpellComponent implements OnChanges {
   public hintPos: HintAttachment = 'above';
 
   @Input()
-  public owner!: UnitGroupInstModel;
+  public owner!: UnitGroup;
 
   @Input()
-  public spell!: SpellInstance;
+  public spell!: Spell;
 
   @Input()
   public hero!: Hero;
 
-  public baseType!: SpellModel;
+  public baseType!: SpellBaseType;
 
   public icon!: Icon;
 

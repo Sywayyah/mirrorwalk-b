@@ -1,4 +1,4 @@
-import { ItemInstanceModel, ItemSlotType } from "./types";
+import { ItemObject, ItemSlotType } from "./types";
 
 export interface ExtendedSlotType {
   icon: string;
@@ -7,9 +7,9 @@ export interface ExtendedSlotType {
 }
 
 export class InventoryItems {
-  private inventoryItemsMap: Map<ItemSlotType, ItemInstanceModel> = new Map();
+  private inventoryItemsMap: Map<ItemSlotType, ItemObject> = new Map();
 
-  private equipedItemsSet: Set<ItemInstanceModel> = new Set();
+  private equipedItemsSet: Set<ItemObject> = new Set();
 
   private static slotTypes: ItemSlotType[] = [
     ItemSlotType.Weapon,
@@ -40,11 +40,11 @@ export class InventoryItems {
     return this.extendedSlotsMap.get(slotType)!;
   }
 
-  public static filterItemsForSlot(slotType: ItemSlotType, items: ItemInstanceModel[]): ItemInstanceModel[] {
+  public static filterItemsForSlot(slotType: ItemSlotType, items: ItemObject[]): ItemObject[] {
     return items.filter(item => item.baseType.slotType === slotType);
   }
 
-  public equipItem(item: ItemInstanceModel): void {
+  public equipItem(item: ItemObject): void {
     const itemType = item.baseType.slotType;
 
     const prevItem = this.inventoryItemsMap.get(itemType);
@@ -58,7 +58,7 @@ export class InventoryItems {
     this.equipedItemsSet.add(item);
   }
 
-  public unequipItem(item: ItemInstanceModel): void {
+  public unequipItem(item: ItemObject): void {
     this.inventoryItemsMap.delete(this.getItemSlotType(item));
     this.equipedItemsSet.delete(item);
   }
@@ -72,7 +72,7 @@ export class InventoryItems {
     }
   }
 
-  public getItemInSlot(slotType: ItemSlotType): ItemInstanceModel | null {
+  public getItemInSlot(slotType: ItemSlotType): ItemObject | null {
     return this.inventoryItemsMap.get(slotType) || null;
   }
 
@@ -80,11 +80,11 @@ export class InventoryItems {
     return this.inventoryItemsMap.has(slotType);
   }
 
-  public getEquippedItems(): ItemInstanceModel[] {
+  public getEquippedItems(): ItemObject[] {
     return [...this.equipedItemsSet];
   }
 
-  private getItemSlotType(item: ItemInstanceModel<object>): ItemSlotType {
+  private getItemSlotType(item: ItemObject<object>): ItemSlotType {
     return item.baseType.slotType;
   }
 }

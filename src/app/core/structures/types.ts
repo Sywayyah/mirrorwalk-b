@@ -1,8 +1,18 @@
 import { PlayersApi, SpellsApi } from '../api/game-api';
+import { GameObject } from '../game-objects';
 import { ItemBaseModel } from '../items';
-import { PlayerInstanceModel } from '../players';
+import { Player } from '../players';
 import { ResourceType } from '../resources';
-import { GenerationModel, UnitBase, UnitGroupInstModel } from '../unit-types';
+import { GenerationModel, UnitBaseType, UnitGroup } from '../unit-types';
+
+/**
+ * Todo: rethink stuctures.
+ *  - rethink the model and system (it might get simplified)
+ *  - rethink relation between view model and structures model
+ *     Maybe structure is just a base type for view location?
+ *     In the end, most of the things might get moved to locations.
+ *      Structures will become just a base type.
+*/
 
 /* Base descriptive type */
 /* Refactor these types */
@@ -15,7 +25,7 @@ export enum StuctureControl {
 interface OnVisitedParams {
   playersApi: PlayersApi;
   spellsApi: SpellsApi,
-  visitingPlayer: PlayerInstanceModel;
+  visitingPlayer: Player;
 }
 
 export interface StructureGeneratorModel {
@@ -47,7 +57,7 @@ export interface ResourceRewardModel {
 }
 
 export interface HiringRewardModel {
-  unitType: UnitBase;
+  unitType: UnitBaseType;
   maxCount: number;
 }
 
@@ -60,17 +70,31 @@ export enum StructureTypeEnum {
   NeutralSite = 'neutral-site',
 }
 
-export interface StructureModel<T extends StructureTypeEnum = StructureTypeEnum> {
-  id: string;
-  type: T;
+export interface StructureCreationModel<T extends StructureTypeEnum = StructureTypeEnum> {
   generator: StructureGeneratorModel;
-  isInactive?: boolean;
+  guardingPlayer?: Player;
+  type: T;
 }
 
-/*  */
-export interface NeutralSite extends StructureModel<StructureTypeEnum.NeutralSite> {
-  isCompleted?: boolean;
-  reward?: NeutralRewardModel;
+export class StructureModel<T extends StructureTypeEnum = StructureTypeEnum> extends GameObject<StructureCreationModel> {
+  public static readonly categoryId: string = 'struct';
+
+  public type!: T;
+  public generator!: StructureGeneratorModel;
+  public isInactive?: boolean;
+  public isCompleted?: boolean;
+  public guard?: Player;
+  public reward?: NeutralRewardModel;
+
+  create({ generator, type, guardingPlayer }: StructureCreationModel<T>): void {
+    this.generator = generator;
+    this.type = type;
+    this.guard = guardingPlayer;
+
+    if (generator.generateReward) {
+      this.reward = generator.generateReward();
+    }
+  }
 }
 
 /* Neutral structures */
@@ -88,11 +112,6 @@ export enum NeutralRewardTypesEnum {
 
 export interface NeutralRewardModel<T extends NeutralRewardTypesEnum = NeutralRewardTypesEnum> {
   type: T;
-}
-
-export interface NeutralCampStructure extends StructureModel<StructureTypeEnum.NeutralCamp> {
-  guard: PlayerInstanceModel;
-  reward?: NeutralRewardModel;
 }
 
 /* Resources Reward */
@@ -113,7 +132,7 @@ export interface ItemReward extends NeutralRewardModel<NeutralRewardTypesEnum.It
 
 /* Unit ungrade reward */
 export interface UnitUpgradeReward extends NeutralRewardModel<NeutralRewardTypesEnum.UnitsUpgrade> {
-  getUnits: (api: PlayersApi) => UnitGroupInstModel[];
+  getUnits: (api: PlayersApi) => UnitGroup[];
 }
 
 /* Reward defined by script */

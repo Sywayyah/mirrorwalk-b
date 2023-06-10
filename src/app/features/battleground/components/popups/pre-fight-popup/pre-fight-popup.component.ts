@@ -21,7 +21,8 @@ export class PreFightPopupComponent extends BasicPopup<PrefightPopup> implements
   }
 
   public ngOnInit(): void {
-    this.data.struct.guard.unitGroups.forEach((unitGroup) => {
+    // it actually should be here, think about it later.
+    this.data.struct.guard!.unitGroups.forEach((unitGroup) => {
       this.totalExpReward += Math.round(unitGroup.count * unitGroup.type.neutralReward.experience);
       this.totalGoldReward += Math.round(unitGroup.count * unitGroup.type.neutralReward.experience);
     });

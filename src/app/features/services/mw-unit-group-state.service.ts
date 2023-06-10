@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
-import { UnitGroupModel } from 'src/app/core/unit-types';
+// import { UnitGroupUnstModel } from 'src/app/core/unit-types';
 import { CommonUtils } from 'src/app/core/unit-types/utils';
 import { MwUnitGroupsService } from './mw-unit-groups.service';
 import { Modifiers } from 'src/app/core/modifiers';
+import { UnitGroup } from 'src/app/core/unit-types';
 
 export interface DamageInfo {
-  attacker: UnitGroupModel;
+  attacker: UnitGroup;
 
   attackingUnitsCount: number;
 
@@ -20,7 +21,7 @@ export interface DamageInfo {
 }
 
 export interface DetailedDamageInfo extends DamageInfo {
-  attacked: UnitGroupModel;
+  attacked: UnitGroup;
 
   enemyCanCounterattack: boolean;
   minUnitCountLoss: number;
@@ -51,7 +52,7 @@ export class MwUnitGroupStateService {
     private units: MwUnitGroupsService,
   ) { }
 
-  public getTailUnitHealth(unitGroup: UnitGroupModel): number {
+  public getTailUnitHealth(unitGroup: UnitGroup): number {
     const { tailUnitHp } = unitGroup;
 
     if (tailUnitHp === 0) {
@@ -63,11 +64,11 @@ export class MwUnitGroupStateService {
     return tailUnitHp;
   }
 
-  public getUnitGroupTotalHp(unitGroup: UnitGroupModel): number {
+  public getUnitGroupTotalHp(unitGroup: UnitGroup): number {
     return (unitGroup.count - 1) * unitGroup.type.baseStats.health + this.getTailUnitHealth(unitGroup);
   }
 
-  public getUnitGroupDamage(unitGroup: UnitGroupModel, attackSuperiority: number = 0): DamageInfo {
+  public getUnitGroupDamage(unitGroup: UnitGroup, attackSuperiority: number = 0): DamageInfo {
     const groupBaseStats = unitGroup.type.baseStats;
     const groupDamageInfo = groupBaseStats.damageInfo;
     const unitsCount = unitGroup.count;
@@ -97,8 +98,8 @@ export class MwUnitGroupStateService {
   }
 
   public getDetailedAttackInfo(
-    attackingGroup: UnitGroupModel,
-    attackedGroup: UnitGroupModel,
+    attackingGroup: UnitGroup,
+    attackedGroup: UnitGroup,
     attackingMods: Modifiers[] = [],
     attackedMods: Modifiers[] = [],
   ): DetailedDamageInfo {
@@ -171,7 +172,7 @@ export class MwUnitGroupStateService {
 
       It becomes 0 only when the full group is defeated.
   */
-  public getFinalDamageInfo(target: UnitGroupModel, damage: number): FinalDamageInfo {
+  public getFinalDamageInfo(target: UnitGroup, damage: number): FinalDamageInfo {
     const attackedGroup = target;
     const targetBaseStats = attackedGroup.type.baseStats;
 
@@ -219,7 +220,7 @@ export class MwUnitGroupStateService {
     };
   }
 
-  public dealPureDamageToUnitGroup(target: UnitGroupModel, damage: number): FinalDamageInfo {
+  public dealPureDamageToUnitGroup(target: UnitGroup, damage: number): FinalDamageInfo {
     const finalDamageInfo = this.getFinalDamageInfo(target, damage);
     target.count -= finalDamageInfo.finalUnitLoss;
     target.tailUnitHp = finalDamageInfo.tailHpLeft;
@@ -232,11 +233,11 @@ export class MwUnitGroupStateService {
     return unitCountLoss > groupCount ? groupCount : unitCountLoss;
   }
 
-  public canGroupCounterattack(group: UnitGroupModel): boolean {
+  public canGroupCounterattack(group: UnitGroup): boolean {
     return !!group.type.defaultModifiers?.counterattacks;
   }
 
-  public isUnitGroupRanged(group: UnitGroupModel): boolean {
+  public isUnitGroupRanged(group: UnitGroup): boolean {
     return !!group.type.defaultModifiers?.isRanged;
   }
 

@@ -20,6 +20,8 @@ import { StructureDescription } from './types';
 */
 const shift = 476;
 
+export const START_LOC_ID = 'start';
+
 function loc(location: number): number {
   return location + shift;
 }
@@ -30,7 +32,7 @@ const brBranch: StructureDescription[] = [
     x: loc(60),
     y: loc(30),
     icon: 'tombstone',
-    pathTo: '1',
+    pathTo: START_LOC_ID,
     struct: GraveyardStructure,
   },
   {
@@ -103,7 +105,7 @@ const brBranch: StructureDescription[] = [
 const fifthBranch: StructureDescription[] = [
   {
     id: '50',
-    pathTo: '1',
+    pathTo: START_LOC_ID,
     x: loc(-30),
     y: loc(70),
     icon: 'gold-bar',
@@ -118,7 +120,7 @@ const blBranch: StructureDescription[] = [
     x: loc(-70),
     y: loc(10),
     icon: 'sword',
-    pathTo: '1',
+    pathTo: START_LOC_ID,
 
     struct: BanditCamp,
   },
@@ -174,7 +176,7 @@ const tlBranch: StructureDescription[] = [
     x: loc(-60),
     y: loc(-60),
     icon: 'sword',
-    pathTo: '1',
+    pathTo: START_LOC_ID,
 
     struct: BanditCamp,
   },
@@ -215,7 +217,7 @@ const trBranch: StructureDescription[] = [
     x: loc(60),
     y: loc(-30),
     icon: 'lighthouse',
-    pathTo: '1',
+    pathTo: START_LOC_ID,
 
     struct: BeaconOfTheUndead,
   },
@@ -223,7 +225,7 @@ const trBranch: StructureDescription[] = [
 
 export const structsPreset1: StructureDescription[] = [
   {
-    id: '1',
+    id: START_LOC_ID,
     x: loc(0),
     y: loc(0),
     icon: 'campfire',

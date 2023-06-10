@@ -1,4 +1,4 @@
-import type { ItemInstanceModel } from '../../items';
+import type { ItemObject } from '../../items';
 import { modsFormatters } from '../../modifiers';
 import { DescHtmlElement, DescriptionElementType } from './types';
 
@@ -7,7 +7,7 @@ function getItemModHtmlElem(text: string): string {
 }
 
 
-export function itemStatsDescr(item: ItemInstanceModel): DescHtmlElement {
+export function itemStatsDescr(item: ItemObject): DescHtmlElement {
   const itemStaticMods = item.baseType.staticMods;
 
   const mods = Object.entries(itemStaticMods).map(([modName, modValue]) => {

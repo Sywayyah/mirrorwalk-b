@@ -2,12 +2,13 @@ import { Injectable } from '@angular/core';
 import { FightEnds, GroupAttacked, HoverTypeEnum, PlayerCastsInstantSpell, PlayerClicksAllyGroup, PlayerClicksAllyGroupEvent, PlayerClicksEnemyGroup, PlayerClicksEnemyGroupEvent, PlayerHoversCardEvent, PlayerHoversGroupCard, PlayerTargetsInstantSpellEvent, PlayerTargetsSpell, PlayerTargetsSpellEvent, PlayerTurnStartEvent, RoundPlayerTurnStarts } from 'src/app/core/events';
 import { SpellEvents } from 'src/app/core/spells';
 import { ActionHintTypeEnum, SpellTargetActionHint } from 'src/app/core/ui';
-import { UnitGroupInstModel } from 'src/app/core/unit-types';
+import { UnitGroup } from 'src/app/core/unit-types';
 import { Notify, StoreClient, WireMethod } from 'src/app/store';
 import { ActionHintService } from '../mw-action-hint.service';
 import { MwCardsMappingService } from '../mw-cards-mapping.service';
 import { CombatInteractorService } from '../mw-combat-interactor.service';
-import { MwCurrentPlayerStateService, PlayerState } from '../mw-current-player-state.service';
+import { MwCurrentPlayerStateService } from '../mw-current-player-state.service';
+import { PlayerState } from 'src/app/core/players';
 
 @Injectable()
 export class UiController extends StoreClient() {
@@ -76,7 +77,7 @@ export class UiController extends StoreClient() {
           const spellTargetHint: SpellTargetActionHint = {
             type: ActionHintTypeEnum.OnTargetSpell,
             spell: this.curPlayerState.currentSpell,
-            target: event.hoveredCard as UnitGroupInstModel,
+            target: event.hoveredCard as UnitGroup,
           };
           this.actionHint.hintMessage$.next(spellTargetHint);
         }
@@ -87,7 +88,7 @@ export class UiController extends StoreClient() {
           const spellTargetHint: SpellTargetActionHint = {
             type: ActionHintTypeEnum.OnTargetSpell,
             spell: this.curPlayerState.currentSpell,
-            target: event.hoveredCard as UnitGroupInstModel,
+            target: event.hoveredCard as UnitGroup,
           };
 
           this.actionHint.hintMessage$.next(spellTargetHint);

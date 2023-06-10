@@ -1,18 +1,19 @@
-import { ItemInstanceModel } from 'src/app/core/items';
-import { PlayerInstanceModel } from 'src/app/core/players';
-import { SpellInstance } from 'src/app/core/spells';
-import { NeutralCampStructure, StructureModel } from 'src/app/core/structures';
-import { UnitGroupInstModel } from 'src/app/core/unit-types';
+import { ItemObject } from 'src/app/core/items';
+import { Player } from 'src/app/core/players';
+import { Spell } from 'src/app/core/spells';
+import { StructureModel } from 'src/app/core/structures';
+import { UnitGroup } from 'src/app/core/unit-types';
 import { Hero } from '../../heroes';
+import { GameObject } from '../../game-objects';
 
 export type StructSelectedEvent = { struct: StructureModel };
-export type NeutralStructParams = { struct: NeutralCampStructure };
+export type NeutralStructParams = { struct: StructureModel };
 export type NewDayParams = { day: number };
-export type FightStartsEvent = { unitGroups: UnitGroupInstModel[], players: PlayerInstanceModel[] };
-export type InitSpellAction = { spell: SpellInstance, player: PlayerInstanceModel, ownerUnit?: UnitGroupInstModel };
-export type InitItemAction = { item: ItemInstanceModel, ownerPlayer: PlayerInstanceModel };
-export type PlayerEquipsItemAction = { player: PlayerInstanceModel, item: ItemInstanceModel };
-export type PlayerUnequipsItemAction = { player: PlayerInstanceModel, item: ItemInstanceModel };
+export type FightStartsEvent = { unitGroups: UnitGroup[], players: Player[] };
+export type InitSpellAction = { spell: Spell, player: Player, ownerUnit?: UnitGroup };
+export type InitItemAction = { item: ItemObject, ownerPlayer: Player };
+export type PlayerEquipsItemAction = { player: Player, item: ItemObject };
+export type PlayerUnequipsItemAction = { player: Player, item: ItemObject };
 
 export type PanMapCameraCenterAction = { x: number; y: number; };
 
@@ -27,3 +28,4 @@ export interface RewardModel {
 }
 
 export type DisplayPlayerRewardAction = { title: string; subTitle: string; rewards: RewardModel[] };
+export type InitGameObjectApiParams = { gameObject: GameObject };

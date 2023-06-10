@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Hero } from 'src/app/core/heroes';
-import { PlayerInstanceModel } from 'src/app/core/players';
-import { SpellInstance, SpellActivationType } from 'src/app/core/spells';
+import { Player } from 'src/app/core/players';
+import { Spell, SpellActivationType } from 'src/app/core/spells';
 
 @Component({
   selector: 'mw-spell-button',
@@ -11,7 +11,7 @@ import { SpellInstance, SpellActivationType } from 'src/app/core/spells';
 export class MwSpellButtonComponent {
 
   @Input()
-  public spell!: SpellInstance;
+  public spell!: Spell;
 
   @Input()
   public onCooldown = false;
@@ -23,13 +23,13 @@ export class MwSpellButtonComponent {
   public isActive = false;
 
   @Input()
-  public player!: PlayerInstanceModel;
+  public player!: Player;
 
   @Input()
   public hero!: Hero;
 
   @Output()
-  public clicked = new EventEmitter<SpellInstance>();
+  public clicked = new EventEmitter<Spell>();
 
   public activationTypes = SpellActivationType;
 

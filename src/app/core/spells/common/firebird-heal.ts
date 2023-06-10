@@ -1,7 +1,7 @@
 import { EffectAnimation } from '../../api/vfx-api';
 import { spellDescrElem } from '../../ui';
 import { createAnimation, getHealParts, getIconElement, getPlainAppearanceFrames, getPlainBlurFrames, getReversePulseKeyframes } from '../../vfx';
-import { SpellActivationType, SpellModel } from '../types';
+import { SpellActivationType, SpellBaseType } from '../types';
 import { canActivateOnAllyFn } from '../utils';
 
 // Theoretically, I can increase heal value along with manacost
@@ -46,7 +46,7 @@ const HealAnimation: EffectAnimation = createAnimation([
 /* Maybe make it ranged */
 const healPerBird = 17;
 
-export const FirebirdHealSpell: SpellModel = {
+export const FirebirdHealSpell: SpellBaseType = {
   name: 'Heal',
   activationType: SpellActivationType.Target,
   icon: {

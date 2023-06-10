@@ -1,13 +1,13 @@
 import { Modifiers } from '../../modifiers';
 import { spellDescrElem } from '../../ui';
 import { frontStackingBuffAnimation } from '../../vfx';
-import { SpellActivationType, SpellModel } from '../types';
+import { SpellActivationType, SpellBaseType } from '../types';
 import { canActivateOnEnemyFn, debuffColors } from '../utils';
 
 const slowingPercent = 50;
 const spellIcon = 'player-despair';
 
-export const KneelingLightDebuff: SpellModel = {
+export const KneelingLightDebuff: SpellBaseType = {
   name: 'Slowed',
   activationType: SpellActivationType.Debuff,
   icon: {
@@ -50,7 +50,7 @@ export const KneelingLightDebuff: SpellModel = {
   },
 };
 
-export const KneelingLight: SpellModel = {
+export const KneelingLight: SpellBaseType = {
   name: 'Kneeling Light',
   icon: {
     // iconClr: 'rgb(235 142 178)',

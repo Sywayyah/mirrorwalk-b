@@ -1,5 +1,5 @@
 import { createEventType } from 'src/app/store';
-import { DisplayPlayerRewardAction, PanMapCameraCenterAction } from './types';
+import { DisplayPlayerRewardAction, InitGameObjectApiParams, PanMapCameraCenterAction } from './types';
 
 
 const commands = createEventType;
@@ -28,3 +28,5 @@ export const OpenSettings = commands('Open Game settings');
 export const GameOpenMapStructuresScreen = commands('Open map structures screen');
 
 export const DisplayPlayerRewardPopup = commands<DisplayPlayerRewardAction>();
+
+export const InitGameObjectApi = commands<InitGameObjectApiParams>();

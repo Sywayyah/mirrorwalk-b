@@ -1,6 +1,6 @@
 import { EffectAnimation } from '../../api/vfx-api';
 import { createAnimation, getHealParts, getIconElement, getPlainAppearanceFrames, getPlainBlurFrames, getReversePulseKeyframes } from '../../vfx';
-import { SpellActivationType, SpellModel } from '../types';
+import { SpellActivationType, SpellBaseType } from '../types';
 import { canActivateOnAllyFn } from '../utils';
 
 const icon = 'hospital-cross';
@@ -42,7 +42,7 @@ const HealAnimation: EffectAnimation = createAnimation([
 ]);
 
 
-export const HealSpell: SpellModel = {
+export const HealSpell: SpellBaseType = {
   name: 'Heal',
   activationType: SpellActivationType.Target,
   icon: {

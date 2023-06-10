@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { HERO_LEVELS_BREAKPOINTS } from 'src/app/core/heroes';
-import { PlayerInstanceModel } from 'src/app/core/players';
+import { Player } from 'src/app/core/players';
 import { MwPlayersService } from 'src/app/features/services';
 
 @Component({
@@ -10,7 +10,7 @@ import { MwPlayersService } from 'src/app/features/services';
 })
 export class MwExperienceBarComponent {
 
-  public currentPlayer: PlayerInstanceModel = this.players.getCurrentPlayer();
+  public currentPlayer: Player = this.players.getCurrentPlayer();
   public xpToNextLevel: number;
 
   constructor(

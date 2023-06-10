@@ -1,5 +1,7 @@
 import { Resources } from '../resources';
-import { UnitBase } from '../unit-types';
+import { UnitBaseType } from '../unit-types';
+
+// Towns and buildings, practically, can also become GameObjects.
 
 export enum ActivityTypes {
   Hiring,
@@ -10,7 +12,7 @@ interface BuildingAcitivty<T extends ActivityTypes = ActivityTypes> {
 }
 
 export interface HiringDetails {
-  type: UnitBase;
+  type: UnitBaseType;
   growth: number;
   // optional, default is 7
   refillDaysInterval?: number;

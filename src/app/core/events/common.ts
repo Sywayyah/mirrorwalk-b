@@ -1,20 +1,20 @@
-import { PlayerInstanceModel, PlayerModel } from 'src/app/core/players';
-import { SpellInstance } from 'src/app/core/spells';
-import { UnitGroupInstModel } from 'src/app/core/unit-types';
+import { Player } from 'src/app/core/players';
+import { Spell } from 'src/app/core/spells';
+import { UnitGroup } from 'src/app/core/unit-types';
 import { CombatInteractionEnum } from "./battle";
 
 export interface CommonEventProps {
-  unitGroup: UnitGroupInstModel;
-  player: PlayerInstanceModel;
-  targetPlayer: PlayerModel;
-  spell: SpellInstance;
-  target: UnitGroupInstModel;
+  unitGroup: UnitGroup;
+  player: Player;
+  targetPlayer: Player;
+  spell: Spell;
+  target: UnitGroup;
 
-  attackingPlayer: PlayerInstanceModel;
-  attackedPlayer: PlayerInstanceModel;
+  attackingPlayer: Player;
+  attackedPlayer: Player;
 
-  attackingGroup: UnitGroupInstModel;
-  attackedGroup: UnitGroupInstModel;
+  attackingGroup: UnitGroup;
+  attackedGroup: UnitGroup;
 
   action: CombatInteractionEnum;
 

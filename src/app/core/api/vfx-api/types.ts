@@ -1,4 +1,4 @@
-import { UnitGroupInstModel } from '../../unit-types';
+import { UnitGroup } from '../../unit-types';
 
 /* Think on better namings and structure for effects and animations */
 export enum AnimationElementType {
@@ -75,6 +75,6 @@ export interface CustomAnimationData {
 
 /*  replace data: object with normal type */
 export interface VfxApi {
-    createEffectForUnitGroup(target: UnitGroupInstModel, animation: EffectAnimation, options?: EffectOptions): void;
-    createFloatingMessageForUnitGroup(target: UnitGroupInstModel, data: CustomizableAnimationData, options: EffectOptions): void;
+    createEffectForUnitGroup(target: UnitGroup, animation: EffectAnimation, options?: EffectOptions): void;
+    createFloatingMessageForUnitGroup(target: UnitGroup, data: CustomizableAnimationData, options: EffectOptions): void;
 }

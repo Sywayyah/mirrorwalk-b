@@ -1,6 +1,6 @@
-import { PlayerInstanceModel, PlayerModel } from 'src/app/core/players';
+import { Player } from 'src/app/core/players';
 import { StructureModel } from 'src/app/core/structures';
-import { UnitBase, UnitGroupInstModel } from 'src/app/core/unit-types';
+import { UnitBaseType, UnitGroup } from 'src/app/core/unit-types';
 import { props } from '../common';
 
 export enum CombatInteractionEnum {
@@ -10,7 +10,7 @@ export enum CombatInteractionEnum {
 }
 
 export type GroupTakesDamageEvent = {
-  group: UnitGroupInstModel;
+  group: UnitGroup;
   registerLoss: boolean;
   unitLoss: number;
 };
@@ -21,14 +21,14 @@ export type GroupDamagedByGroupEvent = props<'attackingGroup' | 'attackedGroup' 
 
 export type RoundGroupSpendsTurnEvent = {
   groupStillAlive: boolean;
-  group: UnitGroupInstModel;
+  group: UnitGroup;
   groupHasMoreTurns: boolean;
-  groupPlayer: PlayerModel;
+  groupPlayer: Player;
 };
 
 export type PlayerTurnStartEvent = {
-  currentPlayer: PlayerModel;
-  previousPlayer: PlayerModel;
+  currentPlayer: Player;
+  previousPlayer: Player;
 };
 
 export type GroupAttackedEvent = props<'attackedGroup' | 'attackingGroup'>;
@@ -50,6 +50,6 @@ export type FightEndsEvent = {
 
 export type UnitSummonedEvent = {
   // ownerPlayer: PlayerInstanceModel;
-  unitGroup: UnitGroupInstModel;
+  unitGroup: UnitGroup;
   // unitNumber: number;
 };

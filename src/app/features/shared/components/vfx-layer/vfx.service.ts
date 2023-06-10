@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { EffectOptions, Effect, CustomizableAnimationData } from 'src/app/core/api/vfx-api';
-import { UnitGroupInstModel } from 'src/app/core/unit-types/types';
+import { UnitGroup } from 'src/app/core/unit-types/types';
 import type { VfxLayerComponent } from './vfx-layer.component';
 
 
@@ -39,7 +39,7 @@ export class VfxService {
   }
 
   public createVfxForUnitGroup(
-    unitGroup: UnitGroupInstModel,
+    unitGroup: UnitGroup,
     effect: Effect,
     options: EffectOptions = {},
   ): void {
@@ -50,7 +50,7 @@ export class VfxService {
   }
 
   public createFloatingMessageForUnitGroup(
-    unitGroup: UnitGroupInstModel,
+    unitGroup: UnitGroup,
     data: CustomizableAnimationData,
     options: EffectOptions = {},
   ): void {

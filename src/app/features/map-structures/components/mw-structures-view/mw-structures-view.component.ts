@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, ElementRef, Renderer2, ViewChild } from '@angular/core';
 import { MapPanCameraCenterTo, PlayerEntersTown, PlayerOpensHeroInfo, StructSelected } from 'src/app/core/events';
-import { ViewStructure } from 'src/app/core/locations';
-import { PlayerInstanceModel } from 'src/app/core/players';
+import { START_LOC_ID, ViewStructure } from 'src/app/core/locations';
+import { Player } from 'src/app/core/players';
 import { MwPlayersService, MwStructuresService } from 'src/app/features/services';
 import { State } from 'src/app/features/services/state.service';
 import { EventsService } from 'src/app/store';
@@ -20,7 +20,7 @@ export class MwStructuresViewComponent implements AfterViewInit {
   @ViewChild('locationsContainer')
   public locationsRef!: ElementRef;
 
-  public player: PlayerInstanceModel;
+  public player: Player;
 
   constructor(
     private readonly playersService: MwPlayersService,
@@ -42,12 +42,12 @@ export class MwStructuresViewComponent implements AfterViewInit {
       return;
     }
 
-    const startingStruct = this.structsService.viewStructures.find(struct => struct.id === '1');
+    const startingStruct = this.structsService.viewStructures.find(struct => struct.id === START_LOC_ID);
 
     if (startingStruct) {
       this.events.dispatch(MapPanCameraCenterTo({ x: startingStruct.x, y: startingStruct.y }));
     } else {
-      console.warn(`[Map View]: Couldn't find location with id "1" to pan camera center on game start`);
+      console.warn(`[Map View]: Couldn't find location with id ${START_LOC_ID} to pan camera center on game start`);
     }
 
     this.state.mapCamera.cameraInitialized = true;

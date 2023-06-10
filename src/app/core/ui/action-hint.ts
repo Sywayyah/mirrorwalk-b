@@ -1,6 +1,6 @@
 import { SafeHtml } from '@angular/platform-browser';
-import { SpellInstance } from 'src/app/core/spells';
-import { UnitGroupModel, UnitGroupInstModel } from 'src/app/core/unit-types';
+import { Spell } from 'src/app/core/spells';
+import { UnitGroup } from 'src/app/core/unit-types';
 
 export enum ActionHintTypeEnum {
   OnHoverEnemyCard = 'on-hover-enemy-card',
@@ -18,7 +18,7 @@ export interface CustomHtmlActionHint extends ActionHintModel<ActionHintTypeEnum
 }
 
 export interface AttackActionHintInfo extends ActionHintModel<ActionHintTypeEnum.OnHoverEnemyCard> {
-  attackedGroup: UnitGroupModel;
+  attackedGroup: UnitGroup;
   minDamage: number;
   maxDamage: number;
   minCountLoss: number;
@@ -29,7 +29,7 @@ export interface AttackActionHintInfo extends ActionHintModel<ActionHintTypeEnum
 }
 
 export interface SpellTargetActionHint extends ActionHintModel<ActionHintTypeEnum.OnTargetSpell> {
-  spell: SpellInstance;
-  target: UnitGroupInstModel;
+  spell: Spell;
+  target: UnitGroup;
 }
 

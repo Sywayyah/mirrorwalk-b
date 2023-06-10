@@ -1,25 +1,25 @@
-import { PlayerInstanceModel } from '../../players';
+import { Player } from '../../players';
 import { Resources, ResourceType } from '../../resources';
-import { SpellInstance, SpellModel } from '../../spells';
-import { UnitGroupInstModel, UnitBase } from '../../unit-types';
+import { Spell, SpellBaseType } from '../../spells';
+import { UnitGroup, UnitBaseType } from '../../unit-types';
 import { SpellCreationOptions } from '../combat-api';
 
 export interface PlayersApi {
-  addManaToPlayer: (player: PlayerInstanceModel, mana: number) => void;
-  addMaxManaToPlayer: (player: PlayerInstanceModel, plusToMaxMana: number) => void;
+  addManaToPlayer: (player: Player, mana: number) => void;
+  addMaxManaToPlayer: (player: Player, plusToMaxMana: number) => void;
 
-  addSpellToPlayerHero: (player: PlayerInstanceModel, spell: SpellInstance) => void;
+  addSpellToPlayerHero: (player: Player, spell: Spell) => void;
 
-  getCurrentPlayer: () => PlayerInstanceModel;
-  getCurrentPlayerUnitGroups: () => UnitGroupInstModel[];
+  getCurrentPlayer: () => Player;
+  getCurrentPlayerUnitGroups: () => UnitGroup[];
 
-  addUnitGroupToPlayer: (player: PlayerInstanceModel, unitType: UnitBase, count: number) => void;
-  addExperienceToPlayer: (player: PlayerInstanceModel, xpAmount: number) => void;
+  addUnitGroupToPlayer: (player: Player, unitType: UnitBaseType, count: number) => void;
+  addExperienceToPlayer: (player: Player, xpAmount: number) => void;
 
-  giveResourceToPlayer: (player: PlayerInstanceModel, type: ResourceType, amount: number) => void;
-  giveResourcesToPlayer: (player: PlayerInstanceModel, resources: Resources) => void;
+  giveResourceToPlayer: (player: Player, type: ResourceType, amount: number) => void;
+  giveResourcesToPlayer: (player: Player, resources: Resources) => void;
 }
 
 export interface SpellsApi {
-  createSpellInstance: <T>(spell: SpellModel<T>, options?: SpellCreationOptions<T>) => SpellInstance<T>;
+  createSpellInstance: <T>(spell: SpellBaseType<T>, options?: SpellCreationOptions<T>) => Spell<T>;
 }

@@ -1,8 +1,8 @@
-import { NeutralCampStructure, NeutralSite, ResourceRewardModel } from 'src/app/core/structures';
-import { UnitBase } from 'src/app/core/unit-types';
+import { ResourceRewardModel, StructureModel } from 'src/app/core/structures';
+import { UnitBaseType } from 'src/app/core/unit-types';
 
 export interface LossModel {
-  type: UnitBase;
+  type: UnitBaseType;
   count: number;
 };
 
@@ -10,35 +10,35 @@ export interface FightEndsPopup {
   isWin: boolean;
   playerLosses: LossModel[];
   enemyLosses: LossModel[];
-  struct: NeutralCampStructure;
+  struct: StructureModel;
 }
 
 export interface StructRewardPopup {
-  struct: NeutralCampStructure;
+  struct: StructureModel;
   selectedRewardGroup?: ResourceRewardModel[];
 }
 
 /* some of these can be united */
 export interface StructHireRewardPopup {
-  struct: NeutralCampStructure;
+  struct: StructureModel;
 }
 
 export interface StructItemRewardPopup {
-  struct: NeutralCampStructure;
+  struct: StructureModel;
 }
 
 export interface PrefightPopup {
-  struct: NeutralCampStructure;
+  struct: StructureModel;
 }
 
 export interface PreviewPopup {
-  struct: NeutralSite;
+  struct: StructureModel;
 }
 
 export interface UpgradingPopup {
-  struct: NeutralSite;
+  struct: StructureModel;
 }
 
 export interface ScriptedRewardPopup {
-  struct: NeutralCampStructure;
+  struct: StructureModel;
 }

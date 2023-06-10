@@ -2,12 +2,12 @@ import { DamageType } from '../../api/combat-api';
 import { spellDescrElem } from '../../ui';
 import { CommonUtils } from '../../unit-types';
 import { simpleConvergentBuffAnimation, getDamageParts } from '../../vfx';
-import { SpellActivationType, SpellModel } from '../types';
+import { SpellActivationType, SpellBaseType } from '../types';
 
 const minDamage = 82;
 const maxDamage = 124;
 
-export const MeteorSpell: SpellModel = {
+export const MeteorSpell: SpellBaseType = {
   name: 'Meteor',
   activationType: SpellActivationType.Instant,
   icon: {

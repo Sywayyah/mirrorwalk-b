@@ -1,8 +1,8 @@
-import { PlayerInstanceModel } from '../players';
-import { UnitBase, UnitGroupInstModel, UnitGroupModel, UnitTypeBaseStatsModel } from './types';
+import { Player } from '../players';
+import { UnitBaseType, UnitGroup, UnitTypeBaseStatsModel } from './types';
 
 /* unit type, minCount, maxCount, maxGroupsOfThisType */
-type UnitModel = [unitType: UnitBase, min: number, max: number, maxOfThisType: number | void];
+type UnitModel = [unitType: UnitBaseType, min: number, max: number, maxOfThisType: number | void];
 
 export interface GenerationModel {
   minUnitGroups: number;
@@ -61,15 +61,23 @@ export const CommonUtils = {
 };
 
 interface GenerationDescription {
-  unitType: UnitBase;
+  unitType: UnitBaseType;
   min: number;
   max: number;
   maxGroupsOfThisType: number;
   created: number;
 }
 
+// this should probably not generate units right away, maybe just create a model
+// basing on which army may be created.
+
+interface UnitGenerationModel {
+  count: number;
+  unitType: UnitBaseType;
+}
+
 export const UnitsUtils = {
-  createRandomArmy(options: GenerationModel): UnitGroupModel[] {
+  createRandomArmy(options: GenerationModel): UnitGenerationModel[] {
     const groupsToGenerateCount = CommonUtils.randIntInRange(options.minUnitGroups, options.maxUnitGroups);
     const generatedGroups = [];
     const unitsToGenerate = [...options.units];
@@ -96,14 +104,15 @@ export const UnitsUtils = {
       const unitType = unit.unitType;
 
       const count = CommonUtils.randIntInRange(unit.min, unit.max);
-      const newUnitGroup: UnitGroupModel = {
+      // problem
+      const newUnitGroup: UnitGenerationModel = {
         count: count,
-        type: unitType,
-        turnsLeft: unitType.defaultTurnsPerRound,
-        fightInfo: {
-          initialCount: count,
-          isAlive: true,
-        },
+        unitType,
+        // turnsLeft: unitType.defaultTurnsPerRound,
+        // fightInfo: {
+        // initialCount: count,
+        // isAlive: true,
+        // },
       };
 
       generatedGroups.push(newUnitGroup);
@@ -123,10 +132,10 @@ export const UnitsUtils = {
     return generatedGroups;
   },
 
-  createRandomArmyForPlayer(options: GenerationModel, player: PlayerInstanceModel): UnitGroupInstModel[] {
-    return this.createRandomArmy(options).map((unitGroup: UnitGroupModel) => {
-      unitGroup.ownerPlayerRef = player;
-      return unitGroup as UnitGroupInstModel;
-    });
-  }
+  // createRandomArmyForPlayer(options: GenerationModel, player: PlayerInstanceModel): UnitGroupInstModel[] {
+  // return this.createRandomArmy(options).map((unitGroup: UnitGroupInstModel) => {
+  // unitGroup.ownerPlayerRef = player;
+  // return unitGroup as UnitGroupInstModel;
+  // });/
+  // }
 }

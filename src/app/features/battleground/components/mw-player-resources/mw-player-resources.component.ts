@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { PlayerInstanceModel } from 'src/app/core/players';
+import { Player } from 'src/app/core/players';
 import { MwPlayersService } from 'src/app/features/services';
 
 @Component({
@@ -9,7 +9,7 @@ import { MwPlayersService } from 'src/app/features/services';
 })
 export class MwPlayerResourcesComponent {
 
-  public currentPlayer: PlayerInstanceModel = this.playersService.getCurrentPlayer();
+  public currentPlayer: Player = this.playersService.getCurrentPlayer();
 
   constructor(
     private readonly playersService: MwPlayersService,

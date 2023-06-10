@@ -1,4 +1,37 @@
 /*
+  Coding.
+    Console commands: I might add some events that can be interpreted
+    as commands in console.
+
+    Event types: I can try to extract a type from events group,
+    and refer the type of Events by this util type.
+
+  Some elements of balancing.
+    Some strong units, like Archers, might have a delayed upgrade, or
+    even conditional upgrade. For instance, Archers cannot not be upgraded
+    into Crossbowmen until the Town Hall is level 3 or 4. It could also
+    be hero-dependent. Some heroes might get an early tech for Archers.
+
+    But there might also be some interesting choice making. For instance,
+    though tech for Archers is delayed in town, there might be a map
+    structure that allows to promote Archers to Crossbowmen. It will
+    take player to make decisions, if he wants to promote his Archers
+    earlier, or he might wanna just save some money on costly tech
+    for Archers.
+
+    Potentially, structures outside of town may promote units using other
+    resources and minimal unit number, like you can promote 10 Archers
+    into 10 Crossbowmen using 3 Iron and 3 Wood.
+
+    In some rare cases, units might have no upgrade available in town.
+
+    But as well, such strong units can be moderated with cost. You could
+    spend money you saved from not buying Archers on something else.
+    So, considerable price can ignite choice making.
+
+    Also, some low-level units might give/receive bonuses when army
+    is stacked with some other units of tier below 3 or 4.
+
   Features.
     Maybe there can be some feature class that can be used to describe
     features in the state. It can be configured in any way, also

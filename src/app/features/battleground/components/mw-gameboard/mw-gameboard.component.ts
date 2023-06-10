@@ -1,9 +1,9 @@
 import { AfterViewInit, ChangeDetectorRef, Component, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 import { GroupDamagedByGroup, GroupDamagedByGroupEvent, PlayerStartsFight, UnitSummoned, UnitSummonedEvent } from 'src/app/core/events';
-import { PlayerInstanceModel } from 'src/app/core/players';
+import { Player } from 'src/app/core/players';
 import { UnitsOrientation } from 'src/app/core/ui';
-import { UnitGroupInstModel } from 'src/app/core/unit-types';
+import { UnitGroup } from 'src/app/core/unit-types';
 import { getDamageParts } from 'src/app/core/vfx';
 import { BattleStateService, CombatInteractorService, MwCardsMappingService, MwNeutralPlayerService, MwPlayerStateService } from 'src/app/features/services';
 import { State } from 'src/app/features/services/state.service';
@@ -17,13 +17,13 @@ import { MwUnitGroupCardComponent } from '../mw-unit-group-card/mw-unit-group-ca
   styleUrls: ['./mw-gameboard.component.scss'],
 })
 export class MwGameboardComponent extends StoreClient() implements OnInit, AfterViewInit {
-  public mainPlayerUnitGroups!: UnitGroupInstModel[];
-  public neutralPlayerGroups!: UnitGroupInstModel[];
+  public mainPlayerUnitGroups!: UnitGroup[];
+  public neutralPlayerGroups!: UnitGroup[];
 
-  public mainPlayerInfo!: PlayerInstanceModel;
-  public enemyPlayerInfo!: PlayerInstanceModel;
+  public mainPlayerInfo!: Player;
+  public enemyPlayerInfo!: Player;
 
-  public fightQueue!: UnitGroupInstModel[];
+  public fightQueue!: UnitGroup[];
 
   @ViewChildren(MwUnitGroupCardComponent)
   public cards!: QueryList<MwUnitGroupCardComponent>;
@@ -56,7 +56,7 @@ export class MwGameboardComponent extends StoreClient() implements OnInit, After
     /* Rework this. Try to implement summons */
   }
 
-  public onGroupDies(unitGroup: UnitGroupInstModel): void {
+  public onGroupDies(unitGroup: UnitGroup): void {
     /* todo: questionable */
     this.cardsMapping.unregister(unitGroup);
   }
@@ -106,8 +106,8 @@ export class MwGameboardComponent extends StoreClient() implements OnInit, After
   }
 
   private updatePlayersUnitGroupsToShow(): void {
-    this.mainPlayerUnitGroups = this.mwBattleState.heroesUnitGroupsMap.get(this.mainPlayerInfo) as UnitGroupInstModel[];
-    this.neutralPlayerGroups = this.mwBattleState.heroesUnitGroupsMap.get(this.enemyPlayerInfo) as UnitGroupInstModel[];
+    this.mainPlayerUnitGroups = this.mwBattleState.heroesUnitGroupsMap.get(this.mainPlayerInfo) as UnitGroup[];
+    this.neutralPlayerGroups = this.mwBattleState.heroesUnitGroupsMap.get(this.enemyPlayerInfo) as UnitGroup[];
     this.updateFightQueue();
   }
 

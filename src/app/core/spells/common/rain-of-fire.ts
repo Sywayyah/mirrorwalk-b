@@ -1,12 +1,12 @@
 import { DamageType } from '../../api/combat-api';
 import { spellDescrElem } from '../../ui';
 import { FireAnimation, getDamageParts } from '../../vfx';
-import { SpellActivationType, SpellModel } from '../types';
+import { SpellActivationType, SpellBaseType } from '../types';
 import { canActivateOnEnemyFn } from '../utils';
 
 const baseDamage = 65;
 
-export const RainOfFireSpell: SpellModel = {
+export const RainOfFireSpell: SpellBaseType = {
   name: 'Rain of Fire',
   activationType: SpellActivationType.Target,
   icon: {
