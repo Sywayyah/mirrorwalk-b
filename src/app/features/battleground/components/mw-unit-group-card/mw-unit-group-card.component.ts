@@ -2,9 +2,9 @@ import { Component, ElementRef, EventEmitter, forwardRef, Input, OnDestroy, OnIn
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { GroupModifiersChanged, GroupSpellsChanged, HoverTypeEnum, PlayerHoversGroupCard } from 'src/app/core/events';
-import { PlayerModel } from 'src/app/core/players';
-import { SpellActivationType, SpellInstance } from 'src/app/core/spells';
-import { UnitGroupInstModel } from 'src/app/core/unit-types';
+import { Player } from 'src/app/core/players';
+import { SpellActivationType, Spell } from 'src/app/core/spells';
+import { UnitGroup } from 'src/app/core/unit-types';
 import { BattleStateService, MwPlayersService, MwUnitGroupsService, MwUnitGroupStateService, UIModsModel } from 'src/app/features/services';
 import { HintAttachment } from 'src/app/features/shared/components';
 import { PROVIDE_UI_UNIT_GROUP, UIUnitProvider } from 'src/app/features/shared/directives';
@@ -21,10 +21,10 @@ import { StoreClient } from 'src/app/store';
 export class MwUnitGroupCardComponent extends StoreClient() implements UIUnitProvider, OnInit, OnDestroy {
 
   @Input()
-  public unitGroup!: UnitGroupInstModel;
+  public unitGroup!: UnitGroup;
 
   @Input()
-  public playerInfo!: PlayerModel;
+  public playerInfo!: Player;
 
   @Input()
   public side: 'left' | 'right' = 'left';
@@ -38,7 +38,7 @@ export class MwUnitGroupCardComponent extends StoreClient() implements UIUnitPro
   public isEnemyCard!: boolean;
 
   // public potentialUnitCountLoss: number = 0;
-  public attackingUnitGroup!: UnitGroupInstModel;
+  public attackingUnitGroup!: UnitGroup;
 
   public canCurrentPlayerAttack: boolean = false;
   public isGroupMelee: boolean = false;
@@ -46,8 +46,8 @@ export class MwUnitGroupCardComponent extends StoreClient() implements UIUnitPro
 
   public initialCount: number = 0;
 
-  public spells: SpellInstance[] = [];
-  public effects: SpellInstance[] = [];
+  public spells: Spell[] = [];
+  public effects: Spell[] = [];
 
   public spellsHintsPosition!: HintAttachment;
 
@@ -144,7 +144,7 @@ export class MwUnitGroupCardComponent extends StoreClient() implements UIUnitPro
     }
   }
 
-  public getUnitGroup(): UnitGroupInstModel {
+  public getUnitGroup(): UnitGroup {
     return this.unitGroup;
   }
 

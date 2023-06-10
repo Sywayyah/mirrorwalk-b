@@ -1,7 +1,7 @@
 import { Modifiers } from '../../modifiers';
-import { PlayerInstanceModel } from '../../players';
-import { DefaultSpellStateType, SpellInstance } from '../../spells';
-import { UnitBase, UnitGroupInstModel } from '../../unit-types';
+import { Player } from '../../players';
+import { DefaultSpellStateType, Spell } from '../../spells';
+import { UnitBaseType, UnitGroup } from '../../unit-types';
 import { SpellsApi } from '../game-api';
 
 export interface PostDamageInfo {
@@ -26,10 +26,10 @@ export interface HealingInfo {
 }
 
 export interface CombatActionsRef extends SpellsApi {
-  summonUnitsForPlayer(ownerPlayer: PlayerInstanceModel, unitType: UnitBase, unitNumber: number): UnitGroupInstModel;
+  summonUnitsForPlayer(ownerPlayer: Player, unitType: UnitBaseType, unitNumber: number): UnitGroup;
 
   dealDamageTo: (
-    target: UnitGroupInstModel,
+    target: UnitGroup,
     damage: number,
     damageType: DamageType,
     postActionFn?: (actionInfo: PostDamageInfo) => void,
@@ -37,32 +37,32 @@ export interface CombatActionsRef extends SpellsApi {
 
   // adds spell instance to specific unit group.
   addSpellToUnitGroup: <T = DefaultSpellStateType>(
-    target: UnitGroupInstModel,
-    spell: SpellInstance<T>,
-    ownerPlayer: PlayerInstanceModel,
+    target: UnitGroup,
+    spell: Spell<T>,
+    ownerPlayer: Player,
   ) => void;
 
   // Removes spell instance from the target unit group and from battle events system.
   removeSpellFromUnitGroup: <T = DefaultSpellStateType>(
-    target: UnitGroupInstModel,
-    spell: SpellInstance<T>,
+    target: UnitGroup,
+    spell: Spell<T>,
   ) => void;
 
-  getUnitGroupsOfPlayer: (player: PlayerInstanceModel) => UnitGroupInstModel[];
+  getUnitGroupsOfPlayer: (player: Player) => UnitGroup[];
 
-  getAliveUnitGroupsOfPlayer: (player: PlayerInstanceModel) => UnitGroupInstModel[];
+  getAliveUnitGroupsOfPlayer: (player: Player) => UnitGroup[];
 
-  getRandomEnemyPlayerGroup: () => UnitGroupInstModel;
+  getRandomEnemyPlayerGroup: () => UnitGroup;
 
-  getEnemyPlayer: () => PlayerInstanceModel;
+  getEnemyPlayer: () => Player;
 
   historyLog: (plainMsg: string) => void;
 
   createModifiers: (modifiers: Modifiers) => Modifiers;
 
-  addModifiersToUnitGroup: (target: UnitGroupInstModel, modifiers: Modifiers) => void;
+  addModifiersToUnitGroup: (target: UnitGroup, modifiers: Modifiers) => void;
 
-  removeModifiresFromUnitGroup: (target: UnitGroupInstModel, modifiers: Modifiers) => void;
+  removeModifiresFromUnitGroup: (target: UnitGroup, modifiers: Modifiers) => void;
 
-  healUnit: (unit: UnitGroupInstModel, healValue: number) => HealingInfo;
+  healUnit: (unit: UnitGroup, healValue: number) => HealingInfo;
 }

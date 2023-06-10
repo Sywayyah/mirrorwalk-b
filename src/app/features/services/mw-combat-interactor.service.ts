@@ -2,10 +2,10 @@ import { Injectable } from '@angular/core';
 import { DamageType, PostDamageInfo } from 'src/app/core/api/combat-api/types';
 import { CombatAttackInteraction, CombatInteractionEnum, CombatInteractionStateEvent, GroupCounterAttacked, GroupDamagedByGroup, GroupDies, GroupSpellsChanged, GroupTakesDamage, InitSpell, PlayerHoversCardEvent } from 'src/app/core/events';
 import { Modifiers } from 'src/app/core/modifiers';
-import { PlayerInstanceModel, PlayerModel } from 'src/app/core/players';
-import { SpellActivationType, SpellEventNames, SpellEventTypeByName, SpellEvents, SpellInstance } from 'src/app/core/spells';
+import { Player } from 'src/app/core/players';
+import { SpellActivationType, SpellEventNames, SpellEventTypeByName, SpellEvents, Spell } from 'src/app/core/spells';
 import { ActionHintTypeEnum, AttackActionHintInfo } from 'src/app/core/ui';
-import { UnitGroupInstModel } from 'src/app/core/unit-types';
+import { UnitGroup } from 'src/app/core/unit-types';
 import { CommonUtils } from 'src/app/core/unit-types/utils';
 import { EventData, StoreClient } from 'src/app/store';
 import { BattleStateService, FinalDamageInfo, MwPlayersService, MwUnitGroupStateService, MwUnitGroupsService } from './';
@@ -17,7 +17,7 @@ import { State } from './state.service';
   providedIn: 'root'
 })
 export class CombatInteractorService extends StoreClient() {
-  public unitGroupModifiersMap: Map<UnitGroupInstModel, Modifiers[]> = new Map();
+  public unitGroupModifiersMap: Map<UnitGroup, Modifiers[]> = new Map();
 
   constructor(
     private readonly battleState: BattleStateService,
@@ -36,12 +36,12 @@ export class CombatInteractorService extends StoreClient() {
   }
 
   public dealDamageTo(
-    target: UnitGroupInstModel,
+    target: UnitGroup,
     damage: number,
     type: DamageType = DamageType.PhysicalAttack,
     postActionFn?: (actionInfo: PostDamageInfo) => void,
     /* options object, contains values depending on situation */
-    options: { attackerUnit?: UnitGroupInstModel } = {},
+    options: { attackerUnit?: UnitGroup } = {},
   ): FinalDamageInfo {
     /* todo: OnGroupDamaged isn't dispatched, and reward isn't calculated because of that. */
     let finalDamage = damage;
@@ -219,12 +219,12 @@ export class CombatInteractorService extends StoreClient() {
   }
 
   public setDamageHintMessageOnCardHover(event: PlayerHoversCardEvent): void {
-    const actionHint: AttackActionHintInfo = this.getTargetAttackActionInfo(event.hoveredCard as UnitGroupInstModel);
+    const actionHint: AttackActionHintInfo = this.getTargetAttackActionInfo(event.hoveredCard as UnitGroup);
 
     this.actionHint.hintMessage$.next(actionHint);
   }
 
-  public getTargetAttackActionInfo(target: UnitGroupInstModel): AttackActionHintInfo {
+  public getTargetAttackActionInfo(target: UnitGroup): AttackActionHintInfo {
     const currentUnitGroup = this.battleState.currentUnitGroup;
     const attackDetails = this.unitState.getDetailedAttackInfo(
       currentUnitGroup,
@@ -250,7 +250,7 @@ export class CombatInteractorService extends StoreClient() {
     return attackActionInfo;
   }
 
-  public forEachUnitGroup(callback: (unitGroup: UnitGroupInstModel, player: PlayerModel) => void): void {
+  public forEachUnitGroup(callback: (unitGroup: UnitGroup, player: Player) => void): void {
     this.battleState.heroesUnitGroupsMap.forEach((playerGroups, player) => {
       playerGroups.forEach((group) => {
         callback(group, player);
@@ -258,7 +258,7 @@ export class CombatInteractorService extends StoreClient() {
     });
   }
 
-  public applyDispellToUnitGroup(target: UnitGroupInstModel): void {
+  public applyDispellToUnitGroup(target: UnitGroup): void {
     const dispellableTypes: SpellActivationType[] = [
       SpellActivationType.Buff,
       SpellActivationType.Debuff,
@@ -284,7 +284,7 @@ export class CombatInteractorService extends StoreClient() {
     this.state.eventHandlers.spells.triggerAllHandlersByEvent(event);
   }
 
-  public triggerEventForSpellHandler<T extends SpellEventNames>(spell: SpellInstance, event: SpellEventTypeByName<T>): void {
+  public triggerEventForSpellHandler<T extends SpellEventNames>(spell: Spell, event: SpellEventTypeByName<T>): void {
     this.state.eventHandlers.spells.triggerRefEventHandlers(spell, event);
   }
 
@@ -293,7 +293,7 @@ export class CombatInteractorService extends StoreClient() {
       if (unitGroup.spells) {
         unitGroup.spells.forEach(spell => this.initSpell(
           spell,
-          player as PlayerInstanceModel,
+          player as Player,
           unitGroup,
         ));
       }
@@ -304,20 +304,20 @@ export class CombatInteractorService extends StoreClient() {
     this.forEachUnitGroup(unitGroup => unitGroup.fightInfo.spellsOnCooldown = false);
   }
 
-  public getRandomEnemyUnitGroup(): UnitGroupInstModel {
+  public getRandomEnemyUnitGroup(): UnitGroup {
     const enemyPlayer = this.players.getEnemyPlayer()
-    const enemyUnitGroups = this.battleState.heroesUnitGroupsMap.get(enemyPlayer) as UnitGroupInstModel[];
+    const enemyUnitGroups = this.battleState.heroesUnitGroupsMap.get(enemyPlayer) as UnitGroup[];
     return CommonUtils.randItem(enemyUnitGroups.filter(group => group.fightInfo.isAlive));
   }
 
-  private getModsForUnitGroup(unitGroup: UnitGroupInstModel): Modifiers[] {
+  private getModsForUnitGroup(unitGroup: UnitGroup): Modifiers[] {
     return [
       ...unitGroup.ownerPlayerRef.hero.mods,
       ...this.unitGroupModifiersMap.get(unitGroup) ?? [],
     ];
   }
 
-  public addSpellToUnitGroup(target: UnitGroupInstModel, spell: SpellInstance, ownerPlayer: PlayerInstanceModel): void {
+  public addSpellToUnitGroup(target: UnitGroup, spell: Spell, ownerPlayer: Player): void {
     target.spells.push(spell);
 
     this.events.dispatch(GroupSpellsChanged({
@@ -328,7 +328,7 @@ export class CombatInteractorService extends StoreClient() {
     this.triggerEventForSpellHandler(spell, SpellEvents.SpellPlacedOnUnitGroup({ target }));
   }
 
-  public removeSpellFromUnitGroup(target: UnitGroupInstModel, spell: SpellInstance): void {
+  public removeSpellFromUnitGroup(target: UnitGroup, spell: Spell): void {
     const spellIndex = target.spells.indexOf(spell);
     target.spells.splice(spellIndex, 1);
 
@@ -339,7 +339,7 @@ export class CombatInteractorService extends StoreClient() {
     }));
   }
 
-  private initSpell(spell: SpellInstance, player: PlayerInstanceModel, ownerUnitGroup?: UnitGroupInstModel): void {
+  private initSpell(spell: Spell, player: Player, ownerUnitGroup?: UnitGroup): void {
     this.events.dispatch(InitSpell({
       spell,
       player,

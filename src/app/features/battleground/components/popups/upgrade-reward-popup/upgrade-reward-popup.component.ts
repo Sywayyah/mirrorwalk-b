@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ResourcesModel, ResourceType } from 'src/app/core/resources';
 import { HiringRewardModel, UnitUpgradeReward } from 'src/app/core/structures';
 import { UpgradingPopup } from 'src/app/core/ui';
-import { UnitBase, UnitGroupInstModel } from 'src/app/core/unit-types';
+import { UnitBaseType, UnitGroup } from 'src/app/core/unit-types';
 import { MwPlayersService, MwUnitGroupsService } from 'src/app/features/services';
 import { ApiProvider } from 'src/app/features/services/api-provider.service';
 import { BasicPopup } from 'src/app/features/shared/components';
@@ -14,7 +14,7 @@ interface UpgradeModel {
   baseCost: Partial<ResourcesModel>;
   currentCost: Partial<ResourcesModel>;
 
-  originalGroup: UnitGroupInstModel;
+  originalGroup: UnitGroup;
 }
 
 @Component({
@@ -65,7 +65,7 @@ export class UpgradeRewardPopupComponent extends BasicPopup<UpgradingPopup> impl
         return {
           hire: {
             maxCount: unit.count,
-            unitType: unit.type.upgradeDetails?.target as UnitBase,
+            unitType: unit.type.upgradeDetails?.target as UnitBaseType,
           },
           count: 0,
           baseCost: baseCost,

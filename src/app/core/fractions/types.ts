@@ -1,10 +1,10 @@
 import type { HeroBase, HeroBaseStats } from '../heroes';
 import type { TownBase } from '../towns';
-import type { UnitBase } from '../unit-types';
+import type { UnitBaseType } from '../unit-types';
 
 /* might be adjusted in the future */
 
-export type UnitTypeCreationParams = Omit<UnitBase, 'type' | 'fraction'>;
+export type UnitTypeCreationParams = Omit<UnitBaseType, 'type' | 'fraction'>;
 
 export interface Fraction<T extends string> {
   name: string;
@@ -12,12 +12,12 @@ export interface Fraction<T extends string> {
   title: string;
   icon: string;
   townBase: TownBase<any> | null;
-  unitTypes: { [key in T]?: UnitBase };
-  defineUnitType(unitTypeName: T, params: UnitTypeCreationParams): UnitBase;
-  getUnitType(unitTypeName: T): UnitBase;
+  unitTypes: { [key in T]?: UnitBaseType };
+  defineUnitType(unitTypeName: T, params: UnitTypeCreationParams): UnitBaseType;
+  getUnitType(unitTypeName: T): UnitBaseType;
   createHero(config: Pick<HeroBase, 'name'> & HeroBaseStats): HeroBase;
   getAllHeroes(): HeroBase[];
-  findBaseUnitType(upgradedType: UnitBase): UnitBase;
+  findBaseUnitType(upgradedType: UnitBaseType): UnitBaseType;
   getTownBase(): TownBase<any> | null;
   setTownBase(townBase: TownBase<any>): void;
 }

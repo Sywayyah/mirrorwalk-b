@@ -2,7 +2,7 @@ import { DamageType } from '../../api/combat-api';
 import { EffectAnimation } from '../../api/vfx-api';
 import { spellDescrElem } from '../../ui';
 import { createAnimation, getDamageParts, getIconElement, getPlainAppearanceFrames, getPlainBlurFrames, getReversePulseKeyframes } from '../../vfx';
-import { SpellActivationType, SpellModel } from '../types';
+import { SpellActivationType, SpellBaseType } from '../types';
 import { canActivateOnEnemyFn, debuffColors } from '../utils';
 
 const icon = 'frost-emblem';
@@ -47,7 +47,7 @@ const magicDamage = 40;
 const slow = 4;
 const attackPenalty = 3;
 
-export const FrozenArrowDebuff: SpellModel = {
+export const FrozenArrowDebuff: SpellBaseType = {
   name: 'Freeze',
   activationType: SpellActivationType.Debuff,
   icon: {
@@ -89,7 +89,7 @@ export const FrozenArrowDebuff: SpellModel = {
   },
 };
 
-export const FrostArrowSpell: SpellModel = {
+export const FrostArrowSpell: SpellBaseType = {
   name: 'Frost Arrow',
   activationType: SpellActivationType.Target,
   icon: {

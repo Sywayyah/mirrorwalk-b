@@ -1,23 +1,14 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { PlayerCastsInstantSpell, PlayersInitialized } from 'src/app/core/events';
-import { PlayerInstanceModel } from 'src/app/core/players';
-import { SpellActivationType, SpellInstance, SpellModel } from 'src/app/core/spells';
-import { UnitGroupInstModel } from 'src/app/core/unit-types';
+import { Player, PlayerState } from 'src/app/core/players';
+import { SpellActivationType, Spell, SpellBaseType } from 'src/app/core/spells';
+import { UnitGroup } from 'src/app/core/unit-types';
 import { Notify, StoreClient } from 'src/app/store';
 import { MwPlayersService } from './';
+import { GameObjectsManager } from './game-objects-manager.service';
 
-
-export enum PlayerState {
-  /* player makes his move */
-  Normal = 'normal',
-  /* targets a spell */
-  SpellTargeting = 'spell-targeting',
-  /* enemy now makes his turn */
-  WaitsForTurn = 'waits-for-turn',
-}
-
-export const NULL_SPELL: SpellModel = {
+export const NULL_SPELL: SpellBaseType = {
   activationType: SpellActivationType.Instant,
   name: '',
   icon: { icon: '' },
@@ -39,26 +30,27 @@ export const NULL_SPELL: SpellModel = {
   }
 };
 
-const NULL_SPELL_INSTANCE: SpellInstance = {
-  currentLevel: 0,
-  currentManaCost: 0,
-  description: '',
-  name: '',
-  state: null,
-  baseType: NULL_SPELL,
-  sourceInfo: {},
-}
-
 @Injectable({
   providedIn: 'root'
 })
 export class MwCurrentPlayerStateService extends StoreClient() {
 
-  public currentPlayer!: PlayerInstanceModel;
+  // think later about this, maybe avoid using null object
+  private readonly NULL_SPELL_INSTANCE = this.gameObjectsManager.createNewGameObject(
+    Spell,
+    {
+      initialLevel: 0,
+      spellBaseType: NULL_SPELL,
+      state: {},
+    },
+    'null-spell',
+  );
 
-  public currentSpell: SpellInstance = NULL_SPELL_INSTANCE;
+  public currentPlayer!: Player;
 
-  public currentCasterUnit: UnitGroupInstModel | undefined;
+  public currentSpell: Spell = this.NULL_SPELL_INSTANCE;
+
+  public currentCasterUnit: UnitGroup | undefined;
 
   public playerCurrentState: PlayerState = PlayerState.Normal;
 
@@ -68,6 +60,7 @@ export class MwCurrentPlayerStateService extends StoreClient() {
 
   constructor(
     private readonly players: MwPlayersService,
+    private readonly gameObjectsManager: GameObjectsManager,
   ) {
     super();
   }
@@ -92,7 +85,7 @@ export class MwCurrentPlayerStateService extends StoreClient() {
     }
   }
 
-  public onSpellClick(spell: SpellInstance, casterUnit?: UnitGroupInstModel): void {
+  public onSpellClick(spell: Spell, casterUnit?: UnitGroup): void {
     this.currentSpell = spell;
     this.currentCasterUnit = casterUnit;
 
@@ -118,11 +111,11 @@ export class MwCurrentPlayerStateService extends StoreClient() {
   }
 
   public isSpellBeingCasted(): boolean {
-    return this.currentSpell !== NULL_SPELL_INSTANCE;
+    return this.currentSpell !== this.NULL_SPELL_INSTANCE;
   }
 
   public resetCurrentSpell(): void {
-    this.currentSpell = NULL_SPELL_INSTANCE;
+    this.currentSpell = this.NULL_SPELL_INSTANCE;
   }
 
   public cancelCurrentSpell(): void {

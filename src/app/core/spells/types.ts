@@ -1,11 +1,12 @@
 import { CombatActionsRef } from '../api/combat-api';
 import { VfxApi } from '../api/vfx-api';
 import { Icon } from '../assets';
+import { GameObject } from '../game-objects';
 import { Hero } from '../heroes';
-import { ItemInstanceModel } from '../items';
-import { PlayerInstanceModel } from '../players';
+import { Item } from '../items';
+import { Player } from '../players';
 import { DescriptionElement } from '../ui/descriptions';
-import { UnitGroupInstModel } from '../unit-types';
+import { UnitGroup } from '../unit-types';
 import { SpellEventHandlers } from './spell-events';
 
 export enum SpellActivationType {
@@ -19,15 +20,13 @@ export enum SpellActivationType {
   Buff = 'buff',
 }
 
-/* Spell model */
-
 export type DefaultSpellStateType = unknown;
 
 export interface SpellDescriptionData<SpellStateType = DefaultSpellStateType> {
-  thisSpell: SpellModel<SpellStateType>;
-  spellInstance: SpellInstance<SpellStateType>;
-  ownerPlayer: PlayerInstanceModel;
-  ownerUnit?: UnitGroupInstModel;
+  thisSpell: SpellBaseType<SpellStateType>;
+  spellInstance: Spell<SpellStateType>;
+  ownerPlayer: Player;
+  ownerUnit?: UnitGroup;
   ownerHero: Hero;
 }
 
@@ -35,7 +34,7 @@ export interface SpellDescription {
   descriptions: DescriptionElement[]
 }
 
-export interface SpellModel<SpellStateType = DefaultSpellStateType> {
+export interface SpellBaseType<SpellStateType = DefaultSpellStateType> {
   name: string;
   // level: number;
   activationType: SpellActivationType;
@@ -45,29 +44,12 @@ export interface SpellModel<SpellStateType = DefaultSpellStateType> {
 
   getDescription(data: SpellDescriptionData<SpellStateType>): { descriptions: DescriptionElement[] };
 
-  type: SpellTypeModel<SpellStateType>;
+  type: SpellTypeConfig<SpellStateType>;
 
   icon: Icon;
 }
 
-export interface SpellInstance<T = DefaultSpellStateType> {
-  name: string;
-  description: string;
-
-  state: T | null;
-  currentLevel: number;
-  currentManaCost: number;
-  // cooldown: number;
-
-
-  baseType: SpellModel<T>;
-
-  sourceInfo: {
-    item?: ItemInstanceModel,
-  };
-}
-
-export interface SpellTypeModel<SpellStateType> {
+export interface SpellTypeConfig<SpellStateType> {
   spellConfig: SpellConfig<SpellStateType>;
   spellInfo: { name: string; };
 }
@@ -79,24 +61,58 @@ export interface SpellCombatEventsRef {
 export interface SpellCombatRefsModel<SpellStateType> {
   events: SpellCombatEventsRef;
   actions: CombatActionsRef;
-  thisSpell: SpellModel<SpellStateType>;
-  spellInstance: SpellInstance<SpellStateType>;
-  ownerPlayer: PlayerInstanceModel;
-  ownerUnit?: UnitGroupInstModel;
+  thisSpell: SpellBaseType<SpellStateType>;
+  spellInstance: Spell<SpellStateType>;
+  ownerPlayer: Player;
+  ownerUnit?: UnitGroup;
   ownerHero: Hero;
   vfx: VfxApi;
 }
 
 export interface CanActivateSpellParams {
-  unitGroup: UnitGroupInstModel,
+  unitGroup: UnitGroup,
   isEnemy: boolean,
 }
 
 export interface SpellConfig<SpellStateType> {
   init: (combatRefs: SpellCombatRefsModel<SpellStateType>) => void;
-  getManaCost: (spellInst: SpellInstance<SpellStateType>) => number;
+  getManaCost: (spellInst: Spell<SpellStateType>) => number;
   targetCastConfig?: {
     canActivate?: (info: CanActivateSpellParams) => boolean,
   };
+}
+
+export interface SpellCreationParams<T> {
+  spellBaseType: SpellBaseType<T>;
+  initialLevel: number;
+  state?: T;
+}
+
+export class Spell<T = DefaultSpellStateType> extends GameObject<SpellCreationParams<T>> {
+  public static readonly categoryId: string = 'spell';
+
+  public name!: string;
+
+  public state?: T;
+  public currentLevel: number = 1;
+  public currentManaCost!: number;
+  // cooldown: number;
+
+  public baseType!: SpellBaseType<T>;
+
+  public sourceInfo!: {
+    item?: Item,
+  };
+
+  create({ spellBaseType, initialLevel, state }: SpellCreationParams<T>): void {
+    this.baseType = spellBaseType;
+
+    this.currentLevel = initialLevel;
+    this.name = this.baseType.type.spellInfo.name;
+    this.state = state;
+    this.sourceInfo = {};
+
+    this.currentManaCost = this.baseType.type.spellConfig.getManaCost(this);
+  }
 }
 

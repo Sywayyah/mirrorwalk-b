@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Fractions } from 'src/app/core/fractions';
-import { Resources, ResourcesModel, ResourceType } from 'src/app/core/resources';
+import { ResourceType, Resources, ResourcesModel } from 'src/app/core/resources';
 import { BuidlingBase, Building, HiringActivity, HiringDetails, Town } from 'src/app/core/towns';
-import { UnitBase } from 'src/app/core/unit-types';
+import { UnitBaseType } from 'src/app/core/unit-types';
 import { MwPlayersService, MwUnitGroupsService } from 'src/app/features/services';
 import { BasicPopup, PopupService } from 'src/app/features/shared/components';
 import { BuildPopupComponent } from '../build-popup/build-popup.component';
@@ -14,7 +13,7 @@ interface HiringPopupData {
 }
 
 interface UnitHiringModel {
-  unitType: UnitBase;
+  unitType: UnitBaseType;
   maxCount: number;
 }
 
@@ -48,7 +47,7 @@ export class HiringPopupComponent extends BasicPopup<HiringPopupData> implements
 
   public currentMode: HireMode = 'hire';
 
-  public unitType: UnitBase;
+  public unitType: UnitBaseType;
 
   public currentBuilding: BuidlingBase;
 

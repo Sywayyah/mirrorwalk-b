@@ -1,13 +1,14 @@
 import { Directive, ElementRef, Inject, InjectionToken, NgZone, OnInit, Renderer2 } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
-import { UnitGroupInstModel } from 'src/app/core/unit-types';
+import { UnitGroup } from 'src/app/core/unit-types';
 import { SpellCastCursorAnimation, StaticCursorAnimation } from 'src/app/core/vfx';
-import { MwCurrentPlayerStateService, MwPlayersService, MwSpellsService, PlayerState } from '../../services';
+import { MwCurrentPlayerStateService, MwPlayersService, MwSpellsService } from '../../services';
 import { CursorService } from '../components/custom-cursor/cursor.service';
 import { AnimatedCursor, MwCustomCursorDirective } from './mw-custom-cursor.directive';
+import { PlayerState } from 'src/app/core/players';
 
 export interface UIUnitProvider {
-  getUnitGroup(): UnitGroupInstModel;
+  getUnitGroup(): UnitGroup;
 }
 
 export const PROVIDE_UI_UNIT_GROUP: InjectionToken<string> = new InjectionToken('UI element unit group provider');
@@ -17,7 +18,7 @@ export const PROVIDE_UI_UNIT_GROUP: InjectionToken<string> = new InjectionToken(
   selector: '[mwUnitEventsCursor]'
 })
 export class MwUnitEventsCursorDirective extends MwCustomCursorDirective implements OnInit {
-  private unitGroup!: UnitGroupInstModel;
+  private unitGroup!: UnitGroup;
 
   constructor(
     vfx: CursorService,

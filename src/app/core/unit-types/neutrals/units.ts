@@ -1,14 +1,14 @@
 import { AssetsImages } from '../../assets';
 import { neutralsFraction } from '../../fractions/neutrals/fraction';
 import { FrightSpell } from '../../spells/common';
-import { UnitBase } from '../types';
+import { UnitBaseType } from '../types';
 import { createStats } from '../utils';
 
 /*
   Theoretically, I can set default values for some params when creating fraction.
   Also, there might be some batch creation, like 'defineUnitTypes'
  */
-const Wraiths: UnitBase = neutralsFraction.defineUnitType('SupremeGhosts', {
+const Wraiths: UnitBaseType = neutralsFraction.defineUnitType('SupremeGhosts', {
   mainPortraitUrl: AssetsImages.Melee,
   name: 'Wraiths',
   level: 1,

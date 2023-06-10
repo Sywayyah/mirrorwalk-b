@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HealingInfo } from 'src/app/core/api/combat-api';
-import { Modifiers, ModifiersModel } from 'src/app/core/modifiers';
-import { PlayerInstanceModel } from 'src/app/core/players';
-import { CommonUtils, GenerationModel, UnitBase, UnitGroupInstModel, UnitGroupModel, UnitsUtils } from 'src/app/core/unit-types';
+import { Modifiers, ModifiersModel, ModsRef, ModsRefsGroup } from 'src/app/core/modifiers';
+import { Player } from 'src/app/core/players';
+import { CommonUtils, GenerationModel, UnitBaseType, UnitGroup, UnitsUtils } from 'src/app/core/unit-types';
 import { MwSpellsService } from './mw-spells.service';
+import { GameObjectsManager } from './game-objects-manager.service';
 
 
 export type KeysMatching<T extends object, V> = {
@@ -20,28 +21,26 @@ export interface UIModsModel {
 })
 export class MwUnitGroupsService {
 
-
   constructor(
     private spells: MwSpellsService,
+    private gameObjectsManager: GameObjectsManager,
   ) { }
   /* todo: unify it */
   /*  todo: figure out diff between UnitGroupModel and Inst */
 
   public createUnitGroup(
-    type: UnitBase,
+    type: UnitBaseType,
     options: { count: number },
-    player: PlayerInstanceModel,
-  ): UnitGroupModel {
-    const unitGroup: UnitGroupModel = {
-      count: options.count,
-      type: type,
-      ownerPlayerRef: player,
-      turnsLeft: type.defaultTurnsPerRound,
-      fightInfo: {
-        initialCount: options.count,
-        isAlive: true,
+    player?: Player,
+  ): UnitGroup {
+    const unitGroup: UnitGroup = this.gameObjectsManager.createNewGameObject(
+      UnitGroup,
+      {
+        count: options.count,
+        ownerPlayer: player,
+        unitBase: type,
       },
-    };
+    );
 
     this.updateUnitGroupSpells(unitGroup);
 
@@ -50,34 +49,36 @@ export class MwUnitGroupsService {
 
   public createUnitGroupFromGenModel(
     genModel: GenerationModel,
-  ): UnitGroupModel[] {
+  ): UnitGroup[] {
     return UnitsUtils
       .createRandomArmy(genModel)
+      .map(unitGenModel => this.createUnitGroup(unitGenModel.unitType, { count: unitGenModel.count }))
       .map(unitGroup => this.updateUnitGroupSpells(unitGroup));
   }
 
   public createUnitGroupFromGenModelForPlayer(
     genModel: GenerationModel,
-    player: PlayerInstanceModel,
-  ): UnitGroupModel[] {
+    player: Player,
+  ): UnitGroup[] {
     return UnitsUtils
-      .createRandomArmyForPlayer(genModel, player)
+      .createRandomArmy(genModel)
+      .map(unitGenModel => this.createUnitGroup(unitGenModel.unitType, { count: unitGenModel.count }, player))
       .map(unitGroup => this.updateUnitGroupSpells(unitGroup));
   }
 
-  public addModifierToUnitGroup(target: UnitGroupInstModel, modifiers: Modifiers) {
+  public addModifierToUnitGroup(target: UnitGroup, modifiers: Modifiers) {
     target.modifiers = [...target.modifiers, modifiers];
   }
 
-  public removeModifiers(target: UnitGroupInstModel, modifiers: Modifiers): void {
+  public removeModifiers(target: UnitGroup, modifiers: Modifiers): void {
     CommonUtils.removeItem(target.modifiers, modifiers);
   }
 
-  public clearUnitModifiers(target: UnitGroupInstModel): void {
+  public clearUnitModifiers(target: UnitGroup): void {
     target.modifiers = [];
   }
 
-  public getUnitGroupSpeed(unitGroup: UnitGroupInstModel): number {
+  public getUnitGroupSpeed(unitGroup: UnitGroup): number {
     const speedBonusFromMods = unitGroup.modifiers
       .filter(mod => mod.unitGroupSpeedBonus)
       .reduce((speedBonusSum, nextMod) => speedBonusSum + (nextMod.unitGroupSpeedBonus ?? 0), 0);
@@ -89,7 +90,7 @@ export class MwUnitGroupsService {
    This might be theoretically split into a data function and executing function,
      in the same manner as damage functions.
    */
-  public healUnit(unit: UnitGroupInstModel, healValue: number): HealingInfo {
+  public healUnit(unit: UnitGroup, healValue: number): HealingInfo {
     const singleUnitHealth = unit.type.baseStats.health;
 
     let fullyRevivedUnitsCount = Math.floor(healValue / singleUnitHealth);
@@ -154,21 +155,25 @@ export class MwUnitGroupsService {
     };
   }
 
-  public calcUiMods(target: UnitGroupInstModel): UIModsModel {
+  public calcUiMods(target: UnitGroup): UIModsModel {
     return {
       speed: this.getNumericModifier(target, 'unitGroupSpeedBonus'),
       attack: this.getNumericModifier(target, 'unitGroupBonusAttack'),
     };
   }
 
-  private getNumericModifier(target: UnitGroupInstModel, modifierProp: KeysMatching<ModifiersModel, number>): number {
-    return target.modifiers.filter(mod => mod[modifierProp]).reduce((sum, next) => sum + (next[modifierProp] ?? 0), 0);
+  private getNumericModifier(target: UnitGroup, modifierProp: KeysMatching<ModifiersModel, number>): number {
+    // switch to groups approach
+    const res1 = target.modifiers.filter(mod => mod[modifierProp]).reduce((sum, next) => sum + (next[modifierProp] ?? 0), 0)
+    // const res2 = ModsRefsGroup.withRefs(target.modifiers.map(mod => ModsRef.fromMods(mod))).getModValue(modifierProp);
+    // console.log(res1, res2, modifierProp);
+    return res1;
   }
 
-  private updateUnitGroupSpells(unitGroup: UnitGroupModel): UnitGroupModel {
+  private updateUnitGroupSpells(unitGroup: UnitGroup): UnitGroup {
     const unitGroupDefaultSpells = unitGroup.type.defaultSpells;
 
-    const unitGroupInst = unitGroup as UnitGroupInstModel;
+    const unitGroupInst = unitGroup as UnitGroup;
 
     /* Init modifiers with empty list */
     unitGroupInst.modifiers = [];

@@ -1,7 +1,7 @@
 import { spellDescrElem } from '../../ui';
-import { SpellModel, SpellActivationType } from '../types';
+import { SpellBaseType, SpellActivationType } from '../types';
 
-export const BlindnessSpell: SpellModel = {
+export const BlindnessSpell: SpellBaseType = {
   name: 'Blindness',
   activationType: SpellActivationType.Instant,
   icon: {

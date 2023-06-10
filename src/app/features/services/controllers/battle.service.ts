@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
 import { CleanUpHandlersOnFightEnd, FightEnds, FightNextRoundStarts, FightStarts, GroupDamagedByGroup, GroupDamagedByGroupEvent, GroupDies, GroupSpeedChanged, GroupTakesDamage, GroupTakesDamageEvent, PlayerTurnStartEvent, RoundGroupSpendsTurn, RoundGroupSpendsTurnEvent, RoundGroupTurnEnds, RoundPlayerCountinuesAttacking, RoundPlayerTurnStarts, UnitHealed, UnitHealedEvent } from 'src/app/core/events';
-import { PlayerTypeEnum } from 'src/app/core/players';
-import { NeutralCampStructure } from 'src/app/core/structures';
+import { PlayerState, PlayerTypeEnum } from 'src/app/core/players';
 import { Notify, StoreClient, WireMethod } from 'src/app/store';
 import { BattleStateService } from '../mw-battle-state.service';
-import { MwCurrentPlayerStateService, PlayerState } from '../mw-current-player-state.service';
+import { MwCurrentPlayerStateService } from '../mw-current-player-state.service';
 import { MwPlayersService } from '../mw-players.service';
 import { MwStructuresService } from '../mw-structures.service';
 import { State } from '../state.service';
@@ -85,7 +84,7 @@ export class BattleController extends StoreClient() {
 
   @Notify(GroupDies)
   public checkIfFightEndedOnUnitGroupDeath(): void {
-    const currentStructure = this.strucuresService.currentStruct as NeutralCampStructure;
+    const currentStructure = this.strucuresService.currentStruct;
 
     const currentPlayer = this.playersService.getCurrentPlayer();
 

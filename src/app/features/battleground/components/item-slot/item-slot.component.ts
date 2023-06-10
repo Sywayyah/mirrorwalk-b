@@ -1,7 +1,7 @@
 import { Component, Input, OnChanges } from '@angular/core';
 import { PlayerEquipsItem, PlayerUnequipsItem } from 'src/app/core/events';
 import { Hero } from 'src/app/core/heroes';
-import { ExtendedSlotType, InventoryItems, ItemInstanceModel, ItemSlotType } from 'src/app/core/items';
+import { ExtendedSlotType, InventoryItems, Item, ItemSlotType } from 'src/app/core/items';
 import { TypedChanges } from 'src/app/core/utils';
 import { MwPlayersService } from 'src/app/features/services';
 import { StoreClient } from 'src/app/store';
@@ -20,9 +20,9 @@ export class ItemSlotComponent extends StoreClient() implements OnChanges {
 
   public isEquipped: boolean = false;
 
-  public equippedItem: ItemInstanceModel | null = null;
+  public equippedItem: Item | null = null;
 
-  public availableItemsForSlot: ItemInstanceModel[] = [];
+  public availableItemsForSlot: Item[] = [];
 
   private hero: Hero = this.playersService.getCurrentPlayer().hero;
 
@@ -49,7 +49,7 @@ export class ItemSlotComponent extends StoreClient() implements OnChanges {
     }
   }
 
-  public equipItem(item: ItemInstanceModel<object>): void {
+  public equipItem(item: Item<object>): void {
     if (this.equippedItem === item) {
       return;
     }

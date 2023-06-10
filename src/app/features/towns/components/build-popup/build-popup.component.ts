@@ -31,7 +31,6 @@ export class BuildPopupComponent extends BasicPopup<{ building: Building, target
     this.cost = formattedResources(buildingCost);
 
     this.missingCostMap = this.players.getMissingResources(this.players.getCurrentPlayer(), buildingCost);
-    // this.missingCost = formattedResources(this.missingCostMap);
 
     this.canBuild = this.players.playerHasResources(
       this.players.getCurrentPlayer(),

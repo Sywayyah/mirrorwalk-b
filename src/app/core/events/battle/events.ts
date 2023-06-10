@@ -1,7 +1,7 @@
-import { PlayerModel } from 'src/app/core/players';
 import { createEventType } from 'src/app/store';
 import { props } from "../common";
 import { CombatInteractionStateEvent, FightEndsEvent, GroupAttackedEvent, GroupDamagedByGroupEvent, GroupDiesEvent, GroupTakesDamageEvent, NextRoundStarts, PlayerTargetsInstantSpellEvent, PlayerTargetsSpellEvent, PlayerTurnStartEvent, RoundGroupSpendsTurnEvent, UnitHealedEvent, UnitSummonedEvent } from "./types";
+import { Player } from '../../players';
 
 const battleEvent = createEventType;
 
@@ -31,7 +31,7 @@ export const GroupDies = battleEvent<GroupDiesEvent>();
 
 export const RoundGroupSpendsTurn = battleEvent<RoundGroupSpendsTurnEvent>();
 
-export const RoundGroupTurnEnds = battleEvent<{ playerEndsTurn: PlayerModel }>();
+export const RoundGroupTurnEnds = battleEvent<{ playerEndsTurn: Player }>();
 
 export const RoundPlayerTurnStarts = battleEvent<PlayerTurnStartEvent>();
 

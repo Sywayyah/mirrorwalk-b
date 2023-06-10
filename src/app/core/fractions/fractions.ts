@@ -1,6 +1,6 @@
 
 import type { HeroBase } from '../heroes';
-import type { UnitBase } from '../unit-types';
+import type { UnitBaseType } from '../unit-types';
 import { Fraction } from './types';
 
 /* might be adjusted in the future */
@@ -45,9 +45,9 @@ export const Fractions = {
       },
       findBaseUnitType(upgradedType) {
         /* todo: fix this place later, remove any */
-        return Object.values<any>(this.unitTypes).find((unitType: UnitBase) => unitType.upgradeDetails?.target === upgradedType) as UnitBase;
+        return Object.values<any>(this.unitTypes).find((unitType: UnitBaseType) => unitType.upgradeDetails?.target === upgradedType) as UnitBaseType;
       },
-      getUnitType(unitTypeName: T): UnitBase {
+      getUnitType(unitTypeName: T): UnitBaseType {
         return this.unitTypes[unitTypeName]!;
       },
       createHero(

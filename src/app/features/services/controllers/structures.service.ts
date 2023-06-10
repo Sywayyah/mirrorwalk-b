@@ -17,9 +17,12 @@ export class StructuresController extends StoreClient() {
 
   @WireMethod(StructCompleted)
   public handleCompletedStructure(event: NeutralStructParams): void {
-    this.structuresService.availableStructuresMap[event.struct.id] = true;
-    this.structuresService.structsMap.get(event.struct.id)!.visited = true;
-    this.structuresService.playerCurrentLocId = event.struct.id;
+    // revisit this, rework structures.
+    const structId = event.struct.id.split(':')[1];
+
+    this.structuresService.availableStructuresMap[structId] = true;
+    this.structuresService.structsMap.get(structId)!.visited = true;
+    this.structuresService.playerCurrentLocId = structId;
     this.structuresService.updateAvailableStructures();
     this.state.currentGame.travelPoints -= defaultTravelPointsCost;
 

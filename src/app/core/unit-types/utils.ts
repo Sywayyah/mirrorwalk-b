@@ -1,8 +1,8 @@
-import { PlayerInstanceModel } from '../players';
-import { UnitBase, UnitGroupInstModel, UnitGroupModel, UnitTypeBaseStatsModel } from './types';
+import { Player } from '../players';
+import { UnitBaseType, UnitGroup, UnitTypeBaseStatsModel } from './types';
 
 /* unit type, minCount, maxCount, maxGroupsOfThisType */
-type UnitModel = [unitType: UnitBase, min: number, max: number, maxOfThisType: number | void];
+type UnitModel = [unitType: UnitBaseType, min: number, max: number, maxOfThisType: number | void];
 
 export interface GenerationModel {
   minUnitGroups: number;
@@ -61,15 +61,20 @@ export const CommonUtils = {
 };
 
 interface GenerationDescription {
-  unitType: UnitBase;
+  unitType: UnitBaseType;
   min: number;
   max: number;
   maxGroupsOfThisType: number;
-  created: number;
+  createdTimes: number;
+}
+
+interface UnitGenerationModel {
+  count: number;
+  unitType: UnitBaseType;
 }
 
 export const UnitsUtils = {
-  createRandomArmy(options: GenerationModel): UnitGroupModel[] {
+  createRandomArmy(options: GenerationModel): UnitGenerationModel[] {
     const groupsToGenerateCount = CommonUtils.randIntInRange(options.minUnitGroups, options.maxUnitGroups);
     const generatedGroups = [];
     const unitsToGenerate = [...options.units];
@@ -81,7 +86,7 @@ export const UnitsUtils = {
         min,
         max,
         maxGroupsOfThisType,
-        created: 0,
+        createdTimes: 0,
       });
 
       return unitGroupsMap;
@@ -96,37 +101,25 @@ export const UnitsUtils = {
       const unitType = unit.unitType;
 
       const count = CommonUtils.randIntInRange(unit.min, unit.max);
-      const newUnitGroup: UnitGroupModel = {
+
+      const newUnitGroup: UnitGenerationModel = {
         count: count,
-        type: unitType,
-        turnsLeft: unitType.defaultTurnsPerRound,
-        fightInfo: {
-          initialCount: count,
-          isAlive: true,
-        },
+        unitType,
       };
 
       generatedGroups.push(newUnitGroup);
 
-      unit.created++;
+      unit.createdTimes++;
 
-      if (unit.created >= unit.maxGroupsOfThisType) {
+      if (unit.createdTimes >= unit.maxGroupsOfThisType) {
         console.log('this unit was generated max times')
         unitsMap.delete(randUnitDescr);
         CommonUtils.removeItem(unitsToGenerate, randUnitDescr)
       }
     }
 
-
     console.log('generated groups', generatedGroups);
 
     return generatedGroups;
   },
-
-  createRandomArmyForPlayer(options: GenerationModel, player: PlayerInstanceModel): UnitGroupInstModel[] {
-    return this.createRandomArmy(options).map((unitGroup: UnitGroupModel) => {
-      unitGroup.ownerPlayerRef = player;
-      return unitGroup as UnitGroupInstModel;
-    });
-  }
 }

@@ -1,11 +1,11 @@
 import { spellDescrElem } from '../../ui';
 import { EnchantAnimation } from '../../vfx';
-import { SpellActivationType, SpellModel } from '../types';
+import { SpellActivationType, SpellBaseType } from '../types';
 import { canActivateOnEnemyFn, debuffColors } from '../utils';
 
 const damageIncreasePercent = 17;
 
-export const EnchantBuff: SpellModel = {
+export const EnchantBuff: SpellBaseType = {
   name: 'Enchanted',
   activationType: SpellActivationType.Debuff,
   icon: {
@@ -44,7 +44,7 @@ export const EnchantBuff: SpellModel = {
   },
 };
 
-export const EnchantSpell: SpellModel = {
+export const EnchantSpell: SpellBaseType = {
   name: 'Enchant',
   activationType: SpellActivationType.Target,
   icon: {

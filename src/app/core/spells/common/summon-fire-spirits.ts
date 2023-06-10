@@ -1,11 +1,11 @@
 import { neutralsFraction } from '../../fractions/neutrals/fraction';
 import { spellDescrElem } from '../../ui';
 import { FireAnimation } from '../../vfx';
-import { SpellActivationType, SpellModel } from '../types';
+import { SpellActivationType, SpellBaseType } from '../types';
 
 const unitCount = 4;
 
-export const SummonFireSpiritsSpell: SpellModel = {
+export const SummonFireSpiritsSpell: SpellBaseType = {
   name: 'Summon Fire Spirits',
   activationType: SpellActivationType.Instant,
   icon: {

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { UnitGroupInstModel } from 'src/app/core/unit-types';
+import { UnitGroup } from 'src/app/core/unit-types';
 import { MwUnitGroupCardComponent } from '../battleground/components';
 
 @Injectable({
@@ -7,19 +7,19 @@ import { MwUnitGroupCardComponent } from '../battleground/components';
 })
 export class MwCardsMappingService {
 
-  private mapping: Map<UnitGroupInstModel, MwUnitGroupCardComponent> = new Map();
+  private mapping: Map<UnitGroup, MwUnitGroupCardComponent> = new Map();
 
   constructor() { }
 
-  public register(unitGroup: UnitGroupInstModel, cardRef: MwUnitGroupCardComponent): void {
+  public register(unitGroup: UnitGroup, cardRef: MwUnitGroupCardComponent): void {
     this.mapping.set(unitGroup, cardRef);
   }
 
-  public unregister(unitGroup: UnitGroupInstModel): void {
+  public unregister(unitGroup: UnitGroup): void {
     this.mapping.delete(unitGroup);
   }
 
-  public get(unitGroup: UnitGroupInstModel): MwUnitGroupCardComponent {
+  public get(unitGroup: UnitGroup): MwUnitGroupCardComponent {
     return this.mapping.get(unitGroup) as MwUnitGroupCardComponent;
   }
 }
