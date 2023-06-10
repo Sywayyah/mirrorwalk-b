@@ -3,6 +3,7 @@ import { StructureDescription } from '../locations';
 interface MapDimensions {
   widthInCells: number;
   heightInCells: number;
+  cellSize: number;
 }
 
 export const CELL_SIZE = 86;

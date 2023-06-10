@@ -2,7 +2,7 @@ import { Component, ElementRef, EventEmitter, NgZone, OnInit, Output, Renderer2,
 import { fromEvent, merge } from 'rxjs';
 import { map, switchMap, take, takeUntil } from 'rxjs/operators';
 import { MapPanCameraCenterTo, PanMapCameraCenterAction } from 'src/app/core/events';
-import { CELL_SIZE, LevelMap } from 'src/app/core/maps';
+import { LevelMap } from 'src/app/core/maps';
 import { State } from 'src/app/features/services/state.service';
 import { StoreClient, WireMethod } from 'src/app/store';
 
@@ -34,6 +34,8 @@ export class MapCanvasComponent extends StoreClient() implements OnInit {
   private hostElem!: HTMLElement;
 
   private currentMap: LevelMap = this.state.mapsState.currentMap;
+
+  private cellSize: number = 0;
 
   private windowWidth = 0;
   private windowHeight = 0;
@@ -150,9 +152,12 @@ export class MapCanvasComponent extends StoreClient() implements OnInit {
   }
 
   private renderMapCellsGrid(): void {
-    const { heightInCells, widthInCells } = this.currentMap.mapSize;
-    const totalWidth = widthInCells * CELL_SIZE;
-    const totalHeight = heightInCells * CELL_SIZE;
+    const { heightInCells, widthInCells, cellSize } = this.currentMap.mapSize;
+
+    this.cellSize = cellSize;
+
+    const totalWidth = widthInCells * cellSize;
+    const totalHeight = heightInCells * cellSize;
 
     this.mapTotalWidth = totalWidth;
     this.mapTotalHeight = totalHeight;
@@ -164,13 +169,13 @@ export class MapCanvasComponent extends StoreClient() implements OnInit {
     const canvas2d = this.canvasCtx;
 
     for (let horLineIndex = 0; horLineIndex <= heightInCells; horLineIndex++) {
-      canvas2d.moveTo(0, horLineIndex * CELL_SIZE);
-      canvas2d.lineTo(totalWidth, horLineIndex * CELL_SIZE);
+      canvas2d.moveTo(0, horLineIndex * cellSize);
+      canvas2d.lineTo(totalWidth, horLineIndex * cellSize);
     }
 
     for (let verLineIndex = 0; verLineIndex <= widthInCells; verLineIndex++) {
-      canvas2d.moveTo(verLineIndex * CELL_SIZE, 0);
-      canvas2d.lineTo(verLineIndex * CELL_SIZE, totalHeight);
+      canvas2d.moveTo(verLineIndex * cellSize, 0);
+      canvas2d.lineTo(verLineIndex * cellSize, totalHeight);
     }
 
     canvas2d.setLineDash([5, 8]);

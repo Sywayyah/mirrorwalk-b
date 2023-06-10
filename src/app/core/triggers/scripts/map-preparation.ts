@@ -13,7 +13,7 @@ TriggersRegistry.register(Triggers.PrepareGameEvent, {
     console.log('Structures are prepared.');
 
     const gameMap = new LevelMap({
-      mapDimensions: { heightInCells: 11, widthInCells: 22 },
+      mapDimensions: { heightInCells: 11, widthInCells: 22, cellSize: 86 },
       structures: structsPreset1,
     });
 
