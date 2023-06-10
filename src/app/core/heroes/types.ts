@@ -1,5 +1,5 @@
 import { GameObject } from '../game-objects';
-import { ItemBaseModel, ItemObject } from '../items';
+import { ItemBaseModel, Item } from '../items';
 import { InventoryItems } from '../items/inventory';
 import { Modifiers } from '../modifiers';
 import { ResourcesModel } from '../resources';
@@ -60,7 +60,7 @@ export class Hero extends GameObject<HeroCreationParams> {
   public stats!: HeroStats;
   public spells: Spell[] = [];
   public mods: Modifiers[] = [];
-  public items: ItemObject[] = [];
+  public items: Item[] = [];
   public base!: HeroBase;
   public inventory: InventoryItems = new InventoryItems();
 

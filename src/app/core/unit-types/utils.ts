@@ -65,11 +65,8 @@ interface GenerationDescription {
   min: number;
   max: number;
   maxGroupsOfThisType: number;
-  created: number;
+  createdTimes: number;
 }
-
-// this should probably not generate units right away, maybe just create a model
-// basing on which army may be created.
 
 interface UnitGenerationModel {
   count: number;
@@ -89,7 +86,7 @@ export const UnitsUtils = {
         min,
         max,
         maxGroupsOfThisType,
-        created: 0,
+        createdTimes: 0,
       });
 
       return unitGroupsMap;
@@ -104,38 +101,25 @@ export const UnitsUtils = {
       const unitType = unit.unitType;
 
       const count = CommonUtils.randIntInRange(unit.min, unit.max);
-      // problem
+
       const newUnitGroup: UnitGenerationModel = {
         count: count,
         unitType,
-        // turnsLeft: unitType.defaultTurnsPerRound,
-        // fightInfo: {
-        // initialCount: count,
-        // isAlive: true,
-        // },
       };
 
       generatedGroups.push(newUnitGroup);
 
-      unit.created++;
+      unit.createdTimes++;
 
-      if (unit.created >= unit.maxGroupsOfThisType) {
+      if (unit.createdTimes >= unit.maxGroupsOfThisType) {
         console.log('this unit was generated max times')
         unitsMap.delete(randUnitDescr);
         CommonUtils.removeItem(unitsToGenerate, randUnitDescr)
       }
     }
 
-
     console.log('generated groups', generatedGroups);
 
     return generatedGroups;
   },
-
-  // createRandomArmyForPlayer(options: GenerationModel, player: PlayerInstanceModel): UnitGroupInstModel[] {
-  // return this.createRandomArmy(options).map((unitGroup: UnitGroupInstModel) => {
-  // unitGroup.ownerPlayerRef = player;
-  // return unitGroup as UnitGroupInstModel;
-  // });/
-  // }
 }

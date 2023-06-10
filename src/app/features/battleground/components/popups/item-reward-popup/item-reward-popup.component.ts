@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ItemObject } from 'src/app/core/items';
+import { Item } from 'src/app/core/items';
 import { ItemReward } from 'src/app/core/structures';
 import { StructItemRewardPopup } from 'src/app/core/ui';
 import { MwItemsService, MwPlayersService } from 'src/app/features/services';
@@ -12,9 +12,9 @@ import { BasicPopup } from 'src/app/features/shared/components';
 })
 export class ItemRewardPopupComponent extends BasicPopup<StructItemRewardPopup> implements OnInit {
 
-  public itemGroups!: ItemObject[][];
+  public itemGroups!: Item[][];
 
-  public selectedGroup!: ItemObject[];
+  public selectedGroup!: Item[];
 
   constructor(
     private itemsService: MwItemsService,
@@ -32,7 +32,7 @@ export class ItemRewardPopupComponent extends BasicPopup<StructItemRewardPopup> 
     });
   }
 
-  public setSelectedGroup(group: ItemObject[]): void {
+  public setSelectedGroup(group: Item[]): void {
     this.selectedGroup = group;
   }
 

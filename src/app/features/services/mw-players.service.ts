@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { PlayerLevelsUp, PlayerReceivesItem, PlayerUnequipsItem } from 'src/app/core/events';
 import { HERO_LEVELS_BREAKPOINTS, HeroBase } from 'src/app/core/heroes';
-import { ItemObject } from 'src/app/core/items';
+import { Item } from 'src/app/core/items';
 import { PlayerCreationModel, Player, PlayerTypeEnum } from 'src/app/core/players';
 import { ResourceType, Resources, ResourcesModel } from 'src/app/core/resources';
 import { CommonUtils, UnitBaseType, UnitGroup } from 'src/app/core/unit-types';
@@ -176,11 +176,11 @@ export class MwPlayersService extends StoreClient() {
     player.hero.stats.currentMana += mana;
   }
 
-  public addItemToPlayer(player: Player, item: ItemObject): void {
+  public addItemToPlayer(player: Player, item: Item): void {
     this.events.dispatch(PlayerReceivesItem({ player, item }));
   }
 
-  public removeItemFromPlayer(player: Player, item: ItemObject): void {
+  public removeItemFromPlayer(player: Player, item: Item): void {
     this.events.dispatch(PlayerUnequipsItem({ player, item }));
   }
 

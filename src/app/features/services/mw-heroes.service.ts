@@ -45,54 +45,12 @@ export class MwHeroesService {
   }
 
   public createHero(heroBase: HeroBase): Hero {
-    // const heroInitState = heroBase.initialState;
-    // const heroBaseStats = heroInitState.stats;
-
     return this.gameObjectsManager.createNewGameObject(Hero, {
       heroBase,
     });
-
-    // return {
-    //   experience: 0,
-    //   freeSkillpoints: 0,
-    //   items: [],
-    //   level: 1,
-    //   mods: [],
-    //   name: heroBase.name,
-    //   spells: heroInitState.abilities.map(spell => this.spellsService.createSpellInstance(spell)),
-    //   stats: {
-    //     baseAttack: heroBaseStats.baseAttack,
-    //     bonusAttack: 0,
-    //     baseDefence: heroBaseStats.baseDefence,
-    //     bonusDefence: 0,
-    //     currentMana: heroBaseStats.mana,
-    //     maxMana: heroBaseStats.mana,
-    //   },
-    //   inventory: new InventoryItems(),
-    //   base: heroBase,
-    // };
   }
 
   public createNeutralHero(): Hero {
-    return this.gameObjectsManager.createNewGameObject(Hero, { heroBase: neutralHeroBase });
-    // return {
-    //   name: null,
-    //   experience: 0,
-    //   level: 0,
-    //   stats: {
-    //     maxMana: 5,
-    //     currentMana: 1,
-    //     baseAttack: 0,
-    //     baseDefence: 0,
-    //     bonusAttack: 0,
-    //     bonusDefence: 0,
-    //   },
-    //   freeSkillpoints: 0,
-    //   spells: [],
-    //   mods: [],
-    //   inventory: new InventoryItems(),
-    //   items: [],
-    //   base: neutralHeroBase,
-    // };
+    return this.createHero(neutralHeroBase);
   }
 }

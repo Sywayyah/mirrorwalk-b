@@ -28,12 +28,15 @@ export interface UnitTypeBaseStatsModel {
   health: number;
   /* base speed of this unit type. speed defines how early in the battle order can be placed */
   speed: number;
-  /* base defence of this unit type, each 15 poins of defense increase EHP by 100% */
-  /* maybe defence types can be different, although I don't really think I want to have
-      paper-rock-scissors here  */
+
+  /**
+   * Similar to Homm3 system.
+   *  When attacking, your attack is checked against enemy defence.
+   *  If attack is higher than defence, damage is increased by 5% per each point of difference.
+   *  If lower, damage is decreased by 3% percent of difference.
+   */
   defence: number;
 
-  /* Similar to Homm3 system, where each point of difference between attack/defence increases damage by 5 percent */
   attackRating: number;
 
   damageInfo: UnitDamageModel;
@@ -64,9 +67,6 @@ export interface UnitBaseType {
   defaultModifiers?: Modifiers;
 
   defaultSpells?: SpellBaseType[];
-  /* create a separate mapping, table UnitGroup->Abilities */
-  /*  Associative tables.. can be useful. Don't need to overgrow the model */
-  // baseAbilities?: AbilityModel[];
 
   /* minimal amount of units that can stack can be hired, sold or split by */
   minQuantityPerStack: number;
@@ -81,16 +81,6 @@ export interface UnitBaseType {
     upgradeCost: Partial<ResourcesModel>,
   };
 }
-
-// export interface UnitGroupInstModel extends UnitGroupModel {
-//   ownerPlayerRef: PlayerInstanceModel;
-
-//   spells: SpellInstance[];
-
-//   // Think, what it needs to be? should it be refs
-//   // And should all applied mods be stored here? feels like rather not...
-//   modifiers: Modifiers[];
-// }
 
 interface UnitCreationParams {
   count: number;
@@ -111,18 +101,15 @@ export class UnitGroup extends GameObject<UnitCreationParams> {
   /* the last unit hp tail. If undefined, the tail unit hp is full */
   public tailUnitHp?: number;
 
-  /* not sure if this should be in this model, tbd later */
   public fightInfo!: {
     initialCount: number;
     isAlive: boolean;
     spellsOnCooldown?: boolean;
   };
-  // ownerPlayerRef: PlayerInstanceModel;
 
   public spells!: Spell[];
 
-  // Think, what it needs to be? should it be refs
-  // And should all applied mods be stored here? feels like rather not... or maybe yes.
+  // Should it be mod refs? or plain modifiers?
   public modifiers!: Modifiers[];
 
   create({ count, ownerPlayer, unitBase }: UnitCreationParams): void {

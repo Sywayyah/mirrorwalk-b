@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { ItemObject } from 'src/app/core/items';
+import { Item } from 'src/app/core/items';
 import { HintAttachment } from 'src/app/features/shared/components';
 
 @Component({
@@ -9,7 +9,7 @@ import { HintAttachment } from 'src/app/features/shared/components';
 })
 export class ItemIconComponent {
 
-  @Input() public item!: ItemObject;
+  @Input() public item!: Item;
   @Input() public hintPos!: HintAttachment;
 
   constructor() { }

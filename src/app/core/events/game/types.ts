@@ -1,4 +1,4 @@
-import { ItemObject } from 'src/app/core/items';
+import { Item } from 'src/app/core/items';
 import { Player } from 'src/app/core/players';
 import { Spell } from 'src/app/core/spells';
 import { StructureModel } from 'src/app/core/structures';
@@ -11,9 +11,9 @@ export type NeutralStructParams = { struct: StructureModel };
 export type NewDayParams = { day: number };
 export type FightStartsEvent = { unitGroups: UnitGroup[], players: Player[] };
 export type InitSpellAction = { spell: Spell, player: Player, ownerUnit?: UnitGroup };
-export type InitItemAction = { item: ItemObject, ownerPlayer: Player };
-export type PlayerEquipsItemAction = { player: Player, item: ItemObject };
-export type PlayerUnequipsItemAction = { player: Player, item: ItemObject };
+export type InitItemAction = { item: Item, ownerPlayer: Player };
+export type PlayerEquipsItemAction = { player: Player, item: Item };
+export type PlayerUnequipsItemAction = { player: Player, item: Item };
 
 export type PanMapCameraCenterAction = { x: number; y: number; };
 

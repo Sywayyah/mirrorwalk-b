@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Colors } from 'src/app/core/assets';
 import { InitItem } from 'src/app/core/events';
-import { ItemBaseModel, ItemObject } from 'src/app/core/items';
+import { ItemBaseModel, Item } from 'src/app/core/items';
 import { Player } from 'src/app/core/players';
 import { EventData, EventsService } from 'src/app/store';
 import { State } from './state.service';
@@ -22,7 +22,7 @@ export class MwItemsService {
     private gameObjectsManager: GameObjectsManager,
   ) { }
 
-  public createItem<T extends object>(itemBase: ItemBaseModel<T>): ItemObject<T> {
+  public createItem<T extends object>(itemBase: ItemBaseModel<T>): Item<T> {
     const itemIcon = itemBase.icon;
 
     if (!itemIcon.bgClr) {
@@ -33,13 +33,13 @@ export class MwItemsService {
       itemIcon.iconClr = Colors.DefaultItemIconClr;
     }
 
-    return this.gameObjectsManager.createNewGameObject(ItemObject<T>, {
+    return this.gameObjectsManager.createNewGameObject(Item<T>, {
       itemBase: itemBase,
       state: itemBase.defaultState,
     });
   }
 
-  public registerItemsEventHandlers(item: ItemObject, ownerPlayer: Player): void {
+  public registerItemsEventHandlers(item: Item, ownerPlayer: Player): void {
     this.events.dispatch(InitItem({
       item,
       ownerPlayer,
@@ -52,7 +52,7 @@ export class MwItemsService {
   }
 
   public triggerEventForItemHandlers(
-    item: ItemObject,
+    item: Item,
     event: EventData,
   ): void {
     this.state.eventHandlers.items.triggerRefEventHandlers(item, event);

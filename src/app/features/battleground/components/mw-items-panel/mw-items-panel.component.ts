@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ItemObject } from 'src/app/core/items';
+import { Item } from 'src/app/core/items';
 import { Player } from 'src/app/core/players';
 import { MwPlayersService } from 'src/app/features/services';
 
@@ -11,7 +11,7 @@ import { MwPlayersService } from 'src/app/features/services';
 export class MwItemsPanelComponent implements OnInit {
 
   public currentPlayer!: Player;
-  public equippedItems!: ItemObject[];
+  public equippedItems!: Item[];
 
   constructor(
     private readonly players: MwPlayersService,

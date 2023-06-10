@@ -16,7 +16,6 @@ export interface ItemRequirementModel<T extends object> {
   isRequirementMet?: (item: ItemBaseModel<T>, unitGroup: UnitGroup) => boolean;
 }
 
-
 export enum ItemSlotType {
   Weapon = 'Weapon',
   Headgear = 'Headgear',
@@ -27,7 +26,7 @@ export enum ItemSlotType {
 }
 
 export interface ItemDescriptionData<T extends object> {
-  thisItem: ItemObject<T>;
+  thisItem: Item<T>;
 }
 
 export interface ItemDescription {
@@ -56,7 +55,7 @@ export interface ItemBaseModel<StateType extends object = object> {
       events: ItemsEventsRef,
       ownerPlayer: Player,
       ownerHero: Hero,
-      thisInstance: ItemObject<StateType>,
+      thisInstance: Item<StateType>,
     }) => void,
   },
   bonusAbilities?: { spell: SpellBaseType, level: number }[];
@@ -67,7 +66,7 @@ export interface ItemCreationParams<T extends object = object> {
   state?: T;
 }
 
-export class ItemObject<T extends object = object> extends GameObject<ItemCreationParams<T>> {
+export class Item<T extends object = object> extends GameObject<ItemCreationParams<T>> {
   public static readonly categoryId: string = 'item';
 
   public baseType!: ItemBaseModel<T>;

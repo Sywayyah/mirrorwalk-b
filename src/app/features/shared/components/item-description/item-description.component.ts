@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
-import { ItemObject } from 'src/app/core/items';
+import { Item } from 'src/app/core/items';
 import { DescriptionElement } from 'src/app/core/ui/descriptions';
 
 @Component({
@@ -11,7 +11,7 @@ import { DescriptionElement } from 'src/app/core/ui/descriptions';
 export class ItemDescriptionComponent implements OnInit {
 
   @Input()
-  public item!: ItemObject;
+  public item!: Item;
 
   public descriptions!: DescriptionElement[];
 

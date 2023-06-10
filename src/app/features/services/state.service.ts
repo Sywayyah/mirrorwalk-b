@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Fraction } from 'src/app/core/fractions';
 import { HeroBase } from 'src/app/core/heroes';
-import { ItemObject } from 'src/app/core/items';
+import { Item } from 'src/app/core/items';
 import { defaultTravelPointsPerDay } from 'src/app/core/locations';
 import { LevelMap } from 'src/app/core/maps';
 import { ModsRefsGroup } from 'src/app/core/modifiers';
@@ -78,10 +78,10 @@ export class State {
 
   public eventHandlers: {
     spells: RefEventTriggersRegistry<Spell>,
-    items: RefEventTriggersRegistry<ItemObject>,
+    items: RefEventTriggersRegistry<Item>,
   } = {
       spells: new RefEventTriggersRegistry<Spell>(),
-      items: new RefEventTriggersRegistry<ItemObject>(),
+      items: new RefEventTriggersRegistry<Item>(),
     };
 
   public unitsAppliedModifiers: Map<UnitGroup, ModsRefsGroup> = new Map();

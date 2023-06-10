@@ -3,7 +3,7 @@ import { VfxApi } from '../api/vfx-api';
 import { Icon } from '../assets';
 import { GameObject } from '../game-objects';
 import { Hero } from '../heroes';
-import { ItemObject } from '../items';
+import { Item } from '../items';
 import { Player } from '../players';
 import { DescriptionElement } from '../ui/descriptions';
 import { UnitGroup } from '../unit-types';
@@ -101,7 +101,7 @@ export class Spell<T = DefaultSpellStateType> extends GameObject<SpellCreationPa
   public baseType!: SpellBaseType<T>;
 
   public sourceInfo!: {
-    item?: ItemObject,
+    item?: Item,
   };
 
   create({ spellBaseType, initialLevel, state }: SpellCreationParams<T>): void {
