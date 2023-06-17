@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ScriptedReward } from 'src/app/core/structures';
-import { ScriptedRewardPopup } from 'src/app/core/ui';
+import { StructPopupData } from 'src/app/core/ui';
 import { MwPlayersService } from 'src/app/features/services';
 import { ApiProvider } from 'src/app/features/services/api-provider.service';
 import { BasicPopup } from 'src/app/features/shared/components';
@@ -10,7 +10,7 @@ import { BasicPopup } from 'src/app/features/shared/components';
   templateUrl: './scripted-reward-popup.component.html',
   styleUrls: ['./scripted-reward-popup.component.scss']
 })
-export class ScriptedRewardPopupComponent extends BasicPopup<ScriptedRewardPopup> implements OnInit {
+export class ScriptedRewardPopupComponent extends BasicPopup<StructPopupData> implements OnInit {
 
   public description!: string;
 
@@ -25,7 +25,8 @@ export class ScriptedRewardPopupComponent extends BasicPopup<ScriptedRewardPopup
 
   public ngOnInit(): void {
     const generator = this.data.struct.generator;
-    const reward = generator.generateReward?.() as ScriptedReward;
+    // consider dummy generator for locations with unneccessay generator
+    const reward = generator?.generateReward?.() as ScriptedReward;
 
     if (reward) {
       this.reward = reward;

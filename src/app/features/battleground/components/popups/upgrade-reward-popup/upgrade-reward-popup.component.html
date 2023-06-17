@@ -1,11 +1,11 @@
 <div>
   <div class="header">
-    {{data.struct.generator.name}}
+    {{data.struct.generator?.name}}
   </div>
 
-  <div *ngIf="data.struct.generator.description"
+  <div *ngIf="data.struct.generator?.description"
        class="description">
-    {{data.struct.generator.description}}
+    {{data.struct.generator?.description}}
   </div>
 
   <div class="units">

@@ -1,8 +1,8 @@
-import { ResourceType } from '../resources';
-import { ArchersOutpostStructure, BanditCamp, BeaconOfTheUndead, BigCampStructure, CalavryStalls, GraveyardStructure, MagicRiverStructure, MountainNestStructure, ThiefsLair, WitchHutStructure } from '../structures/common';
-import { FireRingStructure } from '../structures/common/guard-location';
-import { resourcesPileStructure, resPileStructure } from '../structures/common/resource-pile';
-import { StructureDescription } from './types';
+import { ResourceType } from '../../resources';
+import { ArchersOutpostStructure, BanditCamp, BeaconOfTheUndead, BigCampStructure, CalavryStalls, GraveyardStructure, MagicRiverStructure, MountainNestStructure, ThiefsLair, WitchHutStructure } from '../common';
+import { FireRingStructure } from '../common/guard-location';
+import { resourcesPileStructure, resPileStructure } from '../common/resource-pile';
+import { StructureDescription } from '../map-structures';
 
 /* Think more here, customizable locations, more location types (resource piles, single guards, etc.) */
 

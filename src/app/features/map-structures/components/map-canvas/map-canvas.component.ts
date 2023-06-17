@@ -33,7 +33,7 @@ export class MapCanvasComponent extends StoreClient() implements OnInit {
 
   private hostElem!: HTMLElement;
 
-  private currentMap: LevelMap = this.state.mapsState.currentMap;
+  private currentMap!: LevelMap;
 
   private cellSize: number = 0;
 
@@ -62,6 +62,8 @@ export class MapCanvasComponent extends StoreClient() implements OnInit {
     this.canvasCtx = this.canvasElem.getContext('2d')!;
 
     this.underlayElem = this.underlayRef.nativeElement;
+
+    this.currentMap = this.state.mapsState.currentMap;
 
     this.renderMapCellsGrid();
     this.setupWindowResizingHandling();

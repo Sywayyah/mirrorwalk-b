@@ -1,21 +1,8 @@
 /*
     Candidates for rework:
-        Models for units (there are now 2 models, less and more detailed)
-          In general: "instance" types, also might be that "ouside combat" and
-          "in-combat" types could be useful, because some properties of in-combat
-          objet might be unused in out of combat state
-
-        Structures
-          Structures are currently swampy and unclear, hard to work with,
-          also gonna need to rework popups along with structures.
-
         Assets:
           Assets should be optimized and size must be reduced, frames should become customizable,
           more assets in the future.
-
-        Popups:
-          For now, all popups are in battleground module, might be moved to views
-          or somewhere else.
 
     Candidates for implementation:
         Store:
@@ -40,8 +27,11 @@
           + Basic implementation of towns
         Saves
         Categorize components
+          + Components are now somewhat categorized
         UI optimizations, maybe more OnPush strategies
+          ? Signals and GameObjects can become handy for UI optimizations
         Horizontal orientation?
+          + Basic implementation is here
           All units may not fit right into vertical orientation, I can try make them smaller,
           but still, horizontal orientation might be just right for that, while also allowing
           to showcase art more.

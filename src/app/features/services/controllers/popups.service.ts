@@ -1,7 +1,7 @@
 import { Injectable, Type } from '@angular/core';
 import { DisplayPlayerRewardAction, DisplayPlayerRewardPopup, DisplayPopup, DisplayReward, FightEnds, FightEndsEvent, NeutralStructParams, OpenSettings, PlayerOpensHeroInfo, ShowGameOverPopup, StructSelected, StructSelectedEvent } from 'src/app/core/events';
-import { NeutralRewardTypesEnum, StructureTypeEnum } from 'src/app/core/structures';
-import { FightEndsPopup, LossModel, PrefightPopup, PreviewPopup, UpgradingPopup } from 'src/app/core/ui';
+import { NeutralRewardTypesEnum } from 'src/app/core/structures';
+import { FightEndsPopup, LossModel, StructPopupData } from 'src/app/core/ui';
 import { Notify, StoreClient, WireMethod } from 'src/app/store';
 import { HiringRewardPopupComponent, ItemRewardPopupComponent, PostFightRewardPopupComponent, PreFightPopupComponent, PreviewPopupComponent, ResourcesRewardPopupComponent, ScriptedRewardPopupComponent, UpgradeRewardPopupComponent } from '../../battleground/components';
 import { HeroPopupComponent } from '../../battleground/components/hero-popup/hero-popup.component';
@@ -61,22 +61,23 @@ export class PopupsController extends StoreClient() {
 
   @WireMethod(StructSelected)
   public playerSelectsStructure(event: StructSelectedEvent): void {
-    if (event.struct.type === StructureTypeEnum.NeutralCamp) {
-      const prefightPopup: PrefightPopup = {
+    if (event.struct.guard?.length) {
+      const prefightPopup: StructPopupData = {
         struct: event.struct,
       };
-
 
       this.events.dispatch(DisplayPopup({
         component: PreFightPopupComponent,
         data: prefightPopup
       }));
+
       return;
     }
 
-    if (event.struct.type === StructureTypeEnum.NeutralSite) {
-      if (event.struct.generator.onVisited) {
-        const previewPopup: PreviewPopup = {
+    if (!event.struct.guard?.length) {
+
+      if (event.struct.generator?.onVisited) {
+        const previewPopup: StructPopupData = {
           struct: event.struct,
         };
 
@@ -88,7 +89,7 @@ export class PopupsController extends StoreClient() {
         return;
       }
 
-      const upgradingPopup: UpgradingPopup = {
+      const upgradingPopup: StructPopupData = {
         struct: event.struct,
       };
 

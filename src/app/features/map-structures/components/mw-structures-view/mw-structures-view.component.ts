@@ -1,11 +1,12 @@
 import { AfterViewInit, Component, ElementRef, Renderer2, ViewChild } from '@angular/core';
 import { MapPanCameraCenterTo, PlayerEntersTown, PlayerOpensHeroInfo, StructSelected } from 'src/app/core/events';
-import { START_LOC_ID, ViewStructure } from 'src/app/core/locations';
 import { Player } from 'src/app/core/players';
 import { MwPlayersService, MwStructuresService } from 'src/app/features/services';
+import { GameObjectsManager } from 'src/app/features/services/game-objects-manager.service';
 import { State } from 'src/app/features/services/state.service';
-import { EventsService } from 'src/app/store';
+import { StoreClient } from 'src/app/store';
 import { MapDragEvent } from '../map-canvas/map-canvas.component';
+import { MapStructure, START_LOC_ID } from 'src/app/core/structures';
 
 /* Rewamp this a bit later, along with service and the rest */
 /*  Check more cases, stuff like that */
@@ -16,7 +17,7 @@ import { MapDragEvent } from '../map-canvas/map-canvas.component';
   templateUrl: './mw-structures-view.component.html',
   styleUrls: ['./mw-structures-view.component.scss'],
 })
-export class MwStructuresViewComponent implements AfterViewInit {
+export class MwStructuresViewComponent extends StoreClient() implements AfterViewInit {
   @ViewChild('locationsContainer')
   public locationsRef!: ElementRef;
 
@@ -24,15 +25,16 @@ export class MwStructuresViewComponent implements AfterViewInit {
 
   constructor(
     private readonly playersService: MwPlayersService,
-    private events: EventsService,
     public state: State,
     public readonly structsService: MwStructuresService,
     private readonly renderer: Renderer2,
+    private gameObjectsManager: GameObjectsManager,
   ) {
+    super();
     this.player = this.playersService.getCurrentPlayer();
   }
 
-  public ngAfterViewInit(): void {
+  ngAfterViewInit(): void {
     if (this.state.mapCamera.cameraInitialized) {
       // reset camera position for now
       // todo: maybe reset camera to location visited by the player..
@@ -42,7 +44,7 @@ export class MwStructuresViewComponent implements AfterViewInit {
       return;
     }
 
-    const startingStruct = this.structsService.viewStructures.find(struct => struct.id === START_LOC_ID);
+    const startingStruct = this.gameObjectsManager.getObjectById(MapStructure, START_LOC_ID);
 
     if (startingStruct) {
       this.events.dispatch(MapPanCameraCenterTo({ x: startingStruct.x, y: startingStruct.y }));
@@ -60,15 +62,15 @@ export class MwStructuresViewComponent implements AfterViewInit {
     this.renderer.setStyle(locationsElem, 'top', `${event.finalPosY}px`);
   }
 
-  public onStructureSelected(struct: ViewStructure): void {
-    if (!this.structsService.availableStructuresMap[struct.id] || !struct.structure || struct.structure?.isInactive) {
+  public onStructureSelected(struct: MapStructure): void {
+    if (!this.structsService.availableStructuresMap[struct.id] || !struct.generator || struct.isInactive) {
       return;
     }
 
-    this.playersService.getEnemyPlayer().unitGroups = this.structsService.guardsMap[struct.id];
+    this.playersService.getEnemyPlayer().unitGroups = struct.guard!;
 
     this.events.dispatch(StructSelected({
-      struct: struct.structure,
+      struct: struct,
     }));
   }
 
