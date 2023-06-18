@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { ResourcesModel, ResourceType } from 'src/app/core/resources';
+import { ResourceType, ResourcesModel } from 'src/app/core/resources';
 import { HiringRewardModel, UnitUpgradeReward } from 'src/app/core/structures';
-import { UpgradingPopup } from 'src/app/core/ui';
+import { StructPopupData } from 'src/app/core/ui';
 import { UnitBaseType, UnitGroup } from 'src/app/core/unit-types';
 import { MwPlayersService, MwUnitGroupsService } from 'src/app/features/services';
 import { ApiProvider } from 'src/app/features/services/api-provider.service';
@@ -22,7 +22,7 @@ interface UpgradeModel {
   templateUrl: './upgrade-reward-popup.component.html',
   styleUrls: ['./upgrade-reward-popup.component.scss']
 })
-export class UpgradeRewardPopupComponent extends BasicPopup<UpgradingPopup> implements OnInit {
+export class UpgradeRewardPopupComponent extends BasicPopup<StructPopupData> implements OnInit {
 
   public hiredGroups!: UpgradeModel[];
 

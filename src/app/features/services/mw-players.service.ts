@@ -143,6 +143,7 @@ export class MwPlayersService extends StoreClient() {
   public getUnitGroupsOfPlayer(playerId: string): UnitGroup[] {
     const player = this.playersMap.get(this.gameObjectsManager.getObjectId(Player, playerId))!;
 
+    // todo: revisit this logic.
     return player.unitGroups.map((unitGroup: UnitGroup) => {
       unitGroup.ownerPlayerRef = player;
 

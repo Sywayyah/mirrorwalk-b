@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Item } from 'src/app/core/items';
 import { ItemReward } from 'src/app/core/structures';
-import { StructItemRewardPopup } from 'src/app/core/ui';
+import { StructPopupData } from 'src/app/core/ui';
 import { MwItemsService, MwPlayersService } from 'src/app/features/services';
 import { BasicPopup } from 'src/app/features/shared/components';
 
@@ -10,7 +10,7 @@ import { BasicPopup } from 'src/app/features/shared/components';
   templateUrl: './item-reward-popup.component.html',
   styleUrls: ['./item-reward-popup.component.scss']
 })
-export class ItemRewardPopupComponent extends BasicPopup<StructItemRewardPopup> implements OnInit {
+export class ItemRewardPopupComponent extends BasicPopup<StructPopupData> implements OnInit {
 
   public itemGroups!: Item[][];
 

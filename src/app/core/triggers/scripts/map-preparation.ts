@@ -1,6 +1,6 @@
 import { DefaultGameModes, DisplayPlayerRewardPopup, PlayerLevelsUp, Triggers } from '../../events';
-import { structsPreset1 } from '../../locations';
 import { LevelMap } from '../../maps';
+import { structsPreset1 } from '../../structures';
 import { TriggersRegistry } from '../registry';
 
 TriggersRegistry.register(Triggers.PrepareGameEvent, {

@@ -1,5 +1,4 @@
-import { Player } from '../players';
-import { UnitBaseType, UnitGroup, UnitTypeBaseStatsModel } from './types';
+import { UnitBaseType, UnitTypeBaseStatsModel } from './types';
 
 /* unit type, minCount, maxCount, maxGroupsOfThisType */
 type UnitModel = [unitType: UnitBaseType, min: number, max: number, maxOfThisType: number | void];
@@ -9,6 +8,7 @@ export interface GenerationModel {
   maxUnitGroups: number;
   units: UnitModel[];
 }
+
 export const createStats = ([[minDmg, maxDmg], attack, defence, health, speed]: [
   damage: [minDmg: number, maxDmg: number],
   attack: number,

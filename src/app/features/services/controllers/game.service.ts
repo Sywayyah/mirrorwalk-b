@@ -9,8 +9,6 @@ import { MwHeroesService } from '../mw-heroes.service';
 import { MwPlayersService, PLAYER_IDS } from '../mw-players.service';
 import { MwStructuresService } from '../mw-structures.service';
 import { State } from '../state.service';
-import { UnitGroup } from 'src/app/core/unit-types';
-
 
 @Injectable()
 export class GameController extends StoreClient() {
@@ -84,7 +82,7 @@ export class GameController extends StoreClient() {
     this.state.currentBattleState = {
       currentPlayer: this.state.gameState.currentPlayer,
       // player should be defined, but it needs to be revisited later on
-      enemyPlayer: event.struct.guard!,
+      enemyPlayer: event.struct.guardingPlayer!,
     };
   }
 
