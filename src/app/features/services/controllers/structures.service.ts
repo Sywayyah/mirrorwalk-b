@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { MapPanCameraCenterTo, NeutralStructParams, NewDayStarted, PanMapCameraCenterAction, StructCompleted } from 'src/app/core/events';
-import { defaultTravelPointsCost, defaultTravelPointsPerDay } from 'src/app/core/locations';
+import { MapStructure, defaultTravelPointsCost, defaultTravelPointsPerDay } from 'src/app/core/structures';
 import { StoreClient, WireMethod } from 'src/app/store';
+import { GameObjectsManager } from '../game-objects-manager.service';
 import { MwStructuresService } from '../mw-structures.service';
 import { State } from '../state.service';
 
@@ -11,17 +12,17 @@ export class StructuresController extends StoreClient() {
   constructor(
     private structuresService: MwStructuresService,
     private state: State,
+    private gameObjectsManager: GameObjectsManager,
   ) {
     super();
   }
 
   @WireMethod(StructCompleted)
   public handleCompletedStructure(event: NeutralStructParams): void {
-    // revisit this, rework structures.
-    const structId = event.struct.id.split(':')[1];
+    const structId = event.struct.id;
 
     this.structuresService.availableStructuresMap[structId] = true;
-    this.structuresService.structsMap.get(structId)!.visited = true;
+    this.gameObjectsManager.getObjectByFullId<MapStructure>(structId)!.visited = true;
     this.structuresService.playerCurrentLocId = structId;
     this.structuresService.updateAvailableStructures();
     this.state.currentGame.travelPoints -= defaultTravelPointsCost;

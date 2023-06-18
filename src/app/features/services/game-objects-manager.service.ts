@@ -4,8 +4,14 @@ import { InitGameObjectApi } from 'src/app/core/events';
 import { CreationParams, GameObject } from 'src/app/core/game-objects';
 import { EventsService } from 'src/app/store';
 
+const ID_SEPARATOR = ':';
+
 function createId(categoryId: string, id: string | number): string {
-  return `${categoryId}:${id}`;
+  return `${categoryId}${ID_SEPARATOR}${id}`;
+}
+
+function getIdParts(fullId: string): [categoryId: string, objectId: string] {
+  return fullId.split(ID_SEPARATOR) as [string, string];
 }
 
 interface ObjectsRegistry<T extends GameObject = GameObject> {
@@ -59,6 +65,26 @@ export class GameObjectsManager {
     }
 
     return newGameObject;
+  }
+
+  getObjectById<T extends GameObject>(gameObjectClass: Type<T> & { categoryId: string }, id: string): T {
+    return this.getObjectByFullId(createId(gameObjectClass.categoryId, id));
+  }
+
+  getObjectByFullId<T extends GameObject>(fullId: string): T {
+    const idParts = getIdParts(fullId);
+
+    if (idParts.length !== 2) {
+      throw new Error(`Getting object by id '${fullId}' failed, id doesn't follow format 'CategoryId${ID_SEPARATOR}ObjectId'`);
+    }
+
+    const object = this.allObjects.get(fullId);
+
+    if (!object) {
+      throw new Error(`Failed to get object by '${fullId}' id: Object doens't exist`);
+    }
+
+    return object as T;
   }
 
   destroyObject(object: GameObject): void {

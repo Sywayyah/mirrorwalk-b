@@ -1,6 +1,6 @@
 import { Player } from 'src/app/core/players';
-import { StructureModel } from 'src/app/core/structures';
-import { UnitBaseType, UnitGroup } from 'src/app/core/unit-types';
+import { UnitGroup } from 'src/app/core/unit-types';
+import { MapStructure } from '../../structures';
 import { props } from '../common';
 
 export enum CombatInteractionEnum {
@@ -45,7 +45,7 @@ export type NextRoundStarts = { round: number };
 
 export type FightEndsEvent = {
   win: boolean;
-  struct: StructureModel;
+  struct: MapStructure;
 };
 
 export type UnitSummonedEvent = {

@@ -11,7 +11,6 @@ import { GameObjectsManager } from './game-objects-manager.service';
   providedIn: 'root'
 })
 export class MwSpellsService {
-
   constructor(
     private gameObjectManager: GameObjectsManager,
   ) { }

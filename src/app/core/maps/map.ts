@@ -1,11 +1,10 @@
-import { StructureDescription } from '../locations';
+import { StructureDescription } from "../structures";
 
 interface MapDimensions {
   widthInCells: number;
   heightInCells: number;
+  cellSize: number;
 }
-
-export const CELL_SIZE = 86;
 
 export class LevelMap {
   public readonly structures: StructureDescription[];

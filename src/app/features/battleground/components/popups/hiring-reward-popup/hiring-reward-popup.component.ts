@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Resources, ResourcesModel, ResourceType } from 'src/app/core/resources';
+import { ResourceType, Resources, ResourcesModel } from 'src/app/core/resources';
 import { HiringReward, HiringRewardModel } from 'src/app/core/structures';
-import { StructHireRewardPopup } from 'src/app/core/ui';
+import { StructPopupData } from 'src/app/core/ui';
 import { MwPlayersService, MwUnitGroupsService } from 'src/app/features/services';
 import { BasicPopup } from 'src/app/features/shared/components';
 
@@ -18,7 +18,7 @@ interface HireModel {
   templateUrl: './hiring-reward-popup.component.html',
   styleUrls: ['./hiring-reward-popup.component.scss']
 })
-export class HiringRewardPopupComponent extends BasicPopup<StructHireRewardPopup> implements OnInit {
+export class HiringRewardPopupComponent extends BasicPopup<StructPopupData> implements OnInit {
 
   public hiredGroups!: HireModel[];
 

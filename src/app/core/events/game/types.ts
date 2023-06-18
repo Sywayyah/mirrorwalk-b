@@ -1,13 +1,13 @@
 import { Item } from 'src/app/core/items';
 import { Player } from 'src/app/core/players';
 import { Spell } from 'src/app/core/spells';
-import { StructureModel } from 'src/app/core/structures';
 import { UnitGroup } from 'src/app/core/unit-types';
-import { Hero } from '../../heroes';
 import { GameObject } from '../../game-objects';
+import { Hero } from '../../heroes';
+import { MapStructure } from '../../structures';
 
-export type StructSelectedEvent = { struct: StructureModel };
-export type NeutralStructParams = { struct: StructureModel };
+export type StructSelectedEvent = { struct: MapStructure };
+export type NeutralStructParams = { struct: MapStructure };
 export type NewDayParams = { day: number };
 export type FightStartsEvent = { unitGroups: UnitGroup[], players: Player[] };
 export type InitSpellAction = { spell: Spell, player: Player, ownerUnit?: UnitGroup };
