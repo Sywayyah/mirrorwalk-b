@@ -104,7 +104,11 @@ export class InGameApiController extends StoreClient() {
     const gameObject = params.gameObject as unknown as { api: GameObjectApi };
 
     // unify api in some way later
-    gameObject.api = { spells: this.apiProvider.getSpellsApi() };
+    gameObject.api = {
+      spells: this.apiProvider.getSpellsApi(),
+      // basic exposure of global events to GameObjects
+      events: { on: (event) => this.events.onEvent(event) },
+    };
   }
 
   private createActionsApiRef(): CombatActionsRef {

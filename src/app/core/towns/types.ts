@@ -1,3 +1,4 @@
+import { NewDayParams, NewDayStarted } from '../events';
 import { GameObject } from '../game-objects';
 import { Resources } from '../resources';
 import { UnitBaseType } from '../unit-types';
@@ -74,7 +75,6 @@ interface TownCreationParams<T extends string> {
   buildings: Record<T, Building>;
   growthMap: Record<string, number>;
   unitsAvailableMap: Record<string, number>;
-
 }
 
 export class Town<T extends string> extends GameObject<TownCreationParams<T>> {
@@ -90,5 +90,10 @@ export class Town<T extends string> extends GameObject<TownCreationParams<T>> {
     this.buildings = buildings;
     this.growthMap = growthMap;
     this.unitsAvailableMap = unitsAvailableMap;
+
+    // the basic use of global events listening from GameObjects
+    this.getApi().events.on(NewDayStarted).subscribe((event: NewDayParams) => {
+      console.log('New day started, town:', this, event);
+    });
   }
 }
