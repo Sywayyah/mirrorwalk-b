@@ -4,8 +4,9 @@ import { GameCreated, GameOpenMainScreen } from 'src/app/core/events';
 import { Fraction, Fractions, humansFraction } from 'src/app/core/fractions';
 import { neutralsFraction } from 'src/app/core/fractions/neutrals/fraction';
 import { HeroBase } from 'src/app/core/heroes';
-import { ActivityTypes, Building, HiringActivity, TownBase } from 'src/app/core/towns';
+import { ActivityTypes, Building, HiringActivity, Town, TownBase } from 'src/app/core/towns';
 import { CommonUtils } from 'src/app/core/unit-types';
+import { GameObjectsManager } from 'src/app/features/services/game-objects-manager.service';
 import { State } from 'src/app/features/services/state.service';
 import { EventsService } from 'src/app/store';
 
@@ -39,6 +40,7 @@ export class NewGameScreenComponent {
   constructor(
     private events: EventsService,
     private state: State,
+    private gameObjectsManager: GameObjectsManager,
   ) {
     this.selectFraction(humansFraction);
   }
@@ -49,17 +51,16 @@ export class NewGameScreenComponent {
 
     /* this logic is going to be moved somewhere else */
     /* and rewapmed later */
+    // Practically, when GOM is going to be provided by API, Town itself can become responsible
+    //  for creating its own buildings
     const townBuildings: Record<string, Building> = Object
       .keys(townBase.availableBuildings)
       .reduce((acc, buildingId) => {
         return {
           ...acc,
-          [buildingId]: {
-            currentLevel: 0,
-            built: false,
+          [buildingId]: this.gameObjectsManager.createNewGameObject(Building, {
             base: townBase.availableBuildings[buildingId],
-            currentBuilding: townBase.availableBuildings[buildingId].levels[0].building,
-          } as Building,
+          }),
         };
       }, {});
 
@@ -70,8 +71,9 @@ export class NewGameScreenComponent {
       fraction,
       selectedColor: this.pickedColor,
       selectedHero: this.selectedHero || CommonUtils.randItem(fraction.heroes),
-      town: {
+      town: this.gameObjectsManager.createNewGameObject(Town, {
         base: townBase,
+        buildings: townBuildings,
         growthMap: hiringBuildings
           .reduce((acc, hiringBuilding) => {
             const hiringActivity = hiringBuilding.currentBuilding.activity as HiringActivity;
@@ -82,14 +84,13 @@ export class NewGameScreenComponent {
 
             return acc;
           }, {} as Record<string, number>),
-        buildings: townBuildings,
         unitsAvailableMap: hiringBuildings.reduce((acc, hiringBuilding) => {
           const activity = hiringBuilding.currentBuilding.activity as HiringActivity;
 
           acc[activity.unitGrowthGroup] = activity.growth;
           return acc;
-        }, {} as Record<string, number>),
-      },
+        }, {} as Record<string, number>)
+      }),
     };
 
     console.log(this.state.createdGame);
