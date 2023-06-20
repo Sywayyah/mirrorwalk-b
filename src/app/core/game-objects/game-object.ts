@@ -34,11 +34,15 @@ export class GameObject<CreationParams extends object = object> {
     this.id = id;
   }
 
+  // method which is going to be called when object is created in order to initialize it.
   create(params: CreationParams): void { }
 
   protected getApi(): GameObjectApi {
     return this.api;
   }
+
+  // method which is going to be called when object is being disposed
+  onDestroy(): void {}
 }
 
 export type CreationParams<T> = T extends GameObject<infer K> ? K : never;

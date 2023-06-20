@@ -96,6 +96,8 @@ export class GameObjectsManager {
 
     categoryRegistry?.objects.delete(object);
 
+    object.onDestroy();
+
     this.allObjects.delete(object.id);
   }
 
