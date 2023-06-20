@@ -1,8 +1,10 @@
 import { Component } from '@angular/core';
-import { FormattedResource, formattedResources, Resources } from 'src/app/core/resources';
+import { InitBuilding } from 'src/app/core/events';
+import { FormattedResource, Resources, formattedResources } from 'src/app/core/resources';
 import { Building, BuildingLevel } from 'src/app/core/towns';
 import { MwPlayersService } from 'src/app/features/services';
 import { BasicPopup } from 'src/app/features/shared/components';
+import { EventsService } from 'src/app/store';
 
 @Component({
   selector: 'mw-build-popup',
@@ -21,8 +23,10 @@ export class BuildPopupComponent extends BasicPopup<{ building: Building, target
 
   constructor(
     private players: MwPlayersService,
+    private events: EventsService,
   ) {
     super();
+
     const building = this.data.building;
 
     this.buildingLevel = building.base.levels[this.data.targetLevel - 1];
@@ -39,17 +43,25 @@ export class BuildPopupComponent extends BasicPopup<{ building: Building, target
   }
 
   public build(): void {
+    const building = this.data.building;
+
     if (this.data.targetLevel === 1) {
-      this.data.building.built = true;
+      building.built = true;
     } else {
-      this.data.building.currentLevel = this.data.targetLevel - 1;
-      this.data.building.currentBuilding = this.data.building.base.levels[this.data.targetLevel - 1].building;
+      building.currentLevel = this.data.targetLevel - 1;
+      building.currentBuilding = building.base.levels[this.data.targetLevel - 1].building;
     }
+
+    this.events.dispatch(InitBuilding({
+      building,
+      player: this.players.getCurrentPlayer(),
+    }));
 
     this.players.removeResourcesFromPlayer(
       this.players.getCurrentPlayer(),
       this.getBuildingCost(),
-    )
+    );
+
     this.close();
   }
 

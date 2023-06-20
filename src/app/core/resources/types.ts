@@ -3,6 +3,9 @@ export enum ResourceType {
     Wood = 'wood',
     RedCrystals = 'redCrystals',
     Gems = 'gems',
+    // new possible resource, pearls of violet color, used for magic activities
+    // Pearls, Magic Pearls
+    // Pearls = 'pearls',
 }
 
 export interface ResourcesModel {

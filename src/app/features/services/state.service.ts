@@ -6,11 +6,12 @@ import { LevelMap } from 'src/app/core/maps';
 import { ModsRefsGroup } from 'src/app/core/modifiers';
 import { Player } from 'src/app/core/players';
 import { Spell } from 'src/app/core/spells';
-import { defaultTravelPointsPerDay } from 'src/app/core/structures';
-import { Town } from 'src/app/core/towns';
+import { MapStructure, defaultTravelPointsPerDay } from 'src/app/core/structures';
+import { Building, Town } from 'src/app/core/towns';
 import { RefEventTriggersRegistry } from 'src/app/core/triggers';
 import { UnitsOrientation } from 'src/app/core/ui';
 import { UnitGroup } from 'src/app/core/unit-types';
+
 
 /*
   I think I want to have state parts as separated features, maybe don't want to have all
@@ -79,9 +80,14 @@ export class State {
   public eventHandlers: {
     spells: RefEventTriggersRegistry<Spell>,
     items: RefEventTriggersRegistry<Item>,
+    /* prepare events for structures and buildings */
+    buildings: RefEventTriggersRegistry<Building>,
+    structures: RefEventTriggersRegistry<MapStructure>,
   } = {
       spells: new RefEventTriggersRegistry<Spell>(),
       items: new RefEventTriggersRegistry<Item>(),
+      buildings: new RefEventTriggersRegistry<Building>(),
+      structures: new RefEventTriggersRegistry<MapStructure>(),
     };
 
   public unitsAppliedModifiers: Map<UnitGroup, ModsRefsGroup> = new Map();

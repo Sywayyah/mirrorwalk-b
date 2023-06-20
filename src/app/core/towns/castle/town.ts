@@ -1,6 +1,6 @@
-import { humansFraction, HUMANS_UNIT_TYPES } from '../../fractions';
-import { ActivityTypes, BuidlingBase, HiringActivity, TownBase } from '../types';
-
+import { HUMANS_UNIT_TYPES, humansFraction } from '../../fractions';
+import { ActivityTypes, BuidlingBase, HiringActivity } from '../buildings';
+import { TownBase } from '../types';
 
 function createHiringActivity(
   unitType: HUMANS_UNIT_TYPES,
@@ -32,6 +32,16 @@ export type CastleTownBuildings = 'town-center'
 
 const townCenter: BuidlingBase = {
   name: 'Town Center',
+  description: 'Earns 500 gold each day.',
+  config: {
+    init({ players, localEvents }) {
+      localEvents.on({
+        NewDayBegins() {
+          players.giveResourcesToPlayer(players.getCurrentPlayer(), { gold: 500 });
+        },
+      })
+    }
+  }
 };
 
 const market: BuidlingBase = {
@@ -100,7 +110,7 @@ export const castleTownBase: TownBase<CastleTownBuildings> = {
     'town-center': {
       description: 'Grants you daily income',
       levels: [
-        { building: townCenter, cost: { gold: 2000 } },
+        { building: townCenter, cost: { gold: 1000 } },
       ],
       icon: 'capitol',
       tier: 1,
