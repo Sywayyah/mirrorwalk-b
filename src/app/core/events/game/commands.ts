@@ -1,5 +1,5 @@
 import { createEventType } from 'src/app/store';
-import { DisplayPlayerRewardAction, InitGameObjectApiParams, InitItemAction, InitSpellAction, PanMapCameraCenterAction } from './types';
+import { DisplayPlayerRewardAction, InitBuildingAction, InitGameObjectApiParams, InitItemAction, InitSpellAction, PanMapCameraCenterAction } from './types';
 
 
 const commands = createEventType;
@@ -34,3 +34,5 @@ export const InitGameObjectApi = commands<InitGameObjectApiParams>();
 export const InitSpell = commands<InitSpellAction>();
 
 export const InitItem = commands<InitItemAction>();
+
+export const InitBuilding = commands<InitBuildingAction>();

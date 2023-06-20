@@ -32,6 +32,16 @@ export type CastleTownBuildings = 'town-center'
 
 const townCenter: BuidlingBase = {
   name: 'Town Center',
+  description: 'Earns 500 gold each day.',
+  config: {
+    init({ players, localEvents }) {
+      localEvents.on({
+        NewDayBegins() {
+          players.giveResourcesToPlayer(players.getCurrentPlayer(), { gold: 500 });
+        },
+      })
+    }
+  }
 };
 
 const market: BuidlingBase = {
@@ -100,7 +110,7 @@ export const castleTownBase: TownBase<CastleTownBuildings> = {
     'town-center': {
       description: 'Grants you daily income',
       levels: [
-        { building: townCenter, cost: { gold: 2000 } },
+        { building: townCenter, cost: { gold: 1000 } },
       ],
       icon: 'capitol',
       tier: 1,

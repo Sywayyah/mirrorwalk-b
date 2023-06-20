@@ -1,5 +1,9 @@
-import { EventData } from 'src/app/store';
+import { EventData, EventGroup, EventHandlersMap } from 'src/app/store';
 import { PlayersApi } from '../api/game-api';
+
+export interface LocalEvents<T extends EventGroup<any>> {
+  on: (handlers: EventHandlersMap<T>) => void;
+}
 
 export interface GameApi {
   events: {
