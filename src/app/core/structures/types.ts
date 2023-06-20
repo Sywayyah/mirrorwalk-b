@@ -27,6 +27,7 @@ export interface StructureGeneratorModel {
   /* todo: Array of rewards? */
   generateReward?: () => NeutralRewardModel;
 
+  // practically, this can be converted to local event
   onVisited?: (params: OnVisitedParams) => void;
 }
 
