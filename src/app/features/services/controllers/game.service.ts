@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { PLAYER_COLORS } from 'src/app/core/assets';
-import { DefaultGameModes, FightStarts, FightStartsEvent, GameCreated, GameOpenMainScreen, GameOpenMapStructuresScreen, GamePreparedEvent, GameStarted, NeutralStructParams, PlayerLeavesTown, PlayerStartsFight, PlayersInitialized, StructFightConfirmed, StructSelected, StructSelectedEvent, Triggers } from 'src/app/core/events';
+import { DefaultGameModes, FightStarts, FightStartsEvent, GameCreated, GameOpenMainScreen, GameOpenMapStructuresScreen, GamePreparedEvent, GameStarted, NeutralStructParams, NewDayStarted, PlayerLeavesTown, PlayerStartsFight, PlayersInitialized, StructFightConfirmed, StructSelected, StructSelectedEvent, Triggers } from 'src/app/core/events';
 import { heroesDefaultResources } from 'src/app/core/heroes';
 import { PlayerTypeEnum } from 'src/app/core/players';
+import { NewDayBegins } from 'src/app/core/towns/events';
 import { Notify, StoreClient, WireMethod } from 'src/app/store';
 import { BattleStateService } from '../mw-battle-state.service';
 import { MwHeroesService } from '../mw-heroes.service';
@@ -70,6 +71,11 @@ export class GameController extends StoreClient() {
     this.events.dispatch(PlayersInitialized({}));
     this.events.dispatch(Triggers.PrepareGameEvent({ gameMode: DefaultGameModes.Normal }));
     this.events.dispatch(GameOpenMapStructuresScreen());
+  }
+
+  @Notify(NewDayStarted)
+  public notifyBuildingsNewDayStarted(): void {
+    this.state.eventHandlers.buildings.triggerAllHandlersByEvent(NewDayBegins());
   }
 
   @Notify(PlayerLeavesTown)

@@ -39,9 +39,6 @@ export interface SpellBaseType<SpellStateType = DefaultSpellStateType> {
   // level: number;
   activationType: SpellActivationType;
 
-  /** @deprecated possibly deprecated */
-  description?: string;
-
   getDescription(data: SpellDescriptionData<SpellStateType>): { descriptions: DescriptionElement[] };
 
   type: SpellTypeConfig<SpellStateType>;

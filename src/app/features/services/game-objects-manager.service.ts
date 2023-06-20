@@ -1,7 +1,7 @@
-import { Injectable, Type } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { CONFIG } from 'src/app/core/config';
 import { InitGameObjectApi } from 'src/app/core/events';
-import { CreationParams, GameObject } from 'src/app/core/game-objects';
+import { CreationParams, GameObject, GameObjectClass } from 'src/app/core/game-objects';
 import { EventsService } from 'src/app/store';
 
 const ID_SEPARATOR = ':';
@@ -30,7 +30,7 @@ export class GameObjectsManager {
 
   constructor(private readonly events: EventsService) { }
 
-  createNewGameObject<T extends GameObject>(gameObjectClass: Type<T> & { categoryId: string }, creationParams: CreationParams<T>, id?: string): T {
+  createNewGameObject<T extends GameObject>(gameObjectClass: GameObjectClass<T>, creationParams: CreationParams<T>, id?: string): T {
     const categoryId = gameObjectClass.categoryId;
 
     const unitsRegistry = this.getOrCreateCategoryRegistry(categoryId);
@@ -67,7 +67,7 @@ export class GameObjectsManager {
     return newGameObject;
   }
 
-  getObjectById<T extends GameObject>(gameObjectClass: Type<T> & { categoryId: string }, id: string): T {
+  getObjectById<T extends GameObject>(gameObjectClass: GameObjectClass<T>, id: string): T {
     return this.getObjectByFullId(createId(gameObjectClass.categoryId, id));
   }
 
@@ -96,10 +96,12 @@ export class GameObjectsManager {
 
     categoryRegistry?.objects.delete(object);
 
+    object.onDestroy();
+
     this.allObjects.delete(object.id);
   }
 
-  getObjectId<T extends GameObject>(gameObjectClass: Type<T> & { categoryId: string }, id: string): string {
+  getObjectId<T extends GameObject>(gameObjectClass: GameObjectClass<T>, id: string): string {
     // check if id is already complete
     const idParts = id.split(':');
 

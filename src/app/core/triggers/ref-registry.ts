@@ -1,4 +1,4 @@
-import { EventMetadataInfo, EventType, EventData } from 'src/app/store';
+import { EventData, EventType } from 'src/app/store';
 
 // this is going to replace { Spell/Item: { Event: Handler } } and some other possible things in the future.
 export class RefEventTriggersRegistry<T> {

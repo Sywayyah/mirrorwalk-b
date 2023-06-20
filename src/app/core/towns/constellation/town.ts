@@ -1,5 +1,6 @@
 import { CONSTELLATION_UNIT_TYPES, constellationFraction } from '../../fractions/constellation/fraction';
-import { ActivityTypes, BuidlingBase, HiringActivity, TownBase } from '../types';
+import { ActivityTypes, BuidlingBase, HiringActivity } from '../buildings';
+import { TownBase } from '../types';
 
 
 function createHiringActivity(

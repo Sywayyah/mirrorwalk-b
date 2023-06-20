@@ -2,7 +2,7 @@ import { EventType } from './events';
 
 type EventGroupList = Record<string | number, EventType<any>>;
 
-interface EventGroup<T extends EventGroupList> {
+export interface EventGroup<T extends EventGroupList> {
   events: T,
   // poor refactoring, but later it feels poor overall
   getEventByName<K extends keyof T>(eventName: K): T[K];
