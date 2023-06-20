@@ -18,6 +18,7 @@ import { MwPlayersService } from '../mw-players.service';
 import { MwSpellsService } from '../mw-spells.service';
 import { MwUnitGroupsService } from '../mw-unit-groups.service';
 import { State } from '../state.service';
+import { GameObjectsManager } from '../game-objects-manager.service';
 
 @Injectable()
 export class InGameApiController extends StoreClient() {
@@ -32,6 +33,7 @@ export class InGameApiController extends StoreClient() {
     private itemsService: MwItemsService,
     private apiProvider: ApiProvider,
     private state: State,
+    private gameObjectsManager: GameObjectsManager,
   ) {
     super();
   }
@@ -108,6 +110,7 @@ export class InGameApiController extends StoreClient() {
       spells: this.apiProvider.getSpellsApi(),
       // basic exposure of global events to GameObjects
       events: { on: (event) => this.events.onEvent(event) },
+      gameObjects: this.gameObjectsManager,
     };
   }
 
