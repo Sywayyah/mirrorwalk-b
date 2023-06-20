@@ -74,5 +74,6 @@ export class Building extends GameObject<BuildingCreationParams> {
   create(params: BuildingCreationParams): void {
     this.base = params.base;
     this.currentBuilding = params.base.levels[0].building;
+    // can add some public methods in GameObjects
   }
 }
