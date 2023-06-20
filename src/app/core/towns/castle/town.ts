@@ -1,6 +1,6 @@
-import { humansFraction, HUMANS_UNIT_TYPES } from '../../fractions';
-import { ActivityTypes, BuidlingBase, HiringActivity, TownBase } from '../types';
-
+import { HUMANS_UNIT_TYPES, humansFraction } from '../../fractions';
+import { ActivityTypes, BuidlingBase, HiringActivity } from '../buildings';
+import { TownBase } from '../types';
 
 function createHiringActivity(
   unitType: HUMANS_UNIT_TYPES,
