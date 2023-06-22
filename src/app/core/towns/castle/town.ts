@@ -50,6 +50,16 @@ const market: BuidlingBase = {
 
 const highTower: BuidlingBase = {
   name: 'High Tower',
+  description: 'Brings 5 mana to your hero at the beginning of each week',
+  config: {
+    init({ localEvents, players }) {
+      localEvents.on({
+        NewWeekStarts() {
+          players.addManaToPlayer(players.getCurrentPlayer(), 5);
+        },
+      });
+    },
+  }
 };
 
 const tavern: BuidlingBase = {

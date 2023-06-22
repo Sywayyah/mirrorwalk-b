@@ -1,4 +1,4 @@
-import { NewDayParams, NewDayStarted } from '../events';
+import { NewWeekStarted } from '../events';
 import { GameObject } from '../game-objects';
 import { ActivityTypes, Building, BuildingDescription, HiringActivity } from './buildings';
 
@@ -28,17 +28,18 @@ export class Town<T extends string> extends GameObject<TownCreationParams<T>> {
     this.initUnitGrowthAndAvailability();
 
     // the basic use of global events listening from GameObjects
-    this.getApi().events.on(NewDayStarted).subscribe((event: NewDayParams) => {
+    this.getApi().events.on(NewWeekStarted).subscribe((event) => {
       console.log('New day started, town:', this, event);
 
-      // army growth each 7-th day
-      // todo: extract into a separate event, like NewWeekBegins
-      if ((event.day % 7) === 0) {
-        this.getHiringBuildings().forEach((building) => {
-          const hiring = building.currentBuilding.activity as HiringActivity;
-          this.unitsAvailableMap[hiring.unitGrowthGroup] += hiring.growth;
-        });
-      }
+      // army growth each week
+      this.updateAvailableUnitsByWeeklyGrowth();
+    });
+  }
+
+  private updateAvailableUnitsByWeeklyGrowth(): void {
+    this.getHiringBuildings().forEach((building) => {
+      const hiring = building.currentBuilding.activity as HiringActivity;
+      this.unitsAvailableMap[hiring.unitGrowthGroup] += hiring.growth;
     });
   }
 

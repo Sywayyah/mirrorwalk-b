@@ -10,6 +10,7 @@ import { Building } from '../../towns';
 export type StructSelectedEvent = { struct: MapStructure };
 export type NeutralStructParams = { struct: MapStructure };
 export type NewDayParams = { day: number };
+export type NewWeekParams = { week: number };
 export type FightStartsEvent = { unitGroups: UnitGroup[], players: Player[] };
 export type InitSpellAction = { spell: Spell, player: Player, ownerUnit?: UnitGroup };
 export type InitItemAction = { item: Item, ownerPlayer: Player };

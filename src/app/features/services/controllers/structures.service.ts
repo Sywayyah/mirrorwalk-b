@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { MapPanCameraCenterTo, NeutralStructParams, NewDayStarted, PanMapCameraCenterAction, StructCompleted } from 'src/app/core/events';
+import { MapPanCameraCenterTo, NeutralStructParams, NewDayStarted, NewWeekStarted, PanMapCameraCenterAction, StructCompleted } from 'src/app/core/events';
 import { MapStructure, defaultTravelPointsCost, defaultTravelPointsPerDay } from 'src/app/core/structures';
 import { StoreClient, WireMethod } from 'src/app/store';
 import { GameObjectsManager } from '../game-objects-manager.service';
@@ -25,15 +25,24 @@ export class StructuresController extends StoreClient() {
     this.gameObjectsManager.getObjectByFullId<MapStructure>(structId)!.visited = true;
     this.structuresService.playerCurrentLocId = structId;
     this.structuresService.updateAvailableStructures();
-    this.state.currentGame.travelPoints -= defaultTravelPointsCost;
 
-    if (this.state.currentGame.travelPoints <= 0) {
-      this.state.currentGame.day += 1;
-      this.state.currentGame.travelPoints += defaultTravelPointsPerDay;
+    const currentGame = this.state.currentGame;
+
+    currentGame.travelPoints -= defaultTravelPointsCost;
+
+    if (currentGame.travelPoints <= 0) {
+      currentGame.day += 1;
+      currentGame.travelPoints += defaultTravelPointsPerDay;
 
       this.events.dispatch(NewDayStarted({
-        day: this.state.currentGame.day
+        day: currentGame.day
       }));
+
+      if ((currentGame.day % 7) === 0) {
+        currentGame.week += 1;
+
+        this.events.dispatch(NewWeekStarted({ week: currentGame.week }));
+      }
     }
   }
 
