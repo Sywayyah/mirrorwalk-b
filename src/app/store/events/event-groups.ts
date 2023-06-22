@@ -32,6 +32,17 @@ export type EventTypeByName<T extends EventGroup<any>, K extends keyof T['events
 
 export type EventHandlersMap<T extends EventGroup<any>> = { [K in keyof T['events']]?: (target: ReturnType<T['events'][K]>) => void };
 
+// this could simplify usage of Events
+export type EventGroupUtilTypes<T extends EventGroup<any>> = {
+  EventNames: EventNames<T>,
+  EventsOfGroup: EventsOfGroup<T>,
+  EventHandlersMap: EventHandlersMap<T>,
+
+  // this could potentially remove type files for events
+  GroupEventTypes: { [K in keyof T['events']]: ReturnType<T['events'][K]> },
+  // GroupEventTypes: { [K in keyof T['events']]: T extends T['events'][K]<infer U> ? U : never },
+};
+
 // Api tests:
 
 // const triggersEvents = createEventsGroup({
