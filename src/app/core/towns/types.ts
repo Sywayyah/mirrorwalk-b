@@ -30,6 +30,15 @@ export class Town<T extends string> extends GameObject<TownCreationParams<T>> {
     // the basic use of global events listening from GameObjects
     this.getApi().events.on(NewDayStarted).subscribe((event: NewDayParams) => {
       console.log('New day started, town:', this, event);
+
+      // army growth each 7-th day
+      // todo: extract into a separate event, like NewWeekBegins
+      if ((event.day % 7) === 0) {
+        this.getHiringBuildings().forEach((building) => {
+          const hiring = building.currentBuilding.activity as HiringActivity;
+          this.unitsAvailableMap[hiring.unitGrowthGroup] += hiring.growth;
+        });
+      }
     });
   }
 
@@ -47,8 +56,7 @@ export class Town<T extends string> extends GameObject<TownCreationParams<T>> {
   }
 
   private initUnitGrowthAndAvailability(): void {
-    const hiringBuildings = Object.values<Building>(this.buildings)
-      .filter((building) => building.currentBuilding.activity?.type === ActivityTypes.Hiring);
+    const hiringBuildings = this.getHiringBuildings();
 
     this.growthMap = hiringBuildings
       .reduce((acc, hiringBuilding) => {
@@ -67,5 +75,10 @@ export class Town<T extends string> extends GameObject<TownCreationParams<T>> {
       acc[activity.unitGrowthGroup] = activity.growth;
       return acc;
     }, {} as Record<string, number>);
+  }
+
+  private getHiringBuildings(): Building[] {
+    return Object.values<Building>(this.buildings)
+      .filter((building) => building.currentBuilding.activity?.type === ActivityTypes.Hiring);
   }
 }
