@@ -3,13 +3,14 @@ import { PLAYER_COLORS } from 'src/app/core/assets';
 import { DefaultGameModes, FightStarts, FightStartsEvent, GameCreated, GameOpenMainScreen, GameOpenMapStructuresScreen, GamePreparedEvent, GameStarted, NeutralStructParams, NewDayStarted, NewWeekStarted, PlayerLeavesTown, PlayerStartsFight, PlayersInitialized, StructFightConfirmed, StructSelected, StructSelectedEvent, Triggers } from 'src/app/core/events';
 import { heroesDefaultResources } from 'src/app/core/heroes';
 import { PlayerTypeEnum } from 'src/app/core/players';
+import { StructEvents } from 'src/app/core/structures/events';
+import { TownEvents } from 'src/app/core/towns';
 import { Notify, StoreClient, WireMethod } from 'src/app/store';
 import { BattleStateService } from '../mw-battle-state.service';
 import { MwHeroesService } from '../mw-heroes.service';
 import { MwPlayersService, PLAYER_IDS } from '../mw-players.service';
 import { MwStructuresService } from '../mw-structures.service';
 import { State } from '../state.service';
-import { TownEvents } from 'src/app/core/towns';
 
 @Injectable()
 export class GameController extends StoreClient() {
@@ -76,11 +77,13 @@ export class GameController extends StoreClient() {
   @Notify(NewDayStarted)
   public notifyBuildingsNewDayStarted(): void {
     this.state.eventHandlers.buildings.triggerAllHandlersByEvent(TownEvents.NewDayBegins());
+    this.state.eventHandlers.structures.triggerAllHandlersByEvent(StructEvents.NewDayBegins());
   }
 
   @Notify(NewWeekStarted)
   public notifyBuildignsNewWeekStarted(): void {
     this.state.eventHandlers.buildings.triggerAllHandlersByEvent(TownEvents.NewWeekStarts());
+    this.state.eventHandlers.structures.triggerAllHandlersByEvent(StructEvents.NewWeekBegins());
   }
 
   @Notify(PlayerLeavesTown)

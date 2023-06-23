@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
+import { StructEvents } from 'src/app/core/structures/events';
 import { StructPopupData } from 'src/app/core/ui';
 import { MwPlayersService } from 'src/app/features/services';
 import { ApiProvider } from 'src/app/features/services/api-provider.service';
+import { State } from 'src/app/features/services/state.service';
 import { BasicPopup } from 'src/app/features/shared/components';
 
 @Component({
@@ -14,6 +16,7 @@ export class PreviewPopupComponent extends BasicPopup<StructPopupData> {
   constructor(
     private players: MwPlayersService,
     private apiProvider: ApiProvider,
+    private state: State,
   ) {
     super();
   }
@@ -32,6 +35,8 @@ export class PreviewPopupComponent extends BasicPopup<StructPopupData> {
       spellsApi: this.apiProvider.getSpellsApi(),
       visitingPlayer: currentPlayer,
     });
+
+    this.state.eventHandlers.structures.triggerRefEventHandlers(this.data.struct, StructEvents.StructVisited({ visitingPlayer: this.players.getCurrentPlayer() }));
 
     struct.isInactive = true;
 
