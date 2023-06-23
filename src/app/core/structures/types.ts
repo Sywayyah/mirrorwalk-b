@@ -21,12 +21,18 @@ interface OnVisitedParams {
 
 export type StructsAPI = { players: PlayersApi, localEvents: LocalEvents<typeof SturctEventsGroup>, thisStruct: MapStructure, };
 
+export enum StructureType {
+  Scripted,
+}
+
 /* This base type for structures will be expanded and, most likely, will have an access to events and API. */
 export interface StructureGeneratorModel {
   name: string;
   icon?: string;
   control: StuctureControl;
   description?: string,
+
+  type?: StructureType;
 
   generateGuard?: () => GenerationModel;
 

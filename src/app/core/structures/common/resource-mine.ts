@@ -1,9 +1,8 @@
 import { ResourceType, Resources, resourceNames } from "../../resources";
-import { StructureGeneratorModel, StuctureControl } from "../types";
+import { StructureGeneratorModel, StructureType, StuctureControl } from "../types";
 
 
 export const dailyResourcesMineStructure = (resources: Resources): StructureGeneratorModel => {
-
   return {
     name: 'Mine with Resources',
     control: StuctureControl.Neutral,
@@ -13,8 +12,7 @@ export const dailyResourcesMineStructure = (resources: Resources): StructureGene
       .map(([resType, amount]) => `+${amount} ${resourceNames[resType as ResourceType]}`)
       .join('\n'),
 
-    // todo: adjust this, transfer other locations to event approach
-    onVisited() { },
+    type: StructureType.Scripted,
 
     config: {
       init({ localEvents, players, thisStruct }) {
