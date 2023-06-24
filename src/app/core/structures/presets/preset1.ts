@@ -1,6 +1,7 @@
 import { ResourceType } from '../../resources';
 import { ArchersOutpostStructure, BanditCamp, BeaconOfTheUndead, BigCampStructure, CalavryStalls, GraveyardStructure, MagicRiverStructure, MountainNestStructure, ThiefsLair, WitchHutStructure } from '../common';
 import { FireRingStructure } from '../common/guard-location';
+import { dailyResourcesMineStructure } from '../common/resource-mine';
 import { resourcesPileStructure, resPileStructure } from '../common/resource-pile';
 import { StructureDescription } from '../map-structures';
 
@@ -89,6 +90,15 @@ const brBranch: StructureDescription[] = [
     pathTo: '8',
 
     struct: CalavryStalls,
+  },
+  {
+    id: '23',
+    x: loc(240),
+    y: loc(148),
+    icon: 'hand-saw',
+    pathTo: '22',
+
+    struct: dailyResourcesMineStructure({ wood: 1 }),
   },
   {
     id: '20',
