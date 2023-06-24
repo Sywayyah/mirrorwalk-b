@@ -1,11 +1,13 @@
 import { Injectable } from '@angular/core';
 import { CombatActionsRef, SpellCreationOptions } from 'src/app/core/api/combat-api';
 import { EffectType, VfxElemEffect } from 'src/app/core/api/vfx-api';
-import { GroupModifiersChanged, GroupSpeedChanged, InitBuilding, InitBuildingAction, InitGameObjectApi, InitGameObjectApiParams, InitItem, InitItemAction, InitSpell, InitSpellAction, PlayerReceivesItem, PlayersInitialized, UnitHealed, UnitSummoned } from 'src/app/core/events';
+import { GroupModifiersChanged, GroupSpeedChanged, InitBuilding, InitBuildingAction, InitGameObjectApi, InitGameObjectApiParams, InitItem, InitItemAction, InitMapStructureAction, InitSpell, InitSpellAction, InitStructure, PlayerReceivesItem, PlayersInitialized, UnitHealed, UnitSummoned } from 'src/app/core/events';
 import { GameObjectApi } from 'src/app/core/game-objects';
 import { ItemEventNames, ItemsEventsGroup, ItemsEventsHandlers } from 'src/app/core/items';
 import { Player } from 'src/app/core/players';
 import { Spell, SpellBaseType, SpellEventHandlers, SpellEventNames, SpellEventsGroup } from 'src/app/core/spells';
+import { StructEventUtilTypes, SturctEventsGroup } from 'src/app/core/structures/events';
+import { BuildingEventNames, BuildingEventsHandlers, BuildingsEventsGroup } from 'src/app/core/towns/events';
 import { CommonUtils, UnitBaseType, UnitGroup } from 'src/app/core/unit-types';
 import { Notify, StoreClient, WireMethod } from 'src/app/store';
 import { VfxService } from '../../shared/components';
@@ -19,7 +21,6 @@ import { MwPlayersService } from '../mw-players.service';
 import { MwSpellsService } from '../mw-spells.service';
 import { MwUnitGroupsService } from '../mw-unit-groups.service';
 import { State } from '../state.service';
-import { BuildingEventNames, BuildingEventsHandlers, BuildingsEventsGroup } from 'src/app/core/towns/events';
 
 @Injectable()
 export class InGameApiController extends StoreClient() {
@@ -107,8 +108,8 @@ export class InGameApiController extends StoreClient() {
     building.currentBuilding.config?.init({
       players: this.apiProvider.getPlayerApi(),
       localEvents: {
-        on: (newEventHandlers: BuildingEventsHandlers) => {
-          Object.entries(newEventHandlers).forEach(([eventName, handler]) => {
+        on: (eventHandlers: BuildingEventsHandlers) => {
+          Object.entries(eventHandlers).forEach(([eventName, handler]) => {
             const event = BuildingsEventsGroup.getEventByName(eventName as BuildingEventNames);
 
             // any as well
@@ -116,6 +117,23 @@ export class InGameApiController extends StoreClient() {
           });
         }
       }
+    });
+  }
+
+  @WireMethod(InitStructure)
+  public initStructureGameObject({ structure }: InitMapStructureAction): void {
+    structure.generator?.config?.init({
+      players: this.apiProvider.getPlayerApi(),
+      thisStruct: structure,
+      localEvents: {
+        on: (eventHandlers: StructEventUtilTypes['EventHandlersMap']) => {
+          Object.entries(eventHandlers).forEach(([eventName, handler]) => {
+            const event = SturctEventsGroup.getEventByName(eventName as StructEventUtilTypes['EventNames']);
+
+            this.state.eventHandlers.structures.registerHandlerByRef(structure, event as any, handler);
+          });
+        }
+      },
     });
   }
 

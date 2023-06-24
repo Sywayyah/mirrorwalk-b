@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
-import { GamePreparedEvent } from 'src/app/core/events';
+import { GamePreparedEvent, InitStructure } from 'src/app/core/events';
 import { Player } from 'src/app/core/players';
+import { MapStructure, START_LOC_ID, StructureDescription } from 'src/app/core/structures';
+import { EventsService } from 'src/app/store';
 import { MwPlayersService, MwUnitGroupsService } from './';
 import { GameObjectsManager } from './game-objects-manager.service';
-import { MapStructure, START_LOC_ID, StructureDescription } from 'src/app/core/structures';
 
 @Injectable({
   providedIn: 'root'
@@ -25,6 +26,7 @@ export class MwStructuresService {
     private playersService: MwPlayersService,
     private unitGroups: MwUnitGroupsService,
     private gameObjectsManager: GameObjectsManager,
+    private events: EventsService,
   ) { }
 
   public initStructures(event: GamePreparedEvent): void {
@@ -51,18 +53,24 @@ export class MwStructuresService {
     });
   }
 
-  private createViewStructures(init: StructureDescription[]): MapStructure[] {
-    const structures = init.map(struct => this.gameObjectsManager.createNewGameObject(MapStructure, {
-      iconName: struct.icon,
-      x: struct.x,
-      y: struct.y,
-      generator: struct.struct,
-      guardingPlayer: undefined,
-      isRoot: struct.isRoot,
-      pathTo: struct.pathTo ? this.gameObjectsManager.getObjectId(MapStructure, struct.pathTo) : undefined,
-    }, struct.id));
+  private createViewStructures(initialStructures: StructureDescription[]): MapStructure[] {
+    const createdStructures = initialStructures.map(struct => this.gameObjectsManager.createNewGameObject(
+      MapStructure,
+      {
+        iconName: struct.icon,
+        x: struct.x,
+        y: struct.y,
+        generator: struct.struct,
+        guardingPlayer: undefined,
+        isRoot: struct.isRoot,
+        pathTo: struct.pathTo ? this.gameObjectsManager.getObjectId(MapStructure, struct.pathTo) : undefined,
+      },
+      struct.id,
+    ));
 
-    return structures.map((viewStrcuture) => {
+    return createdStructures.map((viewStrcuture) => {
+      this.events.dispatch(InitStructure({ structure: viewStrcuture }));
+
       const pathTo = viewStrcuture.pathTo;
 
       if (viewStrcuture.isRoot) {
@@ -72,7 +80,7 @@ export class MwStructuresService {
       }
 
       if (pathTo) {
-        const linkedLoc = structures.find(struct2 => struct2.id === viewStrcuture.pathTo)!;
+        const linkedLoc = createdStructures.find(struct2 => struct2.id === viewStrcuture.pathTo)!;
         viewStrcuture.pathTo = pathTo;
 
         const { x, y } = viewStrcuture;

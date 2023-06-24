@@ -1,4 +1,5 @@
 import { EventGroupUtilTypes, createEventType, createEventsGroup } from 'src/app/store';
+import { Player } from '../../players';
 
 const structEvent = createEventType;
 
@@ -7,8 +8,10 @@ export const SturctEventsGroup = createEventsGroup({
   events: {
     NewDayBegins: structEvent(),
     NewWeekBegins: structEvent(),
-    StructVisited: structEvent(),
+    StructVisited: structEvent<{visitingPlayer: Player}>(),
   },
-})
+});
 
-type StructEventUtilTypes = EventGroupUtilTypes<typeof SturctEventsGroup>;
+export const StructEvents = SturctEventsGroup.events;
+
+export type StructEventUtilTypes = EventGroupUtilTypes<typeof SturctEventsGroup>;
