@@ -219,8 +219,8 @@ export class InGameApiController extends StoreClient() {
       getRandomEnemyPlayerGroup: () => {
         return this.combatInteractor.getRandomEnemyUnitGroup();
       },
-      getEnemyPlayer: () => {
-        return this.players.getEnemyPlayer();
+      getEnemyOfPlayer: (player) => {
+        return this.battleState.getEnemyOfPlayer(player);
       },
       historyLog: (plainMsg) => {
         this.battleLog.logSimpleMessage(plainMsg);

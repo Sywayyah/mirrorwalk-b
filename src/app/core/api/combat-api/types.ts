@@ -7,6 +7,7 @@ import { SpellsApi } from '../game-api';
 export interface PostDamageInfo {
   unitLoss: number;
   finalDamage: number;
+  initialUnitCount: number;
 }
 
 export enum DamageType {
@@ -54,7 +55,7 @@ export interface CombatActionsRef extends SpellsApi {
 
   getRandomEnemyPlayerGroup: () => UnitGroup;
 
-  getEnemyPlayer: () => Player;
+  getEnemyOfPlayer: (player: Player) => Player;
 
   historyLog: (plainMsg: string) => void;
 

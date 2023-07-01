@@ -28,7 +28,7 @@ export const SummonFireSpiritsSpell: SpellBaseType = {
 
             vfx.createEffectForUnitGroup(summonedUnitGroup, FireAnimation, { duration: 1000 });
 
-            const enemyUnitGroups = actions.getAliveUnitGroupsOfPlayer(actions.getEnemyPlayer());
+            const enemyUnitGroups = actions.getAliveUnitGroupsOfPlayer(actions.getEnemyOfPlayer(ownerPlayer));
 
             // possible addition to spell: when Fire Spirits are summoned, all enemies receive 15
             // magical damage

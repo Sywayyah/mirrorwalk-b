@@ -8,6 +8,9 @@ export type NEUTRAL_UNIT_TYPES =
   | 'ForestTrolls'
 
   | 'FireSpirits'
+
+  // bosses
+  | 'Devastator'
   ;
 
 const defaultReward = {
