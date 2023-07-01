@@ -99,12 +99,16 @@ export class CombatInteractorService extends StoreClient() {
         finalDamage = damage;
     }
 
+    const initialUnitCount = target.count;
+
+    // this could become event at some point
     const finalDamageInfo = this.unitState.dealPureDamageToUnitGroup(target, finalDamage);
 
     if (postActionFn) {
       postActionFn({
         unitLoss: finalDamageInfo.finalUnitLoss,
         finalDamage: finalDamageInfo.finalDamage,
+        initialUnitCount,
       });
     }
 

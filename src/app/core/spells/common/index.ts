@@ -10,3 +10,4 @@ export * from './meteor';
 export * from './poison-cloud';
 export * from './rain-of-fire';
 export * from './wind-bless';
+export * from './fire-breath';

@@ -40,6 +40,7 @@ export interface ModifiersModel {
   counterattacks: boolean;
   isGhost: boolean;
   isSummon: boolean;
+  isBoss: boolean;
 }
 
 export type Modifiers = Partial<ModifiersModel>;

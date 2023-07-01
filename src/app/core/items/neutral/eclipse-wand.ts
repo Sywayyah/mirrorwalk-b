@@ -24,7 +24,7 @@ export const ItemEclipseWand: ItemBaseModel<{}> = {
       events.on({
         NewRoundBegins(event) {
           if (event.round === 0) {
-            const enemyPlayer = actions.getEnemyPlayer();
+            const enemyPlayer = actions.getEnemyOfPlayer(ownerPlayer);
             const enemyUnitGroups = actions.getUnitGroupsOfPlayer(enemyPlayer);
 
             enemyUnitGroups.forEach(unitGroup => {

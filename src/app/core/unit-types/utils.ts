@@ -58,6 +58,21 @@ export const CommonUtils = {
     return Math.random() < chance;
   },
 
+  getRandomItems<T>(items: T[], count: number): T[] {
+    const itemsLeft = [...items];
+    const result = [];
+
+    while (count) {
+      const [item] = itemsLeft.splice(CommonUtils.randIndex(itemsLeft), 1);
+
+      result.push(item);
+
+      count--;
+    }
+
+    return result;
+  }
+
 };
 
 interface GenerationDescription {
