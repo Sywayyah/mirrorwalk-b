@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { PLAYER_COLORS } from 'src/app/core/assets';
-import { DefaultGameModes, FightStarts, FightStartsEvent, GameCreated, GameOpenMainScreen, GameOpenMapStructuresScreen, GamePreparedEvent, GameStarted, NeutralStructParams, NewDayStarted, NewWeekStarted, PlayerLeavesTown, PlayerStartsFight, PlayersInitialized, StructFightConfirmed, StructSelected, StructSelectedEvent, Triggers } from 'src/app/core/events';
+import { DefaultGameModes, FightStarts, FightStartsEvent, GameCommandEvents, GameCreated, GameEventsTypes, GameOpenMainScreen, GameOpenMapStructuresScreen, GamePreparedEvent, GameStarted, NeutralStructParams, NewDayStarted, NewWeekStarted, PlayerLeavesTown, PlayerStartsFight, PlayersInitialized, PushEventFeedMessage, StructFightConfirmed, StructSelected, StructSelectedEvent, Triggers } from 'src/app/core/events';
 import { heroesDefaultResources } from 'src/app/core/heroes';
 import { PlayerTypeEnum } from 'src/app/core/players';
 import { StructEvents } from 'src/app/core/structures/events';
@@ -11,6 +11,7 @@ import { MwHeroesService } from '../mw-heroes.service';
 import { MwPlayersService, PLAYER_IDS } from '../mw-players.service';
 import { MwStructuresService } from '../mw-structures.service';
 import { State } from '../state.service';
+import { UiEventFeedService } from '../ui-event-feed.service';
 
 @Injectable()
 export class GameController extends StoreClient() {
@@ -21,6 +22,7 @@ export class GameController extends StoreClient() {
     private players: MwPlayersService,
     private heroesService: MwHeroesService,
     private state: State,
+    private eventFeedUiService: UiEventFeedService,
   ) {
     super();
   }
@@ -80,8 +82,14 @@ export class GameController extends StoreClient() {
     this.state.eventHandlers.structures.triggerAllHandlersByEvent(StructEvents.NewDayBegins());
   }
 
-  @Notify(NewWeekStarted)
-  public notifyBuildignsNewWeekStarted(): void {
+  @WireMethod(PushEventFeedMessage)
+  public pushEventFeedMessage(event: GameCommandEvents['PushEventFeedMessage']): void {
+    this.eventFeedUiService.pushEventFeedMessage(event);
+  }
+
+  @WireMethod(NewWeekStarted)
+  public notifyBuildignsNewWeekStarted(event: GameEventsTypes['NewWeekStarted']): void {
+    this.eventFeedUiService.pushPlainMessage(`Week ${event.week} started`);
     this.state.eventHandlers.buildings.triggerAllHandlersByEvent(TownEvents.NewWeekStarts());
     this.state.eventHandlers.structures.triggerAllHandlersByEvent(StructEvents.NewWeekBegins());
   }

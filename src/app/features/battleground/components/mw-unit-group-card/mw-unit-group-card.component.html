@@ -40,7 +40,7 @@
         </div>
 
         <!-- this info will have to be updated -->
-        <div>
+        <div *ngIf="!isBoss">
           <mw-ra-icon icon="health" />
           {{ unitGroup.type.baseStats.health * (unitGroup.count - 1) + (unitGroup.tailUnitHp ?? 0) }}
         </div>
@@ -80,8 +80,15 @@
 
         -->
     <!-- rgb(80 89 165) -->
-    <!-- <mw-value-bar class="health-bar" barStyle="static" [side]="side" color="rgb(201, 45, 45)" [currentValue]="unitGroup.count"
-            [maxValue]="unitGroup.fightInfo.initialCount" [barHeight]="14">
-        </mw-value-bar> -->
+    <mw-value-bar class="health-bar"
+                  *ngIf="isBoss"
+                  barStyle="normal"
+                  [side]="side"
+                  color="rgb(201, 45, 45)"
+                  [showMax]="true"
+                  [currentValue]="unitGroup.tailUnitHp!"
+                  [maxValue]="unitGroup.type.baseStats.health"
+                  [barHeight]="14">
+    </mw-value-bar>
   </div>
 </div>

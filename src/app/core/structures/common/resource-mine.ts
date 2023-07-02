@@ -15,7 +15,7 @@ export const dailyResourcesMineStructure = (resources: Resources): StructureGene
     type: StructureType.Scripted,
 
     config: {
-      init({ localEvents, players, thisStruct }) {
+      init({ localEvents, players, thisStruct, eventFeed }) {
         // start to give resources only after player visited the mine.
 
         localEvents.on({

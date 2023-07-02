@@ -14,6 +14,10 @@ const gameCommands = createEventsGroup({
 
 export const Game = { ...gameEvents.events, ...gameCommands.events };
 
-// type GameEventGroupUtilTypes = EventGroupUtilTypes<typeof gameEvents>;
+type GameEventGroupUtilTypes = EventGroupUtilTypes<typeof gameEvents>;
+type GameCommandsGroupUtilTypes = EventGroupUtilTypes<typeof gameCommands>;
+
+export type GameCommandEvents = GameCommandsGroupUtilTypes['GroupEventTypes'];
+export type GameEventsTypes = GameEventGroupUtilTypes['GroupEventTypes'];
 
 // const a: GameEventGroupUtilTypes['GroupEventTypes']['PlayerEquipsItem'] = { item: {} as any, player: {} as any, __eventType: {} as any };

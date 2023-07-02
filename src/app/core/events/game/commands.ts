@@ -1,4 +1,5 @@
 import { createEventType } from 'src/app/store';
+import { DescHtmlElement } from '../../ui';
 import { DisplayPlayerRewardAction, InitBuildingAction, InitGameObjectApiParams, InitItemAction, InitMapStructureAction, InitSpellAction, PanMapCameraCenterAction } from './types';
 
 
@@ -38,3 +39,5 @@ export const InitItem = commands<InitItemAction>();
 export const InitBuilding = commands<InitBuildingAction>();
 
 export const InitStructure = commands<InitMapStructureAction>();
+
+export const PushEventFeedMessage = commands<{ message: DescHtmlElement[], delay?: number; }>();
