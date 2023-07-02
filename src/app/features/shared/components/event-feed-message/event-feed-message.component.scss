@@ -1,0 +1,26 @@
+:host {
+  background: rgb(65, 65, 65);
+  display: inline-block;
+  color: white;
+  font-size: 12px;
+  border-radius: 4px;
+  display: block;
+  padding: 3px 10px 3px 5px;
+  overflow: hidden;
+  height: 0;
+  opacity: 0;
+  position: relative;
+  right: -50%;
+  transition: 0.4s;
+}
+
+:host.visible {
+  height: 100%;
+  right: 0;
+  opacity: 1;
+}
+
+:host.hidden {
+  height: 0;
+  opacity: 0;
+}

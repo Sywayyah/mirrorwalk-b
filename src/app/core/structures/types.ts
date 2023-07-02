@@ -1,4 +1,5 @@
 import { PlayersApi, SpellsApi } from '../api/game-api';
+import { EventFeedApi } from '../game-objects';
 import { ItemBaseModel } from '../items';
 import { Player } from '../players';
 import { ResourceType } from '../resources';
@@ -19,7 +20,12 @@ interface OnVisitedParams {
 }
 
 
-export type StructsAPI = { players: PlayersApi, localEvents: LocalEvents<typeof SturctEventsGroup>, thisStruct: MapStructure, };
+export type StructsAPI = {
+  players: PlayersApi,
+  localEvents: LocalEvents<typeof SturctEventsGroup>,
+  thisStruct: MapStructure,
+  eventFeed: EventFeedApi,
+};
 
 export enum StructureType {
   Scripted,

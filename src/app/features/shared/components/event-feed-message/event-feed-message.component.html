@@ -1,0 +1,4 @@
+<ng-container *ngFor="let message of message.message"
+              [ngSwitch]="message.type">
+  <div [innerHTML]="message.htmlContent"></div>
+</ng-container>

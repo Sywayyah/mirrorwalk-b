@@ -172,10 +172,10 @@ const blBranch: StructureDescription[] = [
   {
     id: 'boss-1',
 
-    x: loc(-90),
-    y: loc(160),
+    x: loc(-250),
+    y: loc(-50),
     icon: 'monster-skull',
-    pathTo: 'left-2',
+    pathTo: '54',
     struct: RockyPassageStructure,
   },
   {

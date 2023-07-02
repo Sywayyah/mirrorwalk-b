@@ -1,0 +1,3 @@
+<mw-event-feed-message *ngFor="let message of eventFeed.visibleMessages"
+                       [message]="message"
+                       (messageExpired)="removeMessage(message)" />

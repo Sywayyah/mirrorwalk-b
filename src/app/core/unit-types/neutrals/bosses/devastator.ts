@@ -8,7 +8,8 @@ neutralsFraction.defineUnitType('Devastator', {
   mainPortraitUrl: AssetsImages.Melee,
 
   // Add units descriptions at some point
-  level: 7,
+  level: 8,
+
   baseStats: createStats([[30, 40], 6, 16, 900, 13]),
 
   defaultSpells: [FireBreath],

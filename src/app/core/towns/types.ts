@@ -1,5 +1,6 @@
 import { NewWeekStarted } from '../events';
 import { GameObject } from '../game-objects';
+import { createEventFeedMsg } from '../ui';
 import { ActivityTypes, Building, BuildingDescription, HiringActivity } from './buildings';
 
 export interface TownBase<T extends string> {
@@ -27,12 +28,14 @@ export class Town<T extends string> extends GameObject<TownCreationParams<T>> {
     this.initTownBuildings();
     this.initUnitGrowthAndAvailability();
 
+    // extract icon into a separate message type
+    this.getApi().eventFeed.pushPlainMessage(`<i class="ra ra-sword"></i> Objective: Defeat Devastator`);
     // the basic use of global events listening from GameObjects
     this.getApi().events.on(NewWeekStarted).subscribe((event) => {
-      console.log('New day started, town:', this, event);
 
       // army growth each week
       this.updateAvailableUnitsByWeeklyGrowth();
+      this.getApi().eventFeed.pushPlainMessage(`The army of ${this.base.name} has grown`);
     });
   }
 

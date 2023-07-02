@@ -21,6 +21,7 @@ import { MwPlayersService } from '../mw-players.service';
 import { MwSpellsService } from '../mw-spells.service';
 import { MwUnitGroupsService } from '../mw-unit-groups.service';
 import { State } from '../state.service';
+import { UiEventFeedService } from '../ui-event-feed.service';
 
 @Injectable()
 export class InGameApiController extends StoreClient() {
@@ -36,6 +37,7 @@ export class InGameApiController extends StoreClient() {
     private apiProvider: ApiProvider,
     private state: State,
     private gameObjectsManager: GameObjectsManager,
+    private eventFeed: UiEventFeedService,
   ) {
     super();
   }
@@ -134,6 +136,10 @@ export class InGameApiController extends StoreClient() {
           });
         }
       },
+      eventFeed: {
+        postEventFeedMessage: (message) => this.eventFeed.pushEventFeedMessage(message),
+        pushPlainMessage: (messageText) => this.eventFeed.pushPlainMessage(messageText),
+      },
     });
   }
 
@@ -148,6 +154,10 @@ export class InGameApiController extends StoreClient() {
       // basic exposure of global events to GameObjects
       events: { on: (event) => this.events.onEvent(event) },
       gameObjects: this.gameObjectsManager,
+      eventFeed: {
+        postEventFeedMessage: (message) => { this.eventFeed.pushEventFeedMessage(message) },
+        pushPlainMessage: (messageText) => this.eventFeed.pushPlainMessage(messageText),
+      },
     };
   }
 
