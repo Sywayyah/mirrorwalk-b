@@ -1,7 +1,7 @@
 import { DamageType } from '../../api/combat-api';
 import { EffectAnimation } from '../../api/vfx-api';
-import { DescriptionElementType, spellDescrElem } from '../../ui';
-import { CommonUtils } from '../../unit-types';
+import { spellDescrElem } from '../../ui';
+import { CommonUtils } from '../../utils';
 import { getDamageParts, simpleConvergentBuffAnimation } from '../../vfx';
 import { SpellActivationType, SpellBaseType } from '../types';
 

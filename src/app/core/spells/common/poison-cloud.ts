@@ -1,7 +1,7 @@
 import { DamageType } from '../../api/combat-api';
 import { EffectAnimation } from '../../api/vfx-api';
 import { spellDescrElem } from '../../ui';
-import { CommonUtils } from '../../unit-types';
+import { CommonUtils } from '../../utils';
 import { createAnimation, getDamageParts, getIconElement, getPlainBlurFrames, getReversePulseKeyframes } from '../../vfx';
 import { SpellActivationType, SpellBaseType } from '../types';
 import { canActivateOnEnemyFn, debuffColors } from '../utils';

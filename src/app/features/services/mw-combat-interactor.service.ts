@@ -6,11 +6,11 @@ import { Player } from 'src/app/core/players';
 import { SpellActivationType, SpellEventNames, SpellEventTypeByName, SpellEvents, Spell } from 'src/app/core/spells';
 import { ActionHintTypeEnum, AttackActionHintInfo } from 'src/app/core/ui';
 import { UnitGroup } from 'src/app/core/unit-types';
-import { CommonUtils } from 'src/app/core/unit-types/utils';
 import { EventData, StoreClient } from 'src/app/store';
 import { BattleStateService, FinalDamageInfo, MwPlayersService, MwUnitGroupStateService, MwUnitGroupsService } from './';
 import { ActionHintService } from './mw-action-hint.service';
 import { State } from './state.service';
+import { CommonUtils } from 'src/app/core/utils';
 
 
 @Injectable({

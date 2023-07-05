@@ -1,5 +1,5 @@
 import { humansFraction } from '../../fractions';
-import { CommonUtils } from '../../unit-types';
+import { CommonUtils } from '../../utils';
 import { StructureGeneratorModel, StuctureControl } from '../types';
 
 export const MountainNestStructure: StructureGeneratorModel = {

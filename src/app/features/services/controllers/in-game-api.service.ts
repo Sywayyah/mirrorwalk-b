@@ -8,7 +8,7 @@ import { Player } from 'src/app/core/players';
 import { Spell, SpellBaseType, SpellEventHandlers, SpellEventNames, SpellEventsGroup } from 'src/app/core/spells';
 import { StructEventUtilTypes, SturctEventsGroup } from 'src/app/core/structures/events';
 import { BuildingEventNames, BuildingEventsHandlers, BuildingsEventsGroup } from 'src/app/core/towns/events';
-import { CommonUtils, UnitBaseType, UnitGroup } from 'src/app/core/unit-types';
+import { UnitBaseType, UnitGroup } from 'src/app/core/unit-types';
 import { Notify, StoreClient, WireMethod } from 'src/app/store';
 import { VfxService } from '../../shared/components';
 import { ApiProvider } from '../api-provider.service';
@@ -22,6 +22,7 @@ import { MwSpellsService } from '../mw-spells.service';
 import { MwUnitGroupsService } from '../mw-unit-groups.service';
 import { State } from '../state.service';
 import { UiEventFeedService } from '../ui-event-feed.service';
+import { CommonUtils } from 'src/app/core/utils';
 
 @Injectable()
 export class InGameApiController extends StoreClient() {

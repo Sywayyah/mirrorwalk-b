@@ -5,7 +5,7 @@ import { Fraction, Fractions, humansFraction } from 'src/app/core/fractions';
 import { neutralsFraction } from 'src/app/core/fractions/neutrals/fraction';
 import { HeroBase } from 'src/app/core/heroes';
 import { Town, TownBase } from 'src/app/core/towns';
-import { CommonUtils } from 'src/app/core/unit-types';
+import { CommonUtils } from 'src/app/core/utils';
 import { GameObjectsManager } from 'src/app/features/services/game-objects-manager.service';
 import { State } from 'src/app/features/services/state.service';
 import { EventsService } from 'src/app/store';
