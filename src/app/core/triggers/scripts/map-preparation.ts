@@ -41,9 +41,8 @@ TriggersRegistry.register(PlayerLevelsUp, {
                 title: `Level ${spell.currentLevel + 1} ${spell.name}`
               },
               onSumbit: () => {
-                // extract into some api
                 if (spell) {
-                  spell.currentLevel += 1;
+                  spell.levelUp();
                 }
               },
             };

@@ -111,5 +111,10 @@ export class Spell<T = DefaultSpellStateType> extends GameObject<SpellCreationPa
 
     this.currentManaCost = this.baseType.type.spellConfig.getManaCost(this);
   }
+
+  levelUp(): void {
+    this.currentLevel += 1;
+    this.currentManaCost = this.baseType.type.spellConfig.getManaCost(this);
+  }
 }
 

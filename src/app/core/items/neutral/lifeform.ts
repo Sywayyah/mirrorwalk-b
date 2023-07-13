@@ -11,7 +11,10 @@ export const LifeformItem: ItemBaseModel = {
   },
   staticMods: {
     playerBonusDefence: 12,
-    resistAll: 13,
+    resistFire: 25,
+    resistPoison: 20,
+    resistLightnining: 15,
+    resistCold: 15,
   },
   description({ thisItem }) {
     return {

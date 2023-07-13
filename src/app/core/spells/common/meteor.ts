@@ -16,7 +16,7 @@ export const MeteorSpell: SpellBaseType = {
   getDescription(data) {
     return {
       descriptions: [
-        spellDescrElem(`Deals ${minDamage}-${maxDamage} magic damage to random enemy group`),
+        spellDescrElem(`Deals ${minDamage}-${maxDamage} fire damage to random enemy group`),
       ],
     }
   },
@@ -52,7 +52,7 @@ export const MeteorSpell: SpellBaseType = {
             actions.dealDamageTo(
               randomEnemyGroup,
               CommonUtils.randIntInRange(minDamage, maxDamage),
-              DamageType.Magic,
+              DamageType.Fire,
               ({ unitLoss, finalDamage }) => {
                 actions.historyLog(`${ownerHero.name} deals ${finalDamage} damage to ${countBeforeDamage} ${randomEnemyGroup.type.name} with ${thisSpell.name}, ${unitLoss} units perish`);
 

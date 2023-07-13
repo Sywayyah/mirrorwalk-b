@@ -123,17 +123,21 @@ export const PoisonCloudDebuff: SpellBaseType<undefined | { debuffRoundsLeft: nu
             events.on({
               NewRoundBegins(event) {
 
-                actions.dealDamageTo(target, CommonUtils.randIntInRange(minDamage, maxDamage), DamageType.Magic, (damageInfo) => {
-                  actions.historyLog(`Poison deals ${damageInfo.finalDamage} damage to ${target.type.name}, ${damageInfo.unitLoss} units perish`);
+                actions.dealDamageTo(
+                  target,
+                  CommonUtils.randIntInRange(minDamage, maxDamage),
+                  DamageType.Poison,
+                  (damageInfo) => {
+                    actions.historyLog(`Poison deals ${damageInfo.finalDamage} damage to ${target.type.name}, ${damageInfo.unitLoss} units perish`);
 
-                  vfx.createEffectForUnitGroup(target, PoisonCloudAnimation);
+                    vfx.createEffectForUnitGroup(target, PoisonCloudAnimation);
 
-                  vfx.createFloatingMessageForUnitGroup(
-                    target,
-                    getDamageParts(damageInfo.finalDamage, damageInfo.unitLoss),
-                    { duration: 1000 },
-                  );
-                });
+                    vfx.createFloatingMessageForUnitGroup(
+                      target,
+                      getDamageParts(damageInfo.finalDamage, damageInfo.unitLoss),
+                      { duration: 1000 },
+                    );
+                  });
 
                 debuffData.debuffRoundsLeft--;
 
