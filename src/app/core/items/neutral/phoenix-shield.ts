@@ -1,7 +1,7 @@
 import { ItemSlotType } from '../types';
 import { createItem } from '../utils';
 
-
+// Possible idea: place debuff that reduces fire resist on enemies.
 export const PhoenixShieldItem = createItem({
   name: 'Phoenix Shield',
   icon: 'fire-shield',
