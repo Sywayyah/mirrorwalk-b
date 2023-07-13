@@ -13,7 +13,15 @@ export interface PostDamageInfo {
 export enum DamageType {
   PhysicalAttack = 'physAttack',
   Physical = 'physical',
+
   Magic = 'magic',
+
+  Fire = 'fire',
+  Cold = 'cold',
+  Poison = 'poison',
+  Lightning = 'lightning',
+
+  Astral = 'astral'
 }
 
 export interface SpellCreationOptions<T = DefaultSpellStateType> {

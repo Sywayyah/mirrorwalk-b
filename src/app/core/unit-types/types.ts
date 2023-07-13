@@ -4,6 +4,7 @@ import { ResourcesModel } from '../resources';
 import { Spell, SpellBaseType } from '../spells';
 import { Modifiers } from '../modifiers/modifiers';
 import { GameObject } from '../game-objects';
+import { DescriptionElement } from '../ui';
 
 interface RequirementModel extends Partial<ResourcesModel> {
   /* heroLevel?: number;
@@ -54,6 +55,8 @@ export interface UnitBaseType {
   level: number;
 
   baseStats: UnitTypeBaseStatsModel;
+
+  getDescription?: (params: { unitBase: UnitBaseType, unit: UnitGroup }) => { descriptions: DescriptionElement[] },
 
   /* what does this unit type requires */
   baseRequirements: RequirementModel;

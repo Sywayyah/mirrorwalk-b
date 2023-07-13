@@ -74,6 +74,9 @@ neutralsFraction.defineUnitType('Gnoll', {
 
   baseStats: createStats([[3, 4], 1, 1, 10, 12]),
 
+  defaultModifiers: {
+    resistFire: 10,
+  },
   minQuantityPerStack: 5,
   defaultTurnsPerRound: 1,
 

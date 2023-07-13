@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { DescriptionElementType, EventFeedMessage } from 'src/app/core/ui';
-import { CommonUtils } from 'src/app/core/unit-types';
+import { CommonUtils } from 'src/app/core/utils';
 
 @Injectable({ providedIn: 'root' })
 export class UiEventFeedService {

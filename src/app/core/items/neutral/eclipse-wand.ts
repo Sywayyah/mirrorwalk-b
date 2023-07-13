@@ -6,6 +6,8 @@ export const ItemEclipseWand: ItemBaseModel<{}> = {
   name: 'Eclipse Wand',
   slotType: ItemSlotType.Weapon,
   staticMods: {
+    // add bonus mana, maybe regen
+    // resistAll: 5,
   },
   icon: {
     icon: 'crystal-wand',

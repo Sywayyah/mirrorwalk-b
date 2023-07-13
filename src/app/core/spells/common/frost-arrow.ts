@@ -128,7 +128,7 @@ export const FrostArrowSpell: SpellBaseType = {
             // not sure about ownerPlayer
             actions.addSpellToUnitGroup(event.target, enchantDebuff, ownerPlayer);
 
-            actions.dealDamageTo(event.target, 40, DamageType.Magic, ({ finalDamage, unitLoss }) => {
+            actions.dealDamageTo(event.target, 40, DamageType.Cold, ({ finalDamage, unitLoss }) => {
               const unitTypeName = event.target.type.name;
               actions.historyLog(`${ownerHero.name} deals ${finalDamage} damage to ${unitTypeName} with ${thisSpell.name}, ${unitLoss} ${unitTypeName} perishes`)
 
