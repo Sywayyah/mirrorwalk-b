@@ -3,6 +3,10 @@
   {{data.struct.generator?.name}}
 </div>
 
+<div class="description" *ngIf="data.struct.generator?.description">
+  {{data.struct.generator?.description}}
+</div>
+
 <div>
   <mw-unit-groups-list [unitGroups]="data.struct.guard!" />
 </div>

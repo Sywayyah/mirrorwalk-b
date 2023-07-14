@@ -19,3 +19,5 @@ export * from './spell-description/spell-description.component';
 export * from './value-bar/value-bar.component';
 export * from './vfx-element/vfx-element.component';
 export * from './vfx-layer';
+export * from './event-feed/event-feed.component';
+export * from './event-feed-message/event-feed-message.component';

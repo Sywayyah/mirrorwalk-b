@@ -1,8 +1,12 @@
 import { PlayersApi, SpellsApi } from '../api/game-api';
+import { EventFeedApi } from '../game-objects';
 import { ItemBaseModel } from '../items';
 import { Player } from '../players';
 import { ResourceType } from '../resources';
+import { LocalEvents } from '../triggers';
 import { GenerationModel, UnitBaseType, UnitGroup } from '../unit-types';
+import { SturctEventsGroup } from './events';
+import { MapStructure } from './map-structures';
 
 export enum StuctureControl {
   Neutral = 'neutral',
@@ -15,12 +19,26 @@ interface OnVisitedParams {
   visitingPlayer: Player;
 }
 
+
+export type StructsAPI = {
+  players: PlayersApi,
+  localEvents: LocalEvents<typeof SturctEventsGroup>,
+  thisStruct: MapStructure,
+  eventFeed: EventFeedApi,
+};
+
+export enum StructureType {
+  Scripted,
+}
+
 /* This base type for structures will be expanded and, most likely, will have an access to events and API. */
 export interface StructureGeneratorModel {
   name: string;
   icon?: string;
   control: StuctureControl;
   description?: string,
+
+  type?: StructureType;
 
   generateGuard?: () => GenerationModel;
 
@@ -29,6 +47,7 @@ export interface StructureGeneratorModel {
 
   // practically, this can be converted to local event
   onVisited?: (params: OnVisitedParams) => void;
+  config?: { init(api: StructsAPI): void };
 }
 
 /* Rewarding resources models */

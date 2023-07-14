@@ -1,15 +1,17 @@
-<div class="resources-panel" *ngIf="viewTypes.MainScreen !== currentView && viewTypes.NewGame !== currentView">
-  <mw-player-resources></mw-player-resources>
-</div>
+<ng-container *ngIf="viewTypes.MainScreen !== currentView && viewTypes.NewGame !== currentView">
+  <mw-player-resources class="resources-panel" />
+  <mw-event-feed />
+</ng-container>
+
 
 <ng-container [ngSwitch]="currentView">
-  <mw-main-screen *ngSwitchCase="viewTypes.MainScreen"></mw-main-screen>
+  <mw-main-screen *ngSwitchCase="viewTypes.MainScreen" />
 
-  <mw-new-game-screen *ngSwitchCase="viewTypes.NewGame"></mw-new-game-screen>
+  <mw-new-game-screen *ngSwitchCase="viewTypes.NewGame" />
 
-  <mw-gameboard *ngSwitchCase="viewTypes.Battleground"></mw-gameboard>
+  <mw-gameboard *ngSwitchCase="viewTypes.Battleground" />
 
-  <mw-structures-view *ngSwitchCase="viewTypes.Structures"></mw-structures-view>
+  <mw-structures-view *ngSwitchCase="viewTypes.Structures" />
 
-  <mw-town-view *ngSwitchCase="viewTypes.Town"></mw-town-view>
+  <mw-town-view *ngSwitchCase="viewTypes.Town" />
 </ng-container>

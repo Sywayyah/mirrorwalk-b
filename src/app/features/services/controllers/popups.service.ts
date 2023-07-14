@@ -1,6 +1,6 @@
 import { Injectable, Type } from '@angular/core';
 import { DisplayPlayerRewardAction, DisplayPlayerRewardPopup, DisplayPopup, DisplayReward, FightEnds, FightEndsEvent, NeutralStructParams, OpenSettings, PlayerOpensHeroInfo, ShowGameOverPopup, StructSelected, StructSelectedEvent } from 'src/app/core/events';
-import { NeutralRewardTypesEnum } from 'src/app/core/structures';
+import { NeutralRewardTypesEnum, StructureType } from 'src/app/core/structures';
 import { FightEndsPopup, LossModel, StructPopupData } from 'src/app/core/ui';
 import { Notify, StoreClient, WireMethod } from 'src/app/store';
 import { HiringRewardPopupComponent, ItemRewardPopupComponent, PostFightRewardPopupComponent, PreFightPopupComponent, PreviewPopupComponent, ResourcesRewardPopupComponent, ScriptedRewardPopupComponent, UpgradeRewardPopupComponent } from '../../battleground/components';
@@ -76,7 +76,7 @@ export class PopupsController extends StoreClient() {
 
     if (!event.struct.guard?.length) {
 
-      if (event.struct.generator?.onVisited) {
+      if (event.struct.generator?.onVisited || event.struct.generator?.type === StructureType.Scripted) {
         const previewPopup: StructPopupData = {
           struct: event.struct,
         };

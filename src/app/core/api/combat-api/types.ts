@@ -7,12 +7,21 @@ import { SpellsApi } from '../game-api';
 export interface PostDamageInfo {
   unitLoss: number;
   finalDamage: number;
+  initialUnitCount: number;
 }
 
 export enum DamageType {
   PhysicalAttack = 'physAttack',
   Physical = 'physical',
+
   Magic = 'magic',
+
+  Fire = 'fire',
+  Cold = 'cold',
+  Poison = 'poison',
+  Lightning = 'lightning',
+
+  Astral = 'astral'
 }
 
 export interface SpellCreationOptions<T = DefaultSpellStateType> {
@@ -54,7 +63,7 @@ export interface CombatActionsRef extends SpellsApi {
 
   getRandomEnemyPlayerGroup: () => UnitGroup;
 
-  getEnemyPlayer: () => Player;
+  getEnemyOfPlayer: (player: Player) => Player;
 
   historyLog: (plainMsg: string) => void;
 

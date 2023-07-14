@@ -2,6 +2,7 @@ import { EventType } from 'src/app/store';
 import { SpellsApi } from '../api/game-api';
 import { Observable } from 'rxjs';
 import { Type } from '@angular/core';
+import { EventFeedMessage } from '../ui';
 
 // base for events for
 export interface EventsApi {
@@ -16,10 +17,16 @@ export interface GameObjectsManagerAPI {
   createNewGameObject<T extends GameObject>(gameObjectClass: GameObjectClass<T>, creationParams: CreationParams<T>, id?: string): T;
 }
 
+export interface EventFeedApi {
+  postEventFeedMessage(message: EventFeedMessage): void;
+  pushPlainMessage(messageText: string): void;
+}
+
 // extend this api
 export interface GameObjectApi {
   spells: SpellsApi;
   events: EventsApi;
+  eventFeed: EventFeedApi;
   gameObjects: GameObjectsManagerAPI;
 }
 

@@ -4,6 +4,7 @@ import { FireAnimation, getDamageParts } from '../../vfx';
 import { SpellActivationType, SpellBaseType } from '../types';
 import { canActivateOnEnemyFn } from '../utils';
 
+// Rescale damage & adjust manacost
 const baseDamage = 65;
 
 export const RainOfFireSpell: SpellBaseType = {
@@ -41,7 +42,7 @@ export const RainOfFireSpell: SpellBaseType = {
             actions.dealDamageTo(
               event.target,
               damage,
-              DamageType.Magic,
+              DamageType.Fire,
               (actionInfo) => {
                 actions.historyLog(`${ownerHero.name} deals ${actionInfo.finalDamage} damage to ${event.target.type.name} with ${thisSpell.name}`)
 
@@ -59,11 +60,13 @@ export const RainOfFireSpell: SpellBaseType = {
       getManaCost: (spell) => {
         const baseMana = 3;
 
+        // create utils for mana costs.
         const manaCosts: Record<number, number> = {
           1: baseMana,
           2: baseMana + 1,
           3: baseMana + 1,
           4: baseMana + 2,
+          5: baseMana + 3,
         };
 
         return manaCosts[spell.currentLevel];

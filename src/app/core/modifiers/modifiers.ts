@@ -11,7 +11,8 @@ export interface ModifiersModel {
   // base damage percent modifier
   baseDamagePercentModifier: number;
 
-  // increases taken magic damage by percent
+  // increases taken universal magic damage by percent
+  // specified in 0-1 scale
   amplifiedTakenMagicDamagePercent: number;
 
   // player bonuses
@@ -29,6 +30,12 @@ export interface ModifiersModel {
   // to be implemented
   resistAll: number;
 
+  // specified in 0-100 scale
+  resistFire: number;
+  resistCold: number;
+  resistPoison: number;
+  resistLightnining: number;
+
   /* unit speed bonus */
   unitGroupSpeedBonus: number;
 
@@ -40,6 +47,7 @@ export interface ModifiersModel {
   counterattacks: boolean;
   isGhost: boolean;
   isSummon: boolean;
+  isBoss: boolean;
 }
 
 export type Modifiers = Partial<ModifiersModel>;

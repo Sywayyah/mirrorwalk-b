@@ -25,6 +25,7 @@ interface Feature {
 
 interface GameState {
   day: number;
+  week: number;
   travelPoints: number;
 }
 
@@ -41,6 +42,7 @@ export class State {
 
   public currentGame: GameState = {
     day: 1,
+    week: 1,
     travelPoints: defaultTravelPointsPerDay,
   };
 

@@ -1,17 +1,27 @@
 import { Injectable } from '@angular/core';
 import { DamageType, PostDamageInfo } from 'src/app/core/api/combat-api/types';
 import { CombatAttackInteraction, CombatInteractionEnum, CombatInteractionStateEvent, GroupCounterAttacked, GroupDamagedByGroup, GroupDies, GroupSpellsChanged, GroupTakesDamage, InitSpell, PlayerHoversCardEvent } from 'src/app/core/events';
-import { Modifiers } from 'src/app/core/modifiers';
+import { Modifiers, ModsRef, ModsRefsGroup } from 'src/app/core/modifiers';
 import { Player } from 'src/app/core/players';
-import { SpellActivationType, SpellEventNames, SpellEventTypeByName, SpellEvents, Spell } from 'src/app/core/spells';
+import { Spell, SpellActivationType, SpellEventNames, SpellEventTypeByName, SpellEvents } from 'src/app/core/spells';
 import { ActionHintTypeEnum, AttackActionHintInfo } from 'src/app/core/ui';
 import { UnitGroup } from 'src/app/core/unit-types';
-import { CommonUtils } from 'src/app/core/unit-types/utils';
+import { CommonUtils } from 'src/app/core/utils';
 import { EventData, StoreClient } from 'src/app/store';
 import { BattleStateService, FinalDamageInfo, MwPlayersService, MwUnitGroupStateService, MwUnitGroupsService } from './';
 import { ActionHintService } from './mw-action-hint.service';
 import { State } from './state.service';
 
+// staying here for now, might move somewhere later
+const resistsMapping: Partial<Record<DamageType, keyof Modifiers>> = {
+  [DamageType.Cold]: 'resistCold',
+  [DamageType.Fire]: 'resistFire',
+  [DamageType.Lightning]: 'resistLightnining',
+  [DamageType.Poison]: 'resistPoison',
+};
+
+// defaul cap is 60%
+const defaultResistCap = 60;
 
 @Injectable({
   providedIn: 'root'
@@ -47,22 +57,6 @@ export class CombatInteractorService extends StoreClient() {
     let finalDamage = damage;
 
     switch (type) {
-      /* Damage coming from spells mostly */
-      case DamageType.Magic:
-        const targetGroupModifiers = this.unitGroupModifiersMap.get(target);
-
-        if (targetGroupModifiers) {
-          const amplifiedMagicDamageMods = targetGroupModifiers
-            .filter(mods => mods.amplifiedTakenMagicDamagePercent);
-
-          amplifiedMagicDamageMods.forEach(mod => {
-            finalDamage += damage * (mod.amplifiedTakenMagicDamagePercent as number);
-          });
-
-          finalDamage = Math.round(finalDamage);
-        }
-        break;
-
       /* Normal Unit Group attack */
       case DamageType.PhysicalAttack:
 
@@ -93,18 +87,64 @@ export class CombatInteractorService extends StoreClient() {
             finalDamage = Math.round(finalDamage + finalDamage * damagePercentMod);
           }
         }
-
         break;
+
       default:
-        finalDamage = damage;
+
+        if (resistsMapping[type]) {
+          // rethink composition and storing of modifiers
+          // unit's modGroup might contain player's mod group as parent
+          //  as well as some other groups, like location mods, stuff like that.
+          // And I also need to consider modifiers from items/hero
+
+          const targetMods = [...this.unitGroupModifiersMap.get(target) || [], target.type.defaultModifiers || {}];
+
+          if (targetMods) {
+            // universal magic damage amplifications
+            //  (poison damage might be avoided here)
+            const amplifiedMagicDamageMods = targetMods
+              .filter(mods => mods.amplifiedTakenMagicDamagePercent);
+
+            amplifiedMagicDamageMods.forEach(mod => {
+              finalDamage += damage * (mod.amplifiedTakenMagicDamagePercent as number);
+            });
+
+            finalDamage = Math.round(finalDamage);
+
+            // damage resists
+            const modsGroup = ModsRefsGroup.withRefs(targetMods.map(mod => ModsRef.fromMods(mod)));
+
+            const resistValue: number = (modsGroup.getModValue(resistsMapping[type] as keyof Modifiers) as number) || 0;
+            const allResistValue: number = (modsGroup.getModValue('resistAll')) || 0;
+
+            let finalResistValue = resistValue + allResistValue;
+
+            if (finalResistValue > defaultResistCap) {
+              finalResistValue = defaultResistCap;
+            }
+
+            console.log(damage, type, 'resist:', finalResistValue);
+
+            // reduce damage basing on
+            finalDamage = finalDamage - (finalDamage * (finalResistValue / 100));
+          }
+
+          // Idea for auras: aura's might require a function that every unit
+          // is going to check against itself, there might also be some utils
+          // to calc distance etc.
+        }
     }
 
+    const initialUnitCount = target.count;
+
+    // this could become event at some point
     const finalDamageInfo = this.unitState.dealPureDamageToUnitGroup(target, finalDamage);
 
     if (postActionFn) {
       postActionFn({
         unitLoss: finalDamageInfo.finalUnitLoss,
         finalDamage: finalDamageInfo.finalDamage,
+        initialUnitCount,
       });
     }
 

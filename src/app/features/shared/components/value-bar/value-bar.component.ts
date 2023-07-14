@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, ElementRef, Input, OnChanges, Renderer2, SimpleChanges } from '@angular/core';
 
-/* 
+/*
   For now, I'm not sure if I want to use it for showing amount of units.
     Maybe it just needs time, or it can become useful if there will be portraits.
 
@@ -18,7 +18,7 @@ export class ValueBarComponent implements OnChanges {
   public maxValue: number = 0;
 
   @Input()
-  public barStyle: 'normal' | 'static' = 'static';
+  public barStyle: 'normal' | 'static' = 'normal';
 
   @Input()
   public showMax: boolean = false;
@@ -31,7 +31,7 @@ export class ValueBarComponent implements OnChanges {
 
   @Input()
   public barHeight: number = 3;
-  
+
   @Input()
   public side: 'left' | 'right' = 'right';
 

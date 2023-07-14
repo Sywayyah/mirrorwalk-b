@@ -1,4 +1,8 @@
 /*
+  IDEA: Event feed? There might be some visual event feed to help
+    understand what happened over time (new day, gained resources
+    from mines, units growth in the town).
+
   IDEA: Some town/hero upgrades may require objectives on the map.
     For instance, most of fractions might not have direct access to
     the market, you would need to find market location on the map.

@@ -6,6 +6,8 @@ export const ItemEclipseWand: ItemBaseModel<{}> = {
   name: 'Eclipse Wand',
   slotType: ItemSlotType.Weapon,
   staticMods: {
+    // add bonus mana, maybe regen
+    // resistAll: 5,
   },
   icon: {
     icon: 'crystal-wand',
@@ -24,7 +26,7 @@ export const ItemEclipseWand: ItemBaseModel<{}> = {
       events.on({
         NewRoundBegins(event) {
           if (event.round === 0) {
-            const enemyPlayer = actions.getEnemyPlayer();
+            const enemyPlayer = actions.getEnemyOfPlayer(ownerPlayer);
             const enemyUnitGroups = actions.getUnitGroupsOfPlayer(enemyPlayer);
 
             enemyUnitGroups.forEach(unitGroup => {

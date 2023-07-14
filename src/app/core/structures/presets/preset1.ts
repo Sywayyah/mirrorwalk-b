@@ -1,6 +1,7 @@
 import { ResourceType } from '../../resources';
-import { ArchersOutpostStructure, BanditCamp, BeaconOfTheUndead, BigCampStructure, CalavryStalls, GraveyardStructure, MagicRiverStructure, MountainNestStructure, ThiefsLair, WitchHutStructure } from '../common';
+import { ArchersOutpostStructure, BanditCamp, BeaconOfTheUndead, BigCampStructure, CalavryStalls, GraveyardStructure, MagicRiverStructure, MountainNestStructure, RockyPassageStructure, ThiefsLair, WitchHutStructure } from '../common';
 import { FireRingStructure } from '../common/guard-location';
+import { dailyResourcesMineStructure } from '../common/resource-mine';
 import { resourcesPileStructure, resPileStructure } from '../common/resource-pile';
 import { StructureDescription } from '../map-structures';
 
@@ -91,6 +92,15 @@ const brBranch: StructureDescription[] = [
     struct: CalavryStalls,
   },
   {
+    id: '23',
+    x: loc(240),
+    y: loc(148),
+    icon: 'hand-saw',
+    pathTo: '22',
+
+    struct: dailyResourcesMineStructure({ wood: 1 }),
+  },
+  {
     id: '20',
     x: loc(45),
     y: loc(145),
@@ -158,6 +168,15 @@ const blBranch: StructureDescription[] = [
     icon: 'fire-ring',
     pathTo: 'left-2',
     struct: FireRingStructure,
+  },
+  {
+    id: 'boss-1',
+
+    x: loc(-250),
+    y: loc(-50),
+    icon: 'monster-skull',
+    pathTo: '54',
+    struct: RockyPassageStructure,
   },
   {
     id: 'left-3',

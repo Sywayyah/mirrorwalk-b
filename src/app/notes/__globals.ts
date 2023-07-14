@@ -1,4 +1,8 @@
 /*
+  Attached custom data:
+    Basically, all GameObjects might attach some custom
+    data to themselves, and release it once object is destroyed.
+
   Coding.
     Console commands: I might add some events that can be interpreted
     as commands in console.

@@ -51,6 +51,8 @@ export class MwUnitGroupCardComponent extends StoreClient() implements UIUnitPro
 
   public spellsHintsPosition!: HintAttachment;
 
+  public isBoss?: boolean = false;
+
   private destroy$: Subject<void> = new Subject();
 
   constructor(
@@ -69,6 +71,7 @@ export class MwUnitGroupCardComponent extends StoreClient() implements UIUnitPro
     this.isGroupMelee = !this.unitsService.isUnitGroupRanged(this.unitGroup);
     this.isEnemyCard = this.playersService.getCurrentPlayer() !== this.playerInfo;
     this.initialCount = this.unitGroup.count;
+    this.isBoss = this.unitGroup.type.defaultModifiers?.isBoss;
     this.cardReady.next(this);
 
     /* Self-animating for summoned units.  */

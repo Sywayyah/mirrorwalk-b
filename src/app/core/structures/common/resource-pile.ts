@@ -1,7 +1,5 @@
 import { resourceNames, Resources, ResourceType } from '../../resources';
-import { StructureGeneratorModel, StuctureControl } from '../types';
-
-
+import { StructureGeneratorModel, StructureType, StuctureControl } from '../types';
 
 export const resPileStructure = (
   resType: ResourceType,
@@ -13,12 +11,16 @@ export const resPileStructure = (
     control: StuctureControl.Neutral,
     description: `You found a pile of resources \n\n +${amount} ${resourceNames[resType]}`,
 
-    onVisited: ({ playersApi, visitingPlayer }) => {
-      playersApi.giveResourceToPlayer(
-        visitingPlayer,
-        resType,
-        amount,
-      );
+    type: StructureType.Scripted,
+
+    config: {
+      init({ localEvents, players }) {
+        localEvents.on({
+          StructVisited({ visitingPlayer }) {
+            players.giveResourceToPlayer(visitingPlayer, resType, amount);
+          }
+        });
+      }
     },
   };
 };
@@ -34,11 +36,21 @@ export const resourcesPileStructure = (resources: Resources): StructureGenerator
       .map(([resType, amount]) => `+${amount} ${resourceNames[resType as ResourceType]}`)
       .join('\n'),
 
-    onVisited: ({ playersApi, visitingPlayer }) => {
-      playersApi.giveResourcesToPlayer(
-        visitingPlayer,
-        resources,
-      );
+    type: StructureType.Scripted,
+
+    config: {
+      init({ localEvents, players }) {
+
+        localEvents.on({
+          StructVisited({ visitingPlayer }) {
+            players.giveResourcesToPlayer(
+              visitingPlayer,
+              resources,
+            );
+          },
+        });
+
+      }
     },
   };
 };
