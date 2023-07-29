@@ -1,4 +1,8 @@
 /*
+  IDEA:
+    Some locations on the map can be guarded by neutral enemy players.
+    And these players might get power-ups over time.
+
   IDEAS: Necromancy? It could boost some abilities of the undead units
     It can increase damage reduction of Ghosts, Ghosts might
     reduce damage also for other undead units.

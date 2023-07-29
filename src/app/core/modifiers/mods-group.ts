@@ -118,12 +118,18 @@ export class ModsRefsGroup {
   }
 
   attachNamedParentGroup(name: string, parentGroup: ModsRefsGroup): void {
+    if (this.namedParentGroupsMap.has(name)) {
+      console.warn(`ModGroup: reattaching '${name}' parent mod group, child group:`, this);
+      this.detachNamedParentGroup(name);
+    }
+
     this.attachParentGroup(parentGroup);
     this.namedParentGroupsMap.set(name, parentGroup);
   }
 
   detachNamedParentGroup(name: string): void {
     const parentModRefsGroup = this.namedParentGroupsMap.get(name);
+
     if (parentModRefsGroup) {
       this.detachParentGroup(parentModRefsGroup);
       this.namedParentGroupsMap.delete(name);
