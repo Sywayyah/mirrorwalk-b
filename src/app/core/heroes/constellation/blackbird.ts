@@ -4,6 +4,8 @@ import { KneelingLight, RainOfFireSpell } from '../../spells/common';
 import { SummonSagittarSpell } from '../../spells/common/summon-sagittar';
 import { heroDescrElem } from '../../ui';
 
+// possible constellation skill:
+//  Summon Star Dragon.
 constellationFraction.createHero({
   name: 'Blackbird',
   abilities: [

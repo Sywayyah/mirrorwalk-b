@@ -9,6 +9,11 @@ import { heroesDefaultResources } from '../utils';
 /*
   Possible common spell: Valor. On being casted, increases stats of all units
   (or x random units initially).
+
+  Pikeman might make Valor stronger.
+
+  Some possible summons:
+    Archangel
 */
 export const TaltirHero: HeroBase = humansFraction.createHero({
   name: 'Taltir',
