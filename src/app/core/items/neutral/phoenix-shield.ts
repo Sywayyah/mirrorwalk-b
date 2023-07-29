@@ -10,7 +10,11 @@ export const PhoenixShieldItem = createItem({
   stats: {
     playerBonusDefence: 2,
     playerBonusAttack: 1,
-    resistFire: 16,
-    resistLightnining: 12,
+    resistFire: 17,
+  },
+  // should it be attached to player? or commonMods?
+  // looks more like player, and maybe then commonMods should also move to player.
+  enemyStats: {
+    resistFire: -12,
   },
 });

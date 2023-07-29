@@ -1,3 +1,5 @@
+import { BehaviorSubject, Observable } from 'rxjs';
+import { CommonUtils } from '../utils';
 import { getEntries } from '../utils/common';
 import { ModValueUpdater } from './mod-updater';
 import { BoolModNames, ModName, Modifiers, ModifiersModel, NumModNames } from './modifiers';
@@ -7,9 +9,11 @@ import { ModsRef } from './mods-ref';
 // todo:
 //  - maybe introduce interfaces
 //  - should values get updated dynamically? ideally not.
+//    - instead, value should be detached, updated, and reattached
 //  - ideally, mods shouldn't change dynamically.
 //  - maybe some updated$ stream can be introduced to the group
 //  - combining groups now has basic implementation.
+// ids for groups? and modRefs?
 
 /**
  * This class can aggregate multiple `ModsRef`, and retrieve combined mod values.
@@ -25,9 +29,12 @@ export class ModsRefsGroup {
 
   private readonly valueUpdater: ModValueUpdater;
 
-  private readonly subGroups: Set<ModsRefsGroup> = new Set();
+  private readonly childGroups: Set<ModsRefsGroup> = new Set();
 
   private readonly parentGroups: Set<ModsRefsGroup> = new Set();
+  private readonly namedParentGroupsMap: Map<string, ModsRefsGroup> = new Map();
+
+  private readonly modValuesChange$ = new BehaviorSubject<Modifiers>({});
 
   private constructor() {
     this.valueUpdater = ModValueUpdater.fromObject(this.cachedModValues);
@@ -71,20 +78,33 @@ export class ModsRefsGroup {
   addModsRef(modsRef: ModsRef): void {
     this.modsRefs.push(modsRef);
     this.processModsRef(modsRef);
-    this.parentGroups.forEach((parentGroup) => parentGroup.addModsRef(modsRef));
+    this.childGroups.forEach((parentGroup) => parentGroup.addModsRef(modsRef));
+    this.emitModValueChange();
   }
 
   removeModsRef(modsRef: ModsRef): void {
-    const modsRefIndex = this.modsRefs.indexOf(modsRef);
-
-    this.modsRefs.splice(modsRefIndex, 1);
+    CommonUtils.removeItem(this.modsRefs, modsRef);
 
     this.processModsRef(modsRef, true);
-    this.parentGroups.forEach((parentGroup) => parentGroup.removeModsRef(modsRef));
+    this.childGroups.forEach((parentGroup) => parentGroup.removeModsRef(modsRef));
+    this.emitModValueChange();
+  }
+
+  clearOwnModRefs(): void {
+    [...this.getAllRefs()].forEach(modRef => this.removeModsRef(modRef));
+    this.emitModValueChange();
   }
 
   getAllRefs(): ModsRef[] {
     return this.modsRefs;
+  }
+
+  removeRefByModInstance(mods: Modifiers): void {
+    const modsRef = this.modsRefs.find(modRef => modRef.getMods() === mods);
+
+    if (modsRef) {
+      this.removeModsRef(modsRef);
+    }
   }
 
   getModValue<K extends ModName>(modName: K): ModifiersModel[K] | null {
@@ -97,16 +117,40 @@ export class ModsRefsGroup {
       .map((mod) => mod.getModValue(modName) as ModifiersModel[K]);
   }
 
-  attachGroup(modsRefGroup: ModsRefsGroup): void {
-    this.subGroups.add(modsRefGroup);
-    modsRefGroup.parentGroups.add(this);
-    modsRefGroup.getAllRefs().forEach(modRef => this.addModsRef(modRef));
+  attachNamedParentGroup(name: string, parentGroup: ModsRefsGroup): void {
+    this.attachParentGroup(parentGroup);
+    this.namedParentGroupsMap.set(name, parentGroup);
   }
 
-  detachGroup(modsRefGroup: ModsRefsGroup): void {
-    this.subGroups.delete(modsRefGroup);
-    modsRefGroup.parentGroups.delete(this);
-    modsRefGroup.getAllRefs().forEach(modRef => this.removeModsRef(modRef));
+  detachNamedParentGroup(name: string): void {
+    const parentModRefsGroup = this.namedParentGroupsMap.get(name);
+    if (parentModRefsGroup) {
+      this.detachParentGroup(parentModRefsGroup);
+      this.namedParentGroupsMap.delete(name);
+    }
+  }
+
+  getNamedGroup(name: string): ModsRefsGroup | undefined {
+    return this.namedParentGroupsMap.get(name);
+  }
+
+  onValueChanges(): Observable<Modifiers> {
+    return this.modValuesChange$;
+  }
+
+  attachParentGroup(parentGroup: ModsRefsGroup): void {
+    parentGroup.childGroups.add(this);
+    this.parentGroups.add(this);
+    parentGroup.getAllRefs().forEach(modRef => this.addModsRef(modRef));
+    this.emitModValueChange();
+  }
+
+  detachParentGroup(parentGroup: ModsRefsGroup): void {
+    this.parentGroups.delete(parentGroup);
+    parentGroup.childGroups.delete(this);
+
+    parentGroup.getAllRefs().forEach(modRef => this.removeModsRef(modRef));
+    this.emitModValueChange();
   }
 
   private processModsRef(modsRef: ModsRef, removing?: boolean): void {
@@ -128,5 +172,9 @@ export class ModsRefsGroup {
         }
       }
     });
+  }
+
+  private emitModValueChange(): void {
+    this.modValuesChange$.next(this.cachedModValues);
   }
 }

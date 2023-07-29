@@ -29,7 +29,7 @@ export class PlayerController extends StoreClient() {
   public addItemToPlayer({ item, player }: PlayerEquipsItemAction): void {
     const hero = player.hero;
 
-    hero.items.push(item);
+    hero.addItem(item);
 
     // if slot was unequipped, equip it with this received item.
     if (!hero.inventory.isSlotEquipped(item.baseType.slotType)) {
@@ -41,52 +41,44 @@ export class PlayerController extends StoreClient() {
   public equipItem({ item, player }: PlayerEquipsItemAction): void {
     const hero = player.hero;
 
-    hero.inventory.equipItem(item);
+    hero.equipItem(item);
 
-    hero.mods.push(item.baseType.staticMods);
+    // hero.inventory.equipItem(item);
+
+    // hero.mods.push(item.baseType.staticMods);
 
     const itemBase = item.baseType;
 
-    if (itemBase.staticMods.playerBonusAttack) {
-      /* todo: rethink this. modifiers array can be better */
-      hero.stats.bonusAttack += itemBase.staticMods.playerBonusAttack;
-    }
+    // rework it:
+    // if (itemBase.staticMods.playerBonusAttack) {
+    //   /* todo: rethink this. modifiers array can be better */
+    //   hero.stats.bonusAttack += itemBase.staticMods.playerBonusAttack;
+    // }
 
-    if (itemBase.staticMods.playerBonusDefence) {
-      hero.stats.bonusDefence += itemBase.staticMods.playerBonusDefence;
-    }
-
-    if (itemBase.bonusAbilities) {
-      itemBase.bonusAbilities.forEach((spellConfig) => {
-        const spellInstance = this.spellsService.createSpellInstance(
-          spellConfig.spell,
-          { initialLevel: spellConfig.level },
-        );
-
-        spellInstance.sourceInfo.item = item;
-
-        hero.spells.push(spellInstance);
-      });
-    }
+    // if (itemBase.staticMods.playerBonusDefence) {
+    //   hero.stats.bonusDefence += itemBase.staticMods.playerBonusDefence;
+    // }
 
     this.itemsService.registerItemsEventHandlers(item, player);
   }
 
   @WireMethod(PlayerUnequipsItem)
   public unequipItem({ player, item }: PlayerUnequipsItemAction): void {
-    CommonUtils.removeItem(player.hero.mods, item.baseType.staticMods);
+    // CommonUtils.removeItem(player.hero.mods, item.baseType.staticMods);
 
-    player.hero.inventory.unequipSlot(item.baseType.slotType);
+    // should it actually be by slot?
+    // player.hero.inventory.unequipSlot(item.baseType.slotType);
+    player.hero.unequipItem(item);
 
-    if (item.baseType.staticMods.playerBonusAttack) {
-      player.hero.stats.bonusAttack -= item.baseType.staticMods.playerBonusAttack;
-    }
+    // rework this
+    // if (item.baseType.staticMods.playerBonusAttack) {
+    //   player.hero.stats.bonusAttack -= item.baseType.staticMods.playerBonusAttack;
+    // }
 
-    if (item.baseType.staticMods.playerBonusDefence) {
-      player.hero.stats.bonusDefence -= item.baseType.staticMods.playerBonusDefence;
-    }
+    // if (item.baseType.staticMods.playerBonusDefence) {
+    //   player.hero.stats.bonusDefence -= item.baseType.staticMods.playerBonusDefence;
+    // }
 
-    player.hero.spells = player.hero.spells.filter(spell => spell.sourceInfo.item !== item);
     this.state.eventHandlers.items.removeAllHandlersForRef(item);
   }
 }

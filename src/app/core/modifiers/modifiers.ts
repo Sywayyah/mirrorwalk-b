@@ -7,6 +7,8 @@ export interface ConditionalModifierParamsModel {
   attacked: UnitGroup;
 }
 
+// should it become .. stats? and mods are named with mod prefix
+// not yet
 export interface ModifiersModel {
   // base damage percent modifier
   baseDamagePercentModifier: number;
@@ -34,7 +36,7 @@ export interface ModifiersModel {
   resistFire: number;
   resistCold: number;
   resistPoison: number;
-  resistLightnining: number;
+  resistLightning: number;
 
   /* unit speed bonus */
   unitGroupSpeedBonus: number;

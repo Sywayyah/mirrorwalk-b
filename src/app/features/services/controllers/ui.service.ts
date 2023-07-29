@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { FightEnds, GroupAttacked, HoverTypeEnum, PlayerCastsInstantSpell, PlayerClicksAllyGroup, PlayerClicksAllyGroupEvent, PlayerClicksEnemyGroup, PlayerClicksEnemyGroupEvent, PlayerHoversCardEvent, PlayerHoversGroupCard, PlayerTargetsInstantSpellEvent, PlayerTargetsSpell, PlayerTargetsSpellEvent, PlayerTurnStartEvent, RoundPlayerTurnStarts } from 'src/app/core/events';
+import { FightEnds, GroupAttacked, HoverTypeEnum, PlayerCastsInstantSpell, PlayerClicksAllyGroup, PlayerClicksAllyGroupEvent, PlayerClicksEnemyGroup, PlayerClicksEnemyGroupEvent, PlayerHoversCardEvent, PlayerHoversGroupCard, PlayerRightClicksUnitGroup, PlayerTargetsInstantSpellEvent, PlayerTargetsSpell, PlayerTargetsSpellEvent, PlayerTurnStartEvent, RoundPlayerTurnStarts, UIEventsTypes } from 'src/app/core/events';
 import { SpellEvents } from 'src/app/core/spells';
 import { ActionHintTypeEnum, SpellTargetActionHint } from 'src/app/core/ui';
 import { UnitGroup } from 'src/app/core/unit-types';
@@ -97,6 +97,11 @@ export class UiController extends StoreClient() {
       case HoverTypeEnum.Unhover:
         this.actionHint.hintMessage$.next(null);
     }
+  }
+
+  @WireMethod(PlayerRightClicksUnitGroup)
+  handleRightClick(event: UIEventsTypes['PlayerRightClicksUnitGroup']): void {
+    console.log('show info for:', event);
   }
 
   @WireMethod(RoundPlayerTurnStarts)

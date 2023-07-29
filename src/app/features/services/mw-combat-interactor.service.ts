@@ -16,7 +16,7 @@ import { State } from './state.service';
 const resistsMapping: Partial<Record<DamageType, keyof Modifiers>> = {
   [DamageType.Cold]: 'resistCold',
   [DamageType.Fire]: 'resistFire',
-  [DamageType.Lightning]: 'resistLightnining',
+  [DamageType.Lightning]: 'resistLightning',
   [DamageType.Poison]: 'resistPoison',
 };
 

@@ -1,18 +1,17 @@
-import { Directive, HostListener, Input, OnInit } from '@angular/core';
-import { HoverTypeEnum, PlayerClicksAllyGroup, PlayerClicksEnemyGroup, PlayerHoversGroupCard } from 'src/app/core/events';
+import { Directive, HostListener, Inject, Input, OnInit } from '@angular/core';
+import { HoverTypeEnum, PlayerClicksAllyGroup, PlayerClicksEnemyGroup, PlayerHoversGroupCard, PlayerRightClicksUnitGroup } from 'src/app/core/events';
 import { UnitGroup } from 'src/app/core/unit-types';
 import { EventsService } from 'src/app/store';
 import { BattleStateService, MwCurrentPlayerStateService, MwPlayersService } from '../../services';
+import { PROVIDE_UI_UNIT_GROUP, UIUnitProvider } from './mw-unit-events-cursor.directive';
 
-/*
-  considering that this directive handles not only spells, it can be renamed later
-*/
+
 @Directive({
-  selector: '[mwSpellTarget]'
+  selector: '[mwUnitGroupCombatAction]'
 })
-export class MwSpellTargetDirective implements OnInit {
+export class MwUnitGroupCombatActionDirective implements OnInit {
 
-  @Input() public spellTargetUnitGroup!: UnitGroup;
+  @Input() public actionTargetUnitGroup!: UnitGroup;
 
   private isEnemyCard: boolean = false;
 
@@ -21,11 +20,15 @@ export class MwSpellTargetDirective implements OnInit {
     private readonly players: MwPlayersService,
     private readonly mwBattleStateService: BattleStateService,
     private events: EventsService,
+
+    @Inject(PROVIDE_UI_UNIT_GROUP)
+    private unitGroupProvider: UIUnitProvider,
   ) {
   }
 
   public ngOnInit(): void {
-    this.isEnemyCard = this.players.isEnemyUnitGroup(this.spellTargetUnitGroup);
+    this.actionTargetUnitGroup = this.unitGroupProvider.getUnitGroup();
+    this.isEnemyCard = this.players.isEnemyUnitGroup(this.actionTargetUnitGroup);
   }
 
   /* maybe create some other directive, which turns off default context menu */
@@ -41,8 +44,13 @@ export class MwSpellTargetDirective implements OnInit {
     if (event.button === 2) {
       event.preventDefault();
 
-      this.curPlayerState.cancelCurrentSpell();
-      this.dispatchUnitGroupHovered(this.isEnemyCard ? HoverTypeEnum.EnemyCard : HoverTypeEnum.AllyCard);
+      if (this.curPlayerState.isSpellBeingCasted()) {
+        this.curPlayerState.cancelCurrentSpell();
+
+        this.dispatchUnitGroupHovered(this.isEnemyCard ? HoverTypeEnum.EnemyCard : HoverTypeEnum.AllyCard);
+      } else {
+        this.events.dispatch(PlayerRightClicksUnitGroup({ unitGroup: this.actionTargetUnitGroup }));
+      }
     }
   }
 
@@ -54,19 +62,19 @@ export class MwSpellTargetDirective implements OnInit {
     }
 
     if (this.isEnemyCard) {
-      if (!this.spellTargetUnitGroup.fightInfo.isAlive) {
+      if (!this.actionTargetUnitGroup.fightInfo.isAlive) {
         return;
       }
 
       this.events.dispatch(PlayerClicksEnemyGroup({
-        attackedGroup: this.spellTargetUnitGroup,
+        attackedGroup: this.actionTargetUnitGroup,
         attackingGroup: this.mwBattleStateService.currentUnitGroup,
         attackingPlayer: this.mwBattleStateService.currentPlayer,
       }));
       this.dispatchUnitGroupHovered(HoverTypeEnum.EnemyCard);
     } else {
       this.events.dispatch(PlayerClicksAllyGroup({
-        unitGroup: this.spellTargetUnitGroup
+        unitGroup: this.actionTargetUnitGroup
       }));
       this.dispatchUnitGroupHovered(HoverTypeEnum.Unhover);
     }
@@ -82,7 +90,7 @@ export class MwSpellTargetDirective implements OnInit {
     }
 
     return canActivateFn({
-      unitGroup: this.spellTargetUnitGroup,
+      unitGroup: this.actionTargetUnitGroup,
       isEnemy: this.isEnemyCard,
     });
   }
@@ -91,7 +99,7 @@ export class MwSpellTargetDirective implements OnInit {
     this.events.dispatch(PlayerHoversGroupCard({
       hoverType: hoverType,
       currentCard: this.mwBattleStateService.currentUnitGroup,
-      hoveredCard: this.spellTargetUnitGroup,
+      hoveredCard: this.actionTargetUnitGroup,
     }));
   }
 }

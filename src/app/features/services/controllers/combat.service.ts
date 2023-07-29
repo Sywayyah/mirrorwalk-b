@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { CombatAttackInteraction, CombatInteractionEnum, CombatInteractionStateEvent, FightNextRoundStarts, FightStarts, GroupAttacked, GroupAttackedEvent, GroupDies, GroupDiesEvent, NextRoundStarts, RoundGroupSpendsTurn, StructCompleted } from 'src/app/core/events';
+import { BattleCommandEvents, CombatAttackInteraction, CombatInteractionEnum, CombatInteractionStateEvent, FightNextRoundStarts, FightStarts, GroupAttacked, GroupAttackedEvent, GroupDies, GroupDiesEvent, NextRoundStarts, RoundGroupSpendsTurn, StructCompleted } from 'src/app/core/events';
+import { AddCombatModifiersToUnit, RemoveCombatModifiersFromUnit } from 'src/app/core/events/battle/commands';
 import { SpellEvents } from 'src/app/core/spells';
 import { Notify, StoreClient, WireMethod } from 'src/app/store';
 import { CombatInteractorService } from '../mw-combat-interactor.service';
@@ -66,5 +67,15 @@ export class CombatController extends StoreClient() {
   @WireMethod(GroupDies)
   public dispelUnitOnDeath(event: GroupDiesEvent): void {
     this.combatInteractor.applyDispellToUnitGroup(event.target);
+  }
+
+  @WireMethod(AddCombatModifiersToUnit)
+  public addCombatModsToUnit({ mods, unit }: BattleCommandEvents['AddCombatModifiersToUnit']): void {
+    unit.addCombatMods(mods);
+  }
+
+  @WireMethod(RemoveCombatModifiersFromUnit)
+  public removeCombatModsToUnit({ mods, unit }: BattleCommandEvents['RemoveCombatModifiersFromUnit']): void {
+    unit.removeCombatMods(mods);
   }
 }

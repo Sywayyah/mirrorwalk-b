@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HealingInfo } from 'src/app/core/api/combat-api';
+import { AddCombatModifiersToUnit, RemoveCombatModifiersFromUnit } from 'src/app/core/events/battle/commands';
 import { Modifiers, ModifiersModel } from 'src/app/core/modifiers';
 import { Player } from 'src/app/core/players';
 import { GenerationModel, UnitBaseType, UnitGroup, UnitsUtils } from 'src/app/core/unit-types';
-import { CommonUtils } from 'src/app/core/utils';
+import { EventsService } from 'src/app/store';
 import { GameObjectsManager } from './game-objects-manager.service';
 import { MwSpellsService } from './mw-spells.service';
 
@@ -25,6 +26,7 @@ export class MwUnitGroupsService {
   constructor(
     private spells: MwSpellsService,
     private gameObjectsManager: GameObjectsManager,
+    private events: EventsService,
   ) { }
   /* todo: unify it */
   /*  todo: figure out diff between UnitGroupModel and Inst */
@@ -67,12 +69,13 @@ export class MwUnitGroupsService {
       .map(unitGroup => this.updateUnitGroupSpells(unitGroup));
   }
 
+  // these methods might become obsolete
   public addModifierToUnitGroup(target: UnitGroup, modifiers: Modifiers) {
-    target.modifiers = [...target.modifiers, modifiers];
+    this.events.dispatch(AddCombatModifiersToUnit({ mods: modifiers, unit: target }));
   }
 
   public removeModifiers(target: UnitGroup, modifiers: Modifiers): void {
-    CommonUtils.removeItem(target.modifiers, modifiers);
+    this.events.dispatch(RemoveCombatModifiersFromUnit({ mods: modifiers, unit: target }));
   }
 
   public clearUnitModifiers(target: UnitGroup): void {

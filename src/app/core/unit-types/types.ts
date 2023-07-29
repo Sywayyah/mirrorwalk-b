@@ -1,9 +1,10 @@
 import type { Fraction } from '../fractions/types';
+import { GameObject } from '../game-objects';
+import { ModsRef, ModsRefsGroup } from '../modifiers';
+import { Modifiers } from '../modifiers/modifiers';
 import type { Player } from '../players';
 import { ResourcesModel } from '../resources';
 import { Spell, SpellBaseType } from '../spells';
-import { Modifiers } from '../modifiers/modifiers';
-import { GameObject } from '../game-objects';
 import { DescriptionElement } from '../ui';
 
 interface RequirementModel extends Partial<ResourcesModel> {
@@ -91,6 +92,14 @@ interface UnitCreationParams {
   ownerPlayer?: Player;
 }
 
+export enum UnitModGroups {
+  /** Mods coming from player */
+  PlayerMods = 'pMods',
+
+  /** Mods attached to particular unit during the battle */
+  CombatMods = 'cMods',
+}
+
 export class UnitGroup extends GameObject<UnitCreationParams> {
   public static readonly categoryId: string = 'unit-group';
 
@@ -115,8 +124,11 @@ export class UnitGroup extends GameObject<UnitCreationParams> {
   // Should it be mod refs? or plain modifiers?
   public modifiers!: Modifiers[];
 
+  // mods are going to be attached there
+  public readonly modGroup: ModsRefsGroup = ModsRefsGroup.empty();
+
   create({ count, ownerPlayer, unitBase }: UnitCreationParams): void {
-    if (count <= 0) {
+    if (count <= 0 || !count) {
       console.warn(`Cannot create unit group with ${count} units. Setting count to 1.`, this);
 
       count = 1;
@@ -127,15 +139,48 @@ export class UnitGroup extends GameObject<UnitCreationParams> {
 
     // think about it later
     if (ownerPlayer) {
-      this.ownerPlayerRef = ownerPlayer;
+      this.assignOwnerPlayer(ownerPlayer);
     }
 
     this.turnsLeft = unitBase.defaultTurnsPerRound;
+
+    if (this.type.defaultModifiers) {
+      this.modGroup.addModsRef(ModsRef.fromMods(this.type.defaultModifiers));
+    }
 
     this.fightInfo = {
       initialCount: count,
       isAlive: true,
       spellsOnCooldown: false,
     };
+
+    this.modGroup.attachNamedParentGroup(UnitModGroups.CombatMods, ModsRefsGroup.empty());
+  }
+
+  // can be more methods
+  assignOwnerPlayer(player: Player): void {
+    this.ownerPlayerRef = player;
+
+    // think if I need to retach like that
+    this.modGroup.detachNamedParentGroup(UnitModGroups.PlayerMods);
+    this.modGroup.attachNamedParentGroup(UnitModGroups.PlayerMods, player.hero.modifiers);
+  }
+
+  /**
+   * Removes all mods gained during the battle. Should be called in the end of battle.
+   * Mods attached by spells are going to be managed by spells.
+   *
+   * Mods that can be removed may have flag __dispellableOnDeath: true.
+   */
+  clearCombatMods(): void {
+    this.modGroup.getNamedGroup(UnitModGroups.CombatMods)!.clearOwnModRefs();
+  }
+
+  addCombatMods(modifiers: Modifiers): void {
+    this.modGroup.getNamedGroup(UnitModGroups.CombatMods)!.addModsRef(ModsRef.fromMods(modifiers));
+  }
+
+  removeCombatMods(modifiers: Modifiers): void {
+    this.modGroup.getNamedGroup(UnitModGroups.CombatMods)!.removeRefByModInstance(modifiers);
   }
 }

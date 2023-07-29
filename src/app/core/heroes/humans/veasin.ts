@@ -34,6 +34,10 @@ import { heroesDefaultResources } from '../utils';
 
   And with that, Veasing is also going to have 2 starting spells.
 */
+/*
+  Another possible special treat of Veasin might be having lots of spells
+    with unshared cooldowns / abilities with charges.
+*/
 export const VeasinHero: HeroBase = humansFraction.createHero({
   name: 'Veasin',
   generalDescription: heroDescrElem(`Veasin makes use of her poison abilities, weakening enemies and dealing damage over time.`),

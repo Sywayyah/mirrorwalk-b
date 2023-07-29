@@ -4,8 +4,7 @@
     <div class="column">
       <mw-unit-group-card class="card"
                           *ngFor="let unitGroup of mainPlayerUnitGroups"
-                          mwSpellTarget
-                          [spellTargetUnitGroup]="unitGroup"
+                          mwUnitGroupCombatAction
                           mwUnitEventsCursor
                           side="left"
                           [playerInfo]="mainPlayerInfo"
@@ -16,8 +15,7 @@
     <div class="column">
       <mw-unit-group-card class="card"
                           *ngFor="let unitGroup of neutralPlayerGroups"
-                          mwSpellTarget
-                          [spellTargetUnitGroup]="unitGroup"
+                          mwUnitGroupCombatAction
                           mwUnitEventsCursor
                           side="right"
                           [playerInfo]="enemyPlayerInfo"

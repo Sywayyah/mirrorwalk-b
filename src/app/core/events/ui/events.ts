@@ -9,3 +9,5 @@ export const PlayerClicksEnemyGroup = uiEvent<PlayerClicksEnemyGroupEvent>();
 export const PlayerClicksAllyGroup = uiEvent<props<'unitGroup'>>();
 
 export const PlayerHoversGroupCard = uiEvent<PlayerHoversCardEvent>();
+
+export const PlayerRightClicksUnitGroup = uiEvent<props<'unitGroup'>>();

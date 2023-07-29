@@ -94,8 +94,8 @@ describe('Test mods cases', () => {
 
     const groupsCombined = ModsRefsGroup.empty();
 
-    groupsCombined.attachGroup(refsGroupA);
-    groupsCombined.attachGroup(refsGroupB);
+    groupsCombined.attachParentGroup(refsGroupA);
+    groupsCombined.attachParentGroup(refsGroupB);
 
     expect(groupsCombined.getModValue('isRanged')).toBe(true);
     expect(groupsCombined.getModValue('resistAll')).toBe(10);
@@ -108,13 +108,83 @@ describe('Test mods cases', () => {
     expect(groupsCombined.getModValue('resistAll')).toBe(25);
 
     // removing group with resists completely
-    groupsCombined.detachGroup(refsGroupB);
+    groupsCombined.detachParentGroup(refsGroupB);
 
     expect(groupsCombined.getModValue('resistAll')).toBe(null);
 
     // Bring mods group back
-    groupsCombined.attachGroup(refsGroupB);
+    groupsCombined.attachParentGroup(refsGroupB);
 
     expect(groupsCombined.getModValue('resistAll')).toBe(25);
   });
+
+  it('is a test scenario #5 (Named Groups)', () => {
+    // two groups with some mods
+    const refWithBool = ModsRef.fromMods({ isRanged: true });
+    const refWithNum = ModsRef.fromMods({ resistAll: 10 });
+
+    const refsGroupA = ModsRefsGroup.empty();
+    const refsGroupB = ModsRefsGroup.empty();
+
+    refsGroupA.addModsRef(refWithBool);
+    refsGroupB.addModsRef(refWithNum);
+
+    // group that is going to attach 2 previous as parents
+    const groupsCombined = ModsRefsGroup.empty();
+
+    groupsCombined.attachNamedParentGroup('parent-1', refsGroupA);
+    groupsCombined.attachNamedParentGroup('parent-2', refsGroupB);
+
+    // combined group inherits parential values
+    expect(groupsCombined.getModValue('isRanged')).toBe(true);
+    expect(groupsCombined.getModValue('resistAll')).toBe(10);
+
+    // add mods dynamically to the combined group
+    const refWithNum2 = ModsRef.fromMods({ resistAll: 15 });
+
+    refsGroupB.addModsRef(refWithNum2);
+
+    expect(refsGroupB.getModValue('resistAll')).toBe(25);
+    expect(groupsCombined.getModValue('resistAll')).toBe(25);
+
+    // removing group with resists completely
+    groupsCombined.detachNamedParentGroup('parent-2');
+
+    expect(groupsCombined.getModValue('resistAll')).toBe(null);
+
+    // Bring mods group back
+    groupsCombined.attachNamedParentGroup('parent-2', refsGroupB);
+
+    expect(groupsCombined.getModValue('resistAll')).toBe(25);
+
+    refsGroupB.removeModsRef(refWithNum2);
+
+    expect(groupsCombined.getModValue('resistAll')).toBe(10);
+  });
+
+  it('is a test scenario #6 (Value Changes Subscribe)', () => {
+    const baseGroup = ModsRefsGroup.empty();
+    const fn = jasmine.createSpy();
+    const subscription = baseGroup.onValueChanges().subscribe(fn);
+    const mods = ModsRef.fromMods({ resistCold: 10 });
+
+    baseGroup.addModsRef(mods);
+    expect(fn).toHaveBeenCalledWith({ resistCold: 10 });
+
+    const parentGroupA = ModsRefsGroup.empty();
+    const parentModsA = ModsRef.fromMods({ resistCold: 5, resistFire: 5 });
+    parentGroupA.addModsRef(parentModsA);
+
+    baseGroup.attachNamedParentGroup('parent-a', parentGroupA);
+
+    expect(fn).toHaveBeenCalledWith({ resistCold: 15, resistFire: 5 });
+
+    const parentModsA2 = ModsRef.fromMods({ resistLightning: 5 });
+    parentGroupA.addModsRef(parentModsA2);
+
+    expect(fn).toHaveBeenCalledWith({ resistCold: 15, resistFire: 5, resistLightning: 5 });
+    subscription.unsubscribe();
+  });
+
+  // maybe test more nested cases
 });

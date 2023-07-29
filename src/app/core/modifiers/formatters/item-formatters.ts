@@ -12,6 +12,6 @@ export const modsFormatters: { [K in keyof Modifiers]: (val: ModifiersModel[K]) 
   lifesteal: val => percentVal('Lifesteal', val),
   resistFire: val => percentVal('Fire Resist', val),
   resistCold: val => percentVal('Cold Resist', val),
-  resistLightnining: val => percentVal('Lightning Resist', val),
+  resistLightning: val => percentVal('Lightning Resist', val),
   resistPoison: val => percentVal('Poison Resist', val),
 };
