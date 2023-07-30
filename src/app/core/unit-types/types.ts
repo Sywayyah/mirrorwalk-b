@@ -145,6 +145,7 @@ export class UnitGroup extends GameObject<UnitCreationParams> {
     this.turnsLeft = unitBase.defaultTurnsPerRound;
 
     if (this.type.defaultModifiers) {
+      // think about it as well.
       this.modGroup.addModsRef(ModsRef.fromMods(this.type.defaultModifiers));
     }
 
