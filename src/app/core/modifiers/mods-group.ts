@@ -86,7 +86,7 @@ export class ModsRefsGroup {
     CommonUtils.removeItem(this.modsRefs, modsRef);
 
     this.processModsRef(modsRef, true);
-    this.childGroups.forEach((parentGroup) => parentGroup.removeModsRef(modsRef));
+    this.childGroups.forEach((childGroup) => childGroup.removeModsRef(modsRef));
     this.emitModValueChange();
   }
 

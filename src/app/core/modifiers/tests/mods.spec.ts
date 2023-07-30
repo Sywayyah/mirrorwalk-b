@@ -186,5 +186,32 @@ describe('Test mods cases', () => {
     subscription.unsubscribe();
   });
 
-  // maybe test more nested cases
+  it('is a test scenario #7 (Clear group mods)', () => {
+    const childGroup = ModsRefsGroup.empty();
+    const childMods = ModsRef.fromMods({ resistCold: 10 });
+
+    childGroup.addModsRef(childMods);
+
+    const parentGroupA = ModsRefsGroup.empty();
+    const parentModsA1 = ModsRef.fromMods({ resistCold: 5, resistFire: 2 });
+    const parentModsA2 = ModsRef.fromMods({ resistCold: 2, resistFire: 2 });
+    parentGroupA.addModsRef(parentModsA1);
+    parentGroupA.addModsRef(parentModsA2);
+
+    expect(childGroup.getModValue('resistCold')).toBe(10);
+    expect(childGroup.getModValue('resistFire')).toBe(null);
+
+    childGroup.attachNamedParentGroup('parent-a', parentGroupA);
+    expect(childGroup.getModValue('resistCold')).toBe(17);
+    expect(childGroup.getModValue('resistFire')).toBe(4);
+
+
+    parentGroupA.clearOwnModRefs();
+
+    expect(childGroup.getModValue('resistCold')).toBe(10);
+    expect(childGroup.getModValue('resistFire')).toBe(null);
+  });
+
+  // maybe descrive tests for more nested cases
+  // it seems to work, but need to re-verify
 });
