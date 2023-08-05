@@ -123,28 +123,8 @@ export class Hero extends GameObject<HeroCreationParams> {
 
     this.spells = heroInitState.abilities.map(spell => this.getApi().spells.createSpellInstance(spell));
 
-    this.modGroup.attachNamedParentGroup(HeroMods.HeroItemMods, ModsRefsGroup.empty());
-    this.modGroup.attachNamedParentGroup(HeroMods.HeroStatMods, ModsRefsGroup.empty());
-    this.modGroup.attachNamedParentGroup(HeroMods.CommonCombatMods, ModsRefsGroup.empty());
-
-    this.modGroup.onValueChanges().pipe(takeUntil(this.destroyed$)).subscribe((mods) => {
-      const { baseAttack, baseDefence } = heroBase.initialState.stats;
-
-      const bonusAttack = mods.playerBonusAttack || 0;
-      const bonusDefence = mods.playerBonusDefence || 0;
-
-      const heroStats: HeroStatsInfo = {
-        baseAttack,
-        bonusAttack,
-        finalAttack: baseAttack + bonusAttack,
-
-        baseDefence,
-        bonusDefence,
-        finalDefence: baseDefence + bonusDefence,
-      }
-
-      this.heroStats$.next(heroStats);
-    });
+    this.initParentModGroups();
+    this.setupStatsUpdating(heroBase);
   }
 
   onDestroy(): void {
@@ -225,5 +205,32 @@ export class Hero extends GameObject<HeroCreationParams> {
 
   private getItemModsGroup(): ModsRefsGroup | undefined {
     return this.modGroup.getNamedGroup(HeroMods.HeroItemMods);
+  }
+
+  private initParentModGroups(): void {
+    this.modGroup.attachNamedParentGroup(HeroMods.HeroItemMods, ModsRefsGroup.empty());
+    this.modGroup.attachNamedParentGroup(HeroMods.HeroStatMods, ModsRefsGroup.empty());
+    this.modGroup.attachNamedParentGroup(HeroMods.CommonCombatMods, ModsRefsGroup.empty());
+  }
+
+  private setupStatsUpdating(heroBase: HeroBase): void {
+    this.modGroup.onValueChanges().pipe(takeUntil(this.destroyed$)).subscribe((mods) => {
+      const { baseAttack, baseDefence } = heroBase.initialState.stats;
+
+      const bonusAttack = mods.playerBonusAttack || 0;
+      const bonusDefence = mods.playerBonusDefence || 0;
+
+      const heroStats: HeroStatsInfo = {
+        baseAttack,
+        bonusAttack,
+        finalAttack: baseAttack + bonusAttack,
+
+        baseDefence,
+        bonusDefence,
+        finalDefence: baseDefence + bonusDefence,
+      };
+
+      this.heroStats$.next(heroStats);
+    });
   }
 }

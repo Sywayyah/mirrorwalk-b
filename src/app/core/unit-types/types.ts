@@ -194,34 +194,7 @@ export class UnitGroup extends GameObject<UnitCreationParams> {
 
     this.modGroup.attachNamedParentGroup(UnitModGroups.CombatMods, ModsRefsGroup.empty());
 
-    this.modGroup.onValueChanges().pipe(takeUntil(this.destroyed$)).subscribe((mods) => {
-      const baseStats = this.type.baseStats;
-
-      const baseAttack = baseStats.attackRating;
-      const bonusAttack = mods.playerBonusAttack || 0;
-
-      const baseDefence = baseStats.defence;
-      const bonusDefence = mods.playerBonusDefence || 0;
-
-      const baseSpeed = baseStats.speed;
-      const speedBonus = mods.unitGroupSpeedBonus || 0;
-
-      const stats = {
-        baseAttack,
-        bonusAttack,
-        finalAttack: bonusAttack + baseAttack,
-
-        baseDefence,
-        bonusDefence,
-        finalDefence: baseDefence + bonusDefence,
-
-        baseSpeed,
-        speedBonus,
-        finalSpeed: baseSpeed + speedBonus,
-      };
-
-      this.unitStats$.next(stats);
-    });
+    this.setupStatsUpdating();
   }
 
   onDestroy(): void {
@@ -261,5 +234,36 @@ export class UnitGroup extends GameObject<UnitCreationParams> {
 
   removeCombatMods(modifiers: Modifiers): void {
     this.modGroup.getNamedGroup(UnitModGroups.CombatMods)!.removeRefByModInstance(modifiers);
+  }
+
+  private setupStatsUpdating(): void {
+    this.modGroup.onValueChanges().pipe(takeUntil(this.destroyed$)).subscribe((mods) => {
+      const baseStats = this.type.baseStats;
+
+      const baseAttack = baseStats.attackRating;
+      const bonusAttack = mods.playerBonusAttack || 0;
+
+      const baseDefence = baseStats.defence;
+      const bonusDefence = mods.playerBonusDefence || 0;
+
+      const baseSpeed = baseStats.speed;
+      const speedBonus = mods.unitGroupSpeedBonus || 0;
+
+      const stats = {
+        baseAttack,
+        bonusAttack,
+        finalAttack: bonusAttack + baseAttack,
+
+        baseDefence,
+        bonusDefence,
+        finalDefence: baseDefence + bonusDefence,
+
+        baseSpeed,
+        speedBonus,
+        finalSpeed: baseSpeed + speedBonus,
+      };
+
+      this.unitStats$.next(stats);
+    });
   }
 }
