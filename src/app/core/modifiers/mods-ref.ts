@@ -17,7 +17,7 @@ export class ModsRef {
     modifiers: Modifiers
   ) {
     this.mods = modifiers;
-    this.valuesUpdater = ModValueUpdater.fromObject(this.mods);
+    this.valuesUpdater = ModValueUpdater.fromObjectRef(this.mods);
   }
 
   static fromMods(mods?: Modifiers): ModsRef {

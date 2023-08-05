@@ -37,7 +37,7 @@ export class ModsRefsGroup {
   private readonly modValuesChange$ = new BehaviorSubject<Modifiers>({});
 
   private constructor() {
-    this.valueUpdater = ModValueUpdater.fromObject(this.cachedModValues);
+    this.valueUpdater = ModValueUpdater.fromObjectRef(this.cachedModValues);
   }
 
   /**

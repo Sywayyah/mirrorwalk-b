@@ -1,4 +1,11 @@
 /*
+  IDEA: If there will be spells that might increase efficiency of certain
+    units, it might also reduce efficiency of another units.
+
+    For instance, if Hero is going to cast something that might make
+    his undead units stronger, it might do something to other units,
+    like: Undead units gain +5 speed, all other units loose 15% of speed.
+
   IDEA:
     Some locations on the map can be guarded by neutral enemy players.
     And these players might get power-ups over time.

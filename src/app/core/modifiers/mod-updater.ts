@@ -8,14 +8,15 @@ import { ModName, Modifiers, ModifiersModel, NumModNames } from './modifiers';
  * Most boolean values represent statuses.
  */
 export class ModValueUpdater {
-  private readonly modsObject: Modifiers;
+  private readonly modsObjectRef: Modifiers;
 
-  private constructor(mods: Modifiers) {
-    this.modsObject = mods;
+  private constructor(modsObjRef: Modifiers) {
+    this.modsObjectRef = modsObjRef;
   }
 
-  static fromObject(mods: Modifiers): ModValueUpdater {
-    return new ModValueUpdater(mods);
+  /** Passed object will be mutated */
+  static fromObjectRef(modsObjRef: Modifiers): ModValueUpdater {
+    return new ModValueUpdater(modsObjRef);
   }
 
   /**
@@ -25,7 +26,7 @@ export class ModValueUpdater {
    * @param val new value
    */
   setValue<K extends ModName>(modName: K, val: ModifiersModel[K]): void {
-    this.modsObject[modName] = val;
+    this.modsObjectRef[modName] = val;
   }
 
   /**
@@ -60,13 +61,13 @@ export class ModValueUpdater {
    * @param modName mod name to clear
    */
   clearValue(modName: ModName): void {
-    delete this.modsObject[modName];
+    delete this.modsObjectRef[modName];
   }
 
   private addNumericModValue(modifierProp: NumModNames, val: number): void {
-    const finalValue = this.modsObject[modifierProp];
+    const finalValue = this.modsObjectRef[modifierProp];
 
-    this.modsObject[modifierProp] = typeof finalValue === 'undefined'
+    this.modsObjectRef[modifierProp] = typeof finalValue === 'undefined'
       // if value wasn't defined yet, replace
       ? val
       // else, combine and round to 2 digits after dot
