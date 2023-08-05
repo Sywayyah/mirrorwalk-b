@@ -13,7 +13,6 @@ import { ModsRef } from './mods-ref';
 //  - ideally, mods shouldn't change dynamically.
 //  - maybe some updated$ stream can be introduced to the group
 //  - combining groups now has basic implementation.
-// ids for groups? and modRefs?
 
 /**
  * This class can aggregate multiple `ModsRef`, and retrieve combined mod values.
