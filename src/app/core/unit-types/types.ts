@@ -1,3 +1,5 @@
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import type { Fraction } from '../fractions/types';
 import { GameObject } from '../game-objects';
 import { ModsRef, ModsRefsGroup } from '../modifiers';
@@ -6,6 +8,7 @@ import type { Player } from '../players';
 import { ResourcesModel } from '../resources';
 import { Spell, SpellBaseType } from '../spells';
 import { DescriptionElement } from '../ui';
+import { complete } from '../utils/observables';
 
 interface RequirementModel extends Partial<ResourcesModel> {
   /* heroLevel?: number;
@@ -100,6 +103,20 @@ export enum UnitModGroups {
   CombatMods = 'cMods',
 }
 
+export interface UnitStatsInfo {
+  baseAttack: number;
+  bonusAttack: number;
+  finalAttack: number;
+
+  baseDefence: number;
+  bonusDefence: number;
+  finalDefence: number;
+
+  baseSpeed: number;
+  speedBonus: number;
+  finalSpeed: number;
+}
+
 export class UnitGroup extends GameObject<UnitCreationParams> {
   public static readonly categoryId: string = 'unit-group';
 
@@ -121,11 +138,25 @@ export class UnitGroup extends GameObject<UnitCreationParams> {
 
   public spells!: Spell[];
 
-  // Should it be mod refs? or plain modifiers?
-  public modifiers!: Modifiers[];
-
   // mods are going to be attached there
   public readonly modGroup: ModsRefsGroup = ModsRefsGroup.empty();
+
+  // final stats used by the game
+  private readonly unitStats$ = new BehaviorSubject<UnitStatsInfo>({
+    baseAttack: 0,
+    bonusAttack: 0,
+    finalAttack: 0,
+
+    baseDefence: 0,
+    bonusDefence: 0,
+    finalDefence: 0,
+
+    baseSpeed: 0,
+    speedBonus: 0,
+    finalSpeed: 0,
+  });
+
+  private readonly destroyed$ = new Subject<void>();
 
   create({ count, ownerPlayer, unitBase }: UnitCreationParams): void {
     if (count <= 0 || !count) {
@@ -155,7 +186,46 @@ export class UnitGroup extends GameObject<UnitCreationParams> {
       spellsOnCooldown: false,
     };
 
+    if (this.type.defaultSpells) {
+      this.spells = this.type.defaultSpells.map(spell => this.getApi().spells.createSpellInstance(spell));
+    } else {
+      this.spells = [];
+    }
+
     this.modGroup.attachNamedParentGroup(UnitModGroups.CombatMods, ModsRefsGroup.empty());
+
+    this.modGroup.onValueChanges().pipe(takeUntil(this.destroyed$)).subscribe((mods) => {
+      const baseStats = this.type.baseStats;
+
+      const baseAttack = baseStats.attackRating;
+      const bonusAttack = mods.playerBonusAttack || 0;
+
+      const baseDefence = baseStats.defence;
+      const bonusDefence = mods.playerBonusDefence || 0;
+
+      const baseSpeed = baseStats.speed;
+      const speedBonus = mods.unitGroupSpeedBonus || 0;
+
+      const stats = {
+        baseAttack,
+        bonusAttack,
+        finalAttack: bonusAttack + baseAttack,
+
+        baseDefence,
+        bonusDefence,
+        finalDefence: baseDefence + bonusDefence,
+
+        baseSpeed,
+        speedBonus,
+        finalSpeed: baseSpeed + speedBonus,
+      };
+
+      this.unitStats$.next(stats);
+    });
+  }
+
+  onDestroy(): void {
+    complete(this.destroyed$);
   }
 
   // can be more methods
@@ -164,7 +234,15 @@ export class UnitGroup extends GameObject<UnitCreationParams> {
 
     // think if I need to retach like that
     this.modGroup.detachNamedParentGroup(UnitModGroups.PlayerMods);
-    this.modGroup.attachNamedParentGroup(UnitModGroups.PlayerMods, player.hero.modifiers);
+    this.modGroup.attachNamedParentGroup(UnitModGroups.PlayerMods, player.hero.modGroup);
+  }
+
+  listenStats(): Observable<UnitStatsInfo> {
+    return this.unitStats$.pipe(takeUntil(this.destroyed$));
+  }
+
+  getStats(): UnitStatsInfo {
+    return this.unitStats$.getValue();
   }
 
   /**

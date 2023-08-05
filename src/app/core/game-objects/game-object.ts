@@ -1,7 +1,7 @@
+import { Type } from '@angular/core';
+import { Observable } from 'rxjs';
 import { EventType } from 'src/app/store';
 import { SpellsApi } from '../api/game-api';
-import { Observable } from 'rxjs';
-import { Type } from '@angular/core';
 import { EventFeedMessage } from '../ui';
 
 // base for events for
@@ -49,7 +49,7 @@ export class GameObject<CreationParams extends object = object> {
   }
 
   // method which is going to be called when object is being disposed
-  onDestroy(): void {}
+  onDestroy(): void { }
 }
 
 export type CreationParams<T> = T extends GameObject<infer K> ? K : never;

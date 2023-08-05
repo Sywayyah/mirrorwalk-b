@@ -9,7 +9,9 @@ import { MwPlayersService } from 'src/app/features/services';
 })
 export class MwPlayerResourcesComponent {
 
-  public currentPlayer: Player = this.playersService.getCurrentPlayer();
+  public readonly currentPlayer: Player = this.playersService.getCurrentPlayer();
+
+  public readonly heroStats$ = this.currentPlayer.hero.listenHeroStats();
 
   constructor(
     private readonly playersService: MwPlayersService,

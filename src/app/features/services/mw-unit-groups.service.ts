@@ -45,8 +45,6 @@ export class MwUnitGroupsService {
       },
     );
 
-    this.updateUnitGroupSpells(unitGroup);
-
     return unitGroup;
   }
 
@@ -55,8 +53,7 @@ export class MwUnitGroupsService {
   ): UnitGroup[] {
     return UnitsUtils
       .createRandomArmy(genModel)
-      .map(unitGenModel => this.createUnitGroup(unitGenModel.unitType, { count: unitGenModel.count }))
-      .map(unitGroup => this.updateUnitGroupSpells(unitGroup));
+      .map(unitGenModel => this.createUnitGroup(unitGenModel.unitType, { count: unitGenModel.count }));
   }
 
   public createUnitGroupFromGenModelForPlayer(
@@ -65,8 +62,7 @@ export class MwUnitGroupsService {
   ): UnitGroup[] {
     return UnitsUtils
       .createRandomArmy(genModel)
-      .map(unitGenModel => this.createUnitGroup(unitGenModel.unitType, { count: unitGenModel.count }, player))
-      .map(unitGroup => this.updateUnitGroupSpells(unitGroup));
+      .map(unitGenModel => this.createUnitGroup(unitGenModel.unitType, { count: unitGenModel.count }, player));
   }
 
   // these methods might become obsolete
@@ -79,15 +75,11 @@ export class MwUnitGroupsService {
   }
 
   public clearUnitModifiers(target: UnitGroup): void {
-    target.modifiers = [];
+    target.clearCombatMods();
   }
 
   public getUnitGroupSpeed(unitGroup: UnitGroup): number {
-    const speedBonusFromMods = unitGroup.modifiers
-      .filter(mod => mod.unitGroupSpeedBonus)
-      .reduce((speedBonusSum, nextMod) => speedBonusSum + (nextMod.unitGroupSpeedBonus ?? 0), 0);
-
-    return unitGroup.type.baseStats.speed + speedBonusFromMods;
+    return unitGroup.getStats().finalSpeed;
   }
 
   /*
@@ -157,37 +149,5 @@ export class MwUnitGroupsService {
       revivedUnitsCount: unitsToRevive,
       totalHealedHp: healValue,
     };
-  }
-
-  public calcUiMods(target: UnitGroup): UIModsModel {
-    return {
-      speed: this.getNumericModifier(target, 'unitGroupSpeedBonus'),
-      attack: this.getNumericModifier(target, 'unitGroupBonusAttack'),
-    };
-  }
-
-  private getNumericModifier(target: UnitGroup, modifierProp: KeysMatching<ModifiersModel, number>): number {
-    // switch to groups approach
-    const res1 = target.modifiers.filter(mod => mod[modifierProp]).reduce((sum, next) => sum + (next[modifierProp] ?? 0), 0)
-    // const res2 = ModsRefsGroup.withRefs(target.modifiers.map(mod => ModsRef.fromMods(mod))).getModValue(modifierProp);
-    // console.log(res1, res2, modifierProp);
-    return res1;
-  }
-
-  private updateUnitGroupSpells(unitGroup: UnitGroup): UnitGroup {
-    const unitGroupDefaultSpells = unitGroup.type.defaultSpells;
-
-    const unitGroupInst = unitGroup as UnitGroup;
-
-    /* Init modifiers with empty list */
-    unitGroupInst.modifiers = [];
-
-    if (unitGroupDefaultSpells) {
-      unitGroupInst.spells = unitGroupDefaultSpells.map(spell => this.spells.createSpellInstance(spell));
-    } else {
-      unitGroupInst.spells = [];
-    }
-
-    return unitGroup;
   }
 }

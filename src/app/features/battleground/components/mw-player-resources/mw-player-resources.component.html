@@ -1,4 +1,4 @@
-<div>
+<div *ngIf="heroStats$ | async as _heroStats">
   <div class="resource-info-row">
     <div>Gold:</div>
     <div>{{currentPlayer.resources.gold}}</div>
@@ -24,10 +24,10 @@
   <div class="resource-info-row">
     <div>Attack:</div>
     <div>
-      {{currentPlayer.hero.stats.baseAttack}}
-      <span *ngIf="currentPlayer.hero.stats.bonusAttack">
+      {{_heroStats.baseAttack}}
+      <span *ngIf="_heroStats.bonusAttack">
         <!-- pipe for pos/neg values, or directive with ::before -->
-        (+{{currentPlayer.hero.stats.bonusAttack}})
+        (+{{_heroStats.bonusAttack}})
       </span>
     </div>
   </div>
@@ -35,9 +35,9 @@
   <div class="resource-info-row">
     <div>Defence:</div>
     <div>
-      {{currentPlayer.hero.stats.baseDefence}}
-      <span *ngIf="currentPlayer.hero.stats.bonusDefence">
-        (+{{currentPlayer.hero.stats.bonusDefence}})
+      {{_heroStats.baseDefence}}
+      <span *ngIf="_heroStats.bonusDefence">
+        (+{{_heroStats.bonusDefence}})
       </span>
     </div>
   </div>
