@@ -10,10 +10,10 @@ export const LifeformItem: ItemBaseModel = {
     icon: 'vest',
   },
   staticMods: {
-    playerBonusDefence: 12,
+    playerBonusDefence: 10,
     resistFire: 25,
     resistPoison: 20,
-    resistLightnining: 15,
+    resistLightning: 15,
     resistCold: 15,
   },
   description({ thisItem }) {

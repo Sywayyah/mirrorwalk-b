@@ -38,9 +38,16 @@
   user-select: none;
 }
 
-/* invert enemy's card */
+// todo: try dvh instead of vh
+//  Transformations now can be applied individually.
+// object-view-box - allows to cut image without overflow hidden/positioning
+// backdrop-filter - only apply filter to background
+// width: clamp(min, width, max)
+// html popover
+
+/* inver card */
 .card-left .portrait {
-  transform: scaleX(-1);
+  scale: -1 1;
 }
 
 $portrait-offset: 70%;
@@ -177,7 +184,7 @@ $inactive-offset: 32px;
 
   &.active {
     filter: brightness(100%) drop-shadow(2px 4px 6px $shadow);
-    transform: scale($active-scale);
+    scale: $active-scale;
   }
 
   &.inactive {
@@ -189,54 +196,70 @@ $inactive-offset: 32px;
   }
 }
 
+// migrate to individual transforms
 :host-context(.vertical) .card-top {
-  &.active.card-left {
-    transform: scale($active-scale) translateX($active-offset);
+  &.active {
+    &.card-left {
+      translate: $active-offset 0;
+    }
+
+    &.card-right {
+      translate: -$active-offset 0;
+    }
   }
 
-  &.active.card-right {
-    transform: scale($active-scale) translateX(-$active-offset);
+  &.inactive {
+    &.card-left {
+      translate: -$inactive-offset 0;
+    }
+
+    &.card-right {
+      translate: $inactive-offset 0;
+    }
   }
 
-  &.inactive.card-left {
-    transform: scale(1) translateX(-$inactive-offset);
-  }
 
-  &.inactive.card-right {
-    transform: scale(1) translateX($inactive-offset);
-  }
+  &.defeated {
+    &.card-left {
+      translate: -$inactive-offset 0;
+    }
 
-  &.defeated.card-left {
-    transform: scale(1) translateX(-$inactive-offset);
-  }
-
-  &.defeated.card-right {
-    transform: scale(1) translateX($inactive-offset);
+    &.card-right {
+      translate: $inactive-offset 0;
+    }
   }
 }
 
 :host-context(.horizontal) .card-top {
-  &.active.card-left {
-    transform: scale($active-scale) translateY(-$active-offset);
+  // translateY doesn't seem to work properly when used standalone
+  &.active {
+    &.card-left {
+      transform: translateY(-$active-offset);
+    }
+
+    &.card-right {
+      transform: translateY($active-offset);
+    }
   }
 
-  &.active.card-right {
-    transform: scale($active-scale) translateY($active-offset);
+  &.inactive {
+    &.card-left {
+      transform: translateY($inactive-offset);
+    }
+
+    &.card-right {
+      transform: translateY(-$inactive-offset);
+    }
   }
 
-  &.inactive.card-left {
-    transform: scale(1) translateY($inactive-offset);
-  }
 
-  &.inactive.card-right {
-    transform: scale(1) translateY(-$inactive-offset);
-  }
+  &.defeated {
+    &.card-left {
+      transform: translateY($inactive-offset);
+    }
 
-  &.defeated.card-left {
-    transform: scale(1) translateY($inactive-offset);
-  }
-
-  &.defeated.card-right {
-    transform: scale(1) translateY(-$inactive-offset);
+    &.card-right {
+      transform: translateY(-$inactive-offset);
+    }
   }
 }

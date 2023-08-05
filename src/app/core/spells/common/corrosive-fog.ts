@@ -22,6 +22,9 @@ const CorrosiveFogAnimation: EffectAnimation = createAnimation([
   [
     getIconElement(icon, 'fire-main'),
     [
+      // todo: I can try to go with standalone properties
+      // it would make animations easier to follow
+      // and some styles could be applied by-default/globally for animation
       {
         opacity: '0',
         transform: 'translate(-50%, -50%) scale(0.8)',

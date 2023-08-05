@@ -16,7 +16,7 @@ import { State } from './state.service';
 const resistsMapping: Partial<Record<DamageType, keyof Modifiers>> = {
   [DamageType.Cold]: 'resistCold',
   [DamageType.Fire]: 'resistFire',
-  [DamageType.Lightning]: 'resistLightnining',
+  [DamageType.Lightning]: 'resistLightning',
   [DamageType.Poison]: 'resistPoison',
 };
 
@@ -181,6 +181,7 @@ export class CombatInteractorService extends StoreClient() {
       action,
     } = attackActionState;
 
+    // todo: history log for counterattack action
     const isCounterattack = action === CombatInteractionEnum.GroupCounterattacks;
 
     const attacker = !isCounterattack ? attackingGroup : attackedGroup;
@@ -194,8 +195,6 @@ export class CombatInteractorService extends StoreClient() {
     const attackDetails = this.unitState.getDetailedAttackInfo(
       attacker,
       attacked,
-      this.getModsForUnitGroup(attacker),
-      this.getModsForUnitGroup(attacked),
     );
 
     const damageInfo = this.unitState.getFinalDamageInfoFromDamageDetailedInfo(attackDetails);
@@ -269,8 +268,6 @@ export class CombatInteractorService extends StoreClient() {
     const attackDetails = this.unitState.getDetailedAttackInfo(
       currentUnitGroup,
       target,
-      this.getModsForUnitGroup(currentUnitGroup),
-      this.getModsForUnitGroup(target),
     );
 
     const attackActionInfo: AttackActionHintInfo = {
@@ -348,13 +345,6 @@ export class CombatInteractorService extends StoreClient() {
     const enemyPlayer = this.players.getEnemyPlayer()
     const enemyUnitGroups = this.battleState.heroesUnitGroupsMap.get(enemyPlayer) as UnitGroup[];
     return CommonUtils.randItem(enemyUnitGroups.filter(group => group.fightInfo.isAlive));
-  }
-
-  private getModsForUnitGroup(unitGroup: UnitGroup): Modifiers[] {
-    return [
-      ...unitGroup.ownerPlayerRef.hero.mods,
-      ...this.unitGroupModifiersMap.get(unitGroup) ?? [],
-    ];
   }
 
   public addSpellToUnitGroup(target: UnitGroup, spell: Spell, ownerPlayer: Player): void {

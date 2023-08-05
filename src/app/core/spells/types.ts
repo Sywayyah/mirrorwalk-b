@@ -98,7 +98,7 @@ export class Spell<T = DefaultSpellStateType> extends GameObject<SpellCreationPa
   public baseType!: SpellBaseType<T>;
 
   public sourceInfo!: {
-    item?: Item,
+    gameObjectId?: string;
   };
 
   create({ spellBaseType, initialLevel, state }: SpellCreationParams<T>): void {

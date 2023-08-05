@@ -1,4 +1,5 @@
-<div class="card-top"
+<div *ngIf="unitStats$ | async as _unitStats"
+     class="card-top"
      [class.active]="mwBattleStateService.currentPlayer === playerInfo && attackingUnitGroup === unitGroup"
      [ngClass]="side === 'left' ? 'card-left' : 'card-right'"
      [class.inactive]="!unitGroup.turnsLeft && unitGroup.fightInfo.isAlive"
@@ -34,9 +35,9 @@
 
         <div>
           <mw-ra-icon icon="feather-wing" />
-          {{ unitGroup.type.baseStats.speed }}
+          {{ _unitStats.baseSpeed }}
 
-          <span [mwNumberModifier]="modsForUi.speed"></span>
+          <span [mwNumberModifier]="_unitStats.speedBonus"></span>
         </div>
 
         <!-- this info will have to be updated -->

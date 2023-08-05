@@ -99,32 +99,17 @@ export class MwUnitGroupStateService {
   public getDetailedAttackInfo(
     attackingGroup: UnitGroup,
     attackedGroup: UnitGroup,
-    attackingMods: Modifiers[] = [],
-    attackedMods: Modifiers[] = [],
   ): DetailedDamageInfo {
-    const attackerUnitType = attackingGroup.type;
     const attackedUnitType = attackedGroup.type;
 
-    const attackerBaseStats = attackerUnitType.baseStats;
     const attackedBaseStats = attackedUnitType.baseStats;
 
-    const attackRatingBonus = attackingMods
-      // .filter(mod => mod.playerBonusAttack)
-      .reduce((bonusAttack, nextMod) => bonusAttack +
-        (nextMod.playerBonusAttack ?? 0) +
-        (nextMod.unitGroupBonusAttack ?? 0),
-        0
-      );
+    const attackerStats = attackingGroup.getStats();
+    const attackedStats = attackedGroup.getStats();
 
-    const targetDefenceBonus = attackedMods.reduce(
-      (totalBonusDef, nextMod) => (nextMod.playerBonusDefence ?? 0) +
-        (nextMod?.unitGroupBonusDefence ?? 0) +
-        totalBonusDef,
-      0,
-    );
 
-    const totalAttack = attackerBaseStats.attackRating + attackRatingBonus;
-    const totalTargetDefence = attackedBaseStats.defence + targetDefenceBonus;
+    const totalAttack = attackerStats.finalAttack;
+    const totalTargetDefence = attackedStats.finalDefence;
 
     const attackSupperiority = totalAttack - totalTargetDefence;
 

@@ -10,7 +10,9 @@ export const PhoenixShieldItem = createItem({
   stats: {
     playerBonusDefence: 2,
     playerBonusAttack: 1,
-    resistFire: 16,
-    resistLightnining: 12,
+    resistFire: 17,
+  },
+  enemyStats: {
+    resistFire: -12,
   },
 });

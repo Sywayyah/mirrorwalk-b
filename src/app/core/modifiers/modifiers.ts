@@ -34,7 +34,7 @@ export interface ModifiersModel {
   resistFire: number;
   resistCold: number;
   resistPoison: number;
-  resistLightnining: number;
+  resistLightning: number;
 
   /* unit speed bonus */
   unitGroupSpeedBonus: number;

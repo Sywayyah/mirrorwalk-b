@@ -1,10 +1,14 @@
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import type { Fraction } from '../fractions/types';
+import { GameObject } from '../game-objects';
+import { ModsRef, ModsRefsGroup } from '../modifiers';
+import { Modifiers } from '../modifiers/modifiers';
 import type { Player } from '../players';
 import { ResourcesModel } from '../resources';
 import { Spell, SpellBaseType } from '../spells';
-import { Modifiers } from '../modifiers/modifiers';
-import { GameObject } from '../game-objects';
 import { DescriptionElement } from '../ui';
+import { complete } from '../utils/observables';
 
 interface RequirementModel extends Partial<ResourcesModel> {
   /* heroLevel?: number;
@@ -91,6 +95,28 @@ interface UnitCreationParams {
   ownerPlayer?: Player;
 }
 
+export enum UnitModGroups {
+  /** Mods coming from player */
+  PlayerMods = 'pMods',
+
+  /** Mods attached to particular unit during the battle */
+  CombatMods = 'cMods',
+}
+
+export interface UnitStatsInfo {
+  baseAttack: number;
+  bonusAttack: number;
+  finalAttack: number;
+
+  baseDefence: number;
+  bonusDefence: number;
+  finalDefence: number;
+
+  baseSpeed: number;
+  speedBonus: number;
+  finalSpeed: number;
+}
+
 export class UnitGroup extends GameObject<UnitCreationParams> {
   public static readonly categoryId: string = 'unit-group';
 
@@ -112,11 +138,28 @@ export class UnitGroup extends GameObject<UnitCreationParams> {
 
   public spells!: Spell[];
 
-  // Should it be mod refs? or plain modifiers?
-  public modifiers!: Modifiers[];
+  // mods are going to be attached there
+  public readonly modGroup: ModsRefsGroup = ModsRefsGroup.empty();
+
+  // final stats used by the game
+  private readonly unitStats$ = new BehaviorSubject<UnitStatsInfo>({
+    baseAttack: 0,
+    bonusAttack: 0,
+    finalAttack: 0,
+
+    baseDefence: 0,
+    bonusDefence: 0,
+    finalDefence: 0,
+
+    baseSpeed: 0,
+    speedBonus: 0,
+    finalSpeed: 0,
+  });
+
+  private readonly destroyed$ = new Subject<void>();
 
   create({ count, ownerPlayer, unitBase }: UnitCreationParams): void {
-    if (count <= 0) {
+    if (count <= 0 || !count) {
       console.warn(`Cannot create unit group with ${count} units. Setting count to 1.`, this);
 
       count = 1;
@@ -127,15 +170,100 @@ export class UnitGroup extends GameObject<UnitCreationParams> {
 
     // think about it later
     if (ownerPlayer) {
-      this.ownerPlayerRef = ownerPlayer;
+      this.assignOwnerPlayer(ownerPlayer);
     }
 
     this.turnsLeft = unitBase.defaultTurnsPerRound;
+
+    if (this.type.defaultModifiers) {
+      // think about it as well.
+      this.modGroup.addModsRef(ModsRef.fromMods(this.type.defaultModifiers));
+    }
 
     this.fightInfo = {
       initialCount: count,
       isAlive: true,
       spellsOnCooldown: false,
     };
+
+    if (this.type.defaultSpells) {
+      this.spells = this.type.defaultSpells.map(spell => this.getApi().spells.createSpellInstance(spell));
+    } else {
+      this.spells = [];
+    }
+
+    this.modGroup.attachNamedParentGroup(UnitModGroups.CombatMods, ModsRefsGroup.empty());
+
+    this.setupStatsUpdating();
+  }
+
+  onDestroy(): void {
+    complete(this.destroyed$);
+  }
+
+  // can be more methods
+  assignOwnerPlayer(player: Player): void {
+    this.ownerPlayerRef = player;
+
+    // think if I need to retach like that
+    this.modGroup.detachNamedParentGroup(UnitModGroups.PlayerMods);
+    this.modGroup.attachNamedParentGroup(UnitModGroups.PlayerMods, player.hero.modGroup);
+  }
+
+  listenStats(): Observable<UnitStatsInfo> {
+    return this.unitStats$.pipe(takeUntil(this.destroyed$));
+  }
+
+  getStats(): UnitStatsInfo {
+    return this.unitStats$.getValue();
+  }
+
+  /**
+   * Removes all mods gained during the battle. Should be called in the end of battle.
+   * Mods attached by spells are going to be managed by spells.
+   *
+   * Mods that can be removed may have flag __dispellableOnDeath: true.
+   */
+  clearCombatMods(): void {
+    this.modGroup.getNamedGroup(UnitModGroups.CombatMods)!.clearOwnModRefs();
+  }
+
+  addCombatMods(modifiers: Modifiers): void {
+    this.modGroup.getNamedGroup(UnitModGroups.CombatMods)!.addModsRef(ModsRef.fromMods(modifiers));
+  }
+
+  removeCombatMods(modifiers: Modifiers): void {
+    this.modGroup.getNamedGroup(UnitModGroups.CombatMods)!.removeRefByModInstance(modifiers);
+  }
+
+  private setupStatsUpdating(): void {
+    this.modGroup.onValueChanges().pipe(takeUntil(this.destroyed$)).subscribe((mods) => {
+      const baseStats = this.type.baseStats;
+
+      const baseAttack = baseStats.attackRating;
+      const bonusAttack = mods.playerBonusAttack || 0;
+
+      const baseDefence = baseStats.defence;
+      const bonusDefence = mods.playerBonusDefence || 0;
+
+      const baseSpeed = baseStats.speed;
+      const speedBonus = mods.unitGroupSpeedBonus || 0;
+
+      const stats = {
+        baseAttack,
+        bonusAttack,
+        finalAttack: bonusAttack + baseAttack,
+
+        baseDefence,
+        bonusDefence,
+        finalDefence: baseDefence + bonusDefence,
+
+        baseSpeed,
+        speedBonus,
+        finalSpeed: baseSpeed + speedBonus,
+      };
+
+      this.unitStats$.next(stats);
+    });
   }
 }

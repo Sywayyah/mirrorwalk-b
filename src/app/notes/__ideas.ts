@@ -1,4 +1,51 @@
 /*
+  IDEA: If there will be spells that might increase efficiency of certain
+    units, it might also reduce efficiency of another units.
+
+    For instance, if Hero is going to cast something that might make
+    his undead units stronger, it might do something to other units,
+    like: Undead units gain +5 speed, all other units loose 15% of speed.
+
+  IDEA:
+    Some locations on the map can be guarded by neutral enemy players.
+    And these players might get power-ups over time.
+
+  IDEAS: Necromancy? It could boost some abilities of the undead units
+    It can increase damage reduction of Ghosts, Ghosts might
+    reduce damage also for other undead units.
+    Or it could be something like this: 30% reduction against Ghosts,
+    15% reduction against other Undead, 9% reduction against all
+    others.
+
+    This can make a fun RPG element to have Necromancy. But, by the
+    way. Character can actually find abilities in some locations. When
+    player visits Night Tower, player can study +2 to Necromancy
+    or get some undead mages or casters.
+
+    Player can find some cards that will give bonuses to units.
+    these bonuses can have their own sub-benefits after a certain level
+    of some main specialty.
+
+    Or could it be that... some abilities can be amplified by some
+    special skill. Like, Undead units might get stronger when
+    some spell is casted.
+
+    There will also be Mixed Arts Schools or Witchcraft Schools
+    that might offer, for instance, 3 options. Here player might
+    find an option in case he doesn't see Night Tower on the map.
+
+    This is also how skills and character can be upgraded, and
+    this might make map more exciting and interesting to explore.
+
+    It can also make players to play around things on the map.
+
+    Sub-idea: Items/units that increase Necromancy?
+
+  IDEA: UI. Considering that battlefield might get bigger with
+    more units, maybe it makes sense to have RTS-like panels
+    that will always stay visible, but battleground itself might
+    become scrollable.
+
   IDEA: Event feed? There might be some visual event feed to help
     understand what happened over time (new day, gained resources
     from mines, units growth in the town).

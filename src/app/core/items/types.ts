@@ -44,6 +44,8 @@ export interface ItemBaseModel<StateType extends object = object> {
   name: string;
   icon: Icon;
   staticMods: Modifiers;
+  /** Mods that will be applied on enemy units by default */
+  staticEnemyMods?: Modifiers;
 
   /* There could be some requirements: */
   // requirements: ItemRequirementModel[],

@@ -4,6 +4,15 @@ import { HasteSpell, RainOfFireSpell } from '../../spells/common';
 import { heroDescrElem } from '../../ui';
 import { HeroBase } from '../types';
 
+/*
+  Ideas: Crystal Illness: gain 1 mana, but lose 1 armor.
+  This might be a passive ability (each round), or active (but cooldown doesn't affect other spells)
+
+  Mages might posses 2 initial skills, 1 of which will
+    always be available, like:
+      Shock
+      Rain of Fire
+*/
 export const HelveticaHero: HeroBase = humansFraction.createHero({
   name: 'Helvetica',
   generalDescription: heroDescrElem(`Helvetica is the mage who supports her own army with offensive fire spells as well as increasing their speed.`),
@@ -24,7 +33,12 @@ export const HelveticaHero: HeroBase = humansFraction.createHero({
       [humansFraction.getUnitType('Pikeman'), 20, 32, 1],
     ],
   }],
-  items: [ItemWindCrest],
+  items: [
+    ItemWindCrest,
+    // PhoenixShieldItem,
+    // ItemIceBow,
+    // WishmasterItem,
+  ],
   resources: {
     gems: 0,
     gold: 750,

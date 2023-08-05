@@ -179,3 +179,14 @@ humansFraction.defineUnitType('Firebird', {
     gold: 60,
   },
 });
+
+// possible tier 4-6 unit: Monks, might increase your magical capabilities
+// Knights could have a branching: Paladins, or something else
+
+// Pikeman can give bonuses to some aura-like spells, like Valor.
+
+// possible tier 7 for humans
+//   fast, normal tier 7 stats
+//   can deal lightning damage
+// humansFraction.defineUnitType('Thunderer', {});
+// humansFraction.defineUnitType('Valkyrie', {});

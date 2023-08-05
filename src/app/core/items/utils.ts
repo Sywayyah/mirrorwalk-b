@@ -7,6 +7,7 @@ export function createItem({ name, icon, slot, stats }: {
   icon: string,
   slot: ItemSlotType,
   stats: Modifiers,
+  enemyStats?: Modifiers,
 }): ItemBaseModel {
   return {
     name,

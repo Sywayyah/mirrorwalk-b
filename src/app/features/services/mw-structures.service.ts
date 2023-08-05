@@ -110,7 +110,7 @@ export class MwStructuresService {
 
         if (generator?.generateGuard) {
           viewStrcuture.guard = this.unitGroups.createUnitGroupFromGenModel(generator.generateGuard());
-          viewStrcuture.guard.forEach(guard => guard.ownerPlayerRef = this.playersService.getNeutralPlayer());
+          viewStrcuture.guard.forEach(guard => guard.assignOwnerPlayer(this.playersService.getNeutralPlayer()));
           viewStrcuture.guardingPlayer = this.playersService.getNeutralPlayer();
         }
 

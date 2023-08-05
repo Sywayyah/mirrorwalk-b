@@ -4,10 +4,9 @@ import { KneelingLight, RainOfFireSpell } from '../../spells/common';
 import { SummonSagittarSpell } from '../../spells/common/summon-sagittar';
 import { heroDescrElem } from '../../ui';
 
-// possible constellation skill:
-//  Summon Star Dragon.
+// new possible constellation hero
 constellationFraction.createHero({
-  name: 'Blackbird',
+  name: 'Luminuous',
   abilities: [
     RainOfFireSpell,
     SummonSagittarSpell,
@@ -42,7 +41,7 @@ constellationFraction.createHero({
   generalDescription: heroDescrElem(`Blackbird is a hero who specializes at Astral and Fire magic, as well as Summoning.`),
   items: [
     // ItemWindCrest,
-    WishmasterItem,
+    // WishmasterItem,
   ],
   stats: {
     baseAttack: 2,

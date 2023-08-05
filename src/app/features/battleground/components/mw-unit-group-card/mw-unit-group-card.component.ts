@@ -1,11 +1,11 @@
 import { Component, ElementRef, EventEmitter, forwardRef, Input, OnDestroy, OnInit, Output, Renderer2 } from '@angular/core';
-import { Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { GroupModifiersChanged, GroupSpellsChanged, HoverTypeEnum, PlayerHoversGroupCard } from 'src/app/core/events';
+import { GroupSpellsChanged, HoverTypeEnum, PlayerHoversGroupCard } from 'src/app/core/events';
 import { Player } from 'src/app/core/players';
-import { SpellActivationType, Spell } from 'src/app/core/spells';
-import { UnitGroup } from 'src/app/core/unit-types';
-import { BattleStateService, MwPlayersService, MwUnitGroupsService, MwUnitGroupStateService, UIModsModel } from 'src/app/features/services';
+import { Spell, SpellActivationType } from 'src/app/core/spells';
+import { UnitGroup, UnitStatsInfo } from 'src/app/core/unit-types';
+import { BattleStateService, MwPlayersService, MwUnitGroupsService, MwUnitGroupStateService } from 'src/app/features/services';
 import { HintAttachment } from 'src/app/features/shared/components';
 import { PROVIDE_UI_UNIT_GROUP, UIUnitProvider } from 'src/app/features/shared/directives';
 import { StoreClient } from 'src/app/store';
@@ -42,10 +42,12 @@ export class MwUnitGroupCardComponent extends StoreClient() implements UIUnitPro
 
   public canCurrentPlayerAttack: boolean = false;
   public isGroupMelee: boolean = false;
-  public modsForUi!: UIModsModel;
+
+  public unitStats$!: Observable<UnitStatsInfo>;
 
   public initialCount: number = 0;
 
+  // todo: revisit, can become part of stats or something
   public spells: Spell[] = [];
   public effects: Spell[] = [];
 
@@ -67,24 +69,28 @@ export class MwUnitGroupCardComponent extends StoreClient() implements UIUnitPro
   }
 
   public ngOnInit(): void {
-    this.spellsHintsPosition = this.side === 'left' ? 'above' : 'below';
+    this.spellsHintsPosition = 'above';
+
+    // this.spellsHintsPosition = this.side === 'left' ? 'above' : 'below';
+
     this.isGroupMelee = !this.unitsService.isUnitGroupRanged(this.unitGroup);
     this.isEnemyCard = this.playersService.getCurrentPlayer() !== this.playerInfo;
     this.initialCount = this.unitGroup.count;
     this.isBoss = this.unitGroup.type.defaultModifiers?.isBoss;
     this.cardReady.next(this);
+    this.unitStats$ = this.unitGroup.listenStats();
 
     /* Self-animating for summoned units.  */
     // In future, this approach is most likely going to change, I might introduce
     // some animating container, that will be able to animate any given element.
     // Which is going to be useful for fight queue as well.
-    const isSummoned = this.unitGroup.modifiers.find(mod => mod.isSummon);
+    const isSummoned = this.unitGroup.modGroup.getModValue('isSummon');
+
     if (isSummoned) {
       this.renderer.addClass(this.hostElem.nativeElement, 'summoned');
     }
 
     this.updateSpellsAndEffects();
-    this.modsForUi = this.units.calcUiMods(this.unitGroup);
 
     this.events.eventStream$
       .pipe(
@@ -96,14 +102,6 @@ export class MwUnitGroupCardComponent extends StoreClient() implements UIUnitPro
         this.attackingUnitGroup = currentUnitGroup;
         this.canCurrentPlayerAttack = this.mwBattleStateService.currentPlayer === this.playersService.getCurrentPlayer();
       });
-
-    this.events.onEvent(GroupModifiersChanged).pipe(
-      takeUntil(this.destroyed$)
-    ).subscribe(event => {
-      if (event.unitGroup === this.unitGroup) {
-        this.modsForUi = this.units.calcUiMods(this.unitGroup);
-      }
-    });
 
     this.events.onEvent(GroupSpellsChanged).pipe(
       takeUntil(this.destroyed$)

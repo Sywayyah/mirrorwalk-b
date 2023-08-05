@@ -80,6 +80,10 @@ export class InventoryItems {
     return this.inventoryItemsMap.has(slotType);
   }
 
+  public isItemEquipped(item: Item): boolean {
+    return this.equipedItemsSet.has(item);
+  }
+
   public getEquippedItems(): Item[] {
     return [...this.equipedItemsSet];
   }

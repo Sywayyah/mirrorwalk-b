@@ -45,7 +45,7 @@ export class ItemSlotComponent extends StoreClient() implements OnChanges {
       this.isEquipped = equippedItems.isSlotEquipped(itemSlot);
       this.equippedItem = equippedItems.getItemInSlot(itemSlot);
 
-      this.availableItemsForSlot = InventoryItems.filterItemsForSlot(itemSlot, this.hero.items);
+      this.availableItemsForSlot = InventoryItems.filterItemsForSlot(itemSlot, this.hero.itemsBackpack);
     }
   }
 
