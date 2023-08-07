@@ -2,6 +2,7 @@ import { GameObject } from '../game-objects';
 import { Player } from '../players';
 import { NeutralRewardModel, StructureGeneratorModel } from '.';
 import { UnitGroup } from '../unit-types';
+import { Modifiers } from '../modifiers';
 
 export interface StructureDescription {
   x: number;
@@ -11,6 +12,8 @@ export interface StructureDescription {
   pathTo?: string;
   struct?: StructureGeneratorModel;
   isRoot?: boolean;
+  defenderStaticMods?: Modifiers;
+  attackerStaticMods?: Modifiers;
 }
 
 type SvgPath = {

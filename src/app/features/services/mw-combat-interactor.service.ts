@@ -27,8 +27,6 @@ const defaultResistCap = 60;
   providedIn: 'root'
 })
 export class CombatInteractorService extends StoreClient() {
-  public unitGroupModifiersMap: Map<UnitGroup, Modifiers[]> = new Map();
-
   constructor(
     private readonly battleState: BattleStateService,
     private readonly actionHint: ActionHintService,
@@ -56,6 +54,7 @@ export class CombatInteractorService extends StoreClient() {
     /* todo: OnGroupDamaged isn't dispatched, and reward isn't calculated because of that. */
     let finalDamage = damage;
 
+    // handle some numbers rounding
     switch (type) {
       /* Normal Unit Group attack */
       case DamageType.PhysicalAttack:
@@ -63,76 +62,51 @@ export class CombatInteractorService extends StoreClient() {
         if (options.attackerUnit) {
           console.log('attacker?', options.attackerUnit);
 
-          const attackerUnitMods = this.unitGroupModifiersMap.get(options.attackerUnit);
+          const combatModifiers = options.attackerUnit.modGroup
+            .getAllModValues('attackConditionalModifiers')
+            .map((mod) => mod!({ attacked: target }));
 
-          if (attackerUnitMods) {
-            // all modifiers mixed (normal/conditional)
-            const combatModifiers = attackerUnitMods.map(mod => {
-              if (mod.attackConditionalModifiers) {
-                const conditionalModifiers = mod.attackConditionalModifiers({
-                  attacked: target,
-                });
+          const damagePercentMod = combatModifiers
+            .filter(mod => mod.baseDamagePercentModifier)
+            .reduce((acc, next) => acc + (next.baseDamagePercentModifier as number), 0);
 
-                return conditionalModifiers;
-              }
+          console.log(`damage reduced by ${damagePercentMod}%`);
 
-              return mod;
-            });
-
-            const damagePercentMod = combatModifiers
-              .filter(mod => mod.baseDamagePercentModifier)
-              .reduce((acc, next) => acc + (next.baseDamagePercentModifier as number), 0);
-
-            console.log(`damage reduced by ${damagePercentMod}%`);
-            finalDamage = Math.round(finalDamage + finalDamage * damagePercentMod);
-          }
+          finalDamage = Math.round(finalDamage + finalDamage * damagePercentMod);
         }
         break;
 
       default:
-
         if (resistsMapping[type]) {
-          // rethink composition and storing of modifiers
-          // unit's modGroup might contain player's mod group as parent
-          //  as well as some other groups, like location mods, stuff like that.
-          // And I also need to consider modifiers from items/hero
+          const modsGroup = target.modGroup;
 
-          const targetMods = [...this.unitGroupModifiersMap.get(target) || [], target.type.defaultModifiers || {}];
+          // universal magic damage amplifications
+          //  (poison damage might be avoided here)
+          const amplifiedMagicDamagePercent = modsGroup.getModValue('amplifiedTakenMagicDamagePercent') || 0;
 
-          if (targetMods) {
-            // universal magic damage amplifications
-            //  (poison damage might be avoided here)
-            const amplifiedMagicDamageMods = targetMods
-              .filter(mods => mods.amplifiedTakenMagicDamagePercent);
+          finalDamage += damage * amplifiedMagicDamagePercent;
 
-            amplifiedMagicDamageMods.forEach(mod => {
-              finalDamage += damage * (mod.amplifiedTakenMagicDamagePercent as number);
-            });
+          finalDamage = Math.round(finalDamage);
 
-            finalDamage = Math.round(finalDamage);
+          // damage resists
+          const resistValue: number = (modsGroup.getModValue(resistsMapping[type] as keyof Modifiers) as number) || 0;
+          const allResistValue: number = (modsGroup.getModValue('resistAll')) || 0;
 
-            // damage resists
-            const modsGroup = ModsRefsGroup.withRefs(targetMods.map(mod => ModsRef.fromMods(mod)));
+          let finalResistValue = resistValue + allResistValue;
 
-            const resistValue: number = (modsGroup.getModValue(resistsMapping[type] as keyof Modifiers) as number) || 0;
-            const allResistValue: number = (modsGroup.getModValue('resistAll')) || 0;
-
-            let finalResistValue = resistValue + allResistValue;
-
-            if (finalResistValue > defaultResistCap) {
-              finalResistValue = defaultResistCap;
-            }
-
-            console.log(damage, type, 'resist:', finalResistValue);
-
-            // reduce damage basing on
-            finalDamage = finalDamage - (finalDamage * (finalResistValue / 100));
+          if (finalResistValue > defaultResistCap) {
+            finalResistValue = defaultResistCap;
           }
 
-          // Idea for auras: aura's might require a function that every unit
-          // is going to check against itself, there might also be some utils
-          // to calc distance etc.
+          console.log(damage, type, 'resist:', finalResistValue);
+
+          // reduce damage basing on
+          finalDamage = finalDamage - (finalDamage * (finalResistValue / 100));
         }
+
+      // Idea for auras: aura's might require a function that every unit
+      // is going to check against itself, there might also be some utils
+      // to calc distance etc.
     }
 
     const initialUnitCount = target.count;
@@ -307,13 +281,8 @@ export class CombatInteractorService extends StoreClient() {
       }
     });
 
-    const targetMods = this.unitGroupModifiersMap.get(target);
-
-    if (targetMods) {
-      targetMods.length = 0;
-    }
-
     /* for now, all modifiers on the unit instance are removed */
+    // todo: review later
     this.units.clearUnitModifiers(target);
   }
 

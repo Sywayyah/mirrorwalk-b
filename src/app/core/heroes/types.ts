@@ -199,6 +199,11 @@ export class Hero extends GameObject<HeroCreationParams> {
     this.spells = this.spells.filter(spell => spell.sourceInfo.gameObjectId !== item.id);
   }
 
+  addCommonCombatMods(mods: ModsRef): void {
+    const commonCombatMods = this.modGroup.getNamedGroup(HeroMods.CommonCombatMods);
+    commonCombatMods?.addModsRef(mods);
+  }
+
   clearCommonCombatMods(): void {
     this.modGroup.getNamedGroup(HeroMods.CommonCombatMods)?.clearOwnModRefs();
   }

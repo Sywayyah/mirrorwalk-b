@@ -145,7 +145,7 @@ export class ModsRefsGroup {
 
   attachParentGroup(parentGroup: ModsRefsGroup): void {
     parentGroup.childGroups.add(this);
-    this.parentGroups.add(this);
+    this.parentGroups.add(parentGroup);
     parentGroup.getAllRefs().forEach(modRef => this.addModsRef(modRef));
     this.emitModValueChange();
   }
