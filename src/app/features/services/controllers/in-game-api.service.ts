@@ -176,16 +176,7 @@ export class InGameApiController extends StoreClient() {
         return this.spellsService.createSpellInstance(spellBase, options);
       },
       addModifiersToUnitGroup: (target, modifiers) => {
-
-        const groupModifiers = this.combatInteractor.unitGroupModifiersMap.get(target);
-
         this.units.addModifierToUnitGroup(target, modifiers);
-
-        if (groupModifiers) {
-          groupModifiers.push(modifiers);
-        } else {
-          this.combatInteractor.unitGroupModifiersMap.set(target, [modifiers]);
-        }
 
         if (modifiers.unitGroupSpeedBonus) {
           this.events.dispatch(GroupSpeedChanged({
@@ -201,14 +192,7 @@ export class InGameApiController extends StoreClient() {
         return this.spellsService.createModifiers(modifiers);
       },
       removeModifiresFromUnitGroup: (target, modifiers) => {
-        /* todo: solve mods/spells being duplicated in 2 places. */
-        const unitGroupMods = this.combatInteractor.unitGroupModifiersMap.get(target);
-
         this.units.removeModifiers(target, modifiers);
-
-        if (unitGroupMods) {
-          CommonUtils.removeItem(unitGroupMods, modifiers);
-        }
 
         this.events.dispatch(GroupModifiersChanged({
           unitGroup: target,

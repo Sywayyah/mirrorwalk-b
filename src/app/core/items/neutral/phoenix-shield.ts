@@ -16,4 +16,5 @@ export const PhoenixShieldItem = createItem({
   enemyStats: {
     resistFire: -12,
   },
+  abilityDescription: `Reduces enemy Fire Resistance by 12%`,
 });

@@ -177,6 +177,10 @@ const blBranch: StructureDescription[] = [
     icon: 'monster-skull',
     pathTo: '54',
     struct: RockyPassageStructure,
+    // attackerStaticMods: {
+    //   playerBonusAttack: -2,
+    //   resistFire: -10,
+    // },
   },
   {
     id: 'left-3',

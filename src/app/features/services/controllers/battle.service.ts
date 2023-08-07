@@ -7,6 +7,7 @@ import { MwCurrentPlayerStateService } from '../mw-current-player-state.service'
 import { MwPlayersService } from '../mw-players.service';
 import { MwStructuresService } from '../mw-structures.service';
 import { State } from '../state.service';
+import { ModsRef } from 'src/app/core/modifiers';
 
 @Injectable()
 export class BattleController extends StoreClient() {
@@ -22,6 +23,8 @@ export class BattleController extends StoreClient() {
 
   @Notify(FightStarts)
   public prepareFightState(): void {
+    this.applyStaticModsFromEquippedItems();
+
     this.battleState.resetCurrentPlayer();
 
     this.battleState.initNextTurnByQueue();
@@ -148,6 +151,8 @@ export class BattleController extends StoreClient() {
 
   @Notify(FightEnds)
   public cleanUpHandlersOnFightEnd(): void {
+    this.cleanupStaticModsFromEquippedItems();
+
     this.events.dispatch(CleanUpHandlersOnFightEnd());
   }
 
@@ -162,4 +167,19 @@ export class BattleController extends StoreClient() {
     return this.battleState.playerHasAnyAliveUnits(this.battleState.getEnemyOfPlayer(this.battleState.currentPlayer));
   }
 
+  private applyStaticModsFromEquippedItems(): void {
+    this.playersService.getCurrentPlayer().hero.inventory.getEquippedItems().forEach((item) => {
+      console.log(item);
+      const itemStaticEnemyMods = item.baseType.staticEnemyMods;
+
+      if (itemStaticEnemyMods) {
+        this.playersService.getEnemyPlayer().hero.addCommonCombatMods(ModsRef.fromMods(itemStaticEnemyMods));
+      }
+    });
+  }
+
+  private cleanupStaticModsFromEquippedItems(): void {
+    this.playersService.getCurrentPlayer().hero.clearCommonCombatMods();
+    this.playersService.getEnemyPlayer().hero.clearCommonCombatMods();
+  }
 }
