@@ -12,9 +12,10 @@ export const FamineScytheItem: ItemBaseModel = {
     /* Vampirism mod, maybe -1-2 to Defence */
   },
   staticEnemyMods: {
+    // percent
     playerBonusDefence: -5,
     playerBonusAttack: -5,
-    unitGroupSpeedBonus: -2,
+    unitGroupSpeedBonus: -6,
   },
   icon: {
     icon: 'scythe',

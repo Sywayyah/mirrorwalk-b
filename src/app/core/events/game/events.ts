@@ -20,6 +20,8 @@ export const StructSelected = gameEvent<StructSelectedEvent>();
 
 export const PlayerStartsFight = gameEvent<FightStartsEvent>();
 
+export const BeforeBattleInit = gameEvent();
+
 export const FightStarts = gameEvent();
 
 export const StructCompleted = gameEvent<NeutralStructParams>();
