@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CleanUpHandlersOnFightEnd, FightEnds, FightNextRoundStarts, FightStarts, GroupDamagedByGroup, GroupDamagedByGroupEvent, GroupDies, GroupSpeedChanged, GroupTakesDamage, GroupTakesDamageEvent, PlayerTurnStartEvent, RoundGroupSpendsTurn, RoundGroupSpendsTurnEvent, RoundGroupTurnEnds, RoundPlayerCountinuesAttacking, RoundPlayerTurnStarts, UnitHealed, UnitHealedEvent } from 'src/app/core/events';
+import { BeforeBattleInit, CleanUpHandlersOnFightEnd, FightEnds, FightNextRoundStarts, FightStarts, GroupDamagedByGroup, GroupDamagedByGroupEvent, GroupDies, GroupSpeedChanged, GroupTakesDamage, GroupTakesDamageEvent, PlayerTurnStartEvent, RoundGroupSpendsTurn, RoundGroupSpendsTurnEvent, RoundGroupTurnEnds, RoundPlayerCountinuesAttacking, RoundPlayerTurnStarts, UnitHealed, UnitHealedEvent } from 'src/app/core/events';
 import { PlayerState, PlayerTypeEnum } from 'src/app/core/players';
 import { Notify, StoreClient, WireMethod } from 'src/app/store';
 import { BattleStateService } from '../mw-battle-state.service';
@@ -21,10 +21,14 @@ export class BattleController extends StoreClient() {
     super();
   }
 
+  @Notify(BeforeBattleInit)
+  public beforeBattleInit(): void {
+    // apply static mods before battle init, so speed calc will be included
+    this.applyStaticModsFromEquippedItems();
+  }
+
   @Notify(FightStarts)
   public prepareFightState(): void {
-    this.applyStaticModsFromEquippedItems();
-
     this.battleState.resetCurrentPlayer();
 
     this.battleState.initNextTurnByQueue();
