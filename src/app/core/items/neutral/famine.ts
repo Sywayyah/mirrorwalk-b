@@ -24,6 +24,7 @@ export const FamineScytheItem: ItemBaseModel = {
     return {
       descriptions: [
         itemStatsDescr(thisItem),
+        spellDescrElem(`Decreases enemy attack and defence by 5, slows down all enemy units by 6`),
       ],
     };
   },

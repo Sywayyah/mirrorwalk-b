@@ -111,6 +111,9 @@ export class CombatInteractorService extends StoreClient() {
 
     const initialUnitCount = target.count;
 
+    // round the final damage
+    finalDamage = Math.round(finalDamage);
+
     // this could become event at some point
     const finalDamageInfo = this.unitState.dealPureDamageToUnitGroup(target, finalDamage);
 
