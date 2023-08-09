@@ -20,7 +20,7 @@ export const LifeformItem: ItemBaseModel = {
     return {
       descriptions: [
         itemStatsDescr(thisItem),
-        spellDescrElem(`An incredible armor that shimmers with bright colors and emits life aura. Heals all units by ${healValue} in the beginning of each round.`),
+        spellDescrElem(`An incredible artifact that shimmers with bright colors and emits life aura. Heals all units by ${healValue} in the beginning of each round.`),
       ],
     }
   },
