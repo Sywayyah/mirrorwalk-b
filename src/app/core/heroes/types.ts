@@ -3,7 +3,7 @@ import { takeUntil } from 'rxjs/operators';
 import { GameObject } from '../game-objects';
 import { Item, ItemBaseModel } from '../items';
 import { InventoryItems } from '../items/inventory';
-import { ModsRef, ModsRefsGroup } from '../modifiers';
+import { Modifiers, ModsRef, ModsRefsGroup } from '../modifiers';
 import { ResourcesModel } from '../resources';
 import { Spell, SpellBaseType } from '../spells';
 import { DescriptionElement } from '../ui';
@@ -22,6 +22,7 @@ export interface HeroBaseStats {
   resources: ResourcesModel;
   items: ItemBaseModel[];
   army: GenerationModel[];
+  defaultModifiers?: Modifiers;
 }
 
 /* Base type for a hero */
@@ -38,6 +39,7 @@ export interface HeroBase {
     resources: ResourcesModel,
     items: ItemBaseModel[],
     army: GenerationModel[],
+    defaultModifiers?: Modifiers;
   };
 }
 
@@ -91,6 +93,10 @@ export class Hero extends GameObject<HeroCreationParams> {
 
   public readonly modGroup: ModsRefsGroup = ModsRefsGroup.empty();
 
+  public readonly unitAurasModGroup: ModsRefsGroup = ModsRefsGroup.empty();
+
+  public readonly specialtiesModGroup: ModsRefsGroup = ModsRefsGroup.empty();
+
   /** All items that hero possesses (not all might be equiped) */
   public itemsBackpack: Item[] = [];
 
@@ -130,6 +136,11 @@ export class Hero extends GameObject<HeroCreationParams> {
       currentMana: heroBaseStats.mana,
       maxMana: heroBaseStats.mana,
     };
+
+    if (heroBase.initialState.defaultModifiers) {
+      // for now, attach to this group.
+      this.modGroup.addModsRef(ModsRef.fromMods(heroBase.initialState.defaultModifiers));
+    }
 
     this.spells = heroInitState.abilities.map(spell => this.getApi().spells.createSpellInstance(spell));
 

@@ -8,6 +8,7 @@ export const BlackLichSwordItem: ItemBaseModel = {
   staticMods: {
     playerBonusAttack: 3,
     lifesteal: 10,
+    specialtyNecromancy: 1,
     /* Vampirism mod, maybe -1-2 to Defence */
   },
   icon: {

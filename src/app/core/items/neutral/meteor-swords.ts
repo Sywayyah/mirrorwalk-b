@@ -7,6 +7,7 @@ export const ItemMeteorSwords: ItemBaseModel<{}> = {
   slotType: ItemSlotType.Weapon,
   staticMods: {
     playerBonusAttack: 2,
+    specialtyFireMastery: 1,
   },
   icon: {
     icon: 'dervish-swords',

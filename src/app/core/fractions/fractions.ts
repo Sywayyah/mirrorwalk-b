@@ -61,6 +61,7 @@ export const Fractions = {
           resources,
           stats,
           generalDescription,
+          defaultModifiers,
         } = heroConfig;
 
         const newHero = {
@@ -72,6 +73,7 @@ export const Fractions = {
             items,
             resources,
             stats,
+            defaultModifiers,
           },
         };
 

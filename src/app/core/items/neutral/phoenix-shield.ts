@@ -8,8 +8,8 @@ export const PhoenixShieldItem = createItem({
   icon: 'fire-shield',
   slot: ItemSlotType.Shield,
   stats: {
-    playerBonusAttack: 1,
     playerBonusDefence: 2,
+    playerBonusAttack: 1,
     resistFire: 17,
   },
   // attach it to enemy player when battle is started

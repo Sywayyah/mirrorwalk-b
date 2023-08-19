@@ -193,6 +193,7 @@ export class UnitGroup extends GameObject<UnitCreationParams> {
 
     if (this.type.defaultModifiers) {
       // think about it as well.
+      // practically, refs on this group remain untouched, but need to keep it in mind
       this.modGroup.addModsRef(ModsRef.fromMods(this.type.defaultModifiers));
     }
 

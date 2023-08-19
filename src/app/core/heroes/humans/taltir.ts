@@ -15,9 +15,13 @@ import { heroesDefaultResources } from '../utils';
   Some possible summons:
     Archangel
 */
+
+const defaultAllResists = 12;
+
 export const TaltirHero: HeroBase = humansFraction.createHero({
   name: 'Taltir',
-  generalDescription: heroDescrElem(`Taltir specializes at utilizing Fire Spells, summoning devastating Meteors and Fire Spirits that aid his army.`),
+  // todo: maybe allow for custom descriptions
+  generalDescription: heroDescrElem(`Taltir specializes at utilizing Fire Spells, summoning devastating Meteors and Fire Spirits. Knowledge in magic defenses makes him start with +${defaultAllResists}% to all resists.`),
 
   abilities: [
     MeteorSpell,
@@ -38,5 +42,8 @@ export const TaltirHero: HeroBase = humansFraction.createHero({
     mana: 14,
     baseAttack: 2,
     baseDefence: 3,
+  },
+  defaultModifiers: {
+    resistAll: defaultAllResists,
   },
 });
