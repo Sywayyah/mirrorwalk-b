@@ -1,11 +1,10 @@
 import { Injectable } from '@angular/core';
 import { DamageType, PostDamageInfo } from 'src/app/core/api/combat-api/types';
 import { CombatAttackInteraction, CombatInteractionEnum, CombatInteractionStateEvent, GroupCounterAttacked, GroupDamagedByGroup, GroupDies, GroupSpellsChanged, GroupTakesDamage, InitSpell, PlayerHoversCardEvent } from 'src/app/core/events';
-import { Modifiers, ModsRef, ModsRefsGroup } from 'src/app/core/modifiers';
 import { Player } from 'src/app/core/players';
 import { Spell, SpellActivationType, SpellEventNames, SpellEventTypeByName, SpellEvents } from 'src/app/core/spells';
 import { ActionHintTypeEnum, AttackActionHintInfo } from 'src/app/core/ui';
-import { UnitGroup } from 'src/app/core/unit-types';
+import { UnitGroup, UnitStatsInfo } from 'src/app/core/unit-types';
 import { CommonUtils } from 'src/app/core/utils';
 import { EventData, StoreClient } from 'src/app/store';
 import { BattleStateService, FinalDamageInfo, MwPlayersService, MwUnitGroupStateService, MwUnitGroupsService } from './';
@@ -13,11 +12,11 @@ import { ActionHintService } from './mw-action-hint.service';
 import { State } from './state.service';
 
 // staying here for now, might move somewhere later
-const resistsMapping: Partial<Record<DamageType, keyof Modifiers>> = {
-  [DamageType.Cold]: 'resistCold',
-  [DamageType.Fire]: 'resistFire',
-  [DamageType.Lightning]: 'resistLightning',
-  [DamageType.Poison]: 'resistPoison',
+const resistsMapping: Partial<Record<DamageType, keyof UnitStatsInfo>> = {
+  [DamageType.Cold]: 'coldResist',
+  [DamageType.Fire]: 'fireResist',
+  [DamageType.Lightning]: 'lightningResist',
+  [DamageType.Poison]: 'poisonResist',
 };
 
 // defaul cap is 60%
@@ -89,10 +88,7 @@ export class CombatInteractorService extends StoreClient() {
           finalDamage = Math.round(finalDamage);
 
           // damage resists
-          const resistValue: number = (modsGroup.getModValue(resistsMapping[type] as keyof Modifiers) as number) || 0;
-          const allResistValue: number = (modsGroup.getModValue('resistAll')) || 0;
-
-          let finalResistValue = resistValue + allResistValue;
+          let finalResistValue = target.getStats()[resistsMapping[type] as keyof UnitStatsInfo];
 
           if (finalResistValue > defaultResistCap) {
             finalResistValue = defaultResistCap;

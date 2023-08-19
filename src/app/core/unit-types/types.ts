@@ -101,6 +101,12 @@ export enum UnitModGroups {
 
   /** Mods attached to particular unit during the battle */
   CombatMods = 'cMods',
+
+  /** Mods gained from auras */
+  AuraMods = 'aMods',
+
+  /** Mods gained from specialties */
+  SpecialtyMods = 'sMods',
 }
 
 export interface UnitStatsInfo {
@@ -115,6 +121,11 @@ export interface UnitStatsInfo {
   baseSpeed: number;
   speedBonus: number;
   finalSpeed: number;
+
+  fireResist: number;
+  coldResist: number;
+  lightningResist: number;
+  poisonResist: number;
 }
 
 export class UnitGroup extends GameObject<UnitCreationParams> {
@@ -154,6 +165,11 @@ export class UnitGroup extends GameObject<UnitCreationParams> {
     baseSpeed: 0,
     speedBonus: 0,
     finalSpeed: 0,
+
+    fireResist: 0,
+    coldResist: 0,
+    lightningResist: 0,
+    poisonResist: 0,
   });
 
   private readonly destroyed$ = new Subject<void>();
@@ -249,6 +265,8 @@ export class UnitGroup extends GameObject<UnitCreationParams> {
       const baseSpeed = baseStats.speed;
       const speedBonus = mods.unitGroupSpeedBonus || 0;
 
+      const allResist = mods.resistAll || 0;
+
       const stats = {
         baseAttack,
         bonusAttack,
@@ -261,6 +279,11 @@ export class UnitGroup extends GameObject<UnitCreationParams> {
         baseSpeed,
         speedBonus,
         finalSpeed: baseSpeed + speedBonus,
+
+        fireResist: (mods.resistFire || 0) + allResist,
+        coldResist: (mods.resistCold || 0) + allResist,
+        lightningResist: (mods.resistLightning || 0) + allResist,
+        poisonResist: (mods.resistPoison || 0) + allResist,
       };
 
       this.unitStats$.next(stats);

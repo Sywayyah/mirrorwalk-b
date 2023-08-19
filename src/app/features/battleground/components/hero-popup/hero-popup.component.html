@@ -32,7 +32,31 @@
   <div class="stats-panel">
     <div>Resistances:</div>
     <div>
-      Fire: <span [mwNumberModifier]="_heroStats.fireResist" [hideEmpty]="false"></span>
+      Fire:
+      <span [mwNumberModifier]="_heroStats.fireResist"
+            [hideEmpty]="false">
+      </span>
+    </div>
+
+    <div>
+      Cold:
+      <span [mwNumberModifier]="_heroStats.coldResist"
+            [hideEmpty]="false">
+      </span>
+    </div>
+
+    <div>
+      Lightning:
+      <span [mwNumberModifier]="_heroStats.lightningResist"
+            [hideEmpty]="false">
+      </span>
+    </div>
+
+    <div>
+      Poison:
+      <span [mwNumberModifier]="_heroStats.poisonResist"
+            [hideEmpty]="false">
+      </span>
     </div>
   </div>
 </ng-container>

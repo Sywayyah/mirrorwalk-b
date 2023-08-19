@@ -26,6 +26,7 @@ export const RainOfFireSpell: SpellBaseType = {
     },
     spellConfig: {
       targetCastConfig: {
+        // can be changed to quicky test damage vs resists on your own units
         canActivate: canActivateOnEnemyFn,
       },
       init: ({ events, actions, thisSpell, ownerHero, vfx, spellInstance }) => {

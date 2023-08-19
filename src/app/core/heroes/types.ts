@@ -74,6 +74,9 @@ export interface HeroStatsInfo {
   finalDefence: number;
 
   fireResist: number;
+  coldResist: number;
+  lightningResist: number;
+  poisonResist: number;
 }
 
 export class Hero extends GameObject<HeroCreationParams> {
@@ -104,6 +107,9 @@ export class Hero extends GameObject<HeroCreationParams> {
     finalDefence: 0,
 
     fireResist: 0,
+    coldResist: 0,
+    lightningResist: 0,
+    poisonResist: 0,
   });
 
   private readonly destroyed$ = new Subject<void>();
@@ -229,6 +235,8 @@ export class Hero extends GameObject<HeroCreationParams> {
       const bonusAttack = mods.playerBonusAttack || 0;
       const bonusDefence = mods.playerBonusDefence || 0;
 
+      const allResist = mods.resistAll || 0;
+
       const heroStats: HeroStatsInfo = {
         baseAttack,
         bonusAttack,
@@ -238,7 +246,10 @@ export class Hero extends GameObject<HeroCreationParams> {
         bonusDefence,
         finalDefence: baseDefence + bonusDefence,
 
-        fireResist: mods.resistFire || 0,
+        fireResist: (mods.resistFire || 0) + allResist,
+        coldResist: (mods.resistCold || 0) + allResist,
+        lightningResist: (mods.resistLightning || 0) + allResist,
+        poisonResist: (mods.resistPoison || 0) + allResist,
       };
 
       this.heroStats$.next(heroStats);
