@@ -2,7 +2,7 @@ import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import type { Fraction } from '../fractions/types';
 import { GameObject } from '../game-objects';
-import { ModsRef, ModsRefsGroup } from '../modifiers';
+import { Specialties, ModsRef, ModsRefsGroup, SpeciatiesModel } from '../modifiers';
 import { Modifiers } from '../modifiers/modifiers';
 import type { Player } from '../players';
 import { ResourcesModel } from '../resources';
@@ -87,6 +87,8 @@ export interface UnitBaseType {
     target: UnitBaseType,
     upgradeCost: Partial<ResourcesModel>,
   };
+
+  getUnitTypeSpecialtyModifiers?(specialties: Specialties): Modifiers | null | undefined;
 }
 
 interface UnitCreationParams {
@@ -210,6 +212,7 @@ export class UnitGroup extends GameObject<UnitCreationParams> {
     }
 
     this.modGroup.attachNamedParentGroup(UnitModGroups.CombatMods, ModsRefsGroup.empty());
+    this.modGroup.attachNamedParentGroup(UnitModGroups.SpecialtyMods, ModsRefsGroup.empty());
 
     this.setupStatsUpdating();
   }
@@ -233,6 +236,14 @@ export class UnitGroup extends GameObject<UnitCreationParams> {
 
   getStats(): UnitStatsInfo {
     return this.unitStats$.getValue();
+  }
+
+  attachSpecialtyMods(specialtyMods: Modifiers): void {
+    this.modGroup.getNamedGroup(UnitModGroups.SpecialtyMods)?.addModsRef(ModsRef.fromMods(specialtyMods));
+  }
+
+  clearSpecialtyMods(): void {
+    this.modGroup.getNamedGroup(UnitModGroups.SpecialtyMods)?.clearOwnModRefs();
   }
 
   /**

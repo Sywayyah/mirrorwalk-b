@@ -3,13 +3,14 @@ import { takeUntil } from 'rxjs/operators';
 import { GameObject } from '../game-objects';
 import { Item, ItemBaseModel } from '../items';
 import { InventoryItems } from '../items/inventory';
-import { Modifiers, ModsRef, ModsRefsGroup } from '../modifiers';
+import { Modifiers, ModsRef, ModsRefsGroup, Specialties, filterSpecialties } from '../modifiers';
 import { ResourcesModel } from '../resources';
 import { Spell, SpellBaseType } from '../spells';
 import { DescriptionElement } from '../ui';
-import { GenerationModel } from '../unit-types';
+import { GenerationModel, UnitGroup } from '../unit-types';
 import { CommonUtils } from '../utils';
 import { complete } from '../utils/observables';
+import { Player } from '../players';
 
 export interface HeroBaseStats {
   stats: {
@@ -120,11 +121,11 @@ export class Hero extends GameObject<HeroCreationParams> {
 
   private readonly destroyed$ = new Subject<void>();
 
+  private ownerPlayer!: Player;
+
   create({ heroBase }: HeroCreationParams): void {
     this.base = heroBase;
     this.name = heroBase.name;
-
-    const heroInitState = heroBase.initialState;
 
     const heroBaseStats = heroBase.initialState.stats;
 
@@ -136,6 +137,15 @@ export class Hero extends GameObject<HeroCreationParams> {
       currentMana: heroBaseStats.mana,
       maxMana: heroBaseStats.mana,
     };
+  }
+
+  assignOwnerPlayer(player: Player): void {
+    this.ownerPlayer = player;
+
+    // init mods after player is known, so there is access to unit groups
+    /* todo: theoretically, unit groups can be defined on hero level instead of player */
+    const heroBase = this.base;
+    const heroInitState = heroBase.initialState;
 
     if (heroBase.initialState.defaultModifiers) {
       // for now, attach to this group.
@@ -205,7 +215,6 @@ export class Hero extends GameObject<HeroCreationParams> {
 
   /** Item becomes unequiped, losing bonuses */
   public unequipItem(item: Item): void {
-    CommonUtils.removeItem(this.itemsBackpack, item);
     this.inventory.unequipItem(item);
     const itemModsGroup = this.getItemModsGroup();
 
@@ -229,6 +238,26 @@ export class Hero extends GameObject<HeroCreationParams> {
     this.modGroup.getNamedGroup(HeroMods.CommonCombatMods)?.clearOwnModRefs();
   }
 
+  updateUnitsSpecialtyMods(): void {
+    this.ownerPlayer.unitGroups.forEach((unitGroup) => this.updateUnitSpecialtyMods(unitGroup));
+  }
+
+  updateUnitSpecialtyMods(unitGroup: UnitGroup): void {
+    const getUnitTypeSpecialtyModifiers = unitGroup.type.getUnitTypeSpecialtyModifiers;
+
+    if (!getUnitTypeSpecialtyModifiers) {
+      return;
+    }
+
+    unitGroup.clearSpecialtyMods();
+
+    const specialtyMods = getUnitTypeSpecialtyModifiers?.(this.specialtiesModGroup.getMods() as Specialties);
+
+    if (specialtyMods) {
+      unitGroup.attachSpecialtyMods(specialtyMods);
+    }
+  }
+
   private getItemModsGroup(): ModsRefsGroup | undefined {
     return this.modGroup.getNamedGroup(HeroMods.HeroItemMods);
   }
@@ -241,6 +270,10 @@ export class Hero extends GameObject<HeroCreationParams> {
 
   private setupStatsUpdating(heroBase: HeroBase): void {
     this.modGroup.onValueChanges().pipe(takeUntil(this.destroyed$)).subscribe((mods) => {
+      this.specialtiesModGroup.clearOwnModRefs();
+      this.specialtiesModGroup.addModsRef(ModsRef.fromMods(filterSpecialties(mods)));
+      this.updateUnitsSpecialtyMods();
+
       const { baseAttack, baseDefence } = heroBase.initialState.stats;
 
       const bonusAttack = mods.playerBonusAttack || 0;

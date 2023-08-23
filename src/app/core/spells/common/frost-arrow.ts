@@ -74,7 +74,7 @@ export const FrozenArrowDebuff: SpellBaseType = {
       init: ({ events, actions, vfx, thisSpell }) => {
         const mods = actions.createModifiers({
           unitGroupSpeedBonus: -slow,
-          unitGroupBonusAttack: -attackPenalty,
+          playerBonusAttack: -attackPenalty,
         });
 
         events.on({

@@ -2,6 +2,7 @@ import { GameObject } from '../game-objects';
 import { Hero } from '../heroes';
 import { ResourcesModel } from '../resources';
 import { UnitGroup } from '../unit-types';
+import { CommonUtils } from '../utils';
 
 export enum PlayerTypeEnum {
   Player = 'Player',
@@ -51,5 +52,17 @@ export class Player extends GameObject<PlayerCreationModel> {
     this.type = type;
     this.unitGroups = unitGroups;
     this.hero = hero;
+
+    this.hero.assignOwnerPlayer(this);
+    this.hero.updateUnitsSpecialtyMods();
+  }
+
+  addUnitGroup(unitGroup: UnitGroup): void {
+    this.unitGroups.push(unitGroup);
+    this.hero.updateUnitSpecialtyMods(unitGroup);
+  }
+
+  removeUnitGroup(unitGroup: UnitGroup): void {
+    CommonUtils.removeItem(this.unitGroups, unitGroup);
   }
 }

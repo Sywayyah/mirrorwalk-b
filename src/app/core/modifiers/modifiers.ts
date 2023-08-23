@@ -1,6 +1,6 @@
 import { UnitGroup } from '../unit-types/types';
 import { KeysMatching } from '../utils';
-import { Masteries } from './specialties';
+import { Specialties } from './specialties';
 
 export interface ConditionalModifierParamsModel {
   // attacker: UnitGroupInstModel;
@@ -8,7 +8,7 @@ export interface ConditionalModifierParamsModel {
 }
 
 /* to add: critical strike chance & multiplier, retaliation damage percent */
-export interface ModifiersModel extends Masteries {
+export interface ModifiersModel extends Specialties {
   // base damage percent modifier
   baseDamagePercentModifier: number;
 
@@ -17,13 +17,9 @@ export interface ModifiersModel extends Masteries {
   amplifiedTakenMagicDamagePercent: number;
 
   // player bonuses
+  // todo: theoretically, can be renamed starting with unitGroup
   playerBonusAttack: number;
   playerBonusDefence: number;
-
-  /* unit group bonuses */
-  // todo: check, not sure if it works properly, maybe needs to be removed
-  unitGroupBonusAttack: number;
-  unitGroupBonusDefence: number;
 
   /* unit speed bonus */
   unitGroupSpeedBonus: number;

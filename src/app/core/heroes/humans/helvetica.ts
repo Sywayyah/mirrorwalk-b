@@ -50,4 +50,7 @@ export const HelveticaHero: HeroBase = humansFraction.createHero({
     baseAttack: 1,
     baseDefence: 0,
   },
+  defaultModifiers: {
+    specialtyFireMastery: 1,
+  }
 });

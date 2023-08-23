@@ -1,4 +1,9 @@
 /*
+  Idea: Items can give tier-based bonuses, like +2 to speed to your tier 1 units.
+    Boots can have that role of increasing speed for certain units.
+*/
+
+/*
 
   Idea.
     Specialties. Hero can gain different specialties from items and buildings,
