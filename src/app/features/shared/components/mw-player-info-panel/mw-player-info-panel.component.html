@@ -1,4 +1,8 @@
-<div [style.background-image]="'url(\'assets/'+ player.hero.base.image + '\')'" class="hero-image">
+<div (click)="openPlayerInfo()"
+     mwActionHint="Inspect Hero"
+     style="cursor: pointer;"
+     [style.background-image]="'url(\'assets/'+ player.hero.base.image + '\')'"
+     class="hero-image">
 </div>
 
 <div class="hero-info">
@@ -7,8 +11,7 @@
     +{{player.hero.freeSkillpoints}} Skillpoints
   </div> -->
 
-  <div style="cursor: pointer;"
-       (click)="openPlayerInfo()">
+  <div>
     {{player.hero.name}}, Level: {{player.hero.level}}
     <mw-experience-bar style="width: 270px;"></mw-experience-bar>
   </div>
