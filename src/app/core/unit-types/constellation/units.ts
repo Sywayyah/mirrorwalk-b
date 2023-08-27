@@ -7,7 +7,7 @@ import { constellationFraction } from '../../fractions/constellation/fraction';
 constellationFraction.defineUnitType('Sprite', {
   name: 'Sprite',
   level: 1,
-  mainPortraitUrl: AssetsImages.Melee,
+  mainPortraitUrl: AssetsImages.UnitMelee,
 
   baseRequirements: {
     gold: 70,
@@ -36,7 +36,7 @@ constellationFraction.defineUnitType('Sprite', {
 constellationFraction.defineUnitType('Fencer', {
   name: 'Fencer',
   level: 2,
-  mainPortraitUrl: AssetsImages.Melee,
+  mainPortraitUrl: AssetsImages.UnitMelee,
 
   baseRequirements: {
     gold: 75,
@@ -64,7 +64,7 @@ constellationFraction.defineUnitType('Fencer', {
 constellationFraction.defineUnitType('Sagittar', {
   name: 'Saggitar',
   level: 3,
-  mainPortraitUrl: AssetsImages.Ranged,
+  mainPortraitUrl: AssetsImages.UnitRanged,
 
   baseRequirements: {
     gold: 95,
@@ -97,7 +97,7 @@ constellationFraction.defineUnitType('Sagittar', {
 constellationFraction.defineUnitType('Chariot', {
   name: 'Chariot',
   level: 4,
-  mainPortraitUrl: AssetsImages.Melee,
+  mainPortraitUrl: AssetsImages.UnitMelee,
 
   baseRequirements: {
     gold: 185,
@@ -130,7 +130,7 @@ constellationFraction.defineUnitType('Chariot', {
 constellationFraction.defineUnitType('NightWyvern', {
   name: 'Night Wyvern',
   level: 7,
-  mainPortraitUrl: AssetsImages.Melee,
+  mainPortraitUrl: AssetsImages.UnitMelee,
 
   baseRequirements: {
     gold: 1500,
@@ -162,7 +162,7 @@ constellationFraction.defineUnitType('NightWyvern', {
 constellationFraction.defineUnitType('StarDragon', {
   name: 'Star Dragon',
   level: 7,
-  mainPortraitUrl: AssetsImages.Melee,
+  mainPortraitUrl: AssetsImages.UnitMelee,
 
   baseRequirements: {
     gold: 1000,

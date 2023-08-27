@@ -3,7 +3,7 @@ import { neutralsFraction } from '../../fractions/neutrals/fraction';
 import { createStats } from '../utils';
 
 neutralsFraction.defineUnitType('Gnoll', {
-  mainPortraitUrl: AssetsImages.Melee,
+  mainPortraitUrl: AssetsImages.UnitMelee,
   name: 'Gnolls',
   level: 2,
 
@@ -27,7 +27,7 @@ neutralsFraction.defineUnitType('Gnoll', {
 });
 
 neutralsFraction.defineUnitType('Thiefs', {
-  mainPortraitUrl: AssetsImages.Melee,
+  mainPortraitUrl: AssetsImages.UnitMelee,
   name: 'Thiefs',
   level: 3,
 
@@ -44,7 +44,7 @@ neutralsFraction.defineUnitType('Thiefs', {
 });
 
 neutralsFraction.defineUnitType('ForestTrolls', {
-  mainPortraitUrl: AssetsImages.Melee,
+  mainPortraitUrl: AssetsImages.UnitMelee,
   name: 'Trolls',
   level: 4,
 

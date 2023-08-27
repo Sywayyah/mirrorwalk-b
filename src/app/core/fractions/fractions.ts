@@ -1,4 +1,5 @@
 
+import { AssetsImages } from '../assets';
 import type { HeroBase } from '../heroes';
 import type { UnitBaseType } from '../unit-types';
 import { Fraction } from './types';
@@ -62,6 +63,7 @@ export const Fractions = {
           stats,
           generalDescription,
           defaultModifiers,
+          image
         } = heroConfig;
 
         const newHero = {
@@ -75,6 +77,7 @@ export const Fractions = {
             stats,
             defaultModifiers,
           },
+          image: image ?? AssetsImages.HeroMage,
         };
 
         this.heroes.push(newHero);

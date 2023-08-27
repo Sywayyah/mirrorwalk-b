@@ -10,7 +10,7 @@ import { createStats } from '../utils';
   Also, there might be some batch creation, like 'defineUnitTypes'
  */
 const Wraiths: UnitBaseType = neutralsFraction.defineUnitType('SupremeGhosts', {
-  mainPortraitUrl: AssetsImages.Melee,
+  mainPortraitUrl: AssetsImages.UnitMelee,
   name: 'Wraiths',
   level: 1,
   baseRequirements: {
@@ -58,7 +58,7 @@ const Wraiths: UnitBaseType = neutralsFraction.defineUnitType('SupremeGhosts', {
 });
 
 neutralsFraction.defineUnitType('Ghosts', {
-  mainPortraitUrl: AssetsImages.Melee,
+  mainPortraitUrl: AssetsImages.UnitMelee,
   name: 'Ghosts',
   level: 1,
   baseRequirements: {

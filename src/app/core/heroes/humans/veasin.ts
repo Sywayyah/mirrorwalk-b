@@ -1,12 +1,12 @@
 
 
+import { AssetsImages } from '../../assets';
 import { humansFraction } from '../../fractions';
 import { ItemWindCrest } from '../../items/neutral';
 import { PoisonCloudSpell } from '../../spells/common';
 import { CorrosiveFogSpell } from '../../spells/common/corrosive-fog';
 import { heroDescrElem } from '../../ui';
 import { HeroBase } from '../types';
-import { heroesDefaultResources } from '../utils';
 
 
 /* Poison Assassin hero, might become a hero of Garden */
@@ -41,6 +41,7 @@ import { heroesDefaultResources } from '../utils';
 export const VeasinHero: HeroBase = humansFraction.createHero({
   name: 'Veasin',
   generalDescription: heroDescrElem(`Veasin makes use of her poison abilities, weakening enemies and dealing damage over time.`),
+  image: AssetsImages.HeroMage,
   abilities: [
     PoisonCloudSpell,
     CorrosiveFogSpell,
