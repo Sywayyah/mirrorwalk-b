@@ -26,9 +26,20 @@
 // .no-turns .card-top {
 // filter: brightness(0.65);
 // }
-.portrait {
+.portrait-frame {
   height: 130px;
-  width: 127px;
+  width: 121px;
+}
+
+.portrait {
+  position: absolute;
+  z-index: -1;
+
+  left: 30px;
+  width: 64px;
+  height: 83px;
+  top: 20px;
+
 }
 
 .portrait-container {
@@ -46,11 +57,11 @@
 // html popover
 
 /* inver card */
-.card-left .portrait {
+.card-left .portrait-frame {
   scale: -1 1;
 }
 
-$portrait-offset: 70%;
+$portrait-offset: 79%;
 
 /* image offset */
 :host-context(.vertical) {
@@ -115,14 +126,17 @@ $portrait-offset: 70%;
   display: flex;
 }
 
+
+$abilities-offset: 185%;
+
 :host-context(.vertical) {
   .abilities.left {
-    right: 171%;
+    right: $abilities-offset;
     flex-direction: row-reverse;
   }
 
   .abilities.right {
-    left: 171%;
+    left: $abilities-offset;
   }
 }
 
@@ -231,6 +245,7 @@ $inactive-offset: 32px;
 }
 
 :host-context(.horizontal) .card-top {
+
   // translateY doesn't seem to work properly when used standalone
   &.active {
     &.card-left {

@@ -1,3 +1,4 @@
+import { AssetsImages } from '../../assets';
 import { humansFraction } from '../../fractions';
 import { IrtonPlateItem } from '../../items/neutral/irton-plate';
 import { MeteorSpell } from '../../spells/common';
@@ -23,6 +24,7 @@ export const TaltirHero: HeroBase = humansFraction.createHero({
   // todo: maybe allow for custom descriptions
   generalDescription: heroDescrElem(`Taltir specializes at utilizing Fire Spells, summoning devastating Meteors and Fire Spirits. Knowledge in magic defenses makes him start with +${defaultAllResists}% to all resists.`),
 
+  image: AssetsImages.HeroTaltir,
   abilities: [
     MeteorSpell,
     SummonFireSpiritsSpell,

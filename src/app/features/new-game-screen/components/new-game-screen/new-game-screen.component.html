@@ -57,8 +57,10 @@
         <mw-menu [menuBody]="heroesMenu"
                  [pos]="'below'">
           <div *ngIf="selectedHero; else randomFraction">
-            <mw-ra-icon class="item-icon"
-                        icon="aura" />
+            <!-- todo: introduce component for character icon -->
+            <div [style.background-image]="'url(\'assets/' + selectedHero.image + '\')'"
+                 class="item-icon hero-icon">
+            </div>
 
             <span class="icon-subtext">{{selectedHero.name}}</span>
           </div>
@@ -74,7 +76,7 @@
         </mw-menu>
 
         <ng-template #heroesMenu>
-          <div style="display: flex; max-width: 200px; justify-content: center; flex-wrap: wrap;">
+          <div style="display: flex; max-width: 216px; justify-content: center; flex-wrap: wrap;">
             <div>
               <mw-ra-icon (click)="selectHero(null)"
                           class="item-icon"
@@ -84,10 +86,10 @@
             </div>
 
             <div *ngFor="let hero of heroes">
-              <mw-ra-icon (click)="selectHero(hero)"
-                          class="item-icon"
-                          icon="aura" />
-
+              <div (click)="selectHero(hero)"
+                   [style.background-image]="'url(\'assets/' + hero.image + '\')'"
+                   class="item-icon hero-icon">
+              </div>
               <span class="icon-subtext">{{hero.name}}</span>
             </div>
           </div>

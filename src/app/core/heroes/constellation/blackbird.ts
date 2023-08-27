@@ -1,3 +1,4 @@
+import { AssetsImages } from '../../assets';
 import { constellationFraction } from '../../fractions/constellation/fraction';
 import { WishmasterItem } from '../../items/neutral';
 import { KneelingLight, RainOfFireSpell } from '../../spells/common';
@@ -8,6 +9,7 @@ import { heroDescrElem } from '../../ui';
 //  Summon Star Dragon.
 constellationFraction.createHero({
   name: 'Blackbird',
+  image: AssetsImages.HeroMelee,
   abilities: [
     RainOfFireSpell,
     SummonSagittarSpell,

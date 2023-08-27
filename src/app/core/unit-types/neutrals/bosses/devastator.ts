@@ -5,7 +5,7 @@ import { createStats } from '../../utils';
 
 neutralsFraction.defineUnitType('Devastator', {
   name: 'Devastator',
-  mainPortraitUrl: AssetsImages.Melee,
+  mainPortraitUrl: AssetsImages.UnitMelee,
 
   // Add units descriptions at some point
   level: 8,

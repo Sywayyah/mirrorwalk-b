@@ -20,6 +20,7 @@ export interface HeroBaseStats {
   };
   abilities: SpellBaseType[];
   generalDescription: DescriptionElement;
+  image?: string;
   resources: ResourcesModel;
   items: ItemBaseModel[];
   army: GenerationModel[];
@@ -42,6 +43,7 @@ export interface HeroBase {
     army: GenerationModel[],
     defaultModifiers?: Modifiers;
   };
+  image: string;
 }
 
 export interface HeroStats {

@@ -1,7 +1,9 @@
 import { Fractions, FractionsEnum } from '../fractions';
 
-export type HUMANS_UNIT_TYPES = 'Archer'
+export type HUMANS_UNIT_TYPES =
+  | 'Archer'
   | 'Pikeman'
+  | 'Halberdier'
   | 'Knight'
   | 'Cavalry'
   | 'Firebird';

@@ -1,5 +1,8 @@
+import { AssetsImages } from '../../assets';
 import { humansFraction } from '../../fractions';
-import { ItemWindCrest } from '../../items/neutral';
+import { ItemWindCrest, WishmasterItem } from '../../items/neutral';
+import { FamineScytheItem } from '../../items/neutral/famine';
+import { PhoenixShieldItem } from '../../items/neutral/phoenix-shield';
 import { HasteSpell, RainOfFireSpell } from '../../spells/common';
 import { heroDescrElem } from '../../ui';
 import { HeroBase } from '../types';
@@ -16,6 +19,7 @@ import { HeroBase } from '../types';
 export const HelveticaHero: HeroBase = humansFraction.createHero({
   name: 'Helvetica',
   generalDescription: heroDescrElem(`Helvetica is the mage who supports her own army with offensive fire spells as well as increasing their speed.`),
+  image: AssetsImages.HeroHelvetica,
   abilities: [
     // ENCHANT_SPELL,
     RainOfFireSpell,
@@ -34,10 +38,11 @@ export const HelveticaHero: HeroBase = humansFraction.createHero({
     ],
   }],
   items: [
+    WishmasterItem,
     ItemWindCrest,
-    // PhoenixShieldItem,
+    PhoenixShieldItem,
+    FamineScytheItem,
     // ItemIceBow,
-    // WishmasterItem,
   ],
   resources: {
     gems: 0,

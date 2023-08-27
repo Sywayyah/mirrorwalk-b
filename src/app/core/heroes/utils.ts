@@ -1,3 +1,4 @@
+import { AssetsImages } from '../assets';
 import { ResourcesModel } from '../resources';
 import { HeroBase, HeroBaseStats } from './types';
 
@@ -26,6 +27,7 @@ export const createHeroModelBase: (heroConfig: Pick<HeroBase, 'name'> & HeroBase
     resources,
     stats,
     generalDescription,
+    image,
   } = heroConfig;
 
   return {
@@ -38,6 +40,7 @@ export const createHeroModelBase: (heroConfig: Pick<HeroBase, 'name'> & HeroBase
       resources,
       stats,
     },
+    image: image ?? AssetsImages.HeroMage,
   };
 };
 

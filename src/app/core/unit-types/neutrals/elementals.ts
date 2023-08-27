@@ -6,7 +6,7 @@ import { createStats } from '../utils';
 
 neutralsFraction.defineUnitType('FireSpirits', {
   name: 'Fire Spirits',
-  mainPortraitUrl: AssetsImages.Melee,
+  mainPortraitUrl: AssetsImages.UnitMelee,
   baseRequirements: {},
   level: 3,
 
