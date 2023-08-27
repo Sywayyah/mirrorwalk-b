@@ -1,11 +1,14 @@
-import { itemStatsDescr } from '../../ui';
+import { itemStatsDescr, spellDescrElem } from '../../ui';
 import { ItemBaseModel, ItemSlotType } from '../types';
 
 export const ItemDoomstring: ItemBaseModel<{}> = {
   name: 'Doomstring',
   slotType: ItemSlotType.Weapon,
   staticMods: {
-    playerBonusAttack: 2,
+    playerBonusAttack: 8,
+    specialtyOffence: 3,
+    specialtyArchery: 2,
+    specialtyFireMastery: 1,
   },
   icon: {
     icon: 'crossbow',
@@ -15,6 +18,8 @@ export const ItemDoomstring: ItemBaseModel<{}> = {
     return {
       descriptions: [
         itemStatsDescr(thisItem),
+        spellDescrElem(`An ancient ballista made in infernal abyss.`),
+        spellDescrElem(`Grants ability: Doom. Doomed target looses 50% of armor and receives 50% increased physical damage.`),
       ],
     };
   },

@@ -23,6 +23,7 @@
   flex-direction: column;
 }
 
+
 .players-row {
   display: flex;
   padding: 4px 0;
@@ -53,8 +54,8 @@
 }
 
 .item-icon {
-  width: 64px;
-  height: 36px;
+  width: 72px;
+  height: 42px;
   background-color: rgb(84, 84, 89);
   color: white;
   display: flex;
@@ -62,6 +63,15 @@
   align-items: center;
   justify-content: center;
   border-radius: 3px;
+
+  &.hero-icon {
+    background-size: cover;
+    background-position: center center;
+  }
+}
+
+.hero-option {
+  margin: 2px;
   cursor: pointer;
 }
 

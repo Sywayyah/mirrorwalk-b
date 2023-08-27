@@ -10,6 +10,7 @@ export const ItemIceBow: ItemBaseModel<{}> = {
   },
   staticMods: {
     playerBonusAttack: 1,
+    specialtyArchery: 1,
   },
   description({ thisItem }) {
     return {

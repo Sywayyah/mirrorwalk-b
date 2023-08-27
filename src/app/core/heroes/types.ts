@@ -3,13 +3,14 @@ import { takeUntil } from 'rxjs/operators';
 import { GameObject } from '../game-objects';
 import { Item, ItemBaseModel } from '../items';
 import { InventoryItems } from '../items/inventory';
-import { ModsRef, ModsRefsGroup } from '../modifiers';
+import { Modifiers, ModsRef, ModsRefsGroup, Specialties, filterSpecialties } from '../modifiers';
 import { ResourcesModel } from '../resources';
 import { Spell, SpellBaseType } from '../spells';
 import { DescriptionElement } from '../ui';
-import { GenerationModel } from '../unit-types';
+import { GenerationModel, UnitGroup } from '../unit-types';
 import { CommonUtils } from '../utils';
 import { complete } from '../utils/observables';
+import { Player } from '../players';
 
 export interface HeroBaseStats {
   stats: {
@@ -19,9 +20,11 @@ export interface HeroBaseStats {
   };
   abilities: SpellBaseType[];
   generalDescription: DescriptionElement;
+  image?: string;
   resources: ResourcesModel;
   items: ItemBaseModel[];
   army: GenerationModel[];
+  defaultModifiers?: Modifiers;
 }
 
 /* Base type for a hero */
@@ -38,7 +41,9 @@ export interface HeroBase {
     resources: ResourcesModel,
     items: ItemBaseModel[],
     army: GenerationModel[],
+    defaultModifiers?: Modifiers;
   };
+  image: string;
 }
 
 export interface HeroStats {
@@ -72,6 +77,11 @@ export interface HeroStatsInfo {
   baseDefence: number;
   bonusDefence: number;
   finalDefence: number;
+
+  fireResist: number;
+  coldResist: number;
+  lightningResist: number;
+  poisonResist: number;
 }
 
 export class Hero extends GameObject<HeroCreationParams> {
@@ -85,6 +95,10 @@ export class Hero extends GameObject<HeroCreationParams> {
   public spells: Spell[] = [];
 
   public readonly modGroup: ModsRefsGroup = ModsRefsGroup.empty();
+
+  public readonly unitAurasModGroup: ModsRefsGroup = ModsRefsGroup.empty();
+
+  public readonly specialtiesModGroup: ModsRefsGroup = ModsRefsGroup.empty();
 
   /** All items that hero possesses (not all might be equiped) */
   public itemsBackpack: Item[] = [];
@@ -100,15 +114,20 @@ export class Hero extends GameObject<HeroCreationParams> {
     baseDefence: 0,
     bonusDefence: 0,
     finalDefence: 0,
+
+    fireResist: 0,
+    coldResist: 0,
+    lightningResist: 0,
+    poisonResist: 0,
   });
 
   private readonly destroyed$ = new Subject<void>();
 
+  private ownerPlayer!: Player;
+
   create({ heroBase }: HeroCreationParams): void {
     this.base = heroBase;
     this.name = heroBase.name;
-
-    const heroInitState = heroBase.initialState;
 
     const heroBaseStats = heroBase.initialState.stats;
 
@@ -120,6 +139,20 @@ export class Hero extends GameObject<HeroCreationParams> {
       currentMana: heroBaseStats.mana,
       maxMana: heroBaseStats.mana,
     };
+  }
+
+  assignOwnerPlayer(player: Player): void {
+    this.ownerPlayer = player;
+
+    // init mods after player is known, so there is access to unit groups
+    /* todo: theoretically, unit groups can be defined on hero level instead of player */
+    const heroBase = this.base;
+    const heroInitState = heroBase.initialState;
+
+    if (heroBase.initialState.defaultModifiers) {
+      // for now, attach to this group.
+      this.modGroup.addModsRef(ModsRef.fromMods(heroBase.initialState.defaultModifiers));
+    }
 
     this.spells = heroInitState.abilities.map(spell => this.getApi().spells.createSpellInstance(spell));
 
@@ -184,7 +217,6 @@ export class Hero extends GameObject<HeroCreationParams> {
 
   /** Item becomes unequiped, losing bonuses */
   public unequipItem(item: Item): void {
-    CommonUtils.removeItem(this.itemsBackpack, item);
     this.inventory.unequipItem(item);
     const itemModsGroup = this.getItemModsGroup();
 
@@ -208,6 +240,26 @@ export class Hero extends GameObject<HeroCreationParams> {
     this.modGroup.getNamedGroup(HeroMods.CommonCombatMods)?.clearOwnModRefs();
   }
 
+  updateUnitsSpecialtyMods(): void {
+    this.ownerPlayer.unitGroups.forEach((unitGroup) => this.updateUnitSpecialtyMods(unitGroup));
+  }
+
+  updateUnitSpecialtyMods(unitGroup: UnitGroup): void {
+    const getUnitTypeSpecialtyModifiers = unitGroup.type.getUnitTypeSpecialtyModifiers;
+
+    if (!getUnitTypeSpecialtyModifiers) {
+      return;
+    }
+
+    unitGroup.clearSpecialtyMods();
+
+    const specialtyMods = getUnitTypeSpecialtyModifiers?.(this.specialtiesModGroup.getMods() as Specialties);
+
+    if (specialtyMods) {
+      unitGroup.attachSpecialtyMods(specialtyMods);
+    }
+  }
+
   private getItemModsGroup(): ModsRefsGroup | undefined {
     return this.modGroup.getNamedGroup(HeroMods.HeroItemMods);
   }
@@ -220,10 +272,16 @@ export class Hero extends GameObject<HeroCreationParams> {
 
   private setupStatsUpdating(heroBase: HeroBase): void {
     this.modGroup.onValueChanges().pipe(takeUntil(this.destroyed$)).subscribe((mods) => {
+      this.specialtiesModGroup.clearOwnModRefs();
+      this.specialtiesModGroup.addModsRef(ModsRef.fromMods(filterSpecialties(mods)));
+      this.updateUnitsSpecialtyMods();
+
       const { baseAttack, baseDefence } = heroBase.initialState.stats;
 
       const bonusAttack = mods.playerBonusAttack || 0;
       const bonusDefence = mods.playerBonusDefence || 0;
+
+      const allResist = mods.resistAll || 0;
 
       const heroStats: HeroStatsInfo = {
         baseAttack,
@@ -233,6 +291,11 @@ export class Hero extends GameObject<HeroCreationParams> {
         baseDefence,
         bonusDefence,
         finalDefence: baseDefence + bonusDefence,
+
+        fireResist: (mods.resistFire || 0) + allResist,
+        coldResist: (mods.resistCold || 0) + allResist,
+        lightningResist: (mods.resistLightning || 0) + allResist,
+        poisonResist: (mods.resistPoison || 0) + allResist,
       };
 
       this.heroStats$.next(heroStats);

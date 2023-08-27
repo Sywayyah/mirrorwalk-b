@@ -2,12 +2,16 @@ import { CombatActionsRef, PostDamageInfo } from '../api/combat-api';
 import { VfxApi } from '../api/vfx-api';
 import { Colors } from '../assets';
 import { Hero } from '../heroes';
-import { UnitBaseType, UnitGroup } from '../unit-types';
+import { UnitGroup } from '../unit-types';
 import { getDamageParts } from '../vfx';
-import { CanActivateSpellParams, Spell, SpellBaseType } from './types';
+import { CanActivateSpellParams, SpellBaseType } from './types';
 
 export const canActivateOnEnemyFn = ({ isEnemy, unitGroup }: CanActivateSpellParams): boolean => {
   return isEnemy && unitGroup.fightInfo.isAlive;
+};
+
+export const canActivateOnAliveFn = ({ unitGroup }: CanActivateSpellParams): boolean => {
+  return unitGroup.fightInfo.isAlive;
 };
 
 export const canActivateOnAllyFn = ({ isEnemy, unitGroup }: CanActivateSpellParams): boolean => {

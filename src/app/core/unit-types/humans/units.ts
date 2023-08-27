@@ -8,8 +8,8 @@ const defaultRewards = {
   gold: 0,
 };
 
-const Halberdier = humansFraction.defineUnitType('Pikeman', {
-  mainPortraitUrl: AssetsImages.Melee,
+const Halberdier = humansFraction.defineUnitType('Halberdier', {
+  mainPortraitUrl: AssetsImages.UnitMelee,
   name: 'Harbeldier',
   level: 1,
 
@@ -31,7 +31,7 @@ const Halberdier = humansFraction.defineUnitType('Pikeman', {
 const Pikeman = humansFraction.defineUnitType('Pikeman', {
   name: 'Pikemans',
   level: 1,
-  mainPortraitUrl: AssetsImages.Melee,
+  mainPortraitUrl: AssetsImages.UnitMelee,
 
   baseRequirements: {
     gold: 55,
@@ -56,7 +56,7 @@ const Pikeman = humansFraction.defineUnitType('Pikeman', {
 });
 
 humansFraction.defineUnitType('Archer', {
-  mainPortraitUrl: AssetsImages.Ranged,
+  mainPortraitUrl: AssetsImages.UnitRanged,
   name: 'Archers',
   level: 2,
 
@@ -117,7 +117,7 @@ humansFraction.defineUnitType('Archer', {
 });
 
 humansFraction.defineUnitType('Knight', {
-  mainPortraitUrl: AssetsImages.Melee,
+  mainPortraitUrl: AssetsImages.UnitMelee,
   name: 'Knights',
   level: 3,
 
@@ -134,7 +134,7 @@ humansFraction.defineUnitType('Knight', {
 
 humansFraction.defineUnitType('Cavalry', {
   name: 'Cavalry',
-  mainPortraitUrl: AssetsImages.Melee,
+  mainPortraitUrl: AssetsImages.UnitMelee,
 
   level: 4,
 
@@ -156,7 +156,7 @@ humansFraction.defineUnitType('Cavalry', {
 
 humansFraction.defineUnitType('Firebird', {
   name: 'Firebird',
-  mainPortraitUrl: AssetsImages.Melee,
+  mainPortraitUrl: AssetsImages.UnitMelee,
 
   level: 5,
 

@@ -1,27 +1,62 @@
-<div class="hero-panel">
-  <div class="items">
+<ng-container *ngIf="heroStats$ | async as _heroStats">
+  <div class="hero-panel">
+    <div class="items">
+      <div>
+        Your items:
+      </div>
+
+      <div style="display: flex; flex-direction: column;">
+        <mw-item-slot *ngFor="let itemSlot of itemSlots"
+                      [itemSlot]="itemSlot" />
+      </div>
+    </div>
+
+    <div class="info">
+      <div>{{hero.base.name}}</div>
+      <div>Level {{hero.level}}</div>
+
+      <mw-experience-bar style="width: 270px;" />
+    </div>
+
+  </div>
+
+  <div class="buttons">
+    <button mw-main-button
+            (click)="close()">
+      Close
+    </button>
+  </div>
+
+
+
+  <div class="stats-panel">
+    <div>Resistances:</div>
     <div>
-      Your items:
+      Fire:
+      <span [mwNumberModifier]="_heroStats.fireResist"
+            [hideEmpty]="false">
+      </span>
     </div>
 
-    <div style="display: flex; flex-direction: column;">
-      <mw-item-slot *ngFor="let itemSlot of itemSlots"
-                    [itemSlot]="itemSlot" />
+    <div>
+      Cold:
+      <span [mwNumberModifier]="_heroStats.coldResist"
+            [hideEmpty]="false">
+      </span>
+    </div>
+
+    <div>
+      Lightning:
+      <span [mwNumberModifier]="_heroStats.lightningResist"
+            [hideEmpty]="false">
+      </span>
+    </div>
+
+    <div>
+      Poison:
+      <span [mwNumberModifier]="_heroStats.poisonResist"
+            [hideEmpty]="false">
+      </span>
     </div>
   </div>
-
-  <div class="info">
-    <div>{{hero.base.name}}</div>
-    <div>Level {{hero.level}}</div>
-
-    <mw-experience-bar style="width: 270px;" />
-  </div>
-
-</div>
-
-<div class="buttons">
-  <button mw-main-button
-          (click)="close()">
-    Close
-  </button>
-</div>
+</ng-container>

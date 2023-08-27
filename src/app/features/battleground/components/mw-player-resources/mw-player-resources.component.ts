@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Player } from 'src/app/core/players';
 import { MwPlayersService } from 'src/app/features/services';
+import { State } from 'src/app/features/services/state.service';
 
 @Component({
   selector: 'mw-player-resources',
@@ -15,6 +16,7 @@ export class MwPlayerResourcesComponent {
 
   constructor(
     private readonly playersService: MwPlayersService,
+    public readonly state: State,
   ) { }
 
 }

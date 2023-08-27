@@ -21,6 +21,7 @@ import { ModsRef } from './mods-ref';
  *
  * The way attaching works is by sharing all of `ModsRef`s with parent groups.
  */
+// maybe add named refs for optimization/smth
 export class ModsRefsGroup {
   private readonly modsRefs: ModsRef[] = [];
 
@@ -87,6 +88,10 @@ export class ModsRefsGroup {
     this.processModsRef(modsRef, true);
     this.childGroups.forEach((childGroup) => childGroup.removeModsRef(modsRef));
     this.emitModValueChange();
+  }
+
+  getMods(): Modifiers {
+    return this.cachedModValues;
   }
 
   clearOwnModRefs(): void {

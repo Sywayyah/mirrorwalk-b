@@ -2,7 +2,7 @@ import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import type { Fraction } from '../fractions/types';
 import { GameObject } from '../game-objects';
-import { ModsRef, ModsRefsGroup } from '../modifiers';
+import { Specialties, ModsRef, ModsRefsGroup, SpeciatiesModel } from '../modifiers';
 import { Modifiers } from '../modifiers/modifiers';
 import type { Player } from '../players';
 import { ResourcesModel } from '../resources';
@@ -87,6 +87,8 @@ export interface UnitBaseType {
     target: UnitBaseType,
     upgradeCost: Partial<ResourcesModel>,
   };
+
+  getUnitTypeSpecialtyModifiers?(specialties: Specialties): Modifiers | null | undefined;
 }
 
 interface UnitCreationParams {
@@ -101,6 +103,12 @@ export enum UnitModGroups {
 
   /** Mods attached to particular unit during the battle */
   CombatMods = 'cMods',
+
+  /** Mods gained from auras */
+  AuraMods = 'aMods',
+
+  /** Mods gained from specialties */
+  SpecialtyMods = 'sMods',
 }
 
 export interface UnitStatsInfo {
@@ -115,6 +123,11 @@ export interface UnitStatsInfo {
   baseSpeed: number;
   speedBonus: number;
   finalSpeed: number;
+
+  fireResist: number;
+  coldResist: number;
+  lightningResist: number;
+  poisonResist: number;
 }
 
 export class UnitGroup extends GameObject<UnitCreationParams> {
@@ -154,6 +167,11 @@ export class UnitGroup extends GameObject<UnitCreationParams> {
     baseSpeed: 0,
     speedBonus: 0,
     finalSpeed: 0,
+
+    fireResist: 0,
+    coldResist: 0,
+    lightningResist: 0,
+    poisonResist: 0,
   });
 
   private readonly destroyed$ = new Subject<void>();
@@ -177,6 +195,7 @@ export class UnitGroup extends GameObject<UnitCreationParams> {
 
     if (this.type.defaultModifiers) {
       // think about it as well.
+      // practically, refs on this group remain untouched, but need to keep it in mind
       this.modGroup.addModsRef(ModsRef.fromMods(this.type.defaultModifiers));
     }
 
@@ -193,6 +212,7 @@ export class UnitGroup extends GameObject<UnitCreationParams> {
     }
 
     this.modGroup.attachNamedParentGroup(UnitModGroups.CombatMods, ModsRefsGroup.empty());
+    this.modGroup.attachNamedParentGroup(UnitModGroups.SpecialtyMods, ModsRefsGroup.empty());
 
     this.setupStatsUpdating();
   }
@@ -216,6 +236,14 @@ export class UnitGroup extends GameObject<UnitCreationParams> {
 
   getStats(): UnitStatsInfo {
     return this.unitStats$.getValue();
+  }
+
+  attachSpecialtyMods(specialtyMods: Modifiers): void {
+    this.modGroup.getNamedGroup(UnitModGroups.SpecialtyMods)?.addModsRef(ModsRef.fromMods(specialtyMods));
+  }
+
+  clearSpecialtyMods(): void {
+    this.modGroup.getNamedGroup(UnitModGroups.SpecialtyMods)?.clearOwnModRefs();
   }
 
   /**
@@ -249,6 +277,8 @@ export class UnitGroup extends GameObject<UnitCreationParams> {
       const baseSpeed = baseStats.speed;
       const speedBonus = mods.unitGroupSpeedBonus || 0;
 
+      const allResist = mods.resistAll || 0;
+
       const stats = {
         baseAttack,
         bonusAttack,
@@ -261,6 +291,11 @@ export class UnitGroup extends GameObject<UnitCreationParams> {
         baseSpeed,
         speedBonus,
         finalSpeed: baseSpeed + speedBonus,
+
+        fireResist: (mods.resistFire || 0) + allResist,
+        coldResist: (mods.resistCold || 0) + allResist,
+        lightningResist: (mods.resistLightning || 0) + allResist,
+        poisonResist: (mods.resistPoison || 0) + allResist,
       };
 
       this.unitStats$.next(stats);

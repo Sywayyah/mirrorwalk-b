@@ -19,23 +19,42 @@ export const FrightSpellDebuff: SpellBaseType<{ frighter: UnitGroup }> = {
       descriptions: [
         spellDescrElem(`This unit group is frightened, dealing ${uiPercent}% less damage to the one who scared it.`),
       ],
-    }
+    };
   },
   type: {
     spellInfo: {
       name: 'Fright',
     },
     spellConfig: {
-      init({ actions, events, spellInstance, vfx }) {
+      init({ actions, events, spellInstance, vfx, ownerHero }) {
         events.on({
           SpellPlacedOnUnitGroup({ target }) {
+            const necromancyLevel = ownerHero.modGroup.getModValue('specialtyNecromancy') || 0;
+
             const reducedDamageCMod = actions.createModifiers({
               attackConditionalModifiers(params) {
-                if (params.attacked === spellInstance.state?.frighter) {
-                  return {
-                    baseDamagePercentModifier: -(damageDecreasePercent / 100),
-                  };
+                if (!necromancyLevel) {
+                  if (params.attacked === spellInstance.state?.frighter) {
+
+                    return {
+                      baseDamagePercentModifier: -damageDecreasePercent,
+                    };
+                  }
                 }
+
+                if (necromancyLevel >= 1) {
+                  if (params.attacked === spellInstance.state?.frighter) {
+                    return { baseDamagePercentModifier: -0.25 };
+                  }
+
+                  if (params.attacked.modGroup.getModValue('isGhost')) {
+                    return { baseDamagePercentModifier: -0.17 };
+                  }
+
+                  return { baseDamagePercentModifier: -0.12 };
+                }
+
+
                 return {};
               }
             });
@@ -63,7 +82,7 @@ export const FrightSpell: SpellBaseType = {
   getDescription(data) {
     return {
       descriptions: [
-        spellDescrElem(`Scares enemy group on attack, reducing damage against this group by ${uiPercent}%.`),
+        spellDescrElem(`Scares enemy group on attack, reducing damage against this group by ${uiPercent}%.  Ability Improves with Necromancy, reducing damage against all your units.`),
       ],
     }
   },

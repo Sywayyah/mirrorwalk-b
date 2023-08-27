@@ -1,19 +1,42 @@
+:host {
+  display: flex;
+}
+
 .groups-container {
   display: flex;
 }
 
+.hero-info {
+  align-self: end;
+  margin-bottom: 6px;
+}
+
+.hero-image {
+  background-size: cover;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  border: 4px solid gray;
+  margin: 8px;
+  align-self: end;
+}
+
 .player-group-card {
-  height: 64px;
-  width: 64px;
+  height: 48px;
+  width: 48px;
   color: white;
   display: flex;
   flex-direction: column;
   justify-content: center;
   text-align: center;
   border-radius: 4px;
-  font-size: 13px;
+  font-size: 11px;
   margin: 3px;
+}
 
+.group-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .skillpoints {

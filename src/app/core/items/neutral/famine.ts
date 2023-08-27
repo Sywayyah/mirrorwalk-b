@@ -8,6 +8,7 @@ export const FamineScytheItem: ItemBaseModel = {
   name: 'Famine',
   slotType: ItemSlotType.Weapon,
   staticMods: {
+    specialtyNecromancy: 2,
     playerBonusAttack: 6,
     /* Vampirism mod, maybe -1-2 to Defence */
   },

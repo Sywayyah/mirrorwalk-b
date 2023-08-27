@@ -111,7 +111,7 @@ export const PoisonCloudDebuff: SpellBaseType<undefined | { debuffRoundsLeft: nu
             spellInstance.state = debuffData;
 
             const modifiers = actions.createModifiers({
-              unitGroupBonusAttack: -attackReduction,
+              playerBonusAttack: -attackReduction,
             });
 
             vfx.createEffectForUnitGroup(target, PoisonCloudAnimation);

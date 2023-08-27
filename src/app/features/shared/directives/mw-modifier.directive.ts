@@ -8,6 +8,9 @@ export class NumberModifierDirective implements OnDestroy, OnChanges {
   @Input('mwNumberModifier')
   public value!: number;
 
+  @Input()
+  public hideEmpty: boolean = true;
+
   constructor(
     private hostElem: ElementRef,
     private renderer: Renderer2,
@@ -21,7 +24,12 @@ export class NumberModifierDirective implements OnDestroy, OnChanges {
 
   public ngOnChanges(): void {
     const elem = this.hostElem.nativeElement as HTMLElement;
-    if (!this.value) {
+    if (this.hideEmpty && !this.value) {
+      elem.innerHTML = '';
+      return;
+    }
+
+    if (typeof this.value !== 'number') {
       elem.innerHTML = '';
       return;
     }

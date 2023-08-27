@@ -1,32 +1,26 @@
-<div>
+<div (click)="openPlayerInfo()"
+     mwActionHint="Inspect Hero"
+     style="cursor: pointer;"
+     [style.background-image]="'url(\'assets/'+ player.hero.base.image + '\')'"
+     class="hero-image">
+</div>
+
+<div class="hero-info">
   <!-- <div class="skillpoints"
        *ngIf="player.hero.freeSkillpoints">
     +{{player.hero.freeSkillpoints}} Skillpoints
   </div> -->
 
   <div>
-    <div>
-      Week: {{state.currentGame.week}}, Day: {{state.currentGame.day}}
-    </div>
-
-    <div>
-      <mw-ra-icon icon="feather-wing"></mw-ra-icon>
-      {{state.currentGame.travelPoints}}
-    </div>
-  </div>
-
-  <div style="cursor: pointer;"
-       (click)="openPlayerInfo()">
     {{player.hero.name}}, Level: {{player.hero.level}}
     <mw-experience-bar style="width: 270px;"></mw-experience-bar>
   </div>
 
-  Your units:
   <div class="groups-container">
     <div class="player-group-card"
          [style.background]="player.color"
          *ngFor="let group of player.unitGroups">
-      <div>{{group.type.name}}</div>
+      <div class="group-name">{{group.type.name}}</div>
 
       <div>{{group.count}}</div>
     </div>

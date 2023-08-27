@@ -109,7 +109,7 @@ export const CorrosiveFogDebuff: SpellBaseType<undefined | { debuffRoundsLeft: n
 
             const modifiers = actions.createModifiers({
               baseDamagePercentModifier: -damageReduction,
-              unitGroupBonusDefence: -defenceReduction,
+              playerBonusAttack: -defenceReduction,
             });
 
             vfx.createEffectForUnitGroup(target, CorrosiveFogAnimation);

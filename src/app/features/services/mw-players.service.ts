@@ -158,11 +158,12 @@ export class MwPlayersService extends StoreClient() {
   }
 
   public addUnitGroupToTypeStack(player: Player, unitGroup: UnitGroup): void {
+    // todo: move these things into classes.
     const sameTypeStack = player.unitGroups.find(group => group.type === unitGroup.type);
     if (sameTypeStack) {
       sameTypeStack.count += unitGroup.count;
     } else {
-      player.unitGroups.push(unitGroup);
+      player.addUnitGroup(unitGroup);
     }
   }
 
@@ -171,7 +172,7 @@ export class MwPlayersService extends StoreClient() {
     unitGroup.count -= count;
 
     if (unitGroup.count <= 0) {
-      CommonUtils.removeItem(player.unitGroups, unitGroup);
+      player.removeUnitGroup(unitGroup);
     }
   }
 

@@ -15,6 +15,8 @@ export class HeroPopupComponent extends BasicPopup<{}> {
 
   public hero = this.currentPlayer.hero;
 
+  public heroStats$ = this.hero.listenHeroStats();
+
   public itemSlots = InventoryItems.getSlotTypes();
 
   constructor(
