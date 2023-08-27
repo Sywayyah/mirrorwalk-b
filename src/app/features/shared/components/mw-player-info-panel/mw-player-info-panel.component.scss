@@ -22,17 +22,21 @@
 }
 
 .player-group-card {
-  height: 64px;
-  width: 64px;
+  height: 48px;
+  width: 48px;
   color: white;
   display: flex;
   flex-direction: column;
   justify-content: center;
   text-align: center;
   border-radius: 4px;
-  font-size: 13px;
+  font-size: 11px;
   margin: 3px;
+}
 
+.group-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .skillpoints {
