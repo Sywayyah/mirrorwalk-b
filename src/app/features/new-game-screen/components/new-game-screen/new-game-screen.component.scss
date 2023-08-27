@@ -23,6 +23,7 @@
   flex-direction: column;
 }
 
+
 .players-row {
   display: flex;
   padding: 4px 0;
@@ -62,12 +63,16 @@
   align-items: center;
   justify-content: center;
   border-radius: 3px;
-  cursor: pointer;
 
   &.hero-icon {
     background-size: cover;
     background-position: center center;
   }
+}
+
+.hero-option {
+  margin: 2px;
+  cursor: pointer;
 }
 
 .color-item {
