@@ -11,7 +11,7 @@
     +{{player.hero.freeSkillpoints}} Skillpoints
   </div> -->
 
-  <div>
+  <div [mwActionHint]="getHeroActionHint()">
     {{player.hero.name}}, Level: {{player.hero.level}}
     <mw-experience-bar style="width: 270px;"></mw-experience-bar>
   </div>

@@ -27,10 +27,10 @@ export const MeteorSpell: SpellBaseType = {
     spellConfig: {
       getManaCost: (spell) => {
         const manaCosts: Record<number, number> = {
-          1: 5,
-          2: 6,
-          3: 7,
-          4: 8,
+          1: 4,
+          2: 5,
+          3: 5,
+          4: 6,
         };
 
         return manaCosts[spell.currentLevel];
