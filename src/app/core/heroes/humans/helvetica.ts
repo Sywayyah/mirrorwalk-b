@@ -1,8 +1,6 @@
 import { AssetsImages } from '../../assets';
 import { humansFraction } from '../../fractions';
-import { ItemWindCrest, WishmasterItem } from '../../items/neutral';
-import { FamineScytheItem } from '../../items/neutral/famine';
-import { PhoenixShieldItem } from '../../items/neutral/phoenix-shield';
+import { ItemWindCrest } from '../../items/neutral';
 import { HasteSpell, RainOfFireSpell } from '../../spells/common';
 import { heroDescrElem } from '../../ui';
 import { HeroBase } from '../types';
@@ -38,10 +36,10 @@ export const HelveticaHero: HeroBase = humansFraction.createHero({
     ],
   }],
   items: [
-    WishmasterItem,
+    // WishmasterItem,
     ItemWindCrest,
-    PhoenixShieldItem,
-    FamineScytheItem,
+    // PhoenixShieldItem,
+    // FamineScytheItem,
     // ItemIceBow,
   ],
   resources: {

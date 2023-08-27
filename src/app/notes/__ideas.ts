@@ -1,4 +1,8 @@
 /*
+  Todo: introduce some storng camp with strong rewards.
+*/
+
+/*
   IDEA: If there will be spells that might increase efficiency of certain
     units, it might also reduce efficiency of another units.
 
