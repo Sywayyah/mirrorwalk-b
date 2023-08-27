@@ -1,3 +1,5 @@
+// todo: functions/constants
+
 export const AssetsImages = {
   UnitMelee: 'units/unit-melee.png',
   UnitRanged: 'units/unit-ranged.png',
