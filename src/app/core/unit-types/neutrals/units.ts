@@ -1,5 +1,6 @@
 import { AssetsImages } from '../../assets';
 import { neutralsFraction } from '../../fractions/neutrals/fraction';
+import { spellDescrElem } from '../../ui';
 import { createStats } from '../utils';
 
 neutralsFraction.defineUnitType('Gnoll', {
@@ -9,8 +10,15 @@ neutralsFraction.defineUnitType('Gnoll', {
 
   baseStats: createStats([[3, 4], 1, 1, 10, 12]),
 
+  getDescription() {
+    return {
+      descriptions: [
+        spellDescrElem('Gnolls are tier 2 neutral units, having average stats. Mostly known for being bandits, they possess a fire resistant fur, giving them +12% to Fire Resist.'),
+      ],
+    };
+  },
   defaultModifiers: {
-    resistFire: 10,
+    resistFire: 12,
   },
   minQuantityPerStack: 5,
   defaultTurnsPerRound: 1,
