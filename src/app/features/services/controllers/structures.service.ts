@@ -40,6 +40,7 @@ export class StructuresController extends StoreClient() {
 
       if ((currentGame.day % 7) === 0) {
         currentGame.week += 1;
+        currentGame.day = 1;
 
         this.events.dispatch(NewWeekStarted({ week: currentGame.week }));
       }
