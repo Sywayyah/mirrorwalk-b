@@ -30,8 +30,10 @@ export class MwPlayerInfoPanelComponent {
 
     const nextLevel = hero.level + 1;
 
+    const nextLevelXpRequired = HERO_LEVELS_BREAKPOINTS[nextLevel] - hero.experience;
     return `
-    <div>Level ${nextLevel} requires ${HERO_LEVELS_BREAKPOINTS[nextLevel] - hero.experience}xp (${hero.experience}/${HERO_LEVELS_BREAKPOINTS[nextLevel]})</div>
+    <div>${nextLevelXpRequired}xp is required to reach Level ${nextLevel}</div>
+    <div>(${hero.experience}/${HERO_LEVELS_BREAKPOINTS[nextLevel]})</div>
     `;
   }
 
