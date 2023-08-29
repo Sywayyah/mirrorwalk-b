@@ -57,6 +57,7 @@ export interface BuildingDescription {
   levels: { building: BuidlingBase, cost: Resources }[];
   icon: string;
   tier: number;
+  baseName: string;
 }
 
 interface BuildingCreationParams {
