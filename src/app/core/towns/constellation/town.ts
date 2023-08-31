@@ -58,6 +58,7 @@ export const castleTownBase: TownBase<ConstellationTownBuildings> = {
   name: 'Constellation',
   availableBuildings: {
     'town-center': {
+      baseName: 'Town Center',
       description: 'Grants you daily income',
       levels: [
         { building: townCenter, cost: { gold: 2000 } },
@@ -66,6 +67,7 @@ export const castleTownBase: TownBase<ConstellationTownBuildings> = {
       tier: 1,
     },
     'market': {
+      baseName: 'Market',
       description: 'Allows to trade resources',
       levels: [
         { building: market, cost: { gold: 1350 } }
@@ -74,6 +76,7 @@ export const castleTownBase: TownBase<ConstellationTownBuildings> = {
       tier: 1,
     },
     "magic-school": {
+      baseName: 'Magic School',
       description: 'Allows you to learn spells for your hero',
       levels: [
         { building: highTower, cost: { gold: 1500, gems: 1 } }
@@ -82,6 +85,7 @@ export const castleTownBase: TownBase<ConstellationTownBuildings> = {
       tier: 2,
     },
     'tavern': {
+      baseName: 'Tavern',
       description: 'Allows to hire neutral units',
       levels: [
         { building: tavern, cost: { gold: 1250 } },
@@ -90,6 +94,7 @@ export const castleTownBase: TownBase<ConstellationTownBuildings> = {
       tier: 2,
     },
     'fate-halls': {
+      baseName: 'Halls of Fate',
       description: 'Allows to develop your hero',
       levels: [
         { building: { name: 'Halls of Fate' }, cost: { gold: 1500 } },
@@ -98,6 +103,7 @@ export const castleTownBase: TownBase<ConstellationTownBuildings> = {
       tier: 2,
     },
     'spirit-towers': {
+      baseName: 'Spirit Towers',
       description: 'Trains Sprites',
       levels: [
         { building: spiritTowers, cost: { gold: 450 } },
@@ -106,6 +112,7 @@ export const castleTownBase: TownBase<ConstellationTownBuildings> = {
       tier: 1,
     },
     'moon-arch': {
+      baseName: 'Moon Arch',
       description: 'Trains Sagittars',
       levels: [
         { building: moonArch, cost: { gold: 500, wood: 1 } },

@@ -58,5 +58,13 @@
             [hideEmpty]="false">
       </span>
     </div>
+
+    <hr>
+
+    Specialties:
+
+    <div *ngFor="let specialty of heroSpecialties$ | async">
+      <div>{{specialty}}</div>
+    </div>
   </div>
 </ng-container>

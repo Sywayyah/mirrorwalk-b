@@ -1,4 +1,9 @@
 /*
+  Todo: When player opens info for something, there can be
+  a side-line with arrow, that allows to close it.
+*/
+
+/*
   Todo: introduce some storng camp with strong rewards.
 */
 
