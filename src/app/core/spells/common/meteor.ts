@@ -7,16 +7,21 @@ import { SpellActivationType, SpellBaseType } from '../types';
 const minDamage = 82;
 const maxDamage = 124;
 
+const dmgIncrementPerLevel = 31;
+
+/* todo: maybe change the bonus gained with level */
 export const MeteorSpell: SpellBaseType = {
   name: 'Meteor',
   activationType: SpellActivationType.Instant,
   icon: {
     icon: 'burning-meteor'
   },
-  getDescription(data) {
+  getDescription({ spellInstance }) {
+    const damageBounsPerLevel = dmgIncrementPerLevel * spellInstance.currentLevel;
+
     return {
       descriptions: [
-        spellDescrElem(`Deals ${minDamage}-${maxDamage} fire damage to random enemy group`),
+        spellDescrElem(`Deals ${minDamage + damageBounsPerLevel}-${maxDamage + damageBounsPerLevel} fire damage to random enemy group`),
       ],
     }
   },
@@ -36,12 +41,12 @@ export const MeteorSpell: SpellBaseType = {
         return manaCosts[spell.currentLevel];
       },
 
-      init({ events, actions, thisSpell, ownerHero, vfx }) {
+      init({ events, actions, thisSpell, ownerHero, vfx, spellInstance }) {
         events.on({
           PlayerCastsInstantSpell(event) {
             const randomEnemyGroup = actions.getRandomEnemyPlayerGroup();
+            const damageBounsPerLevel = dmgIncrementPerLevel * spellInstance.currentLevel;
 
-            const countBeforeDamage = randomEnemyGroup.count;
 
             vfx.createEffectForUnitGroup(
               randomEnemyGroup,
@@ -51,10 +56,10 @@ export const MeteorSpell: SpellBaseType = {
 
             actions.dealDamageTo(
               randomEnemyGroup,
-              CommonUtils.randIntInRange(minDamage, maxDamage),
+              CommonUtils.randIntInRange(minDamage + damageBounsPerLevel, maxDamage + damageBounsPerLevel),
               DamageType.Fire,
-              ({ unitLoss, finalDamage }) => {
-                actions.historyLog(`${ownerHero.name} deals ${finalDamage} damage to ${countBeforeDamage} ${randomEnemyGroup.type.name} with ${thisSpell.name}, ${unitLoss} units perish`);
+              ({ unitLoss, initialUnitCount, finalDamage }) => {
+                actions.historyLog(`${ownerHero.name} deals ${finalDamage} damage to ${initialUnitCount} ${randomEnemyGroup.type.name} with ${thisSpell.name}, ${unitLoss} units perish`);
 
                 vfx.createFloatingMessageForUnitGroup(
                   randomEnemyGroup,

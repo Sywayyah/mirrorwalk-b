@@ -23,7 +23,9 @@ export class HeroPopupComponent extends BasicPopup<{}> {
   public readonly itemSlots = InventoryItems.getSlotTypes();
 
   public readonly heroSpecialties$ = this.hero.specialtiesModGroup.onValueChanges().pipe(
-    map((specialties) => getEntries(specialties).filter(([, specValue]) => specValue).map(([specName, specValue]) => `${specialtyLabels[specName as keyof Specialties]}: ${specValue}`)),
+    map((specialties) => getEntries(specialties)
+      .filter(([, specValue]) => specValue)
+      .map(([specName, specValue]) => `${specialtyLabels[specName as keyof Specialties]}: ${specValue}`)),
   );
 
   constructor(
