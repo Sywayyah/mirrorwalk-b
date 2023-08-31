@@ -61,10 +61,22 @@
 
     <hr>
 
-    Specialties:
+    <div class="specialties">
+      Specialties:
 
-    <div *ngFor="let specialty of heroSpecialties$ | async">
-      <div>{{specialty}}</div>
+      <ng-container *ngIf="heroSpecialties$ | async as specialties">
+
+        <ng-container *ngIf="specialties.length; else noSpecialties">
+          <div *ngFor="let specialty of specialties">
+            <div>{{specialty}}</div>
+          </div>
+        </ng-container>
+
+        <ng-template #noSpecialties>
+          <div>No specialties</div>
+        </ng-template>
+
+      </ng-container>
     </div>
   </div>
 </ng-container>
