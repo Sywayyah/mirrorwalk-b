@@ -46,3 +46,11 @@ export const CommonUtils = {
   }
 
 };
+
+export function getLast<T>(items: T[]): T {
+  return items[items.length - 1];
+}
+
+export function getFirst<T>(items: T[]): T{
+  return items[0];
+}

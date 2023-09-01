@@ -1,7 +1,7 @@
 import { AssetsImages } from '../../assets';
 import { neutralsFraction } from '../../fractions/neutrals/fraction';
-import { spellDescrElem } from '../../ui';
-import { createStats } from '../utils';
+import { heroDescrElem } from '../../ui';
+import { createStats, simpleDescriptions } from '../utils';
 
 
 neutralsFraction.defineUnitType('FireSpirits', {
@@ -17,13 +17,10 @@ neutralsFraction.defineUnitType('FireSpirits', {
     resistCold: 15,
   },
 
-  getDescription: (params) => {
-    return {
-      descriptions: [
-        spellDescrElem('Tier 3, Creature of fire. Tenacious and strong. Have increased resists against Ice and Fire.'),
-      ],
-    };
-  },
+  getDescription: simpleDescriptions([
+    heroDescrElem('Creature of fire.'),
+    heroDescrElem('<br>Tenacious and strong. Have increased resists against Ice and Fire.'),
+  ]),
 
   neutralReward: {
     experience: 10,

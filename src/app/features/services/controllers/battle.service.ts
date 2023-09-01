@@ -98,7 +98,7 @@ export class BattleController extends StoreClient() {
     const currentPlayerUnitGroups = this.battleState.getAliveUnitsOfPlayer(currentPlayer);
 
     if (!currentPlayerUnitGroups.length) {
-      this.playersService.getCurrentPlayer().unitGroups = currentPlayerUnitGroups;
+      this.playersService.getCurrentPlayer().setUnitGroups(currentPlayerUnitGroups);
 
       this.events.dispatch(FightEnds({
         struct: currentStructure,
@@ -111,7 +111,7 @@ export class BattleController extends StoreClient() {
     const enemyPlayer = this.battleState.getEnemyOfPlayer(currentPlayer);
 
     if (!this.battleState.getAliveUnitsOfPlayer(enemyPlayer).length) {
-      this.playersService.getCurrentPlayer().unitGroups = currentPlayerUnitGroups;
+      this.playersService.getCurrentPlayer().setUnitGroups(currentPlayerUnitGroups);
 
       currentStructure.isInactive = true;
 

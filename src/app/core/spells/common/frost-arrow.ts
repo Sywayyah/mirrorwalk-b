@@ -47,6 +47,8 @@ const magicDamage = 40;
 const slow = 4;
 const attackPenalty = 3;
 
+
+// practically, I can create some util function for debuffs.
 export const FrozenArrowDebuff: SpellBaseType = {
   name: 'Freeze',
   activationType: SpellActivationType.Debuff,

@@ -2,7 +2,7 @@ import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import type { Fraction } from '../fractions/types';
 import { GameObject } from '../game-objects';
-import { Specialties, ModsRef, ModsRefsGroup, SpeciatiesModel } from '../modifiers';
+import { ModsRef, ModsRefsGroup, Specialties } from '../modifiers';
 import { Modifiers } from '../modifiers/modifiers';
 import type { Player } from '../players';
 import { ResourcesModel } from '../resources';
@@ -47,6 +47,15 @@ export interface UnitTypeBaseStatsModel {
   damageInfo: UnitDamageModel;
 }
 
+export interface UnitDescriptionParams {
+  unitBase: UnitBaseType;
+  unit: UnitGroup;
+}
+
+export interface UnitDescriptions {
+  descriptions: DescriptionElement[];
+}
+
 export interface UnitBaseType {
   type: string;
 
@@ -60,7 +69,7 @@ export interface UnitBaseType {
 
   baseStats: UnitTypeBaseStatsModel;
 
-  getDescription?: (params: { unitBase: UnitBaseType, unit: UnitGroup }) => { descriptions: DescriptionElement[] },
+  getDescription?: (params: UnitDescriptionParams) => UnitDescriptions,
 
   /* what does this unit type requires */
   baseRequirements: RequirementModel;
@@ -128,20 +137,36 @@ export interface UnitStatsInfo {
   coldResist: number;
   lightningResist: number;
   poisonResist: number;
+
+  totalHealth: number;
+  totalMinDamage: number;
+  totalMaxDamage: number;
+  avgTotalDamage: number;
 }
 
 export class UnitGroup extends GameObject<UnitCreationParams> {
   public static readonly categoryId: string = 'unit-group';
 
-  public count!: number;
+  // todo: many properties can become getters
+
+  private _count!: number;
+  /* the last unit hp tail. */
+  // todo: recheck how it works, maybe shouldn't be undefined anymore
+  private _tailUnitHp?: number;
+
+  public get count() {
+    return this._count;
+  }
+
+  public get tailUnitHp() {
+    return this._tailUnitHp;
+  }
+
   public type!: UnitBaseType;
   public ownerPlayerRef!: Player;
 
   /* how much turns left during round, not sure if it's best to have it there */
   public turnsLeft!: number;
-
-  /* the last unit hp tail. If undefined, the tail unit hp is full */
-  public tailUnitHp?: number;
 
   public fightInfo!: {
     initialCount: number;
@@ -172,6 +197,11 @@ export class UnitGroup extends GameObject<UnitCreationParams> {
     coldResist: 0,
     lightningResist: 0,
     poisonResist: 0,
+
+    totalHealth: 0,
+    totalMinDamage: 0,
+    totalMaxDamage: 0,
+    avgTotalDamage: 0,
   });
 
   private readonly destroyed$ = new Subject<void>();
@@ -183,7 +213,6 @@ export class UnitGroup extends GameObject<UnitCreationParams> {
       count = 1;
     }
 
-    this.count = count;
     this.type = unitBase;
 
     // think about it later
@@ -192,6 +221,7 @@ export class UnitGroup extends GameObject<UnitCreationParams> {
     }
 
     this.turnsLeft = unitBase.defaultTurnsPerRound;
+    this._tailUnitHp = unitBase.baseStats.health;
 
     if (this.type.defaultModifiers) {
       // think about it as well.
@@ -205,6 +235,8 @@ export class UnitGroup extends GameObject<UnitCreationParams> {
       spellsOnCooldown: false,
     };
 
+    this.setUnitsCount(count);
+
     if (this.type.defaultSpells) {
       this.spells = this.type.defaultSpells.map(spell => this.getApi().spells.createSpellInstance(spell));
     } else {
@@ -213,7 +245,6 @@ export class UnitGroup extends GameObject<UnitCreationParams> {
 
     this.modGroup.attachNamedParentGroup(UnitModGroups.CombatMods, ModsRefsGroup.empty());
     this.modGroup.attachNamedParentGroup(UnitModGroups.SpecialtyMods, ModsRefsGroup.empty());
-
     this.setupStatsUpdating();
   }
 
@@ -228,6 +259,24 @@ export class UnitGroup extends GameObject<UnitCreationParams> {
     // think if I need to retach like that
     this.modGroup.detachNamedParentGroup(UnitModGroups.PlayerMods);
     this.modGroup.attachNamedParentGroup(UnitModGroups.PlayerMods, player.hero.modGroup);
+  }
+
+  addUnitsCount(addedCount: number): void {
+    this.setUnitsCount(this._count + addedCount);
+  }
+
+  setUnitsCount(newCount: number): void {
+    this._count = newCount >= 0 ? newCount : 0;
+    this.recalcHealthBasedStats();
+  }
+
+  addTailUnitHp(addedTailHp: number): void {
+    this.setTailUnitHp((this._tailUnitHp ?? 0) + addedTailHp);
+  }
+
+  setTailUnitHp(newTailUnitHp: number): void {
+    this._tailUnitHp = newTailUnitHp;
+    this.recalcHealthBasedStats();
   }
 
   listenStats(): Observable<UnitStatsInfo> {
@@ -264,25 +313,42 @@ export class UnitGroup extends GameObject<UnitCreationParams> {
     this.modGroup.getNamedGroup(UnitModGroups.CombatMods)!.removeRefByModInstance(modifiers);
   }
 
+  private recalcHealthBasedStats(): void {
+    const currentUnitStats = this.unitStats$.getValue();
+    const baseStats = this.type.baseStats;
+    const unitCount = this._count;
+
+    currentUnitStats.totalHealth = baseStats.health * (unitCount - 1) + (this.tailUnitHp ?? 0);
+    currentUnitStats.totalMinDamage = unitCount * baseStats.damageInfo.minDamage;
+    currentUnitStats.totalMaxDamage = unitCount * baseStats.damageInfo.maxDamage;
+    currentUnitStats.avgTotalDamage = (currentUnitStats.totalMinDamage + currentUnitStats.totalMaxDamage) / 2;
+
+    this.unitStats$.next(currentUnitStats);
+  }
+
   private setupStatsUpdating(): void {
     this.modGroup.onValueChanges().pipe(takeUntil(this.destroyed$)).subscribe((mods) => {
       const baseStats = this.type.baseStats;
+      // review later
+      const heroBaseStats = this.ownerPlayerRef?.hero.base.initialState.stats;
 
       const baseAttack = baseStats.attackRating;
-      const bonusAttack = mods.playerBonusAttack || 0;
+      const bonusAttack = (mods.playerBonusAttack || 0) + (heroBaseStats?.baseAttack || 0);
 
       const baseDefence = baseStats.defence;
-      const bonusDefence = mods.playerBonusDefence || 0;
+      const bonusDefence = (mods.playerBonusDefence || 0) + (heroBaseStats?.baseDefence || 0);
 
       const baseSpeed = baseStats.speed;
       const speedBonus = mods.unitGroupSpeedBonus || 0;
 
       const allResist = mods.resistAll || 0;
 
-      const stats = {
+      const previousStats = this.unitStats$.getValue();
+
+      const stats: UnitStatsInfo = {
         baseAttack,
         bonusAttack,
-        finalAttack: bonusAttack + baseAttack,
+        finalAttack: baseAttack + bonusAttack,
 
         baseDefence,
         bonusDefence,
@@ -296,6 +362,11 @@ export class UnitGroup extends GameObject<UnitCreationParams> {
         coldResist: (mods.resistCold || 0) + allResist,
         lightningResist: (mods.resistLightning || 0) + allResist,
         poisonResist: (mods.resistPoison || 0) + allResist,
+
+        totalHealth: previousStats.totalHealth,
+        totalMinDamage: previousStats.totalMaxDamage,
+        totalMaxDamage: previousStats.totalMinDamage,
+        avgTotalDamage: previousStats.avgTotalDamage,
       };
 
       this.unitStats$.next(stats);

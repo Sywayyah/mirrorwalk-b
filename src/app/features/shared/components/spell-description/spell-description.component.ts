@@ -16,6 +16,7 @@ export class SpellDescriptionComponent implements OnInit {
   @Input()
   public spell!: Spell;
 
+  /* todo: this is possibly bad, maybe hero can be attached to spell itself. */
   @Input()
   public hero!: Hero;
 

@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { CustomCursorComponent, DescriptionComponent, EventFeedComponent, EventFeedMessageComponent, GameOverPopupComponent, HintsContainerComponent, HoverHintComponent, IconBtnComponent, ItemDescriptionComponent, MainButtonComponent, MenuComponent, MwActionHintComponent, MwExperienceBarComponent, MwPlayerInfoPanelComponent, MwRaIconComponent, PopupContainerComponent, PopupWrapperComponent, RewardPopupComponent, SharedTemplateDirective, SharedTemplatesComponent, SpellDescriptionComponent, ValueBarComponent, VfxElementComponent, VfxLayerComponent } from './components';
-import { MwActionHintDirective, MwCustomCursorDirective, MwUnitGroupCombatActionDirective, MwUnitEventsCursorDirective, NumberModifierDirective } from './directives';
+import { CustomCursorComponent, DescriptionComponent, EventFeedComponent, EventFeedMessageComponent, GameOverPopupComponent, HintsContainerComponent, HoverHintComponent, IconBtnComponent, ItemDescriptionComponent, MainButtonComponent, MenuComponent, MwActionHintComponent, MwExperienceBarComponent, MwPlayerInfoPanelComponent, MwRaIconComponent, PopupContainerComponent, PopupWrapperComponent, RewardPopupComponent, SharedTemplateDirective, SharedTemplatesComponent, SpellDescriptionComponent, UnitGroupInfoComponent, UnitGroupInfoPopupComponent, UnitGroupPortraitComponent, UnitGroupSpellIconComponent, ValueBarComponent, VfxElementComponent, VfxLayerComponent } from './components';
+import { DisableContextMenuDirective, MwActionHintDirective, MwCustomCursorDirective, MwUnitEventsCursorDirective, MwUnitGroupCombatActionDirective, NumberModifierDirective } from './directives';
 
 const directives = [
   MwCustomCursorDirective,
@@ -9,34 +9,45 @@ const directives = [
   MwUnitGroupCombatActionDirective,
   MwUnitEventsCursorDirective,
   MwActionHintDirective,
+  DisableContextMenuDirective,
 ];
 
 const components = [
   ...directives,
-  MwActionHintComponent,
+
   GameOverPopupComponent,
-  EventFeedComponent,
-  EventFeedMessageComponent,
-  CustomCursorComponent,
-  HintsContainerComponent,
-  HoverHintComponent,
-  MwRaIconComponent,
-  PopupContainerComponent,
-  MainButtonComponent,
-  PopupWrapperComponent,
   SharedTemplateDirective,
   SharedTemplatesComponent,
-  ValueBarComponent,
+
   DescriptionComponent,
   ItemDescriptionComponent,
   SpellDescriptionComponent,
+  UnitGroupInfoPopupComponent,
+  UnitGroupInfoComponent,
+  UnitGroupPortraitComponent,
+  UnitGroupSpellIconComponent,
+
   VfxElementComponent,
   VfxLayerComponent,
+  CustomCursorComponent,
+
+  EventFeedComponent,
+  EventFeedMessageComponent,
+  HintsContainerComponent,
+  HoverHintComponent,
+  MwActionHintComponent,
+  MwRaIconComponent,
+  PopupContainerComponent,
+  PopupWrapperComponent,
   MenuComponent,
+  IconBtnComponent,
+  MainButtonComponent,
+  ValueBarComponent,
+
   MwPlayerInfoPanelComponent,
   MwExperienceBarComponent,
-  IconBtnComponent,
   RewardPopupComponent,
+
 ];
 
 @NgModule({

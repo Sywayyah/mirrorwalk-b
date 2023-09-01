@@ -20,6 +20,21 @@ export enum SpellActivationType {
   Buff = 'buff',
 }
 
+export const EffectSpellTypes = [
+  SpellActivationType.Buff,
+  SpellActivationType.Debuff,
+];
+
+export const NonEffectSpellTypes = [
+  SpellActivationType.Instant,
+  SpellActivationType.Passive,
+  SpellActivationType.Target
+];
+
+export function isEffectSpell(spell: Spell): boolean {
+  return EffectSpellTypes.includes(spell.baseType.activationType);
+}
+
 export type DefaultSpellStateType = unknown;
 
 export interface SpellDescriptionData<SpellStateType = DefaultSpellStateType> {

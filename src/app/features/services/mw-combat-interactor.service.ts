@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { DamageType, PostDamageInfo } from 'src/app/core/api/combat-api/types';
 import { CombatAttackInteraction, CombatInteractionEnum, CombatInteractionStateEvent, GroupCounterAttacked, GroupDamagedByGroup, GroupDies, GroupSpellsChanged, GroupTakesDamage, InitSpell, PlayerHoversCardEvent } from 'src/app/core/events';
+import { defaultResistCap, resistsMapping } from 'src/app/core/modifiers/resists';
 import { Player } from 'src/app/core/players';
 import { Spell, SpellActivationType, SpellEventNames, SpellEventTypeByName, SpellEvents } from 'src/app/core/spells';
 import { ActionHintTypeEnum, AttackActionHintInfo } from 'src/app/core/ui';
@@ -11,16 +12,6 @@ import { BattleStateService, FinalDamageInfo, MwPlayersService, MwUnitGroupState
 import { ActionHintService } from './mw-action-hint.service';
 import { State } from './state.service';
 
-// staying here for now, might move somewhere later
-const resistsMapping: Partial<Record<DamageType, keyof UnitStatsInfo>> = {
-  [DamageType.Cold]: 'coldResist',
-  [DamageType.Fire]: 'fireResist',
-  [DamageType.Lightning]: 'lightningResist',
-  [DamageType.Poison]: 'poisonResist',
-};
-
-// defaul cap is 60%
-const defaultResistCap = 60;
 
 @Injectable({
   providedIn: 'root'
@@ -35,7 +26,6 @@ export class CombatInteractorService extends StoreClient() {
     private readonly state: State
   ) {
     super();
-    /* Dispell buffs and debuffs when location is left. May change in future. */
   }
 
   public onBattleBegins(): void {
@@ -45,7 +35,7 @@ export class CombatInteractorService extends StoreClient() {
   public dealDamageTo(
     target: UnitGroup,
     damage: number,
-    type: DamageType = DamageType.PhysicalAttack,
+    damageType: DamageType = DamageType.PhysicalAttack,
     postActionFn?: (actionInfo: PostDamageInfo) => void,
     /* options object, contains values depending on situation */
     options: { attackerUnit?: UnitGroup } = {},
@@ -54,7 +44,7 @@ export class CombatInteractorService extends StoreClient() {
     let finalDamage = damage;
 
     // handle some numbers rounding
-    switch (type) {
+    switch (damageType) {
       /* Normal Unit Group attack */
       case DamageType.PhysicalAttack:
 
@@ -76,11 +66,12 @@ export class CombatInteractorService extends StoreClient() {
         break;
 
       default:
-        if (resistsMapping[type]) {
+        // reduce damage by resistances
+        if (resistsMapping[damageType]) {
           const modsGroup = target.modGroup;
 
-          // universal magic damage amplifications
-          //  (poison damage might be avoided here)
+          // universal magic damage amplification
+          //  (poison damage might be avoided here in future)
           const amplifiedMagicDamagePercent = modsGroup.getModValue('amplifiedTakenMagicDamagePercent') || 0;
 
           finalDamage += damage * amplifiedMagicDamagePercent;
@@ -88,21 +79,17 @@ export class CombatInteractorService extends StoreClient() {
           finalDamage = Math.round(finalDamage);
 
           // damage resists
-          let finalResistValue = target.getStats()[resistsMapping[type] as keyof UnitStatsInfo];
+          let finalResistValue = target.getStats()[resistsMapping[damageType] as keyof UnitStatsInfo];
 
           if (finalResistValue > defaultResistCap) {
             finalResistValue = defaultResistCap;
           }
 
-          console.log(damage, type, 'resist:', finalResistValue);
+          console.log(damage, damageType, 'resist:', finalResistValue);
 
           // reduce damage basing on
           finalDamage = finalDamage - (finalDamage * (finalResistValue / 100));
         }
-
-      // Idea for auras: aura's might require a function that every unit
-      // is going to check against itself, there might also be some utils
-      // to calc distance etc.
     }
 
     const initialUnitCount = target.count;
@@ -122,7 +109,7 @@ export class CombatInteractorService extends StoreClient() {
     }
 
     /* don't handle rest if this is a phys attack */
-    if (type === DamageType.PhysicalAttack) {
+    if (damageType === DamageType.PhysicalAttack) {
       return finalDamageInfo;
     }
 
@@ -210,6 +197,7 @@ export class CombatInteractorService extends StoreClient() {
       }));
       attackActionState.action = CombatInteractionEnum.AttackInteractionCompleted;
 
+      // todo: redispatching object
       this.events.dispatch(CombatAttackInteraction(attackActionState));
       return;
     }

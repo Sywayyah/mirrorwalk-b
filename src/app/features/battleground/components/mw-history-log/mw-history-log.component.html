@@ -1,5 +1,6 @@
 <div class="history-panel">
-  History:
+  Battle Log:
+
   <div class="history-log"
        #historyLog>
     <div *ngFor="let historyEntry of battleLogService.history">
@@ -7,9 +8,11 @@
         <div *ngSwitchCase="types.SimpleMsg">
           <ng-container *ngTemplateOutlet="simple; context: { log: historyEntry }" />
         </div>
+
         <div *ngSwitchCase="types.RoundInfoMsg">
           <ng-container *ngTemplateOutlet="roundInfoMsg; context: { log: historyEntry }" />
         </div>
+
         <div *ngSwitchCase="types.DealtDamageMsg">
           <ng-container *ngTemplateOutlet="dealtDamageLog; context: { log: historyEntry }" />
         </div>

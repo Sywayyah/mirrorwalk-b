@@ -35,7 +35,7 @@ export const TaltirHero: HeroBase = humansFraction.createHero({
     units: [
       [humansFraction.getUnitType('Knight'), 6, 11, 2],
       [humansFraction.getUnitType('Cavalry'), 3, 6, 2],
-      [humansFraction.getUnitType('Pikeman'), 25, 30, 1],
+      [humansFraction.getUnitType('Pikemen'), 25, 30, 1],
     ],
   }],
   items: [IrtonPlateItem],

@@ -5,7 +5,6 @@ import { Item } from 'src/app/core/items';
 import { Player, PlayerCreationModel, PlayerTypeEnum } from 'src/app/core/players';
 import { ResourceType, Resources, ResourcesModel } from 'src/app/core/resources';
 import { UnitBaseType, UnitGroup } from 'src/app/core/unit-types';
-import { CommonUtils } from 'src/app/core/utils';
 import { StoreClient } from 'src/app/store';
 import { MwHeroesService, MwUnitGroupsService } from './';
 import { GameObjectsManager } from './game-objects-manager.service';
@@ -147,7 +146,8 @@ export class MwPlayersService extends StoreClient() {
     // todo: revisit this logic.
     return player.unitGroups.map((unitGroup: UnitGroup) => {
       // unitGroup.ownerPlayerRef = player;
-      unitGroup.assignOwnerPlayer(player);
+      // possibly obsolete logic
+      // unitGroup.assignOwnerPlayer(player);
 
       const unitGroupInstance = unitGroup as UnitGroup;
 
@@ -161,7 +161,7 @@ export class MwPlayersService extends StoreClient() {
     // todo: move these things into classes.
     const sameTypeStack = player.unitGroups.find(group => group.type === unitGroup.type);
     if (sameTypeStack) {
-      sameTypeStack.count += unitGroup.count;
+      sameTypeStack.addUnitsCount(unitGroup.count);
     } else {
       player.addUnitGroup(unitGroup);
     }
@@ -169,7 +169,7 @@ export class MwPlayersService extends StoreClient() {
 
   /* todo: rework this method later, allow to check several stacks */
   public removeNUnitsFromGroup(player: Player, unitGroup: UnitGroup, count: number): void {
-    unitGroup.count -= count;
+    unitGroup.addUnitsCount(-count);
 
     if (unitGroup.count <= 0) {
       player.removeUnitGroup(unitGroup);

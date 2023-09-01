@@ -29,8 +29,7 @@
           <ng-template #rangedIcon>
             <mw-ra-icon icon="crossbow" />
           </ng-template>
-
-          {{ unitGroup.type.baseStats.damageInfo.maxDamage * unitGroup.count }}
+          {{ _unitStats.avgTotalDamage }}
         </div>
 
         <div>
@@ -43,14 +42,11 @@
         <!-- this info will have to be updated -->
         <div *ngIf="!isBoss">
           <mw-ra-icon icon="health" />
-          {{ unitGroup.type.baseStats.health * (unitGroup.count - 1) + (unitGroup.tailUnitHp ?? 0) }}
+          {{ _unitStats.totalHealth }}
         </div>
       </div>
     </div>
 
-    <!-- #4f52bd -->
-    <!-- "linear-gradient(180deg, rgba(255,77,93,1) 0%, rgba(129,25,25,1) 100%)" -->
-    <!-- rgb(201, 45, 45) -->
     <div class="abilities"
          [ngClass]="side">
       <div class="column-data">
@@ -72,17 +68,13 @@
   </div>
 
   <div class="portrait-container">
-    <!-- Looks like main cause of minor lag is heavy assets. -->
-    <img src="../assets/{{unitGroup.type.mainPortraitUrl}}"
-         class="portrait">
-    <img src="../assets/common/common-unit-frame.png"
-         class="portrait-frame">
-    <!-- can be customizable (on/off), also some highlight can be implemented -->
-    <!--
-            I'm not really sure if I want to have this bar. The latest value is what matters.
-            To display heal value... still can be done with single value.
 
-        -->
+    <mw-unit-group-portrait [unitGroup]="unitGroup"
+                            [toRight]="side === 'left'" />
+
+    <!-- #4f52bd -->
+    <!-- "linear-gradient(180deg, rgba(255,77,93,1) 0%, rgba(129,25,25,1) 100%)" -->
+    <!-- rgb(201, 45, 45) -->
     <!-- rgb(80 89 165) -->
     <mw-value-bar class="health-bar"
                   *ngIf="isBoss"

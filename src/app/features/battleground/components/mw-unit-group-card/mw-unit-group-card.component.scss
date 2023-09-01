@@ -26,27 +26,10 @@
 // .no-turns .card-top {
 // filter: brightness(0.65);
 // }
-.portrait-frame {
-  height: 130px;
-  width: 121px;
-}
-
-.portrait {
-  position: absolute;
-  z-index: -1;
-
-  left: 30px;
-  width: 64px;
-  height: 83px;
-  top: 20px;
-
-}
 
 .portrait-container {
   position: absolute;
-  // z-index: 1000;
   top: -25px;
-  user-select: none;
 }
 
 // todo: try dvh instead of vh
@@ -159,7 +142,6 @@ $abilities-offset: 185%;
   padding: 4px 15px 0;
   color: white;
   border: 3px solid transparent;
-  // cursor: pointer;
   user-select: none;
 }
 
@@ -169,7 +151,6 @@ $abilities-offset: 185%;
 
 .hovered-enemy {
   border: 3px solid rgba(240, 113, 113, 0.906);
-  // cursor: pointer;
 }
 
 .column-data {

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { CONFIG } from 'src/app/core/config';
-import { FightEnds, GroupAttacked, HoverTypeEnum, PlayerCastsInstantSpell, PlayerClicksAllyGroup, PlayerClicksAllyGroupEvent, PlayerClicksEnemyGroup, PlayerClicksEnemyGroupEvent, PlayerHoversCardEvent, PlayerHoversGroupCard, PlayerRightClicksUnitGroup, PlayerTargetsInstantSpellEvent, PlayerTargetsSpell, PlayerTargetsSpellEvent, PlayerTurnStartEvent, RoundPlayerTurnStarts, UIEventsTypes } from 'src/app/core/events';
+import { DisplayUnitGroupInfo, FightEnds, GroupAttacked, HoverTypeEnum, PlayerCastsInstantSpell, PlayerClicksAllyGroup, PlayerClicksAllyGroupEvent, PlayerClicksEnemyGroup, PlayerClicksEnemyGroupEvent, PlayerHoversCardEvent, PlayerHoversGroupCard, PlayerRightClicksUnitGroup, PlayerTargetsInstantSpellEvent, PlayerTargetsSpell, PlayerTargetsSpellEvent, PlayerTurnStartEvent, RoundPlayerTurnStarts, UIEventsTypes } from 'src/app/core/events';
 import { PlayerState } from 'src/app/core/players';
 import { SpellEvents } from 'src/app/core/spells';
 import { ActionHintTypeEnum, SpellTargetActionHint } from 'src/app/core/ui';
@@ -10,6 +10,7 @@ import { ActionHintService } from '../mw-action-hint.service';
 import { MwCardsMappingService } from '../mw-cards-mapping.service';
 import { CombatInteractorService } from '../mw-combat-interactor.service';
 import { MwCurrentPlayerStateService } from '../mw-current-player-state.service';
+import { PopupService, UnitGroupInfoPopupComponent } from '../../shared/components';
 
 @Injectable()
 export class UiController extends StoreClient() {
@@ -19,6 +20,7 @@ export class UiController extends StoreClient() {
     private actionHint: ActionHintService,
     private curPlayerState: MwCurrentPlayerStateService,
     private cardsMapping: MwCardsMappingService,
+    private popupService: PopupService,
   ) {
     super();
   }
@@ -102,9 +104,21 @@ export class UiController extends StoreClient() {
 
   @WireMethod(PlayerRightClicksUnitGroup)
   handleRightClick(event: UIEventsTypes['PlayerRightClicksUnitGroup']): void {
+    this.events.dispatch(DisplayUnitGroupInfo({ unitGroup: event.unitGroup }));
+  }
+
+  @WireMethod(DisplayUnitGroupInfo)
+  displayUnitGroupInfo(event: UIEventsTypes['DisplayUnitGroupInfo']): void {
     if (CONFIG.logObjectsOnRightClick) {
       console.log('show info for:', event);
     }
+
+    this.popupService.createBasicPopup({
+      data: { unitGroup: event.unitGroup },
+      component: UnitGroupInfoPopupComponent,
+      isCloseable: true,
+      class: 'small-padding',
+    });
   }
 
   @WireMethod(RoundPlayerTurnStarts)
