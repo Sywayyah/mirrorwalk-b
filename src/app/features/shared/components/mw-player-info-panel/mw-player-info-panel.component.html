@@ -1,4 +1,6 @@
+<!-- todo: extract into separate component -->
 <div (click)="openPlayerInfo()"
+     (mwNoContextMenu)="openPlayerInfo()"
      mwActionHint="Inspect Hero"
      style="cursor: pointer;"
      [style.background-image]="'url(\'assets/'+ player.hero.base.image + '\')'"
@@ -6,6 +8,7 @@
 </div>
 
 <div class="hero-info">
+  <!-- todo: practically, this is how overstacking popups can be solved, via counting & reducing skillpoints -->
   <!-- <div class="skillpoints"
        *ngIf="player.hero.freeSkillpoints">
     +{{player.hero.freeSkillpoints}} Skillpoints
@@ -20,6 +23,7 @@
     <div class="player-group-card"
          [style.background]="player.color"
          (click)="displayUnitGroupInfo(group)"
+         (mwNoContextMenu)="displayUnitGroupInfo(group)"
          [mwActionHint]="'Inspect group of ' + group.count + ' ' + group.type.name"
          *ngFor="let group of player.unitGroups">
       <div class="group-name">{{group.type.name}}</div>
