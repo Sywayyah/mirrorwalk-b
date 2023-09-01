@@ -12,6 +12,13 @@
 .info-header {
   display: flex;
   margin-left: 64px;
+  flex-direction: column;
+  height: 92px;
+}
+
+.stats {
+  margin-top: 16px;
+  font-size: 13px;
 }
 
 .tier {
@@ -19,7 +26,6 @@
 }
 
 .description {
-  margin-top: 40px;
   font-size: 12px;
   max-width: 360px;
 }

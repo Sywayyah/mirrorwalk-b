@@ -142,7 +142,12 @@ export interface UnitStatsInfo {
 export class UnitGroup extends GameObject<UnitCreationParams> {
   public static readonly categoryId: string = 'unit-group';
 
-  public count!: number;
+  private _count!: number;
+
+  public get count(): number {
+    return this._count;
+  }
+
   public type!: UnitBaseType;
   public ownerPlayerRef!: Player;
 
@@ -192,7 +197,7 @@ export class UnitGroup extends GameObject<UnitCreationParams> {
       count = 1;
     }
 
-    this.count = count;
+    this._count = count;
     this.type = unitBase;
 
     // think about it later
@@ -237,6 +242,14 @@ export class UnitGroup extends GameObject<UnitCreationParams> {
     // think if I need to retach like that
     this.modGroup.detachNamedParentGroup(UnitModGroups.PlayerMods);
     this.modGroup.attachNamedParentGroup(UnitModGroups.PlayerMods, player.hero.modGroup);
+  }
+
+  setUnitsCount(newCount: number): void {
+    this._count = newCount;
+  }
+
+  addUnitsCount(addedCount: number): void {
+    this._count += addedCount;
   }
 
   listenStats(): Observable<UnitStatsInfo> {

@@ -121,7 +121,7 @@ export class MwUnitGroupsService {
     // if heal is greater than overall loss, heal out to max
     if (healValue > totalHpLoss) {
       unit.tailUnitHp = singleUnitHealth;
-      unit.count = initialUnitsCount;
+      unit.setUnitsCount(initialUnitsCount);
 
       return {
         revivedUnitsCount: totalUnitsLoss,
@@ -143,7 +143,7 @@ export class MwUnitGroupsService {
       }
     }
 
-    unit.count += unitsToRevive;
+    unit.addUnitsCount(unitsToRevive);
 
     return {
       revivedUnitsCount: unitsToRevive,
