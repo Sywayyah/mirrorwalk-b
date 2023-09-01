@@ -1,7 +1,8 @@
 import { AssetsImages } from '../../assets';
 import { humansFraction } from '../../fractions/humans/fraction';
 import { FirebirdHealSpell } from '../../spells/common';
-import { createStats } from '../utils';
+import { heroDescrElem } from '../../ui';
+import { createStats, simpleDescriptions } from '../utils';
 
 const defaultRewards = {
   experience: 0,
@@ -37,11 +38,27 @@ const Pikeman = humansFraction.defineUnitType('Pikeman', {
     gold: 55,
   },
 
+  // adjust retaliation damage, make it better for Halberdiers
+  getDescription: simpleDescriptions([
+    heroDescrElem(`Tier 1 units of the Castle.`),
+    heroDescrElem(`<br>While possessing good average stats, Pikemen also strikes back at any attacker.`),
+    heroDescrElem(`<br>Receives bonuses from Combat Tactics speciality.`),
+  ]),
+
   defaultModifiers: {
     counterattacks: true,
   },
 
-  baseStats: createStats([[2, 3], 2, 2, 8, 13]),
+  baseStats: {
+    damageInfo: {
+      minDamage: 2,
+      maxDamage: 3,
+    },
+    attackRating: 2,
+    defence: 2,
+    health: 8,
+    speed: 13,
+  },
 
   upgradeDetails: {
     target: Halberdier,
@@ -60,16 +77,24 @@ humansFraction.defineUnitType('Archer', {
   name: 'Archers',
   level: 2,
 
-  // baseStats: {
-  //   damageInfo: {
-  //     minDamage: 3,
-  //     maxDamage: 4,
-  //   },
-  //   attackRating: 1,
-  //   defence: 3,
-  //   health: 8,
-  //   speed: 21,
-  // },
+  // todo: Crossbowmen, attack penalty
+  getDescription: simpleDescriptions([
+    heroDescrElem(`Tier 2 ranged units of the Castle.`),
+    heroDescrElem(`<br>Archers are one of the fastest units, allowing hero to have an early turn against most early foes. Attacks twice per turn.`),
+    heroDescrElem(`<br>In return to their advantages, they are also costly and relatively fragile.`),
+  ]),
+
+  baseStats: {
+    damageInfo: {
+      minDamage: 3,
+      maxDamage: 4,
+    },
+    attackRating: 1,
+    defence: 3,
+    health: 8,
+    speed: 21,
+  },
+
   /*
     This might actually be a fun change. Archers might have two attacks and
     high base damage, but low attack rating. So, they might be less efficient
@@ -98,8 +123,6 @@ humansFraction.defineUnitType('Archer', {
     effect, only 6-th point will make difference).
   */
 
-  baseStats: createStats([[3, 4], 1, 3, 8, 21]),
-
   defaultModifiers: {
     isRanged: true,
   },
@@ -121,6 +144,11 @@ humansFraction.defineUnitType('Knight', {
   name: 'Knights',
   level: 3,
 
+  getDescription: simpleDescriptions([
+    heroDescrElem(`Tier 3 units of the Castle.`),
+    heroDescrElem(`<br>Knights are possessing hight armor and attack, while also having +12% to Fire, Cold and Lightning resistances.`),
+  ]),
+
   baseStats: createStats([[6, 9], 6, 5, 17, 10]),
 
   minQuantityPerStack: 2,
@@ -129,12 +157,24 @@ humansFraction.defineUnitType('Knight', {
   baseRequirements: {
     gold: 100,
   },
+
+  defaultModifiers: {
+    resistFire: 12,
+    resistCold: 12,
+    resistLightning: 12,
+  },
+
   neutralReward: defaultRewards,
 });
 
 humansFraction.defineUnitType('Cavalry', {
   name: 'Cavalry',
   mainPortraitUrl: AssetsImages.UnitMelee,
+
+  getDescription: simpleDescriptions([
+    heroDescrElem(`Tier 4 units of the Castle.`),
+    heroDescrElem(`<br>Cavalry is armored unit type that also deals heavy damage.`),
+  ]),
 
   level: 4,
 
@@ -158,6 +198,10 @@ humansFraction.defineUnitType('Firebird', {
   name: 'Firebird',
   mainPortraitUrl: AssetsImages.UnitMelee,
 
+  getDescription: simpleDescriptions([
+    heroDescrElem(`Tier 5 units of the Castle.`),
+    heroDescrElem(`<br>Very powerful creatures that can heal and resurrect allied units.`),
+  ]),
   level: 5,
 
   baseStats: createStats([[21, 28], 11, 12, 51, 17]),

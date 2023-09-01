@@ -11,5 +11,9 @@
 <!--  and some modifiers/resists -->
 
 <div class="description">
-  <mw-description [descriptions]="description.descriptions"></mw-description>
+  <mw-description *ngIf="description.descriptions.length; else noDescription" [descriptions]="description.descriptions"></mw-description>
+
+  <ng-template #noDescription>
+    No Description.
+  </ng-template>
 </div>

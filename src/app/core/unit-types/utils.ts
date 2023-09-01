@@ -1,5 +1,6 @@
+import { DescriptionElement } from '../ui';
 import { CommonUtils } from '../utils';
-import { UnitBaseType, UnitTypeBaseStatsModel } from './types';
+import { UnitBaseType, UnitDescriptions, UnitTypeBaseStatsModel } from './types';
 
 /* unit type, minCount, maxCount, maxGroupsOfThisType */
 type UnitModel = [unitType: UnitBaseType, min: number, max: number, maxOfThisType: number | void];
@@ -92,3 +93,10 @@ export const UnitsUtils = {
     return generatedGroups;
   },
 }
+
+
+export const simpleDescriptions = (descriptions: DescriptionElement[]): () => UnitDescriptions => {
+  return () => ({
+    descriptions,
+  });
+};

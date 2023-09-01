@@ -47,6 +47,15 @@ export interface UnitTypeBaseStatsModel {
   damageInfo: UnitDamageModel;
 }
 
+export interface UnitDescriptionParams {
+  unitBase: UnitBaseType;
+  unit: UnitGroup;
+}
+
+export interface UnitDescriptions {
+  descriptions: DescriptionElement[];
+}
+
 export interface UnitBaseType {
   type: string;
 
@@ -60,7 +69,7 @@ export interface UnitBaseType {
 
   baseStats: UnitTypeBaseStatsModel;
 
-  getDescription?: (params: { unitBase: UnitBaseType, unit: UnitGroup }) => { descriptions: DescriptionElement[] },
+  getDescription?: (params: UnitDescriptionParams) => UnitDescriptions,
 
   /* what does this unit type requires */
   baseRequirements: RequirementModel;
