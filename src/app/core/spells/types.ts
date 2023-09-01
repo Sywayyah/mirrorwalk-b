@@ -25,6 +25,12 @@ export const EffectSpellTypes = [
   SpellActivationType.Debuff,
 ];
 
+export const PassiveSpellTypes = [
+  SpellActivationType.Buff,
+  SpellActivationType.Debuff,
+  SpellActivationType.Passive,
+];
+
 export const NonEffectSpellTypes = [
   SpellActivationType.Instant,
   SpellActivationType.Passive,
@@ -130,6 +136,14 @@ export class Spell<T = DefaultSpellStateType> extends GameObject<SpellCreationPa
   levelUp(): void {
     this.currentLevel += 1;
     this.currentManaCost = this.baseType.type.spellConfig.getManaCost(this);
+  }
+
+  isEffect(): boolean {
+    return isEffectSpell(this as Spell);
+  }
+
+  isPassive(): boolean {
+    return PassiveSpellTypes.includes(this.baseType.activationType);
   }
 }
 

@@ -40,7 +40,7 @@ const Pikemen = humansFraction.defineUnitType('Pikemen', {
 
   // adjust retaliation damage, make it better for Halberdiers
   getDescription: simpleDescriptions([
-    heroDescrElem(`<br>While possessing good average stats, Pikemen also strikes back at any attacker.`),
+    heroDescrElem(`While possessing good average stats, Pikemen also strikes back at any attacker.`),
     heroDescrElem(`<br>Receives bonuses from Combat Tactics speciality.`),
   ]),
 
@@ -89,7 +89,7 @@ humansFraction.defineUnitType('Archer', {
       maxDamage: 4,
     },
     attackRating: 1,
-    defence: 3,
+    defence: 2,
     health: 8,
     speed: 21,
   },
@@ -144,10 +144,10 @@ humansFraction.defineUnitType('Knight', {
   level: 3,
 
   getDescription: simpleDescriptions([
-    heroDescrElem(`<br>Knights are possessing hight armor and attack, while also having +12% to Fire, Cold and Lightning resistances.`),
+    heroDescrElem(`Knights are possessing high armor and attack, while also having +12% to Fire, Cold and Lightning resistances.`),
   ]),
 
-  baseStats: createStats([[6, 9], 6, 5, 17, 10]),
+  baseStats: createStats([[6, 9], 6, 5, 17, 11]),
 
   minQuantityPerStack: 2,
   defaultTurnsPerRound: 1,
@@ -170,18 +170,24 @@ humansFraction.defineUnitType('Cavalry', {
   mainPortraitUrl: AssetsImages.UnitMelee,
 
   getDescription: simpleDescriptions([
-    heroDescrElem(`<br>Cavalry is armored unit type that also deals heavy damage.`),
+    heroDescrElem(`Cavalry is armored unit type that also deals heavy damage.`),
   ]),
 
   level: 4,
 
-  baseStats: createStats([[14, 18], 9, 10, 31, 12]),
+  baseStats: {
+    damageInfo: { minDamage: 14, maxDamage: 19, },
+    attackRating: 9,
+    defence: 10,
+    health: 33,
+    speed: 16,
+  },
 
   defaultTurnsPerRound: 1,
   minQuantityPerStack: 1,
 
   baseRequirements: {
-    gold: 175,
+    gold: 225,
     wood: 1,
     // redCrystals: 1
   },
