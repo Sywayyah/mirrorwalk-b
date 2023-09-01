@@ -1,4 +1,25 @@
+:host {
+  display: block;
+  width: 600px;
+}
+
+.unit-portrait {
+  position: absolute;
+  left: -37px;
+  top: -36px;
+}
+
+.info-header {
+  display: flex;
+  margin-left: 64px;
+}
+
+.tier {
+  font-size: 13px;
+}
+
 .description {
+  margin-top: 40px;
   font-size: 12px;
-  width: 470px;
+  max-width: 360px;
 }
