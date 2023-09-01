@@ -1,4 +1,4 @@
-import { Component, HostListener, Injector, Input, OnInit, Type } from '@angular/core';
+import { Component, ElementRef, HostListener, Injector, Input, OnInit, Renderer2, Type } from '@angular/core';
 import { POPUP_REF } from '../../injection-tokens';
 import { PopupData, PopupService } from '../../popup.service';
 
@@ -19,9 +19,18 @@ export class PopupWrapperComponent implements OnInit {
 
   constructor(
     private popups: PopupService,
+    private hostElemRef: ElementRef,
+    private renderer: Renderer2,
   ) { }
 
   public ngOnInit(): void {
+    if (this.popupData.class) {
+      this.renderer.addClass(
+        this.hostElemRef.nativeElement,
+        this.popupData.class
+      );
+    }
+
     this.injector = Injector.create({
       providers: [
         { provide: POPUP_REF, useValue: { data: this.popupData.data, close: () => { this.popups.removePopup(this.popupData) } } },

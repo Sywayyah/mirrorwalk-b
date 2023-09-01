@@ -117,6 +117,7 @@ export class UiController extends StoreClient() {
       data: { unitGroup: event.unitGroup },
       component: UnitGroupInfoPopupComponent,
       isCloseable: true,
+      class: 'small-padding',
     });
   }
 

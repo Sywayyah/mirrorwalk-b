@@ -23,7 +23,7 @@ describe('one-side damage scenarios', () => {
 
     // check attacked group before attack
     expect(attackedGroup.count).toBe(2);
-    expect(attackedGroup.tailUnitHp).toBeUndefined();
+    expect(attackedGroup.tailUnitHp).toBe(10);
     expect(attackedGroup.fightInfo.isAlive).toBe(true);
 
     // getting damage info of attacking group against attacked

@@ -1,3 +1,4 @@
+
 import { Player, PlayerTypeEnum } from 'src/app/core/players';
 import { UnitBaseType, UnitGroup } from 'src/app/core/unit-types';
 import { MwUnitGroupStateService } from '../mw-unit-group-state.service';
@@ -75,7 +76,7 @@ export const getCommonFunctions = (services: () => { unitsService: MwUnitGroupsS
   ) as UnitGroup;
 
   const getDamageDetails = (attacker: UnitGroup, attacked: UnitGroup) => {
-    const damageDetails = services().unitState.getDetailedAttackInfo(attacker, attacked, [], []);
+    const damageDetails = services().unitState.getDetailedAttackInfo(attacker, attacked);
 
     const damageFinalDetails = services().unitState.getFinalDamageInfoFromDamageDetailedInfo(damageDetails);
 

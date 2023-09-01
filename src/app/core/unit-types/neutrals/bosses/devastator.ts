@@ -11,7 +11,7 @@ neutralsFraction.defineUnitType('Devastator', {
   level: 8,
 
   getDescription: simpleDescriptions([
-    heroDescrElem('Tier 8 unit, dragon of fire.'),
+    heroDescrElem('Dragon of fire.'),
     heroDescrElem('<br>Dangerous boss unit with large health pool. Has +20% to All Resists and Fire Breath ability that damages random units.'),
   ]),
 

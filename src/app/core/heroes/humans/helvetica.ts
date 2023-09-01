@@ -32,7 +32,7 @@ export const HelveticaHero: HeroBase = humansFraction.createHero({
     units: [
       [humansFraction.getUnitType('Archer'), 12, 18, 1],
       [humansFraction.getUnitType('Knight'), 6, 11, 1],
-      [humansFraction.getUnitType('Pikeman'), 20, 32, 1],
+      [humansFraction.getUnitType('Pikemen'), 20, 32, 1],
     ],
   }],
   items: [

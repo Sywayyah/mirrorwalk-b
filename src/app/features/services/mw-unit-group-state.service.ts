@@ -207,7 +207,7 @@ export class MwUnitGroupStateService {
   public dealPureDamageToUnitGroup(target: UnitGroup, damage: number): FinalDamageInfo {
     const finalDamageInfo = this.getFinalDamageInfo(target, damage);
     target.addUnitsCount(-finalDamageInfo.finalTotalUnitLoss);
-    target.tailUnitHp = finalDamageInfo.tailHpLeft;
+    target.setTailUnitHp(finalDamageInfo.tailHpLeft);
 
     return finalDamageInfo;
   }

@@ -146,7 +146,8 @@ export class MwPlayersService extends StoreClient() {
     // todo: revisit this logic.
     return player.unitGroups.map((unitGroup: UnitGroup) => {
       // unitGroup.ownerPlayerRef = player;
-      unitGroup.assignOwnerPlayer(player);
+      // possibly obsolete logic
+      // unitGroup.assignOwnerPlayer(player);
 
       const unitGroupInstance = unitGroup as UnitGroup;
 

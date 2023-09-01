@@ -22,7 +22,7 @@ const Wraiths: UnitBaseType = neutralsFraction.defineUnitType('SupremeGhosts', {
   getDescription(data) {
     return {
       descriptions: [
-        heroDescrElem('Tier 1 Undead unit. Upgraded version of Ghosts.'),
+        heroDescrElem('Undead unit. Upgraded version of Ghosts.'),
         heroDescrElem('<br>While having increased stats, inherits passive ability Fright.'),
         heroDescrElem('<br>Gains improvements from Necromancy.'),
       ],
@@ -70,7 +70,8 @@ neutralsFraction.defineUnitType('Ghosts', {
   getDescription(data) {
     return {
       descriptions: [
-        heroDescrElem('Tier 1 Undead unit. Possesses no outstanding qualities outside of low price and passive ability Fright. Gains improvements from Necromancy.'),
+        heroDescrElem('Undead unit.'),
+        heroDescrElem('<br>Possesses no outstanding qualities outside of low price and passive ability Fright. Gains improvements from Necromancy.'),
         heroDescrElem('<br>Can be upgraded into Wraiths, faster unit with better stats, inheriting Fright ability.'),
       ],
     }

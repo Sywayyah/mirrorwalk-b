@@ -1,30 +1,141 @@
-<mw-unit-group-portrait class="unit-portrait"
-                        [unitGroup]="unitGroup" />
+<ng-container *ngIf="unitStats$ | async as _unitStats">
+  <mw-unit-group-portrait class="unit-portrait"
+                          [unitGroup]="unitGroup" />
 
-<div class="info-header">
-  <div class="title">
-    <div class="group">
-      {{unitGroup.count}}
+  <div class="main-group">
+    <div class="info-header">
+      <div class="title">
+        <div class="group">
+          {{unitGroup.count}}
 
-      {{unitGroup.type.name}}
+          {{unitGroup.type.name}}
+        </div>
+
+        <div class="tier">
+          Tier {{unitGroup.type.level}}
+        </div>
+      </div>
+
+      <!-- Total stats can be a separate section on the right -->
+      <div class="stats">
+        <div class="col">
+          <div class="stat">
+            <mw-ra-icon icon="sword" />
+            {{baseStats.damageInfo.minDamage}}-{{baseStats.damageInfo.maxDamage}}
+          </div>
+
+          <div class="stat">
+            <mw-ra-icon icon="health" /> {{baseStats.health}}
+          </div>
+        </div>
+
+        <div class="col">
+          <div class="stat">
+            <mw-ra-icon icon="spinning-sword" />
+            Turns per round:
+            {{ unitGroup.type.defaultTurnsPerRound }}
+          </div>
+        </div>
+      </div>
+
+      <!-- todo: more descriptions, provide abilities here -->
+      <!--  and some modifiers/resists -->
+
+
+    </div>
+    <div class="description">
+      <hr>
+      <mw-description *ngIf="description.descriptions.length; else noDescription"
+                      [descriptions]="description.descriptions"></mw-description>
+
+      <ng-template #noDescription>
+        No Description.
+      </ng-template>
     </div>
 
-    <div class="tier">
-      Tier {{unitGroup.type.level}}
-    </div>
   </div>
 
-</div>
+  <div class="secondary-group">
+    <div class="title">Group Stats</div>
+    <hr>
 
-<!-- todo: more descriptions, provide abilities here -->
-<!--  and some modifiers/resists -->
+    <div class="stats">
+      <div class="col">
+        <div class="stat">
+          <mw-ra-icon icon="sword" />
+          {{_unitStats.totalMinDamage}}-{{_unitStats.totalMaxDamage}}, avg. {{_unitStats.avgTotalDamage}}
+        </div>
 
-<div class="description">
-  <hr>
-  <mw-description *ngIf="description.descriptions.length; else noDescription"
-                  [descriptions]="description.descriptions"></mw-description>
+        <div class="stat">
+          <mw-ra-icon icon="health" /> {{_unitStats.totalHealth}}
+        </div>
 
-  <ng-template #noDescription>
-    No Description.
-  </ng-template>
-</div>
+        <hr>
+
+        <div class="hor-stats">
+          <div class="stat">
+            <div>Attack:</div>
+
+            <div>
+              {{_unitStats.baseAttack}}
+              <span [mwNumberModifier]="_unitStats.bonusAttack"></span>
+            </div>
+          </div>
+
+          <div class="stat">
+            <div>Defence:</div>
+
+            <div>
+              {{_unitStats.baseDefence}}
+              <span [mwNumberModifier]="_unitStats.bonusDefence"></span>
+            </div>
+          </div>
+
+          <div class="stat">
+            <div>Speed</div>
+
+            <div>
+              {{_unitStats.baseSpeed}}
+              <span [mwNumberModifier]="_unitStats.speedBonus"></span>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="abilities"
+             *ngIf="spells.length">
+          <hr>
+
+          <div class="title">
+            Abilities:
+          </div>
+
+          <div class="abilities-list">
+            <mw-unit-group-spell-icon *ngFor="let spell of spells"
+                                      [hero]="unitGroup.ownerPlayerRef.hero"
+                                      [spell]="spell"
+                                      [hintPos]="'above'"
+                                      [owner]="unitGroup" />
+          </div>
+        </div>
+
+        <div class="abilities"
+             *ngIf="effects.length">
+          <hr>
+
+          <div class="title">
+            Effects:
+          </div>
+
+          <div class="abilities-list">
+            <mw-unit-group-spell-icon *ngFor="let spell of effects"
+                                      [hero]="unitGroup.ownerPlayerRef.hero"
+                                      [spell]="spell"
+                                      [hintPos]="'above'"
+                                      [owner]="unitGroup" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-container>

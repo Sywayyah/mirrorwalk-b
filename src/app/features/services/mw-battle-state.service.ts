@@ -222,7 +222,7 @@ export class BattleStateService {
     this.players.forEach((player) => {
       player.unitGroups.forEach(unitGroup => {
         if (!unitGroup.tailUnitHp) {
-          unitGroup.tailUnitHp = unitGroup.type.baseStats.health;
+          unitGroup.setTailUnitHp(unitGroup.type.baseStats.health);
         }
         unitGroup.fightInfo.initialCount = unitGroup.count;
       })

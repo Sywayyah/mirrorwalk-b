@@ -1,11 +1,11 @@
 :host {
-  display: block;
-  width: 600px;
+  display: flex;
+  width: 570px;
 }
 
 .unit-portrait {
   position: absolute;
-  left: -37px;
+  left: -40px;
   top: -36px;
 }
 
@@ -17,8 +17,13 @@
 }
 
 .stats {
-  margin-top: 16px;
+  margin-top: 12px;
   font-size: 13px;
+  display: flex;
+}
+
+.col {
+  margin-left: 8px;
 }
 
 .tier {
@@ -28,4 +33,45 @@
 .description {
   font-size: 12px;
   max-width: 360px;
+}
+
+.secondary-group {
+  width: 202px;
+  flex-grow: 1;
+  margin-left: 8px;
+
+  .title {
+    text-align: center;
+  }
+
+  .col {
+    width: 100%;
+  }
+
+  .abilities-list {
+    display: flex;
+    justify-content: center;
+    gap: 4px;
+  }
+
+
+  .hor-stats {
+    display: flex;
+    justify-content: space-around;
+
+    .stat {
+      display: flex;
+      flex-direction: column;
+    }
+  }
+
+  .stats {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+
+    .stat {
+      padding-bottom: 2px;
+    }
+  }
 }

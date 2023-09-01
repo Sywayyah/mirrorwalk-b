@@ -85,13 +85,13 @@ const tavern: BuidlingBase = {
 const trainingCamp: BuidlingBase = {
   name: 'Training Camp',
   description: 'Allows to train Pikemans that can be upgraded.',
-  activity: createHiringActivity('Pikeman', 12, 'pikeman'),
+  activity: createHiringActivity('Pikemen', 12, 'pikeman'),
 };
 
 const upgradedTrainingCamp: BuidlingBase = {
   name: 'Upg. Training Camp',
   description: 'Allows to hire and upgrade Halberdiers',
-  activity: createHiringActivity('Pikeman', 12, 'pikeman', true),
+  activity: createHiringActivity('Pikemen', 12, 'pikeman', true),
 };
 
 const archersOutpost = {

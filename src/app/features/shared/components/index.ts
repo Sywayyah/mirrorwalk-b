@@ -24,3 +24,4 @@ export * from './event-feed-message/event-feed-message.component';
 export * from './unit-group-info/unit-group-info.component';
 export * from './unit-group-info-popup/unit-group-info-popup.component';
 export * from './unit-group-portrait/unit-group-portrait.component';
+export * from './unit-group-spell-icon/unit-group-spell-icon.component';

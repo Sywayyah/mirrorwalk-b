@@ -29,8 +29,8 @@ const Halberdier = humansFraction.defineUnitType('Halberdier', {
   neutralReward: defaultRewards,
 });
 
-const Pikeman = humansFraction.defineUnitType('Pikeman', {
-  name: 'Pikemans',
+const Pikemen = humansFraction.defineUnitType('Pikemen', {
+  name: 'Pikemen',
   level: 1,
   mainPortraitUrl: AssetsImages.UnitMelee,
 
@@ -40,7 +40,6 @@ const Pikeman = humansFraction.defineUnitType('Pikeman', {
 
   // adjust retaliation damage, make it better for Halberdiers
   getDescription: simpleDescriptions([
-    heroDescrElem(`Tier 1 units of the Castle.`),
     heroDescrElem(`<br>While possessing good average stats, Pikemen also strikes back at any attacker.`),
     heroDescrElem(`<br>Receives bonuses from Combat Tactics speciality.`),
   ]),
@@ -79,7 +78,7 @@ humansFraction.defineUnitType('Archer', {
 
   // todo: Crossbowmen, attack penalty
   getDescription: simpleDescriptions([
-    heroDescrElem(`Tier 2 ranged units of the Castle.`),
+    heroDescrElem(`Ranged unit.`),
     heroDescrElem(`<br>Archers are one of the fastest units, allowing hero to have an early turn against most early foes. Attacks twice per turn.`),
     heroDescrElem(`<br>In return to their advantages, they are also costly and relatively fragile.`),
   ]),
@@ -145,7 +144,6 @@ humansFraction.defineUnitType('Knight', {
   level: 3,
 
   getDescription: simpleDescriptions([
-    heroDescrElem(`Tier 3 units of the Castle.`),
     heroDescrElem(`<br>Knights are possessing hight armor and attack, while also having +12% to Fire, Cold and Lightning resistances.`),
   ]),
 
@@ -172,7 +170,6 @@ humansFraction.defineUnitType('Cavalry', {
   mainPortraitUrl: AssetsImages.UnitMelee,
 
   getDescription: simpleDescriptions([
-    heroDescrElem(`Tier 4 units of the Castle.`),
     heroDescrElem(`<br>Cavalry is armored unit type that also deals heavy damage.`),
   ]),
 
@@ -199,7 +196,6 @@ humansFraction.defineUnitType('Firebird', {
   mainPortraitUrl: AssetsImages.UnitMelee,
 
   getDescription: simpleDescriptions([
-    heroDescrElem(`Tier 5 units of the Castle.`),
     heroDescrElem(`<br>Very powerful creatures that can heal and resurrect allied units.`),
   ]),
   level: 5,

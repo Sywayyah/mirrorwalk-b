@@ -29,8 +29,7 @@
           <ng-template #rangedIcon>
             <mw-ra-icon icon="crossbow" />
           </ng-template>
-
-          {{ unitGroup.type.baseStats.damageInfo.maxDamage * unitGroup.count }}
+          {{ _unitStats.avgTotalDamage }}
         </div>
 
         <div>
@@ -43,7 +42,7 @@
         <!-- this info will have to be updated -->
         <div *ngIf="!isBoss">
           <mw-ra-icon icon="health" />
-          {{ unitGroup.type.baseStats.health * (unitGroup.count - 1) + (unitGroup.tailUnitHp ?? 0) }}
+          {{ _unitStats.totalHealth }}
         </div>
       </div>
     </div>

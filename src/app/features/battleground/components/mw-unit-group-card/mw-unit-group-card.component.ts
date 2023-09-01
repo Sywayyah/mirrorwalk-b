@@ -3,7 +3,7 @@ import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { GroupSpellsChanged, HoverTypeEnum, PlayerHoversGroupCard } from 'src/app/core/events';
 import { Player } from 'src/app/core/players';
-import { Spell, SpellActivationType } from 'src/app/core/spells';
+import { isEffectSpell, Spell } from 'src/app/core/spells';
 import { UnitGroup, UnitStatsInfo } from 'src/app/core/unit-types';
 import { BattleStateService, MwPlayersService, MwUnitGroupsService, MwUnitGroupStateService } from 'src/app/features/services';
 import { HintAttachment } from 'src/app/features/shared/components';
@@ -148,20 +148,9 @@ export class MwUnitGroupCardComponent extends StoreClient() implements UIUnitPro
 
   public updateSpellsAndEffects(): void {
     const spells = this.unitGroup.spells;
-    this.effects = spells.filter(spell =>
-      [
-        SpellActivationType.Buff,
-        SpellActivationType.Debuff,
-      ].includes(spell.baseType.activationType)
-    );
+    this.effects = spells.filter(spell => isEffectSpell(spell));
 
-    this.spells = spells.filter(spell =>
-      [
-        SpellActivationType.Instant,
-        SpellActivationType.Passive,
-        SpellActivationType.Target
-      ].includes(spell.baseType.activationType)
-    )
+    this.spells = spells.filter(spell => !isEffectSpell(spell));
   }
 
 }

@@ -82,6 +82,7 @@ export class MwUnitGroupsService {
     return unitGroup.getStats().finalSpeed;
   }
 
+  // todo: review, maybe some stats can be used
   /*
    This might be theoretically split into a data function and executing function,
      in the same manner as damage functions.
@@ -120,7 +121,7 @@ export class MwUnitGroupsService {
 
     // if heal is greater than overall loss, heal out to max
     if (healValue > totalHpLoss) {
-      unit.tailUnitHp = singleUnitHealth;
+      unit.setTailUnitHp(singleUnitHealth);
       unit.setUnitsCount(initialUnitsCount);
 
       return {
@@ -134,12 +135,12 @@ export class MwUnitGroupsService {
     // if heal of tail exceeds tail loss
     if (healValueTail > lossTailHp) {
       unitsToRevive += 1;
-      unit.tailUnitHp = (currentTailHp + healValueTail) - singleUnitHealth;
+      unit.setTailUnitHp((currentTailHp + healValueTail) - singleUnitHealth);
     } else {
       if (unit.tailUnitHp === 0 && healValueTail === 0 && unitsToRevive > 0) {
-        unit.tailUnitHp = singleUnitHealth;
+        unit.setTailUnitHp(singleUnitHealth);
       } else {
-        unit.tailUnitHp! += healValueTail;
+        unit.addTailUnitHp(healValueTail);
       }
     }
 
