@@ -1,7 +1,7 @@
 import { Component, Input, OnChanges } from '@angular/core';
 import { Icon } from 'src/app/core/assets';
 import { Hero } from 'src/app/core/heroes';
-import { Spell, SpellActivationType, SpellBaseType, isEffectSpell } from 'src/app/core/spells';
+import { Spell, SpellBaseType } from 'src/app/core/spells';
 import { UnitGroup } from 'src/app/core/unit-types';
 import { TypedChanges } from 'src/app/core/utils';
 import { HintAttachment } from 'src/app/features/shared/components';
@@ -38,9 +38,8 @@ export class UnitGroupSpellIconComponent implements OnChanges {
   public isPassive: boolean = false;
 
   public ngOnChanges(changes: TypedChanges<this>): void {
-    this.isPassive = isEffectSpell(this.spell);
-
     if (changes.spell) {
+      this.isPassive = this.spell.isPassive();
       this.baseType = this.spell.baseType;
       this.icon = this.baseType.icon;
     }

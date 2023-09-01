@@ -6,7 +6,6 @@ export const ItemWindCrest: ItemBaseModel = {
   name: 'Wind Crest',
   slotType: ItemSlotType.Headgear,
   staticMods: {
-    playerBonusAttack: 2,
     playerBonusDefence: 1,
   },
   icon: {

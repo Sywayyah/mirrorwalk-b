@@ -1,6 +1,6 @@
 import { Component, Input, OnChanges } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Spell, isEffectSpell } from 'src/app/core/spells';
+import { Spell } from 'src/app/core/spells';
 import { DescriptionElement } from 'src/app/core/ui';
 import { UnitGroup, UnitStatsInfo, UnitTypeBaseStatsModel } from 'src/app/core/unit-types';
 import { TypedChanges } from 'src/app/core/utils';
@@ -33,8 +33,8 @@ export class UnitGroupInfoComponent implements OnChanges {
     this.unitStats$ = this.unitGroup.listenStats();
     this.baseStats = this.unitGroup.type.baseStats;
     const unitSpells = this.unitGroup.spells;
-    this.effects = unitSpells.filter(spell => isEffectSpell(spell));
-    this.spells = unitSpells.filter(spell => !isEffectSpell(spell));
+    this.effects = unitSpells.filter(spell => spell.isEffect());
+    this.spells = unitSpells.filter(spell => !spell.isEffect());
 
     this.description = this.unitGroup.type.getDescription?.({
       unit: this.unitGroup,
