@@ -3,6 +3,8 @@
 </div>
 
 <div *ngIf="popupsService.popups.length"
+     (click)="handleOverlayClick($event)"
+     mwNoContextMenu
      class="popups-container">
   <mw-popup-wrapper *ngFor="let popup of popupsService.popups; let last = last"
                     [ngClass]="popup.class"

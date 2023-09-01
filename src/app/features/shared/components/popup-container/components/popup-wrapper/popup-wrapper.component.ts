@@ -1,4 +1,4 @@
-import { Component, Injector, Input, OnInit, Type } from '@angular/core';
+import { Component, HostListener, Injector, Input, OnInit, Type } from '@angular/core';
 import { POPUP_REF } from '../../injection-tokens';
 import { PopupData, PopupService } from '../../popup.service';
 
@@ -24,9 +24,13 @@ export class PopupWrapperComponent implements OnInit {
   public ngOnInit(): void {
     this.injector = Injector.create({
       providers: [
-        /* provide close(), do I need abstract class? */
         { provide: POPUP_REF, useValue: { data: this.popupData.data, close: () => { this.popups.removePopup(this.popupData) } } },
       ]
     });
+  }
+
+  @HostListener('click', ['$event'])
+  preventClick(event: MouseEvent): void {
+    event.stopPropagation();
   }
 }

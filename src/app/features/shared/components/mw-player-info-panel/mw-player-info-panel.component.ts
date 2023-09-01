@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
-import { PlayerOpensHeroInfo } from 'src/app/core/events';
+import { DisplayUnitGroupInfo, PlayerOpensHeroInfo } from 'src/app/core/events';
 import { HERO_LEVELS_BREAKPOINTS } from 'src/app/core/heroes';
 import { Player } from 'src/app/core/players';
+import { UnitGroup } from 'src/app/core/unit-types';
 import { MwPlayersService } from 'src/app/features/services';
 import { State } from 'src/app/features/services/state.service';
 import { EventsService } from 'src/app/store';
@@ -9,11 +10,10 @@ import { EventsService } from 'src/app/store';
 @Component({
   selector: 'mw-player-info-panel',
   templateUrl: './mw-player-info-panel.component.html',
-  styleUrls: ['./mw-player-info-panel.component.scss']
+  styleUrls: ['./mw-player-info-panel.component.scss'],
 })
 export class MwPlayerInfoPanelComponent {
-
-  public player: Player = this.players.getCurrentPlayer();
+  public readonly player: Player = this.players.getCurrentPlayer();
 
   constructor(
     private players: MwPlayersService,
@@ -35,6 +35,10 @@ export class MwPlayerInfoPanelComponent {
     <div>${nextLevelXpRequired}xp is required to reach Level ${nextLevel}</div>
     <div>(${hero.experience}/${HERO_LEVELS_BREAKPOINTS[nextLevel]})</div>
     `;
+  }
+
+  displayUnitGroupInfo(unitGroup: UnitGroup): void {
+    this.events.dispatch(DisplayUnitGroupInfo({ unitGroup }));
   }
 
 }

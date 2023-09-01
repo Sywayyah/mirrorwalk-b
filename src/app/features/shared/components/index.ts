@@ -21,3 +21,6 @@ export * from './vfx-element/vfx-element.component';
 export * from './vfx-layer';
 export * from './event-feed/event-feed.component';
 export * from './event-feed-message/event-feed-message.component';
+export * from './unit-group-info/unit-group-info.component';
+export * from './unit-group-info-popup/unit-group-info-popup.component';
+export * from './unit-group-portrait/unit-group-portrait.component';

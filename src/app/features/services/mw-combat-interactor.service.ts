@@ -197,6 +197,7 @@ export class CombatInteractorService extends StoreClient() {
       }));
       attackActionState.action = CombatInteractionEnum.AttackInteractionCompleted;
 
+      // todo: redispatching object
       this.events.dispatch(CombatAttackInteraction(attackActionState));
       return;
     }

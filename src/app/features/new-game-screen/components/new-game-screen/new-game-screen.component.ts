@@ -60,7 +60,7 @@ export class NewGameScreenComponent {
 
     console.log(this.state.createdGame);
 
-    this.events.dispatch(GameCreated({}));
+    this.events.dispatch(GameCreated());
   }
 
   public returnToMainScreen(): void {

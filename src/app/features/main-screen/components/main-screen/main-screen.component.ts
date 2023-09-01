@@ -13,10 +13,10 @@ export class MainScreenComponent {
   ) { }
 
   public openNewGameScreen(): void {
-    this.events.dispatch(OpenNewGameScreen({}));
+    this.events.dispatch(OpenNewGameScreen());
   }
 
   public openSettings(): void {
-    this.events.dispatch(OpenSettings({}));
+    this.events.dispatch(OpenSettings());
   }
 }

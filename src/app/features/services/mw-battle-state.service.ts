@@ -90,7 +90,7 @@ export class BattleStateService {
         previousPlayer: previousPlayer,
       }));
     } else {
-      this.events.dispatch(RoundPlayerCountinuesAttacking({}));
+      this.events.dispatch(RoundPlayerCountinuesAttacking());
     }
   }
 

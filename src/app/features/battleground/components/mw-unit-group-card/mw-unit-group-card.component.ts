@@ -37,7 +37,6 @@ export class MwUnitGroupCardComponent extends StoreClient() implements UIUnitPro
   public isCardHovered: boolean = false;
   public isEnemyCard!: boolean;
 
-  // public potentialUnitCountLoss: number = 0;
   public attackingUnitGroup!: UnitGroup;
 
   public canCurrentPlayerAttack: boolean = false;
@@ -70,8 +69,6 @@ export class MwUnitGroupCardComponent extends StoreClient() implements UIUnitPro
 
   public ngOnInit(): void {
     this.spellsHintsPosition = 'above';
-
-    // this.spellsHintsPosition = this.side === 'left' ? 'above' : 'below';
 
     this.isGroupMelee = !this.unitsService.isUnitGroupRanged(this.unitGroup);
     this.isEnemyCard = this.playersService.getCurrentPlayer() !== this.playerInfo;

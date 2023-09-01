@@ -19,6 +19,8 @@
   <div class="groups-container">
     <div class="player-group-card"
          [style.background]="player.color"
+         (click)="displayUnitGroupInfo(group)"
+         [mwActionHint]="'Inspect group of ' + group.count + ' ' + group.type.name"
          *ngFor="let group of player.unitGroups">
       <div class="group-name">{{group.type.name}}</div>
 

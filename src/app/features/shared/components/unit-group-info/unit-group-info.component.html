@@ -1,4 +1,5 @@
-<img [src]="unitGroup.type.mainPortraitUrl">
+<mw-unit-group-portrait class="unit-portrait"
+                        [unitGroup]="unitGroup" />
 
 <div>
   {{unitGroup.type.name}}
@@ -6,5 +7,9 @@
   {{unitGroup.count}}
 </div>
 
-<div *ngFor="let description of description.descriptions">
+<!-- todo: more descriptions, provide abilities here -->
+<!--  and some modifiers/resists -->
+
+<div class="description">
+  <mw-description [descriptions]="description.descriptions"></mw-description>
 </div>

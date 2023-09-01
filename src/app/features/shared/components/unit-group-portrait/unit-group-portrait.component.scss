@@ -1,0 +1,24 @@
+:host {
+  position: relative;
+  user-select: none;
+  display: inline-block;
+}
+
+:host.to-right {
+  scale: -1 1;
+}
+
+.portrait-frame {
+  height: 130px;
+  width: 121px;
+}
+
+.portrait {
+  position: absolute;
+  z-index: -1;
+
+  left: 30px;
+  width: 64px;
+  height: 83px;
+  top: 20px;
+}

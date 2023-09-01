@@ -5,6 +5,7 @@ export interface PopupData {
   data: object;
   component: Type<any>;
   class?: string;
+  isCloseable?: boolean
 }
 
 @Injectable({
@@ -22,6 +23,7 @@ export class PopupService {
     data: T;
     component: Type<BasicPopup<T>>;
     class?: string;
+    isCloseable?: boolean;
   }): void {
     this.createPopup(params);
   }
