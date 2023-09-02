@@ -90,7 +90,7 @@ humansFraction.defineUnitType('Archer', {
     },
     attackRating: 1,
     defence: 2,
-    health: 8,
+    health: 9,
     speed: 21,
   },
 

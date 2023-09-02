@@ -14,7 +14,7 @@ export const ThiefsLair: StructureGeneratorModel = {
       maxUnitGroups: 3,
       minUnitGroups: 3,
       units: [
-        [neutralsFraction.getUnitType('Thiefs'), 12, 14, 2],
+        [neutralsFraction.getUnitType('Thieves'), 12, 14, 2],
         [neutralsFraction.getUnitType('Gnoll'), 14, 24, 3],
       ],
     } as GenerationModel;

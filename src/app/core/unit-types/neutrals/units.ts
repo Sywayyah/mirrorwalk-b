@@ -33,17 +33,17 @@ neutralsFraction.defineUnitType('Gnoll', {
   },
 });
 
-neutralsFraction.defineUnitType('Thiefs', {
+neutralsFraction.defineUnitType('Thieves', {
   mainPortraitUrl: AssetsImages.UnitMelee,
-  name: 'Thiefs',
+  name: 'Thieves',
   level: 2,
 
   getDescription: simpleDescriptions([
-    heroDescrElem('Thiefs are tier 2 neutral units.'),
-    heroDescrElem('<br>While being fragile, they are very dangerous due to their high speed and ability to attack twice per round.'),
+    heroDescrElem('Thieves are tier 2 neutral units.'),
+    heroDescrElem('<br>Thieves are very dangerous despite being fragile. Their high speed allows them to have their turn earlier, and ability to attack twice, along with high damage, can result in heavy losses.'),
   ]),
 
-  baseStats: createStats([[6, 7], 2, 1, 9, 17]),
+  baseStats: createStats([[6, 7], 2, 1, 9, 16]),
 
   minQuantityPerStack: 4,
   defaultTurnsPerRound: 2,

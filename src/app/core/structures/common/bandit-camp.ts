@@ -15,7 +15,7 @@ export const BanditCamp: StructureGeneratorModel = {
       maxUnitGroups: 2,
       minUnitGroups: 1,
       units: [
-        [neutralsFraction.getUnitType('Thiefs'), 14, 24, 1],
+        [neutralsFraction.getUnitType('Thieves'), 14, 24, 1],
         [neutralsFraction.getUnitType('Gnoll'), 14, 24, 3],
       ],
     } as GenerationModel;

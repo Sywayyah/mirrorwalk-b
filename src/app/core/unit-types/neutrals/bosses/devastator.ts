@@ -1,8 +1,8 @@
 import { FireBreath } from 'src/app/core/spells/common/fire-breath';
+import { heroDescrElem } from 'src/app/core/ui';
 import { AssetsImages } from '../../../assets';
 import { neutralsFraction } from '../../../fractions/neutrals/fraction';
-import { createStats, simpleDescriptions } from '../../utils';
-import { heroDescrElem } from 'src/app/core/ui';
+import { simpleDescriptions } from '../../utils';
 
 neutralsFraction.defineUnitType('Devastator', {
   name: 'Devastator',
@@ -11,16 +11,16 @@ neutralsFraction.defineUnitType('Devastator', {
   level: 8,
 
   getDescription: simpleDescriptions([
-    heroDescrElem('Dragon of fire.'),
+    heroDescrElem('An evil dragon of fire.'),
     heroDescrElem('<br>Dangerous boss unit with large health pool. Has +20% to All Resists and Fire Breath ability that damages random units.'),
   ]),
 
   baseStats: {
-    damageInfo: { minDamage: 30, maxDamage: 45 },
-    attackRating: 7,
+    damageInfo: { minDamage: 32, maxDamage: 47 },
+    attackRating: 9,
     defence: 16,
     health: 900,
-    speed: 13,
+    speed: 14,
   },
 
   defaultSpells: [FireBreath],

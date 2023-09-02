@@ -4,7 +4,7 @@ export type NEUTRAL_UNIT_TYPES =
   'Ghosts'
   | 'SupremeGhosts'
   | 'Gnoll'
-  | 'Thiefs'
+  | 'Thieves'
   | 'ForestTrolls'
 
   | 'FireSpirits'
