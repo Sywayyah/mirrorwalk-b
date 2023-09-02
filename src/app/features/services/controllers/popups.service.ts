@@ -32,7 +32,7 @@ export class PopupsController extends StoreClient() {
     this.popupService.createPopup({
       component: HeroPopupComponent,
       data: {},
-    })
+    });
   }
 
   @Notify(OpenSettings)

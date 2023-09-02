@@ -22,7 +22,7 @@ export class MwPlayerInfoPanelComponent {
   ) { }
 
   public openPlayerInfo(): void {
-    this.events.dispatch(PlayerOpensHeroInfo({}));
+    this.events.dispatch(PlayerOpensHeroInfo());
   }
 
   public getHeroActionHint(): string {

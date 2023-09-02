@@ -1,6 +1,9 @@
 <div class="list">
   <div *ngFor="let group of unitGroups"
        class="group"
+       (click)="displayUnitGroupInfo(group)"
+       [mwActionHint]="'Inspect ' + group.count + ' ' + group.type.name"
+       (mwNoContextMenu)="displayUnitGroupInfo(group)"
        [style.background]="group.ownerPlayerRef.color">
     <div>{{group.type.name}}</div>
     <div>{{group.count}}</div>

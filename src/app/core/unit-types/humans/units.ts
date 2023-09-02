@@ -90,7 +90,7 @@ humansFraction.defineUnitType('Archer', {
     },
     attackRating: 1,
     defence: 2,
-    health: 8,
+    health: 9,
     speed: 21,
   },
 
@@ -202,7 +202,7 @@ humansFraction.defineUnitType('Firebird', {
   mainPortraitUrl: AssetsImages.UnitMelee,
 
   getDescription: simpleDescriptions([
-    heroDescrElem(`<br>Very powerful creatures that can heal and resurrect allied units.`),
+    heroDescrElem(`Very powerful fire creatures that can heal and resurrect allied units.`),
   ]),
   level: 5,
 

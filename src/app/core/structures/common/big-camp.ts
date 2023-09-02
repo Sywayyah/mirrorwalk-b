@@ -8,9 +8,9 @@ export const BigCampStructure: StructureGeneratorModel = {
       maxUnitGroups: 3,
       minUnitGroups: 3,
       units: [
-        [neutralsFraction.getUnitType('ForestTrolls'), 24, 26, 1],
+        [neutralsFraction.getUnitType('ForestTrolls'), 23, 25, 1],
         [neutralsFraction.getUnitType('Gnoll'), 28, 36, 1],
-        [neutralsFraction.getUnitType('Thiefs'), 15, 18, 1],
+        [neutralsFraction.getUnitType('Thieves'), 15, 18, 1],
       ],
     };
   },
