@@ -202,7 +202,7 @@ humansFraction.defineUnitType('Firebird', {
   mainPortraitUrl: AssetsImages.UnitMelee,
 
   getDescription: simpleDescriptions([
-    heroDescrElem(`<br>Very powerful creatures that can heal and resurrect allied units.`),
+    heroDescrElem(`Very powerful fire creatures that can heal and resurrect allied units.`),
   ]),
   level: 5,
 
