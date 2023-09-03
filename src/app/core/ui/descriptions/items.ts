@@ -10,15 +10,19 @@ function getItemModHtmlElem(text: string): string {
 export function itemStatsDescr(item: Item): DescHtmlElement {
   const itemStaticMods = item.baseType.staticMods;
 
-  const mods = Object.entries(itemStaticMods).map(([modName, modValue]) => {
+  const mods = Object.entries(itemStaticMods)
+    .map(([modName, modValue]) => {
+      if (modName in modsFormatters) {
+        /* cast to any */
+        return getItemModHtmlElem((modsFormatters as any)[modName](modValue));
+      }
 
-    if (modName in modsFormatters) {
-      /* cast to any */
-      return getItemModHtmlElem((modsFormatters as any)[modName](modValue));
-    }
-
-    return getItemModHtmlElem(`${modValue} ${modName}`);
-  }).join('');
+      // return getItemModHtmlElem(`${modValue} ${modName}`)
+      // filter out mods without formatter
+      return '';
+    })
+    .filter(Boolean)
+    .join('');
 
   return {
     type: DescriptionElementType.FreeHtml,

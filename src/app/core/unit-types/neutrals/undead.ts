@@ -34,7 +34,7 @@ const Wraiths: UnitBaseType = neutralsFraction.defineUnitType('SupremeGhosts', {
       return { unitGroupSpeedBonus: 4, playerBonusDefence: 2 };
     }
 
-    if (specialties.specialtyNecromancy > 2) {
+    if (specialties.specialtyNecromancy >= 2) {
       return { unitGroupSpeedBonus: 4, playerBonusDefence: 2, resistCold: 10, resistFire: 10 };
     }
 

@@ -1,6 +1,7 @@
 import { AssetsImages } from '../../assets';
 import { humansFraction } from '../../fractions';
 import { IrtonPlateItem } from '../../items/neutral/irton-plate';
+import { LightBootsItem } from '../../items/neutral/light-boots';
 import { MeteorSpell } from '../../spells/common';
 import { SummonFireSpiritsSpell } from '../../spells/common/summon-fire-spirits';
 import { heroDescrElem } from '../../ui';
@@ -38,12 +39,16 @@ export const TaltirHero: HeroBase = humansFraction.createHero({
       [humansFraction.getUnitType('Pikemen'), 25, 30, 1],
     ],
   }],
-  items: [IrtonPlateItem],
+  items: [
+    IrtonPlateItem,
+    LightBootsItem,
+    // FamineScytheItem,
+  ],
   resources: heroesDefaultResources,
   stats: {
     mana: 14,
     baseAttack: 2,
-    baseDefence: 3,
+    baseDefence: 2,
   },
   defaultModifiers: {
     resistAll: defaultAllResists,

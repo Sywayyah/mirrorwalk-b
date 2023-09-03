@@ -37,9 +37,6 @@ export interface ModifiersModel extends Specialties {
   resistPoison: number;
   resistLightning: number;
 
-  /* Modifiers can be returned on condition */
-  attackConditionalModifiers?: (params: ConditionalModifierParamsModel) => Modifiers;
-
   /* markers */
   isRanged: boolean;
   counterattacks: boolean;
@@ -47,20 +44,17 @@ export interface ModifiersModel extends Specialties {
   isSummon: boolean;
   isBoss: boolean;
 
+  /* Modifiers can be returned on condition */
+  attackConditionalModifiers?: (params: ConditionalModifierParamsModel) => Modifiers;
+
   // this can be used potentially to imlpement specialties.
   // mods from specialties can be added to hero, then
   // by this condition, applied/not applied somehow to units.
-  __unitTypeModifiers: (unitGroup: UnitGroup) => Modifiers;
+  __unitConditionalMods: (unitGroup: UnitGroup) => Modifiers | null;
 
+  // might get obsolete.
   // same as above, but for auras.
   __auraModifiers: () => Modifiers;
-
-  // additionally, theoretically.. specialties can be a part of modifiers,
-  // but maybe there can be a separate modGroup, containing only specialties or something.
-  // or maybe it can be a part of main stream of mods
-  // todo: for now, it is in main stream, but I tend to replicate it into another mod stream
-
-  // Need to think about definition of bonuses per Specialty
 }
 
 export type Modifiers = Partial<ModifiersModel>;

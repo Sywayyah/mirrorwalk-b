@@ -58,7 +58,7 @@ export class Player extends GameObject<PlayerCreationModel> {
     this.setUnitGroups(unitGroups);
 
     this.hero.assignOwnerPlayer(this);
-    this.hero.updateUnitsSpecialtyMods();
+    this.hero.updateUnitsSpecialtyAndConditionalMods();
   }
 
   addUnitGroup(unitGroup: UnitGroup): void {
@@ -72,12 +72,12 @@ export class Player extends GameObject<PlayerCreationModel> {
   }
 
   removeUnitGroup(unitGroup: UnitGroup): void {
-    // todo: unassign hero 
+    // todo: unassign hero
     CommonUtils.removeItem(this.unitGroups, unitGroup);
   }
 
   private updateUnitGroup(unitGroup: UnitGroup): void {
     unitGroup.assignOwnerPlayer(this);
-    this.hero.updateUnitSpecialtyMods(unitGroup);
+    this.hero.updateUnitSpecialtyAndConditionalMods(unitGroup);
   }
 }

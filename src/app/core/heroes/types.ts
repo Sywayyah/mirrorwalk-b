@@ -240,18 +240,30 @@ export class Hero extends GameObject<HeroCreationParams> {
     this.modGroup.getNamedGroup(HeroMods.CommonCombatMods)?.clearOwnModRefs();
   }
 
-  updateUnitsSpecialtyMods(): void {
-    this.ownerPlayer.unitGroups.forEach((unitGroup) => this.updateUnitSpecialtyMods(unitGroup));
+  updateUnitsSpecialtyAndConditionalMods(): void {
+    this.ownerPlayer.unitGroups.forEach((unitGroup) => this.updateUnitSpecialtyAndConditionalMods(unitGroup));
   }
 
-  updateUnitSpecialtyMods(unitGroup: UnitGroup): void {
+  updateUnitSpecialtyAndConditionalMods(unitGroup: UnitGroup): void {
+
+    // todo: seems to work fine, but can be revisited later.
+    // clearing old spec & conditional mods
+    unitGroup.clearSpecialtyAndConditionalMods();
+
+    // attaching conditional mods
+    const conditionalMods = this.modGroup.getAllModValues('__unitConditionalMods')
+      .map(unitConditMod => unitConditMod(unitGroup))
+      .filter(Boolean) as Modifiers[];
+
+    // todo: theoretically, there can be some tool to merge mods.
+    conditionalMods.forEach((mods) => unitGroup.attachSpecialtyMods(mods));
+
+    // attaching specialty mods
     const getUnitTypeSpecialtyModifiers = unitGroup.type.getUnitTypeSpecialtyModifiers;
 
     if (!getUnitTypeSpecialtyModifiers) {
       return;
     }
-
-    unitGroup.clearSpecialtyMods();
 
     const specialtyMods = getUnitTypeSpecialtyModifiers?.(this.specialtiesModGroup.getMods() as Specialties);
 
@@ -274,7 +286,7 @@ export class Hero extends GameObject<HeroCreationParams> {
     this.modGroup.onValueChanges().pipe(takeUntil(this.destroyed$)).subscribe((mods) => {
       this.specialtiesModGroup.clearOwnModRefs();
       this.specialtiesModGroup.addModsRef(ModsRef.fromMods(filterSpecialties(mods)));
-      this.updateUnitsSpecialtyMods();
+      this.updateUnitsSpecialtyAndConditionalMods();
 
       const { baseAttack, baseDefence } = heroBase.initialState.stats;
 

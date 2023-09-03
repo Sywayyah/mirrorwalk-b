@@ -1,5 +1,6 @@
 import { neutralsFraction } from '../../fractions/neutrals/fraction';
 import { ItemEclipseWand, ItemIceBow, ItemMeteorSwords, ItemWindCrest } from '../../items/neutral';
+import { LightBootsItem } from '../../items/neutral/light-boots';
 import { ResourceType } from '../../resources';
 import { GenerationModel } from '../../unit-types';
 import { CommonUtils } from '../../utils';
@@ -44,7 +45,7 @@ export const BanditCamp: StructureGeneratorModel = {
       const itemReward: ItemReward = {
         type: NeutralRewardTypesEnum.Item,
         itemGroups: [
-          [ItemWindCrest],
+          [CommonUtils.randBoolean() ? ItemWindCrest : LightBootsItem],
           [ItemEclipseWand],
           [ItemMeteorSwords],
           [ItemIceBow],
