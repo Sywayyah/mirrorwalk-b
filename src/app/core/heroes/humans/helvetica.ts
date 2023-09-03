@@ -1,6 +1,7 @@
 import { AssetsImages } from '../../assets';
 import { humansFraction } from '../../fractions';
 import { ItemWindCrest } from '../../items/neutral';
+import { FamineScytheItem } from '../../items/neutral/famine';
 import { HasteSpell, RainOfFireSpell } from '../../spells/common';
 import { heroDescrElem } from '../../ui';
 import { HeroBase } from '../types';

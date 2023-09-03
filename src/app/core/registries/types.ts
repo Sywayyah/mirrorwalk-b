@@ -30,5 +30,5 @@ export class Registries {
   static getEntity(key: keyof A): void { }
 }
 
-Registries.getEntity('units');
+// Registries.getEntity('units');
 // Registries.create('h').registerEntity('qe', {});

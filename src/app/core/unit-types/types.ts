@@ -116,8 +116,8 @@ export enum UnitModGroups {
   /** Mods gained from auras */
   AuraMods = 'aMods',
 
-  /** Mods gained from specialties */
-  SpecialtyMods = 'sMods',
+  /** Mods gained from specialties and conditional mods */
+  SpecialtyAndConditionalMods = 'scMods',
 }
 
 export interface UnitStatsInfo {
@@ -244,7 +244,7 @@ export class UnitGroup extends GameObject<UnitCreationParams> {
     }
 
     this.modGroup.attachNamedParentGroup(UnitModGroups.CombatMods, ModsRefsGroup.empty());
-    this.modGroup.attachNamedParentGroup(UnitModGroups.SpecialtyMods, ModsRefsGroup.empty());
+    this.modGroup.attachNamedParentGroup(UnitModGroups.SpecialtyAndConditionalMods, ModsRefsGroup.empty());
     this.setupStatsUpdating();
   }
 
@@ -288,11 +288,11 @@ export class UnitGroup extends GameObject<UnitCreationParams> {
   }
 
   attachSpecialtyMods(specialtyMods: Modifiers): void {
-    this.modGroup.getNamedGroup(UnitModGroups.SpecialtyMods)?.addModsRef(ModsRef.fromMods(specialtyMods));
+    this.getSpecialtyAndConditionalModsGroup().addModsRef(ModsRef.fromMods(specialtyMods));
   }
 
-  clearSpecialtyMods(): void {
-    this.modGroup.getNamedGroup(UnitModGroups.SpecialtyMods)?.clearOwnModRefs();
+  clearSpecialtyAndConditionalMods(): void {
+    this.getSpecialtyAndConditionalModsGroup().clearOwnModRefs();
   }
 
   /**
@@ -324,6 +324,10 @@ export class UnitGroup extends GameObject<UnitCreationParams> {
     currentUnitStats.avgTotalDamage = (currentUnitStats.totalMinDamage + currentUnitStats.totalMaxDamage) / 2;
 
     this.unitStats$.next(currentUnitStats);
+  }
+
+  private getSpecialtyAndConditionalModsGroup(): ModsRefsGroup {
+    return this.modGroup.getNamedGroup(UnitModGroups.SpecialtyAndConditionalMods)!;
   }
 
   private setupStatsUpdating(): void {
