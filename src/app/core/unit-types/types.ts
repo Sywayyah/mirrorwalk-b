@@ -62,6 +62,8 @@ export interface UnitBaseType {
   fraction: Fraction<any>;
   /* displayed name */
   name: string;
+  // todo: practically, here I can configure how names can be displayed in different places
+  //  also specifying font size, short name versions, etc.
   /* main portrait for this unit (used during combat, hiring and so on) */
   mainPortraitUrl?: string;
 

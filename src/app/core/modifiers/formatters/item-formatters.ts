@@ -28,8 +28,9 @@ export const specialtyLabels: Record<keyof Specialties, string> = {
   specialtyOffence: 'Offensive Tactics',
 };
 
-// todo: turn it into a function
-export const modsFormatters: { [K in keyof Modifiers]: (val: ModifiersModel[K]) => string } = {
+type ModFormatter<K extends keyof Modifiers> = (val: ModifiersModel[K]) => string;
+
+export const modsFormatters: { [K in keyof Modifiers]: ModFormatter<K> } = {
   playerBonusAttack: plainNumMod('Attack Rating'),
   playerBonusDefence: plainNumMod('Defence'),
   lifesteal: percentVal('Lifesteal'),
@@ -39,21 +40,18 @@ export const modsFormatters: { [K in keyof Modifiers]: (val: ModifiersModel[K]) 
   resistCold: percentVal('Cold Resist'),
   resistLightning: percentVal('Lightning Resist'),
   resistPoison: percentVal('Poison Resist'),
-
-  // Masteries
-  specialtyNecromancy: plainNumMod('Necromancy'),
-  specialtySpiritism: plainNumMod('Spiritism'),
-
-  specialtyMysticism: plainNumMod('Mysticism'),
-  specialtyMagic: plainNumMod('Magic'),
-
-  specialtyColdMastery: plainNumMod('Cold Mastery'),
-  specialtyFireMastery: plainNumMod('Fire Mastery'),
-  specialtyLightningMastery: plainNumMod('Lightning Mastery'),
-  specialtyPoisonMastery: plainNumMod('Poison Mastery'),
-
-  specialtyCombatTactics: plainNumMod('Combat Tactics'),
-  specialtyArchery: plainNumMod('Archery'),
-  specialtyOffence: plainNumMod('Offensive Tactics'),
-
 };
+
+export function formatMod(modName: keyof Modifiers, modValue: unknown): string {
+  // if mod name is a specialty, use label
+  if (modName in specialtyLabels) {
+    return `+${modValue} to ${specialtyLabels[modName as keyof Specialties]}`;
+  }
+
+  // otherwise, use formatters, and return empty string if there is no formatter
+  if (!(modName in modsFormatters)) {
+    return '';
+  }
+
+  return (modsFormatters[modName] as ModFormatter<typeof modName>)(modValue as any);
+}
