@@ -19,7 +19,7 @@ neutralsFraction.defineUnitType('FireSpirits', {
 
   getDescription: simpleDescriptions([
     heroDescrElem('Creature of fire.'),
-    heroDescrElem('<br>Tenacious and strong. Have increased resists against Ice and Fire.'),
+    heroDescrElem('<br>Tenacious and strong. Have increased resists against Fire (+20%) and Ice (+15%).'),
   ]),
 
   neutralReward: {
