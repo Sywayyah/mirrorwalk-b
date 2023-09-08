@@ -1,4 +1,24 @@
 /*
+  I can concentrate more on content creation for the game, and some new ideas.
+    1. Halberdiers can block damage based on their count (0.5/0.7 per Pikeman/Halberdier).
+        giving some static percent makes it feel less important when units are being lost.
+    2. Some hiring buildings can also have some other activities (sell items, spells, etc.)
+        (same on the map, e.g. locations)
+    3. Knights might gain 2 possible promotions: Paladins or some other type.
+        - Knights could give Blessing and have their own manapool (maybe Blessing will go to hero).
+            - side note - Knights can also give some Defencive ability, so some important units
+              can be protected.
+        - Paladins might have resistances and also grant Zeal (+1 turn in that round)
+        - Other type can give 1 mana to all creatures and hero at the end of the round.
+    4. Locations on the map: School of mixed arts. Also some places where player can gain
+        new specialties, and increase the growth of units in his town (instant/weekly).
+    5. Constellation: Sprites, Absorb Essence: Casted on target, allows other units to steal
+        health on attacking target.
+
+        -- Side Note: In theory, if there are different promotions to the same unit type,
+            player might want to have both for greater effects.
+*/
+/*
   Todo: When player opens info for something, there can be
   a side-line with arrow, that allows to close it.
 */
