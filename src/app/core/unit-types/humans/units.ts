@@ -9,9 +9,10 @@ const defaultRewards = {
   gold: 0,
 };
 
+
 const Halberdier = humansFraction.defineUnitType('Halberdier', {
   mainPortraitUrl: AssetsImages.UnitMelee,
-  name: 'Harbeldier',
+  name: 'Halberdier',
   level: 1,
 
   baseStats: createStats([[3, 3], 2, 3, 8, 14]),
