@@ -20,14 +20,20 @@ export class MapCanvasComponent extends StoreClient() implements OnInit {
   @ViewChild('mapCanvas', { static: true })
   public mapCanvasRef!: ElementRef;
 
+  @ViewChild('fogCanvas', { static: true })
+  public fogCanvasRef!: ElementRef;
+
   @ViewChild('underlay', { static: true })
   public underlayRef!: ElementRef;
 
   @Output()
   public mapDragEvent = new EventEmitter<MapDragEvent>();
 
-  private canvasElem!: HTMLCanvasElement;
-  private canvasCtx!: CanvasRenderingContext2D;
+  private fogCanvasElem!: HTMLCanvasElement;
+  private fogCanvasCtx!: CanvasRenderingContext2D;
+
+  private mapCanvasElem!: HTMLCanvasElement;
+  private mapCanvasCtx!: CanvasRenderingContext2D;
 
   private underlayElem!: HTMLElement;
 
@@ -58,17 +64,125 @@ export class MapCanvasComponent extends StoreClient() implements OnInit {
   ngOnInit(): void {
     this.hostElem = this.hostRef.nativeElement;
 
-    this.canvasElem = this.mapCanvasRef.nativeElement;
-    this.canvasCtx = this.canvasElem.getContext('2d')!;
+    this.mapCanvasElem = this.mapCanvasRef.nativeElement;
+    this.fogCanvasElem = this.fogCanvasRef.nativeElement;
+
+    this.mapCanvasCtx = this.mapCanvasElem.getContext('2d')!;
+    this.fogCanvasCtx = this.fogCanvasElem.getContext('2d')!;
 
     this.underlayElem = this.underlayRef.nativeElement;
 
     this.currentMap = this.state.mapsState.currentMap;
+    this.cellSize = this.currentMap.mapSize.cellSize;
 
     this.renderMapCellsGrid();
+    // this.initFogCanvas();
     this.setupWindowResizingHandling();
     this.setupMapDragging();
     this.resetCanvasPosition();
+  }
+
+  private initFogCanvas(): void {
+    const fogCtx = this.fogCanvasCtx;
+
+    fogCtx.fillStyle = "rgba(0,0,0,0.5)";
+    fogCtx.fillRect(0, 0, this.fogCanvasElem.width, this.fogCanvasElem.height);
+
+    // this.revealFogWithRadius(5, 5, 3);
+    const halfCell = this.cellSize / 2;
+    // this.revealFogCircle(5 * this.cellSize + halfCell, 5 * this.cellSize + halfCell, 420);
+    // this.revealFogCircle(6 * this.cellSize + halfCell, 6 * this.cellSize + halfCell, 420);
+    setTimeout(() => {
+      this.revealFogCircle(6 * this.cellSize + halfCell, 6 * this.cellSize + halfCell, 125);
+    }, 0);
+    setTimeout(() => {
+      this.revealFogCircle(5 * this.cellSize + halfCell, 5 * this.cellSize + halfCell, 50);
+    }, 2);
+  }
+
+  private revealFogCircle(
+    x: number,
+    y: number,
+    radius: number,
+    easeSteps: number = 6,
+    easeRadius: number = 14,
+  ): void {
+    const fogCtx = this.fogCanvasCtx;
+
+    const prevOperation = fogCtx.globalCompositeOperation;
+
+    fogCtx.globalCompositeOperation = 'destination-out';
+
+    const opacityStep = 1 / easeSteps;
+
+    fogCtx.fillStyle = `rgba(0,0,0,${opacityStep * 3})`;
+
+    for (let i = 0; i < easeSteps; i++) {
+
+      const opacity = (i + 1) * opacityStep;
+
+      const curRadius = radius + (i * easeRadius);
+      const halfRadius = curRadius / 2;
+      fogCtx.roundRect(
+        x - halfRadius,
+        y - halfRadius,
+        curRadius,
+        curRadius,
+        [halfRadius]
+      );
+      // fogCtx.arc(x + i * 120, y, radius - (i * easeRadius), 0, 360);
+
+      // this.fogCanvasCtx.fill();
+
+      console.log(
+        x - halfRadius,
+        y - halfRadius,
+        curRadius,
+        curRadius,
+        [halfRadius],
+        `rgba(0,0,0, ${opacity})`,
+      );
+
+      // (this.fogCanvasCtx as any).reset();
+      this.fogCanvasCtx.fill();
+      // console.log(i, radius - (i * easeRadius), opacity);
+    }
+
+
+    fogCtx.globalCompositeOperation = prevOperation;
+
+  }
+
+  private revealFogWithRadius(x: number, y: number, radius: number = 1): void {
+    this.revealFogOnCell(x, y);
+
+    // fog corner half-tones
+    this.revealFogOnCell(x - radius, y, true);
+    this.revealFogOnCell(x + radius, y, true);
+    this.revealFogOnCell(x, y - radius, true);
+    this.revealFogOnCell(x, y + radius, true);
+
+    const halfsSize = radius - 1;
+
+    for (let step = 1; step < radius; step++) {
+      this.revealFogOnCell(x - step, y - halfsSize + step - 1, true);
+      this.revealFogOnCell(x + step, y - halfsSize + step - 1, true);
+
+      for (let fill = 0; fill < step; fill++) {
+        this.revealFogOnCell(x - step, y - halfsSize + step - 1, true);
+      }
+    }
+  }
+
+  private revealFogOnCell(x: number, y: number, halfTone: boolean = false): void {
+    const xCellCoord = x * this.cellSize;
+    const yCellCoord = y * this.cellSize;
+
+    this.fogCanvasCtx.clearRect(xCellCoord, yCellCoord, this.cellSize, this.cellSize);
+    if (halfTone) {
+      this.fogCanvasCtx.fillStyle = 'rgba(0,0,0,0.4)';
+      this.fogCanvasCtx.fillRect(xCellCoord, yCellCoord, this.cellSize, this.cellSize);
+    }
   }
 
   @WireMethod(MapPanCameraCenterTo)
@@ -89,8 +203,8 @@ export class MapCanvasComponent extends StoreClient() implements OnInit {
       fromEvent(this.hostElem, 'mousedown').pipe(
         switchMap((mouseDown) => {
           const mouseDownEvent = mouseDown as MouseEvent;
-          const mapPosX = parseInt(this.canvasElem.style.left);
-          const mapPosY = parseInt(this.canvasElem.style.top);
+          const mapPosX = parseInt(this.mapCanvasElem.style.left);
+          const mapPosY = parseInt(this.mapCanvasElem.style.top);
 
           return fromEvent(window, 'mousemove').pipe(
             map((mouseMove) => {
@@ -144,19 +258,23 @@ export class MapCanvasComponent extends StoreClient() implements OnInit {
   }
 
   private setMapElementsPosition(x: number, y: number): void {
-    this.renderer.setStyle(this.canvasElem, 'left', `${x}px`);
-    this.renderer.setStyle(this.canvasElem, 'top', `${y}px`);
+    this.setElementPosition(this.mapCanvasElem, x, y);
+    this.setElementPosition(this.fogCanvasElem, x, y);
   }
 
   private resetCanvasPosition(): void {
-    this.renderer.setStyle(this.canvasElem, 'left', `${0}px`);
-    this.renderer.setStyle(this.canvasElem, 'top', `${0}px`);
+    this.setElementPosition(this.mapCanvasElem, 0, 0);
+    this.setElementPosition(this.fogCanvasElem, 0, 0);
+  }
+
+  private setElementPosition(elem: HTMLElement, x: number, y: number): void {
+    this.renderer.setStyle(elem, 'left', `${x}px`);
+    this.renderer.setStyle(elem, 'top', `${y}px`);
   }
 
   private renderMapCellsGrid(): void {
     const { heightInCells, widthInCells, cellSize } = this.currentMap.mapSize;
 
-    this.cellSize = cellSize;
 
     const totalWidth = widthInCells * cellSize;
     const totalHeight = heightInCells * cellSize;
@@ -164,11 +282,9 @@ export class MapCanvasComponent extends StoreClient() implements OnInit {
     this.mapTotalWidth = totalWidth;
     this.mapTotalHeight = totalHeight;
 
-    this.canvasElem.width = totalWidth;
-    this.canvasElem.height = totalHeight;
+    this.setCanvasElementsSizes(totalWidth, totalHeight);
 
-
-    const canvas2d = this.canvasCtx;
+    const canvas2d = this.mapCanvasCtx;
 
     for (let horLineIndex = 0; horLineIndex <= heightInCells; horLineIndex++) {
       canvas2d.moveTo(0, horLineIndex * cellSize);
@@ -184,6 +300,14 @@ export class MapCanvasComponent extends StoreClient() implements OnInit {
     canvas2d.lineWidth = 0.5;
     canvas2d.strokeStyle = "gray";
     canvas2d.stroke();
+  }
+
+  private setCanvasElementsSizes(totalWidth: number, totalHeight: number): void {
+    this.mapCanvasElem.width = totalWidth;
+    this.mapCanvasElem.height = totalHeight;
+
+    this.fogCanvasElem.width = totalWidth;
+    this.fogCanvasElem.height = totalHeight;
   }
 
   private setupWindowResizingHandling(): void {

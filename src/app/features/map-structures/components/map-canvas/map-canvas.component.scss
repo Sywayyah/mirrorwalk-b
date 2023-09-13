@@ -10,7 +10,15 @@ canvas {
   position: absolute;
   // Can be animated potentially
   // transition: 0.2s;
-  background: whitesmoke;
-  z-index: -2;
   user-select: none;
+
+  &.map-canvas {
+    background: whitesmoke;
+    z-index: -2;
+  }
+
+  &.fog-canvas {
+    z-index: 1;
+    pointer-events: none;
+  }
 }
