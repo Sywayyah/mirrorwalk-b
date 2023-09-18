@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { GamePreparedEvent, InitStructure } from 'src/app/core/events';
 import { Player } from 'src/app/core/players';
-import { MapStructure, START_LOC_ID, StructureDescription } from 'src/app/core/structures';
+import { MapStructure, StructureDescription } from 'src/app/core/structures';
 import { EventsService } from 'src/app/store';
 import { MwPlayersService, MwUnitGroupsService } from './';
 import { GameObjectsManager } from './game-objects-manager.service';
@@ -22,6 +22,8 @@ export class MwStructuresService {
 
   public currentStruct!: MapStructure;
 
+  private startingLocationId!: string;
+
   constructor(
     private playersService: MwPlayersService,
     private unitGroups: MwUnitGroupsService,
@@ -33,8 +35,9 @@ export class MwStructuresService {
     this.neutralPlayer = this.playersService.getNeutralPlayer();
 
     this.initialStructs = event.map.structures;
+    this.startingLocationId = event.map.startingLocId;
+    this.playerCurrentLocId = this.gameObjectsManager.getObjectId(MapStructure, this.startingLocationId);
     this.viewStructures = this.createViewStructures(this.initialStructs);
-    this.playerCurrentLocId = this.gameObjectsManager.getObjectId(MapStructure, START_LOC_ID);
     this.updateParentLinks();
     this.updateAvailableStructures();
   }
@@ -48,7 +51,13 @@ export class MwStructuresService {
 
   public updateAvailableStructures(): void {
     Object.keys(this.availableStructuresMap).forEach(structId => {
-      const childStructures = this.viewStructures.filter(struct => [...struct.parentStructs].find(parentId => this.gameObjectsManager.getObjectByFullId<MapStructure>(this.gameObjectsManager.getObjectId(MapStructure, parentId))?.visited) && struct.parentStructs.has(structId));
+      const childStructures = this.viewStructures
+        .filter(struct => [...struct.parentStructs]
+          .find(parentId => this.gameObjectsManager.getObjectByFullId<MapStructure>(
+            this.gameObjectsManager.getObjectId(MapStructure, parentId))?.visited)
+          && struct.parentStructs.has(structId)
+        );
+
       childStructures.forEach(struct => this.availableStructuresMap[struct.id] = true);
     });
   }
@@ -62,7 +71,7 @@ export class MwStructuresService {
         y: struct.y,
         generator: struct.struct,
         guardingPlayer: undefined,
-        isRoot: struct.isRoot,
+        isRoot: struct.id === this.startingLocationId,
         pathTo: struct.pathTo ? this.gameObjectsManager.getObjectId(MapStructure, struct.pathTo) : undefined,
       },
       struct.id,

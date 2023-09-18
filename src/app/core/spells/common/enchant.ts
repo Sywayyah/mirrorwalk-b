@@ -15,7 +15,7 @@ export const EnchantBuff: SpellBaseType = {
   getDescription() {
     return {
       descriptions: [
-        spellDescrElem(`Incoming magic damage is increased by ${damageIncreasePercent}%.`),
+        spellDescrElem(`Incoming damage from spells is increased by ${damageIncreasePercent}%.`),
       ],
     }
   },
@@ -53,7 +53,7 @@ export const EnchantSpell: SpellBaseType = {
   getDescription() {
     return {
       descriptions: [
-        spellDescrElem(`Enchants an enemy to receive increased magic damage by ${damageIncreasePercent}%`),
+        spellDescrElem(`Enchants an enemy to receive increased damage from spells by ${damageIncreasePercent}%`),
       ],
     }
   },

@@ -1,20 +1,30 @@
 import { DefaultGameModes, DisplayPlayerRewardPopup, PlayerLevelsUp, Triggers } from '../../events';
+import { Fraction } from '../../fractions';
+import { constellationFraction } from '../../fractions/constellation/fraction';
 import { LevelMap } from '../../maps';
-import { structsPreset1 } from '../../structures';
+import { START_LOC_ID, structsPreset1 } from '../../structures';
 import { TriggersRegistry } from '../registry';
 
 TriggersRegistry.register(Triggers.PrepareGameEvent, {
   // supply some more api here
-  fn: (event: { gameMode: DefaultGameModes }, { events }) => {
+  fn: (event: { gameMode: DefaultGameModes, selectedFraction?: Fraction<string> }, { events }) => {
     if (event.gameMode !== DefaultGameModes.Normal) {
       return;
+    }
+
+    let startingLocId = START_LOC_ID;
+
+    // change starting loc id depending on selected fraction
+    if (event.selectedFraction === constellationFraction) {
+      startingLocId = 'const-start-1';
     }
 
     console.log('Structures are prepared.');
 
     const gameMap = new LevelMap({
-      mapDimensions: { heightInCells: 11, widthInCells: 22, cellSize: 86 },
+      mapDimensions: { heightInCells: 27, widthInCells: 34, cellSize: 86 },
       structures: structsPreset1,
+      startLocId: startingLocId,
     });
 
     events.dispatch(Triggers.GamePreparationFinished({ map: gameMap }));

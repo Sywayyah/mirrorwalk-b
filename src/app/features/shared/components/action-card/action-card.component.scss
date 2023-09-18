@@ -1,0 +1,65 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+}
+
+$iconContainerSize: 84px;
+$iconSize: 74px;
+
+$titleSize: 20px;
+$descriptionSize: 12px;
+
+$contentWidth: 120px;
+
+.icon {
+  width: $iconContainerSize;
+  height: $iconContainerSize;
+
+  position: relative;
+  bottom: -14px;
+  display: flex;
+
+  mw-ra-icon {
+    width: $iconSize;
+    height: $iconSize;
+    display: flex;
+
+    background-color: gray;
+    font-size: $iconSize;
+    border-radius: 50%;
+    border: 4px solid rgb(82, 82, 82);
+    color: white;
+    margin: auto;
+  }
+}
+
+.content {
+  border: 3px solid gray;
+  border-radius: 5px;
+  padding: 8px;
+  padding-top: 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: white;
+  width: $contentWidth;
+  min-height: 74px;
+  text-align: center;
+
+  background-color: rgb(99, 99, 99);
+  user-select: none;
+
+  .title {
+    font-size: $titleSize;
+    margin-bottom: 6px;
+    padding-bottom: 4px;
+    border-bottom: 2px solid #8d8d8d;
+    width: 100%;
+  }
+
+  .description {
+    font-size: $descriptionSize;
+  }
+}

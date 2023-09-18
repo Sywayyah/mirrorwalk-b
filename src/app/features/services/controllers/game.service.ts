@@ -34,11 +34,11 @@ export class GameController extends StoreClient() {
 
   @WireMethod(Triggers.GamePreparationFinished)
   public initializeGameMap(event: GamePreparedEvent): void {
-    this.structuresService.initStructures(event);
     this.state.mapsState = {
       currentMap: event.map,
       maps: [event.map],
     };
+    this.structuresService.initStructures(event);
   }
 
   @Notify(GameCreated)
@@ -72,7 +72,7 @@ export class GameController extends StoreClient() {
     };
 
     this.events.dispatch(PlayersInitialized({}));
-    this.events.dispatch(Triggers.PrepareGameEvent({ gameMode: DefaultGameModes.Normal }));
+    this.events.dispatch(Triggers.PrepareGameEvent({ gameMode: DefaultGameModes.Normal, selectedFraction: this.state.createdGame.fraction }));
     this.events.dispatch(GameOpenMapStructuresScreen());
   }
 

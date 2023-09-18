@@ -11,7 +11,6 @@ export interface StructureDescription {
   id: string;
   pathTo?: string;
   struct?: StructureGeneratorModel;
-  isRoot?: boolean;
   defenderStaticMods?: Modifiers;
   attackerStaticMods?: Modifiers;
 }

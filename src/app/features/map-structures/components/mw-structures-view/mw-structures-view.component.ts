@@ -1,12 +1,12 @@
 import { AfterViewInit, Component, ElementRef, Renderer2, ViewChild } from '@angular/core';
 import { MapPanCameraCenterTo, PlayerEntersTown, PlayerOpensHeroInfo, StructSelected } from 'src/app/core/events';
 import { Player } from 'src/app/core/players';
+import { MapStructure } from 'src/app/core/structures';
 import { MwPlayersService, MwStructuresService } from 'src/app/features/services';
 import { GameObjectsManager } from 'src/app/features/services/game-objects-manager.service';
 import { State } from 'src/app/features/services/state.service';
 import { StoreClient } from 'src/app/store';
 import { MapDragEvent } from '../map-canvas/map-canvas.component';
-import { MapStructure, START_LOC_ID } from 'src/app/core/structures';
 
 /* Rewamp this a bit later, along with service and the rest */
 /*  Check more cases, stuff like that */
@@ -44,12 +44,14 @@ export class MwStructuresViewComponent extends StoreClient() implements AfterVie
       return;
     }
 
-    const startingStruct = this.gameObjectsManager.getObjectById(MapStructure, START_LOC_ID);
+    const startLocId = this.state.mapsState.currentMap.startingLocId;
+
+    const startingStruct = this.gameObjectsManager.getObjectById(MapStructure, startLocId);
 
     if (startingStruct) {
       this.events.dispatch(MapPanCameraCenterTo({ x: startingStruct.x, y: startingStruct.y }));
     } else {
-      console.warn(`[Map View]: Couldn't find location with id ${START_LOC_ID} to pan camera center on game start`);
+      console.warn(`[Map View]: Couldn't find location with id ${startLocId} to pan camera center on game start`);
     }
 
     this.state.mapCamera.cameraInitialized = true;
