@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { CustomCursorComponent, DescriptionComponent, EventFeedComponent, EventFeedMessageComponent, GameOverPopupComponent, HintsContainerComponent, HoverHintComponent, IconBtnComponent, ItemDescriptionComponent, MainButtonComponent, MenuComponent, MwActionHintComponent, MwExperienceBarComponent, MwPlayerInfoPanelComponent, MwRaIconComponent, PopupContainerComponent, PopupWrapperComponent, RewardPopupComponent, SharedTemplateDirective, SharedTemplatesComponent, SpellDescriptionComponent, UnitGroupInfoComponent, UnitGroupInfoPopupComponent, UnitGroupPortraitComponent, UnitGroupSpellIconComponent, ValueBarComponent, VfxElementComponent, VfxLayerComponent } from './components';
+import { ActionCardComponent, CustomCursorComponent, DescriptionComponent, EventFeedComponent, EventFeedMessageComponent, GameOverPopupComponent, HintsContainerComponent, HoverHintComponent, IconBtnComponent, ItemDescriptionComponent, MainButtonComponent, MenuComponent, MwActionHintComponent, MwExperienceBarComponent, MwPlayerInfoPanelComponent, MwRaIconComponent, PopupContainerComponent, PopupWrapperComponent, RewardPopupComponent, SharedTemplateDirective, SharedTemplatesComponent, SpellDescriptionComponent, UnitGroupInfoComponent, UnitGroupInfoPopupComponent, UnitGroupPortraitComponent, UnitGroupSpellIconComponent, ValueBarComponent, VfxElementComponent, VfxLayerComponent } from './components';
 import { DisableContextMenuDirective, MwActionHintDirective, MwCustomCursorDirective, MwUnitEventsCursorDirective, MwUnitGroupCombatActionDirective, NumberModifierDirective } from './directives';
 
 const directives = [
@@ -14,6 +14,8 @@ const directives = [
 
 const components = [
   ...directives,
+
+  ActionCardComponent,
 
   GameOverPopupComponent,
   SharedTemplateDirective,

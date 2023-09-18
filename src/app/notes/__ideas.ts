@@ -17,6 +17,9 @@
 
         -- Side Note: In theory, if there are different promotions to the same unit type,
             player might want to have both for greater effects.
+    6. There can also me some ways to obtain magic (mb temporary, with books, etc.),
+        so, heroes of Castle could obtain Fire Hydra ability.
+        (for Constellation as well)
 */
 /*
   Todo: When player opens info for something, there can be

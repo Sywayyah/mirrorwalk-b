@@ -4,6 +4,7 @@ import { FireRingStructure } from '../common/guard-location';
 import { dailyResourcesMineStructure } from '../common/resource-mine';
 import { resourcesPileStructure, resPileStructure } from '../common/resource-pile';
 import { StructureDescription } from '../map-structures';
+import { constellationSpawn } from './preset1-const-spawn';
 
 /* Think more here, customizable locations, more location types (resource piles, single guards, etc.) */
 
@@ -252,11 +253,11 @@ export const structsPreset1: StructureDescription[] = [
     x: loc(0),
     y: loc(0),
     icon: 'campfire',
-    isRoot: true,
   },
   ...fifthBranch,
   ...brBranch,
   ...blBranch,
   ...tlBranch,
   ...trBranch,
+  ...constellationSpawn,
 ];

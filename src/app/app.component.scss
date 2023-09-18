@@ -1,0 +1,10 @@
+.test {
+  position: absolute;
+  left: 100px;
+  top: 100px;
+  display: flex;
+  gap: 12px;
+
+  max-width: 1000px;
+  flex-wrap: wrap;
+}

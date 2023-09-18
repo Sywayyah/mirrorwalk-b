@@ -1,9 +1,13 @@
 import { createEventType } from 'src/app/store';
 import { DefaultGameModes, GamePreparedEvent } from './types';
+import { Fraction } from '../../fractions';
 
 const createTriggerEvent = createEventType;
 
-export const PrepareGameEvent = createTriggerEvent<{ gameMode: DefaultGameModes }>(
+export const PrepareGameEvent = createTriggerEvent<{
+  gameMode: DefaultGameModes;
+  selectedFraction?: Fraction<string>;
+}>(
   'Player started new game, waiting for GamePreparationFinished event to prepare the map.',
 );
 
