@@ -143,18 +143,7 @@ export class MwPlayersService extends StoreClient() {
   public getUnitGroupsOfPlayer(playerId: string): UnitGroup[] {
     const player = this.playersMap.get(this.gameObjectsManager.getObjectId(Player, playerId))!;
 
-    // todo: revisit this logic.
-    return player.unitGroups.map((unitGroup: UnitGroup) => {
-      // unitGroup.ownerPlayerRef = player;
-      // possibly obsolete logic
-      // unitGroup.assignOwnerPlayer(player);
-
-      const unitGroupInstance = unitGroup as UnitGroup;
-
-      unitGroupInstance.spells = unitGroupInstance.spells ?? [];
-
-      return unitGroupInstance;
-    })
+    return player.unitGroups;
   }
 
   public addUnitGroupToTypeStack(player: Player, unitGroup: UnitGroup): void {

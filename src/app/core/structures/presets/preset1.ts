@@ -36,6 +36,7 @@ const brBranch: StructureDescription[] = [
     icon: 'tombstone',
     pathTo: START_LOC_ID,
     struct: GraveyardStructure,
+    tags: [''],
   },
   {
     id: '5',

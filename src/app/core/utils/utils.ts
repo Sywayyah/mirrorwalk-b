@@ -30,6 +30,10 @@ export const CommonUtils = {
     return Math.random() < chance;
   },
 
+  nonNegative(val: number): number {
+    return val < 0 ? 0 : val;
+  },
+
   getRandomItems<T>(items: T[], count: number): T[] {
     const itemsLeft = [...items];
     const result = [];
@@ -51,6 +55,6 @@ export function getLast<T>(items: T[]): T {
   return items[items.length - 1];
 }
 
-export function getFirst<T>(items: T[]): T{
+export function getFirst<T>(items: T[]): T {
   return items[0];
 }

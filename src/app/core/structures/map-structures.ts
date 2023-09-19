@@ -13,6 +13,7 @@ export interface StructureDescription {
   struct?: StructureGeneratorModel;
   defenderStaticMods?: Modifiers;
   attackerStaticMods?: Modifiers;
+  tags?: string[];
 }
 
 type SvgPath = {

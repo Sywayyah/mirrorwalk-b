@@ -1,6 +1,7 @@
 import { AssetsImages } from '../../assets';
 import { neutralsFraction } from '../../fractions/neutrals/fraction';
 import { FrightSpell } from '../../spells/common';
+import { SkeletonsDamageBlock } from '../../spells/common/skeletons-damage-block';
 import { heroDescrElem } from '../../ui';
 import { UnitBaseType } from '../types';
 import { createStats } from '../utils';
@@ -106,4 +107,42 @@ neutralsFraction.defineUnitType('Ghosts', {
   defaultModifiers: {
     isGhost: true,
   }
+});
+
+neutralsFraction.defineUnitType('Skeletons', {
+  name: 'Skeletons',
+  mainPortraitUrl: AssetsImages.UnitMelee,
+  level: 1,
+
+  getDescription() {
+    return {
+      descriptions: [
+        heroDescrElem(`Undead unit.`),
+        heroDescrElem(`Usually found in big numbers, Skeletons also have ability to block damage with some chance.`),
+      ],
+    }
+  },
+
+  baseStats: {
+    damageInfo: { maxDamage: 2, minDamage: 1 },
+    attackRating: 1,
+    defence: 2,
+    health: 9,
+    speed: 11,
+  },
+  
+  defaultSpells: [SkeletonsDamageBlock],
+
+  defaultTurnsPerRound: 1,
+  minQuantityPerStack: 1,
+
+  baseRequirements: {
+    gold: 55,
+  },
+
+  neutralReward: {
+    experience: 3,
+    gold: 1.5,
+  },
+
 });

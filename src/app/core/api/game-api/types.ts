@@ -1,7 +1,7 @@
 import { Player } from '../../players';
 import { Resources, ResourceType } from '../../resources';
 import { Spell, SpellBaseType } from '../../spells';
-import { UnitGroup, UnitBaseType } from '../../unit-types';
+import { UnitBaseType, UnitGroup } from '../../unit-types';
 import { SpellCreationOptions } from '../combat-api';
 
 export interface PlayersApi {

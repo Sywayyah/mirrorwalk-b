@@ -33,6 +33,9 @@
     deal {{log.damage}} damage to
     <span [style.color]="log.attackedPlayer.color">{{log.attackedNumber}} {{log.attacked.name}}</span>
     , killing {{log.losses}} units
+    <span *ngIf="log.damageBlocked">
+      {{log.damageBlocked}} damage was blocked
+    </span>
   </div>
 </ng-template>
 
