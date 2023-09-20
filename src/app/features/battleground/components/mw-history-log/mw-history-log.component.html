@@ -21,6 +21,7 @@
   </div>
 </div>
 
+<!-- todo: pass custom html -->
 <ng-template #simple
              let-log="log">
   {{log.message}}
@@ -33,6 +34,9 @@
     deal {{log.damage}} damage to
     <span [style.color]="log.attackedPlayer.color">{{log.attackedNumber}} {{log.attacked.name}}</span>
     , killing {{log.losses}} units
+    <div *ngIf="log.damageBlocked">
+      {{log.damageBlocked}} damage was blocked
+    </div>
   </div>
 </ng-template>
 

@@ -13,6 +13,7 @@ export interface StructureDescription {
   struct?: StructureGeneratorModel;
   defenderStaticMods?: Modifiers;
   attackerStaticMods?: Modifiers;
+  tags?: string[];
 }
 
 type SvgPath = {
@@ -91,6 +92,9 @@ export class MapStructure extends GameObject<ViewStructureCreationParams> {
     this.icon = iconName;
     this.isRoot = isRoot;
     this.generator = generator;
+    if (generator) {
+      this.name = generator.name;
+    }
     this.guardingPlayer = guardingPlayer;
     this.pathTo = pathTo;
   }

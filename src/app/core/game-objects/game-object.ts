@@ -15,6 +15,7 @@ export type GameObjectClass<T extends GameObject> = Type<T> & {
 
 export interface GameObjectsManagerAPI {
   createNewGameObject<T extends GameObject>(gameObjectClass: GameObjectClass<T>, creationParams: CreationParams<T>, id?: string): T;
+  getObjectByFullId<T extends GameObject>(gameObjectId: string): T;
 }
 
 export interface EventFeedApi {

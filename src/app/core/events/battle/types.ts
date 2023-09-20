@@ -17,7 +17,11 @@ export type GroupTakesDamageEvent = {
 
 export type GroupDiesEvent = props<'target' | 'loss' | 'targetPlayer'>;
 
-export type GroupDamagedByGroupEvent = props<'attackingGroup' | 'attackedGroup' | 'loss' | 'damage'> & { attackersCount: number, attackedCount: number };
+export type GroupDamagedByGroupEvent = props<'attackingGroup' | 'attackedGroup' | 'loss' | 'damage'> & {
+  attackersCount: number,
+  attackedCount: number,
+  damageBlocked: number
+};
 
 export type RoundGroupSpendsTurnEvent = {
   groupStillAlive: boolean;

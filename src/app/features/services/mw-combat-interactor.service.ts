@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { DamageType, PostDamageInfo } from 'src/app/core/api/combat-api/types';
 import { CombatAttackInteraction, CombatInteractionEnum, CombatInteractionStateEvent, GroupCounterAttacked, GroupDamagedByGroup, GroupDies, GroupSpellsChanged, GroupTakesDamage, InitSpell, PlayerHoversCardEvent } from 'src/app/core/events';
+import { ModsRef, ModsRefsGroup } from 'src/app/core/modifiers';
 import { defaultResistCap, resistsMapping } from 'src/app/core/modifiers/resists';
 import { Player } from 'src/app/core/players';
 import { Spell, SpellActivationType, SpellEventNames, SpellEventTypeByName, SpellEvents } from 'src/app/core/spells';
@@ -12,7 +13,9 @@ import { BattleStateService, FinalDamageInfo, MwPlayersService, MwUnitGroupState
 import { ActionHintService } from './mw-action-hint.service';
 import { State } from './state.service';
 
-
+interface ExtendedFinalDamageInfo extends FinalDamageInfo {
+  blockedDamage: number;
+}
 @Injectable({
   providedIn: 'root'
 })
@@ -39,10 +42,10 @@ export class CombatInteractorService extends StoreClient() {
     postActionFn?: (actionInfo: PostDamageInfo) => void,
     /* options object, contains values depending on situation */
     options: { attackerUnit?: UnitGroup } = {},
-  ): FinalDamageInfo {
+  ): ExtendedFinalDamageInfo {
     /* todo: OnGroupDamaged isn't dispatched, and reward isn't calculated because of that. */
     let finalDamage = damage;
-
+    let blockedDamage = 0;
     // handle some numbers rounding
     switch (damageType) {
       /* Normal Unit Group attack */
@@ -51,17 +54,44 @@ export class CombatInteractorService extends StoreClient() {
         if (options.attackerUnit) {
           console.log('attacker?', options.attackerUnit);
 
-          const combatModifiers = options.attackerUnit.modGroup
-            .getAllModValues('attackConditionalModifiers')
-            .map((mod) => mod!({ attacked: target }));
+          const conditionalAttackData = { attacked: target, attacker: options.attackerUnit };
 
-          const damagePercentMod = combatModifiers
+          const attackerConditionalModifiers = options.attackerUnit.modGroup
+            .getAllModValues('attackConditionalModifiers')
+            .map((mod) => mod!(conditionalAttackData));
+
+          const targetConditionalModifiers = target.modGroup
+            .getAllModValues('attackConditionalModifiers')
+            .map((mod) => mod!(conditionalAttackData));
+
+          // another thing: conditional + non-conditional, should be added together
+          const targetConditionalModsGroup = ModsRefsGroup.withRefs(targetConditionalModifiers.map(ModsRef.fromMods));
+
+          const chanceToBlock = targetConditionalModsGroup.getModValue('chanceToBlock');
+          const damageBlockMin = targetConditionalModsGroup.getModValue('damageBlockMin');
+          const damageBlockMax = targetConditionalModsGroup.getModValue('damageBlockMax');
+
+          if (chanceToBlock) {
+            const blockChanceWorked = CommonUtils.chanceRoll(chanceToBlock);
+            console.log('blocking -> chance to block', chanceToBlock, blockChanceWorked);
+
+            if (blockChanceWorked) {
+              const damageBlockValue = CommonUtils.randIntInRange(damageBlockMin!, damageBlockMax!);
+
+              blockedDamage = damageBlockValue;
+            }
+
+          }
+
+          // todo: practically, attacker modifiers can also be united under new ModGroup, so there will be no need
+          // to recalc values like this
+          const damagePercentMod = attackerConditionalModifiers
             .filter(mod => mod.baseDamagePercentModifier)
             .reduce((acc, next) => acc + (next.baseDamagePercentModifier as number), 0);
 
           console.log(`damage reduced by ${damagePercentMod}%`);
 
-          finalDamage = Math.round(finalDamage + finalDamage * damagePercentMod);
+          finalDamage = CommonUtils.nonNegative(Math.round(finalDamage + finalDamage * damagePercentMod) - blockedDamage);
         }
         break;
 
@@ -110,7 +140,7 @@ export class CombatInteractorService extends StoreClient() {
 
     /* don't handle rest if this is a phys attack */
     if (damageType === DamageType.PhysicalAttack) {
-      return finalDamageInfo;
+      return { ...finalDamageInfo, blockedDamage };
     }
 
     if (finalDamageInfo.isDamageFatal) {
@@ -130,7 +160,7 @@ export class CombatInteractorService extends StoreClient() {
       }));
     }
 
-    return finalDamageInfo;
+    return { ...finalDamageInfo, blockedDamage };
   }
 
   /* when group counterattacks and defeats enemy group, both are gone from queue */
@@ -173,6 +203,7 @@ export class CombatInteractorService extends StoreClient() {
 
       this.events.dispatch(GroupDamagedByGroup({
         attackingGroup: attacker,
+        damageBlocked: finalDamageInfo.blockedDamage,
         attackedGroup: attacked,
         loss: finalDamageInfo.finalUnitLoss,
         damage: finalDamageInfo.finalDamage,
@@ -304,19 +335,20 @@ export class CombatInteractorService extends StoreClient() {
   }
 
   public addSpellToUnitGroup(target: UnitGroup, spell: Spell, ownerPlayer: Player): void {
-    target.spells.push(spell);
+    target.addSpell(spell);
+
 
     this.events.dispatch(GroupSpellsChanged({
       unitGroup: target,
     }));
 
     this.initSpell(spell, ownerPlayer);
+
     this.triggerEventForSpellHandler(spell, SpellEvents.SpellPlacedOnUnitGroup({ target }));
   }
 
   public removeSpellFromUnitGroup(target: UnitGroup, spell: Spell): void {
-    const spellIndex = target.spells.indexOf(spell);
-    target.spells.splice(spellIndex, 1);
+    target.removeSpell(spell);
 
     this.state.eventHandlers.spells.removeAllHandlersForRef(spell);
 

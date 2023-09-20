@@ -22,7 +22,6 @@ import { MwSpellsService } from '../mw-spells.service';
 import { MwUnitGroupsService } from '../mw-unit-groups.service';
 import { State } from '../state.service';
 import { UiEventFeedService } from '../ui-event-feed.service';
-import { CommonUtils } from 'src/app/core/utils';
 
 @Injectable()
 export class InGameApiController extends StoreClient() {

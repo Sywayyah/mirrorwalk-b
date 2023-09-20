@@ -28,5 +28,6 @@ export interface DealtDamageMessage extends HistoryLogModel<HistoryLogTypesEnum.
   attackersNumber: number;
   attackedNumber: number;
   losses: number;
+  damageBlocked: number;
   damage: number;
 }

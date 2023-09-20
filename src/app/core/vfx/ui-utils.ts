@@ -1,9 +1,19 @@
 import { CustomizableAnimationData } from '../api/vfx-api';
 
-export const getDamageParts = (damage: number, loss: number, isRanged: boolean = false): CustomizableAnimationData => {
+export const uiPercent = (chanceNumber: number): string => `${Math.round(chanceNumber * 100)}`;
+
+export const uiValueRange = (min: number, max: number) => min === max ? `${min} ` : `${min} -${max} `;
+
+export const getDamageParts = (
+  damage: number,
+  loss: number,
+  isRanged: boolean = false,
+  blockedDamage: number = 0,
+): CustomizableAnimationData => {
   return {
     parts: [
       { type: 'plainPart', icon: isRanged ? 'broadhead-arrow' : 'sword', text: damage, color: 'red' },
+      ...(blockedDamage ? [{ type: 'plainPart', icon: 'shield', color: 'yellow', text: blockedDamage }] : []),
       { type: 'plainPart', icon: 'skull', text: loss, color: 'white' },
     ],
   };

@@ -1,6 +1,7 @@
 import { AssetsImages } from '../../assets';
 import { humansFraction } from '../../fractions/humans/fraction';
 import { FirebirdHealSpell } from '../../spells/common';
+import { KnightsDamageBlock } from '../../spells/common/damage-block/knights-damage-block';
 import { heroDescrElem } from '../../ui';
 import { createStats, simpleDescriptions } from '../utils';
 
@@ -145,7 +146,8 @@ humansFraction.defineUnitType('Knight', {
   level: 3,
 
   getDescription: simpleDescriptions([
-    heroDescrElem(`Knights are possessing high armor and attack, while also having +12% to Fire, Cold and Lightning resistances.`),
+    heroDescrElem(`Knights are possessing high armor and attack. `),
+    heroDescrElem(`<br>Chance-based ability to block damage along with +12% to Fire, Cold and Lightning resistances makes them durable fighters.`),
   ]),
 
   baseStats: createStats([[6, 9], 6, 5, 17, 11]),
@@ -154,9 +156,12 @@ humansFraction.defineUnitType('Knight', {
   defaultTurnsPerRound: 1,
 
   baseRequirements: {
-    gold: 100,
+    gold: 120,
   },
 
+  defaultSpells: [
+    KnightsDamageBlock,
+  ],
   defaultModifiers: {
     resistFire: 12,
     resistCold: 12,

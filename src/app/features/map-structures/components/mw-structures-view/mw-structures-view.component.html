@@ -10,9 +10,18 @@
                 [class.disabled]="!structsService.availableStructuresMap[struct.id]"
                 (click)="onStructureSelected(struct)"
                 [style.left.px]="struct.x"
+                [mwActionHint]="struct.name"
                 [style.top.px]="struct.y"
                 class="struct-icon"
                 [icon]="struct.icon" />
+    <div *ngIf="isLocNameVisible"
+         style="position: absolute;"
+         [style.left.px]="struct.x"
+         [style.top.px]="struct.y">
+      <span class="loc-name">
+        {{struct.name}}
+      </span>
+    </div>
 
     <!-- <mw-ra-icon *ngIf="playerCurrentLocId === struct.id" style="position: absolute; z-index: 70" icon="castle-flag"></mw-ra-icon> -->
 

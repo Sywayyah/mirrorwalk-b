@@ -3,6 +3,7 @@ import { Fractions, FractionsEnum } from '../fractions';
 export type NEUTRAL_UNIT_TYPES =
   'Ghosts'
   | 'SupremeGhosts'
+  | 'Skeletons'
   | 'Gnoll'
   | 'Thieves'
   | 'ForestTrolls'

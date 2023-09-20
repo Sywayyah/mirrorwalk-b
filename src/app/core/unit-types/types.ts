@@ -9,6 +9,7 @@ import { ResourcesModel } from '../resources';
 import { Spell, SpellBaseType } from '../spells';
 import { DescriptionElement } from '../ui';
 import { complete } from '../utils/observables';
+import { CommonUtils } from '../utils';
 
 interface RequirementModel extends Partial<ResourcesModel> {
   /* heroLevel?: number;
@@ -84,7 +85,7 @@ export interface UnitBaseType {
 
   defaultModifiers?: Modifiers;
 
-  defaultSpells?: SpellBaseType[];
+  defaultSpells?: SpellBaseType<any>[];
 
   /* minimal amount of units that can stack can be hired, sold or split by */
   minQuantityPerStack: number;
@@ -120,6 +121,9 @@ export enum UnitModGroups {
 
   /** Mods gained from specialties and conditional mods */
   SpecialtyAndConditionalMods = 'scMods',
+
+  /** Mods coming from spells */
+  SpellMods = 'sMods',
 }
 
 export interface UnitStatsInfo {
@@ -147,6 +151,7 @@ export interface UnitStatsInfo {
 }
 
 export class UnitGroup extends GameObject<UnitCreationParams> {
+
   public static readonly categoryId: string = 'unit-group';
 
   // todo: many properties can become getters
@@ -176,7 +181,11 @@ export class UnitGroup extends GameObject<UnitCreationParams> {
     spellsOnCooldown?: boolean;
   };
 
-  public spells!: Spell[];
+  public get spells(): Spell[] {
+    return this._spells;
+  }
+
+  private _spells!: Spell[];
 
   // mods are going to be attached there
   public readonly modGroup: ModsRefsGroup = ModsRefsGroup.empty();
@@ -239,14 +248,20 @@ export class UnitGroup extends GameObject<UnitCreationParams> {
 
     this.setUnitsCount(count);
 
-    if (this.type.defaultSpells) {
-      this.spells = this.type.defaultSpells.map(spell => this.getApi().spells.createSpellInstance(spell));
-    } else {
-      this.spells = [];
-    }
-
+    // Init unit mod groups
     this.modGroup.attachNamedParentGroup(UnitModGroups.CombatMods, ModsRefsGroup.empty());
     this.modGroup.attachNamedParentGroup(UnitModGroups.SpecialtyAndConditionalMods, ModsRefsGroup.empty());
+    this.modGroup.attachNamedParentGroup(UnitModGroups.SpellMods, ModsRefsGroup.empty());
+
+    // Init spells when all mod groups are ready
+    this._spells = [];
+
+    if (this.type.defaultSpells) {
+      this.type.defaultSpells
+        .map(spell => this.getApi().spells.createSpellInstance(spell))
+        .forEach(spell => this.addSpell(spell));
+    }
+
     this.setupStatsUpdating();
   }
 
@@ -285,6 +300,16 @@ export class UnitGroup extends GameObject<UnitCreationParams> {
     return this.unitStats$.pipe(takeUntil(this.destroyed$));
   }
 
+  addSpell(spell: Spell): void {
+    this._spells.push(spell);
+    spell.setOwnerObjectId(this.id);
+    spell.baseType.type.spellConfig.onAcquired?.({ spellInstance: spell, ownerUnit: this });
+  }
+
+  removeSpell(spell: Spell): void {
+    CommonUtils.removeItem(this._spells, spell);
+  }
+
   getStats(): UnitStatsInfo {
     return this.unitStats$.getValue();
   }
@@ -313,6 +338,14 @@ export class UnitGroup extends GameObject<UnitCreationParams> {
 
   removeCombatMods(modifiers: Modifiers): void {
     this.modGroup.getNamedGroup(UnitModGroups.CombatMods)!.removeRefByModInstance(modifiers);
+  }
+
+  addSpellMods(mods: Modifiers): void {
+    this.modGroup.getNamedGroup(UnitModGroups.SpellMods)!.addModsRef(ModsRef.fromMods(mods));
+  }
+
+  removeSpellMods(mods: Modifiers): void {
+    this.modGroup.getNamedGroup(UnitModGroups.SpellMods)!.removeRefByModInstance(mods);
   }
 
   private recalcHealthBasedStats(): void {

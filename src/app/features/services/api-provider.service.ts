@@ -4,6 +4,7 @@ import { MwHeroesService } from './mw-heroes.service';
 import { MwPlayersService } from './mw-players.service';
 import { MwSpellsService } from './mw-spells.service';
 import { MwUnitGroupsService } from './mw-unit-groups.service';
+import { State } from './state.service';
 
 @Injectable({
   providedIn: 'root',
@@ -15,6 +16,7 @@ export class ApiProvider {
     private readonly unitGroups: MwUnitGroupsService,
     private readonly players: MwPlayersService,
     private readonly spells: MwSpellsService,
+    private readonly state: State,
   ) {
   }
 

@@ -3,7 +3,7 @@ import { KeysMatching } from '../utils';
 import { Specialties } from './specialties';
 
 export interface ConditionalModifierParamsModel {
-  // attacker: UnitGroupInstModel;
+  attacker?: UnitGroup;
   attacked: UnitGroup;
 }
 
@@ -27,8 +27,17 @@ export interface ModifiersModel extends Specialties {
   // to be implemented
   lifesteal: number;
   retaliationDamagePercent: number;
-  criticalDamageMul: number;
+
+  // critical damage (to be implemented)
   criticalDamageChance: number;
+  criticalDamageMul: number;
+  
+  // damage block
+  // chance is in 0-1 scale
+  // needs to be specified all together on same modfiers instance
+  chanceToBlock: number;
+  damageBlockMin: number;
+  damageBlockMax: number;
 
   // specified in 0-100 scale
   resistAll: number;

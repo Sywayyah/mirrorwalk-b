@@ -93,7 +93,11 @@ export class MwGameboardComponent extends StoreClient() implements OnInit, After
   public displayDamageVfxOverAttackedGroup(event: GroupDamagedByGroupEvent): void {
     /* previous solution was stacking because of no unsubscribe. */
     const isRanged = event.attackingGroup.type.defaultModifiers?.isRanged;
-    this.vfx.createFloatingMessageForUnitGroup(event.attackedGroup, getDamageParts(event.damage, event.loss, isRanged));
+    this.vfx.createFloatingMessageForUnitGroup(
+      event.attackedGroup,
+      getDamageParts(event.damage, event.loss, isRanged, event.damageBlocked),
+      { duration: event.damageBlocked ? 1100 : 1000 }
+    );
   }
 
   @WireMethod(UnitSummoned)

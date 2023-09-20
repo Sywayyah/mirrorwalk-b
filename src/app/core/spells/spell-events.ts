@@ -7,10 +7,10 @@ import { Spell } from './types';
 export const SpellEventsGroup = createEventsGroup({
   prefix: 'Spells',
   events: {
-    PlayerTargetsSpell: createEventType<{ target: UnitGroup }>(''),
-    SpellPlacedOnUnitGroup: createEventType<{ target: UnitGroup }>(''),
-    NewRoundBegins: createEventType<{ round: number }>(''),
-    PlayerCastsInstantSpell: createEventType<{ player: Player, spell: Spell }>(''),
+    PlayerTargetsSpell: createEventType<{ target: UnitGroup }>(),
+    SpellPlacedOnUnitGroup: createEventType<{ target: UnitGroup }>(),
+    NewRoundBegins: createEventType<{ round: number }>(),
+    PlayerCastsInstantSpell: createEventType<{ player: Player, spell: Spell }>(),
     UnitGroupAttacks: createEventType<{
       attacker: UnitGroup;
       attacked: UnitGroup;
