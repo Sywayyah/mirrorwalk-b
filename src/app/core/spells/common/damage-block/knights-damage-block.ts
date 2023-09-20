@@ -11,5 +11,5 @@ export const KnightsDamageBlock: SpellBaseType<{ damageBlockMod: Modifiers }> = 
     chance: [0.60, 0.62, 0.64, 0.66, 0.68],
     chanceAgainstRange: [0.63, 0.65, 0.67, 0.68, 0.70],
   },
-  description: ({ blockValue, meleeChance, rangedChance }) => `Knigts can block ${blockValue} damage with ${meleeChance}% chance (${rangedChance}% against ranged units).`,
+  description: ({ blockValue, meleeChance, rangedChance }) => `Knights can block ${blockValue} damage with ${meleeChance}% chance (${rangedChance}% against ranged units).`,
 });
