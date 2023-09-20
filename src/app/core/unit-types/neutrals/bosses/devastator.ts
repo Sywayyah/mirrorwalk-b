@@ -1,3 +1,4 @@
+import { DevastatorScaleArmorDamageBlock } from 'src/app/core/spells/common/damage-block/devastator-damage-block';
 import { FireBreath } from 'src/app/core/spells/common/fire-breath';
 import { heroDescrElem } from 'src/app/core/ui';
 import { AssetsImages } from '../../../assets';
@@ -13,6 +14,7 @@ neutralsFraction.defineUnitType('Devastator', {
   getDescription: simpleDescriptions([
     heroDescrElem('An evil dragon of fire.'),
     heroDescrElem('<br>Dangerous boss unit with large health pool. Has +20% to All Resists and Fire Breath ability that damages random units.'),
+    heroDescrElem('<br>His scales also allow him to block some damage.'),
   ]),
 
   baseStats: {
@@ -23,7 +25,7 @@ neutralsFraction.defineUnitType('Devastator', {
     speed: 14,
   },
 
-  defaultSpells: [FireBreath],
+  defaultSpells: [FireBreath, DevastatorScaleArmorDamageBlock],
   defaultModifiers: {
     isBoss: true,
     resistAll: 20,

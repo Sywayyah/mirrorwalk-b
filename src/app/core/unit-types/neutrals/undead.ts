@@ -1,7 +1,7 @@
 import { AssetsImages } from '../../assets';
 import { neutralsFraction } from '../../fractions/neutrals/fraction';
 import { FrightSpell } from '../../spells/common';
-import { SkeletonsDamageBlock } from '../../spells/common/skeletons-damage-block';
+import { SkeletonsDamageBlock } from '../../spells/common/damage-block/skeletons-damage-block';
 import { heroDescrElem } from '../../ui';
 import { UnitBaseType } from '../types';
 import { createStats } from '../utils';
@@ -130,7 +130,7 @@ neutralsFraction.defineUnitType('Skeletons', {
     health: 9,
     speed: 11,
   },
-  
+
   defaultSpells: [SkeletonsDamageBlock],
 
   defaultTurnsPerRound: 1,

@@ -14,7 +14,7 @@ export const createDamageBlockSpell = (config: {
   name: string,
   icon: string,
   blockConfig: DamageBlockPerLevelConfig,
-  description: (data: { meleeChance: number, rangedChance: number, blockValue: string }) => string,
+  description: (data: { meleeChance: string, rangedChance: string, blockValue: string }) => string,
 }): SpellBaseType<{ damageBlockMod: Modifiers }> => {
   const { icon, name, blockConfig, description } = config;
   return {
