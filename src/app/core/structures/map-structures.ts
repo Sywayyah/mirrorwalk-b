@@ -92,6 +92,9 @@ export class MapStructure extends GameObject<ViewStructureCreationParams> {
     this.icon = iconName;
     this.isRoot = isRoot;
     this.generator = generator;
+    if (generator) {
+      this.name = generator.name;
+    }
     this.guardingPlayer = guardingPlayer;
     this.pathTo = pathTo;
   }

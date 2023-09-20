@@ -7,6 +7,7 @@ import { GameObjectsManager } from 'src/app/features/services/game-objects-manag
 import { State } from 'src/app/features/services/state.service';
 import { StoreClient } from 'src/app/store';
 import { MapDragEvent } from '../map-canvas/map-canvas.component';
+import { CONFIG } from 'src/app/core/config';
 
 /* Rewamp this a bit later, along with service and the rest */
 /*  Check more cases, stuff like that */
@@ -22,6 +23,8 @@ export class MwStructuresViewComponent extends StoreClient() implements AfterVie
   public locationsRef!: ElementRef;
 
   public player: Player;
+
+  public isLocNameVisible = CONFIG.showLocationsNames;
 
   constructor(
     private readonly playersService: MwPlayersService,
