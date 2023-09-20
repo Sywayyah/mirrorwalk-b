@@ -2,6 +2,8 @@ import { CustomizableAnimationData } from '../api/vfx-api';
 
 export const uiPercent = (chanceNumber: number) => chanceNumber * 100;
 
+export const uiValueRange = (min: number, max: number) => min === max ? `${min}` : `${min}-${max}`;
+
 export const getDamageParts = (
   damage: number,
   loss: number,

@@ -29,11 +29,12 @@ export interface ModifiersModel extends Specialties {
   retaliationDamagePercent: number;
 
   // critical damage (to be implemented)
-  criticalDamageMul: number;
   criticalDamageChance: number;
-
+  criticalDamageMul: number;
+  
   // damage block
   // chance is in 0-1 scale
+  // needs to be specified all together on same modfiers instance
   chanceToBlock: number;
   damageBlockMin: number;
   damageBlockMax: number;
