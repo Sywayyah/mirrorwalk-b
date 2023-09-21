@@ -7,10 +7,10 @@ export const SkeletonsDamageBlock: SpellBaseType<{ damageBlockMod: Modifiers }> 
   name: 'Damage Block',
   icon: 'heavy-shield',
   blockConfig: {
-    minDamage: [8, 35, 45, 86, 120],
-    maxDamage: [16, 46, 55, 96, 160],
-    chance: [0.5, 0.53, 0.56, 0.59, 0.62],
-    chanceAgainstRange: [0.65, 0.68, 0.71, 0.74, 0.77],
+    minDamage: [8, 24, 45, 86, 120],
+    maxDamage: [16, 36, 55, 96, 160],
+    chance: [0.20, 0.30, 0.35, 0.40, 0.45],
+    chanceAgainstRange: [0.65, 0.70, 0.75, 0.80, 0.85],
   },
   description: ({ blockValue, meleeChance, rangedChance }) => `Skeletons can block ${blockValue} damage with ${meleeChance}% chance (${rangedChance}% against ranged units).`,
 });
