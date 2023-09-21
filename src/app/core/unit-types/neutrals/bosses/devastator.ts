@@ -21,11 +21,12 @@ neutralsFraction.defineUnitType('Devastator', {
     damageInfo: { minDamage: 32, maxDamage: 47 },
     attackRating: 9,
     defence: 16,
-    health: 900,
+    health: 740,
     speed: 14,
   },
 
   defaultSpells: [FireBreath, DevastatorScaleArmorDamageBlock],
+
   defaultModifiers: {
     isBoss: true,
     resistAll: 20,
@@ -36,8 +37,8 @@ neutralsFraction.defineUnitType('Devastator', {
   minQuantityPerStack: 1,
 
   neutralReward: {
-    experience: 100,
-    gold: 250,
+    experience: 120,
+    gold: 340,
   },
 
   upgraded: false,
