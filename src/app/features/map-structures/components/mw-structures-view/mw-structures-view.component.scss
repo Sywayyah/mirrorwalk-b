@@ -123,10 +123,7 @@
   top: 50%;
   display: flex;
   flex-direction: column;
-
-  >mw-icon-btn {
-    margin-bottom: 4px;
-  }
+  transform: translateY(-50%);
 }
 
 mw-action-hint {
@@ -135,10 +132,4 @@ mw-action-hint {
   left: 0;
   right: 0;
   font-size: 13px;
-}
-
-.player-actions {
-  mw-icon-btn {
-    padding: 0 20px;
-  }
 }

@@ -1,0 +1,16 @@
+<mw-icon-btn mwActionHint="Go to {{state.createdGame.fraction.title}}"
+             (click)="goToTown()"
+             [icon]="state.createdGame.fraction.icon" />
+
+<mw-icon-btn mwActionHint="Inspect Hero"
+             (click)="openPlayerInfo()"
+             icon="aura" />
+
+<mw-icon-btn [mwActionHint]="'Action Cards<hr>' + state.currentGame.actionPoints + ' action points left'"
+             class="action-points"
+             (click)="openActionCards()">
+  <div class="action-info">
+    <mw-ra-icon icon="feather-wing" />
+    <span>{{state.currentGame.actionPoints}}</span>
+  </div>
+</mw-icon-btn>
