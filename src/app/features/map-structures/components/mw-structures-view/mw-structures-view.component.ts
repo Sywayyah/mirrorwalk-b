@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, ElementRef, Renderer2, ViewChild } from '@angular/core';
-import { MapPanCameraCenterTo, PlayerEntersTown, PlayerOpensHeroInfo, StructSelected } from 'src/app/core/events';
+import { MapPanCameraCenterTo, PlayerEntersTown, PlayerOpensActionCards, PlayerOpensHeroInfo, StructSelected } from 'src/app/core/events';
 import { Player } from 'src/app/core/players';
 import { MapStructure } from 'src/app/core/structures';
 import { MwPlayersService, MwStructuresService } from 'src/app/features/services';
@@ -19,6 +19,7 @@ import { CONFIG } from 'src/app/core/config';
   styleUrls: ['./mw-structures-view.component.scss'],
 })
 export class MwStructuresViewComponent extends StoreClient() implements AfterViewInit {
+
   @ViewChild('locationsContainer')
   public locationsRef!: ElementRef;
 
@@ -87,5 +88,9 @@ export class MwStructuresViewComponent extends StoreClient() implements AfterVie
 
   public openPlayerInfo(): void {
     this.events.dispatch(PlayerOpensHeroInfo());
+  }
+
+  public openActionCards(): void {
+    this.events.dispatch(PlayerOpensActionCards());
   }
 }

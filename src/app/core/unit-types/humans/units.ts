@@ -134,9 +134,10 @@ humansFraction.defineUnitType('Archer', {
   baseRequirements: {
     gold: 95,
   },
+
   neutralReward: {
-    experience: 2,
-    gold: 2,
+    experience: 3,
+    gold: 5,
   },
 });
 
@@ -168,7 +169,10 @@ humansFraction.defineUnitType('Knight', {
     resistLightning: 12,
   },
 
-  neutralReward: defaultRewards,
+  neutralReward: {
+    experience: 10,
+    gold: 7,
+  },
 });
 
 humansFraction.defineUnitType('Cavalry', {
@@ -198,8 +202,8 @@ humansFraction.defineUnitType('Cavalry', {
     // redCrystals: 1
   },
   neutralReward: {
-    experience: 4,
-    gold: 6.3,
+    experience: 20,
+    gold: 25,
   },
 });
 

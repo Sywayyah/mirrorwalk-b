@@ -96,7 +96,7 @@ neutralsFraction.defineUnitType('Ghosts', {
   ],
   neutralReward: {
     experience: 2.3,
-    gold: 2.4,
+    gold: 3,
   },
   upgradeDetails: {
     target: Wraiths,
@@ -124,7 +124,7 @@ neutralsFraction.defineUnitType('Skeletons', {
   },
 
   baseStats: {
-    damageInfo: { maxDamage: 2, minDamage: 1 },
+    damageInfo: { minDamage: 1, maxDamage: 2, },
     attackRating: 1,
     defence: 2,
     health: 9,
@@ -142,7 +142,7 @@ neutralsFraction.defineUnitType('Skeletons', {
 
   neutralReward: {
     experience: 3,
-    gold: 1.5,
+    gold: 2,
   },
 
 });

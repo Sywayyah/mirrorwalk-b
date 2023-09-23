@@ -17,5 +17,26 @@ export const MeditateActionCard: ActionCard = {
   bgColor: 'rgb(39 57 89)',
   iconColor: '#d9f2fd',
   type: ActionCardTypes.PlayerAction,
-  description: `You restore 2 points of mana.`,
+  description: `You restore 4 points of mana (+2 per point of Restoration specialty), consumes 2 action points. Restored every week.`,
 };
+
+export const RestoreActionCard: ActionCard = {
+  title: 'Restore Mana',
+  icon: 'barrier',
+  bgColor: 'rgb(39 57 89)',
+  iconColor: '#d9f2fd',
+  type: ActionCardTypes.PlayerAction,
+  description: `You restore 3 points of mana (+2 per point of Restoration specialty), consumes 1 action point.`,
+};
+
+// Recruitting action
+export const RecruitActionCard: ActionCard = {
+  title: 'Recruit',
+  icon: 'knight-helmet',
+  bgColor: 'rgb(39 57 89)',
+  iconColor: '#d9f2fd',
+  type: ActionCardTypes.PlayerAction,
+  description: `Gives you additional units below tier 3, consumes 2 action points.`,
+};
+
+

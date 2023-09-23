@@ -1,3 +1,4 @@
+import { ActionCardStack } from '../action-cards';
 import { GameObject } from '../game-objects';
 import { Hero } from '../heroes';
 import { ResourcesModel } from '../resources';
@@ -43,6 +44,8 @@ export class Player extends GameObject<PlayerCreationModel> {
   public type!: PlayerTypeEnum;
 
   public hero!: Hero;
+
+  public actionCards: ActionCardStack[] = [];
 
   public get unitGroups() {
     return this._unitGroups;

@@ -1,5 +1,5 @@
 import { Injectable, Type } from '@angular/core';
-import { DisplayPlayerRewardAction, DisplayPlayerRewardPopup, DisplayPopup, DisplayReward, FightEnds, FightEndsEvent, NeutralStructParams, OpenSettings, PlayerOpensHeroInfo, ShowGameOverPopup, StructSelected, StructSelectedEvent } from 'src/app/core/events';
+import { DisplayPlayerRewardAction, DisplayPlayerRewardPopup, DisplayPopup, DisplayReward, FightEnds, FightEndsEvent, NeutralStructParams, OpenSettings, PlayerOpensActionCards, PlayerOpensHeroInfo, ShowGameOverPopup, StructSelected, StructSelectedEvent } from 'src/app/core/events';
 import { NeutralRewardTypesEnum, StructureType } from 'src/app/core/structures';
 import { FightEndsPopup, LossModel, StructPopupData } from 'src/app/core/ui';
 import { Notify, StoreClient, WireMethod } from 'src/app/store';
@@ -9,6 +9,7 @@ import { SettingsPopupComponent } from '../../main-screen/components';
 import { GameOverPopupComponent, PopupData, PopupService, RewardPopupComponent } from '../../shared/components';
 import { BattleStateService } from '../mw-battle-state.service';
 import { MwPlayersService } from '../mw-players.service';
+import { ActionCardsPopupComponent } from '../../shared/components/action-cards-popup/action-cards-popup.component';
 
 
 @Injectable()
@@ -56,6 +57,16 @@ export class PopupsController extends StoreClient() {
     this.popupService.createBasicPopup({
       component: RewardPopupComponent,
       data: action,
+    });
+  }
+
+  @Notify(PlayerOpensActionCards)
+  public displayActionCardsPopup(): void {
+    this.popupService.createBasicPopup({
+      component: ActionCardsPopupComponent,
+      data: {},
+      class: 'transparent',
+      isCloseable: true,
     });
   }
 

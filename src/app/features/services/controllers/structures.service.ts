@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { MapPanCameraCenterTo, NeutralStructParams, NewDayStarted, NewWeekStarted, PanMapCameraCenterAction, StructCompleted } from 'src/app/core/events';
-import { MapStructure, defaultTravelPointsCost, defaultTravelPointsPerDay } from 'src/app/core/structures';
+import { MapStructure, defaultActionPointsCost, defaultActionPointsPerDay } from 'src/app/core/structures';
 import { StoreClient, WireMethod } from 'src/app/store';
 import { GameObjectsManager } from '../game-objects-manager.service';
 import { MwStructuresService } from '../mw-structures.service';
@@ -28,11 +28,12 @@ export class StructuresController extends StoreClient() {
 
     const currentGame = this.state.currentGame;
 
-    currentGame.travelPoints -= defaultTravelPointsCost;
+    // todo: extract this as points removal/new day check as separate event
+    currentGame.actionPoints -= defaultActionPointsCost;
 
-    if (currentGame.travelPoints <= 0) {
+    if (currentGame.actionPoints <= 0) {
       currentGame.day += 1;
-      currentGame.travelPoints += defaultTravelPointsPerDay;
+      currentGame.actionPoints += defaultActionPointsPerDay;
 
       this.events.dispatch(NewDayStarted({
         day: currentGame.day

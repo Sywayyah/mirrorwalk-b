@@ -14,6 +14,11 @@ export interface ActionCard {
   borderColor?: string;
 }
 
+export interface ActionCardStack {
+  card: ActionCard;
+  count: number;
+}
+
 // todo: locations themselves will contain information about how much action points
 //  they will require (or 1 if unspecified)
 // player can have 3 action points at the beginning of each day

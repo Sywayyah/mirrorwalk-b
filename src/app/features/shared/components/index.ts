@@ -1,4 +1,5 @@
 export * from './action-card/action-card.component';
+export * from './action-cards-popup/action-cards-popup.component';
 export * from './custom-cursor';
 export * from './description/description.component';
 export * from './event-feed-message/event-feed-message.component';

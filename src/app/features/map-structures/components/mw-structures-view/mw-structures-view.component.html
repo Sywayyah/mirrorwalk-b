@@ -50,14 +50,18 @@
 <!-- maybe move it to some kind of ui overlay eventually.. -->
 <mw-action-hint />
 
+<!-- todo: extract as separate component -->
 <div class="player-actions">
   <mw-icon-btn mwActionHint="Go to {{state.createdGame.fraction.title}}"
                (click)="goToTown()"
-               style="padding: 0 20px"
                [icon]="state.createdGame.fraction.icon" />
 
   <mw-icon-btn mwActionHint="Inspect Hero"
                (click)="openPlayerInfo()"
-               style="padding: 0 20px"
                icon="aura" />
+
+  <!-- In general, action points could be rendered in this button, next to icon -->
+  <mw-icon-btn mwActionHint="Action Cards"
+               (click)="openActionCards()"
+               icon="feather-wing" />
 </div>

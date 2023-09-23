@@ -16,6 +16,8 @@ export const PlayerLeavesTown = gameEvent();
 
 export const PlayerOpensHeroInfo = gameEvent();
 
+export const PlayerOpensActionCards = gameEvent();
+
 export const StructSelected = gameEvent<StructSelectedEvent>();
 
 export const PlayerStartsFight = gameEvent<FightStartsEvent>();

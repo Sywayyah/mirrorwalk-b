@@ -6,7 +6,7 @@ import { LevelMap } from 'src/app/core/maps';
 import { ModsRefsGroup } from 'src/app/core/modifiers';
 import { Player } from 'src/app/core/players';
 import { Spell } from 'src/app/core/spells';
-import { MapStructure, defaultTravelPointsPerDay } from 'src/app/core/structures';
+import { MapStructure, defaultActionPointsPerDay } from 'src/app/core/structures';
 import { Building, Town } from 'src/app/core/towns';
 import { RefEventTriggersRegistry } from 'src/app/core/triggers';
 import { UnitsOrientation } from 'src/app/core/ui';
@@ -26,7 +26,7 @@ interface Feature {
 interface GameState {
   day: number;
   week: number;
-  travelPoints: number;
+  actionPoints: number;
 }
 
 @Injectable({
@@ -43,7 +43,7 @@ export class State {
   public currentGame: GameState = {
     day: 1,
     week: 1,
-    travelPoints: defaultTravelPointsPerDay,
+    actionPoints: defaultActionPointsPerDay,
   };
 
   // todo: review map-related settings later

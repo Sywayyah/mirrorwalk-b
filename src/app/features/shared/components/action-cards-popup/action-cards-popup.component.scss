@@ -1,0 +1,25 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: rgb(0 0 0 / 61%);
+  padding: 40px 0;
+}
+
+.header {
+  color: white;
+  text-align: center;
+  font-size: 24px;
+
+  .action-points {
+    font-size: 16px;
+    font-weight: 100;
+    line-height: 32px;
+  }
+}
+
+.cards {
+  display: flex;
+  gap: 24px;
+  pointer-events: all;
+}

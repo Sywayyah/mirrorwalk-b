@@ -28,7 +28,10 @@ export class GameObjectsManager {
 
   private readonly allObjects: Map<string, GameObject> = new Map();
 
-  constructor(private readonly events: EventsService) { }
+  constructor(private readonly events: EventsService) {
+    // expose game object into window for debugging
+    (window as any).gameObjects = this;
+  }
 
   createNewGameObject<T extends GameObject>(gameObjectClass: GameObjectClass<T>, creationParams: CreationParams<T>, id?: string): T {
     const categoryId = gameObjectClass.categoryId;

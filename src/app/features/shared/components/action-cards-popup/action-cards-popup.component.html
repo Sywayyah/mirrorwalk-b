@@ -1,0 +1,17 @@
+<div class="header">
+  Action cards
+  <div class="action-points">
+    Remaining action points for this day:
+    <br>
+    <mw-ra-icon icon='feather-wing' />
+    {{actionPointsLeft}}
+  </div>
+  <hr>
+</div>
+
+<div class="cards">
+  <mw-action-card *ngFor="let actionCard of cards"
+                  [actionCard]="actionCard.card"
+                  [mwActionHint]="'Use ' + actionCard.card.title"
+                  (click)="handleCardClick(actionCard)" />
+</div>
