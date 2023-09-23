@@ -6,4 +6,6 @@ export const HERO_LEVELS_BREAKPOINTS: Record<number, number> = {
   4: 475,
   5: 545,
   6: 600,
+  7: 650,
+  8: 700,
 };
