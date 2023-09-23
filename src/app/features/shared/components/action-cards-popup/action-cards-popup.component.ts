@@ -19,5 +19,7 @@ export class ActionCardsPopupComponent extends BasicPopup<{}> {
 
   public handleCardClick(actionCard: ActionCardStack): void {
     console.log(actionCard);
+    // close for now
+    this.close();
   }
 }
