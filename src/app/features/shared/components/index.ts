@@ -15,6 +15,7 @@ export * from './mw-action-hint/mw-action-hint.component';
 export * from './mw-experience-bar/mw-experience-bar.component';
 export * from './mw-player-info-panel/mw-player-info-panel.component';
 export * from './mw-ra-icon/mw-ra-icon.component';
+export * from './player-map-actions-panel/player-map-actions-panel.component';
 export * from './popup-container';
 export * from './reward-popup/reward-popup.component';
 export * from './shared-templates/shared-template.directive';
