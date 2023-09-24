@@ -14,6 +14,7 @@ export interface StructureDescription {
   defenderStaticMods?: Modifiers;
   attackerStaticMods?: Modifiers;
   tags?: string[];
+  actionPoints?: number;
 }
 
 type SvgPath = {

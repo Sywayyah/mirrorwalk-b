@@ -18,9 +18,12 @@ export const MeditateActionCard: ActionCard = {
   bgColor: 'rgb(39 57 89)',
   iconColor: '#d9f2fd',
   type: ActionCardTypes.PlayerAction,
-  description: `Restore ${manaIcon(4)} points of mana (+${manaIcon(2)} per point of Restoration specialty), consumes ${actionIcon(2)} action points. Restored every week.`,
+  description: `You restore ${manaIcon(4)} points of mana (+${manaIcon(2)} per point of Restoration specialty), consumes ${actionIcon(2)} action points. Restored every week.`,
+
+  actionPoints: 2,
 };
 
+// Restore action can be given by High Tower from the city, and some locations on the map
 export const RestoreActionCard: ActionCard = {
   title: 'Restore Mana',
   icon: 'barrier',
@@ -28,6 +31,8 @@ export const RestoreActionCard: ActionCard = {
   iconColor: '#d9f2fd',
   type: ActionCardTypes.PlayerAction,
   description: `You restore 3 points of mana (+2 per point of Restoration specialty), consumes 1 action point.`,
+
+  actionPoints: 1,
 };
 
 // Recruitting action

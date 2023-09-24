@@ -9,6 +9,7 @@ import { ItemReward, NeutralRewardTypesEnum, ResourcesReward, StructureGenerator
 
 export const BanditCamp: StructureGeneratorModel = {
   name: 'Bandit Camp',
+  actionPoints: 1,
   control: StuctureControl.Neutral,
 
   generateGuard: () => {

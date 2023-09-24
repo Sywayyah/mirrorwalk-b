@@ -1,8 +1,14 @@
 import { Component, inject } from '@angular/core';
+import { ActionCardStack } from 'src/app/core/action-cards';
+import { RemoveActionPoints } from 'src/app/core/events';
+import { CommonUtils } from 'src/app/core/utils';
 import { MwPlayersService } from 'src/app/features/services';
 import { State } from 'src/app/features/services/state.service';
+import { EventsService } from 'src/app/store';
 import { BasicPopup } from '../popup-container';
-import { ActionCardStack } from 'src/app/core/action-cards';
+import { VfxService } from '../vfx-layer';
+import { MeditateActionCard } from 'src/app/core/action-cards/player-actions';
+import { ApiProvider } from 'src/app/features/services/api-provider.service';
 
 @Component({
   selector: 'mw-action-cards-popup',
@@ -12,13 +18,37 @@ import { ActionCardStack } from 'src/app/core/action-cards';
 export class ActionCardsPopupComponent extends BasicPopup<{}> {
   private readonly state = inject(State);
   private readonly playersService = inject(MwPlayersService);
+  private readonly events = inject(EventsService);
+  private readonly vfx = inject(VfxService);
+  private readonly apiProvider = inject(ApiProvider);
 
   public cards = this.playersService.getCurrentPlayer().actionCards;
 
   public actionPointsLeft = this.state.currentGame.actionPoints;
 
-  public handleCardClick(actionCard: ActionCardStack): void {
-    console.log(actionCard);
+  public handleCardClick(cardStack: ActionCardStack): void {
+    console.log(cardStack);
+    const card = cardStack.card;
+
+    cardStack.count--;
+
+    if (card.actionPoints) {
+      this.events.dispatch(RemoveActionPoints({ points: card.actionPoints }));
+    }
+
+    if (!cardStack.count) {
+      CommonUtils.removeItem(this.cards, cardStack);
+    }
+
+    if (card === MeditateActionCard) {
+      const playerApi = this.apiProvider.getPlayerApi();
+      const currentPlayer = playerApi.getCurrentPlayer();
+      playerApi.addManaToPlayer(currentPlayer, 4);
+    }
+    // add floating text somewhere
+
+    // this.vfx.createXyVfx();
+
     // close for now
     this.close();
   }

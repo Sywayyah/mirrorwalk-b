@@ -4,6 +4,7 @@ import { HiringReward, NeutralRewardTypesEnum, StructureGeneratorModel, Stucture
 
 export const GraveyardStructure: StructureGeneratorModel = {
   name: 'Graveyard',
+  actionPoints: 1,
   control: StuctureControl.Neutral,
 
   generateGuard: () => {

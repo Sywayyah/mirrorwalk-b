@@ -12,6 +12,8 @@ export interface ActionCard {
   bgColor?: string;
   iconColor?: string;
   borderColor?: string;
+
+  actionPoints?: number;
 }
 
 export interface ActionCardStack {

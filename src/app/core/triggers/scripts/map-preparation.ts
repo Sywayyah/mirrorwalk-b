@@ -1,5 +1,5 @@
 import { MeditateActionCard, SkipDayActionCard } from '../../action-cards/player-actions';
-import { DefaultGameModes, DisplayPlayerRewardPopup, GameStarted, PlayerLevelsUp, PlayersInitialized, Triggers } from '../../events';
+import { DefaultGameModes, DisplayPlayerRewardPopup, PlayerLevelsUp, PlayersInitialized, Triggers } from '../../events';
 import { Fraction } from '../../fractions';
 import { constellationFraction } from '../../fractions/constellation/fraction';
 import { LevelMap } from '../../maps';
