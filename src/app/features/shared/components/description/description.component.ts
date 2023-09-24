@@ -1,6 +1,5 @@
-import { ChangeDetectionStrategy, Component, Input, OnChanges, ViewEncapsulation } from '@angular/core';
-import { DomSanitizer } from '@angular/platform-browser';
-import { DescHtmlElement, DescriptionElement, DescriptionElementType } from 'src/app/core/ui/descriptions';
+import { ChangeDetectionStrategy, Component, Input, ViewEncapsulation } from '@angular/core';
+import { DescriptionElement } from 'src/app/core/ui/descriptions';
 
 @Component({
   selector: 'mw-description',
@@ -9,29 +8,7 @@ import { DescHtmlElement, DescriptionElement, DescriptionElementType } from 'src
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DescriptionComponent implements OnChanges {
-
+export class DescriptionComponent {
   @Input()
   public descriptions!: DescriptionElement[];
-
-  public processedDescriptions: DescriptionElement[] = [];
-
-  constructor(
-    private domSanitizer: DomSanitizer,
-  ) { }
-
-  ngOnChanges(): void {
-    this.processedDescriptions = this.descriptions.map((descr) => {
-
-      if (descr.type === DescriptionElementType.FreeHtml) {
-        return {
-          ...descr,
-          htmlContent: this.domSanitizer.bypassSecurityTrustHtml((descr as DescHtmlElement).htmlContent),
-        }
-      }
-
-      return descr;
-    });
-  }
-
 }
