@@ -1,4 +1,5 @@
 import { ActionCard, ActionCardTypes } from './types';
+import { actionIcon, manaIcon } from './utils';
 
 export const SkipDayActionCard: ActionCard = {
   title: 'Skip the day',
@@ -17,7 +18,7 @@ export const MeditateActionCard: ActionCard = {
   bgColor: 'rgb(39 57 89)',
   iconColor: '#d9f2fd',
   type: ActionCardTypes.PlayerAction,
-  description: `You restore 4 points of mana (+2 per point of Restoration specialty), consumes 2 action points. Restored every week.`,
+  description: `Restore ${manaIcon(4)} points of mana (+${manaIcon(2)} per point of Restoration specialty), consumes ${actionIcon(2)} action points. Restored every week.`,
 };
 
 export const RestoreActionCard: ActionCard = {
