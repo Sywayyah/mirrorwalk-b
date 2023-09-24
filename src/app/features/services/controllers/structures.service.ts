@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { MapPanCameraCenterTo, NeutralStructParams, NewDayStarted, NewWeekStarted, PanMapCameraCenterAction, StructCompleted } from 'src/app/core/events';
+import { GameEventsTypes, MapPanCameraCenterTo, NeutralStructParams, NewDayStarted, NewWeekStarted, PanMapCameraCenterAction, RemoveActionPoints, StructCompleted } from 'src/app/core/events';
 import { MapStructure, defaultActionPointsCost, defaultActionPointsPerDay } from 'src/app/core/structures';
 import { StoreClient, WireMethod } from 'src/app/store';
 import { GameObjectsManager } from '../game-objects-manager.service';
@@ -17,19 +17,11 @@ export class StructuresController extends StoreClient() {
     super();
   }
 
-  @WireMethod(StructCompleted)
-  public handleCompletedStructure(event: NeutralStructParams): void {
-    const structId = event.struct.id;
-
-    this.structuresService.availableStructuresMap[structId] = true;
-    this.gameObjectsManager.getObjectByFullId<MapStructure>(structId)!.visited = true;
-    this.structuresService.playerCurrentLocId = structId;
-    this.structuresService.updateAvailableStructures();
-
+  @WireMethod(RemoveActionPoints)
+  public removeActionPoints({ points }: GameEventsTypes['RemoveActionPoints']): void {
     const currentGame = this.state.currentGame;
 
-    // todo: extract this as points removal/new day check as separate event
-    currentGame.actionPoints -= defaultActionPointsCost;
+    currentGame.actionPoints -= points;
 
     if (currentGame.actionPoints <= 0) {
       currentGame.day += 1;
@@ -46,6 +38,18 @@ export class StructuresController extends StoreClient() {
         this.events.dispatch(NewWeekStarted({ week: currentGame.week }));
       }
     }
+  }
+
+  @WireMethod(StructCompleted)
+  public handleCompletedStructure(event: NeutralStructParams): void {
+    const structId = event.struct.id;
+
+    this.structuresService.availableStructuresMap[structId] = true;
+    this.gameObjectsManager.getObjectByFullId<MapStructure>(structId)!.visited = true;
+    this.structuresService.playerCurrentLocId = structId;
+    this.structuresService.updateAvailableStructures();
+
+    this.events.dispatch(RemoveActionPoints({ points: defaultActionPointsCost }));
   }
 
   @WireMethod(MapPanCameraCenterTo)
