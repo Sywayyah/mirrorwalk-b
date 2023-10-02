@@ -31,3 +31,4 @@ export const getHealParts = (healCount: number, healValue: number): Customizable
 };
 
 export const actionCardIcon = ({ icon, iconColor, bgColor }: ActionCard) => `<i class='ra ra-${icon}' style="background: ${bgColor}; color: ${iconColor}"></i>`;
+export const actionCardEvent = (card: ActionCard) => `${actionCardIcon(card)} <span style="font-weight: 600;">${card.title}</span>`;

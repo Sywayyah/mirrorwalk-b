@@ -3,7 +3,7 @@ import { ActionCardStack } from 'src/app/core/action-cards';
 import { MeditateActionCard } from 'src/app/core/action-cards/player-actions';
 import { RemoveActionPoints } from 'src/app/core/events';
 import { CommonUtils } from 'src/app/core/utils';
-import { actionCardIcon } from 'src/app/core/vfx';
+import { actionCardEvent } from 'src/app/core/vfx';
 import { MwPlayersService } from 'src/app/features/services';
 import { ApiProvider } from 'src/app/features/services/api-provider.service';
 import { State } from 'src/app/features/services/state.service';
@@ -34,7 +34,7 @@ export class ActionCardsPopupComponent extends BasicPopup<{}> {
     const card = cardStack.card;
 
     cardStack.count--;
-    this.eventFeed.pushPlainMessage(`${actionCardIcon(card)} ${card.title} action card is used, left: ${cardStack.count}.`);
+    this.eventFeed.pushPlainMessage(`${actionCardEvent(card)} action card is used, left: ${cardStack.count}.`);
 
     if (card.actionPoints) {
       this.events.dispatch(RemoveActionPoints({ points: card.actionPoints }));

@@ -5,7 +5,7 @@ import { heroesDefaultResources } from 'src/app/core/heroes';
 import { PlayerTypeEnum } from 'src/app/core/players';
 import { StructEvents } from 'src/app/core/structures/events';
 import { TownEvents } from 'src/app/core/towns';
-import { actionCardIcon } from 'src/app/core/vfx';
+import { actionCardEvent, actionCardIcon } from 'src/app/core/vfx';
 import { Notify, StoreClient, WireMethod } from 'src/app/store';
 import { BattleStateService } from '../mw-battle-state.service';
 import { MwHeroesService } from '../mw-heroes.service';
@@ -92,7 +92,7 @@ export class GameController extends StoreClient() {
   public addActionCardsToPlayer(event: GameCommandEvents['AddActionCardsToPlayer']): void {
     this.eventFeedUiService
       .pushPlainMessage(`Received action cards:<hr> ${event.actionCardStacks
-        .map(({ card, count }) => `x${count} ${actionCardIcon(card)}${card.title}`)
+        .map(({ card, count }) => `x${count} ${actionCardEvent(card)}`)
         .join('<br>')}`
       );
 
