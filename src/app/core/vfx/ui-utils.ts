@@ -1,3 +1,4 @@
+import { ActionCard } from '../action-cards';
 import { CustomizableAnimationData } from '../api/vfx-api';
 
 export const uiPercent = (chanceNumber: number): string => `${Math.round(chanceNumber * 100)}`;
@@ -28,3 +29,5 @@ export const getHealParts = (healCount: number, healValue: number): Customizable
     ],
   };
 };
+
+export const actionCardIcon = ({ icon, iconColor, bgColor }: ActionCard) => `<i class='ra ra-${icon}' style="background: ${bgColor}; color: ${iconColor}"></i>`;
