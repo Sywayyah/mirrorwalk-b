@@ -170,6 +170,7 @@ const blBranch: StructureDescription[] = [
     icon: 'fire-ring',
     pathTo: 'left-2',
     struct: FireRingStructure,
+    actionPoints: 2,
   },
   {
     id: 'boss-1',
@@ -183,6 +184,7 @@ const blBranch: StructureDescription[] = [
     //   playerBonusAttack: -2,
     //   resistFire: -10,
     // },
+    actionPoints: 2,
   },
   {
     id: 'left-3',
@@ -213,6 +215,7 @@ const tlBranch: StructureDescription[] = [
     pathTo: '6',
 
     struct: MagicRiverStructure,
+    actionPoints: 1,
   },
   {
     id: '15',
@@ -223,6 +226,7 @@ const tlBranch: StructureDescription[] = [
     pathTo: '6',
 
     struct: ArchersOutpostStructure,
+    actionPoints: 1,
   },
   {
     id: '53',

@@ -1,8 +1,8 @@
-<ng-container *ngFor="let description of processedDescriptions">
+<ng-container *ngFor="let description of descriptions">
   <ng-container *ngTemplateOutlet="freeHtml; context: { $implicit: description }" />
 </ng-container>
 
 <ng-template #freeHtml
              let-data>
-  <div [innerHTML]="data.htmlContent"></div>
+  <div [innerHTML]="data.htmlContent | safeHtml"></div>
 </ng-template>

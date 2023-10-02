@@ -7,6 +7,7 @@ import { StructureGeneratorModel, StuctureControl, ItemReward, NeutralRewardType
 
 export const ThiefsLair: StructureGeneratorModel = {
   name: 'Bandit Camp',
+  actionPoints: 2,
   control: StuctureControl.Neutral,
 
   generateGuard: () => {

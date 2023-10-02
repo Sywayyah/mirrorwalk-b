@@ -17,6 +17,7 @@ export const specialtyLabels: Record<keyof Specialties, string> = {
 
   specialtyMysticism: 'Mysticism',
   specialtyMagic: 'Magic',
+  specialtyMagicRecovery: 'Restoration',
 
   specialtyColdMastery: 'Cold Mastery',
   specialtyFireMastery: 'Fire Mastery',

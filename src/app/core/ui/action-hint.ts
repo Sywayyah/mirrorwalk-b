@@ -14,7 +14,6 @@ export interface ActionHintModel<T extends ActionHintTypeEnum = ActionHintTypeEn
 
 export interface CustomHtmlActionHint extends ActionHintModel<ActionHintTypeEnum.CustomHtml> {
   html: string;
-  safeHtml: SafeHtml;
 }
 
 export interface AttackActionHintInfo extends ActionHintModel<ActionHintTypeEnum.OnHoverEnemyCard> {

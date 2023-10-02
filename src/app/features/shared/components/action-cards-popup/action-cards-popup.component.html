@@ -12,8 +12,10 @@
 </div>
 
 <div class="cards">
-  <mw-action-card *ngFor="let actionCard of cards"
-                  [actionCard]="actionCard.card"
-                  [mwActionHint]="'Use ' + actionCard.card.title"
-                  (click)="handleCardClick(actionCard)" />
+  <div *ngFor="let actionCard of cards" class="card-stack">
+    <mw-action-card [actionCard]="actionCard.card"
+                    [mwActionHint]="'Use ' + actionCard.card.title"
+                    (click)="handleCardClick(actionCard)" />
+    <div class="cards-left">Left: {{actionCard.count}}</div>
+  </div>
 </div>

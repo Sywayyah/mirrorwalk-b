@@ -41,3 +41,5 @@ export const InitBuilding = commands<InitBuildingAction>();
 export const InitStructure = commands<InitMapStructureAction>();
 
 export const PushEventFeedMessage = commands<{ message: DescHtmlElement[], delay?: number; }>();
+
+export const RemoveActionPoints = commands<{ points: number }>();

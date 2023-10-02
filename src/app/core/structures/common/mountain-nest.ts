@@ -4,6 +4,7 @@ import { StructureGeneratorModel, StuctureControl } from '../types';
 
 export const MountainNestStructure: StructureGeneratorModel = {
   control: StuctureControl.Neutral,
+  actionPoints: 2,
   name: 'Mountain Nest',
   description: 'Walking through mountains, you find a very bright birdnest... \n\n1-2 Firebirds join your army.',
 
