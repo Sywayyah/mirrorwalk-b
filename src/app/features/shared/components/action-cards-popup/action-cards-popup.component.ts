@@ -32,9 +32,9 @@ export class ActionCardsPopupComponent extends BasicPopup<{}> {
   public handleCardClick(cardStack: ActionCardStack): void {
     console.log(cardStack);
     const card = cardStack.card;
-    this.eventFeed.pushPlainMessage(`${actionCardIcon(card)} ${card.title} action card is used.`);
 
     cardStack.count--;
+    this.eventFeed.pushPlainMessage(`${actionCardIcon(card)} ${card.title} action card is used, left: ${cardStack.count}.`);
 
     if (card.actionPoints) {
       this.events.dispatch(RemoveActionPoints({ points: card.actionPoints }));

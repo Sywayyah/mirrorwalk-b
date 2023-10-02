@@ -91,7 +91,7 @@ export class GameController extends StoreClient() {
   @WireMethod(AddActionCardsToPlayer)
   public addActionCardsToPlayer(event: GameCommandEvents['AddActionCardsToPlayer']): void {
     this.eventFeedUiService
-      .pushPlainMessage(`Received action cards:<br> ${event.actionCardStacks
+      .pushPlainMessage(`Received action cards:<hr> ${event.actionCardStacks
         .map(({ card, count }) => `x${count} ${actionCardIcon(card)}${card.title}`)
         .join('<br>')}`
       );

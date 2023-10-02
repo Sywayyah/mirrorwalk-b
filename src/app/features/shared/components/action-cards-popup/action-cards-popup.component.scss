@@ -25,6 +25,7 @@
 .cards {
   display: flex;
   pointer-events: all;
+  gap: 14px;
 }
 
 .card-stack {
@@ -38,7 +39,7 @@
 
   &:hover {
     background-color: rgba(255, 255, 255, 0.193);
-    transition: 0.4s;
+    transition: 0.2s;
   }
 }
 
