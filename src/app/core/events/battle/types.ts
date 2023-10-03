@@ -11,7 +11,6 @@ export enum CombatInteractionEnum {
 
 export type GroupTakesDamageEvent = {
   group: UnitGroup;
-  registerLoss: boolean;
   unitLoss: number;
 };
 

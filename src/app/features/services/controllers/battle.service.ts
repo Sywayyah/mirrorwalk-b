@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
-import { BeforeBattleInit, CleanUpHandlersOnFightEnd, FightEnds, FightNextRoundStarts, FightStarts, GroupDamagedByGroup, GroupDamagedByGroupEvent, GroupDies, GroupSpeedChanged, GroupTakesDamage, GroupTakesDamageEvent, PlayerTurnStartEvent, RoundGroupSpendsTurn, RoundGroupSpendsTurnEvent, RoundGroupTurnEnds, RoundPlayerCountinuesAttacking, RoundPlayerTurnStarts, UnitHealed, UnitHealedEvent } from 'src/app/core/events';
+import { BattleCommandEvents, BeforeBattleInit, CleanUpHandlersOnFightEnd, FightEnds, FightNextRoundStarts, FightStarts, GroupDamagedByGroup, GroupDamagedByGroupEvent, GroupDies, GroupSpeedChanged, PlayerTurnStartEvent, RoundGroupSpendsTurn, RoundGroupSpendsTurnEvent, RoundGroupTurnEnds, RoundPlayerCountinuesAttacking, RoundPlayerTurnStarts, UnitHealed, UnitHealedEvent } from 'src/app/core/events';
+import { RegisterUnitLoss } from 'src/app/core/events/battle/commands';
+import { ModsRef } from 'src/app/core/modifiers';
 import { PlayerState, PlayerTypeEnum } from 'src/app/core/players';
 import { Notify, StoreClient, WireMethod } from 'src/app/store';
 import { BattleStateService } from '../mw-battle-state.service';
@@ -7,7 +9,6 @@ import { MwCurrentPlayerStateService } from '../mw-current-player-state.service'
 import { MwPlayersService } from '../mw-players.service';
 import { MwStructuresService } from '../mw-structures.service';
 import { State } from '../state.service';
-import { ModsRef } from 'src/app/core/modifiers';
 
 @Injectable()
 export class BattleController extends StoreClient() {
@@ -56,18 +57,6 @@ export class BattleController extends StoreClient() {
     this.battleState.initNextTurnByQueue(true);
   }
 
-  @WireMethod(GroupDamagedByGroup)
-  public registerDamageFromOtherGroup(event: GroupDamagedByGroupEvent): void {
-    if (!event.loss) {
-      return;
-    }
-
-    this.battleState.registerPlayerUnitLoss(
-      event.attackedGroup,
-      event.loss,
-    );
-  }
-
   @WireMethod(UnitHealed)
   public registerHealedUnits(event: UnitHealedEvent): void {
     if (!event.healedUnitsCount) {
@@ -80,13 +69,11 @@ export class BattleController extends StoreClient() {
     );
   }
 
-  @WireMethod(GroupTakesDamage)
+  @WireMethod(RegisterUnitLoss)
   public registerUnitLossOnAnyOtherDamageSources(
-    { group, registerLoss, unitLoss }: GroupTakesDamageEvent,
+    { loss, unit }: BattleCommandEvents['RegisterUnitLoss']
   ): void {
-    if (registerLoss && unitLoss) {
-      this.battleState.registerPlayerUnitLoss(group, unitLoss);
-    }
+    this.battleState.registerPlayerUnitLoss(unit, loss);
   }
 
   @Notify(GroupDies)

@@ -1,14 +1,16 @@
 import { Component, inject } from '@angular/core';
 import { ActionCardStack } from 'src/app/core/action-cards';
+import { MeditateActionCard } from 'src/app/core/action-cards/player-actions';
 import { RemoveActionPoints } from 'src/app/core/events';
 import { CommonUtils } from 'src/app/core/utils';
+import { actionCardEvent } from 'src/app/core/vfx';
 import { MwPlayersService } from 'src/app/features/services';
+import { ApiProvider } from 'src/app/features/services/api-provider.service';
 import { State } from 'src/app/features/services/state.service';
+import { UiEventFeedService } from 'src/app/features/services/ui-event-feed.service';
 import { EventsService } from 'src/app/store';
 import { BasicPopup } from '../popup-container';
 import { VfxService } from '../vfx-layer';
-import { MeditateActionCard } from 'src/app/core/action-cards/player-actions';
-import { ApiProvider } from 'src/app/features/services/api-provider.service';
 
 @Component({
   selector: 'mw-action-cards-popup',
@@ -21,6 +23,7 @@ export class ActionCardsPopupComponent extends BasicPopup<{}> {
   private readonly events = inject(EventsService);
   private readonly vfx = inject(VfxService);
   private readonly apiProvider = inject(ApiProvider);
+  private readonly eventFeed = inject(UiEventFeedService);
 
   public cards = this.playersService.getCurrentPlayer().actionCards;
 
@@ -31,6 +34,7 @@ export class ActionCardsPopupComponent extends BasicPopup<{}> {
     const card = cardStack.card;
 
     cardStack.count--;
+    this.eventFeed.pushPlainMessage(`${actionCardEvent(card)} action card is used, left: ${cardStack.count}.`);
 
     if (card.actionPoints) {
       this.events.dispatch(RemoveActionPoints({ points: card.actionPoints }));
