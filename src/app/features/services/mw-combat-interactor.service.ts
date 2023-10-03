@@ -44,10 +44,9 @@ export class CombatInteractorService extends StoreClient() {
     /* options object, contains values depending on situation */
     options: { attackerUnit?: UnitGroup } = {},
   ): ExtendedFinalDamageInfo {
-    /* todo: OnGroupDamaged isn't dispatched, and reward isn't calculated because of that. */
     let finalDamage = damage;
     let blockedDamage = 0;
-    // handle some numbers rounding
+
     switch (damageType) {
       /* Normal Unit Group attack */
       case DamageType.PhysicalAttack:
@@ -143,7 +142,7 @@ export class CombatInteractorService extends StoreClient() {
       });
     }
 
-    /* don't handle rest if this is a phys attack */
+    /* don't handle rest if this is a normal phys attack */
     if (damageType === DamageType.PhysicalAttack) {
       return { ...finalDamageInfo, blockedDamage };
     }
