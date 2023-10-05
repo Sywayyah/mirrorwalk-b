@@ -10,6 +10,9 @@ export interface GameApi {
     dispatch(event: EventData): void;
   },
   players: PlayersApi,
+  actions: {
+    getActionPointsLeft(): number;
+  },
 }
 
 export type Trigger<T> = {

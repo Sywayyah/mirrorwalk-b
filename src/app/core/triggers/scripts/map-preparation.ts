@@ -36,7 +36,7 @@ TriggersRegistry.register(PlayersInitialized, {
   fn: (_, api) => {
     const initialActionCards = [
       { card: MeditateActionCard, count: 1 },
-      { card: SkipDayActionCard, count: 2 },
+      { card: SkipDayActionCard, count: 1 },
     ];
 
     const currentPlayer = api.players.getCurrentPlayer();

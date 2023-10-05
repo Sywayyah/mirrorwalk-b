@@ -43,6 +43,7 @@ export class State {
   public currentGame: GameState = {
     day: 1,
     week: 1,
+    // maybe should be moved to player level..
     actionPoints: defaultActionPointsPerDay,
   };
 

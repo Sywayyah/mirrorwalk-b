@@ -1,6 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { ActionCardStack } from 'src/app/core/action-cards';
-import { MeditateActionCard } from 'src/app/core/action-cards/player-actions';
+import { ActionCardStack, ActionCardTypes } from 'src/app/core/action-cards';
 import { RemoveActionPoints } from 'src/app/core/events';
 import { CommonUtils } from 'src/app/core/utils';
 import { actionCardEvent } from 'src/app/core/vfx';
@@ -34,7 +33,6 @@ export class ActionCardsPopupComponent extends BasicPopup<{}> {
     const card = cardStack.card;
 
     cardStack.count--;
-    this.eventFeed.pushPlainMessage(`${actionCardEvent(card)} action card is used. Left: ${cardStack.count}`);
 
     if (card.actionPoints) {
       this.events.dispatch(RemoveActionPoints({ points: card.actionPoints }));
@@ -44,14 +42,11 @@ export class ActionCardsPopupComponent extends BasicPopup<{}> {
       CommonUtils.removeItem(this.cards, cardStack);
     }
 
-    if (card === MeditateActionCard) {
-      const playerApi = this.apiProvider.getPlayerApi();
-      const currentPlayer = playerApi.getCurrentPlayer();
-      playerApi.addManaToPlayer(currentPlayer, 4);
+    if (card.type === ActionCardTypes.PlayerAction) {
+      card.config?.onUsedInstantly?.(this.apiProvider.getGameApi());
     }
-    // add floating text somewhere
 
-    // this.vfx.createXyVfx();
+    this.eventFeed.pushPlainMessage(`${actionCardEvent(card)} is used. Left: ${cardStack.count}`);
 
     // close for now
     this.close();

@@ -1,3 +1,5 @@
+import { GameApi } from '../triggers';
+
 export enum ActionCardTypes {
   Event,
   LocationAction,
@@ -14,6 +16,11 @@ export interface ActionCard {
   borderColor?: string;
 
   actionPoints?: number;
+
+  config?: {
+    onUsedInstantly?(api: GameApi): void;
+    onLocationTargeted?(api: GameApi): void;
+  };
 }
 
 export interface ActionCardStack {

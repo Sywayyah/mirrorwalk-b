@@ -21,14 +21,8 @@ export class MwTriggersService extends StoreClient() {
         this.events.onEvent(event).subscribe((data) => {
           trigger.fn(
             data,
-            {
-              events: {
-                dispatch: (eventData) => {
-                  this.events.dispatch(eventData);
-                }
-              },
-              players: this.apiProvider.getPlayerApi(),
-            });
+            this.apiProvider.getGameApi()
+          );
         })
       });
     });

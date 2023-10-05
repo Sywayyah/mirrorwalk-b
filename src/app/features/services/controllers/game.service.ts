@@ -5,7 +5,7 @@ import { heroesDefaultResources } from 'src/app/core/heroes';
 import { PlayerTypeEnum } from 'src/app/core/players';
 import { StructEvents } from 'src/app/core/structures/events';
 import { TownEvents } from 'src/app/core/towns';
-import { actionCardEvent, actionCardIcon } from 'src/app/core/vfx';
+import { actionCardEvent } from 'src/app/core/vfx';
 import { Notify, StoreClient, WireMethod } from 'src/app/store';
 import { BattleStateService } from '../mw-battle-state.service';
 import { MwHeroesService } from '../mw-heroes.service';
