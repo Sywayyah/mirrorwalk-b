@@ -10,10 +10,10 @@ export const GraveyardStructure: StructureGeneratorModel = {
   generateGuard: () => {
     const guard = {
       maxUnitGroups: 2,
-      minUnitGroups: 2,
+      minUnitGroups: 3,
       units: [
-        [neutralsFraction.getUnitType('Ghosts'), 16, 24, 1],
-        [neutralsFraction.getUnitType('Skeletons'), 16, 24, 1],
+        [neutralsFraction.getUnitType('Ghosts'), 14, 18, 3],
+        // [neutralsFraction.getUnitType('Skeletons'), 16, 24, 1],
       ],
     } as GenerationModel;
 

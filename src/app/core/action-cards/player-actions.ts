@@ -42,7 +42,7 @@ export const MeditateActionCard: ActionCard = {
   bgColor: 'rgb(39 57 89)',
   iconColor: '#d9f2fd',
   type: ActionCardTypes.PlayerAction,
-  description: `You restore ${manaIcon(3)} points of mana (+${manaIcon(2)} per point of Restoration specialty), consumes ${actionIcon(2)} action points. Action restored every week.`,
+  description: `You restore ${manaIcon(3)} mana (+${manaIcon(2)} per point of Restoration specialty), consumes ${actionIcon(2)} action points. Action restored every week.`,
 
   actionPoints: 2,
 

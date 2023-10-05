@@ -2,10 +2,11 @@ import { DamageType } from '../../api/combat-api';
 import { spellDescrElem } from '../../ui';
 import { FireAnimation, getDamageParts } from '../../vfx';
 import { SpellActivationType, SpellBaseType } from '../types';
-import { canActivateOnEnemyFn } from '../utils';
+import { canActivateOnEnemyFn, getLevelScalingValueFn } from '../utils';
 
-// Rescale damage & adjust manacost
 const baseDamage = 65;
+const bonusDmgPerLevel = 25;
+const getDamageByLevel = getLevelScalingValueFn(baseDamage, bonusDmgPerLevel);
 
 export const RainOfFireSpell: SpellBaseType = {
   name: 'Rain of Fire',
@@ -16,7 +17,7 @@ export const RainOfFireSpell: SpellBaseType = {
   getDescription({ ownerHero, spellInstance }) {
     return {
       descriptions: [
-        spellDescrElem(`Deals ${baseDamage} (${baseDamage * spellInstance.currentLevel}) damage per level to the target.`),
+        spellDescrElem(`Deals ${baseDamage} +${bonusDmgPerLevel} damage per level (${getDamageByLevel(spellInstance.currentLevel)}) to the target.`),
       ],
     }
   },
@@ -38,7 +39,7 @@ export const RainOfFireSpell: SpellBaseType = {
               duration: 850,
             });
 
-            const damage = baseDamage * spellInstance.currentLevel;
+            const damage = getDamageByLevel(spellInstance.currentLevel);
 
             actions.dealDamageTo(
               event.target,
@@ -59,15 +60,15 @@ export const RainOfFireSpell: SpellBaseType = {
 
       },
       getManaCost: (spell) => {
-        const baseMana = 3;
+        const baseMana = 2;
 
         // create utils for mana costs.
         const manaCosts: Record<number, number> = {
           1: baseMana,
-          2: baseMana + 1,
+          2: baseMana,
           3: baseMana + 1,
-          4: baseMana + 2,
-          5: baseMana + 3,
+          4: baseMana + 1,
+          5: baseMana + 2,
         };
 
         return manaCosts[spell.currentLevel];
