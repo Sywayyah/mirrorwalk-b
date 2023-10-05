@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { PlayersApi, SpellsApi } from 'src/app/core/api/game-api';
+import { GameApi } from 'src/app/core/triggers';
+import { EventsService } from 'src/app/store';
 import { MwHeroesService } from './mw-heroes.service';
 import { MwPlayersService } from './mw-players.service';
 import { MwSpellsService } from './mw-spells.service';
@@ -16,6 +18,7 @@ export class ApiProvider {
     private readonly unitGroups: MwUnitGroupsService,
     private readonly players: MwPlayersService,
     private readonly spells: MwSpellsService,
+    private readonly events: EventsService,
     private readonly state: State,
   ) {
   }
@@ -51,5 +54,19 @@ export class ApiProvider {
         return this.spells.createSpellInstance(spell, options);
       },
     };
+  }
+
+  public getGameApi(): GameApi {
+    return {
+      events: {
+        dispatch: (eventData) => {
+          this.events.dispatch(eventData);
+        }
+      },
+      players: this.getPlayerApi(),
+      actions: {
+        getActionPointsLeft: () => this.state.currentGame.actionPoints
+      },
+    }
   }
 }

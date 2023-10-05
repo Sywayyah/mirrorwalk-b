@@ -10,7 +10,7 @@
     {{actionCard.title}}
   </div>
 
-  <div class="description">
-    {{actionCard.description}}
+  <div class="description"
+       [innerHtml]="actionCard.description | safeHtml">
   </div>
 </div>

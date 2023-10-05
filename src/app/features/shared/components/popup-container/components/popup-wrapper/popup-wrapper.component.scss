@@ -10,3 +10,10 @@
 :host.small-padding {
   padding: 12px;
 }
+
+:host.transparent {
+  background: transparent;
+  width: 100%;
+  pointer-events: none;
+  padding: 0;
+}

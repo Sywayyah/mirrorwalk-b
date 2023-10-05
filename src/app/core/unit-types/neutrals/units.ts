@@ -29,7 +29,7 @@ neutralsFraction.defineUnitType('Gnoll', {
 
   neutralReward: {
     experience: 3.3,
-    gold: 2.8
+    gold: 3.2,
   },
 });
 
@@ -51,7 +51,7 @@ neutralsFraction.defineUnitType('Thieves', {
   baseRequirements: {},
   neutralReward: {
     experience: 4.55,
-    gold: 3.9
+    gold: 4.7,
   }
 });
 
@@ -73,7 +73,7 @@ neutralsFraction.defineUnitType('ForestTrolls', {
 
   baseRequirements: {},
   neutralReward: {
-    experience: 4,
-    gold: 5.2,
+    experience: 6,
+    gold: 6,
   }
 });

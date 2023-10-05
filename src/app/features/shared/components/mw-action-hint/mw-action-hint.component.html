@@ -17,7 +17,7 @@
 
 <ng-template #customHtml
              let-hint="hint">
-  <div [innerHTML]="hint.safeHtml"></div>
+  <div [innerHTML]="hint.html | safeHtml"></div>
 </ng-template>
 
 <ng-template #simple

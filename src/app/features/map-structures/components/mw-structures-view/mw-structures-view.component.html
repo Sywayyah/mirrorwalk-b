@@ -50,14 +50,4 @@
 <!-- maybe move it to some kind of ui overlay eventually.. -->
 <mw-action-hint />
 
-<div class="player-actions">
-  <mw-icon-btn mwActionHint="Go to {{state.createdGame.fraction.title}}"
-               (click)="goToTown()"
-               style="padding: 0 20px"
-               [icon]="state.createdGame.fraction.icon" />
-
-  <mw-icon-btn mwActionHint="Inspect Hero"
-               (click)="openPlayerInfo()"
-               style="padding: 0 20px"
-               icon="aura" />
-</div>
+<mw-player-map-actions-panel class="player-actions" />

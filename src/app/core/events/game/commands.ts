@@ -1,4 +1,6 @@
 import { createEventType } from 'src/app/store';
+import { ActionCardStack } from '../../action-cards';
+import { Player } from '../../players';
 import { DescHtmlElement } from '../../ui';
 import { DisplayPlayerRewardAction, InitBuildingAction, InitGameObjectApiParams, InitItemAction, InitMapStructureAction, InitSpellAction, PanMapCameraCenterAction } from './types';
 
@@ -41,3 +43,7 @@ export const InitBuilding = commands<InitBuildingAction>();
 export const InitStructure = commands<InitMapStructureAction>();
 
 export const PushEventFeedMessage = commands<{ message: DescHtmlElement[], delay?: number; }>();
+
+export const RemoveActionPoints = commands<{ points: number }>();
+
+export const AddActionCardsToPlayer = commands<{ player: Player, actionCardStacks: ActionCardStack[] }>();

@@ -9,6 +9,7 @@ export interface SpeciatiesModel {
 
   mysticism: number;
   magic: number;
+  magicRecovery: number;
   fireMastery: number;
   coldMastery: number;
   poisonMastery: number;

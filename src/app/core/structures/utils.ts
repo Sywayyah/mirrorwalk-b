@@ -1,22 +1,23 @@
 import { GenerationModel } from '../unit-types';
-import { HiringRewardModel, StructureGeneratorModel, StuctureControl, HiringReward, NeutralRewardTypesEnum } from './types';
+import { HiringReward, HiringRewardModel, NeutralRewardTypesEnum, StructureGeneratorModel, StuctureControl } from './types';
 
 export function createHireStructure(name: string, guard: GenerationModel, unitsForHire: HiringRewardModel[]): StructureGeneratorModel {
-    return {
-        name: name,
-        control: StuctureControl.Neutral,
+  return {
+    name: name,
+    actionPoints: 1,
+    control: StuctureControl.Neutral,
 
-        generateGuard: () => {
-            return guard;
-        },
+    generateGuard: () => {
+      return guard;
+    },
 
-        generateReward: () => {
-            const hiringReward: HiringReward = {
-                type: NeutralRewardTypesEnum.UnitsHire,
-                units: unitsForHire,
-            };
+    generateReward: () => {
+      const hiringReward: HiringReward = {
+        type: NeutralRewardTypesEnum.UnitsHire,
+        units: unitsForHire,
+      };
 
-            return hiringReward;
-        },
-    };
+      return hiringReward;
+    },
+  };
 }

@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { PLAYER_COLORS } from 'src/app/core/assets';
-import { BeforeBattleInit, DefaultGameModes, FightStarts, FightStartsEvent, GameCommandEvents, GameCreated, GameEventsTypes, GameOpenMainScreen, GameOpenMapStructuresScreen, GamePreparedEvent, GameStarted, NeutralStructParams, NewDayStarted, NewWeekStarted, PlayerLeavesTown, PlayerStartsFight, PlayersInitialized, PushEventFeedMessage, StructFightConfirmed, StructSelected, StructSelectedEvent, Triggers } from 'src/app/core/events';
+import { AddActionCardsToPlayer, BeforeBattleInit, DefaultGameModes, FightStarts, FightStartsEvent, GameCommandEvents, GameCreated, GameEventsTypes, GameOpenMainScreen, GameOpenMapStructuresScreen, GamePreparedEvent, GameStarted, NeutralStructParams, NewDayStarted, NewWeekStarted, PlayerLeavesTown, PlayerStartsFight, PlayersInitialized, PushEventFeedMessage, StructFightConfirmed, StructSelected, StructSelectedEvent, Triggers } from 'src/app/core/events';
 import { heroesDefaultResources } from 'src/app/core/heroes';
 import { PlayerTypeEnum } from 'src/app/core/players';
 import { StructEvents } from 'src/app/core/structures/events';
 import { TownEvents } from 'src/app/core/towns';
+import { actionCardEvent } from 'src/app/core/vfx';
 import { Notify, StoreClient, WireMethod } from 'src/app/store';
 import { BattleStateService } from '../mw-battle-state.service';
 import { MwHeroesService } from '../mw-heroes.service';
@@ -85,6 +86,19 @@ export class GameController extends StoreClient() {
   @WireMethod(PushEventFeedMessage)
   public pushEventFeedMessage(event: GameCommandEvents['PushEventFeedMessage']): void {
     this.eventFeedUiService.pushEventFeedMessage(event);
+  }
+
+  @WireMethod(AddActionCardsToPlayer)
+  public addActionCardsToPlayer(event: GameCommandEvents['AddActionCardsToPlayer']): void {
+    this.eventFeedUiService
+      .pushPlainMessage(`Received action cards:<hr> ${event.actionCardStacks
+        .map(({ card, count }) => `x${count} ${actionCardEvent(card)}`)
+        .join('<br>')}`
+      );
+
+    event.actionCardStacks.forEach(({ card, count }) => {
+      event.player.addActionCards(card, count);
+    });
   }
 
   @WireMethod(NewWeekStarted)

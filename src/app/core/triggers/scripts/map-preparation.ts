@@ -1,4 +1,5 @@
-import { DefaultGameModes, DisplayPlayerRewardPopup, PlayerLevelsUp, Triggers } from '../../events';
+import { MeditateActionCard, SkipDayActionCard } from '../../action-cards/player-actions';
+import { AddActionCardsToPlayer, DefaultGameModes, DisplayPlayerRewardPopup, PlayerLevelsUp, PlayersInitialized, Triggers } from '../../events';
 import { Fraction } from '../../fractions';
 import { constellationFraction } from '../../fractions/constellation/fraction';
 import { LevelMap } from '../../maps';
@@ -31,6 +32,21 @@ TriggersRegistry.register(Triggers.PrepareGameEvent, {
   },
 });
 
+TriggersRegistry.register(PlayersInitialized, {
+  fn: (_, api) => {
+    const initialActionCards = [
+      { card: MeditateActionCard, count: 1 },
+      { card: SkipDayActionCard, count: 1 },
+    ];
+
+    const currentPlayer = api.players.getCurrentPlayer();
+
+    api.events.dispatch(AddActionCardsToPlayer({
+      player: currentPlayer,
+      actionCardStacks: initialActionCards,
+    }));
+  },
+});
 
 TriggersRegistry.register(PlayerLevelsUp, {
   fn: (event, { events, players }) => {

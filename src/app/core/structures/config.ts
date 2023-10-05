@@ -1,2 +1,2 @@
-export const defaultTravelPointsPerDay = 100;
-export const defaultTravelPointsCost = 50;
+export const defaultActionPointsPerDay = 3;
+export const defaultActionPointsCost = 1;

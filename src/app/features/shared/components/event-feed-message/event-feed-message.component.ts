@@ -4,7 +4,7 @@ import { DescriptionElementType, EventFeedMessage } from 'src/app/core/ui';
 @Component({
   selector: 'mw-event-feed-message',
   templateUrl: './event-feed-message.component.html',
-  styleUrls: ['./event-feed-message.component.scss']
+  styleUrls: ['./event-feed-message.component.scss'],
 })
 export class EventFeedMessageComponent implements OnInit {
   @Input()

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { DamageType, PostDamageInfo } from 'src/app/core/api/combat-api/types';
 import { CombatAttackInteraction, CombatInteractionEnum, CombatInteractionStateEvent, GroupCounterAttacked, GroupDamagedByGroup, GroupDies, GroupSpellsChanged, GroupTakesDamage, InitSpell, PlayerHoversCardEvent } from 'src/app/core/events';
+import { RegisterUnitLoss } from 'src/app/core/events/battle/commands';
 import { ModsRef, ModsRefsGroup } from 'src/app/core/modifiers';
 import { defaultResistCap, resistsMapping } from 'src/app/core/modifiers/resists';
 import { Player } from 'src/app/core/players';
@@ -43,10 +44,9 @@ export class CombatInteractorService extends StoreClient() {
     /* options object, contains values depending on situation */
     options: { attackerUnit?: UnitGroup } = {},
   ): ExtendedFinalDamageInfo {
-    /* todo: OnGroupDamaged isn't dispatched, and reward isn't calculated because of that. */
     let finalDamage = damage;
     let blockedDamage = 0;
-    // handle some numbers rounding
+
     switch (damageType) {
       /* Normal Unit Group attack */
       case DamageType.PhysicalAttack:
@@ -130,6 +130,10 @@ export class CombatInteractorService extends StoreClient() {
     // this could become event at some point
     const finalDamageInfo = this.unitState.dealPureDamageToUnitGroup(target, finalDamage);
 
+    if (finalDamageInfo.finalUnitLoss) {
+      this.events.dispatch(RegisterUnitLoss({ unit: target, loss: finalDamageInfo.finalUnitLoss }));
+    }
+
     if (postActionFn) {
       postActionFn({
         unitLoss: finalDamageInfo.finalUnitLoss,
@@ -138,7 +142,7 @@ export class CombatInteractorService extends StoreClient() {
       });
     }
 
-    /* don't handle rest if this is a phys attack */
+    /* don't handle rest if this is a normal phys attack */
     if (damageType === DamageType.PhysicalAttack) {
       return { ...finalDamageInfo, blockedDamage };
     }
@@ -155,7 +159,6 @@ export class CombatInteractorService extends StoreClient() {
     if (finalDamageInfo.finalUnitLoss) {
       this.events.dispatch(GroupTakesDamage({
         unitLoss: finalDamageInfo.finalUnitLoss,
-        registerLoss: true,
         group: target,
       }));
     }

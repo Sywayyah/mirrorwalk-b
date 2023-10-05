@@ -1,3 +1,4 @@
+import { ActionCard, ActionCardStack } from '../action-cards';
 import { GameObject } from '../game-objects';
 import { Hero } from '../heroes';
 import { ResourcesModel } from '../resources';
@@ -44,6 +45,8 @@ export class Player extends GameObject<PlayerCreationModel> {
 
   public hero!: Hero;
 
+  public actionCards: ActionCardStack[] = [];
+
   public get unitGroups() {
     return this._unitGroups;
   }
@@ -74,6 +77,18 @@ export class Player extends GameObject<PlayerCreationModel> {
   removeUnitGroup(unitGroup: UnitGroup): void {
     // todo: unassign hero
     CommonUtils.removeItem(this.unitGroups, unitGroup);
+  }
+
+  addActionCards(actionCard: ActionCard, count: number): void {
+    const cardStack = this.actionCards.find((stack) => stack.card === actionCard);
+
+    if (cardStack) {
+      cardStack.count += count;
+    } else {
+      this.actionCards.push({
+        card: actionCard, count
+      });
+    }
   }
 
   private updateUnitGroup(unitGroup: UnitGroup): void {

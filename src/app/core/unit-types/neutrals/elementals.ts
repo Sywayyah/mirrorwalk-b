@@ -23,8 +23,8 @@ neutralsFraction.defineUnitType('FireSpirits', {
   ]),
 
   neutralReward: {
-    experience: 10,
-    gold: 15,
+    experience: 20,
+    gold: 20,
   },
   defaultSpells: [],
   defaultTurnsPerRound: 1,

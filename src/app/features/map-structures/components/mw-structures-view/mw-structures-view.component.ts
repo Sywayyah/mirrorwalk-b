@@ -1,5 +1,6 @@
 import { AfterViewInit, Component, ElementRef, Renderer2, ViewChild } from '@angular/core';
-import { MapPanCameraCenterTo, PlayerEntersTown, PlayerOpensHeroInfo, StructSelected } from 'src/app/core/events';
+import { CONFIG } from 'src/app/core/config';
+import { MapPanCameraCenterTo, StructSelected } from 'src/app/core/events';
 import { Player } from 'src/app/core/players';
 import { MapStructure } from 'src/app/core/structures';
 import { MwPlayersService, MwStructuresService } from 'src/app/features/services';
@@ -7,7 +8,6 @@ import { GameObjectsManager } from 'src/app/features/services/game-objects-manag
 import { State } from 'src/app/features/services/state.service';
 import { StoreClient } from 'src/app/store';
 import { MapDragEvent } from '../map-canvas/map-canvas.component';
-import { CONFIG } from 'src/app/core/config';
 
 /* Rewamp this a bit later, along with service and the rest */
 /*  Check more cases, stuff like that */
@@ -19,6 +19,7 @@ import { CONFIG } from 'src/app/core/config';
   styleUrls: ['./mw-structures-view.component.scss'],
 })
 export class MwStructuresViewComponent extends StoreClient() implements AfterViewInit {
+
   @ViewChild('locationsContainer')
   public locationsRef!: ElementRef;
 
@@ -79,13 +80,5 @@ export class MwStructuresViewComponent extends StoreClient() implements AfterVie
     this.events.dispatch(StructSelected({
       struct: struct,
     }));
-  }
-
-  public goToTown(): void {
-    this.events.dispatch(PlayerEntersTown());
-  }
-
-  public openPlayerInfo(): void {
-    this.events.dispatch(PlayerOpensHeroInfo());
   }
 }

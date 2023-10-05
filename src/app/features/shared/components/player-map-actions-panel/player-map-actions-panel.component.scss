@@ -1,0 +1,19 @@
+mw-icon-btn {
+  text-align: center;
+  min-width: 70px;
+  max-width: 70px;
+  min-height: 40px;
+  margin-bottom: 4px;
+
+  &.action-points {
+    font-weight: 100;
+    font-size: 23px;
+    padding-top: 4px;
+    box-sizing: border-box;
+  }
+
+  >.action-info {
+    margin-left: -2px;
+  }
+
+}

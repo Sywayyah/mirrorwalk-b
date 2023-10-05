@@ -123,10 +123,7 @@
   top: 50%;
   display: flex;
   flex-direction: column;
-
-  >mw-icon-btn {
-    margin-bottom: 4px;
-  }
+  transform: translateY(-50%);
 }
 
 mw-action-hint {

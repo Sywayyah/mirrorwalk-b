@@ -1,7 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { ActionCardComponent, CustomCursorComponent, DescriptionComponent, EventFeedComponent, EventFeedMessageComponent, GameOverPopupComponent, HintsContainerComponent, HoverHintComponent, IconBtnComponent, ItemDescriptionComponent, MainButtonComponent, MenuComponent, MwActionHintComponent, MwExperienceBarComponent, MwPlayerInfoPanelComponent, MwRaIconComponent, PopupContainerComponent, PopupWrapperComponent, RewardPopupComponent, SharedTemplateDirective, SharedTemplatesComponent, SpellDescriptionComponent, UnitGroupInfoComponent, UnitGroupInfoPopupComponent, UnitGroupPortraitComponent, UnitGroupSpellIconComponent, ValueBarComponent, VfxElementComponent, VfxLayerComponent } from './components';
-import { DisableContextMenuDirective, MwActionHintDirective, MwCustomCursorDirective, MwUnitEventsCursorDirective, MwUnitGroupCombatActionDirective, NumberModifierDirective } from './directives';
+import { ActionCardComponent, ActionCardsPopupComponent, CustomCursorComponent, DescriptionComponent, EventFeedComponent, EventFeedMessageComponent, GameOverPopupComponent, HintsContainerComponent, HoverHintComponent, IconBtnComponent, ItemDescriptionComponent, MainButtonComponent, MenuComponent, MwActionHintComponent, MwExperienceBarComponent, MwPlayerInfoPanelComponent, MwRaIconComponent, PlayerMapActionsPanelComponent, PopupContainerComponent, PopupWrapperComponent, RewardPopupComponent, SharedTemplateDirective, SharedTemplatesComponent, SpellDescriptionComponent, UnitGroupInfoComponent, UnitGroupInfoPopupComponent, UnitGroupPortraitComponent, UnitGroupSpellIconComponent, ValueBarComponent, VfxElementComponent, VfxLayerComponent } from './components';
+import { DisableContextMenuDirective, MwActionHintDirective, MwCustomCursorDirective, MwSafeHtmlPipe, MwUnitEventsCursorDirective, MwUnitGroupCombatActionDirective, NumberModifierDirective } from './directives';
+
+const pipes = [
+  MwSafeHtmlPipe,
+];
 
 const directives = [
   MwCustomCursorDirective,
@@ -14,8 +18,10 @@ const directives = [
 
 const components = [
   ...directives,
+  ...pipes,
 
   ActionCardComponent,
+  ActionCardsPopupComponent,
 
   GameOverPopupComponent,
   SharedTemplateDirective,
@@ -46,10 +52,10 @@ const components = [
   MainButtonComponent,
   ValueBarComponent,
 
+  PlayerMapActionsPanelComponent,
   MwPlayerInfoPanelComponent,
   MwExperienceBarComponent,
   RewardPopupComponent,
-
 ];
 
 @NgModule({

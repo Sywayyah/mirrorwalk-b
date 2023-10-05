@@ -16,7 +16,7 @@ export class UiEventFeedService {
   pushPlainMessage(messageText: string): void {
     const message: EventFeedMessage = {
       message: [{ htmlContent: messageText, type: DescriptionElementType.FreeHtml }],
-      delay: 4000,
+      delay: 4500,
     };
 
     this.pushEventFeedMessage(message);

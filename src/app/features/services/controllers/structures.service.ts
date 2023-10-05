@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { MapPanCameraCenterTo, NeutralStructParams, NewDayStarted, NewWeekStarted, PanMapCameraCenterAction, StructCompleted } from 'src/app/core/events';
-import { MapStructure, defaultTravelPointsCost, defaultTravelPointsPerDay } from 'src/app/core/structures';
+import { GameCommandEvents, MapPanCameraCenterTo, NeutralStructParams, NewDayStarted, NewWeekStarted, PanMapCameraCenterAction, RemoveActionPoints, StructCompleted } from 'src/app/core/events';
+import { MapStructure, defaultActionPointsCost, defaultActionPointsPerDay } from 'src/app/core/structures';
 import { StoreClient, WireMethod } from 'src/app/store';
 import { GameObjectsManager } from '../game-objects-manager.service';
 import { MwStructuresService } from '../mw-structures.service';
@@ -17,22 +17,15 @@ export class StructuresController extends StoreClient() {
     super();
   }
 
-  @WireMethod(StructCompleted)
-  public handleCompletedStructure(event: NeutralStructParams): void {
-    const structId = event.struct.id;
-
-    this.structuresService.availableStructuresMap[structId] = true;
-    this.gameObjectsManager.getObjectByFullId<MapStructure>(structId)!.visited = true;
-    this.structuresService.playerCurrentLocId = structId;
-    this.structuresService.updateAvailableStructures();
-
+  @WireMethod(RemoveActionPoints)
+  public removeActionPoints({ points }: GameCommandEvents['RemoveActionPoints']): void {
     const currentGame = this.state.currentGame;
 
-    currentGame.travelPoints -= defaultTravelPointsCost;
+    currentGame.actionPoints -= points;
 
-    if (currentGame.travelPoints <= 0) {
+    if (currentGame.actionPoints <= 0) {
       currentGame.day += 1;
-      currentGame.travelPoints += defaultTravelPointsPerDay;
+      currentGame.actionPoints += defaultActionPointsPerDay;
 
       this.events.dispatch(NewDayStarted({
         day: currentGame.day
@@ -45,6 +38,18 @@ export class StructuresController extends StoreClient() {
         this.events.dispatch(NewWeekStarted({ week: currentGame.week }));
       }
     }
+  }
+
+  @WireMethod(StructCompleted)
+  public handleCompletedStructure(event: NeutralStructParams): void {
+    const structId = event.struct.id;
+
+    this.structuresService.availableStructuresMap[structId] = true;
+    this.gameObjectsManager.getObjectByFullId<MapStructure>(structId)!.visited = true;
+    this.structuresService.playerCurrentLocId = structId;
+    this.structuresService.updateAvailableStructures();
+
+    this.events.dispatch(RemoveActionPoints({ points: defaultActionPointsCost }));
   }
 
   @WireMethod(MapPanCameraCenterTo)

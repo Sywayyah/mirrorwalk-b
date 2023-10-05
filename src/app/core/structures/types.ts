@@ -36,7 +36,8 @@ export interface StructureGeneratorModel {
   name: string;
   icon?: string;
   control: StuctureControl;
-  description?: string,
+  description?: string;
+  actionPoints?: number;
 
   type?: StructureType;
 

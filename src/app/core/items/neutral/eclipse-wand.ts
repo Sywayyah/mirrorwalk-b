@@ -1,5 +1,5 @@
 import { EnchantBuff } from '../../spells/common';
-import { spellDescrElem } from '../../ui';
+import { itemStatsDescr, spellDescrElem } from '../../ui';
 import { ItemBaseModel, ItemSlotType } from '../types';
 
 export const ItemEclipseWand: ItemBaseModel<{}> = {
@@ -7,6 +7,7 @@ export const ItemEclipseWand: ItemBaseModel<{}> = {
   slotType: ItemSlotType.Weapon,
   staticMods: {
     specialtyMagic: 1,
+    specialtyMagicRecovery: 2,
     // add bonus mana, maybe regen
     // resistAll: 5,
   },
@@ -17,6 +18,7 @@ export const ItemEclipseWand: ItemBaseModel<{}> = {
   description({ thisItem }) {
     return {
       descriptions: [
+        itemStatsDescr(thisItem),
         spellDescrElem('At the beginning of the battle, applies level 1 Enchant to all enemy groups.')
       ],
     };

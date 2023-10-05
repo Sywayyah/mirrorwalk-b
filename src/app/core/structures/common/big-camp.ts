@@ -3,6 +3,7 @@ import { NeutralRewardTypesEnum, ScriptedReward, StructureGeneratorModel, Stuctu
 
 export const BigCampStructure: StructureGeneratorModel = {
   name: 'Big Camp',
+  actionPoints: 1,
   generateGuard() {
     return {
       maxUnitGroups: 3,
