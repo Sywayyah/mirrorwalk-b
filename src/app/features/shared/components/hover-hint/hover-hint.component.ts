@@ -12,7 +12,7 @@ export class HoverHintComponent implements OnDestroy {
   @Input() public hintBody!: TemplateRef<ElementRef>;
   /* todo: improve transition and overall logic of this component later */
   @Input() public transition: number = 0.15;
-  @Input() public xPos: HintAttachment = 'after';
+  @Input() public hintPos: HintAttachment = 'after';
 
   @ViewChild('elem', { static: true }) public elem!: ElementRef;
   @ViewChild('generalHint', { static: true }) public generalHint!: TemplateRef<ElementRef>;
@@ -35,7 +35,7 @@ export class HoverHintComponent implements OnDestroy {
     this.currentHintRef = this.hintsService.containerRef.createHint(
       this.elem,
       this.generalHint,
-      this.xPos,
+      this.hintPos,
     );
 
     this.showTimeoutId = window.setTimeout(() => {

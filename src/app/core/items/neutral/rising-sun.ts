@@ -13,7 +13,7 @@ export const RisingSunPendant: ItemBaseModel = {
   },
   slotType: ItemSlotType.Amulet,
   staticMods: {
-    playerBonusDefence: 2,
+    heroBonusDefence: 2,
   },
   description({ thisItem }) {
     return {

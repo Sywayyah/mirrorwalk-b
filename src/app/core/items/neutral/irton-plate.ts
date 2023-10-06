@@ -9,7 +9,7 @@ export const IrtonPlateItem: ItemBaseModel = {
     icon: 'vest',
   },
   staticMods: {
-    playerBonusDefence: 3,
+    heroBonusDefence: 3,
   },
   description({ thisItem }) {
     return {

@@ -11,13 +11,13 @@ export const SkipDayActionCard: ActionCard = {
   bgColor: '#283761',
   iconColor: 'rgb(255 198 90)',
   borderColor: 'rgb(255 198 90)',
-  description: `You will immediately skip this day and receive 150 gold for each remaining action point left.`,
+  description: `You will immediately skip this day and receive 200 gold for each remaining action point left.`,
 
   config: {
     onUsedInstantly({ events, players, actions }) {
       const currentPlayer = players.getCurrentPlayer();
       const actionPointsLeft = actions.getActionPointsLeft();
-      const bonusGold = actionPointsLeft * 150;
+      const bonusGold = actionPointsLeft * 200;
 
       events.dispatch(RemoveActionPoints({ points: actionPointsLeft }));
 

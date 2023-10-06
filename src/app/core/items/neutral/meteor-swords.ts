@@ -6,7 +6,7 @@ export const ItemMeteorSwords: ItemBaseModel<{}> = {
   name: 'Meteor Swords',
   slotType: ItemSlotType.Weapon,
   staticMods: {
-    playerBonusAttack: 2,
+    heroBonusAttack: 2,
     specialtyFireMastery: 1,
   },
   icon: {

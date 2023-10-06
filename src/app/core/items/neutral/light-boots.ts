@@ -6,7 +6,7 @@ export const LightBootsItem = createItem({
   icon: 'boot-stomp',
   slot: ItemSlotType.Boots,
   stats: {
-    playerBonusDefence: 1,
+    heroBonusDefence: 1,
     __unitConditionalMods(unit) {
       if (unit.type.level === 1) {
         return {

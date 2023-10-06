@@ -372,10 +372,10 @@ export class UnitGroup extends GameObject<UnitCreationParams> {
       const heroBaseStats = this.ownerPlayerRef?.hero.base.initialState.stats;
 
       const baseAttack = baseStats.attackRating;
-      const bonusAttack = (mods.playerBonusAttack || 0) + (heroBaseStats?.baseAttack || 0);
+      const bonusAttack = (mods.heroBonusAttack || 0) + (heroBaseStats?.baseAttack || 0);
 
       const baseDefence = baseStats.defence;
-      const bonusDefence = (mods.playerBonusDefence || 0) + (heroBaseStats?.baseDefence || 0);
+      const bonusDefence = (mods.heroBonusDefence || 0) + (heroBaseStats?.baseDefence || 0);
 
       const baseSpeed = baseStats.speed;
       const speedBonus = mods.unitGroupSpeedBonus || 0;

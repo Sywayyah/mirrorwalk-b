@@ -5,7 +5,7 @@ export const ItemDoomstring: ItemBaseModel<{}> = {
   name: 'Doomstring',
   slotType: ItemSlotType.Weapon,
   staticMods: {
-    playerBonusAttack: 8,
+    heroBonusAttack: 8,
     specialtyOffence: 3,
     specialtyArchery: 2,
     specialtyFireMastery: 1,

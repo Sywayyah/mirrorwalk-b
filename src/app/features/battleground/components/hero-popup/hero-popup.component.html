@@ -78,5 +78,17 @@
 
       </ng-container>
     </div>
+
+    <hr/>
+    <div style="display: flex; flex-direction: column; align-items: center;">
+      Spells:
+
+      <div style="display: flex; flex-wrap: wrap; justify-content: center;">
+        <mw-spell-button *ngFor="let spell of currentPlayer.hero.spells"
+                         [spell]="spell"
+                         [player]="currentPlayer"
+                         [hero]="currentPlayer.hero" />
+      </div>
+    </div>
   </div>
 </ng-container>

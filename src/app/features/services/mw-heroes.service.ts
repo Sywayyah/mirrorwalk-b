@@ -28,18 +28,11 @@ export class MwHeroesService {
   ) { }
 
   public addManaToHero(hero: Hero, mana: number): void {
-    const heroStats = hero.stats;
-    const newMana = heroStats.currentMana + mana;
-
-    heroStats.currentMana = newMana > heroStats.maxMana ? heroStats.maxMana : newMana;
+    hero.addMana(mana);
   }
 
   public addSpellToHero(hero: Hero, spell: Spell): void {
     hero.spells.push(spell);
-  }
-
-  public addMaxManaToHero(hero: Hero, maxMana: number): void {
-    hero.stats.maxMana += maxMana;
   }
 
   public createHero(heroBase: HeroBase): Hero {

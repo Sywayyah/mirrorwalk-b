@@ -6,11 +6,11 @@ export const GrainHuskItem: ItemBaseModel = {
   name: 'Grain Husk',
   slotType: ItemSlotType.Weapon,
   staticMods: {
-    playerBonusAttack: 2,
+    heroBonusAttack: 2,
   },
   staticEnemyMods: {
-    playerBonusDefence: -3,
-    playerBonusAttack: -3,
+    heroBonusDefence: -3,
+    heroBonusAttack: -3,
     unitGroupSpeedBonus: -2,
   },
   icon: {

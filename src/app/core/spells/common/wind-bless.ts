@@ -33,7 +33,7 @@ export const WindBlessBuff: SpellBaseType<State> = {
         events.on({
           SpellPlacedOnUnitGroup(event) {
             const mods = actions.createModifiers({
-              playerBonusAttack: attackBonus,
+              heroBonusAttack: attackBonus,
             });
 
             spellInstance.state = {

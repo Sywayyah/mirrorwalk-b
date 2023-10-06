@@ -18,6 +18,7 @@ export const RainOfFireSpell: SpellBaseType = {
     return {
       descriptions: [
         spellDescrElem(`Deals ${baseDamage} +${bonusDmgPerLevel} damage per level (${getDamageByLevel(spellInstance.currentLevel)}) to the target.`),
+        spellDescrElem(`<br>Improves with Fire Mastery: gains additional targets and damage.`),
       ],
     }
   },
