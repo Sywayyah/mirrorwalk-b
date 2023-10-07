@@ -300,7 +300,7 @@ const Firebirds = humansFraction.defineUnitType('Firebird', {
   level: 5,
 
   getDescription: simpleDescriptions([
-    heroDescrElem(`Tier 5 Castle fire creature. Upgraded version of Mystical Birds`),
+    heroDescrElem(`Tier 5 Castle fire creature. Upgraded version of Mystical Birds.`),
     heroDescrElem(`<br>Powerful creatures of fire that can heal and resurrect allied units, has better stats than Mystical Birds and +17% fire resistance.`),
   ]),
 
