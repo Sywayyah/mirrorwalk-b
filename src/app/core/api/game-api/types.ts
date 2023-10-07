@@ -1,3 +1,4 @@
+import { EventData } from 'src/app/store';
 import { Player } from '../../players';
 import { Resources, ResourceType } from '../../resources';
 import { Spell, SpellBaseType } from '../../spells';
@@ -22,4 +23,8 @@ export interface PlayersApi {
 
 export interface SpellsApi {
   createSpellInstance: <T>(spell: SpellBaseType<T>, options?: SpellCreationOptions<T>) => Spell<T>;
+}
+
+export interface GlobalEventsApi {
+  dispatch(event: EventData): void;
 }
