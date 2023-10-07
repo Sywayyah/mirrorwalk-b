@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { PlayersApi, SpellsApi } from 'src/app/core/api/game-api';
+import { GlobalEventsApi, PlayersApi, SpellsApi } from 'src/app/core/api/game-api';
 import { GameApi } from 'src/app/core/triggers';
 import { EventsService } from 'src/app/store';
 import { MwHeroesService } from './mw-heroes.service';
@@ -68,5 +68,11 @@ export class ApiProvider {
         getActionPointsLeft: () => this.state.currentGame.actionPoints
       },
     }
+  }
+
+  public getGlobalEventsApi(): GlobalEventsApi {
+    return {
+      dispatch: (event) => this.events.dispatch(event),
+    };
   }
 }

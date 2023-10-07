@@ -7,8 +7,10 @@ import { SpellActivationType, SpellBaseType } from '../types';
 import { canActivateOnEnemyFn, getLevelScalingValueFn } from '../utils';
 
 const baseDamage = 65;
-const bonusDmgPerLevel = 20;
+const bonusDmgPerLevel = 25;
 const getDamageByLevel = getLevelScalingValueFn(baseDamage, bonusDmgPerLevel);
+
+const baseManaCost = 3;
 
 const fireMasteryBonusesByLevels = [
   { targets: 1, damage: [0.30] },
@@ -32,7 +34,7 @@ export const RainOfFireSpell: SpellBaseType = {
 
     if (fireMastery) {
       const fireMasteryBonuses = fireMasteryBonusesByLevels[fireMastery - 1];
-      descriptions.push(spellDescrElem(`<hr/>Fire Mastery ${fireMastery}:<br>Additional targets: ${fireMasteryBonuses.targets}<br>Damage: ${fireMasteryBonuses.damage.map(uiPercentSign).join(', ')}.`));
+      descriptions.push(spellDescrElem(`<hr/>Fire Mastery ${fireMastery}:<br>Additional targets: ${fireMasteryBonuses.targets}<br>Damage: ${fireMasteryBonuses.damage.map(uiPercentSign).join(', ')}`));
     }
 
     return {
@@ -98,18 +100,16 @@ export const RainOfFireSpell: SpellBaseType = {
 
           }
         });
-
       },
       getManaCost: (spell) => {
-        const baseMana = 2;
 
         // create utils for mana costs.
         const manaCosts: Record<number, number> = {
-          1: baseMana,
-          2: baseMana,
-          3: baseMana + 1,
-          4: baseMana + 1,
-          5: baseMana + 2,
+          1: baseManaCost,
+          2: baseManaCost,
+          3: baseManaCost + 1,
+          4: baseManaCost + 1,
+          5: baseManaCost + 2,
         };
 
         return manaCosts[spell.currentLevel];

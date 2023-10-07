@@ -12,7 +12,8 @@
 </div>
 
 <div class="cards">
-  <div *ngFor="let actionCard of cards" class="card-stack">
+  <div *ngFor="let actionCard of cards"
+       class="card-stack">
     <mw-action-card [actionCard]="actionCard.card"
                     [mwActionHint]="'Use ' + actionCard.card.title"
                     (click)="handleCardClick(actionCard)" />

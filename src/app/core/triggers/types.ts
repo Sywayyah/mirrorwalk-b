@@ -1,14 +1,12 @@
-import { EventData, EventGroup, EventHandlersMap } from 'src/app/store';
-import { PlayersApi } from '../api/game-api';
+import { EventGroup, EventHandlersMap } from 'src/app/store';
+import { GlobalEventsApi, PlayersApi } from '../api/game-api';
 
 export interface LocalEvents<T extends EventGroup<any>> {
   on: (handlers: EventHandlersMap<T>) => void;
 }
 
 export interface GameApi {
-  events: {
-    dispatch(event: EventData): void;
-  },
+  events: GlobalEventsApi,
   players: PlayersApi,
   actions: {
     getActionPointsLeft(): number;

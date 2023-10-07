@@ -1,4 +1,4 @@
-import { PlayersApi } from "../api/game-api";
+import { GlobalEventsApi, PlayersApi } from "../api/game-api";
 import { GameObject } from "../game-objects";
 import { Resources } from "../resources";
 import { LocalEvents } from "../triggers";
@@ -36,7 +36,11 @@ export interface HiringActivity extends BuildingAcitivty<ActivityTypes.Hiring> {
  *  2. Point 1 might make it possible so I won't need a file with types declared per event.
  *  3. API unifications.
  */
-export type BuldingsAPI = { players: PlayersApi, localEvents: LocalEvents<typeof BuildingsEventsGroup> };
+export type BuldingsAPI = {
+  players: PlayersApi;
+  localEvents: LocalEvents<typeof BuildingsEventsGroup>;
+  globalEvents: GlobalEventsApi;
+};
 
 export interface BuidlingBase {
   name: string;

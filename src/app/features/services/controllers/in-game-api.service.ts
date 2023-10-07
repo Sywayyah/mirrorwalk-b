@@ -118,7 +118,8 @@ export class InGameApiController extends StoreClient() {
             this.state.eventHandlers.buildings.registerHandlerByRef(building, event as any, handler);
           });
         }
-      }
+      },
+      globalEvents: this.apiProvider.getGlobalEventsApi(),
     });
   }
 

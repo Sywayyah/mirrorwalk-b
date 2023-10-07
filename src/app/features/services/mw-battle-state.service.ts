@@ -145,6 +145,18 @@ export class BattleStateService {
     );
   }
 
+  public getDeadUnitsOfPlayer(player: Player): UnitGroup[] {
+    return (this.heroesUnitGroupsMap.get(player) as UnitGroup[]).filter(
+      unitGroup => !unitGroup.fightInfo.isAlive,
+    );
+  }
+
+  public getSummonsOfPlayer(player: Player): UnitGroup[] {
+    return (this.heroesUnitGroupsMap.get(player) as UnitGroup[]).filter(
+      unitGroup => unitGroup.modGroup.getModValue('isSummon'),
+    );
+  }
+
   public playerHasAnyAliveUnits(player: Player): boolean {
     return this.getAliveUnitsOfPlayer(player).length !== 0;
   }

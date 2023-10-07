@@ -294,17 +294,51 @@ humansFraction.defineUnitType('Cavalry', {
   },
 });
 
-humansFraction.defineUnitType('Firebird', {
-  name: 'Firebird',
+const Firebirds = humansFraction.defineUnitType('Firebird', {
+  name: 'Firebirds',
   mainPortraitUrl: AssetsImages.UnitMelee,
-
-  getDescription: simpleDescriptions([
-    heroDescrElem(`Tier 5 Castle fire creature.`),
-    heroDescrElem(`<br>Very powerful fire creatures that can heal and resurrect allied units.`),
-  ]),
   level: 5,
 
-  baseStats: createStats([[21, 28], 11, 12, 51, 17]),
+  getDescription: simpleDescriptions([
+    heroDescrElem(`Tier 5 Castle fire creature. Upgraded version of Mystical Birds.`),
+    heroDescrElem(`<br>Powerful creatures of fire that can heal and resurrect allied units, has better stats than Mystical Birds and +17% fire resistance.`),
+  ]),
+
+  baseStats: createStats([[23, 29], 12, 14, 57, 17]),
+
+  defaultTurnsPerRound: 1,
+  minQuantityPerStack: 1,
+
+  defaultModifiers: {
+    resistFire: 17,
+  },
+
+  defaultSpells: [
+    FirebirdHealSpell,
+  ],
+
+  baseRequirements: {
+    gold: 500,
+    wood: 1,
+  },
+
+  neutralReward: {
+    experience: 45,
+    gold: 60,
+  },
+});
+
+humansFraction.defineUnitType('MysticalBird', {
+  name: 'Mystical Birds',
+  mainPortraitUrl: AssetsImages.UnitMelee,
+  level: 5,
+
+  getDescription: simpleDescriptions([
+    heroDescrElem(`Tier 5 Castle fire creature. Can be upgraded into Firebirds.`),
+    heroDescrElem(`<br>Powerful creatures of fire that can heal and resurrect allied units, also has 10% resist against fire.`),
+  ]),
+
+  baseStats: createStats([[20, 26], 10, 12, 48, 16]),
 
   defaultTurnsPerRound: 1,
   minQuantityPerStack: 1,
@@ -313,10 +347,19 @@ humansFraction.defineUnitType('Firebird', {
     FirebirdHealSpell,
   ],
 
+  defaultModifiers: {
+    resistFire: 10,
+  },
+
   baseRequirements: {
     gold: 400,
     wood: 1,
-    // redCrystals: 1
+  },
+  upgradeDetails: {
+    target: Firebirds,
+    upgradeCost: {
+      gold: 100,
+    },
   },
   neutralReward: {
     experience: 40,

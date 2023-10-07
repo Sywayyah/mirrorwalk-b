@@ -1,3 +1,5 @@
+import { MeditateActionCard } from '../../action-cards/player-actions';
+import { AddActionCardsToPlayer } from '../../events';
 import { HUMANS_UNIT_TYPES, humansFraction } from '../../fractions';
 import { ActivityTypes, BuidlingBase, HiringActivity } from '../buildings';
 import { TownBase } from '../types';
@@ -51,12 +53,20 @@ const market: BuidlingBase = {
 
 const highTower: BuidlingBase = {
   name: 'High Tower',
-  description: 'Brings 5 mana to your hero at the beginning of each week',
+  description: 'Gives 1 Meditation action card instantly and at the beginning of each week.',
   config: {
-    init({ localEvents, players }) {
+    init({ localEvents, players, globalEvents }) {
+      globalEvents.dispatch(AddActionCardsToPlayer({
+        actionCardStacks: [{ card: MeditateActionCard, count: 1 }],
+        player: players.getCurrentPlayer(),
+      }));
+
       localEvents.on({
         NewWeekStarts() {
-          players.addManaToPlayer(players.getCurrentPlayer(), 5);
+          globalEvents.dispatch(AddActionCardsToPlayer({
+            actionCardStacks: [{ card: MeditateActionCard, count: 1 }],
+            player: players.getCurrentPlayer(),
+          }));
         },
       });
     },
@@ -120,8 +130,14 @@ const cavalryStalls = {
 
 const magicTower: BuidlingBase = {
   name: 'Magic Tower',
-  description: 'Allows to train Firebirds',
-  activity: createHiringActivity('Firebird', 1, 'firebirds'),
+  description: 'Allows to train Mystical Birds',
+  activity: createHiringActivity('MysticalBird', 2, 'firebirds'),
+};
+
+const upgradedMagicTower: BuidlingBase = {
+  name: 'Upg. Magic Tower',
+  description: 'Allows to train Mystical Birds and Firebirds',
+  activity: createHiringActivity('MysticalBird', 2, 'firebirds', true),
 };
 
 // will be reworked, need somehow to process it in the fraction itself
@@ -150,7 +166,7 @@ export const castleTownBase: TownBase<CastleTownBuildings> = {
       baseName: 'Magic School',
       description: 'Allows you to learn spells for your hero',
       levels: [
-        { building: highTower, cost: { gold: 1500, gems: 2 } }
+        { building: highTower, cost: { gold: 1000, gems: 1 } }
       ],
       icon: 'burning-book',
       tier: 2,
@@ -287,6 +303,7 @@ export const castleTownBase: TownBase<CastleTownBuildings> = {
       description: 'Trains Firebirds and Mystical Birds',
       levels: [
         { building: magicTower, cost: { gold: 625, wood: 1, gems: 1 } },
+        { building: upgradedMagicTower, cost: { gold: 500, gems: 1 } },
       ],
       icon: 'tower',
       tier: 4,
