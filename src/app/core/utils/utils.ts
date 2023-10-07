@@ -18,6 +18,9 @@ export const CommonUtils = {
   },
 
   removeItem<T>(arr: T[], item: T): void {
+    if (arr.indexOf(item) === -1) {
+      return;
+    }
     const itemIndex = arr.indexOf(item);
     arr.splice(itemIndex, 1);
   },

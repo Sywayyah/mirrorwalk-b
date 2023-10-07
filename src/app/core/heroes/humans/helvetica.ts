@@ -1,7 +1,6 @@
 import { AssetsImages } from '../../assets';
 import { humansFraction } from '../../fractions';
 import { ItemWindCrest } from '../../items/neutral';
-import { SwordOfTheBattleMageItem } from '../../items/neutral/sword-of-the-battle-mage';
 import { HasteSpell, RainOfFireSpell } from '../../spells/common';
 import { heroDescrElem } from '../../ui';
 import { HeroBase } from '../types';
@@ -42,6 +41,7 @@ export const HelveticaHero: HeroBase = humansFraction.createHero({
     // SwordOfTheBattleMageItem,
     // PhoenixShieldItem,
     // FamineScytheItem,
+    // FlamingSword,
     // ItemIceBow,
   ],
   resources: {
@@ -56,6 +56,6 @@ export const HelveticaHero: HeroBase = humansFraction.createHero({
     baseDefence: 0,
   },
   defaultModifiers: {
-    specialtyFireMastery: 1,
+    // specialtyFireMastery: 1,
   }
 });
