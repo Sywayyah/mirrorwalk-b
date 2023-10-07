@@ -28,7 +28,7 @@ export const BlackLichSwordItem: ItemBaseModel = {
     return {
       descriptions: [
         itemStatsDescr(thisItem),
-        spellDescrElem(`Grants 10% Lifesteal to non-ranged units up to 4-th level.`),
+        spellDescrElem(`Grants 10% Lifesteal to non-ranged units up to level 4.`),
       ],
     };
   },

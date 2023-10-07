@@ -4,7 +4,7 @@ import { Specialties } from '../specialties';
 export const numMod = (num: number) => `${num >= 0 ? '+' : '-'}${num}`;
 
 export function plainNumMod(label: string): (num: number) => string {
-  return (num) => `${num >= 0 ? '+' : '-'}${num} ${label}`;
+  return (num) => `${num >= 0 ? '+' : ''}${num} ${label}`;
 };
 
 function percentVal(label: string): (val: number) => string {
