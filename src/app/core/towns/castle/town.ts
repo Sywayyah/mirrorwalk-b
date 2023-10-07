@@ -100,6 +100,12 @@ const archersOutpost = {
   activity: createHiringActivity('Archer', 10, 'archers'),
 };
 
+const upgradedArchersOutpost = {
+  name: 'Upg. Archers Outpost',
+  description: 'Allows to train Archers and Crossbowmen',
+  activity: createHiringActivity('Archer', 10, 'archers', true),
+};
+
 const hallsOfKnights = {
   name: 'Halls of Knights',
   description: 'Allows to train Knights',
@@ -252,7 +258,8 @@ export const castleTownBase: TownBase<CastleTownBuildings> = {
       baseName: 'Archers Outpost',
       description: 'Trains Archers',
       levels: [
-        { building: archersOutpost, cost: { gold: 420, wood: 2 } },
+        { building: archersOutpost, cost: { gold: 420, wood: 1 } },
+        { building: upgradedArchersOutpost, cost: { gold: 300, wood: 2 } },
       ],
       icon: 'arrow-cluster',
       tier: 1,

@@ -30,6 +30,11 @@ export const CommonUtils = {
     return Math.random() < chance;
   },
 
+  /** Keep percent below max percent */
+  maxPercent(percent: number, maxPercent = 1): number {
+    return percent > maxPercent ? percent : 0;
+  },
+
   nonNegative(val: number): number {
     return val < 0 ? 0 : val;
   },

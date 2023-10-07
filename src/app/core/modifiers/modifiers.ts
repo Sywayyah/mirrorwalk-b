@@ -40,6 +40,9 @@ export interface ModifiersModel extends Specialties {
   damageBlockMin: number;
   damageBlockMax: number;
 
+  // percent of block value will be ignored
+  blockPiercingPercent: number;
+
   // specified in 0-100 scale
   resistAll: number;
   resistFire: number;
