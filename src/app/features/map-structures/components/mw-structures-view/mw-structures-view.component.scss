@@ -51,6 +51,7 @@
 // outline: 2px solid #e3d069;
 // }
 
+
 .struct-icon {
   position: absolute;
   cursor: pointer;
@@ -72,6 +73,11 @@
     transition: 0.4s;
     transform: translate(-50%, -50%) scale(1.4);
   }
+}
+
+.available {
+  // filter: brightness(0.8);
+  outline: 4px solid rgb(151 133 27 / 28%);
 }
 
 .struct-icon.disabled {

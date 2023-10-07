@@ -10,7 +10,7 @@
                 [class.disabled]="!structsService.availableStructuresMap[struct.id]"
                 (click)="onStructureSelected(struct)"
                 [style.left.px]="struct.x"
-                [mwActionHint]="struct.name"
+                [mwActionHint]="struct.name + (struct.visited ? '<hr/>Visited' : '')"
                 [style.top.px]="struct.y"
                 class="struct-icon"
                 [icon]="struct.icon" />

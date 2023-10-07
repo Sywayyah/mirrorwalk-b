@@ -128,8 +128,6 @@ const Crossbowmen = humansFraction.defineUnitType('Crossbowmen', {
   },
 })
 
-// todo: add upgraded units
-// also add bonuses from specialties
 // add action points required for location
 humansFraction.defineUnitType('Archer', {
   mainPortraitUrl: AssetsImages.UnitRanged,
@@ -258,7 +256,7 @@ humansFraction.defineUnitType('Cavalry', {
 
   getDescription: simpleDescriptions([
     heroDescrElem(`Tier 4 Castle units.`),
-    heroDescrElem(`<br>Cavalry is armored unit type that also deals heavy damage with 50% block-piercing attack.`),
+    heroDescrElem(`<br>Cavalry is armored unit type that also deals heavy damage with 55% block-piercing attack.`),
   ]),
 
   level: 4,
@@ -275,7 +273,7 @@ humansFraction.defineUnitType('Cavalry', {
   minQuantityPerStack: 1,
 
   defaultModifiers: {
-    blockPiercingPercent: 0.5,
+    blockPiercingPercent: 0.55,
   },
 
   baseRequirements: {

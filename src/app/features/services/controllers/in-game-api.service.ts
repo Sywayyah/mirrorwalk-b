@@ -140,6 +140,7 @@ export class InGameApiController extends StoreClient() {
         postEventFeedMessage: (message) => this.eventFeed.pushEventFeedMessage(message),
         pushPlainMessage: (messageText) => this.eventFeed.pushPlainMessage(messageText),
       },
+      spells: this.apiProvider.getSpellsApi(),
     });
   }
 

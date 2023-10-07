@@ -14,9 +14,10 @@ export const resPileStructure = (
     type: StructureType.Scripted,
 
     config: {
-      init({ localEvents, players }) {
+      init({ localEvents, players, thisStruct }) {
         localEvents.on({
           StructVisited({ visitingPlayer }) {
+            thisStruct.visited = true;
             players.giveResourceToPlayer(visitingPlayer, resType, amount);
           }
         });
@@ -39,10 +40,10 @@ export const resourcesPileStructure = (resources: Resources): StructureGenerator
     type: StructureType.Scripted,
 
     config: {
-      init({ localEvents, players }) {
-
+      init({ localEvents, players, thisStruct }) {
         localEvents.on({
           StructVisited({ visitingPlayer }) {
+            thisStruct.visited = true;
             players.giveResourcesToPlayer(
               visitingPlayer,
               resources,
