@@ -228,7 +228,8 @@ humansFraction.defineUnitType('Knight', {
   level: 3,
 
   getDescription: simpleDescriptions([
-    heroDescrElem(`Knights are possessing high armor and attack. `),
+    heroDescrElem(`Tier 3 Castle unit.`),
+    heroDescrElem(`<br>Knights are possessing high armor and attack. `),
     heroDescrElem(`<br>Chance-based ability to block damage along with +12% to Fire, Cold and Lightning resistances makes them durable fighters.`),
   ]),
 
@@ -261,7 +262,7 @@ humansFraction.defineUnitType('Cavalry', {
   mainPortraitUrl: AssetsImages.UnitMelee,
 
   getDescription: simpleDescriptions([
-    heroDescrElem(`Tier 4 Castle units.`),
+    heroDescrElem(`Tier 4 Castle unit.`),
     heroDescrElem(`<br>Cavalry is armored unit type that also deals heavy damage with 55% block-piercing attack.`),
   ]),
 
@@ -298,7 +299,8 @@ humansFraction.defineUnitType('Firebird', {
   mainPortraitUrl: AssetsImages.UnitMelee,
 
   getDescription: simpleDescriptions([
-    heroDescrElem(`Very powerful fire creatures that can heal and resurrect allied units.`),
+    heroDescrElem(`Tier 5 Castle fire creature.`),
+    heroDescrElem(`<br>Very powerful fire creatures that can heal and resurrect allied units.`),
   ]),
   level: 5,
 
