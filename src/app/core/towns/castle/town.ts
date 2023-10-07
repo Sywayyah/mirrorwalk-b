@@ -130,8 +130,14 @@ const cavalryStalls = {
 
 const magicTower: BuidlingBase = {
   name: 'Magic Tower',
-  description: 'Allows to train Firebirds',
-  activity: createHiringActivity('Firebird', 2, 'firebirds'),
+  description: 'Allows to train Mystical Birds',
+  activity: createHiringActivity('MysticalBird', 2, 'firebirds'),
+};
+
+const upgradedMagicTower: BuidlingBase = {
+  name: 'Upg. Magic Tower',
+  description: 'Allows to train Mystical Birds and Firebirds',
+  activity: createHiringActivity('MysticalBird', 2, 'firebirds', true),
 };
 
 // will be reworked, need somehow to process it in the fraction itself
@@ -297,6 +303,7 @@ export const castleTownBase: TownBase<CastleTownBuildings> = {
       description: 'Trains Firebirds and Mystical Birds',
       levels: [
         { building: magicTower, cost: { gold: 625, wood: 1, gems: 1 } },
+        { building: upgradedMagicTower, cost: { gold: 500, gems: 1 } },
       ],
       icon: 'tower',
       tier: 4,
