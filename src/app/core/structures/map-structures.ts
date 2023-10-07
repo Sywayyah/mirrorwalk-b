@@ -4,6 +4,7 @@ import { NeutralRewardModel, StructureGeneratorModel } from '.';
 import { UnitGroup } from '../unit-types';
 import { Modifiers } from '../modifiers';
 
+// todo: choosed structures? there could be branches where only one of 2 can be chosen
 export interface StructureDescription {
   x: number;
   y: number;

@@ -18,8 +18,9 @@ export interface ModifiersModel extends Specialties {
 
   // player bonuses
   // todo: theoretically, can be renamed starting with unitGroup
-  playerBonusAttack: number;
-  playerBonusDefence: number;
+  heroBonusAttack: number;
+  heroBonusDefence: number;
+  heroMaxMana: number;
 
   /* unit speed bonus */
   unitGroupSpeedBonus: number;
@@ -31,13 +32,16 @@ export interface ModifiersModel extends Specialties {
   // critical damage (to be implemented)
   criticalDamageChance: number;
   criticalDamageMul: number;
-  
+
   // damage block
   // chance is in 0-1 scale
   // needs to be specified all together on same modfiers instance
   chanceToBlock: number;
   damageBlockMin: number;
   damageBlockMax: number;
+
+  // percent of block value will be ignored
+  blockPiercingPercent: number;
 
   // specified in 0-100 scale
   resistAll: number;

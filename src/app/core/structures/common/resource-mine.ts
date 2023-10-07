@@ -20,6 +20,7 @@ export const dailyResourcesMineStructure = (resources: Resources): StructureGene
 
         localEvents.on({
           StructVisited() {
+            thisStruct.visited = true;
             players.giveResourcesToPlayer(players.getCurrentPlayer(), resources);
 
             localEvents.on({

@@ -34,6 +34,7 @@ TriggersRegistry.register(Triggers.PrepareGameEvent, {
 
 TriggersRegistry.register(PlayersInitialized, {
   fn: (_, api) => {
+    // could rely on random
     const initialActionCards = [
       { card: MeditateActionCard, count: 1 },
       { card: SkipDayActionCard, count: 1 },

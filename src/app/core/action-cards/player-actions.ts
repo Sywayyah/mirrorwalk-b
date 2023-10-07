@@ -11,13 +11,13 @@ export const SkipDayActionCard: ActionCard = {
   bgColor: '#283761',
   iconColor: 'rgb(255 198 90)',
   borderColor: 'rgb(255 198 90)',
-  description: `You will immediately skip this day and receive 150 gold for each remaining action point left.`,
+  description: `You will immediately skip this day and receive 200 gold for each remaining action point left.`,
 
   config: {
     onUsedInstantly({ events, players, actions }) {
       const currentPlayer = players.getCurrentPlayer();
       const actionPointsLeft = actions.getActionPointsLeft();
-      const bonusGold = actionPointsLeft * 150;
+      const bonusGold = actionPointsLeft * 200;
 
       events.dispatch(RemoveActionPoints({ points: actionPointsLeft }));
 
@@ -42,7 +42,7 @@ export const MeditateActionCard: ActionCard = {
   bgColor: 'rgb(39 57 89)',
   iconColor: '#d9f2fd',
   type: ActionCardTypes.PlayerAction,
-  description: `You restore ${manaIcon(3)} points of mana (+${manaIcon(2)} per point of Restoration specialty), consumes ${actionIcon(2)} action points. Action restored every week.`,
+  description: `You restore ${manaIcon(3)} mana (+${manaIcon(2)} per point of Restoration specialty), consumes ${actionIcon(2)} action points. Action restored every week.`,
 
   actionPoints: 2,
 

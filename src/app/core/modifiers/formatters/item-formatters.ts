@@ -4,7 +4,7 @@ import { Specialties } from '../specialties';
 export const numMod = (num: number) => `${num >= 0 ? '+' : '-'}${num}`;
 
 export function plainNumMod(label: string): (num: number) => string {
-  return (num) => `${num >= 0 ? '+' : '-'}${num} ${label}`;
+  return (num) => `${num >= 0 ? '+' : ''}${num} ${label}`;
 };
 
 function percentVal(label: string): (val: number) => string {
@@ -32,8 +32,10 @@ export const specialtyLabels: Record<keyof Specialties, string> = {
 type ModFormatter<K extends keyof Modifiers> = (val: ModifiersModel[K]) => string;
 
 export const modsFormatters: { [K in keyof Modifiers]: ModFormatter<K> } = {
-  playerBonusAttack: plainNumMod('Attack Rating'),
-  playerBonusDefence: plainNumMod('Defence'),
+  heroBonusAttack: plainNumMod('Attack Rating'),
+  heroBonusDefence: plainNumMod('Defence'),
+  heroMaxMana: plainNumMod('Max Mana'),
+
   lifesteal: percentVal('Lifesteal'),
 
   resistAll: percentVal('All Resists'),

@@ -46,14 +46,9 @@ export interface HeroBase {
   image: string;
 }
 
+// stats that are not the part of modifiers
 export interface HeroStats {
-  maxMana: number;
   currentMana: number;
-  /* these ones can be just for UI, but mods will be used in calcs */
-  baseAttack: number;
-  bonusAttack: number;
-  baseDefence: number;
-  bonusDefence: number;
 }
 
 export interface HeroCreationParams {
@@ -61,7 +56,7 @@ export interface HeroCreationParams {
 }
 
 export enum HeroMods {
-  /** Hero stats mods */
+  /** Hero stats mods that remain unchanged */
   HeroStatMods = 'hsMods',
   /** Mods coming from items. */
   HeroItemMods = 'hiMods',
@@ -82,6 +77,9 @@ export interface HeroStatsInfo {
   coldResist: number;
   lightningResist: number;
   poisonResist: number;
+
+  currentMana: number;
+  maxMana: number;
 }
 
 export class Hero extends GameObject<HeroCreationParams> {
@@ -119,6 +117,9 @@ export class Hero extends GameObject<HeroCreationParams> {
     coldResist: 0,
     lightningResist: 0,
     poisonResist: 0,
+
+    currentMana: 0,
+    maxMana: 0,
   });
 
   private readonly destroyed$ = new Subject<void>();
@@ -132,12 +133,7 @@ export class Hero extends GameObject<HeroCreationParams> {
     const heroBaseStats = heroBase.initialState.stats;
 
     this.stats = {
-      baseAttack: heroBaseStats.baseAttack,
-      bonusAttack: 0,
-      baseDefence: heroBaseStats.baseDefence,
-      bonusDefence: 0,
       currentMana: heroBaseStats.mana,
-      maxMana: heroBaseStats.mana,
     };
   }
 
@@ -272,6 +268,26 @@ export class Hero extends GameObject<HeroCreationParams> {
     }
   }
 
+  public addStatsMods(mods: Modifiers): void {
+    this.modGroup.getNamedGroup(HeroMods.HeroStatMods)?.addModsRef(ModsRef.fromMods(mods));
+  }
+
+  public addMana(mana: number) {
+    this.stats.currentMana += mana;
+    const maxMana = this.getStats().maxMana;
+
+    if (this.stats.currentMana > maxMana) {
+      this.stats.currentMana = maxMana;
+    }
+
+    const currentState = this.heroStats$.getValue();
+
+    this.heroStats$.next({
+      ...currentState,
+      currentMana: this.stats.currentMana,
+    });
+  }
+
   private getItemModsGroup(): ModsRefsGroup | undefined {
     return this.modGroup.getNamedGroup(HeroMods.HeroItemMods);
   }
@@ -288,12 +304,18 @@ export class Hero extends GameObject<HeroCreationParams> {
       this.specialtiesModGroup.addModsRef(ModsRef.fromMods(filterSpecialties(mods)));
       this.updateUnitsSpecialtyAndConditionalMods();
 
-      const { baseAttack, baseDefence } = heroBase.initialState.stats;
+      const { baseAttack, baseDefence, mana } = heroBase.initialState.stats;
 
-      const bonusAttack = mods.playerBonusAttack || 0;
-      const bonusDefence = mods.playerBonusDefence || 0;
+      const bonusAttack = mods.heroBonusAttack || 0;
+      const bonusDefence = mods.heroBonusDefence || 0;
 
       const allResist = mods.resistAll || 0;
+
+      const maxMana = (mods.heroMaxMana || 0) + mana;
+
+      if (this.stats.currentMana > maxMana) {
+        this.stats.currentMana = maxMana;
+      }
 
       const heroStats: HeroStatsInfo = {
         baseAttack,
@@ -308,6 +330,9 @@ export class Hero extends GameObject<HeroCreationParams> {
         coldResist: (mods.resistCold || 0) + allResist,
         lightningResist: (mods.resistLightning || 0) + allResist,
         poisonResist: (mods.resistPoison || 0) + allResist,
+
+        currentMana: this.stats.currentMana,
+        maxMana: maxMana,
       };
 
       this.heroStats$.next(heroStats);

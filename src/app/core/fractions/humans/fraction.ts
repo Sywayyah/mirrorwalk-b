@@ -1,11 +1,17 @@
 import { Fractions, FractionsEnum } from '../fractions';
 
 export type HUMANS_UNIT_TYPES =
-  | 'Archer'
   | 'Pikemen'
   | 'Halberdier'
+
+  | 'Archer'
+  | 'Crossbowmen'
+
   | 'Knight'
+
   | 'Cavalry'
+
+  | 'MysticalBird'
   | 'Firebird';
 
 export const humansFraction = Fractions.createFraction<HUMANS_UNIT_TYPES>(

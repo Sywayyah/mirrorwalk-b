@@ -1,11 +1,20 @@
 import { DamageType } from '../../api/combat-api';
 import { spellDescrElem } from '../../ui';
-import { FireAnimation, getDamageParts } from '../../vfx';
+import { UnitGroup } from '../../unit-types';
+import { CommonUtils } from '../../utils';
+import { FireAnimation, getDamageParts, uiPercentSign } from '../../vfx';
 import { SpellActivationType, SpellBaseType } from '../types';
-import { canActivateOnEnemyFn } from '../utils';
+import { canActivateOnEnemyFn, getLevelScalingValueFn } from '../utils';
 
-// Rescale damage & adjust manacost
 const baseDamage = 65;
+const bonusDmgPerLevel = 20;
+const getDamageByLevel = getLevelScalingValueFn(baseDamage, bonusDmgPerLevel);
+
+const fireMasteryBonusesByLevels = [
+  { targets: 1, damage: [0.30] },
+  { targets: 1, damage: [0.60] },
+  { targets: 2, damage: [0.65, 0.25] },
+];
 
 export const RainOfFireSpell: SpellBaseType = {
   name: 'Rain of Fire',
@@ -14,10 +23,20 @@ export const RainOfFireSpell: SpellBaseType = {
     icon: 'fire',
   },
   getDescription({ ownerHero, spellInstance }) {
+    const fireMastery = ownerHero.specialtiesModGroup.getModValue('specialtyFireMastery') || 0;
+
+    const descriptions = [
+      spellDescrElem(`Deals ${baseDamage} +${bonusDmgPerLevel} damage per level (${getDamageByLevel(spellInstance.currentLevel)}) to the target.`),
+      spellDescrElem(`<br>Improves with Fire Mastery: gains additional targets.`),
+    ];
+
+    if (fireMastery) {
+      const fireMasteryBonuses = fireMasteryBonusesByLevels[fireMastery - 1];
+      descriptions.push(spellDescrElem(`<hr/>Fire Mastery ${fireMastery}:<br>Additional targets: ${fireMasteryBonuses.targets}<br>Damage: ${fireMasteryBonuses.damage.map(uiPercentSign).join(', ')}.`));
+    }
+
     return {
-      descriptions: [
-        spellDescrElem(`Deals ${baseDamage} (${baseDamage * spellInstance.currentLevel}) damage per level to the target.`),
-      ],
+      descriptions,
     }
   },
   type: {
@@ -34,40 +53,63 @@ export const RainOfFireSpell: SpellBaseType = {
         events.on({
           PlayerTargetsSpell(event) {
 
-            vfx.createEffectForUnitGroup(event.target, FireAnimation, {
-              duration: 850,
-            });
+            const fullDamage = getDamageByLevel(spellInstance.currentLevel);
 
-            const damage = baseDamage * spellInstance.currentLevel;
+            function dealDamageToTarget(target: UnitGroup, damage: number): void {
+              vfx.createEffectForUnitGroup(target, FireAnimation, {
+                duration: 850,
+              });
 
-            actions.dealDamageTo(
-              event.target,
-              damage,
-              DamageType.Fire,
-              (actionInfo) => {
-                actions.historyLog(`${ownerHero.name} deals ${actionInfo.finalDamage} damage to ${event.target.type.name} with ${thisSpell.name}`)
+              actions.dealDamageTo(
+                target,
+                damage,
+                DamageType.Fire,
+                (actionInfo) => {
+                  actions.historyLog(`${ownerHero.name} deals ${actionInfo.finalDamage} damage to ${actionInfo.initialUnitCount} ${target.type.name} with ${thisSpell.name}, ${actionInfo.unitLoss} units perish.`)
 
-                vfx.createFloatingMessageForUnitGroup(
-                  event.target,
-                  getDamageParts(actionInfo.finalDamage, actionInfo.unitLoss),
-                  { duration: 1000 },
-                );
-              },
-            );
+                  vfx.createFloatingMessageForUnitGroup(
+                    target,
+                    getDamageParts(actionInfo.finalDamage, actionInfo.unitLoss),
+                    { duration: 1000 },
+                  );
+                },
+              );
+            }
+
+            dealDamageToTarget(event.target, fullDamage);
+
+            // handle additional targets if fire mastery is present
+            const fireMasteryLevel = ownerHero.specialtiesModGroup.getModValue('specialtyFireMastery') || 0;
+
+            if (fireMasteryLevel) {
+              const fireMasteryBonuses = fireMasteryBonusesByLevels[fireMasteryLevel - 1];
+
+              const aliveEnemyUnits = actions.getAliveUnitGroupsOfPlayer(event.target.ownerPlayerRef);
+              CommonUtils.removeItem(aliveEnemyUnits, event.target);
+
+              if (aliveEnemyUnits.length) {
+                const randomEnemies = CommonUtils.getRandomItems(aliveEnemyUnits, fireMasteryBonuses.targets);
+
+                randomEnemies.forEach((additionalTarget, index) => {
+                  dealDamageToTarget(additionalTarget, fullDamage * fireMasteryBonuses.damage[index]);
+                });
+              }
+            }
+
           }
         });
 
       },
       getManaCost: (spell) => {
-        const baseMana = 3;
+        const baseMana = 2;
 
         // create utils for mana costs.
         const manaCosts: Record<number, number> = {
           1: baseMana,
-          2: baseMana + 1,
+          2: baseMana,
           3: baseMana + 1,
-          4: baseMana + 2,
-          5: baseMana + 3,
+          4: baseMana + 1,
+          5: baseMana + 2,
         };
 
         return manaCosts[spell.currentLevel];

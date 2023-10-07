@@ -9,13 +9,13 @@ export const FamineScytheItem: ItemBaseModel = {
   slotType: ItemSlotType.Weapon,
   staticMods: {
     specialtyNecromancy: 2,
-    playerBonusAttack: 6,
+    heroBonusAttack: 6,
     /* Vampirism mod, maybe -1-2 to Defence */
   },
   staticEnemyMods: {
     // percent
-    playerBonusDefence: -5,
-    playerBonusAttack: -5,
+    heroBonusDefence: -5,
+    heroBonusAttack: -5,
     unitGroupSpeedBonus: -6,
   },
   icon: {

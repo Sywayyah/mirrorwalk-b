@@ -12,11 +12,11 @@ neutralsFraction.defineUnitType('Gnoll', {
 
   getDescription: simpleDescriptions([
     heroDescrElem('Gnolls are tier 1 neutral units with average stats.'),
-    heroDescrElem('Mostly known for being bandits, they possess a fire resistant fur, giving them +12% to Fire Resist.'),
+    heroDescrElem('Mostly known for being bandits, they possess a fire resistant fur, giving them +10% to Fire Resist.'),
   ]),
 
   defaultModifiers: {
-    resistFire: 12,
+    resistFire: 10,
   },
 
   minQuantityPerStack: 5,

@@ -44,3 +44,6 @@ export const logDamage = ({
     { duration: 1000 },
   );
 };
+
+export const getLevelScalingValueFn = (baseValue: number, addedValuePerLevel: number) =>
+  (level: number) => baseValue + ((level - 1) * addedValuePerLevel);

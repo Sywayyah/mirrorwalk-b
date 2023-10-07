@@ -56,7 +56,8 @@ export class CombatInteractorService extends StoreClient() {
 
           const conditionalAttackData = { attacked: target, attacker: options.attackerUnit };
 
-          const attackerConditionalModifiers = options.attackerUnit.modGroup
+          const attackerModGroup = options.attackerUnit.modGroup;
+          const attackerConditionalModifiers = attackerModGroup
             .getAllModValues('attackConditionalModifiers')
             .map((mod) => mod!(conditionalAttackData));
 
@@ -77,8 +78,9 @@ export class CombatInteractorService extends StoreClient() {
 
             if (blockChanceWorked) {
               const damageBlockValue = CommonUtils.randIntInRange(damageBlockMin!, damageBlockMax!);
+              const blockPiercingPercent = CommonUtils.maxPercent(attackerModGroup.getModValue('blockPiercingPercent') || 0);
 
-              blockedDamage = damageBlockValue;
+              blockedDamage = Math.round(damageBlockValue - (damageBlockValue * blockPiercingPercent));
             }
 
           }

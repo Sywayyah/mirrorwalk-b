@@ -25,6 +25,7 @@ export type StructsAPI = {
   localEvents: LocalEvents<typeof SturctEventsGroup>,
   thisStruct: MapStructure,
   eventFeed: EventFeedApi,
+  spells: SpellsApi,
 };
 
 export enum StructureType {
@@ -47,6 +48,7 @@ export interface StructureGeneratorModel {
   generateReward?: () => NeutralRewardModel;
 
   // practically, this can be converted to local event
+  // todo: might be obsolete
   onVisited?: (params: OnVisitedParams) => void;
   config?: { init(api: StructsAPI): void };
 }

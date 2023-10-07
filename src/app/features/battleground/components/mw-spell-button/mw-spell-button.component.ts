@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Hero } from 'src/app/core/heroes';
 import { Player } from 'src/app/core/players';
 import { Spell, SpellActivationType } from 'src/app/core/spells';
+import { HintAttachment } from 'src/app/features/shared/components';
 
 @Component({
   selector: 'mw-spell-button',
@@ -27,6 +28,9 @@ export class MwSpellButtonComponent {
 
   @Input()
   public hero!: Hero;
+
+  @Input()
+  public hintPos: HintAttachment = 'above';
 
   @Output()
   public clicked = new EventEmitter<Spell>();

@@ -166,7 +166,7 @@ export class MwPlayersService extends StoreClient() {
   }
 
   public addManaToPlayer(player: Player, mana: number): void {
-    player.hero.stats.currentMana += mana;
+    player.hero.addMana(mana);
   }
 
   public addItemToPlayer(player: Player, item: Item): void {

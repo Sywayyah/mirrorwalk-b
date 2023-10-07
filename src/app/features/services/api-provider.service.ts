@@ -36,7 +36,7 @@ export class ApiProvider {
         this.heroes.addManaToHero(player.hero, mana);
       },
       addMaxManaToPlayer: (player, mana) => {
-        this.heroes.addMaxManaToHero(player.hero, mana);
+        player.hero.addStatsMods({ heroMaxMana: mana });
       },
       giveResourceToPlayer: (player, type, amount) => this.playersService.addResourceToPlayer(player, type, amount),
       addSpellToPlayerHero: (player, spell) => {

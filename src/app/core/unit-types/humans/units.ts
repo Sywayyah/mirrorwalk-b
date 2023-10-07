@@ -10,13 +10,18 @@ const defaultRewards = {
   gold: 0,
 };
 
-
 const Halberdier = humansFraction.defineUnitType('Halberdier', {
   mainPortraitUrl: AssetsImages.UnitMelee,
   name: 'Halberdier',
   level: 1,
 
   baseStats: createStats([[3, 3], 2, 3, 8, 14]),
+
+  getDescription: simpleDescriptions([
+    heroDescrElem(`Tier 1 Castle unit. Upgraded version of Pikemen.`),
+    heroDescrElem(`<br>More durable and strong version of Pikemen, also retains ability to counterattack any attacker.`),
+    heroDescrElem(`<br>Receives bonuses from Combat Tactics speciality.`),
+  ]),
 
   defaultModifiers: {
     counterattacks: true,
@@ -40,9 +45,9 @@ const Pikemen = humansFraction.defineUnitType('Pikemen', {
     gold: 55,
   },
 
-  // adjust retaliation damage, make it better for Halberdiers
   getDescription: simpleDescriptions([
-    heroDescrElem(`While possessing good average stats, Pikemen also strikes back at any attacker.`),
+    heroDescrElem(`Tier 1 Castle unit. Can be upgraded into Halberdier.`),
+    heroDescrElem(`<br>While possessing good average stats, Pikemen also strikes back at any attacker.`),
     heroDescrElem(`<br>Receives bonuses from Combat Tactics speciality.`),
   ]),
 
@@ -73,6 +78,63 @@ const Pikemen = humansFraction.defineUnitType('Pikemen', {
   neutralReward: defaultRewards,
 });
 
+const Crossbowmen = humansFraction.defineUnitType('Crossbowmen', {
+  mainPortraitUrl: AssetsImages.UnitRanged,
+  name: 'Crossbowmen',
+  level: 2,
+
+  // todo: Crossbowmen, attack penalty
+  getDescription: simpleDescriptions([
+    heroDescrElem(`Tier 2 Castle ranged unit. Upgraded version of Archers.`),
+    heroDescrElem(`<br>Crossbowmen are one of the fastest units, allowing hero to have an early turn against most early foes. Attacks twice per turn.`),
+    heroDescrElem(`<br>Crossbowmen have higher base stats and less fragile than Archers, but also have 35% block-piercing attack.`),
+    heroDescrElem(`<br>Receives bonuses from Archery specialty, granting bonus Attack Rating and Block-piercing.`),
+  ]),
+
+  baseStats: {
+    damageInfo: {
+      minDamage: 3,
+      maxDamage: 4,
+    },
+    attackRating: 4,
+    defence: 3,
+    health: 14,
+    speed: 21,
+  },
+
+  getUnitTypeSpecialtyModifiers(specialties) {
+    if (specialties.specialtyArchery === 1) {
+      return { heroBonusAttack: 1, blockPiercingPercent: 0.20 };
+    }
+
+    if (specialties.specialtyArchery >= 2) {
+      return { heroBonusAttack: 2, blockPiercingPercent: 0.30 };
+    }
+
+    return {};
+  },
+
+  defaultModifiers: {
+    isRanged: true,
+    blockPiercingPercent: 0.35,
+  },
+
+  minQuantityPerStack: 12,
+  defaultTurnsPerRound: 2,
+
+  upgraded: true,
+
+  baseRequirements: {
+    gold: 120,
+  },
+
+  neutralReward: {
+    experience: 4.5,
+    gold: 7,
+  },
+})
+
+// add action points required for location
 humansFraction.defineUnitType('Archer', {
   mainPortraitUrl: AssetsImages.UnitRanged,
   name: 'Archers',
@@ -80,9 +142,10 @@ humansFraction.defineUnitType('Archer', {
 
   // todo: Crossbowmen, attack penalty
   getDescription: simpleDescriptions([
-    heroDescrElem(`Ranged unit.`),
+    heroDescrElem(`Tier 2 Castle ranged unit. Can be upgraded into Crossbowmen.`),
     heroDescrElem(`<br>Archers are one of the fastest units, allowing hero to have an early turn against most early foes. Attacks twice per turn.`),
     heroDescrElem(`<br>In return to their advantages, they are also costly and relatively fragile.`),
+    heroDescrElem(`<br>Receives bonuses from Archery specialty, granting bonus Attack Rating and Block-piercing.`),
   ]),
 
   baseStats: {
@@ -96,6 +159,24 @@ humansFraction.defineUnitType('Archer', {
     speed: 21,
   },
 
+  upgradeDetails: {
+    target: Crossbowmen,
+    upgradeCost: {
+      gold: 25,
+    }
+  },
+
+  getUnitTypeSpecialtyModifiers(specialties) {
+    if (specialties.specialtyArchery === 1) {
+      return { heroBonusAttack: 1, blockPiercingPercent: 0.15 };
+    }
+
+    if (specialties.specialtyArchery >= 2) {
+      return { heroBonusAttack: 2, blockPiercingPercent: 0.25 };
+    }
+
+    return {};
+  },
   /*
     This might actually be a fun change. Archers might have two attacks and
     high base damage, but low attack rating. So, they might be less efficient
@@ -147,7 +228,8 @@ humansFraction.defineUnitType('Knight', {
   level: 3,
 
   getDescription: simpleDescriptions([
-    heroDescrElem(`Knights are possessing high armor and attack. `),
+    heroDescrElem(`Tier 3 Castle unit.`),
+    heroDescrElem(`<br>Knights are possessing high armor and attack. `),
     heroDescrElem(`<br>Chance-based ability to block damage along with +12% to Fire, Cold and Lightning resistances makes them durable fighters.`),
   ]),
 
@@ -180,7 +262,8 @@ humansFraction.defineUnitType('Cavalry', {
   mainPortraitUrl: AssetsImages.UnitMelee,
 
   getDescription: simpleDescriptions([
-    heroDescrElem(`Cavalry is armored unit type that also deals heavy damage.`),
+    heroDescrElem(`Tier 4 Castle unit.`),
+    heroDescrElem(`<br>Cavalry is armored unit type that also deals heavy damage with 55% block-piercing attack.`),
   ]),
 
   level: 4,
@@ -195,6 +278,10 @@ humansFraction.defineUnitType('Cavalry', {
 
   defaultTurnsPerRound: 1,
   minQuantityPerStack: 1,
+
+  defaultModifiers: {
+    blockPiercingPercent: 0.55,
+  },
 
   baseRequirements: {
     gold: 225,
@@ -212,7 +299,8 @@ humansFraction.defineUnitType('Firebird', {
   mainPortraitUrl: AssetsImages.UnitMelee,
 
   getDescription: simpleDescriptions([
-    heroDescrElem(`Very powerful fire creatures that can heal and resurrect allied units.`),
+    heroDescrElem(`Tier 5 Castle fire creature.`),
+    heroDescrElem(`<br>Very powerful fire creatures that can heal and resurrect allied units.`),
   ]),
   level: 5,
 

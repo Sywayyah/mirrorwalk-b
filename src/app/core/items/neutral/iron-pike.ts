@@ -7,6 +7,6 @@ export const IronPikeItem = createItem({
   slot: ItemSlotType.Weapon,
   stats: {
     specialtyCombatTactics: 1,
-    playerBonusAttack: 1,
+    heroBonusAttack: 1,
   },
 });

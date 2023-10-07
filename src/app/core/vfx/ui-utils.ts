@@ -2,6 +2,7 @@ import { ActionCard } from '../action-cards';
 import { CustomizableAnimationData } from '../api/vfx-api';
 
 export const uiPercent = (chanceNumber: number): string => `${Math.round(chanceNumber * 100)}`;
+export const uiPercentSign = (chanceNumber: number): string => `${Math.round(chanceNumber * 100)}%`;
 
 export const uiValueRange = (min: number, max: number) => min === max ? `${min} ` : `${min}-${max} `;
 

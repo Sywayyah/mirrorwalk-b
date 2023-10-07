@@ -7,9 +7,8 @@ export const ItemEclipseWand: ItemBaseModel<{}> = {
   slotType: ItemSlotType.Weapon,
   staticMods: {
     specialtyMagic: 1,
-    specialtyMagicRecovery: 2,
-    // add bonus mana, maybe regen
-    // resistAll: 5,
+    specialtyMagicRecovery: 1,
+    heroMaxMana: 5,
   },
   icon: {
     icon: 'crystal-wand',

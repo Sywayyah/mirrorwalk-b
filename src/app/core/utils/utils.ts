@@ -18,6 +18,9 @@ export const CommonUtils = {
   },
 
   removeItem<T>(arr: T[], item: T): void {
+    if (arr.indexOf(item) === -1) {
+      return;
+    }
     const itemIndex = arr.indexOf(item);
     arr.splice(itemIndex, 1);
   },
@@ -28,6 +31,11 @@ export const CommonUtils = {
 
   chanceRoll(chance: number): boolean {
     return Math.random() < chance;
+  },
+
+  /** Keep percent below max percent */
+  maxPercent(percent: number, maxPercent = 1): number {
+    return percent > maxPercent ? percent : 0;
   },
 
   nonNegative(val: number): number {

@@ -6,8 +6,8 @@ export const WishmasterItem: ItemBaseModel = {
   name: 'Wishmaster',
   slotType: ItemSlotType.Headgear,
   staticMods: {
-    playerBonusAttack: 8,
-    playerBonusDefence: 7,
+    heroBonusAttack: 5,
+    heroBonusDefence: 4,
     resistAll: 13,
   },
   icon: {

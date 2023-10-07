@@ -9,7 +9,7 @@ export const ItemIceBow: ItemBaseModel<{}> = {
     icon: 'frozen-arrow',
   },
   staticMods: {
-    playerBonusAttack: 1,
+    heroBonusAttack: 1,
     specialtyArchery: 1,
   },
   description({ thisItem }) {

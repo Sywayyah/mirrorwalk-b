@@ -43,7 +43,7 @@ export const FireBreath: SpellBaseType = {
 
               // can be extracted/reused somehow
               actions.dealDamageTo(unit, damage, DamageType.Fire, (actionInfo) => {
-                actions.historyLog(`${ownerUnit?.type.name} deals ${actionInfo.finalDamage} to ${actionInfo.initialUnitCount} ${unit.type.name} with ${thisSpell.name}, ${actionInfo.unitLoss} units perish`);
+                actions.historyLog(`${ownerUnit?.type.name} deals ${actionInfo.finalDamage} damage to ${actionInfo.initialUnitCount} ${unit.type.name} with ${thisSpell.name}, ${actionInfo.unitLoss} units perish`);
 
                 vfx.createFloatingMessageForUnitGroup(
                   unit,

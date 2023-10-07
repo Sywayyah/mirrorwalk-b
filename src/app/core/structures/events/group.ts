@@ -8,7 +8,7 @@ export const SturctEventsGroup = createEventsGroup({
   events: {
     NewDayBegins: structEvent(),
     NewWeekBegins: structEvent(),
-    StructVisited: structEvent<{visitingPlayer: Player}>(),
+    StructVisited: structEvent<{ visitingPlayer: Player }>(),
   },
 });
 

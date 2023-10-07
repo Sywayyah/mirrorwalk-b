@@ -36,7 +36,10 @@ export class PreviewPopupComponent extends BasicPopup<StructPopupData> {
       visitingPlayer: currentPlayer,
     });
 
-    this.state.eventHandlers.structures.triggerRefEventHandlers(this.data.struct, StructEvents.StructVisited({ visitingPlayer: this.players.getCurrentPlayer() }));
+    this.state.eventHandlers.structures.triggerRefEventHandlers(
+      this.data.struct,
+      StructEvents.StructVisited({ visitingPlayer: this.players.getCurrentPlayer() }),
+    );
 
     struct.isInactive = true;
 

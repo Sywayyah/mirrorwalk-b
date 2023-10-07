@@ -1,15 +1,16 @@
 import { itemStatsDescr } from '../../ui';
 import { ItemBaseModel, ItemSlotType } from '../types';
 
-
-export const IrtonPlateItem: ItemBaseModel = {
-  name: 'Irton Plate',
-  slotType: ItemSlotType.Armor,
+export const FlamingSword: ItemBaseModel = {
+  name: 'Flaming Sword',
   icon: {
-    icon: 'vest',
+    icon: 'sword',
   },
+  slotType: ItemSlotType.Weapon,
   staticMods: {
-    heroBonusDefence: 3,
+    heroBonusAttack: 3,
+    heroMaxMana: 6,
+    specialtyFireMastery: 3,
   },
   description({ thisItem }) {
     return {
@@ -18,5 +19,8 @@ export const IrtonPlateItem: ItemBaseModel = {
       ],
     }
   },
-  config: { init() { } },
+  config: {
+    init() {
+    }
+  },
 };

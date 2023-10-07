@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { PlayerCastsInstantSpell, PlayersInitialized } from 'src/app/core/events';
 import { Player, PlayerState } from 'src/app/core/players';
-import { SpellActivationType, Spell, SpellBaseType } from 'src/app/core/spells';
+import { Spell, SpellActivationType, SpellBaseType } from 'src/app/core/spells';
 import { UnitGroup } from 'src/app/core/unit-types';
 import { Notify, StoreClient } from 'src/app/store';
 import { MwPlayersService } from './';
@@ -125,7 +125,7 @@ export class MwCurrentPlayerStateService extends StoreClient() {
   }
 
   public onCurrentSpellCast(): void {
-    this.players.addManaToPlayer(this.currentPlayer, -this.currentSpell.currentManaCost);
+    this.currentPlayer.hero.addMana(-this.currentSpell.currentManaCost)
   }
 
   public setPlayerState(state: PlayerState): void {
