@@ -7,9 +7,19 @@ export const BlackLichSwordItem: ItemBaseModel = {
   slotType: ItemSlotType.Weapon,
   staticMods: {
     heroBonusAttack: 3,
-    lifesteal: 10,
     specialtyNecromancy: 1,
-    /* Vampirism mod, maybe -1-2 to Defence */
+    heroBonusDefence: -2,
+    heroMaxMana: -2,
+
+    __unitConditionalMods(unitGroup) {
+      if (unitGroup.type.level <= 4 && !unitGroup.modGroup.getModValue('isRanged')) {
+        return {
+          lifesteal: 10,
+        };
+      }
+
+      return null;
+    },
   },
   icon: {
     icon: 'bat-sword',
@@ -18,6 +28,7 @@ export const BlackLichSwordItem: ItemBaseModel = {
     return {
       descriptions: [
         itemStatsDescr(thisItem),
+        spellDescrElem(`Grants 10% Lifesteal to non-ranged units up to 4-th level.`),
       ],
     };
   },
