@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
-import { BattleCommandEvents, BeforeBattleInit, CleanUpHandlersOnFightEnd, FightEnds, FightNextRoundStarts, FightStarts, GroupDamagedByGroup, GroupDamagedByGroupEvent, GroupDies, GroupSpeedChanged, PlayerTurnStartEvent, RoundGroupSpendsTurn, RoundGroupSpendsTurnEvent, RoundGroupTurnEnds, RoundPlayerCountinuesAttacking, RoundPlayerTurnStarts, UnitHealed, UnitHealedEvent } from 'src/app/core/events';
+import { BattleCommandEvents, BeforeBattleInit, CleanUpHandlersOnFightEnd, FightEnds, FightNextRoundStarts, FightStarts, GroupDies, GroupSpeedChanged, PlayerTurnStartEvent, RoundGroupSpendsTurn, RoundGroupSpendsTurnEvent, RoundGroupTurnEnds, RoundPlayerCountinuesAttacking, RoundPlayerTurnStarts, UnitHealed, UnitHealedEvent } from 'src/app/core/events';
 import { RegisterUnitLoss } from 'src/app/core/events/battle/commands';
 import { ModsRef } from 'src/app/core/modifiers';
 import { PlayerState, PlayerTypeEnum } from 'src/app/core/players';
 import { Notify, StoreClient, WireMethod } from 'src/app/store';
+import { GameObjectsManager } from '../game-objects-manager.service';
 import { BattleStateService } from '../mw-battle-state.service';
 import { MwCurrentPlayerStateService } from '../mw-current-player-state.service';
 import { MwPlayersService } from '../mw-players.service';
@@ -18,6 +19,7 @@ export class BattleController extends StoreClient() {
     private strucuresService: MwStructuresService,
     private playersService: MwPlayersService,
     private state: State,
+    private readonly gameObjectsManager: GameObjectsManager,
   ) {
     super();
   }
@@ -84,6 +86,7 @@ export class BattleController extends StoreClient() {
 
     const currentPlayerUnitGroups = this.battleState.getAliveUnitsOfPlayer(currentPlayer);
 
+    // if current player doesn't have unit groups left
     if (!currentPlayerUnitGroups.length) {
       this.playersService.getCurrentPlayer().setUnitGroups(currentPlayerUnitGroups);
 
@@ -97,8 +100,20 @@ export class BattleController extends StoreClient() {
 
     const enemyPlayer = this.battleState.getEnemyOfPlayer(currentPlayer);
 
+    // if enemy units doesn't have unit groups left
+    // todo: handle the case then only summons left
     if (!this.battleState.getAliveUnitsOfPlayer(enemyPlayer).length) {
-      this.playersService.getCurrentPlayer().setUnitGroups(currentPlayerUnitGroups);
+      const deadUnitsOfCurrentPlayer = this.battleState.getDeadUnitsOfPlayer(currentPlayer);
+      const deadUnitsOfEnemyPlayer = this.battleState.getDeadUnitsOfPlayer(enemyPlayer);
+      const summonedUnitsOfPlayer = this.battleState.getDeadUnitsOfPlayer(enemyPlayer);
+
+      [...deadUnitsOfCurrentPlayer, ...deadUnitsOfEnemyPlayer, ...summonedUnitsOfPlayer].forEach((unitGroup) => {
+        this.gameObjectsManager.destroyObject(unitGroup);
+      });
+
+      const finalCurrentUnitsOfPlayer = currentPlayerUnitGroups.filter(unit => !unit.modGroup.getModValue('isSummon'));
+
+      this.playersService.getCurrentPlayer().setUnitGroups(finalCurrentUnitsOfPlayer);
 
       currentStructure.isInactive = true;
 

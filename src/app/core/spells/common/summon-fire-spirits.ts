@@ -4,6 +4,7 @@ import { FireAnimation } from '../../vfx';
 import { SpellActivationType, SpellBaseType } from '../types';
 
 const unitCount = 3;
+const unitGrowthPerLevel = 2;
 
 // todo: despawn summoned spirits when fight ends
 export const SummonFireSpiritsSpell: SpellBaseType = {
@@ -15,13 +16,14 @@ export const SummonFireSpiritsSpell: SpellBaseType = {
   getDescription({ spellInstance }) {
     return {
       descriptions: [
-        spellDescrElem(`Summons ${unitCount + spellInstance.currentLevel} Fire Spirits that fight on your side.`),
+        spellDescrElem(`Summon ${unitCount + unitGrowthPerLevel * spellInstance.currentLevel} Fire Spirits that fight on your side.`),
+        spellDescrElem(`<br>Spirits disappear when fight is over.`),
       ],
     }
   },
   type: {
     spellConfig: {
-      getManaCost(thisSpell) { return 3 + thisSpell.currentLevel; },
+      getManaCost(thisSpell) { return 2 + thisSpell.currentLevel; },
       init({ actions, spellInstance, ownerPlayer, events, vfx }) {
         events.on({
           PlayerCastsInstantSpell() {

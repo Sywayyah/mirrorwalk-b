@@ -27,8 +27,8 @@ export const TaltirHero: HeroBase = humansFraction.createHero({
 
   image: AssetsImages.HeroTaltir,
   abilities: [
-    MeteorSpell,
     SummonFireSpiritsSpell,
+    MeteorSpell,
   ],
   army: [{
     maxUnitGroups: 2,
@@ -46,7 +46,7 @@ export const TaltirHero: HeroBase = humansFraction.createHero({
   ],
   resources: heroesDefaultResources,
   stats: {
-    mana: 10,
+    mana: 14,
     baseAttack: 2,
     baseDefence: 2,
   },
