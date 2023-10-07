@@ -17,6 +17,12 @@ const Halberdier = humansFraction.defineUnitType('Halberdier', {
 
   baseStats: createStats([[3, 3], 2, 3, 8, 14]),
 
+  getDescription: simpleDescriptions([
+    heroDescrElem(`Tier 1 Castle unit. Upgraded version of Pikemen.`),
+    heroDescrElem(`<br>More durable and strong version of Pikemen, also retains ability to counterattack any attacker.`),
+    heroDescrElem(`<br>Receives bonuses from Combat Tactics speciality.`),
+  ]),
+
   defaultModifiers: {
     counterattacks: true,
   },
@@ -39,9 +45,9 @@ const Pikemen = humansFraction.defineUnitType('Pikemen', {
     gold: 55,
   },
 
-  // adjust retaliation damage, make it better for Halberdiers
   getDescription: simpleDescriptions([
-    heroDescrElem(`While possessing good average stats, Pikemen also strikes back at any attacker.`),
+    heroDescrElem(`Tier 1 Castle unit. Can be upgraded into Halberdier.`),
+    heroDescrElem(`<br>While possessing good average stats, Pikemen also strikes back at any attacker.`),
     heroDescrElem(`<br>Receives bonuses from Combat Tactics speciality.`),
   ]),
 
@@ -136,7 +142,7 @@ humansFraction.defineUnitType('Archer', {
 
   // todo: Crossbowmen, attack penalty
   getDescription: simpleDescriptions([
-    heroDescrElem(`Ranged unit.`),
+    heroDescrElem(`Tier 2 Castle ranged unit. Can be upgraded into Crossbowmen.`),
     heroDescrElem(`<br>Archers are one of the fastest units, allowing hero to have an early turn against most early foes. Attacks twice per turn.`),
     heroDescrElem(`<br>In return to their advantages, they are also costly and relatively fragile.`),
     heroDescrElem(`<br>Receives bonuses from Archery specialty, granting bonus Attack Rating and Block-piercing.`),
