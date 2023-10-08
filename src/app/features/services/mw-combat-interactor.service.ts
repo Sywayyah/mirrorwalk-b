@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { DamageType, PostDamageInfo } from 'src/app/core/api/combat-api/types';
-import { CombatAttackInteraction, CombatInteractionEnum, CombatInteractionStateEvent, GroupCounterAttacked, GroupDamagedByGroup, GroupDies, GroupSpellsChanged, GroupTakesDamage, InitSpell, PlayerHoversCardEvent } from 'src/app/core/events';
+import { CombatAttackInteraction, CombatInteractionEnum, CombatInteractionStateEvent, GroupCounterAttacked, GroupDamagedByGroup, GroupDies, GroupSpellsChanged, GroupTakesDamage, InitSpell, PlayerHoversCardEvent, UnitHealed } from 'src/app/core/events';
 import { RegisterUnitLoss } from 'src/app/core/events/battle/commands';
 import { ModsRef, ModsRefsGroup } from 'src/app/core/modifiers';
 import { defaultResistCap, resistsMapping } from 'src/app/core/modifiers/resists';
@@ -9,6 +9,7 @@ import { Spell, SpellActivationType, SpellEventNames, SpellEventTypeByName, Spel
 import { ActionHintTypeEnum, AttackActionHintInfo } from 'src/app/core/ui';
 import { UnitGroup, UnitStatsInfo } from 'src/app/core/unit-types';
 import { CommonUtils } from 'src/app/core/utils';
+import { nonNullish } from 'src/app/core/utils/common';
 import { EventData, StoreClient } from 'src/app/store';
 import { BattleStateService, FinalDamageInfo, MwPlayersService, MwUnitGroupStateService, MwUnitGroupsService } from './';
 import { ActionHintService } from './mw-action-hint.service';
@@ -16,6 +17,8 @@ import { State } from './state.service';
 
 interface ExtendedFinalDamageInfo extends FinalDamageInfo {
   blockedDamage: number;
+  stolenLife: number;
+  stolenLifeUnitsRestored: number;
 }
 @Injectable({
   providedIn: 'root'
@@ -46,6 +49,8 @@ export class CombatInteractorService extends StoreClient() {
   ): ExtendedFinalDamageInfo {
     let finalDamage = damage;
     let blockedDamage = 0;
+    let stolenLife = 0;
+    let stolenLifeUnitsRestored = 0;
 
     switch (damageType) {
       /* Normal Unit Group attack */
@@ -58,14 +63,23 @@ export class CombatInteractorService extends StoreClient() {
 
           const attackerModGroup = options.attackerUnit.modGroup;
           const attackerConditionalModifiers = attackerModGroup
-            .getAllModValues('attackConditionalModifiers')
+            .getAllModValues('__attackConditionalModifiers')
             .map((mod) => mod!(conditionalAttackData));
 
+          const attackerUnitConditionalModifiers = attackerModGroup
+            .getAllModValues('__unitConditionalMods')
+            .map((mod) => mod!(options.attackerUnit!));
+
           const targetConditionalModifiers = target.modGroup
-            .getAllModValues('attackConditionalModifiers')
+            .getAllModValues('__attackConditionalModifiers')
             .map((mod) => mod!(conditionalAttackData));
 
           // another thing: conditional + non-conditional, should be added together
+          // theoretically, non-conditional and conditional mods can be joined in the same mod group
+          // practically, currently there are 3 types of mods: normal, conditionalAttack, conditionalUnitType
+          const attackerConditionalModsGroup = ModsRefsGroup.withRefs(attackerConditionalModifiers.map(ModsRef.fromMods));
+          const attackerUnitConditionalModsGroup = ModsRefsGroup.withRefs(attackerUnitConditionalModifiers.filter(nonNullish).map(ModsRef.fromMods));
+
           const targetConditionalModsGroup = ModsRefsGroup.withRefs(targetConditionalModifiers.map(ModsRef.fromMods));
 
           const chanceToBlock = targetConditionalModsGroup.getModValue('chanceToBlock');
@@ -82,18 +96,19 @@ export class CombatInteractorService extends StoreClient() {
 
               blockedDamage = Math.round(damageBlockValue - (damageBlockValue * blockPiercingPercent));
             }
-
           }
 
-          // todo: practically, attacker modifiers can also be united under new ModGroup, so there will be no need
-          // to recalc values like this
-          const damagePercentMod = attackerConditionalModifiers
-            .filter(mod => mod.baseDamagePercentModifier)
-            .reduce((acc, next) => acc + (next.baseDamagePercentModifier as number), 0);
+          const damagePercentMod = attackerConditionalModsGroup.getModValue('baseDamagePercentModifier') || 0;
+          const lifesteal = attackerUnitConditionalModsGroup.getModValue('lifesteal') || 0;
 
           console.log(`damage reduced by ${damagePercentMod}%`);
 
           finalDamage = CommonUtils.nonNegative(Math.round(finalDamage + finalDamage * damagePercentMod) - blockedDamage);
+
+          if (lifesteal) {
+            stolenLife = Math.round(finalDamage * (lifesteal / 100));
+            console.log('Lifesteal: ', stolenLife);
+          }
         }
         break;
 
@@ -129,6 +144,18 @@ export class CombatInteractorService extends StoreClient() {
     // round the final damage
     finalDamage = Math.round(finalDamage);
 
+    if (stolenLife && options.attackerUnit) {
+      // unify somehow, there is already a place with same logic
+      const healDetails = this.units.healUnit(options.attackerUnit, stolenLife);
+
+      stolenLifeUnitsRestored = healDetails.revivedUnitsCount;
+
+      this.events.dispatch(UnitHealed({
+        healedUnitsCount: healDetails.revivedUnitsCount,
+        target: options.attackerUnit,
+      }));
+    }
+
     // this could become event at some point
     const finalDamageInfo = this.unitState.dealPureDamageToUnitGroup(target, finalDamage);
 
@@ -146,7 +173,7 @@ export class CombatInteractorService extends StoreClient() {
 
     /* don't handle rest if this is a normal phys attack */
     if (damageType === DamageType.PhysicalAttack) {
-      return { ...finalDamageInfo, blockedDamage };
+      return { ...finalDamageInfo, blockedDamage, stolenLife, stolenLifeUnitsRestored };
     }
 
     if (finalDamageInfo.isDamageFatal) {
@@ -165,7 +192,7 @@ export class CombatInteractorService extends StoreClient() {
       }));
     }
 
-    return { ...finalDamageInfo, blockedDamage };
+    return { ...finalDamageInfo, blockedDamage, stolenLife, stolenLifeUnitsRestored };
   }
 
   /* when group counterattacks and defeats enemy group, both are gone from queue */
@@ -208,12 +235,15 @@ export class CombatInteractorService extends StoreClient() {
 
       this.events.dispatch(GroupDamagedByGroup({
         attackingGroup: attacker,
-        damageBlocked: finalDamageInfo.blockedDamage,
         attackedGroup: attacked,
-        loss: finalDamageInfo.finalUnitLoss,
-        damage: finalDamageInfo.finalDamage,
         attackedCount: attackDetails.originalAttackedCount,
         attackersCount: attackDetails.originalAttackersCount,
+
+        loss: finalDamageInfo.finalUnitLoss,
+        damage: finalDamageInfo.finalDamage,
+        damageBlocked: finalDamageInfo.blockedDamage,
+        lifeStolen: finalDamageInfo.stolenLife,
+        lifeStolenUnitsRestored: finalDamageInfo.stolenLifeUnitsRestored,
       }));
     } else {
       this.events.dispatch(GroupCounterAttacked({

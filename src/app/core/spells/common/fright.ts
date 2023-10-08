@@ -32,7 +32,7 @@ export const FrightSpellDebuff: SpellBaseType<{ frighter: UnitGroup }> = {
             const necromancyLevel = ownerHero.modGroup.getModValue('specialtyNecromancy') || 0;
 
             const reducedDamageCMod = actions.createModifiers({
-              attackConditionalModifiers(params) {
+              __attackConditionalModifiers(params) {
                 if (!necromancyLevel) {
                   if (params.attacked === spellInstance.state?.frighter) {
 
