@@ -35,7 +35,7 @@ export const CommonUtils = {
 
   /** Keep percent below max percent */
   maxPercent(percent: number, maxPercent = 1): number {
-    return percent > maxPercent ? percent : 0;
+    return percent > maxPercent ? maxPercent : percent;
   },
 
   nonNegative(val: number): number {
