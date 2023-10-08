@@ -25,8 +25,8 @@ export interface ModifiersModel extends Specialties {
   /* unit speed bonus */
   unitGroupSpeedBonus: number;
 
-  // to be implemented
   lifesteal: number;
+  // to implement
   retaliationDamagePercent: number;
 
   // critical damage (to be implemented)
@@ -58,7 +58,7 @@ export interface ModifiersModel extends Specialties {
   isBoss: boolean;
 
   /* Modifiers can be returned on condition */
-  attackConditionalModifiers?: (params: ConditionalModifierParamsModel) => Modifiers;
+  __attackConditionalModifiers?: (params: ConditionalModifierParamsModel) => Modifiers;
 
   // this can be used potentially to imlpement specialties.
   // mods from specialties can be added to hero, then

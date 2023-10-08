@@ -50,7 +50,7 @@ export const createDamageBlockSpell = (config: {
 
           spellInstance.state = {
             damageBlockMod: ({
-              attackConditionalModifiers({ attacker }) {
+              __attackConditionalModifiers({ attacker }) {
                 const level = spellInstance.currentLevel - 1;
                 const minBlock = blockConfig.minDamage[level];
                 const maxBlock = blockConfig.maxDamage[level];

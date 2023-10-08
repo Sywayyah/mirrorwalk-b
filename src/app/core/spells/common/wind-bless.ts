@@ -2,6 +2,7 @@ import { Colors } from '../../assets';
 import { Modifiers } from '../../modifiers';
 import { spellPlainDescription } from '../../ui';
 import { UnitGroup } from '../../unit-types';
+import { uiPercentSign } from '../../vfx';
 import { SpellActivationType, SpellBaseType } from '../types';
 
 type State = {
@@ -11,6 +12,7 @@ type State = {
 };
 
 const attackBonus = 2;
+const blockPiercing = 0.17;
 
 export const WindBlessBuff: SpellBaseType<State> = {
   name: 'Wind Bless',
@@ -22,7 +24,7 @@ export const WindBlessBuff: SpellBaseType<State> = {
   activationType: SpellActivationType.Buff,
 
   getDescription() {
-    return spellPlainDescription(`Increases attack of ranged units by ${attackBonus}.`);
+    return spellPlainDescription(`Attack of ranged units increased by ${attackBonus} and Block-Piercing by ${uiPercentSign(blockPiercing)}.`);
   },
   type: {
     spellInfo: {
@@ -34,6 +36,7 @@ export const WindBlessBuff: SpellBaseType<State> = {
           SpellPlacedOnUnitGroup(event) {
             const mods = actions.createModifiers({
               heroBonusAttack: attackBonus,
+              blockPiercingPercent: blockPiercing,
             });
 
             spellInstance.state = {

@@ -26,6 +26,9 @@ export class BattleLogController extends StoreClient() {
     attackedCount,
     attackersCount,
     damageBlocked,
+
+    lifeStolen,
+    lifeStolenUnitsRestored,
   }: GroupDamagedByGroupEvent): void {
     this.battleLog.logDealtDamageMessage({
       attacked: attackedGroup.type,
@@ -37,6 +40,9 @@ export class BattleLogController extends StoreClient() {
       damage,
       damageBlocked,
       losses: loss,
+
+      stolenLife: lifeStolen,
+      stolenLifeUnitsRestored: lifeStolenUnitsRestored,
     });
   }
 
