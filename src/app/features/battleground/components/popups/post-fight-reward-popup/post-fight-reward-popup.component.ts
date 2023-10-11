@@ -25,7 +25,8 @@ export class PostFightRewardPopupComponent extends BasicPopup<FightEndsPopup> im
 
   ngOnInit(): void {
     this.data.enemyLosses.forEach(group => {
-      this.totalGoldReward += Math.round(group.count * group.type.neutralReward.gold);
+      // maybe this can be a good thing.
+      // this.totalGoldReward += Math.round(group.count * group.type.neutralReward.gold);
       this.totalExperienceReward += Math.round(group.count * group.type.neutralReward.experience);
     });
   }

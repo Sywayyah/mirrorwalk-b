@@ -20,6 +20,8 @@
   display: flex;
   position: relative;
   transition: 0.5s;
+  left: 0;
+  right: 0;
 }
 
 /* brightness can be used to make element darker */
@@ -195,32 +197,32 @@ $inactive-offset: 32px;
 :host-context(.vertical) .card-top {
   &.active {
     &.card-left {
-      translate: $active-offset 0;
+      left: $active-offset;
     }
 
     &.card-right {
-      translate: -$active-offset 0;
+      right: $active-offset;
     }
   }
 
   &.inactive {
     &.card-left {
-      translate: -$inactive-offset 0;
+      left: -$inactive-offset;
     }
 
     &.card-right {
-      translate: $inactive-offset 0;
+      right: -$inactive-offset;
     }
   }
 
 
   &.defeated {
     &.card-left {
-      translate: -$inactive-offset 0;
+      left: -$inactive-offset;
     }
 
     &.card-right {
-      translate: $inactive-offset 0;
+      right: $inactive-offset;
     }
   }
 }
