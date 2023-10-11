@@ -23,8 +23,8 @@ export class PreFightPopupComponent extends BasicPopup<StructPopupData> implemen
   public ngOnInit(): void {
     // can be a service/api method
     this.data.struct.guard?.forEach((unitGroup) => {
+      // this.totalGoldReward += Math.round(unitGroup.count * unitGroup.type.neutralReward.gold);
       this.totalExpReward += Math.round(unitGroup.count * unitGroup.type.neutralReward.experience);
-      this.totalGoldReward += Math.round(unitGroup.count * unitGroup.type.neutralReward.gold);
     });
   }
 
