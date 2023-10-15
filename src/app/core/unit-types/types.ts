@@ -1,5 +1,6 @@
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { GroupSpellsChanged } from '../events';
 import type { Fraction } from '../fractions/types';
 import { GameObject } from '../game-objects';
 import { ModsRef, ModsRefsGroup, Specialties } from '../modifiers';
@@ -8,8 +9,8 @@ import type { Player } from '../players';
 import { ResourcesModel } from '../resources';
 import { Spell, SpellBaseType } from '../spells';
 import { DescriptionElement } from '../ui';
-import { complete } from '../utils/observables';
 import { CommonUtils } from '../utils';
+import { complete } from '../utils/observables';
 
 interface RequirementModel extends Partial<ResourcesModel> {
   /* heroLevel?: number;
@@ -267,6 +268,7 @@ export class UnitGroup extends GameObject<UnitCreationParams> {
 
   onDestroy(): void {
     complete(this.destroyed$);
+    this.spells.forEach(spell => this.getApi().gameObjects.destroyObject(spell));
   }
 
   // can be more methods
@@ -304,6 +306,8 @@ export class UnitGroup extends GameObject<UnitCreationParams> {
     this._spells.push(spell);
     spell.setOwnerObjectId(this.id);
     spell.baseType.type.spellConfig.onAcquired?.({ spellInstance: spell, ownerUnit: this });
+    this.getApi().events.dispatch(GroupSpellsChanged({ unitGroup: this }));
+    // todo: initialize listeners
   }
 
   removeSpell(spell: Spell): void {
