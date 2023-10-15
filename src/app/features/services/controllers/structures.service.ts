@@ -49,7 +49,7 @@ export class StructuresController extends StoreClient() {
     this.structuresService.playerCurrentLocId = structId;
     this.structuresService.updateAvailableStructures();
 
-    this.events.dispatch(RemoveActionPoints({ points: defaultActionPointsCost }));
+    this.events.dispatch(RemoveActionPoints({ points: event.struct.actionPoints }));
   }
 
   @WireMethod(MapPanCameraCenterTo)
