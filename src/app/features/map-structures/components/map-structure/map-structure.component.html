@@ -3,7 +3,7 @@
             [style.borderColor]="isCurrentLoc ? activeLocColor : 'rgb(90, 90, 90)'"
             [class.disabled]="!isAvailable"
             (click)="structSelected.emit(struct)"
-            [mwActionHint]="struct.name + (struct.visited ? '<hr/>Visited' : struct.actionPoints ? '<hr/>' + struct.actionPoints + ' action points' : '')"
+            [mwActionHint]="struct.name + (struct.visited ? '<hr/>Visited' : struct.actionPoints ? '<hr/>Cost: ' + struct.actionPoints + ' action points' : '')"
             class="struct-icon"
             [icon]="struct.icon" />
 
