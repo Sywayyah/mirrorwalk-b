@@ -55,7 +55,7 @@ export const FireShieldBuff: SpellBaseType = {
   getDescription() {
     return {
       descriptions: [
-        spellDescrElem(`Unit group is speeded up by ${speedBonus}.`),
+        spellDescrElem(`Unit is protected by Fire Shield, blocking 14-18 damage with 100% and receiving 15% Fire Resist.`),
       ],
     }
   },
@@ -69,11 +69,16 @@ export const FireShieldBuff: SpellBaseType = {
       },
 
       init: ({ events, actions, vfx }) => {
+        // change it to non-conditional modifiers maybe
         const mods = actions.createModifiers({
-          chanceToBlock: 1,
-          damageBlockMax: 18,
-          damageBlockMin: 14,
-          resistFire: 15,
+          __attackConditionalModifiers() {
+            return {
+              chanceToBlock: 1,
+              damageBlockMax: 18,
+              damageBlockMin: 14,
+              resistFire: 15,
+            };
+          }
         });
 
         events.on({
