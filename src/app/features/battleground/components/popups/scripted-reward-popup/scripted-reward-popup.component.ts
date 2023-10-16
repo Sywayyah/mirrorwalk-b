@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
+import { RemoveActionPoints } from 'src/app/core/events';
 import { ScriptedReward } from 'src/app/core/structures';
 import { StructPopupData } from 'src/app/core/ui';
 import { MwPlayersService } from 'src/app/features/services';
 import { ApiProvider } from 'src/app/features/services/api-provider.service';
 import { BasicPopup } from 'src/app/features/shared/components';
+import { EventsService } from 'src/app/store';
 
 @Component({
   selector: 'mw-scripted-reward-popup',
@@ -19,6 +21,7 @@ export class ScriptedRewardPopupComponent extends BasicPopup<StructPopupData> im
   constructor(
     private players: MwPlayersService,
     private apiProvider: ApiProvider,
+    private events: EventsService,
   ) {
     super();
   }
@@ -40,6 +43,13 @@ export class ScriptedRewardPopupComponent extends BasicPopup<StructPopupData> im
       spellsApi: this.apiProvider.getSpellsApi(),
       visitingPlayer: this.players.getCurrentPlayer(),
     });
+
+    const locActionPoints = this.data.struct.actionPoints;
+
+    if (locActionPoints) {
+      this.events.dispatch(RemoveActionPoints({ points: locActionPoints }));
+    }
+
     this.close();
   }
 }

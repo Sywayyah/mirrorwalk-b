@@ -154,7 +154,10 @@ export class InGameApiController extends StoreClient() {
     gameObject.api = {
       spells: this.apiProvider.getSpellsApi(),
       // basic exposure of global events to GameObjects
-      events: { on: (event) => this.events.onEvent(event) },
+      events: {
+        on: (eventType) => this.events.onEvent(eventType),
+        dispatch: (event) => this.events.dispatch(event),
+      },
       gameObjects: this.gameObjectsManager,
       eventFeed: {
         postEventFeedMessage: (message) => { this.eventFeed.pushEventFeedMessage(message) },

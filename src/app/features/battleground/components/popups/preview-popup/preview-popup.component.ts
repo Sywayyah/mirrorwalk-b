@@ -1,10 +1,12 @@
 import { Component } from '@angular/core';
+import { RemoveActionPoints } from 'src/app/core/events';
 import { StructEvents } from 'src/app/core/structures/events';
 import { StructPopupData } from 'src/app/core/ui';
 import { MwPlayersService } from 'src/app/features/services';
 import { ApiProvider } from 'src/app/features/services/api-provider.service';
 import { State } from 'src/app/features/services/state.service';
 import { BasicPopup } from 'src/app/features/shared/components';
+import { EventsService } from 'src/app/store';
 
 @Component({
   selector: 'mw-preview-popup',
@@ -17,6 +19,7 @@ export class PreviewPopupComponent extends BasicPopup<StructPopupData> {
     private players: MwPlayersService,
     private apiProvider: ApiProvider,
     private state: State,
+    private events: EventsService,
   ) {
     super();
   }
@@ -40,6 +43,12 @@ export class PreviewPopupComponent extends BasicPopup<StructPopupData> {
       this.data.struct,
       StructEvents.StructVisited({ visitingPlayer: this.players.getCurrentPlayer() }),
     );
+
+    const locActionPoints = this.data.struct.actionPoints;
+
+    if (locActionPoints) {
+      this.events.dispatch(RemoveActionPoints({ points: locActionPoints }));
+    }
 
     struct.isInactive = true;
 

@@ -135,7 +135,7 @@ export class Spell<T = DefaultSpellStateType> extends GameObject<SpellCreationPa
     this.baseType = spellBaseType;
 
     this.currentLevel = initialLevel;
-    this.name = this.baseType.type.spellInfo.name;
+    this.name = this.baseType.name;
     this.state = state;
     this.sourceInfo = {};
 

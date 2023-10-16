@@ -78,6 +78,8 @@ export class MapStructure extends GameObject<ViewStructureCreationParams> {
 
   public guard?: UnitGroup[];
 
+  public actionPoints: number = 0;
+
   // can be considered as Base Type for location
   // question: Shouldn't there always be a generator?
   // root is the only location that doesn't seem to posses generator
@@ -97,6 +99,7 @@ export class MapStructure extends GameObject<ViewStructureCreationParams> {
     if (generator) {
       this.name = generator.name;
     }
+    this.actionPoints = generator?.actionPoints || 0;
     this.guardingPlayer = guardingPlayer;
     this.pathTo = pathTo;
   }

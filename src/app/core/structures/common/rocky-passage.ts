@@ -3,6 +3,7 @@ import { NeutralRewardTypesEnum, StructureGeneratorModel, StuctureControl } from
 
 export const RockyPassageStructure: StructureGeneratorModel = {
   name: 'Rocky Passage',
+  actionPoints: 2,
   // Make new descriptions later
   description: 'A rocky passage held by a powerful dragon.',
 

@@ -4,6 +4,7 @@ import { NeutralRewardTypesEnum, StructureGeneratorModel, StuctureControl } from
 
 export const FireRingStructure: StructureGeneratorModel = {
   name: 'Fire Ring',
+  actionPoints: 2,
 
   generateGuard() {
     return {
