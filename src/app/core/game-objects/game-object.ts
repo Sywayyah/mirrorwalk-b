@@ -1,12 +1,13 @@
 import { Type } from '@angular/core';
 import { Observable } from 'rxjs';
-import { EventType } from 'src/app/store';
+import { EventData, EventType } from 'src/app/store';
 import { SpellsApi } from '../api/game-api';
 import { EventFeedMessage } from '../ui';
 
 // base for events for
 export interface EventsApi {
   on<T extends object>(event: EventType<T>): Observable<T>;
+  dispatch(event: EventData): void;
 }
 
 export type GameObjectClass<T extends GameObject> = Type<T> & {
@@ -16,6 +17,7 @@ export type GameObjectClass<T extends GameObject> = Type<T> & {
 export interface GameObjectsManagerAPI {
   createNewGameObject<T extends GameObject>(gameObjectClass: GameObjectClass<T>, creationParams: CreationParams<T>, id?: string): T;
   getObjectByFullId<T extends GameObject>(gameObjectId: string): T;
+  destroyObject<T extends GameObject>(object: T): void;
 }
 
 export interface EventFeedApi {

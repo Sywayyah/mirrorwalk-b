@@ -2,6 +2,7 @@ import { neutralsFraction } from '../../fractions/neutrals/fraction';
 import { spellDescrElem } from '../../ui';
 import { FireAnimation } from '../../vfx';
 import { SpellActivationType, SpellBaseType } from '../types';
+import { FireShieldSpell } from './fire-shield';
 
 const unitCount = 3;
 const unitGrowthPerLevel = 2;
@@ -29,9 +30,14 @@ export const SummonFireSpiritsSpell: SpellBaseType = {
           PlayerCastsInstantSpell() {
             const summonedUnitGroup = actions.summonUnitsForPlayer(ownerPlayer, neutralsFraction.getUnitType('FireSpirits'), unitCount + unitGrowthPerLevel * spellInstance.currentLevel);
 
+            const fireShieldSpell = actions.createSpellInstance(FireShieldSpell, { initialLevel: 1 });
+
+            summonedUnitGroup.addSpell(fireShieldSpell);
+
             vfx.createEffectForUnitGroup(summonedUnitGroup, FireAnimation, { duration: 1000 });
 
             const enemyUnitGroups = actions.getAliveUnitGroupsOfPlayer(actions.getEnemyOfPlayer(ownerPlayer));
+
 
             // possible addition to spell: when Fire Spirits are summoned, all enemies receive 15
             // magical damage

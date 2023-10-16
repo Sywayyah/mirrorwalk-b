@@ -1,11 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { SharedModule } from '../shared/shared.module';
-import { MwStructuresViewComponent } from './components';
-import { MapCanvasComponent } from './components/map-canvas/map-canvas.component';
+import { MapCanvasComponent, MapStructureComponent, MwStructuresViewComponent } from './components';
 
 const components = [
   MwStructuresViewComponent,
+  MapStructureComponent,
   MapCanvasComponent,
 ];
 

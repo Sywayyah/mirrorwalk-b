@@ -1,0 +1,13 @@
+<mw-ra-icon [class.available]="isAvailable && !struct.visited"
+            [class.completed]="struct.visited"
+            [style.borderColor]="isCurrentLoc ? activeLocColor : 'rgb(90, 90, 90)'"
+            [class.disabled]="!isAvailable"
+            (click)="structSelected.emit(struct)"
+            [mwActionHint]="struct.name + (struct.visited ? '<hr/>Visited' : struct.actionPoints ? '<hr/>' + struct.actionPoints + ' action points' : '')"
+            class="struct-icon"
+            [icon]="struct.icon" />
+
+<div class="loc-action-points"
+     *ngIf="isAvailable && !struct.visited && struct.actionPoints">
+  {{struct.actionPoints}}
+</div>
