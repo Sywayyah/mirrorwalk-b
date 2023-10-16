@@ -2,8 +2,9 @@
             [class.completed]="struct.visited"
             [style.borderColor]="isCurrentLoc ? activeLocColor : 'rgb(90, 90, 90)'"
             [class.disabled]="!isAvailable"
+            [class.guards]="struct.guard && !struct.visited && isAvailable"
             (click)="structSelected.emit(struct)"
-            [mwActionHint]="struct.name + (struct.visited ? '<hr/>Visited' : struct.actionPoints ? '<hr/>Cost: ' + struct.actionPoints + ' action points' : '')"
+            [mwActionHint]="(struct.guard && isAvailable ? 'Attack guard of ' : '') + struct.name + (struct.visited ? '<hr/>Visited' : struct.actionPoints ? '<hr/>Cost: ' + struct.actionPoints + ' action points' : '')"
             class="struct-icon"
             [icon]="struct.icon" />
 

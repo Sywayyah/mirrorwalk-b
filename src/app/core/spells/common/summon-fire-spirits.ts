@@ -32,7 +32,8 @@ export const SummonFireSpiritsSpell: SpellBaseType = {
 
             const fireShieldSpell = actions.createSpellInstance(FireShieldSpell, { initialLevel: 1 });
 
-            summonedUnitGroup.addSpell(fireShieldSpell);
+            // add action maybe
+            actions.addSpellToUnitGroup(summonedUnitGroup, fireShieldSpell, ownerPlayer);
 
             vfx.createEffectForUnitGroup(summonedUnitGroup, FireAnimation, { duration: 1000 });
 
