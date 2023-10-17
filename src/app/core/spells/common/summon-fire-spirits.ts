@@ -18,7 +18,7 @@ export const SummonFireSpiritsSpell: SpellBaseType = {
     return {
       descriptions: [
         spellDescrElem(`Summon ${unitCount + unitGrowthPerLevel * spellInstance.currentLevel} Fire Spirits that fight on your side.`),
-        spellDescrElem(`<br>Spirits disappear when fight is over.`),
+        spellDescrElem(`<br>Spirits have active ability Fire Shield and disappear when the fight is over.`),
       ],
     }
   },
