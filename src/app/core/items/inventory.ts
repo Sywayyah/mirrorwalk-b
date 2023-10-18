@@ -12,11 +12,11 @@ export class InventoryItems {
   private equipedItemsSet: Set<Item> = new Set();
 
   private static slotTypes: ItemSlotType[] = [
-    ItemSlotType.Weapon,
-    ItemSlotType.Armor,
-    ItemSlotType.Amulet,
     ItemSlotType.Headgear,
+    ItemSlotType.Amulet,
+    ItemSlotType.Weapon,
     ItemSlotType.Shield,
+    ItemSlotType.Armor,
     ItemSlotType.Boots,
   ];
 
