@@ -69,10 +69,9 @@ export const LightningAnimation: EffectAnimation = createAnimation([
 
 export const FireAnimation: EffectAnimation = simpleConvergentBuffAnimation('fire');
 
-
-
-
 export const FrightAnimation: EffectAnimation = frontStackingBuffAnimation('batwings', 'rgba(218, 137, 204, 0.78)');
+
+export const LifestealAnimtaion: EffectAnimation = frontStackingBuffAnimation('bat-sword', 'rgba(245, 10, 20, 0.8)');
 
 export const FloatingMessageAnimation: EffectAnimation = createAnimation([
   [
