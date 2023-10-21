@@ -131,13 +131,13 @@ const cavalryStalls = {
 const magicTower: BuidlingBase = {
   name: 'Magic Tower',
   description: 'Allows to train Mystical Birds',
-  activity: createHiringActivity('MysticalBird', 2, 'firebirds'),
+  activity: createHiringActivity('MysticBird', 2, 'firebirds'),
 };
 
 const upgradedMagicTower: BuidlingBase = {
   name: 'Upg. Magic Tower',
   description: 'Allows to train Mystical Birds and Firebirds',
-  activity: createHiringActivity('MysticalBird', 2, 'firebirds', true),
+  activity: createHiringActivity('MysticBird', 2, 'firebirds', true),
 };
 
 // will be reworked, need somehow to process it in the fraction itself

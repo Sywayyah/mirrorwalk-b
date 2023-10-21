@@ -24,6 +24,7 @@ export interface ModifiersModel extends Specialties {
 
   /* unit speed bonus */
   unitGroupSpeedBonus: number;
+  cannotBeSlowed: boolean;
 
   lifesteal: number;
   // to implement

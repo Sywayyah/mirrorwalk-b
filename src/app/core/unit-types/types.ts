@@ -382,7 +382,11 @@ export class UnitGroup extends GameObject<UnitCreationParams> {
       const bonusDefence = (mods.heroBonusDefence || 0) + (heroBaseStats?.baseDefence || 0);
 
       const baseSpeed = baseStats.speed;
-      const speedBonus = mods.unitGroupSpeedBonus || 0;
+      let speedBonus = mods.unitGroupSpeedBonus || 0;
+
+      if (speedBonus < 0 && mods.cannotBeSlowed) {
+        speedBonus = 0;
+      }
 
       const allResist = mods.resistAll || 0;
 

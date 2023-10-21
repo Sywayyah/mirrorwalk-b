@@ -11,7 +11,7 @@ export type HUMANS_UNIT_TYPES =
 
   | 'Cavalry'
 
-  | 'MysticalBird'
+  | 'MysticBird'
   | 'Firebird';
 
 export const humansFraction = Fractions.createFraction<HUMANS_UNIT_TYPES>(
