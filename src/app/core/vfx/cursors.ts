@@ -1,5 +1,5 @@
 import { EffectAnimation } from '../api/vfx-api';
-import { createAnimation, getCustomizableElement, getIconElement, getReversePulseKeyframes, getPlainPulseFrames } from './utils';
+import { createAnimation, getCustomizableElement, getIconElement, getPlainPulseFrames, getReversePulseKeyframes } from './utils';
 
 const CursorStyles = {
   textShadow: '0px 0px 5px rgba(0, 0, 0, 1)',

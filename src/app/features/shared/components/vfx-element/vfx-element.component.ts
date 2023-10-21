@@ -1,5 +1,5 @@
-import { Component, ElementRef, EmbeddedViewRef, Renderer2, TemplateRef, ViewChild, ViewContainerRef, ViewRef } from '@angular/core';
-import { EffectAnimation, EffectOptions, CustomAnimationData, AnimationElementType, AnimationIconElement } from 'src/app/core/api/vfx-api';
+import { Component, ElementRef, EmbeddedViewRef, EventEmitter, OnInit, Output, Renderer2, TemplateRef, ViewChild, ViewContainerRef, ViewRef } from '@angular/core';
+import { AnimationElementType, AnimationIconElement, CustomAnimationData, EffectAnimation, EffectOptions } from 'src/app/core/api/vfx-api';
 
 export interface AnimationRef {
   elem: VfxElementComponent;
@@ -11,19 +11,30 @@ export interface AnimationRef {
   templateUrl: './vfx-element.component.html',
   styleUrls: ['./vfx-element.component.scss']
 })
-export class VfxElementComponent {
+export class VfxElementComponent implements OnInit {
 
   @ViewChild('container', { read: ViewContainerRef, static: true }) public viewContainerRef!: ViewContainerRef;
 
   @ViewChild('iconSfx', { static: true }) public iconSfx!: TemplateRef<unknown>;
   @ViewChild('customizableVfx', { static: true }) public customizableVfx!: TemplateRef<unknown>;
+  @ViewChild('htmlSfx', { static: true }) public htmlSfx!: TemplateRef<unknown>;
 
   private createdViews: Record<string, ViewRef> = {};
+
+  @Output()
+  animationEnded = new EventEmitter();
+
+  @Output()
+  created = new EventEmitter<VfxElementComponent>();
 
   constructor(
     public renderer: Renderer2,
     public hostElem: ElementRef,
   ) { }
+
+  public ngOnInit(): void {
+    this.created.emit(this);
+  }
 
   public playAnimation(
     animation: EffectAnimation,
@@ -53,6 +64,13 @@ export class VfxElementComponent {
             this.customizableVfx,
             { data: data.custom },
           );
+
+          break;
+        case AnimationElementType.Html:
+          iconSfxView = this.viewContainerRef.createEmbeddedView(
+            this.htmlSfx,
+            { html: data.custom?.html },
+          );
       }
 
       this.createdViews[animationElemConfig.id] = iconSfxView;
@@ -62,7 +80,10 @@ export class VfxElementComponent {
         // console.log(prop, value);
         this.renderer.setStyle(firstNode, prop, value);
       });
-      this.renderer.addClass(firstNode, 'dl-sfx');
+
+      if (!options.skipDlClass) {
+        this.renderer.addClass(firstNode, 'dl-sfx');
+      }
 
       const keyFramesConfig = animation.elemsKeyframes[animationElemConfig.id];
 
