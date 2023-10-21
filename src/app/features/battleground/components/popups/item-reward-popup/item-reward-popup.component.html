@@ -7,9 +7,13 @@
        *ngFor="let items of itemGroups"
        [class.selected]="items === selectedGroup"
        (click)="setSelectedGroup(items)">
-    <mw-item-icon *ngFor="let item of items"
-                  [item]="item"
-                  [hintPos]="'above'" />
+    <div *ngFor="let item of items" style="display: flex; flex-direction: column; align-items: center;">
+      <mw-item-icon [item]="item"
+                    [hintPos]="'above'" />
+      <div style="font-size: 11px; text-align: center;">
+        {{item.baseType.name}}
+      </div>
+    </div>
   </div>
 </div>
 
