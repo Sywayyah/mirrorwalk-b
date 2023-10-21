@@ -29,9 +29,12 @@ export const getHealParts = (healCount: number, healValue: number): Customizable
 
 export const getLifeStealParts = (healedUnits: number, stolenLife: number): CustomizableAnimationData => {
   return {
+    // background:rgba(0,0,0,0.4); padding: 2px; border-radius: 5px;
     html: `
-      <div style="width: 150px">Lifesteal: ${getHtmlRaIcon({ icon: 'health', iconColor: 'red' })} ${stolenLife}</div>
-      <div style="width: 150px">Healed: ${uiSignedNum(healedUnits)}</div>
+    <div style="width: 100px;">
+      <div style=" font-size: 15px">Lifesteal: ${getHtmlRaIcon({ icon: 'health', iconColor: 'red' })} ${stolenLife}</div>
+      <div style=" font-size: 13px">Healed: ${uiSignedNum(healedUnits)}</div>
+    </div>
     `,
   };
 };
