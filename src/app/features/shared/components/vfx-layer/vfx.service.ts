@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
-import { EffectOptions, Effect, CustomizableAnimationData } from 'src/app/core/api/vfx-api';
+import { CustomizableAnimationData, Effect, EffectAnimation, EffectOptions, EffectType, VfxElemEffect } from 'src/app/core/api/vfx-api';
 import { UnitGroup } from 'src/app/core/unit-types/types';
+import { DroppingMessageAnimation } from 'src/app/core/vfx';
+import { VfxContainerComponent } from '../vfx-container/vfx-container.component';
 import type { VfxLayerComponent } from './vfx-layer.component';
 
 
@@ -15,11 +17,21 @@ export class VfxService {
 
   private layerComponent!: VfxLayerComponent;
 
+  private containersSet = new Map<string, VfxContainerComponent>();
+
   constructor(
   ) { }
 
   public registerLayerComponent(component: VfxLayerComponent): void {
     this.layerComponent = component;
+  }
+
+  public registerVfxContainer(id: string, component: VfxContainerComponent): void {
+    this.containersSet.set(id, component);
+  }
+
+  public unregisterVfxContainer(id: string): void {
+    this.containersSet.delete(id);
   }
 
   public getNewId(): number {
@@ -49,6 +61,29 @@ export class VfxService {
     });
   }
 
+  public createEffectAnimationForUnitGroup(
+    unitGroup: UnitGroup,
+    animation: EffectAnimation,
+    options: EffectOptions = {},
+  ): void {
+    this.layerComponent.createVfxForUnitGroup(
+      unitGroup,
+      { type: EffectType.VfxElement, animation } as VfxElemEffect,
+      {
+        ...defaultOptions,
+        ...options,
+      });
+  }
+
+  public createEffectAnimationForContainer(
+    id: string,
+    animation: EffectAnimation,
+    options: EffectOptions = {},
+  ): void {
+    const container = this.containersSet.get(id);
+    container?.addAnimation(animation);
+  }
+
   public createFloatingMessageForUnitGroup(
     unitGroup: UnitGroup,
     data: CustomizableAnimationData,
@@ -59,4 +94,16 @@ export class VfxService {
     }, options);
   }
 
+  public createDroppingMessageForContainer(
+    id: string,
+    data: CustomizableAnimationData,
+    options: EffectOptions = {},
+  ): void {
+    const container = this.containersSet.get(id);
+    container?.addAnimation(
+      DroppingMessageAnimation,
+      { skipDlClass: true, ...options },
+      { custom: data },
+    );
+  }
 }

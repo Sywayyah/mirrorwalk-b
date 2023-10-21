@@ -1,4 +1,20 @@
-import { AnimationElement, EffectAnimation, AnimationIconElement, AnimationElementType } from '../api/vfx-api';
+import { AnimationElement, AnimationElementType, AnimationHtmlElement, AnimationIconElement, EffectAnimation } from '../api/vfx-api';
+
+export const getIconElement = (iconName: string, id: string): AnimationIconElement => ({
+  icon: iconName,
+  id: id,
+  type: AnimationElementType.Icon,
+});
+
+export const getHtmlElem = (id: string): AnimationHtmlElement => ({
+  id,
+  type: AnimationElementType.Html,
+  // html: iconName,
+});
+
+export const getCustomizableElement = (id: string): AnimationElement => ({
+  id, type: AnimationElementType.Customizable,
+});
 
 export const createAnimation = (configs: [AnimationElement, Keyframe[], Record<string, string | number>][]) => {
   const newAnimation: EffectAnimation = {
@@ -18,16 +34,6 @@ export const createAnimation = (configs: [AnimationElement, Keyframe[], Record<s
 
   return newAnimation;
 };
-
-export const getIconElement = (iconName: string, id: string): AnimationIconElement => ({
-  icon: iconName,
-  id: id,
-  type: AnimationElementType.Icon,
-});
-
-export const getCustomizableElement = (id: string): AnimationElement => ({
-  id, type: AnimationElementType.Customizable,
-});
 
 
 export const getPlainAppearanceFrames = () => {

@@ -1,6 +1,6 @@
 import { EffectAnimation } from '../api/vfx-api';
 import { frontStackingBuffAnimation, simpleConvergentBuffAnimation } from './templates';
-import { createAnimation, getCustomizableElement, getIconElement, getPlainAppearanceFrames, getPlainBlurFrames, getPlainPulseFrames } from './utils';
+import { createAnimation, getIconElement, getPlainAppearanceFrames, getPlainBlurFrames, getPlainPulseFrames } from './utils';
 
 export const LightningAnimation: EffectAnimation = createAnimation([
   [
@@ -69,34 +69,10 @@ export const LightningAnimation: EffectAnimation = createAnimation([
 
 export const FireAnimation: EffectAnimation = simpleConvergentBuffAnimation('fire');
 
-
-
-
 export const FrightAnimation: EffectAnimation = frontStackingBuffAnimation('batwings', 'rgba(218, 137, 204, 0.78)');
 
-export const FloatingMessageAnimation: EffectAnimation = createAnimation([
-  [
-    getCustomizableElement('msg'),
-    [
-      {
-        fontSize: '13px',
-      },
-      {
-        offset: 0.3,
-        opacity: 1,
-        transform: 'translate(10px, -50px) scale(1.5)',
-      },
-      {
-        opacity: 0,
-        transform: 'translate(20px, -100px) scale(0.8)',
-      }
-    ],
-    {
-      opacity: 0.3,
-      fontSize: '15px',
-    }
-  ]
-]);
+export const LifestealAnimtaion: EffectAnimation = frontStackingBuffAnimation('bat-sword', 'rgba(245, 10, 20, 0.8)');
+
 
 export const EnchantAnimation: EffectAnimation = createAnimation([
   [

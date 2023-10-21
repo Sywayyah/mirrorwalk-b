@@ -181,7 +181,8 @@ $inactive-offset: 32px;
 
   &.active {
     filter: brightness(100%) drop-shadow(2px 4px 6px $shadow);
-    scale: $active-scale;
+    // disable transformations for performance check for now
+    // scale: $active-scale;
   }
 
   &.inactive {

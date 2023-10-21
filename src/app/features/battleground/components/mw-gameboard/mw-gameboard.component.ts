@@ -4,7 +4,7 @@ import { GroupDamagedByGroup, GroupDamagedByGroupEvent, PlayerStartsFight, UnitS
 import { Player } from 'src/app/core/players';
 import { UnitsOrientation } from 'src/app/core/ui';
 import { UnitGroup } from 'src/app/core/unit-types';
-import { getDamageParts, getHealParts } from 'src/app/core/vfx';
+import { LifestealAnimtaion, getDamageParts, getLifeStealParts } from 'src/app/core/vfx';
 import { BattleStateService, CombatInteractorService, MwCardsMappingService, MwNeutralPlayerService, MwPlayerStateService } from 'src/app/features/services';
 import { State } from 'src/app/features/services/state.service';
 import { VfxService } from 'src/app/features/shared/components';
@@ -93,13 +93,20 @@ export class MwGameboardComponent extends StoreClient() implements OnInit, After
   public displayDamageVfxOverAttackedGroup(event: GroupDamagedByGroupEvent): void {
     /* previous solution was stacking because of no unsubscribe. */
     const isRanged = event.attackingGroup.type.defaultModifiers?.isRanged;
+
     if (event.lifeStolen) {
-      this.vfx.createFloatingMessageForUnitGroup(
-        event.attackingGroup,
-        getHealParts(event.lifeStolenUnitsRestored, event.lifeStolen),
+      this.vfx.createDroppingMessageForContainer(
+        event.attackingGroup.id,
+        getLifeStealParts(event.lifeStolenUnitsRestored, event.lifeStolen),
         { duration: 1600 },
       );
+
+      this.vfx.createEffectAnimationForUnitGroup(event.attackingGroup, LifestealAnimtaion, {
+        duration: 700,
+        darkOverlay: false,
+      });
     }
+
     this.vfx.createFloatingMessageForUnitGroup(
       event.attackedGroup,
       getDamageParts(event.damage, event.loss, isRanged, event.damageBlocked),

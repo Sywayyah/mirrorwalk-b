@@ -1,7 +1,7 @@
 import { itemStatsDescr, spellDescrElem } from '../../ui';
 import { ItemBaseModel, ItemSlotType } from '../types';
 
-const lifestealValue = 25;
+const lifestealValue = 18;
 
 export const BlackLichSwordItem: ItemBaseModel = {
   name: 'Black Lich Sword',

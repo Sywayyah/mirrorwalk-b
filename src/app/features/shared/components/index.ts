@@ -26,5 +26,6 @@ export * from './unit-group-info/unit-group-info.component';
 export * from './unit-group-portrait/unit-group-portrait.component';
 export * from './unit-group-spell-icon/unit-group-spell-icon.component';
 export * from './value-bar/value-bar.component';
+export * from './vfx-container/vfx-container.component';
 export * from './vfx-element/vfx-element.component';
 export * from './vfx-layer';
