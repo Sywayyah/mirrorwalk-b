@@ -9,7 +9,7 @@ const unitGrowthPerLevel = 2;
 
 // todo: despawn summoned spirits when fight ends
 export const SummonFireSpiritsSpell: SpellBaseType = {
-  name: 'Summon Fire Spirits',
+  name: 'Fire Spirits',
   activationType: SpellActivationType.Instant,
   icon: {
     icon: 'aura',

@@ -27,8 +27,6 @@
     </button>
   </div>
 
-
-
   <div class="stats-panel">
     <div>Resistances:</div>
     <div>
@@ -79,15 +77,20 @@
       </ng-container>
     </div>
 
-    <hr/>
+    <hr />
+    <div style="margin-bottom: 5px; text-align: center;">Spells:</div>
     <div style="display: flex; flex-direction: column; align-items: center;">
-      Spells:
 
-      <div style="display: flex; flex-wrap: wrap; justify-content: center;">
-        <mw-spell-button *ngFor="let spell of currentPlayer.hero.spells"
-                         [spell]="spell"
-                         [player]="currentPlayer"
-                         [hero]="currentPlayer.hero" />
+      <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 4px">
+        <div style="display: flex; flex-direction: column; align-items: center;" *ngFor="let spell of currentPlayer.hero.spells">
+
+          <mw-spell-button [spell]="spell"
+                           [player]="currentPlayer"
+                           [hero]="currentPlayer.hero" />
+          <div style="font-size: 10px; text-align: center;">
+            {{spell.baseType.name }}
+          </div>
+        </div>
       </div>
     </div>
   </div>
