@@ -11,7 +11,7 @@ interface DamageBlockPerLevelConfig {
 }
 
 export const rangedChanceDescription = (meleeChance: string | number, rangedChance: string | number) =>
-  meleeChance === rangedChance ? `(${rangedChance}% against ranged units)` : '';
+  meleeChance !== rangedChance ? ` (${rangedChance}% against ranged units)` : '';
 
 export const createDamageBlockSpell = (config: {
   name: string,

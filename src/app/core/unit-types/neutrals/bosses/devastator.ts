@@ -13,15 +13,15 @@ neutralsFraction.defineUnitType('Devastator', {
 
   getDescription: simpleDescriptions([
     heroDescrElem('An evil dragon of fire.'),
-    heroDescrElem('<br>Dangerous boss unit with large health pool. Has +20% to All Resists and Fire Breath ability that damages random units.'),
-    heroDescrElem('<br>His scales also allow him to block some damage.'),
+    heroDescrElem('<br>Dangerous boss unit with large health pool. Resistant to magic, has +50% to Fire Resist and +20% to All Other Resists, also posseses Fire Breath ability that damages random enemies with fire.'),
+    heroDescrElem('<br>His scales allow him to block some damage. Cannot be slowed.'),
   ]),
 
   baseStats: {
     damageInfo: { minDamage: 32, maxDamage: 47 },
     attackRating: 9,
-    defence: 16,
-    health: 740,
+    defence: 9,
+    health: 820,
     speed: 14,
   },
 
@@ -30,6 +30,8 @@ neutralsFraction.defineUnitType('Devastator', {
   defaultModifiers: {
     isBoss: true,
     resistAll: 20,
+    resistFire: 30,
+    cannotBeSlowed: true,
   },
 
   baseRequirements: {},

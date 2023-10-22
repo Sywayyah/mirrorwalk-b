@@ -8,8 +8,8 @@ export const DevastatorScaleArmorDamageBlock: SpellBaseType<{ damageBlockMod: Mo
   blockConfig: {
     minDamage: [16],
     maxDamage: [24],
-    chance: [0.25],
-    chanceAgainstRange: [0.55],
+    chance: [0.35],
+    chanceAgainstRange: [0.65],
   },
-  description: ({ blockValue, meleeChance, rangedChance }) => `Sturdy scales of Devastator give a ${meleeChance}% chance to block ${blockValue} damage ${rangedChanceDescription(meleeChance, rangedChance)}.`,
+  description: ({ blockValue, meleeChance, rangedChance }) => `Sturdy scales of Devastator give a ${meleeChance}% chance to block ${blockValue} damage${rangedChanceDescription(meleeChance, rangedChance)}.`,
 });
