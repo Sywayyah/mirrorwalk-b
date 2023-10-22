@@ -2,7 +2,7 @@ import { ResourceType } from '../../resources';
 import { ArchersOutpostStructure, BanditCamp, BeaconOfTheUndead, BigCampStructure, CalavryStalls, GraveyardStructure, MagicRiverStructure, MountainNestStructure, RockyPassageStructure, ThiefsLair, WitchHutStructure } from '../common';
 import { FireRingStructure } from '../common/guard-location';
 import { dailyResourcesMineStructure } from '../common/resource-mine';
-import { resourcesPileStructure, resPileStructure } from '../common/resource-pile';
+import { resPileStructure, resourcesPileStructure } from '../common/resource-pile';
 import { StructureDescription } from '../map-structures';
 import { constellationSpawn } from './preset1-const-spawn';
 
@@ -53,6 +53,7 @@ const brBranch: StructureDescription[] = [
     y: loc(-10),
     icon: 'hand-saw',
     pathTo: '5',
+    actionPoints: 1,
 
     struct: resPileStructure(ResourceType.Wood, 4),
   },
@@ -64,7 +65,6 @@ const brBranch: StructureDescription[] = [
     pathTo: '5',
 
     struct: WitchHutStructure,
-
   },
   {
     id: '8',
@@ -72,6 +72,7 @@ const brBranch: StructureDescription[] = [
     y: loc(90),
     icon: 'sword',
     pathTo: '2',
+
 
     struct: BanditCamp,
   },
@@ -108,6 +109,7 @@ const brBranch: StructureDescription[] = [
     y: loc(145),
     icon: 'monster-skull',
     pathTo: '9',
+    actionPoints: 2,
 
     struct: BigCampStructure,
   },
@@ -121,6 +123,7 @@ const fifthBranch: StructureDescription[] = [
     x: loc(-30),
     y: loc(70),
     icon: 'gold-bar',
+    actionPoints: 1,
     struct: resPileStructure(ResourceType.Gold, 650),
   },
 

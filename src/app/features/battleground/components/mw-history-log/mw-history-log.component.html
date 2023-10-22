@@ -3,7 +3,8 @@
 
   <div class="history-log"
        #historyLog>
-    <div class="entry" *ngFor="let historyEntry of battleLogService.history">
+    <div class="entry"
+         *ngFor="let historyEntry of battleLogService.history">
       <ng-container [ngSwitch]="historyEntry.type">
         <div *ngSwitchCase="types.SimpleMsg">
           <ng-container *ngTemplateOutlet="simple; context: { log: historyEntry }" />
@@ -16,6 +17,10 @@
         <div *ngSwitchCase="types.DealtDamageMsg">
           <ng-container *ngTemplateOutlet="dealtDamageLog; context: { log: historyEntry }" />
         </div>
+
+        <div *ngSwitchCase="types.Html">
+          <ng-container *ngTemplateOutlet="htmlLog; context: { log: historyEntry }" />
+        </div>
       </ng-container>
     </div>
   </div>
@@ -25,6 +30,11 @@
 <ng-template #simple
              let-log="log">
   {{log.message}}
+</ng-template>
+
+<ng-template #htmlLog
+             let-log="log">
+  <div [innerHTML]="log.message | safeHtml"></div>
 </ng-template>
 
 <ng-template #dealtDamageLog

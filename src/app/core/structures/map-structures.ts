@@ -44,6 +44,7 @@ export interface ViewStructureCreationParams {
   pathTo?: string;
 
   iconName: string;
+  actionPoints?: number;
 }
 
 // location/structure
@@ -91,7 +92,7 @@ export class MapStructure extends GameObject<ViewStructureCreationParams> {
   // in the future, could be stored separately.
   public svg?: SvgPath;
 
-  create({ iconName, x, y, isRoot, generator, guardingPlayer, pathTo }: ViewStructureCreationParams): void {
+  create({ iconName, x, y, isRoot, generator, guardingPlayer, pathTo, actionPoints }: ViewStructureCreationParams): void {
     this.x = x;
     this.y = y;
     this.icon = iconName;
@@ -100,7 +101,7 @@ export class MapStructure extends GameObject<ViewStructureCreationParams> {
     if (generator) {
       this.name = generator.name;
     }
-    this.actionPoints = generator?.actionPoints || 0;
+    this.actionPoints = actionPoints || generator?.actionPoints || 0;
     this.guardingPlayer = guardingPlayer;
     this.pathTo = pathTo;
   }

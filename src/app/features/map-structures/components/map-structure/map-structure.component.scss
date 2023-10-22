@@ -55,11 +55,16 @@
   cursor: pointer;
 }
 
+.guards {
+  // background: #de8989;
+}
+
 .inactive {
   opacity: 0.5;
 }
 
 .loc-action-points {
+  user-select: none;
   z-index: 50;
   position: relative;
   background: #4d4d4d;

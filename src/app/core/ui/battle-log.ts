@@ -5,7 +5,8 @@ import { Player } from '../players';
 export enum HistoryLogTypesEnum {
   SimpleMsg = 'simple-msg',
   RoundInfoMsg = 'round-info-msg',
-  DealtDamageMsg = 'dealt-damage-msg'
+  DealtDamageMsg = 'dealt-damage-msg',
+  Html = 'html',
 }
 
 export interface HistoryLogModel<T extends HistoryLogTypesEnum = HistoryLogTypesEnum> {
@@ -13,6 +14,10 @@ export interface HistoryLogModel<T extends HistoryLogTypesEnum = HistoryLogTypes
 }
 
 export interface SimpleMessage extends HistoryLogModel<HistoryLogTypesEnum.SimpleMsg> {
+  message: string;
+}
+
+export interface HtmlMessage extends HistoryLogModel<HistoryLogTypesEnum.Html> {
   message: string;
 }
 

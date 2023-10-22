@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
-import { DealtDamageMessage, HistoryLogModel, HistoryLogTypesEnum, RoundInfoMessage, SimpleMessage } from 'src/app/core/ui';
+import { DealtDamageMessage, HistoryLogModel, HistoryLogTypesEnum, HtmlMessage, RoundInfoMessage, SimpleMessage } from 'src/app/core/ui';
 
 @Injectable({
   providedIn: 'root'
@@ -9,6 +9,11 @@ export class MwBattleLogService {
 
   public history: HistoryLogModel[] = [];
   public historyEvent$: Subject<void> = new Subject();
+
+  public logHtmlMessage(htmlMsg: string): void {
+    const htmlMessage: HtmlMessage = { type: HistoryLogTypesEnum.Html, message: htmlMsg };
+    this.pushMessage(htmlMessage);
+  }
 
   public logSimpleMessage(log: string): void {
     const simpleMessage: SimpleMessage = { type: HistoryLogTypesEnum.SimpleMsg, message: log };

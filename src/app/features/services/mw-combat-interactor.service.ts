@@ -10,11 +10,12 @@ import { ActionHintTypeEnum, AttackActionHintInfo } from 'src/app/core/ui';
 import { UnitGroup, UnitStatsInfo } from 'src/app/core/unit-types';
 import { CommonUtils } from 'src/app/core/utils';
 import { nonNullish } from 'src/app/core/utils/common';
+import { getHtmlRaIcon, getRetaliationMessage, getUnitGroupMessage, messageWrapper } from 'src/app/core/vfx';
 import { EventData, StoreClient } from 'src/app/store';
-import { BattleStateService, FinalDamageInfo, MwPlayersService, MwUnitGroupStateService, MwUnitGroupsService } from './';
+import { VfxService } from '../shared/components';
+import { BattleStateService, FinalDamageInfo, MwBattleLogService, MwPlayersService, MwUnitGroupStateService, MwUnitGroupsService } from './';
 import { ActionHintService } from './mw-action-hint.service';
 import { State } from './state.service';
-import { VfxService } from '../shared/components';
 
 interface ExtendedFinalDamageInfo extends FinalDamageInfo {
   blockedDamage: number;
@@ -31,6 +32,7 @@ export class CombatInteractorService extends StoreClient() {
     private readonly players: MwPlayersService,
     private readonly unitState: MwUnitGroupStateService,
     private readonly units: MwUnitGroupsService,
+    private readonly history: MwBattleLogService,
     private readonly state: State,
     private readonly vfx: VfxService,
   ) {
@@ -234,12 +236,18 @@ export class CombatInteractorService extends StoreClient() {
 
     if (isCounterattack) {
       this.vfx.createDroppingMessageForContainer(attacked.id, {
-        html: `
-        <div style='width: 200px; margin-top: 6px'>
-          <div style="font-size: 14px">Retaliated! ${finalDamageInfo.finalUnitLoss} perished.</div>
-        </div>
-        `,
+        html: messageWrapper(`
+          <div style="font-size: 14px">Retaliated! ${getHtmlRaIcon({ icon: 'skull' })} ${finalDamageInfo.finalUnitLoss}</div>
+        `, { width: 130 }),
       }, { duration: 1500 });
+
+      this.history.logHtmlMessage(getRetaliationMessage({
+        attacked,
+        attacker,
+        damage: finalDamageInfo.finalDamage,
+        originalNumber: attackDetails.originalAttackersCount,
+        unitLoss: finalDamageInfo.finalUnitLoss,
+      }));
     }
 
     if (!isCounterattack) {
