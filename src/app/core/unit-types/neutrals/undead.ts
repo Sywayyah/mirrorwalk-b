@@ -23,7 +23,7 @@ const Wraiths: UnitBaseType = neutralsFraction.defineUnitType('SupremeGhosts', {
   getDescription(data) {
     return {
       descriptions: [
-        heroDescrElem('Undead unit. Upgraded version of Ghosts.'),
+        heroDescrElem('Undead unit. Upgraded and faster version of Ghosts.'),
         heroDescrElem('<br>While having increased stats, inherits passive ability Fright.'),
         heroDescrElem('<br>Gains improvements from Necromancy.'),
       ],
@@ -129,6 +129,7 @@ neutralsFraction.defineUnitType('Skeletons', {
     defence: 2,
     health: 9,
     speed: 11,
+
   },
 
   defaultSpells: [SkeletonsDamageBlock],
@@ -143,6 +144,97 @@ neutralsFraction.defineUnitType('Skeletons', {
   neutralReward: {
     experience: 3,
     gold: 2,
+  },
+
+});
+
+const MasterLich = neutralsFraction.defineUnitType('MasterLich', {
+  name: 'Master Liches',
+  mainPortraitUrl: AssetsImages.UnitMelee,
+  level: 4,
+
+  getDescription() {
+    return {
+      descriptions: [
+        heroDescrElem(`Tier 4 Undead unit, an upgraded version of Liches.`),
+        heroDescrElem(`<br>Powerful undead creatures, standing in the head of undead armies. Masterful wielders of long swords, they possess improved 45% lifesteal and cannot be slowed down.`),
+      ],
+    }
+  },
+
+  baseStats: {
+    damageInfo: { minDamage: 14, maxDamage: 19, },
+    attackRating: 7,
+    defence: 7,
+    health: 35,
+    speed: 15,
+  },
+
+  defaultModifiers: {
+    lifesteal: 45,
+    isGhost: true,
+    cannotBeSlowed: true,
+  },
+
+  defaultTurnsPerRound: 1,
+  minQuantityPerStack: 1,
+
+  baseRequirements: {
+    gold: 400,
+  },
+
+  neutralReward: {
+    experience: 40,
+    gold: 2,
+  },
+
+});
+
+neutralsFraction.defineUnitType('Lich', {
+  name: 'Liches',
+  mainPortraitUrl: AssetsImages.UnitMelee,
+  level: 4,
+
+  getDescription() {
+    return {
+      descriptions: [
+        heroDescrElem(`Tier 4 Undead unit. Can be upgraded into Master Liches.`),
+        heroDescrElem(`<br>Powerful undead creatures, standing in the head of undead armies. Masterful wielders of long swords, they also possess 25% lifesteal and cannot be slowed down.`),
+      ],
+    }
+  },
+
+  baseStats: {
+    damageInfo: { minDamage: 13, maxDamage: 17, },
+    attackRating: 6,
+    defence: 5,
+    health: 32,
+    speed: 14,
+  },
+
+  defaultModifiers: {
+    lifesteal: 25,
+    isGhost: true,
+    cannotBeSlowed: true,
+  },
+
+  defaultTurnsPerRound: 1,
+  minQuantityPerStack: 1,
+
+  baseRequirements: {
+    gold: 400,
+  },
+
+  neutralReward: {
+    experience: 30,
+    gold: 2,
+  },
+
+  upgradeDetails: {
+    target: MasterLich,
+    upgradeCost: {
+      gold: 100
+    },
   },
 
 });

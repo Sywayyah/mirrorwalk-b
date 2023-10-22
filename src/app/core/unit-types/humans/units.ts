@@ -33,6 +33,8 @@ const Halberdier = humansFraction.defineUnitType('Halberdier', {
     gold: 70,
     redCrystals: 0,
   },
+  upgraded: true,
+
   neutralReward: defaultRewards,
 });
 
@@ -300,7 +302,7 @@ const Firebirds = humansFraction.defineUnitType('Firebird', {
   level: 5,
 
   getDescription: simpleDescriptions([
-    heroDescrElem(`Tier 5 Castle fire creature. Upgraded version of Mystical Birds.`),
+    heroDescrElem(`Tier 5 Castle majestic creatures of fire, an upgraded version of Mystic Birds.`),
     heroDescrElem(`<br>Powerful creatures of fire that can heal and resurrect allied units, has better stats than Mystical Birds and +17% fire resistance.`),
   ]),
 
@@ -318,7 +320,7 @@ const Firebirds = humansFraction.defineUnitType('Firebird', {
   ],
 
   baseRequirements: {
-    gold: 500,
+    gold: 475,
     wood: 1,
   },
 
@@ -328,17 +330,17 @@ const Firebirds = humansFraction.defineUnitType('Firebird', {
   },
 });
 
-humansFraction.defineUnitType('MysticalBird', {
-  name: 'Mystical Birds',
+humansFraction.defineUnitType('MysticBird', {
+  name: 'Mystic Birds',
   mainPortraitUrl: AssetsImages.UnitMelee,
   level: 5,
 
   getDescription: simpleDescriptions([
-    heroDescrElem(`Tier 5 Castle fire creature. Can be upgraded into Firebirds.`),
+    heroDescrElem(`Tier 5 Castle majestic creatures of fire. Can be upgraded into Firebirds.`),
     heroDescrElem(`<br>Powerful creatures of fire that can heal and resurrect allied units, also has 10% resist against fire.`),
   ]),
 
-  baseStats: createStats([[20, 26], 10, 12, 48, 16]),
+  baseStats: createStats([[18, 26], 8, 10, 46, 16]),
 
   defaultTurnsPerRound: 1,
   minQuantityPerStack: 1,
@@ -352,13 +354,13 @@ humansFraction.defineUnitType('MysticalBird', {
   },
 
   baseRequirements: {
-    gold: 400,
+    gold: 350,
     wood: 1,
   },
   upgradeDetails: {
     target: Firebirds,
     upgradeCost: {
-      gold: 100,
+      gold: 125,
     },
   },
   neutralReward: {

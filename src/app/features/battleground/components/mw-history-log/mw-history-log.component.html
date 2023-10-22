@@ -3,7 +3,7 @@
 
   <div class="history-log"
        #historyLog>
-    <div *ngFor="let historyEntry of battleLogService.history">
+    <div class="entry" *ngFor="let historyEntry of battleLogService.history">
       <ng-container [ngSwitch]="historyEntry.type">
         <div *ngSwitchCase="types.SimpleMsg">
           <ng-container *ngTemplateOutlet="simple; context: { log: historyEntry }" />

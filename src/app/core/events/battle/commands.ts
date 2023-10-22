@@ -9,3 +9,6 @@ export const AddCombatModifiersToUnit = battleCommand<{ unit: UnitGroup, mods: M
 export const RemoveCombatModifiersFromUnit = battleCommand<{ unit: UnitGroup, mods: Modifiers }>();
 
 export const RegisterUnitLoss = battleCommand<{ unit: UnitGroup; loss: number }>();
+
+/* Current unit will enter defence state */
+export const DefendAction = battleCommand();

@@ -1,6 +1,9 @@
 import { ItemSlotType } from '../types';
 import { createItem } from '../utils';
 
+const speedBonus = 1;
+const speedBonusUpgraded = speedBonus + 2;
+
 export const LightBootsItem = createItem({
   name: 'Light Boots',
   icon: 'boot-stomp',
@@ -9,13 +12,19 @@ export const LightBootsItem = createItem({
     heroBonusDefence: 1,
     __unitConditionalMods(unit) {
       if (unit.type.level === 1) {
+        if (unit.type.upgraded) {
+          return {
+            unitGroupSpeedBonus: speedBonusUpgraded,
+          }
+        }
+
         return {
-          unitGroupSpeedBonus: 4,
+          unitGroupSpeedBonus: speedBonus,
         };
       }
 
       return null;
     }
   },
-  abilityDescription: `Increases speed of tier 1 units by 4.`,
+  abilityDescription: `Increases speed of tier 1 units by ${speedBonus} (${speedBonusUpgraded} if unit type is upgraded).`,
 })

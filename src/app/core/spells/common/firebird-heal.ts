@@ -44,7 +44,7 @@ const HealAnimation: EffectAnimation = createAnimation([
 ]);
 
 /* Maybe make it ranged */
-const healPerBird = 17;
+const healPerBird = 20;
 
 export const FirebirdHealSpell: SpellBaseType = {
   name: 'Heal',

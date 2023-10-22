@@ -5,6 +5,7 @@ import { EventsService } from 'src/app/store';
 import { MwHeroesService } from './mw-heroes.service';
 import { MwPlayersService } from './mw-players.service';
 import { MwSpellsService } from './mw-spells.service';
+import { MwStructuresService } from './mw-structures.service';
 import { MwUnitGroupsService } from './mw-unit-groups.service';
 import { State } from './state.service';
 
@@ -20,6 +21,7 @@ export class ApiProvider {
     private readonly spells: MwSpellsService,
     private readonly events: EventsService,
     private readonly state: State,
+    private readonly structures: MwStructuresService,
   ) {
   }
 
@@ -65,6 +67,7 @@ export class ApiProvider {
       },
       players: this.getPlayerApi(),
       actions: {
+        getMapStructures: () => this.structures.viewStructures,
         getActionPointsLeft: () => this.state.currentGame.actionPoints
       },
     }

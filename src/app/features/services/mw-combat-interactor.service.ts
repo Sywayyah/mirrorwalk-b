@@ -14,6 +14,7 @@ import { EventData, StoreClient } from 'src/app/store';
 import { BattleStateService, FinalDamageInfo, MwPlayersService, MwUnitGroupStateService, MwUnitGroupsService } from './';
 import { ActionHintService } from './mw-action-hint.service';
 import { State } from './state.service';
+import { VfxService } from '../shared/components';
 
 interface ExtendedFinalDamageInfo extends FinalDamageInfo {
   blockedDamage: number;
@@ -30,7 +31,8 @@ export class CombatInteractorService extends StoreClient() {
     private readonly players: MwPlayersService,
     private readonly unitState: MwUnitGroupStateService,
     private readonly units: MwUnitGroupsService,
-    private readonly state: State
+    private readonly state: State,
+    private readonly vfx: VfxService,
   ) {
     super();
   }
@@ -74,11 +76,12 @@ export class CombatInteractorService extends StoreClient() {
             .getAllModValues('__attackConditionalModifiers')
             .map((mod) => mod!(conditionalAttackData));
 
-          // another thing: conditional + non-conditional, should be added together
-          // theoretically, non-conditional and conditional mods can be joined in the same mod group
-          // practically, currently there are 3 types of mods: normal, conditionalAttack, conditionalUnitType
-          const attackerConditionalModsGroup = ModsRefsGroup.withRefs(attackerConditionalModifiers.map(ModsRef.fromMods));
-          const attackerUnitConditionalModsGroup = ModsRefsGroup.withRefs(attackerUnitConditionalModifiers.filter(nonNullish).map(ModsRef.fromMods));
+          // joined final mods of attacker
+          const attackerFinalMods = ModsRefsGroup.withRefs([
+            ...attackerConditionalModifiers.map(ModsRef.fromMods),
+            ...attackerUnitConditionalModifiers.filter(nonNullish).map(ModsRef.fromMods),
+            ...attackerModGroup.getAllRefs(),
+          ]);
 
           const targetConditionalModsGroup = ModsRefsGroup.withRefs(targetConditionalModifiers.map(ModsRef.fromMods));
 
@@ -98,8 +101,8 @@ export class CombatInteractorService extends StoreClient() {
             }
           }
 
-          const damagePercentMod = attackerConditionalModsGroup.getModValue('baseDamagePercentModifier') || 0;
-          const lifesteal = attackerUnitConditionalModsGroup.getModValue('lifesteal') || 0;
+          const damagePercentMod = attackerFinalMods.getModValue('baseDamagePercentModifier') || 0;
+          const lifesteal = attackerFinalMods.getModValue('lifesteal') || 0;
 
           console.log(`damage reduced by ${damagePercentMod}%`);
 
@@ -228,6 +231,16 @@ export class CombatInteractorService extends StoreClient() {
       undefined,
       { attackerUnit: attacker },
     );
+
+    if (isCounterattack) {
+      this.vfx.createDroppingMessageForContainer(attacked.id, {
+        html: `
+        <div style='width: 200px; margin-top: 6px'>
+          <div style="font-size: 14px">Retaliated! ${finalDamageInfo.finalUnitLoss} perished.</div>
+        </div>
+        `,
+      }, { duration: 1500 });
+    }
 
     if (!isCounterattack) {
       this.battleState.currentGroupTurnsLeft--;

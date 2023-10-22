@@ -9,7 +9,7 @@
                           side="left"
                           [playerInfo]="mainPlayerInfo"
                           [unitGroup]="unitGroup"
-                          (groupDies)="onGroupDies(unitGroup)" />
+                          (grupDies)="onGroupDies(unitGroup)" />
     </div>
 
     <div class="column">
@@ -26,6 +26,12 @@
 </div>
 
 <div class="abilities-panel">
+  <mw-icon-btn icon="shield"
+               (click)="defend()"
+               [disabled]="(canDefend$ | async) === false"
+               [mwActionHint]="(defendActionMessage$ | async)!"
+               style="width: 60px; text-align: center; color: #fedf2c; background: #515681" />
+
   <mw-battle-hero-abilities />
 </div>
 

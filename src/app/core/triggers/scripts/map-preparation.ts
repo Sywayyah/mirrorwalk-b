@@ -1,5 +1,5 @@
 import { MeditateActionCard, SkipDayActionCard } from '../../action-cards/player-actions';
-import { AddActionCardsToPlayer, DefaultGameModes, DisplayPlayerRewardPopup, PlayerLevelsUp, PlayersInitialized, Triggers } from '../../events';
+import { AddActionCardsToPlayer, DefaultGameModes, DisplayPlayerRewardPopup, NewWeekStarted, PlayerLevelsUp, PlayersInitialized, PushPlainEventFeedMessage, Triggers } from '../../events';
 import { Fraction } from '../../fractions';
 import { constellationFraction } from '../../fractions/constellation/fraction';
 import { LevelMap } from '../../maps';
@@ -46,6 +46,23 @@ TriggersRegistry.register(PlayersInitialized, {
       player: currentPlayer,
       actionCardStacks: initialActionCards,
     }));
+  },
+});
+
+TriggersRegistry.register(NewWeekStarted, {
+  fn: (_, api) => {
+    const guardedStructures = api.actions.getMapStructures()
+      .filter(struct =>
+        !struct.visited
+        && struct.guard?.length
+        && !struct.generator?.disableWeeklyGuardRise
+      );
+
+    guardedStructures.forEach((guardedStruct) => {
+      guardedStruct.guard?.forEach((guardUnitGroup) => guardUnitGroup.addUnitsCount(Math.round(guardUnitGroup.count * 0.40)));
+    });
+
+    api.events.dispatch(PushPlainEventFeedMessage({ message: `Guards in locations raised by 40%` }));
   },
 });
 
