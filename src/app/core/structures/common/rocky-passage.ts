@@ -6,6 +6,7 @@ export const RockyPassageStructure: StructureGeneratorModel = {
   actionPoints: 2,
   // Make new descriptions later
   description: 'A rocky passage held by a powerful dragon.',
+  disableWeeklyGuardRise: true,
 
   generateGuard() {
     return {

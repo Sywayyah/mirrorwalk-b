@@ -44,6 +44,9 @@ export const InitStructure = commands<InitMapStructureAction>();
 
 export const PushEventFeedMessage = commands<{ message: DescHtmlElement[], delay?: number; }>();
 
+// supports html
+export const PushPlainEventFeedMessage = commands<{ message: string, delay?: number; }>();
+
 export const RemoveActionPoints = commands<{ points: number }>();
 
 export const AddActionCardsToPlayer = commands<{ player: Player, actionCardStacks: ActionCardStack[] }>();

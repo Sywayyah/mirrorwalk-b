@@ -39,6 +39,7 @@ export interface StructureGeneratorModel {
   control: StuctureControl;
   description?: string;
   actionPoints?: number;
+  disableWeeklyGuardRise?: boolean;
 
   type?: StructureType;
 

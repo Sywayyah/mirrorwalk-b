@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { PLAYER_COLORS } from 'src/app/core/assets';
-import { AddActionCardsToPlayer, BeforeBattleInit, DefaultGameModes, FightStarts, FightStartsEvent, GameCommandEvents, GameCreated, GameEventsTypes, GameOpenMainScreen, GameOpenMapStructuresScreen, GamePreparedEvent, GameStarted, NeutralStructParams, NewDayStarted, NewWeekStarted, PlayerLeavesTown, PlayerStartsFight, PlayersInitialized, PushEventFeedMessage, StructFightConfirmed, StructSelected, StructSelectedEvent, Triggers } from 'src/app/core/events';
+import { AddActionCardsToPlayer, BeforeBattleInit, DefaultGameModes, FightStarts, FightStartsEvent, GameCommandEvents, GameCreated, GameEventsTypes, GameOpenMainScreen, GameOpenMapStructuresScreen, GamePreparedEvent, GameStarted, NeutralStructParams, NewDayStarted, NewWeekStarted, PlayerLeavesTown, PlayerStartsFight, PlayersInitialized, PushEventFeedMessage, PushPlainEventFeedMessage, StructFightConfirmed, StructSelected, StructSelectedEvent, Triggers } from 'src/app/core/events';
 import { heroesDefaultResources } from 'src/app/core/heroes';
 import { PlayerTypeEnum } from 'src/app/core/players';
 import { StructEvents } from 'src/app/core/structures/events';
 import { TownEvents } from 'src/app/core/towns';
+import { DescriptionElementType } from 'src/app/core/ui';
 import { actionCardEvent } from 'src/app/core/vfx';
 import { Notify, StoreClient, WireMethod } from 'src/app/store';
 import { BattleStateService } from '../mw-battle-state.service';
@@ -86,6 +87,14 @@ export class GameController extends StoreClient() {
   @WireMethod(PushEventFeedMessage)
   public pushEventFeedMessage(event: GameCommandEvents['PushEventFeedMessage']): void {
     this.eventFeedUiService.pushEventFeedMessage(event);
+  }
+
+  @WireMethod(PushPlainEventFeedMessage)
+  public pushPlainEventFeedMessage(event: GameCommandEvents['PushPlainEventFeedMessage']): void {
+    this.eventFeedUiService.pushEventFeedMessage({
+      message: [{ type: DescriptionElementType.FreeHtml, htmlContent: event.message }],
+      delay: event.delay,
+    });
   }
 
   @WireMethod(AddActionCardsToPlayer)

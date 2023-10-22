@@ -33,6 +33,8 @@ const Halberdier = humansFraction.defineUnitType('Halberdier', {
     gold: 70,
     redCrystals: 0,
   },
+  upgraded: true,
+
   neutralReward: defaultRewards,
 });
 

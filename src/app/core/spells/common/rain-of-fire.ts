@@ -110,6 +110,8 @@ export const RainOfFireSpell: SpellBaseType = {
           3: baseManaCost + 1,
           4: baseManaCost + 1,
           5: baseManaCost + 2,
+          6: baseManaCost + 2,
+          7: baseManaCost + 2,
         };
 
         return manaCosts[spell.currentLevel];

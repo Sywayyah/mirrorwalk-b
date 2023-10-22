@@ -1,8 +1,8 @@
-import { GameObject } from '../game-objects';
-import { Player } from '../players';
 import { NeutralRewardModel, StructureGeneratorModel } from '.';
-import { UnitGroup } from '../unit-types';
+import { GameObject } from '../game-objects';
 import { Modifiers } from '../modifiers';
+import { Player } from '../players';
+import { UnitGroup } from '../unit-types';
 
 // todo: choosed structures? there could be branches where only one of 2 can be chosen
 export interface StructureDescription {
@@ -61,6 +61,7 @@ export class MapStructure extends GameObject<ViewStructureCreationParams> {
   public pathTo?: string;
 
   public visited?: boolean;
+
   public parentStructs: Set<string> = new Set();
 
   public icon: string = '';

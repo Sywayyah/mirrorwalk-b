@@ -23,7 +23,7 @@ const Wraiths: UnitBaseType = neutralsFraction.defineUnitType('SupremeGhosts', {
   getDescription(data) {
     return {
       descriptions: [
-        heroDescrElem('Undead unit. Upgraded version of Ghosts.'),
+        heroDescrElem('Undead unit. Upgraded and faster version of Ghosts.'),
         heroDescrElem('<br>While having increased stats, inherits passive ability Fright.'),
         heroDescrElem('<br>Gains improvements from Necromancy.'),
       ],
