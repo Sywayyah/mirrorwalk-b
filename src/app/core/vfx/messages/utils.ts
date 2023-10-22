@@ -1,4 +1,5 @@
 import { CustomizableAnimationData } from '../../api/vfx-api';
+import { UnitGroup } from '../../unit-types';
 import { getHtmlRaIcon } from '../html-elements';
 import { uiSignedNum } from '../ui-utils';
 
@@ -38,6 +39,14 @@ export const getLifeStealParts = (healedUnits: number, stolenLife: number): Cust
       <div style="">${getHtmlRaIcon({ icon: 'double-team', iconColor: '#91edb8' })}${uiSignedNum(healedUnits)}</div>
     `, { width: 50 }),
   };
+};
+
+export const getUnitGroupMessage = (unitGroup: UnitGroup, count: number = unitGroup.count): string => {
+  return `<span style="color: ${unitGroup.ownerPlayerRef.color}; font-weight: 500">${count} ${unitGroup.type.name}</span>`;
+};
+
+export const getRetaliationMessage = ({ attacker, attacked, originalNumber, damage, unitLoss }: { attacker: UnitGroup; attacked: UnitGroup; originalNumber: number; damage: number; unitLoss: number; }) => {
+  return `${getUnitGroupMessage(attacker)} retaliated! Dealing ${damage} damage to ${getUnitGroupMessage(attacked, originalNumber)}, ${unitLoss} units perish.`;
 };
 
 export const getLifeStealParts2 = (healedUnits: number, stolenLife: number): CustomizableAnimationData => {

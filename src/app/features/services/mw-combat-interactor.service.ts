@@ -10,7 +10,7 @@ import { ActionHintTypeEnum, AttackActionHintInfo } from 'src/app/core/ui';
 import { UnitGroup, UnitStatsInfo } from 'src/app/core/unit-types';
 import { CommonUtils } from 'src/app/core/utils';
 import { nonNullish } from 'src/app/core/utils/common';
-import { getHtmlRaIcon, messageWrapper } from 'src/app/core/vfx';
+import { getHtmlRaIcon, getRetaliationMessage, getUnitGroupMessage, messageWrapper } from 'src/app/core/vfx';
 import { EventData, StoreClient } from 'src/app/store';
 import { VfxService } from '../shared/components';
 import { BattleStateService, FinalDamageInfo, MwBattleLogService, MwPlayersService, MwUnitGroupStateService, MwUnitGroupsService } from './';
@@ -241,7 +241,13 @@ export class CombatInteractorService extends StoreClient() {
         `, { width: 130 }),
       }, { duration: 1500 });
 
-      this.history.logSimpleMessage(`${attacker.count} ${attacker.type.name} retaliated! Dealing ${finalDamageInfo.finalDamage} damage to ${attackDetails.originalAttackersCount} ${attacked.type.name}, ${finalDamageInfo.finalUnitLoss} units perish.`);
+      this.history.logHtmlMessage(getRetaliationMessage({
+        attacked,
+        attacker,
+        damage: finalDamageInfo.finalDamage,
+        originalNumber: attackDetails.originalAttackersCount,
+        unitLoss: finalDamageInfo.finalUnitLoss,
+      }));
     }
 
     if (!isCounterattack) {
