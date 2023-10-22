@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, HostBinding, HostListener, Input } from '@angular/core';
 
 @Component({
   selector: 'mw-icon-btn',
@@ -9,5 +9,14 @@ export class IconBtnComponent {
   @Input()
   public icon!: string;
 
+  @Input()
+  @HostBinding('class.disabled')
+  disabled: boolean | null = false;
+
   constructor() { }
+
+  @HostListener('click')
+  click(): boolean {
+    return !this.disabled;
+  }
 }

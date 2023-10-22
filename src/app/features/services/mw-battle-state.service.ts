@@ -28,6 +28,7 @@ export class BattleStateService {
   private fightQueue!: UnitGroup[];
   private players!: Player[];
 
+  public readonly currentUnitGroup$ = new BehaviorSubject<UnitGroup | null>(null);
 
   constructor(
     private readonly units: MwUnitGroupsService,
@@ -68,8 +69,15 @@ export class BattleStateService {
 
     if (!this.fightQueue.length) {
       /* Review this event order later */
+      this.getAllUnits().forEach(unitGroup => {
+        if (unitGroup.modGroup.getModValue('defending')) {
+          unitGroup.removeDefendingMod();
+        }
+      });
+
       this.resetFightQueue();
       this.resetGroupsTurnsLeft();
+
 
       this.round++;
       this.events.dispatch(FightNextRoundStarts({
@@ -82,7 +90,13 @@ export class BattleStateService {
     const previousPlayer = this.currentPlayer;
     this.currentPlayer = firstUnitGroup.ownerPlayerRef;
     this.currentUnitGroup = firstUnitGroup;
-    this.currentGroupTurnsLeft = this.currentUnitGroup.type.defaultTurnsPerRound;
+    this.currentUnitGroup$.next(firstUnitGroup);
+
+    if (!this.currentUnitGroup.modGroup.getModValue('defending')) {
+      this.currentGroupTurnsLeft = this.currentUnitGroup.type.defaultTurnsPerRound;
+    } else {
+      this.currentGroupTurnsLeft = this.currentUnitGroup.turnsLeft;
+    }
 
     if (this.currentPlayer !== previousPlayer) {
       this.events.dispatch(RoundPlayerTurnStarts({
@@ -134,7 +148,12 @@ export class BattleStateService {
     return unitGroup.count * unitGroup.type.baseStats.damageInfo.maxDamage;
   }
 
-  public resortFightQueue(): void {
+  public resortFightQueue(includeFirst: boolean = false): void {
+    if (includeFirst) {
+      this.fightQueue = [...this.sortUnitsBySpeed(this.fightQueue.slice(0))];
+      return;
+    }
+
     this.fightQueue = [this.fightQueue[0], ...this.sortUnitsBySpeed(this.fightQueue.slice(1))];
   }
 
@@ -215,6 +234,13 @@ export class BattleStateService {
       ...this.getAliveUnitsOfPlayer(this.players[0]),
       ...this.getAliveUnitsOfPlayer(this.players[1]),
     ]);
+  }
+
+  private getAllUnits(): UnitGroup[] {
+    return [
+      ...this.getAliveUnitsOfPlayer(this.players[0]),
+      ...this.getAliveUnitsOfPlayer(this.players[1]),
+    ];
   }
 
   private initPlayerUnitGroupsMap(unitGroups: UnitGroup[]): void {

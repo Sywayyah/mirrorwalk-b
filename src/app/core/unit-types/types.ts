@@ -152,7 +152,6 @@ export interface UnitStatsInfo {
 }
 
 export class UnitGroup extends GameObject<UnitCreationParams> {
-
   public static readonly categoryId: string = 'unit-group';
 
   // todo: many properties can become getters
@@ -280,6 +279,7 @@ export class UnitGroup extends GameObject<UnitCreationParams> {
     this.modGroup.attachNamedParentGroup(UnitModGroups.PlayerMods, player.hero.modGroup);
   }
 
+
   addUnitsCount(addedCount: number): void {
     this.setUnitsCount(this._count + addedCount);
   }
@@ -313,6 +313,23 @@ export class UnitGroup extends GameObject<UnitCreationParams> {
   removeSpell(spell: Spell): void {
     CommonUtils.removeItem(this._spells, spell);
   }
+
+  removeDefendingMod() {
+    const combatMods = this.modGroup.getNamedGroup(UnitModGroups.CombatMods);
+
+    if (!combatMods) {
+      return;
+    }
+
+    const defendingMod = combatMods
+      ?.getAllRefs()
+      .find((modRef) => modRef.getModValue('defending'));
+
+    if (defendingMod) {
+      combatMods?.removeModsRef(defendingMod);
+    }
+  }
+
 
   getStats(): UnitStatsInfo {
     return this.unitStats$.getValue();
@@ -381,11 +398,16 @@ export class UnitGroup extends GameObject<UnitCreationParams> {
       const baseDefence = baseStats.defence;
       const bonusDefence = (mods.heroBonusDefence || 0) + (heroBaseStats?.baseDefence || 0);
 
-      const baseSpeed = baseStats.speed;
+      let baseSpeed = baseStats.speed;
       let speedBonus = mods.unitGroupSpeedBonus || 0;
 
       if (speedBonus < 0 && mods.cannotBeSlowed) {
         speedBonus = 0;
+      }
+
+      if (mods.fixedSpeed) {
+        speedBonus = 0;
+        baseSpeed = mods.fixedSpeed || 5;
       }
 
       const allResist = mods.resistAll || 0;

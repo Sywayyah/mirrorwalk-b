@@ -5,10 +5,10 @@ import { createHireStructure } from '../utils';
 export const CalavryStalls: StructureGeneratorModel = createHireStructure(
   'Cavalry Stalls',
   {
-    maxUnitGroups: 1,
-    minUnitGroups: 1,
+    maxUnitGroups: 2,
+    minUnitGroups: 2,
     units: [
-      [humansFraction.getUnitType('Cavalry'), 4, 4, 1],
+      [humansFraction.getUnitType('Cavalry'), 3, 3, 2],
     ],
   },
   [

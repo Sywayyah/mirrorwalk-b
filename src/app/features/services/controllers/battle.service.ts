@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BattleCommandEvents, BeforeBattleInit, CleanUpHandlersOnFightEnd, FightEnds, FightNextRoundStarts, FightStarts, GroupDies, GroupSpeedChanged, PlayerTurnStartEvent, RoundGroupSpendsTurn, RoundGroupSpendsTurnEvent, RoundGroupTurnEnds, RoundPlayerCountinuesAttacking, RoundPlayerTurnStarts, UnitHealed, UnitHealedEvent } from 'src/app/core/events';
-import { RegisterUnitLoss } from 'src/app/core/events/battle/commands';
+import { DefendAction, RegisterUnitLoss } from 'src/app/core/events/battle/commands';
 import { ModsRef } from 'src/app/core/modifiers';
 import { PlayerState, PlayerTypeEnum } from 'src/app/core/players';
 import { Notify, StoreClient, WireMethod } from 'src/app/store';
@@ -10,6 +10,10 @@ import { MwCurrentPlayerStateService } from '../mw-current-player-state.service'
 import { MwPlayersService } from '../mw-players.service';
 import { MwStructuresService } from '../mw-structures.service';
 import { State } from '../state.service';
+import { MwBattleLogService } from '../mw-battle-log.service';
+import { HistoryLogTypesEnum } from 'src/app/core/ui';
+import { VfxService } from '../../shared/components';
+import { getHtmlRaIcon, getIconElement } from 'src/app/core/vfx';
 
 @Injectable()
 export class BattleController extends StoreClient() {
@@ -18,7 +22,9 @@ export class BattleController extends StoreClient() {
     private curPlayerState: MwCurrentPlayerStateService,
     private strucuresService: MwStructuresService,
     private playersService: MwPlayersService,
+    private vfx: VfxService,
     private state: State,
+    private historyLog: MwBattleLogService,
     private readonly gameObjectsManager: GameObjectsManager,
   ) {
     super();
@@ -34,6 +40,20 @@ export class BattleController extends StoreClient() {
   public prepareFightState(): void {
     this.battleState.resetCurrentPlayer();
 
+    this.battleState.initNextTurnByQueue();
+  }
+
+  @Notify(DefendAction)
+  public defendAction(): void {
+    const currentUnitGroup = this.battleState.currentUnitGroup;
+    currentUnitGroup.addCombatMods({ fixedSpeed: 5, heroBonusDefence: 5, defending: true });
+
+    this.battleState.resortFightQueue(true);
+    this.vfx.createDroppingMessageForContainer(currentUnitGroup.id, {
+      html: `Defending!`,
+    }, { duration: 1000 });
+
+    this.historyLog.logSimpleMessage(`${currentUnitGroup.count} ${currentUnitGroup.type.name} choose to defend. Their speed is fixed to 5, and armor is increased by 5.`);
     this.battleState.initNextTurnByQueue();
   }
 

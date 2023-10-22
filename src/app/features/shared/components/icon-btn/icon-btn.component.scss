@@ -5,4 +5,9 @@
   background: rgb(85, 87, 90);
   cursor: pointer;
   border-radius: 5px;
+
+  &.disabled {
+    filter: brightness(0.7);
+    pointer-events: none;
+  }
 }

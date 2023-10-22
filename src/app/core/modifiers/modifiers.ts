@@ -25,6 +25,7 @@ export interface ModifiersModel extends Specialties {
   /* unit speed bonus */
   unitGroupSpeedBonus: number;
   cannotBeSlowed: boolean;
+  fixedSpeed: number;
 
   lifesteal: number;
   // to implement
@@ -57,6 +58,9 @@ export interface ModifiersModel extends Specialties {
   isGhost: boolean;
   isSummon: boolean;
   isBoss: boolean;
+
+  /* states */
+  defending: true,
 
   /* Modifiers can be returned on condition */
   __attackConditionalModifiers?: (params: ConditionalModifierParamsModel) => Modifiers;
