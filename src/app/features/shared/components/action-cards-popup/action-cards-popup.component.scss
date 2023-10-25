@@ -26,6 +26,7 @@
   display: flex;
   pointer-events: all;
   gap: 14px;
+  padding-top: 15px;
 }
 
 .card-stack {
@@ -35,11 +36,12 @@
   padding: 0 16px 8px;
   border-radius: 6px;
   background-color: rgba(255, 255, 255, 0);
-
+  transform: translateY(0px);
+  transition: 0.2s;
 
   &:hover {
     background-color: rgba(255, 255, 255, 0.193);
-    transition: 0.2s;
+    transform: translateY(-20px);
   }
 }
 
