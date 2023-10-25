@@ -4,7 +4,7 @@
             [class.disabled]="!isAvailable"
             [class.guards]="struct.guard && !struct.visited && isAvailable"
             (click)="structSelected.emit(struct)"
-            [mwActionHint]="(struct.guard && isAvailable && !struct.visited ? 'Attack guard of ' : '') + struct.name + (struct.visited ? '<hr/>Visited' : struct.actionPoints ? '<hr/>Cost: ' + struct.actionPoints + ' action points' : '')"
+            [mwActionHint]="(struct.guard && isAvailable && !struct.visited ? 'Attack the guard of ' : '') + struct.name + (struct.visited ? '<hr/>Visited' : struct.actionPoints ? '<hr/>Cost: ' + struct.actionPoints + ' action points' : '')"
             class="struct-icon"
             [icon]="struct.icon" />
 
