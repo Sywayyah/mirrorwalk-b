@@ -36,7 +36,7 @@ export class MwGameboardComponent extends StoreClient() implements OnInit, After
   public currentUnitGroup$ = this.mwBattleState.currentUnitGroup$;
 
   public canDefend$ = this.mwBattleState.currentUnitGroup$.pipe(
-    map((unit) => Boolean(unit && !unit.modGroup.getModValue('defending') && !this.players.isEnemyUnitGroup(unit)))
+    map((unit) => Boolean(unit && !unit.getStats().defends && !this.players.isEnemyUnitGroup(unit)))
   );
 
   public defendActionMessage$ = this.mwBattleState.currentUnitGroup$.pipe(
@@ -45,7 +45,7 @@ export class MwGameboardComponent extends StoreClient() implements OnInit, After
         return '';
       }
 
-      if (unit.modGroup.getModValue('defending')) {
+      if (unit.getStats().defends) {
         return 'Unit group is already defending';
       }
 
