@@ -1,4 +1,4 @@
-import { itemStatsDescr, spellDescrElem } from '../../ui';
+import { itemStatsDescr } from '../../ui';
 import { ItemBaseModel, ItemSlotType } from '../types';
 
 export const GarudaWindCrown: ItemBaseModel = {
@@ -10,6 +10,7 @@ export const GarudaWindCrown: ItemBaseModel = {
     heroBonusDefence: 6,
     resistAll: 10,
     unitGroupSpeedBonus: 3,
+    specialtyArchery: 2,
     cannotBeSlowed: true,
   },
   icon: {
@@ -19,14 +20,10 @@ export const GarudaWindCrown: ItemBaseModel = {
     return {
       descriptions: [
         itemStatsDescr(thisItem),
-        spellDescrElem('An artefact of incredible strength.'),
       ],
     };
   },
   config: {
-    init: ({
-      actions, events, ownerPlayer,
-    }) => {
-    },
+    init: () => { },
   },
 }
