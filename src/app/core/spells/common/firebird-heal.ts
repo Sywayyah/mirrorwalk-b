@@ -47,7 +47,7 @@ const HealAnimation: EffectAnimation = createAnimation([
 const healPerBird = 20;
 
 export const FirebirdHealSpell: SpellBaseType = {
-  name: 'Heal',
+  name: 'Revitalize',
   activationType: SpellActivationType.Target,
   icon: {
     icon: icon,

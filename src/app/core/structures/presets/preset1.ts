@@ -1,6 +1,8 @@
 import { ResourceType } from '../../resources';
 import { ArchersOutpostStructure, BanditCamp, BeaconOfTheUndead, BigCampStructure, CalavryStalls, GraveyardStructure, MagicRiverStructure, MountainNestStructure, RockyPassageStructure, ThiefsLair, WitchHutStructure } from '../common';
+import { DarkArtsSchool } from '../common/dark-arts-school';
 import { FireRingStructure } from '../common/guard-location';
+import { Mausoleum } from '../common/mausoleum';
 import { dailyResourcesMineStructure } from '../common/resource-mine';
 import { resPileStructure, resourcesPileStructure } from '../common/resource-pile';
 import { StructureDescription } from '../map-structures';
@@ -95,6 +97,14 @@ const brBranch: StructureDescription[] = [
     struct: CalavryStalls,
   },
   {
+    id: '52',
+    pathTo: '22',
+    x: loc(165),
+    y: loc(201),
+    icon: 'scroll-unfurled',
+    struct: DarkArtsSchool,
+  },
+  {
     id: '23',
     x: loc(240),
     y: loc(148),
@@ -126,7 +136,6 @@ const fifthBranch: StructureDescription[] = [
     actionPoints: 1,
     struct: resPileStructure(ResourceType.Gold, 650),
   },
-
 ];
 
 const blBranch: StructureDescription[] = [
@@ -188,6 +197,15 @@ const blBranch: StructureDescription[] = [
     //   resistFire: -10,
     // },
     actionPoints: 2,
+  },
+  {
+    id: '101',
+    pathTo: 'boss-1',
+    icon: 'capitol',
+    x: loc(-300),
+    y: loc(-80),
+    actionPoints: 2,
+    struct: Mausoleum,
   },
   {
     id: 'left-3',

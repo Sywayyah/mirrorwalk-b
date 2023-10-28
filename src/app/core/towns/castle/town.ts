@@ -95,37 +95,37 @@ const tavern: BuidlingBase = {
 const trainingCamp: BuidlingBase = {
   name: 'Training Camp',
   description: 'Allows to train Pikemans that can be upgraded.',
-  activity: createHiringActivity('Pikemen', 12, 'pikeman'),
+  activity: createHiringActivity('Pikemen', 18, 'pikeman'),
 };
 
 const upgradedTrainingCamp: BuidlingBase = {
   name: 'Upg. Training Camp',
   description: 'Allows to hire and upgrade Halberdiers',
-  activity: createHiringActivity('Pikemen', 12, 'pikeman', true),
+  activity: createHiringActivity('Pikemen', 18, 'pikeman', true),
 };
 
 const archersOutpost = {
   name: 'Archers Outpost',
   description: 'Allows to train Archers',
-  activity: createHiringActivity('Archer', 10, 'archers'),
+  activity: createHiringActivity('Archer', 12, 'archers'),
 };
 
 const upgradedArchersOutpost = {
   name: 'Upg. Archers Outpost',
   description: 'Allows to train Archers and Crossbowmen',
-  activity: createHiringActivity('Archer', 10, 'archers', true),
+  activity: createHiringActivity('Archer', 12, 'archers', true),
 };
 
 const hallsOfKnights = {
   name: 'Halls of Knights',
   description: 'Allows to train Knights',
-  activity: createHiringActivity('Knight', 7, 'knights'),
+  activity: createHiringActivity('Knight', 4, 'knights'),
 };
 
 const cavalryStalls = {
   name: 'Cavalry Stalls',
   description: 'Allows to train Cavalry',
-  activity: createHiringActivity('Cavalry', 3, 'cavalry'),
+  activity: createHiringActivity('Cavalry', 2, 'cavalry'),
 };
 
 const magicTower: BuidlingBase = {
@@ -157,7 +157,7 @@ export const castleTownBase: TownBase<CastleTownBuildings> = {
       baseName: 'Market',
       description: 'Allows to trade resources',
       levels: [
-        { building: market, cost: { gold: 1500 } }
+        { building: market, cost: { gold: 1500, wood: 2 } }
       ],
       icon: 'gavel',
       tier: 1,
@@ -166,7 +166,7 @@ export const castleTownBase: TownBase<CastleTownBuildings> = {
       baseName: 'Magic School',
       description: 'Allows you to learn spells for your hero',
       levels: [
-        { building: highTower, cost: { gold: 1000, gems: 1 } }
+        { building: highTower, cost: { gold: 1000, gems: 2 } }
       ],
       icon: 'burning-book',
       tier: 2,
@@ -175,7 +175,7 @@ export const castleTownBase: TownBase<CastleTownBuildings> = {
       baseName: 'Tavern',
       description: 'Allows to hire neutral units',
       levels: [
-        { building: tavern, cost: { gold: 1250 } },
+        { building: tavern, cost: { gold: 1250, wood: 3 } },
       ],
       icon: 'hood',
       tier: 2,
@@ -264,8 +264,8 @@ export const castleTownBase: TownBase<CastleTownBuildings> = {
          that increase Firebirds growth in the town, which will give an ability to
          produce more Firebirds than usually would be allowed.
         */
-        { building: trainingCamp, cost: { gold: 300 } },
-        { building: upgradedTrainingCamp, cost: { gold: 150, wood: 1 } },
+        { building: trainingCamp, cost: { gold: 450 } },
+        { building: upgradedTrainingCamp, cost: { gold: 150, wood: 2 } },
       ],
       icon: 'spear-head',
       tier: 1,
@@ -274,8 +274,8 @@ export const castleTownBase: TownBase<CastleTownBuildings> = {
       baseName: 'Archers Outpost',
       description: 'Trains Archers',
       levels: [
-        { building: archersOutpost, cost: { gold: 420, wood: 1 } },
-        { building: upgradedArchersOutpost, cost: { gold: 300, wood: 2 } },
+        { building: archersOutpost, cost: { gold: 500, wood: 2 } },
+        { building: upgradedArchersOutpost, cost: { gold: 400, wood: 2 } },
       ],
       icon: 'arrow-cluster',
       tier: 1,
@@ -284,7 +284,7 @@ export const castleTownBase: TownBase<CastleTownBuildings> = {
       baseName: 'Halls of Knights',
       description: 'Trains Knights',
       levels: [
-        { building: hallsOfKnights, cost: { gold: 500, wood: 2 } },
+        { building: hallsOfKnights, cost: { gold: 1000, wood: 5 } },
       ],
       icon: 'crossed-swords',
       tier: 2,
@@ -293,7 +293,7 @@ export const castleTownBase: TownBase<CastleTownBuildings> = {
       baseName: 'Cavalry Halls',
       description: 'Trains Cavalry',
       levels: [
-        { building: cavalryStalls, cost: { gold: 575, wood: 2 } },
+        { building: cavalryStalls, cost: { gold: 1200, wood: 7 } },
       ],
       icon: 'horseshoe',
       tier: 3,
@@ -302,8 +302,8 @@ export const castleTownBase: TownBase<CastleTownBuildings> = {
       baseName: 'Magic Tower',
       description: 'Trains Firebirds and Mystical Birds',
       levels: [
-        { building: magicTower, cost: { gold: 625, wood: 1, gems: 1 } },
-        { building: upgradedMagicTower, cost: { gold: 500, gems: 1 } },
+        { building: magicTower, cost: { gold: 1500, wood: 10 } },
+        { building: upgradedMagicTower, cost: { gold: 600, wood: 5 } },
       ],
       icon: 'tower',
       tier: 4,
