@@ -106,6 +106,7 @@ const brBranch: StructureDescription[] = [
   },
   {
     id: '23',
+    actionPoints: 2,
     x: loc(240),
     y: loc(148),
     icon: 'hand-saw',
@@ -173,6 +174,16 @@ const blBranch: StructureDescription[] = [
     pathTo: 'left-2',
 
     struct: ThiefsLair,
+  },
+  {
+    id: 'left-6',
+    actionPoints: 4,
+    x: loc(-180),
+    y: loc(-80),
+    icon: 'crystals',
+    pathTo: 'left-5',
+
+    struct: dailyResourcesMineStructure({ redCrystals: 1 }),
   },
   {
     id: '54',
