@@ -1,5 +1,5 @@
 import { Component, Input, OnChanges } from '@angular/core';
-import { GameEventsTypes, PlayerEquipsItem, PlayerUnequipsItem } from 'src/app/core/events';
+import { GameEventsTypes, PlayerEquipsItem, PlayerReceivesItem, PlayerUnequipsItem } from 'src/app/core/events';
 import { Hero } from 'src/app/core/heroes';
 import { ExtendedSlotType, InventoryItems, Item, ItemSlotType } from 'src/app/core/items';
 import { TypedChanges } from 'src/app/core/utils';
@@ -50,6 +50,13 @@ export class ItemSlotComponent extends StoreClient() implements OnChanges {
       this.equippedItem = equippedItems.getItemInSlot(itemSlot);
 
       this.availableItemsForSlot = InventoryItems.filterItemsForSlot(itemSlot, this.hero.itemsBackpack);
+    }
+  }
+
+  @WireMethod(PlayerReceivesItem)
+  public updateItems(event: GameEventsTypes['PlayerReceivesItem']): void {
+    if (event.item.baseType.slotType === this.itemSlot) {
+      this.availableItemsForSlot = InventoryItems.filterItemsForSlot(this.itemSlot, this.hero.itemsBackpack);
     }
   }
 
