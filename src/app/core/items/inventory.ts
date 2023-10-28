@@ -36,6 +36,10 @@ export class InventoryItems {
     return this.slotTypes;
   }
 
+  public static getExtendedSlotTypes(): ExtendedSlotType[] {
+    return [...this.extendedSlotsMap.values()];
+  }
+
   public static getSlotExtendedInfo(slotType: ItemSlotType): ExtendedSlotType {
     return this.extendedSlotsMap.get(slotType)!;
   }

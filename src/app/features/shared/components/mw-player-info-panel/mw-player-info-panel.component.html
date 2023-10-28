@@ -14,6 +14,15 @@
     +{{player.hero.freeSkillpoints}} Skillpoints
   </div> -->
 
+  <div>
+    <div style="display: flex; flex-direction: row;">
+      <mw-item-slot *ngFor="let itemSlot of itemSlots"
+                    class="info-small-icons"
+                    [mwActionHint]="itemSlot.name"
+                    [itemSlot]="itemSlot.slotType"
+                    hintPos="above" />
+    </div>
+  </div>
   <div [mwActionHint]="getHeroActionHint()">
     {{player.hero.name}}, Level: {{player.hero.level}}
     <mw-experience-bar style="width: 270px;"></mw-experience-bar>

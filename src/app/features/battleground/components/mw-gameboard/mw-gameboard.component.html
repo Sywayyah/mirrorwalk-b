@@ -30,7 +30,11 @@
                (click)="defend()"
                [disabled]="(canDefend$ | async) === false"
                [mwActionHint]="(defendActionMessage$ | async)!"
-               style="width: 60px; text-align: center; color: #fedf2c; background: #515681" />
+               style="
+               width: 60px;
+               text-align: center;
+               color: #ffe5a0;
+               background: #505263;" />
 
   <mw-battle-hero-abilities />
 </div>

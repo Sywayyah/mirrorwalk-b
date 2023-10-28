@@ -3,10 +3,10 @@ import { BlackLichSwordItem } from '../../items/neutral/black-lich-sword';
 import { IrtonPlateItem } from '../../items/neutral/irton-plate';
 import { PhoenixShieldItem } from '../../items/neutral/phoenix-shield';
 import { GenerationModel } from '../../unit-types';
-import { StructureGeneratorModel, StuctureControl, ItemReward, NeutralRewardTypesEnum } from '../types';
+import { ItemReward, NeutralRewardTypesEnum, StructureGeneratorModel, StuctureControl } from '../types';
 
-export const ThiefsLair: StructureGeneratorModel = {
-  name: 'Bandit Camp',
+export const ThievesLair: StructureGeneratorModel = {
+  name: 'Thieves\' Lair',
   actionPoints: 2,
   control: StuctureControl.Neutral,
 

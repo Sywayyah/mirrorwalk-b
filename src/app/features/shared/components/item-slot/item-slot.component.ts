@@ -1,10 +1,11 @@
 import { Component, Input, OnChanges } from '@angular/core';
-import { PlayerEquipsItem, PlayerUnequipsItem } from 'src/app/core/events';
+import { GameEventsTypes, PlayerEquipsItem, PlayerUnequipsItem } from 'src/app/core/events';
 import { Hero } from 'src/app/core/heroes';
 import { ExtendedSlotType, InventoryItems, Item, ItemSlotType } from 'src/app/core/items';
 import { TypedChanges } from 'src/app/core/utils';
 import { MwPlayersService } from 'src/app/features/services';
-import { StoreClient } from 'src/app/store';
+import { StoreClient, WireMethod } from 'src/app/store';
+import { HintAttachment } from '../hints-container/hints-container.component';
 
 @Component({
   selector: 'mw-item-slot',
@@ -15,6 +16,9 @@ export class ItemSlotComponent extends StoreClient() implements OnChanges {
 
   @Input()
   public itemSlot!: ItemSlotType;
+
+  @Input()
+  public hintPos: HintAttachment = 'after';
 
   public slotInfo!: ExtendedSlotType;
 
@@ -49,6 +53,22 @@ export class ItemSlotComponent extends StoreClient() implements OnChanges {
     }
   }
 
+  @WireMethod(PlayerEquipsItem)
+  public updateSlotOnEquip(params: GameEventsTypes['PlayerEquipsItem']): void {
+    if (params.item.baseType.slotType === this.itemSlot) {
+      this.equippedItem = params.item;
+      this.isEquipped = true;
+    }
+  }
+
+  @WireMethod(PlayerUnequipsItem)
+  public updateSlotOnUnequip(params: GameEventsTypes['PlayerUnequipsItem']): void {
+    if (params.item.baseType.slotType === this.itemSlot) {
+      this.equippedItem = null;
+      this.isEquipped = false;
+    }
+  }
+
   public equipItem(item: Item<object>): void {
     if (this.equippedItem === item) {
       return;
@@ -62,9 +82,6 @@ export class ItemSlotComponent extends StoreClient() implements OnChanges {
       item: item,
       player: this.playersService.getCurrentPlayer(),
     }));
-
-    this.equippedItem = item;
-    this.isEquipped = true;
   }
 
   public unequipSlot(): void {
@@ -77,9 +94,6 @@ export class ItemSlotComponent extends StoreClient() implements OnChanges {
         item: this.equippedItem,
         player: this.playersService.getCurrentPlayer(),
       }));
-
-      this.equippedItem = null;
-      this.isEquipped = false;
     }
   }
 

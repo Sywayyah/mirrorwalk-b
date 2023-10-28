@@ -3,7 +3,7 @@
   <div *ngIf="isEquipped; else isUnequipped">
     <mw-item-icon class="hoverable"
                   [item]="equippedItem!"
-                  hintPos="after" />
+                  [hintPos]="hintPos" />
   </div>
 
   <ng-template #isUnequipped>

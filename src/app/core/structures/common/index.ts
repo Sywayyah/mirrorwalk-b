@@ -6,5 +6,5 @@ export * from './graveyard';
 export * from './magic-river';
 export * from './mountain-nest';
 export * from './witch-hut';
-export * from './thiefs-lair';
+export * from './thieves-lair';
 export * from './rocky-passage';

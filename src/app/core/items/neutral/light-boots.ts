@@ -1,8 +1,8 @@
 import { ItemSlotType } from '../types';
 import { createItem } from '../utils';
 
-const speedBonus = 1;
-const speedBonusUpgraded = speedBonus + 2;
+const speedBonus = 2;
+const speedBonusUpgraded = speedBonus + 3;
 
 export const LightBootsItem = createItem({
   name: 'Light Boots',
@@ -26,5 +26,5 @@ export const LightBootsItem = createItem({
       return null;
     }
   },
-  abilityDescription: `Increases speed of tier 1 units by ${speedBonus} (${speedBonusUpgraded} if unit type is upgraded).`,
+  abilityDescription: `Increases speed of tier 1 units by ${speedBonus} (${speedBonusUpgraded} if unit is upgraded).`,
 })

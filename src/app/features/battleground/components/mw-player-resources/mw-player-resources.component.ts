@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Player } from 'src/app/core/players';
+import { resourceNames } from 'src/app/core/resources';
 import { MwPlayersService } from 'src/app/features/services';
 import { State } from 'src/app/features/services/state.service';
 
@@ -9,6 +10,7 @@ import { State } from 'src/app/features/services/state.service';
   styleUrls: ['./mw-player-resources.component.scss']
 })
 export class MwPlayerResourcesComponent {
+  public readonly resourceNames = resourceNames;
 
   public readonly currentPlayer: Player = this.playersService.getCurrentPlayer();
 
