@@ -1,18 +1,21 @@
 <div *ngIf="heroStats$ | async as _heroStats">
   <div class="resource-info-row">
-    <div>Gold:</div>
+    <div>{{resourceNames.gold}}:</div>
     <div>{{currentPlayer.resources.gold}}</div>
   </div>
+
   <div class="resource-info-row">
-    <div>Wood:</div>
+    <div>{{resourceNames.wood}}:</div>
     <div>{{currentPlayer.resources.wood}}</div>
   </div>
+
   <div class="resource-info-row">
-    <div>Red Crystals:</div>
+    <div>{{resourceNames.redCrystals}}:</div>
     <div>{{currentPlayer.resources.redCrystals}}</div>
   </div>
+
   <div class="resource-info-row">
-    <div>Gems:</div>
+    <div>{{resourceNames.gems}}:</div>
     <div>{{currentPlayer.resources.gems}}</div>
   </div>
 
