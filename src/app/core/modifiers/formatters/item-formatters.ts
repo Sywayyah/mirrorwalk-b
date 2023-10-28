@@ -43,6 +43,7 @@ export const modsFormatters: { [K in keyof Modifiers]: ModFormatter<K> } = {
   resistCold: percentVal('Cold Resist'),
   resistLightning: percentVal('Lightning Resist'),
   resistPoison: percentVal('Poison Resist'),
+  cannotBeSlowed: () => 'Units Cannot be slowed',
 };
 
 export function formatMod(modName: keyof Modifiers, modValue: unknown): string {

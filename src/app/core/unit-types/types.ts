@@ -136,6 +136,8 @@ export interface UnitStatsInfo {
   bonusDefence: number;
   finalDefence: number;
 
+  defends?: boolean;
+
   baseSpeed: number;
   speedBonus: number;
   finalSpeed: number;
@@ -199,6 +201,8 @@ export class UnitGroup extends GameObject<UnitCreationParams> {
     baseDefence: 0,
     bonusDefence: 0,
     finalDefence: 0,
+
+    defends: false,
 
     baseSpeed: 0,
     speedBonus: 0,
@@ -418,6 +422,8 @@ export class UnitGroup extends GameObject<UnitCreationParams> {
         baseAttack,
         bonusAttack,
         finalAttack: baseAttack + bonusAttack,
+
+        defends: mods.defending,
 
         baseDefence,
         bonusDefence,

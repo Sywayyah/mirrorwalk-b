@@ -10,7 +10,7 @@ import { ActionHintTypeEnum, AttackActionHintInfo } from 'src/app/core/ui';
 import { UnitGroup, UnitStatsInfo } from 'src/app/core/unit-types';
 import { CommonUtils } from 'src/app/core/utils';
 import { nonNullish } from 'src/app/core/utils/common';
-import { getHtmlRaIcon, getRetaliationMessage, getUnitGroupMessage, messageWrapper } from 'src/app/core/vfx';
+import { getHtmlRaIcon, getRetaliationMessage, messageWrapper } from 'src/app/core/vfx';
 import { EventData, StoreClient } from 'src/app/store';
 import { VfxService } from '../shared/components';
 import { BattleStateService, FinalDamageInfo, MwBattleLogService, MwPlayersService, MwUnitGroupStateService, MwUnitGroupsService } from './';
@@ -131,7 +131,7 @@ export class CombatInteractorService extends StoreClient() {
           finalDamage = Math.round(finalDamage);
 
           // damage resists
-          let finalResistValue = target.getStats()[resistsMapping[damageType] as keyof UnitStatsInfo];
+          let finalResistValue = target.getStats()[resistsMapping[damageType] as keyof UnitStatsInfo] as number;
 
           if (finalResistValue > defaultResistCap) {
             finalResistValue = defaultResistCap;
