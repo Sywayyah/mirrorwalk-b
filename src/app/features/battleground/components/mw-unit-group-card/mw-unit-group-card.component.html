@@ -34,7 +34,7 @@
             {{ _unitStats.avgTotalDamage }}
           </div>
 
-          <div>
+          <div [class.defence]="_unitStats.defends">
             <mw-ra-icon icon="feather-wing" />
             {{ _unitStats.baseSpeed }}
 
