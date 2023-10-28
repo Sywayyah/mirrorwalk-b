@@ -1,5 +1,5 @@
 import { ResourceType } from '../../resources';
-import { ArchersOutpostStructure, BanditCamp, BeaconOfTheUndead, BigCampStructure, CalavryStalls, GraveyardStructure, MagicRiverStructure, MountainNestStructure, RockyPassageStructure, ThiefsLair, WitchHutStructure } from '../common';
+import { ArchersOutpostStructure, BanditCamp, BeaconOfTheUndead, BigCampStructure, CalavryStalls, GraveyardStructure, MagicRiverStructure, MountainNestStructure, RockyPassageStructure, ThievesLair, WitchHutStructure } from '../common';
 import { DarkArtsSchool } from '../common/dark-arts-school';
 import { FireRingStructure } from '../common/guard-location';
 import { Mausoleum } from '../common/mausoleum';
@@ -173,7 +173,7 @@ const blBranch: StructureDescription[] = [
     icon: 'campfire',
     pathTo: 'left-2',
 
-    struct: ThiefsLair,
+    struct: ThievesLair,
   },
   {
     id: 'left-6',

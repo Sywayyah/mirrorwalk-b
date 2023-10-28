@@ -1,7 +1,7 @@
 import { Resources, ResourceType } from './types';
 
 export const resourceNames: Record<ResourceType, string> = {
-  [ResourceType.Gems]: 'Gemstones',
+  [ResourceType.Gems]: 'Gems',
   [ResourceType.Gold]: 'Gold',
   [ResourceType.RedCrystals]: 'Red Crystals',
   [ResourceType.Wood]: 'Wood',
