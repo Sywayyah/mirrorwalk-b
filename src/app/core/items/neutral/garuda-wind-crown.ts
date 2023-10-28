@@ -1,13 +1,16 @@
 import { itemStatsDescr, spellDescrElem } from '../../ui';
 import { ItemBaseModel, ItemSlotType } from '../types';
 
-export const WishmasterItem: ItemBaseModel = {
-  name: 'Wishmaster',
+export const GarudaWindCrown: ItemBaseModel = {
+  name: `Garuda's Wind Crown`,
   slotType: ItemSlotType.Headgear,
+
   staticMods: {
-    heroBonusAttack: 5,
-    heroBonusDefence: 4,
-    resistAll: 13,
+    heroBonusAttack: 3,
+    heroBonusDefence: 6,
+    resistAll: 10,
+    unitGroupSpeedBonus: 3,
+    cannotBeSlowed: true,
   },
   icon: {
     icon: 'feather-wing',
@@ -21,8 +24,9 @@ export const WishmasterItem: ItemBaseModel = {
     };
   },
   config: {
-    init: () => {
-
+    init: ({
+      actions, events, ownerPlayer,
+    }) => {
     },
   },
 }
