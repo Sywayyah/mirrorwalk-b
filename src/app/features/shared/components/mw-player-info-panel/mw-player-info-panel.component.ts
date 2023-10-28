@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { DisplayUnitGroupInfo, PlayerOpensHeroInfo } from 'src/app/core/events';
 import { HERO_LEVELS_BREAKPOINTS } from 'src/app/core/heroes';
+import { InventoryItems } from 'src/app/core/items';
 import { Player } from 'src/app/core/players';
 import { UnitGroup } from 'src/app/core/unit-types';
 import { MwPlayersService } from 'src/app/features/services';
@@ -14,6 +15,8 @@ import { EventsService } from 'src/app/store';
 })
 export class MwPlayerInfoPanelComponent {
   public readonly player: Player = this.players.getCurrentPlayer();
+
+  public readonly itemSlots = InventoryItems.getExtendedSlotTypes();
 
   constructor(
     private players: MwPlayersService,
