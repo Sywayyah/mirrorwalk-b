@@ -1,3 +1,4 @@
+export * from './fort/fraction';
 export * from './fractions';
-export * from './types';
 export * from './humans/fraction';
+export * from './types';

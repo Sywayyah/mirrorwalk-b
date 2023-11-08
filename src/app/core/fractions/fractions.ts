@@ -103,5 +103,6 @@ export const Fractions = {
 export enum FractionsEnum {
   Humans = 'humans',
   Neutrals = 'neutrals',
+  Fort = 'fort',
   Constellation = 'constellation',
 }

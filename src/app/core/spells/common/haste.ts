@@ -94,6 +94,7 @@ export const HasteSpell: SpellBaseType = {
     return {
       descriptions: [
         spellDescrElem(`Target unit group is speeding up by ${speedBonus}.`),
+        spellDescrElem(`When upgraded, increases the speed bonus and starts to grant a chance to gain additional turn to units.`),
       ],
     }
   },
