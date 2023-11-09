@@ -3,23 +3,24 @@
 
   <div class="history-log"
        #historyLog>
-    <div class="entry"
-         *ngFor="let historyEntry of battleLogService.history">
-      @switch (historyEntry.type) {
-        @case (types.SimpleMsg) {
-          <ng-container *ngTemplateOutlet="simple; context: { log: historyEntry }" />
+    @for (historyEntry of battleLogService.history; track $index) {
+      <div class="entry">
+        @switch (historyEntry.type) {
+          @case (types.SimpleMsg) {
+            <ng-container *ngTemplateOutlet="simple; context: { log: historyEntry }" />
+          }
+          @case (types.RoundInfoMsg) {
+            <ng-container *ngTemplateOutlet="roundInfoMsg; context: { log: historyEntry }" />
+          }
+          @case (types.DealtDamageMsg) {
+            <ng-container *ngTemplateOutlet="dealtDamageLog; context: { log: historyEntry }" />
+          }
+          @case (types.Html) {
+            <ng-container *ngTemplateOutlet="htmlLog; context: { log: historyEntry }" />
+          }
         }
-        @case (types.RoundInfoMsg) {
-          <ng-container *ngTemplateOutlet="roundInfoMsg; context: { log: historyEntry }" />
-        }
-        @case (types.DealtDamageMsg) {
-          <ng-container *ngTemplateOutlet="dealtDamageLog; context: { log: historyEntry }" />
-        }
-        @case (types.Html) {
-          <ng-container *ngTemplateOutlet="htmlLog; context: { log: historyEntry }" />
-        }
-      }
-    </div>
+      </div>
+    }
   </div>
 </div>
 
