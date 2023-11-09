@@ -27,9 +27,6 @@ export const WindBlessBuff: SpellBaseType<State> = {
     return spellPlainDescription(`Attack of ranged units increased by ${attackBonus} and Block-Piercing by ${uiPercentSign(blockPiercing)}.`);
   },
   type: {
-    spellInfo: {
-      name: 'Wind Bless',
-    },
     spellConfig: {
       init: ({ events, actions, spellInstance }) => {
         events.on({

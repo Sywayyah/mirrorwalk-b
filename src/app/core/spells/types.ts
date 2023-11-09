@@ -68,7 +68,6 @@ export interface SpellBaseType<SpellStateType = DefaultSpellStateType> {
 
 export interface SpellTypeConfig<SpellStateType> {
   spellConfig: SpellConfig<SpellStateType>;
-  spellInfo: { name: string; };
 }
 
 export interface SpellCombatEventsRef {

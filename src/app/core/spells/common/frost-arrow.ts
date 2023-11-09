@@ -65,9 +65,6 @@ export const FrozenArrowDebuff: SpellBaseType = {
     }
   },
   type: {
-    spellInfo: {
-      name: 'Freeze',
-    },
     spellConfig: {
       getManaCost(spellInst) {
         return 0;
@@ -105,9 +102,6 @@ export const FrostArrowSpell: SpellBaseType = {
     }
   },
   type: {
-    spellInfo: {
-      name: 'Frost Arrow',
-    },
     spellConfig: {
       targetCastConfig: {
         canActivate: canActivateOnEnemyFn,

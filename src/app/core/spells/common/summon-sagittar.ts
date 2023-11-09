@@ -31,8 +31,5 @@ export const SummonSagittarSpell: SpellBaseType = {
         })
       },
     },
-    spellInfo: {
-      name: 'Summon Sagittar',
-    }
   }
 };

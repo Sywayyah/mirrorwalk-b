@@ -42,9 +42,6 @@ export const RainOfFireSpell: SpellBaseType = {
     }
   },
   type: {
-    spellInfo: {
-      name: 'Rain of Fire',
-    },
     spellConfig: {
       targetCastConfig: {
         // can be changed to quicky test damage vs resists on your own units

@@ -6,6 +6,10 @@ import { UnitGroup } from '../unit-types';
 import { getDamageParts } from '../vfx';
 import { CanActivateSpellParams, SpellBaseType } from './types';
 
+export const createSpell = (spell: SpellBaseType): SpellBaseType => {
+  return spell
+};
+
 export const canActivateOnEnemyFn = ({ isEnemy, unitGroup }: CanActivateSpellParams): boolean => {
   return isEnemy && unitGroup.fightInfo.isAlive;
 };

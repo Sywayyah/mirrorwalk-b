@@ -20,9 +20,6 @@ export const EnchantBuff: SpellBaseType = {
     }
   },
   type: {
-    spellInfo: {
-      name: 'Enchanted',
-    },
     spellConfig: {
       getManaCost(spellInst) {
         return 0;
@@ -58,9 +55,6 @@ export const EnchantSpell: SpellBaseType = {
     }
   },
   type: {
-    spellInfo: {
-      name: 'Enchant',
-    },
     spellConfig: {
       targetCastConfig: {
         canActivate: canActivateOnEnemyFn,

@@ -22,9 +22,6 @@ export const KneelingLightDebuff: SpellBaseType = {
     }
   },
   type: {
-    spellInfo: {
-      name: 'Slowed',
-    },
     spellConfig: {
       getManaCost(spellInst) {
         return 0;
@@ -66,9 +63,6 @@ export const KneelingLight: SpellBaseType = {
   },
   activationType: SpellActivationType.Target,
   type: {
-    spellInfo: {
-      name: 'Kneeling light',
-    },
     spellConfig: {
       targetCastConfig: {
         canActivate: canActivateOnEnemyFn,

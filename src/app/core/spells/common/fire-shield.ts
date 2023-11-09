@@ -60,9 +60,6 @@ export const FireShieldBuff: SpellBaseType = {
     }
   },
   type: {
-    spellInfo: {
-      name: 'Haste',
-    },
     spellConfig: {
       getManaCost(spellInst) {
         return 0;
@@ -106,9 +103,6 @@ export const FireShieldSpell: SpellBaseType = {
     }
   },
   type: {
-    spellInfo: {
-      name: 'Fire Shield',
-    },
     spellConfig: {
       targetCastConfig: {
         canActivate: canActivateOnAllyFn,

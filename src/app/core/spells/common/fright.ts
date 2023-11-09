@@ -22,9 +22,6 @@ export const FrightSpellDebuff: SpellBaseType<{ frighter: UnitGroup }> = {
     };
   },
   type: {
-    spellInfo: {
-      name: 'Fright',
-    },
     spellConfig: {
       init({ actions, events, spellInstance, vfx, ownerHero }) {
         events.on({
@@ -87,9 +84,6 @@ export const FrightSpell: SpellBaseType = {
     }
   },
   type: {
-    spellInfo: {
-      name: 'Fright',
-    },
     spellConfig: {
       init({ actions, events, ownerPlayer, ownerUnit }) {
         events.on({

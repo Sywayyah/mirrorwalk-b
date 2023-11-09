@@ -92,9 +92,6 @@ export const CorrosiveFogDebuff: SpellBaseType<undefined | { debuffRoundsLeft: n
     }
   },
   type: {
-    spellInfo: {
-      name: 'Corrosion'
-    },
     spellConfig: {
       getManaCost(spellInst) {
         return 0;
@@ -150,9 +147,6 @@ export const CorrosiveFogSpell: SpellBaseType = {
     }
   },
   type: {
-    spellInfo: {
-      name: 'Corrosive Fog',
-    },
     spellConfig: {
       targetCastConfig: {
         canActivate: canActivateOnEnemyFn,

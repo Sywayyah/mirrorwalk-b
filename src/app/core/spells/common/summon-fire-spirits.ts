@@ -62,8 +62,6 @@ export const SummonFireSpiritsSpell: SpellBaseType = {
         })
       },
     },
-    spellInfo: {
-      name: 'Summon Fire Spirits',
-    }
+
   }
 };

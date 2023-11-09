@@ -60,9 +60,6 @@ export const HasteBuff: SpellBaseType = {
     }
   },
   type: {
-    spellInfo: {
-      name: 'Haste',
-    },
     spellConfig: {
       getManaCost(spellInst) {
         return 0;
@@ -99,9 +96,6 @@ export const HasteSpell: SpellBaseType = {
     }
   },
   type: {
-    spellInfo: {
-      name: 'Haste',
-    },
     spellConfig: {
       targetCastConfig: {
         canActivate: canActivateOnAllyFn,

@@ -15,9 +15,6 @@ export const BlindnessSpell: SpellBaseType = {
     }
   },
   type: {
-    spellInfo: {
-      name: 'blindness',
-    },
     spellConfig: {
       getManaCost(spellInst) {
         return 0;

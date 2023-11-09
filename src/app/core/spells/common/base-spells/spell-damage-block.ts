@@ -78,9 +78,6 @@ export const createDamageBlockSpell = (config: {
         getManaCost() { return 0; },
         init() { },
       },
-      spellInfo: {
-        name: name,
-      },
     },
   };
 };
