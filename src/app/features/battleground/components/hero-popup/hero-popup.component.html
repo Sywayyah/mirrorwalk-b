@@ -19,10 +19,19 @@
 
       <div class="unit-groups-slots">
         @for (slot of hero.unitSlots; track $index) {
-        <div class="unit-slot">
-          @if (slot.unitGroup) {}
-          @else {}
+        @if (slot.unitGroup) {
+        <div class="unit-slot"
+             (click)="clickOnSlot(slot)"
+             [class.active]="slot === activeGroupSlot"
+             [style.background]="slot.unitGroup.ownerPlayer.color">
+          <span>{{slot.unitGroup.type.name}}</span>
+          <span>{{slot.unitGroup.count}}</span>
         </div>
+        }
+        @else {
+        <div class="unit-slot"
+             (click)="clickOnSlot(slot)"></div>
+        }
         }
       </div>
     </div>

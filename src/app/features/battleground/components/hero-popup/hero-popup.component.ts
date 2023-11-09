@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { map } from 'rxjs/operators';
+import { UnitGroupSlot } from 'src/app/core/heroes';
 import { InventoryItems } from 'src/app/core/items';
 import { Specialties, specialtyLabels } from 'src/app/core/modifiers';
 import { getEntries } from 'src/app/core/utils/common';
@@ -13,7 +14,6 @@ import { BasicPopup } from 'src/app/features/shared/components';
   styleUrls: ['./hero-popup.component.scss']
 })
 export class HeroPopupComponent extends BasicPopup<{}> {
-
   public readonly currentPlayer = this.playersService.getCurrentPlayer();
 
   public readonly hero = this.currentPlayer.hero;
@@ -28,11 +28,35 @@ export class HeroPopupComponent extends BasicPopup<{}> {
       .map(([specName, specValue]) => `${specialtyLabels[specName as keyof Specialties]}: ${specValue}`)),
   );
 
+  public activeGroupSlot?: UnitGroupSlot;
+
   constructor(
     private readonly playersService: MwPlayersService,
     public readonly state: State,
     public readonly curPlayerState: MwCurrentPlayerStateService,
   ) {
     super();
+  }
+
+  clickOnSlot(slot: UnitGroupSlot): void {
+    if (!this.activeGroupSlot && slot.unitGroup) {
+      this.activeGroupSlot = slot;
+      return;
+    }
+
+    if (this.activeGroupSlot) {
+      if (slot.unitGroup) {
+        const temp = slot.unitGroup;
+
+        slot.unitGroup = this.activeGroupSlot.unitGroup;
+        this.activeGroupSlot.unitGroup = temp;
+        this.activeGroupSlot = undefined;
+      } else {
+        slot.unitGroup = this.activeGroupSlot.unitGroup;
+        this.activeGroupSlot.unitGroup = null;
+        this.activeGroupSlot = undefined;
+      }
+    }
+
   }
 }
