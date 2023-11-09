@@ -1,4 +1,5 @@
 import { ResourceType } from '../../resources';
+import { BanditCamp } from '../common';
 import { resPileStructure } from '../common/resource-pile';
 import { StructureDescription } from '../map-structures';
 
@@ -19,5 +20,12 @@ export const constellationSpawn: StructureDescription[] = [
     ...locCoord(90, -60),
     icon: 'gold-bar',
     struct: resPileStructure(ResourceType.Gold, 650),
+  },
+  {
+    id: id('loc-2'),
+    pathTo: id('start-1'),
+    ...locCoord(10, -70),
+    icon: 'sword',
+    struct: BanditCamp,
   }
 ];
