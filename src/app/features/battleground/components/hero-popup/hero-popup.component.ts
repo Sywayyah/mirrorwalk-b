@@ -38,9 +38,20 @@ export class HeroPopupComponent extends BasicPopup<{}> {
     super();
   }
 
+  splitGroup(slot: UnitGroupSlot): void {
+    console.log('split', slot);
+    this.activeGroupSlot = undefined;
+
+    if (!slot.unitGroup) {
+      return;
+    }
+  }
+
   clickOnSlot(slot: UnitGroupSlot): void {
-    if (!this.activeGroupSlot && slot.unitGroup) {
-      this.activeGroupSlot = slot;
+    if (!this.activeGroupSlot) {
+      if (slot.unitGroup) {
+        this.activeGroupSlot = slot;
+      }
       return;
     }
 

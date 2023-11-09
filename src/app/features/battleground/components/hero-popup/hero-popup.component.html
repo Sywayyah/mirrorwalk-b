@@ -21,6 +21,7 @@
         @for (slot of hero.unitSlots; track $index) {
         @if (slot.unitGroup) {
         <div class="unit-slot"
+             (mwNoContextMenu)="splitGroup(slot)"
              (click)="clickOnSlot(slot)"
              [class.active]="slot === activeGroupSlot"
              [style.background]="slot.unitGroup.ownerPlayer.color">
@@ -30,6 +31,7 @@
         }
         @else {
         <div class="unit-slot"
+             (mwNoContextMenu)="splitGroup(slot)"
              (click)="clickOnSlot(slot)"></div>
         }
         }
