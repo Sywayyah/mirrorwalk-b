@@ -8,13 +8,13 @@ export const CommonUtils = {
   },
 
   randIntInRange(from: number, to: number): number {
-    const diff = to - from;
+    const diff = to - from + 1;
 
-    return Math.round(from + (diff * Math.random()));
+    return Math.floor(from + (diff * Math.random()));
   },
 
   randIntTo(to: number): number {
-    return Math.round(to * Math.random());
+    return Math.floor((to + 1) * Math.random());
   },
 
   removeItem<T>(arr: T[], item: T): void {
