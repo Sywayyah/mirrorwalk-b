@@ -12,7 +12,6 @@ export class PlayerController extends StoreClient() {
   constructor(
     private curPlayerState: MwCurrentPlayerStateService,
     private itemsService: MwItemsService,
-    private spellsService: MwSpellsService,
     private state: State,
   ) {
     super();

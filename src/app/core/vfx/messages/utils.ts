@@ -42,7 +42,7 @@ export const getLifeStealParts = (healedUnits: number, stolenLife: number): Cust
 };
 
 export const getUnitGroupMessage = (unitGroup: UnitGroup, count: number = unitGroup.count): string => {
-  return `<span style="color: ${unitGroup.ownerPlayerRef.color}; font-weight: 500">${count} ${unitGroup.type.name}</span>`;
+  return `<span style="color: ${unitGroup.ownerPlayer.color}; font-weight: 500">${count} ${unitGroup.type.name}</span>`;
 };
 
 export const getRetaliationMessage = ({ attacker, attacked, originalNumber, damage, unitLoss }: { attacker: UnitGroup; attacked: UnitGroup; originalNumber: number; damage: number; unitLoss: number; }) => {

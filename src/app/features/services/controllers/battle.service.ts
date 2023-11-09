@@ -107,7 +107,7 @@ export class BattleController extends StoreClient() {
 
     // if current player doesn't have unit groups left
     if (!currentPlayerUnitGroups.length) {
-      this.playersService.getCurrentPlayer().setUnitGroups(currentPlayerUnitGroups);
+      this.playersService.getCurrentPlayer().hero.setUnitGroups(currentPlayerUnitGroups);
 
       this.events.dispatch(FightEnds({
         struct: currentStructure,
@@ -132,7 +132,7 @@ export class BattleController extends StoreClient() {
 
       const finalCurrentUnitsOfPlayer = currentPlayerUnitGroups.filter(unit => !unit.modGroup.getModValue('isSummon'));
 
-      this.playersService.getCurrentPlayer().setUnitGroups(finalCurrentUnitsOfPlayer);
+      this.playersService.getCurrentPlayer().hero.setUnitGroups(finalCurrentUnitsOfPlayer);
 
       currentStructure.isInactive = true;
 

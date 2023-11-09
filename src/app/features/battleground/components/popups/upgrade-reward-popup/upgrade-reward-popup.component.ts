@@ -113,7 +113,7 @@ export class UpgradeRewardPopupComponent extends BasicPopup<StructPopupData> imp
         const unitGroup = this.unitGroups.createUnitGroup(
           group.hire.unitType,
           { count: group.count },
-          currentPlayer
+          currentPlayer.hero
         );
 
         this.playersService.addUnitGroupToTypeStack(currentPlayer, unitGroup);

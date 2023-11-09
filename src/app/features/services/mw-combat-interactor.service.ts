@@ -185,7 +185,7 @@ export class CombatInteractorService extends StoreClient() {
       this.battleState.handleDefeatedUnitGroup(target);
       this.events.dispatch(GroupDies({
         target: target,
-        targetPlayer: target.ownerPlayerRef,
+        targetPlayer: target.ownerPlayer,
         loss: finalDamageInfo.finalUnitLoss,
       }));
     }
@@ -279,7 +279,7 @@ export class CombatInteractorService extends StoreClient() {
       this.battleState.handleDefeatedUnitGroup(attacked);
       this.events.dispatch(GroupDies({
         target: attacked,
-        targetPlayer: attacked.ownerPlayerRef,
+        targetPlayer: attacked.ownerPlayer,
         loss: finalDamageInfo.finalUnitLoss,
       }));
       attackActionState.action = CombatInteractionEnum.AttackInteractionCompleted;

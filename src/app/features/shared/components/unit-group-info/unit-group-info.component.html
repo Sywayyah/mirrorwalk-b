@@ -112,7 +112,7 @@
 
           <div class="abilities-list">
             <mw-unit-group-spell-icon *ngFor="let spell of spells"
-                                      [hero]="unitGroup.ownerPlayerRef.hero"
+                                      [hero]="unitGroup.ownerPlayer.hero"
                                       [spell]="spell"
                                       [hintPos]="'above'"
                                       [owner]="unitGroup" />
@@ -129,7 +129,7 @@
 
           <div class="abilities-list">
             <mw-unit-group-spell-icon *ngFor="let spell of effects"
-                                      [hero]="unitGroup.ownerPlayerRef.hero"
+                                      [hero]="unitGroup.ownerPlayer.hero"
                                       [spell]="spell"
                                       [hintPos]="'above'"
                                       [owner]="unitGroup" />

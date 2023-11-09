@@ -48,7 +48,7 @@ export class CombatController extends StoreClient() {
         const attackerGroup = state.attackingGroup;
         this.events.dispatch(RoundGroupSpendsTurn({
           group: attackerGroup,
-          groupPlayer: attackerGroup.ownerPlayerRef,
+          groupPlayer: attackerGroup.ownerPlayer,
           groupStillAlive: Boolean(attackerGroup.count),
           groupHasMoreTurns: Boolean(attackerGroup.turnsLeft),
         }));

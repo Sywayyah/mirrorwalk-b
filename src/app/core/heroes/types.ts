@@ -53,6 +53,8 @@ export interface HeroStats {
 
 export interface HeroCreationParams {
   heroBase: HeroBase;
+  unitGroups?: UnitGroup[];
+  ownerPlayer?: Player;
 }
 
 export enum HeroMods {
@@ -82,6 +84,10 @@ export interface HeroStatsInfo {
   maxMana: number;
 }
 
+interface UnitGroupSlot {
+  unitGroup: null | UnitGroup;
+}
+
 export class Hero extends GameObject<HeroCreationParams> {
   public static readonly categoryId: string = 'hero';
   public name!: string | null;
@@ -104,6 +110,18 @@ export class Hero extends GameObject<HeroCreationParams> {
   public base!: HeroBase;
   public readonly inventory: InventoryItems = new InventoryItems();
 
+  private _ownerPlayer!: Player;
+
+  public get ownerPlayer(): Player {
+    return this._ownerPlayer;
+  }
+
+  public get unitGroups() {
+    return this._unitGroups;
+  }
+
+  private _unitGroups: UnitGroup[] = [];
+
   private readonly heroStats$ = new BehaviorSubject<HeroStatsInfo>({
     baseAttack: 0,
     bonusAttack: 0,
@@ -124,21 +142,50 @@ export class Hero extends GameObject<HeroCreationParams> {
 
   private readonly destroyed$ = new Subject<void>();
 
-  private ownerPlayer!: Player;
+  readonly unitSlots: UnitGroupSlot[] = [
+    { unitGroup: null },
+    { unitGroup: null },
+    { unitGroup: null },
+    { unitGroup: null },
+  ];
 
-  create({ heroBase }: HeroCreationParams): void {
+
+  create({ heroBase, unitGroups, ownerPlayer }: HeroCreationParams): void {
     this.base = heroBase;
     this.name = heroBase.name;
 
     const heroBaseStats = heroBase.initialState.stats;
 
+    if (ownerPlayer) {
+      this._ownerPlayer = ownerPlayer;
+    }
+
     this.stats = {
       currentMana: heroBaseStats.mana,
     };
+
+    if (unitGroups) {
+      this.setUnitGroups(unitGroups);
+    }
+  }
+
+  removeUnitGroup(unitGroup: UnitGroup): void {
+    // todo: unassign hero
+    CommonUtils.removeItem(this.unitGroups, unitGroup);
+  }
+
+  addUnitGroup(unitGroup: UnitGroup): void {
+    this._unitGroups.push(unitGroup);
+    this.updateUnitGroup(unitGroup);
+  }
+
+  setUnitGroups(unitGroups: UnitGroup[]): void {
+    this._unitGroups = unitGroups;
+    this._unitGroups.forEach((unitGroup) => this.updateUnitGroup(unitGroup));
   }
 
   assignOwnerPlayer(player: Player): void {
-    this.ownerPlayer = player;
+    this._ownerPlayer = player;
 
     // init mods after player is known, so there is access to unit groups
     /* todo: theoretically, unit groups can be defined on hero level instead of player */
@@ -160,21 +207,21 @@ export class Hero extends GameObject<HeroCreationParams> {
     complete(this.destroyed$);
   }
 
-  public getStats(): HeroStatsInfo {
+  getStats(): HeroStatsInfo {
     return this.heroStats$.getValue();
   }
 
-  public listenHeroStats(): Observable<HeroStatsInfo> {
+  listenHeroStats(): Observable<HeroStatsInfo> {
     return this.heroStats$.pipe(takeUntil(this.destroyed$));
   }
 
   /** Add item to backback */
-  public addItem(item: Item): void {
+  addItem(item: Item): void {
     this.itemsBackpack.push(item);
   }
 
   /** Removme item from backback and inventory (if equipped) */
-  public removeItem(item: Item): void {
+  removeItem(item: Item): void {
     CommonUtils.removeItem(this.itemsBackpack, item);
 
     if (this.inventory.isItemEquipped(item)) {
@@ -183,7 +230,7 @@ export class Hero extends GameObject<HeroCreationParams> {
   }
 
   /** Equips item and gains bonuses */
-  public equipItem(item: Item): void {
+  equipItem(item: Item): void {
     this.inventory.equipItem(item);
 
     const itemModsGroup = this.getItemModsGroup();
@@ -212,7 +259,7 @@ export class Hero extends GameObject<HeroCreationParams> {
   }
 
   /** Item becomes unequiped, losing bonuses */
-  public unequipItem(item: Item): void {
+  unequipItem(item: Item): void {
     this.inventory.unequipItem(item);
     const itemModsGroup = this.getItemModsGroup();
 
@@ -237,7 +284,7 @@ export class Hero extends GameObject<HeroCreationParams> {
   }
 
   updateUnitsSpecialtyAndConditionalMods(): void {
-    this.ownerPlayer.unitGroups.forEach((unitGroup) => this.updateUnitSpecialtyAndConditionalMods(unitGroup));
+    this.unitGroups.forEach((unitGroup) => this.updateUnitSpecialtyAndConditionalMods(unitGroup));
   }
 
   updateUnitSpecialtyAndConditionalMods(unitGroup: UnitGroup): void {
@@ -268,11 +315,11 @@ export class Hero extends GameObject<HeroCreationParams> {
     }
   }
 
-  public addStatsMods(mods: Modifiers): void {
+  addStatsMods(mods: Modifiers): void {
     this.modGroup.getNamedGroup(HeroMods.HeroStatMods)?.addModsRef(ModsRef.fromMods(mods));
   }
 
-  public addMana(mana: number) {
+  addMana(mana: number) {
     this.stats.currentMana += mana;
     const maxMana = this.getStats().maxMana;
 
@@ -286,6 +333,12 @@ export class Hero extends GameObject<HeroCreationParams> {
       ...currentState,
       currentMana: this.stats.currentMana,
     });
+  }
+
+  private updateUnitGroup(unitGroup: UnitGroup): void {
+    unitGroup.assignOwnerPlayer(this.ownerPlayer);
+    unitGroup.assignOwnerHero(this);
+    this.updateUnitSpecialtyAndConditionalMods(unitGroup);
   }
 
   private getItemModsGroup(): ModsRefsGroup | undefined {

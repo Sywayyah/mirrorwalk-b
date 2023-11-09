@@ -59,7 +59,7 @@ export class UiController extends StoreClient() {
       const unitGroup = event.unitGroup;
 
       this.events.dispatch(PlayerTargetsSpell({
-        player: unitGroup.ownerPlayerRef,
+        player: unitGroup.ownerPlayer,
         spell: this.curPlayerState.currentSpell,
         target: unitGroup,
       }));

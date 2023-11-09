@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HealingInfo } from 'src/app/core/api/combat-api';
 import { AddCombatModifiersToUnit, RemoveCombatModifiersFromUnit } from 'src/app/core/events/battle/commands';
-import { Modifiers, ModifiersModel } from 'src/app/core/modifiers';
+import { Hero } from 'src/app/core/heroes';
+import { Modifiers } from 'src/app/core/modifiers';
 import { Player } from 'src/app/core/players';
 import { GenerationModel, UnitBaseType, UnitGroup, UnitsUtils } from 'src/app/core/unit-types';
 import { EventsService } from 'src/app/store';
@@ -34,13 +35,13 @@ export class MwUnitGroupsService {
   public createUnitGroup(
     type: UnitBaseType,
     options: { count: number },
-    player?: Player,
+    ownerHero?: Hero,
   ): UnitGroup {
     const unitGroup: UnitGroup = this.gameObjectsManager.createNewGameObject(
       UnitGroup,
       {
         count: options.count,
-        ownerPlayer: player,
+        ownerHero: ownerHero,
         unitBase: type,
       },
     );
@@ -58,11 +59,11 @@ export class MwUnitGroupsService {
 
   public createUnitGroupFromGenModelForPlayer(
     genModel: GenerationModel,
-    player: Player,
+    ownerHero?: Hero,
   ): UnitGroup[] {
     return UnitsUtils
       .createRandomArmy(genModel)
-      .map(unitGenModel => this.createUnitGroup(unitGenModel.unitType, { count: unitGenModel.count }, player));
+      .map(unitGenModel => this.createUnitGroup(unitGenModel.unitType, { count: unitGenModel.count }, ownerHero));
   }
 
   // these methods might become obsolete

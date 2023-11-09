@@ -106,7 +106,7 @@ export class MwPlayersService extends StoreClient() {
   }
 
   public getPlayerUnitsCountOfType(player: Player, unitType: UnitBaseType): number {
-    return player.unitGroups.reduce((totalCount, nextUnitGroupType) => totalCount + (nextUnitGroupType.type === unitType ? nextUnitGroupType.count : 0), 0);
+    return player.hero.unitGroups.reduce((totalCount, nextUnitGroupType) => totalCount + (nextUnitGroupType.type === unitType ? nextUnitGroupType.count : 0), 0);
   }
 
   public addExperienceToPlayer(playerId: string, experience: number): void {
@@ -143,16 +143,16 @@ export class MwPlayersService extends StoreClient() {
   public getUnitGroupsOfPlayer(playerId: string): UnitGroup[] {
     const player = this.playersMap.get(this.gameObjectsManager.getObjectId(Player, playerId))!;
 
-    return player.unitGroups;
+    return player.hero.unitGroups;
   }
 
   public addUnitGroupToTypeStack(player: Player, unitGroup: UnitGroup): void {
     // todo: move these things into classes.
-    const sameTypeStack = player.unitGroups.find(group => group.type === unitGroup.type);
+    const sameTypeStack = player.hero.unitGroups.find(group => group.type === unitGroup.type);
     if (sameTypeStack) {
       sameTypeStack.addUnitsCount(unitGroup.count);
     } else {
-      player.addUnitGroup(unitGroup);
+      player.hero.addUnitGroup(unitGroup);
     }
   }
 
@@ -161,7 +161,7 @@ export class MwPlayersService extends StoreClient() {
     unitGroup.addUnitsCount(-count);
 
     if (unitGroup.count <= 0) {
-      player.removeUnitGroup(unitGroup);
+      player.hero.removeUnitGroup(unitGroup);
     }
   }
 
@@ -187,7 +187,6 @@ export class MwPlayersService extends StoreClient() {
       hero: this.heroesService.createHero(hero),
       resources: hero.initialState.resources,
       type,
-      unitGroups: this.unitGroups.createUnitGroupFromGenModel(hero.initialState.army[0]),
     };
   }
 }

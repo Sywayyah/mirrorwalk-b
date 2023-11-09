@@ -34,7 +34,7 @@
          (click)="displayUnitGroupInfo(group)"
          (mwNoContextMenu)="displayUnitGroupInfo(group)"
          [mwActionHint]="'Inspect group of ' + group.count + ' ' + group.type.name"
-         *ngFor="let group of player.unitGroups">
+         *ngFor="let group of player.hero.unitGroups">
       <div class="group-name">{{group.type.name}}</div>
 
       <div>{{group.count}}</div>

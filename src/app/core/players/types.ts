@@ -2,8 +2,6 @@ import { ActionCard, ActionCardStack } from '../action-cards';
 import { GameObject } from '../game-objects';
 import { Hero } from '../heroes';
 import { ResourcesModel } from '../resources';
-import { UnitGroup } from '../unit-types';
-import { CommonUtils } from '../utils';
 
 export enum PlayerTypeEnum {
   Player = 'Player',
@@ -29,8 +27,6 @@ export interface PlayerCreationModel {
   type: PlayerTypeEnum;
 
   hero: Hero;
-
-  unitGroups: UnitGroup[];
 }
 
 export class Player extends GameObject<PlayerCreationModel> {
@@ -47,36 +43,14 @@ export class Player extends GameObject<PlayerCreationModel> {
 
   public actionCards: ActionCardStack[] = [];
 
-  public get unitGroups() {
-    return this._unitGroups;
-  }
-
-  private _unitGroups: UnitGroup[] = [];
-
-  create({ color, hero, resources, type, unitGroups }: PlayerCreationModel): void {
+  create({ color, hero, resources, type }: PlayerCreationModel): void {
     this.color = color;
     this.resources = resources;
     this.type = type;
     this.hero = hero;
-    this.setUnitGroups(unitGroups);
 
     this.hero.assignOwnerPlayer(this);
     this.hero.updateUnitsSpecialtyAndConditionalMods();
-  }
-
-  addUnitGroup(unitGroup: UnitGroup): void {
-    this._unitGroups.push(unitGroup);
-    this.updateUnitGroup(unitGroup);
-  }
-
-  setUnitGroups(unitGroups: UnitGroup[]): void {
-    this._unitGroups = unitGroups;
-    this._unitGroups.forEach((unitGroup) => this.updateUnitGroup(unitGroup));
-  }
-
-  removeUnitGroup(unitGroup: UnitGroup): void {
-    // todo: unassign hero
-    CommonUtils.removeItem(this.unitGroups, unitGroup);
   }
 
   addActionCards(actionCard: ActionCard, count: number): void {
@@ -91,8 +65,4 @@ export class Player extends GameObject<PlayerCreationModel> {
     }
   }
 
-  private updateUnitGroup(unitGroup: UnitGroup): void {
-    unitGroup.assignOwnerPlayer(this);
-    this.hero.updateUnitSpecialtyAndConditionalMods(unitGroup);
-  }
 }

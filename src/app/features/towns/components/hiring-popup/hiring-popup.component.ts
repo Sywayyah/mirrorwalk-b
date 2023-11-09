@@ -222,7 +222,7 @@ export class HiringPopupComponent extends BasicPopup<HiringPopupData> implements
           const unitGroup = this.unitsService.createUnitGroup(
             group.hire.unitType,
             { count: group.count },
-            currentPlayer
+            currentPlayer.hero,
           );
 
           const activity = this.data.building.currentBuilding.activity as HiringActivity;
@@ -235,14 +235,14 @@ export class HiringPopupComponent extends BasicPopup<HiringPopupData> implements
     } else {
       this.hirableGroups.forEach(group => {
         if (group.count) {
-          const stackOfType = currentPlayer.unitGroups.find(unitGroup => unitGroup.type === this.activity.hiring.type)!;
+          const stackOfType = currentPlayer.hero.unitGroups.find(unitGroup => unitGroup.type === this.activity.hiring.type)!;
 
           this.playersService.removeNUnitsFromGroup(currentPlayer, stackOfType, group.count);
 
           const unitGroup = this.unitsService.createUnitGroup(
             group.hire.unitType,
             { count: group.count },
-            currentPlayer
+            currentPlayer.hero
           );
 
           this.playersService.addUnitGroupToTypeStack(currentPlayer, unitGroup);

@@ -83,7 +83,7 @@ export const RainOfFireSpell: SpellBaseType = {
             if (fireMasteryLevel) {
               const fireMasteryBonuses = fireMasteryBonusesByLevels[fireMasteryLevel - 1];
 
-              const aliveEnemyUnits = actions.getAliveUnitGroupsOfPlayer(event.target.ownerPlayerRef);
+              const aliveEnemyUnits = actions.getAliveUnitGroupsOfPlayer(event.target.ownerPlayer);
               CommonUtils.removeItem(aliveEnemyUnits, event.target);
 
               if (aliveEnemyUnits.length) {

@@ -41,7 +41,7 @@
 
 <div class="queue-panel">
   <div *ngFor="let group of fightQueue"
-       [style.background]="group.ownerPlayerRef!.color"
+       [style.background]="group.ownerPlayer.color"
        class="queue-card">
     <div>{{group.type.name}}</div>
     <div>{{group.count}}</div>
