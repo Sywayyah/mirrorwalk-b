@@ -84,7 +84,7 @@ export interface HeroStatsInfo {
   maxMana: number;
 }
 
-interface UnitGroupSlot {
+export interface UnitGroupSlot {
   unitGroup: null | UnitGroup;
 }
 
@@ -181,7 +181,14 @@ export class Hero extends GameObject<HeroCreationParams> {
 
   setUnitGroups(unitGroups: UnitGroup[]): void {
     this._unitGroups = unitGroups;
-    this._unitGroups.forEach((unitGroup) => this.updateUnitGroup(unitGroup));
+    this._unitGroups.forEach((unitGroup, i) => {
+      this.unitSlots[i].unitGroup = unitGroup;
+      this.updateUnitGroup(unitGroup);
+    });
+  }
+
+  refreshUnitGroupsOrderBySlots(): void {
+    this._unitGroups = this.unitSlots.map(slot => slot.unitGroup).filter(Boolean) as UnitGroup[];
   }
 
   assignOwnerPlayer(player: Player): void {

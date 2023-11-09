@@ -67,6 +67,8 @@ export class HeroPopupComponent extends BasicPopup<{}> {
         this.activeGroupSlot.unitGroup = null;
         this.activeGroupSlot = undefined;
       }
+
+      this.hero.refreshUnitGroupsOrderBySlots();
     }
 
   }
