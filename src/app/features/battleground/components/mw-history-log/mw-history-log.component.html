@@ -5,23 +5,20 @@
        #historyLog>
     <div class="entry"
          *ngFor="let historyEntry of battleLogService.history">
-      <ng-container [ngSwitch]="historyEntry.type">
-        <div *ngSwitchCase="types.SimpleMsg">
+      @switch (historyEntry.type) {
+        @case (types.SimpleMsg) {
           <ng-container *ngTemplateOutlet="simple; context: { log: historyEntry }" />
-        </div>
-
-        <div *ngSwitchCase="types.RoundInfoMsg">
+        }
+        @case (types.RoundInfoMsg) {
           <ng-container *ngTemplateOutlet="roundInfoMsg; context: { log: historyEntry }" />
-        </div>
-
-        <div *ngSwitchCase="types.DealtDamageMsg">
+        }
+        @case (types.DealtDamageMsg) {
           <ng-container *ngTemplateOutlet="dealtDamageLog; context: { log: historyEntry }" />
-        </div>
-
-        <div *ngSwitchCase="types.Html">
+        }
+        @case (types.Html) {
           <ng-container *ngTemplateOutlet="htmlLog; context: { log: historyEntry }" />
-        </div>
-      </ng-container>
+        }
+      }
     </div>
   </div>
 </div>
