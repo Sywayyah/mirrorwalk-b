@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
-import { BasicPopup } from '../popup-container';
+import { Component, inject } from '@angular/core';
 import { UnitGroupSlot, swapUnitsInSlots } from 'src/app/core/heroes';
+import { MwPlayersService } from 'src/app/features/services';
+import { BasicPopup } from '../popup-container';
 
 @Component({
   selector: 'mw-unit-slots-action-popup',
@@ -9,6 +10,8 @@ import { UnitGroupSlot, swapUnitsInSlots } from 'src/app/core/heroes';
 })
 export class UnitSlotsActionPopupComponent extends BasicPopup<{ sourceSlot: UnitGroupSlot, targetSlot: UnitGroupSlot }>{
 
+  private readonly players = inject(MwPlayersService);
+
   swap(): void {
     swapUnitsInSlots(this.data.sourceSlot, this.data.targetSlot);
 
@@ -16,6 +19,11 @@ export class UnitSlotsActionPopupComponent extends BasicPopup<{ sourceSlot: Unit
   }
 
   merge(): void {
+    const currentHero = this.players.getCurrentPlayer().hero;
+
+    this.data.targetSlot.unitGroup!.addUnitsCount(this.data.sourceSlot.unitGroup!.count);
+    this.data.sourceSlot.unitGroup = null;
+    currentHero.removeUnitGroup(this.data.sourceSlot.unitGroup!);
     this.close();
   }
 }

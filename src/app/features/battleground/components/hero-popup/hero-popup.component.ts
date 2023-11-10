@@ -70,8 +70,8 @@ export class HeroPopupComponent extends BasicPopup<{}> {
       if (slot.unitGroup) {
         if (slot.unitGroup.type === this.activeGroupSlot.unitGroup?.type) {
           this.events.dispatch(OpenUnitSlotsActionPopup({
-            sourceSlot: slot,
-            targetSlot: this.activeGroupSlot,
+            sourceSlot: this.activeGroupSlot,
+            targetSlot: slot,
           }));
 
           return;
