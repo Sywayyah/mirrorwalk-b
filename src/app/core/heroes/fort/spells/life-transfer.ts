@@ -1,4 +1,4 @@
-import { SpellActivationType, canActivateOnEnemyFn, createSpell } from 'src/app/core/spells';
+import { SpellActivationType, createSpell } from 'src/app/core/spells';
 import { spellDescrElem } from 'src/app/core/ui';
 
 
@@ -22,9 +22,6 @@ export const LifeTransferSpell = createSpell({
           }
         })
 
-      },
-      targetCastConfig: {
-        canActivate: canActivateOnEnemyFn,
       },
     }
   },
