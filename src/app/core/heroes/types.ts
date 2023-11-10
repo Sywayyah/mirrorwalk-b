@@ -180,6 +180,10 @@ export class Hero extends GameObject<HeroCreationParams> {
     if (unitGroups) {
       this.setUnitGroups(unitGroups);
     }
+
+    if (heroBase.initialState.defaultModifiers) {
+      this.modGroup.addModsRef(ModsRef.fromMods(heroBase.initialState.defaultModifiers));
+    }
   }
 
   removeUnitGroup(unitGroup: UnitGroup): void {
@@ -223,11 +227,6 @@ export class Hero extends GameObject<HeroCreationParams> {
     /* todo: theoretically, unit groups can be defined on hero level instead of player */
     const heroBase = this.base;
     const heroInitState = heroBase.initialState;
-
-    if (heroBase.initialState.defaultModifiers) {
-      // for now, attach to this group.
-      this.modGroup.addModsRef(ModsRef.fromMods(heroBase.initialState.defaultModifiers));
-    }
 
     this.spells = heroInitState.abilities.map(spell => this.getApi().spells.createSpellInstance(spell));
 

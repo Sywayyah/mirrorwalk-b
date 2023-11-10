@@ -83,4 +83,9 @@ export interface CustomAnimationData {
 export interface VfxApi {
   createEffectForUnitGroup(target: UnitGroup, animation: EffectAnimation, options?: EffectOptions): void;
   createFloatingMessageForUnitGroup(target: UnitGroup, data: CustomizableAnimationData, options: EffectOptions): void;
+  createDroppingMessageForUnitGroup(
+    id: string,
+    data: CustomizableAnimationData,
+    options?: EffectOptions
+  ): void;
 }

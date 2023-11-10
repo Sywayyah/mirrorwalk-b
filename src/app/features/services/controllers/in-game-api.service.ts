@@ -74,7 +74,10 @@ export class InGameApiController extends StoreClient() {
         },
         createFloatingMessageForUnitGroup: (target, data, options) => {
           this.vfxService.createFloatingMessageForUnitGroup(target, data, options);
-        }
+        },
+        createDroppingMessageForUnitGroup: (id, data, options) => {
+          this.vfxService.createDroppingMessageForContainer(id, data, options);
+        },
       },
       thisSpell: spell.baseType,
       ownerPlayer: player,
