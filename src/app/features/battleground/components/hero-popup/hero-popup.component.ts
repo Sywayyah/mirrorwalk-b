@@ -48,6 +48,12 @@ export class HeroPopupComponent extends BasicPopup<{}> {
     if (!slot.unitGroup || slot.unitGroup.count === 1) {
       return;
     }
+    const filledMainSlots = this.hero.unitSlots.filter(slot => slot.unitGroup).length;
+    const filledReservedSlots = this.hero.reserveUnitSlots.filter(slot => slot.unitGroup).length;
+
+    if (filledMainSlots === this.hero.unitSlots.length && filledReservedSlots === this.hero.reserveUnitSlots.length) {
+      return;
+    }
 
     this.events.dispatch(OpenSplitUnitGroupPopup({ unitGroup: slot.unitGroup }));
   }
@@ -69,7 +75,7 @@ export class HeroPopupComponent extends BasicPopup<{}> {
         this.activeGroupSlot = undefined;
       } else {
         // add as a field to hero that is updated on changes
-        const filledMainSlotsCount = this.hero.unitSlots.reduce((filledSlotsCount, nextSlot) => nextSlot.unitGroup ? filledSlotsCount + 1 : filledSlotsCount, 0);
+        const filledMainSlotsCount = this.hero.unitSlots.filter(slot => slot.unitGroup).length;
 
         if (slot.isReserve && filledMainSlotsCount === 1) {
           this.activeGroupSlot = undefined;
