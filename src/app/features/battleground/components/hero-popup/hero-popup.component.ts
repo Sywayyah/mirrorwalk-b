@@ -59,6 +59,7 @@ export class HeroPopupComponent extends BasicPopup<{}> {
   }
 
   clickOnSlot(slot: UnitGroupSlot): void {
+
     if (!this.activeGroupSlot) {
       if (slot.unitGroup) {
         this.activeGroupSlot = slot;
@@ -67,6 +68,11 @@ export class HeroPopupComponent extends BasicPopup<{}> {
     }
 
     if (this.activeGroupSlot) {
+      if (this.activeGroupSlot === slot) {
+        this.activeGroupSlot = undefined;
+        return;
+      }
+
       if (slot.unitGroup) {
         if (slot.unitGroup.type === this.activeGroupSlot.unitGroup?.type) {
           this.events.dispatch(OpenUnitSlotsActionPopup({
