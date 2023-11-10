@@ -59,7 +59,6 @@ export class HeroPopupComponent extends BasicPopup<{}> {
   }
 
   clickOnSlot(slot: UnitGroupSlot): void {
-
     if (!this.activeGroupSlot) {
       if (slot.unitGroup) {
         this.activeGroupSlot = slot;
@@ -92,7 +91,7 @@ export class HeroPopupComponent extends BasicPopup<{}> {
         // add as a field to hero that is updated on changes
         const filledMainSlotsCount = this.hero.unitSlots.filter(slot => slot.unitGroup).length;
 
-        if (slot.isReserve && filledMainSlotsCount === 1) {
+        if (!this.activeGroupSlot.isReserve && slot.isReserve && filledMainSlotsCount === 1) {
           this.activeGroupSlot = undefined;
           return;
         }

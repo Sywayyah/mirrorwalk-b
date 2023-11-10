@@ -20,6 +20,11 @@ export class SplitUnitsPopupComponent extends BasicPopup<{ unitGroup: UnitGroup 
   }
 
   split(): void {
+    if (this.toSplit === 0) {
+      this.close();
+      return;
+    }
+
     const unitGroup = this.data.unitGroup;
 
     const currentHero = this.players.getCurrentPlayer().hero;
