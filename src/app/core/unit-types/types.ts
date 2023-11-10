@@ -90,10 +90,10 @@ export interface UnitBaseType {
   defaultSpells?: SpellBaseType<any>[];
 
   /* minimal amount of units that can stack can be hired, sold or split by */
-  minQuantityPerStack: number;
+  minQuantityPerStack?: number;
 
-  /* How many attacks unit can make by default */
-  defaultTurnsPerRound: number;
+  /* How many attacks unit can make by default, if not specified - 1 */
+  defaultTurnsPerRound?: number;
 
   upgraded?: boolean;
 
@@ -247,7 +247,7 @@ export class UnitGroup extends GameObject<UnitCreationParams> {
       this.assignOwnerPlayer(ownerHero.ownerPlayer);
     }
 
-    this.turnsLeft = unitBase.defaultTurnsPerRound;
+    this.turnsLeft = unitBase.defaultTurnsPerRound || 1;
     this._tailUnitHp = unitBase.baseStats.health;
 
     if (this.type.defaultModifiers) {

@@ -93,7 +93,7 @@ export class BattleStateService {
     this.currentUnitGroup$.next(firstUnitGroup);
 
     if (!this.currentUnitGroup.modGroup.getModValue('defending')) {
-      this.currentGroupTurnsLeft = this.currentUnitGroup.type.defaultTurnsPerRound;
+      this.currentGroupTurnsLeft = this.currentUnitGroup.type.defaultTurnsPerRound || 1;
     } else {
       this.currentGroupTurnsLeft = this.currentUnitGroup.turnsLeft;
     }
@@ -219,7 +219,8 @@ export class BattleStateService {
   }
 
   private resetGroupsTurnsLeft(): void {
-    this.fightQueue.forEach((unitGroup: UnitGroup) => unitGroup.turnsLeft = unitGroup.type.defaultTurnsPerRound);
+    // add method on game object level
+    this.fightQueue.forEach((unitGroup: UnitGroup) => unitGroup.turnsLeft = unitGroup.type.defaultTurnsPerRound || 1);
   }
 
   private sortUnitsBySpeed(units: UnitGroup[]): UnitGroup[] {
@@ -269,7 +270,7 @@ export class BattleStateService {
   private refreshUnitGroups(): void {
     this.players.forEach((player) => {
       player.hero.unitGroups.forEach(unitGroup => {
-        unitGroup.turnsLeft = unitGroup.type.defaultTurnsPerRound;
+        unitGroup.turnsLeft = unitGroup.type.defaultTurnsPerRound || 1;
       })
     });
   }

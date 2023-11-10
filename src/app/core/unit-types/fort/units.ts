@@ -34,8 +34,6 @@ const Clan = fortFraction.defineUnitType('Clan', {
     criticalDamageChance: 45,
     criticalDamageMul: 2,
   },
-  minQuantityPerStack: 5,
-  defaultTurnsPerRound: 1,
 
   baseRequirements: {
     gold: 55,
@@ -49,7 +47,7 @@ const Clan = fortFraction.defineUnitType('Clan', {
 fortFraction.defineUnitType('Raiders', {
   mainPortraitUrl: AssetsImages.UnitMelee,
   name: 'Raiders',
-  level: 2,
+  level: 1,
 
   baseStats: {
     damageInfo: {
@@ -72,8 +70,6 @@ fortFraction.defineUnitType('Raiders', {
     criticalDamageChance: 35,
     criticalDamageMul: 2,
   },
-  minQuantityPerStack: 5,
-  defaultTurnsPerRound: 1,
 
   baseRequirements: {
     gold: 35,
@@ -89,7 +85,7 @@ fortFraction.defineUnitType('Raiders', {
   neutralReward: defaultRewards,
 });
 
-fortFraction.defineUnitType('GoblinShooter', {
+const GoblinShooters = fortFraction.defineUnitType('GoblinShooter', {
   mainPortraitUrl: AssetsImages.UnitMelee,
   name: 'Goblin Shooters',
   level: 2,
@@ -111,24 +107,14 @@ fortFraction.defineUnitType('GoblinShooter', {
     heroDescrElem(`<br>As an improved version of Goblin Archers they are equipped with primitive but fast-reloading crossbows, allowing them to attack 3 times per round.`),
   ]),
 
-  defaultModifiers: {
-    counterattacks: true,
-  },
-
-  minQuantityPerStack: 5,
-  defaultTurnsPerRound: 2,
+  defaultTurnsPerRound: 3,
 
   baseRequirements: {
     gold: 60,
     redCrystals: 0,
   },
 
-  upgradeDetails: {
-    target: Clan,
-    upgradeCost: {
-      gold: 20,
-    },
-  },
+  upgraded: true,
 
   neutralReward: defaultRewards,
 });
@@ -136,12 +122,12 @@ fortFraction.defineUnitType('GoblinShooter', {
 fortFraction.defineUnitType('GoblinArcher', {
   mainPortraitUrl: AssetsImages.UnitMelee,
   name: 'Goblin Archers',
-  level: 1,
+  level: 2,
 
   baseStats: {
     damageInfo: {
       minDamage: 1,
-      maxDamage: 2,
+      maxDamage: 1,
     },
     attackRating: 1,
     speed: 14,
@@ -154,11 +140,6 @@ fortFraction.defineUnitType('GoblinArcher', {
     heroDescrElem(`<br>Basic archers that deal very low damage due to poor technologies, but mitigate that weakness by adding poison to their arrows. Attacks twice per turn.`),
   ]),
 
-  defaultModifiers: {
-    counterattacks: true,
-  },
-
-  minQuantityPerStack: 5,
   defaultTurnsPerRound: 2,
 
   baseRequirements: {
@@ -167,7 +148,7 @@ fortFraction.defineUnitType('GoblinArcher', {
   },
 
   upgradeDetails: {
-    target: Clan,
+    target: GoblinShooters,
     upgradeCost: {
       gold: 20,
     },
