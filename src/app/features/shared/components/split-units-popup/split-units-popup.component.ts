@@ -9,6 +9,12 @@ import { BasicPopup } from '../popup-container';
 })
 export class SplitUnitsPopupComponent extends BasicPopup<{ unitGroup: UnitGroup }> {
 
+  toSplit = 0;
+
+  upgadeValue(event: Event): void {
+    this.toSplit = Number((event.target as HTMLInputElement).value);
+  }
+
   closePopup(): void {
     this.close();
   }

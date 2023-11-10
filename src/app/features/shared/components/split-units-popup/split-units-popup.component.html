@@ -1,9 +1,30 @@
-Split Group
+<div>
+  Splitting Group
+</div>
 
-{{ popup.data.unitGroup.type.name }}
-{{ popup.data.unitGroup.count }}
+<div>
+  {{ popup.data.unitGroup.type.name }}
+  {{ popup.data.unitGroup.count }}
+</div>
 
-<button mw-main-button
-        (click)="closePopup()">
-  Close
-</button>
+<div>
+  <input type="range"
+         min="0"
+         [max]="popup.data.unitGroup.count - 1"
+         [value]="toSplit"
+         (input)="upgadeValue($event)">
+  <div>
+    To split: {{ toSplit}}
+  </div>
+</div>
+
+<div style="display: flex;">
+  <button mw-main-button
+          (click)="closePopup()">
+    Split
+  </button>
+  <button mw-main-button
+          (click)="closePopup()">
+    Close
+  </button>
+</div>

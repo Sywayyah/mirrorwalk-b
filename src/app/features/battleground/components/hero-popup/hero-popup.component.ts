@@ -45,9 +45,10 @@ export class HeroPopupComponent extends BasicPopup<{}> {
     console.log('split', slot);
     this.activeGroupSlot = undefined;
 
-    if (!slot.unitGroup) {
+    if (!slot.unitGroup || slot.unitGroup.count === 1) {
       return;
     }
+
     this.events.dispatch(OpenSplitUnitGroupPopup({ unitGroup: slot.unitGroup }));
   }
 
