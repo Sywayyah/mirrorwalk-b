@@ -21,7 +21,7 @@ export const PlayerOpensHeroInfo = gameEvent();
 // can be command
 export const OpenSplitUnitGroupPopup = gameEvent<{ unitGroup: UnitGroup }>();
 
-export const OpenUnitSlotsActionPopup = gameEvent<{ sourceSlot: UnitGroupSlot, targetSlot: UnitGroupSlot }>();
+export const OpenUnitSlotsActionPopup = gameEvent<{ sourceSlot: UnitGroupSlot, targetSlot: UnitGroupSlot, postAction: () => void }>();
 
 export const PlayerOpensActionCards = gameEvent();
 

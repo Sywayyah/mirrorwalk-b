@@ -72,6 +72,10 @@ export class HeroPopupComponent extends BasicPopup<{}> {
           this.events.dispatch(OpenUnitSlotsActionPopup({
             sourceSlot: this.activeGroupSlot,
             targetSlot: slot,
+            postAction: () => {
+              this.activeGroupSlot = undefined;
+              this.hero.refreshUnitGroupsOrderBySlots();
+            },
           }));
 
           return;
