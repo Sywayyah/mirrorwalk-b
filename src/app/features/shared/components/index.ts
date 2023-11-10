@@ -13,6 +13,7 @@ export * from './main-button/main-button.component';
 export * from './menu/menu.component';
 export * from './mw-action-hint/mw-action-hint.component';
 export * from './mw-experience-bar/mw-experience-bar.component';
+export * from './split-units-popup/split-units-popup.component';
 export * from './mw-player-info-panel/mw-player-info-panel.component';
 export * from './mw-ra-icon/mw-ra-icon.component';
 export * from './player-map-actions-panel/player-map-actions-panel.component';

@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { map } from 'rxjs/operators';
+import { OpenSplitUnitGroupPopup } from 'src/app/core/events';
 import { UnitGroupSlot } from 'src/app/core/heroes';
 import { InventoryItems } from 'src/app/core/items';
 import { Specialties, specialtyLabels } from 'src/app/core/modifiers';
@@ -7,6 +8,7 @@ import { getEntries } from 'src/app/core/utils/common';
 import { MwCurrentPlayerStateService, MwPlayersService } from 'src/app/features/services';
 import { State } from 'src/app/features/services/state.service';
 import { BasicPopup } from 'src/app/features/shared/components';
+import { EventsService } from 'src/app/store';
 
 @Component({
   selector: 'mw-hero-popup',
@@ -34,6 +36,7 @@ export class HeroPopupComponent extends BasicPopup<{}> {
     private readonly playersService: MwPlayersService,
     public readonly state: State,
     public readonly curPlayerState: MwCurrentPlayerStateService,
+    private readonly events: EventsService,
   ) {
     super();
   }
@@ -45,6 +48,7 @@ export class HeroPopupComponent extends BasicPopup<{}> {
     if (!slot.unitGroup) {
       return;
     }
+    this.events.dispatch(OpenSplitUnitGroupPopup({ unitGroup: slot.unitGroup }));
   }
 
   clickOnSlot(slot: UnitGroupSlot): void {

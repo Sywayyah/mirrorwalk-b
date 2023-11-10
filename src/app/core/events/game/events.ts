@@ -1,6 +1,7 @@
 import { PopupData } from 'src/app/features/shared/components';
 import { createEventType } from 'src/app/store';
 import { FightStartsEvent, NeutralStructParams, NewDayParams, NewWeekParams, PlayerEquipsItemAction, PlayerLevelsUpEvent, PlayerUnequipsItemAction, StructSelectedEvent } from "./types";
+import { UnitGroup } from '../../unit-types';
 
 const gameEvent = createEventType;
 
@@ -15,6 +16,8 @@ export const PlayerEntersTown = gameEvent();
 export const PlayerLeavesTown = gameEvent();
 
 export const PlayerOpensHeroInfo = gameEvent();
+// can be command
+export const OpenSplitUnitGroupPopup = gameEvent<{unitGroup: UnitGroup}>();
 
 export const PlayerOpensActionCards = gameEvent();
 

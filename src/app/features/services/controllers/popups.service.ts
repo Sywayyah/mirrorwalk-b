@@ -1,15 +1,15 @@
 import { Injectable, Type } from '@angular/core';
-import { DisplayPlayerRewardAction, DisplayPlayerRewardPopup, DisplayPopup, DisplayReward, FightEnds, FightEndsEvent, NeutralStructParams, OpenSettings, PlayerOpensActionCards, PlayerOpensHeroInfo, ShowGameOverPopup, StructSelected, StructSelectedEvent } from 'src/app/core/events';
+import { DisplayPlayerRewardAction, DisplayPlayerRewardPopup, DisplayPopup, DisplayReward, FightEnds, FightEndsEvent, GameEventsTypes, NeutralStructParams, OpenSettings, OpenSplitUnitGroupPopup, PlayerOpensActionCards, PlayerOpensHeroInfo, ShowGameOverPopup, StructSelected, StructSelectedEvent } from 'src/app/core/events';
 import { NeutralRewardTypesEnum, StructureType } from 'src/app/core/structures';
 import { FightEndsPopup, LossModel, StructPopupData } from 'src/app/core/ui';
 import { Notify, StoreClient, WireMethod } from 'src/app/store';
 import { HiringRewardPopupComponent, ItemRewardPopupComponent, PostFightRewardPopupComponent, PreFightPopupComponent, PreviewPopupComponent, ResourcesRewardPopupComponent, ScriptedRewardPopupComponent, UpgradeRewardPopupComponent } from '../../battleground/components';
 import { HeroPopupComponent } from '../../battleground/components/hero-popup/hero-popup.component';
 import { SettingsPopupComponent } from '../../main-screen/components';
-import { GameOverPopupComponent, PopupData, PopupService, RewardPopupComponent } from '../../shared/components';
+import { GameOverPopupComponent, PopupData, PopupService, RewardPopupComponent, SplitUnitsPopupComponent } from '../../shared/components';
+import { ActionCardsPopupComponent } from '../../shared/components/action-cards-popup/action-cards-popup.component';
 import { BattleStateService } from '../mw-battle-state.service';
 import { MwPlayersService } from '../mw-players.service';
-import { ActionCardsPopupComponent } from '../../shared/components/action-cards-popup/action-cards-popup.component';
 
 
 @Injectable()
@@ -56,6 +56,14 @@ export class PopupsController extends StoreClient() {
   public displayPlayerRewardPopup(action: DisplayPlayerRewardAction): void {
     this.popupService.createBasicPopup({
       component: RewardPopupComponent,
+      data: action,
+    });
+  }
+
+  @WireMethod(OpenSplitUnitGroupPopup)
+  public openUnitGroupSplitPopup(action: GameEventsTypes['OpenSplitUnitGroupPopup']): void {
+    this.popupService.createBasicPopup({
+      component: SplitUnitsPopupComponent,
       data: action,
     });
   }
