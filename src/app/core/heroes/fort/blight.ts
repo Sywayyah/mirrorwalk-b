@@ -14,7 +14,7 @@ import { LifeObeliskSpell } from './spells/obelisk';
 //  When life totem is present on the battlefield, effect of this ability is increased by 30%.
 export const BlightHero: HeroBase = fortFraction.createHero({
   name: 'Blight',
-  generalDescription: heroDescrElem(`A rotting ent called Blight that weakens his own army by starting with -10% All Resist and -5 Defence, but compensating it with powerful abilities and providing many ways to heal your army.`),
+  generalDescription: heroDescrElem(`A rotting ent called Blight. His army is weakened by -10% All Resist and -5 Defence, but compensating it with abilities and providing many ways to heal.`),
 
   image: AssetsImages.HeroKnight,
   abilities: [
