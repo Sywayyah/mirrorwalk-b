@@ -16,8 +16,11 @@ export const PlayerEntersTown = gameEvent();
 export const PlayerLeavesTown = gameEvent();
 
 export const PlayerOpensHeroInfo = gameEvent();
+
 // can be command
-export const OpenSplitUnitGroupPopup = gameEvent<{unitGroup: UnitGroup}>();
+export const OpenSplitUnitGroupPopup = gameEvent<{ unitGroup: UnitGroup }>();
+
+export const OpenUnitSlotsActionPopup = gameEvent<{}>();
 
 export const PlayerOpensActionCards = gameEvent();
 

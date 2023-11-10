@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { map } from 'rxjs/operators';
-import { OpenSplitUnitGroupPopup } from 'src/app/core/events';
+import { OpenSplitUnitGroupPopup, OpenUnitSlotsActionPopup } from 'src/app/core/events';
 import { UnitGroupSlot } from 'src/app/core/heroes';
 import { InventoryItems } from 'src/app/core/items';
 import { Specialties, specialtyLabels } from 'src/app/core/modifiers';
@@ -68,6 +68,10 @@ export class HeroPopupComponent extends BasicPopup<{}> {
 
     if (this.activeGroupSlot) {
       if (slot.unitGroup) {
+        if (slot.unitGroup.type === this.activeGroupSlot.unitGroup?.type) {
+          this.events.dispatch(OpenUnitSlotsActionPopup());
+        }
+
         const temp = slot.unitGroup;
 
         slot.unitGroup = this.activeGroupSlot.unitGroup;
