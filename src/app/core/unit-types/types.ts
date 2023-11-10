@@ -300,7 +300,6 @@ export class UnitGroup extends GameObject<UnitCreationParams> {
     // think if I need to retach like that
   }
 
-
   addUnitsCount(addedCount: number): void {
     this.setUnitsCount(this._count + addedCount);
   }

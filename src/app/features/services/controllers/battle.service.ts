@@ -107,6 +107,7 @@ export class BattleController extends StoreClient() {
 
     // if current player doesn't have unit groups left
     if (!currentPlayerUnitGroups.length) {
+      // todo: handle it differently, don't need to call this method
       this.playersService.getCurrentPlayer().hero.setUnitGroups(currentPlayerUnitGroups);
 
       this.events.dispatch(FightEnds({

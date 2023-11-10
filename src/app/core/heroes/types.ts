@@ -86,6 +86,7 @@ export interface HeroStatsInfo {
 
 export interface UnitGroupSlot {
   unitGroup: null | UnitGroup;
+  isReserve?: boolean;
 }
 
 export class Hero extends GameObject<HeroCreationParams> {
@@ -149,6 +150,11 @@ export class Hero extends GameObject<HeroCreationParams> {
     { unitGroup: null },
   ];
 
+  readonly reserveUnitSlots: UnitGroupSlot[] = [
+    { unitGroup: null, isReserve: true },
+    { unitGroup: null, isReserve: true },
+  ];
+
 
   create({ heroBase, unitGroups, ownerPlayer }: HeroCreationParams): void {
     this.base = heroBase;
@@ -175,8 +181,20 @@ export class Hero extends GameObject<HeroCreationParams> {
   }
 
   addUnitGroup(unitGroup: UnitGroup): void {
+    const wasIncluded = this.unitGroups.includes(unitGroup);
+
     this._unitGroups.push(unitGroup);
     this.updateUnitGroup(unitGroup);
+
+    if (wasIncluded) {
+      return;
+    }
+
+    const emptySlot = this.unitSlots.find(slot => !slot.unitGroup);
+    console.log('empty slot?', emptySlot);
+    if (emptySlot) {
+      emptySlot.unitGroup = unitGroup;
+    }
   }
 
   setUnitGroups(unitGroups: UnitGroup[]): void {

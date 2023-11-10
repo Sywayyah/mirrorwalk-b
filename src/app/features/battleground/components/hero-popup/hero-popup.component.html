@@ -36,6 +36,27 @@
         }
         }
       </div>
+
+      Reserve:
+      <div class="unit-groups-slots">
+        @for (slot of hero.reserveUnitSlots; track $index) {
+        @if (slot.unitGroup) {
+        <div class="unit-slot reserve"
+             (mwNoContextMenu)="splitGroup(slot)"
+             (click)="clickOnSlot(slot)"
+             [class.active]="slot === activeGroupSlot"
+             [style.background]="slot.unitGroup.ownerPlayer.color">
+          <span>{{slot.unitGroup.type.name}}</span>
+          <span>{{slot.unitGroup.count}}</span>
+        </div>
+        }
+        @else {
+        <div class="unit-slot reserve"
+             (mwNoContextMenu)="splitGroup(slot)"
+             (click)="clickOnSlot(slot)"></div>
+        }
+        }
+      </div>
     </div>
   </div>
 
