@@ -2,6 +2,7 @@ import { PopupData } from 'src/app/features/shared/components';
 import { createEventType } from 'src/app/store';
 import { FightStartsEvent, NeutralStructParams, NewDayParams, NewWeekParams, PlayerEquipsItemAction, PlayerLevelsUpEvent, PlayerUnequipsItemAction, StructSelectedEvent } from "./types";
 import { UnitGroup } from '../../unit-types';
+import { UnitGroupSlot } from '../../heroes';
 
 const gameEvent = createEventType;
 
@@ -20,7 +21,7 @@ export const PlayerOpensHeroInfo = gameEvent();
 // can be command
 export const OpenSplitUnitGroupPopup = gameEvent<{ unitGroup: UnitGroup }>();
 
-export const OpenUnitSlotsActionPopup = gameEvent<{}>();
+export const OpenUnitSlotsActionPopup = gameEvent<{ sourceSlot: UnitGroupSlot, targetSlot: UnitGroupSlot }>();
 
 export const PlayerOpensActionCards = gameEvent();
 

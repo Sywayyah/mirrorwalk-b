@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { map } from 'rxjs/operators';
 import { OpenSplitUnitGroupPopup, OpenUnitSlotsActionPopup } from 'src/app/core/events';
-import { UnitGroupSlot } from 'src/app/core/heroes';
+import { UnitGroupSlot, swapUnitsInSlots } from 'src/app/core/heroes';
 import { InventoryItems } from 'src/app/core/items';
 import { Specialties, specialtyLabels } from 'src/app/core/modifiers';
 import { getEntries } from 'src/app/core/utils/common';
@@ -69,13 +69,14 @@ export class HeroPopupComponent extends BasicPopup<{}> {
     if (this.activeGroupSlot) {
       if (slot.unitGroup) {
         if (slot.unitGroup.type === this.activeGroupSlot.unitGroup?.type) {
-          this.events.dispatch(OpenUnitSlotsActionPopup());
+          this.events.dispatch(OpenUnitSlotsActionPopup({
+            sourceSlot: slot,
+            targetSlot: this.activeGroupSlot,
+          }));
+
+          return;
         }
-
-        const temp = slot.unitGroup;
-
-        slot.unitGroup = this.activeGroupSlot.unitGroup;
-        this.activeGroupSlot.unitGroup = temp;
+        swapUnitsInSlots(this.activeGroupSlot, slot);
         this.activeGroupSlot = undefined;
       } else {
         // add as a field to hero that is updated on changes

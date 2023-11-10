@@ -89,6 +89,13 @@ export interface UnitGroupSlot {
   isReserve?: boolean;
 }
 
+export function swapUnitsInSlots(source: UnitGroupSlot, target: UnitGroupSlot): void {
+  const temp = source.unitGroup;
+
+  source.unitGroup = target.unitGroup;
+  target.unitGroup = temp;
+}
+
 export class Hero extends GameObject<HeroCreationParams> {
   public static readonly categoryId: string = 'hero';
   public name!: string | null;
