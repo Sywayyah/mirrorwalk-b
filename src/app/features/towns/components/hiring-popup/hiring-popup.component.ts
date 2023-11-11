@@ -3,6 +3,7 @@ import { ResourceType, Resources, ResourcesModel } from 'src/app/core/resources'
 import { BuidlingBase, Building, HiringActivity, HiringDetails, Town } from 'src/app/core/towns';
 import { UnitBaseType } from 'src/app/core/unit-types';
 import { MwPlayersService, MwUnitGroupsService } from 'src/app/features/services';
+import { GameObjectsManager } from 'src/app/features/services/game-objects-manager.service';
 import { BasicPopup, PopupService } from 'src/app/features/shared/components';
 import { BuildPopupComponent } from '../build-popup/build-popup.component';
 
@@ -59,6 +60,7 @@ export class HiringPopupComponent extends BasicPopup<HiringPopupData> implements
     private playersService: MwPlayersService,
     private unitsService: MwUnitGroupsService,
     private popupService: PopupService,
+    private gameObjectsManager: GameObjectsManager,
   ) {
     super();
     this.unitType = this.data.hiringActivity.hiring.type;
@@ -238,6 +240,15 @@ export class HiringPopupComponent extends BasicPopup<HiringPopupData> implements
           const stackOfType = currentPlayer.hero.unitGroups.find(unitGroup => unitGroup.type === this.activity.hiring.type)!;
 
           this.playersService.removeNUnitsFromGroup(currentPlayer, stackOfType, group.count);
+
+          if (stackOfType.count === 0) {
+            this.gameObjectsManager.destroyObject(stackOfType);
+            const stackWithRemovedUnit = currentPlayer.hero.getAllSlots().find(slot => slot.unitGroup === stackOfType);
+
+            if (stackWithRemovedUnit) {
+              stackWithRemovedUnit.unitGroup = null;
+            }
+          }
 
           const unitGroup = this.unitsService.createUnitGroup(
             group.hire.unitType,

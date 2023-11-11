@@ -162,6 +162,7 @@ export class MwPlayersService extends StoreClient() {
 
     if (unitGroup.count <= 0) {
       player.hero.removeUnitGroup(unitGroup);
+      // todo: maybe add here destroy
     }
   }
 
