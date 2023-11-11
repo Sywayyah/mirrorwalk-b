@@ -195,30 +195,6 @@ export class Hero extends GameObject<HeroCreationParams> {
     CommonUtils.removeItem(this.unitGroups, unitGroup);
   }
 
-  addUnitGroup(unitGroup: UnitGroup): void {
-    const wasIncluded = this.unitGroups.includes(unitGroup);
-
-    this._unitGroups.push(unitGroup);
-    this.updateUnitGroup(unitGroup);
-
-    if (wasIncluded) {
-      return;
-    }
-
-    const emptySlot = this.mainUnitSlots.find(slot => !slot.unitGroup);
-
-    if (emptySlot) {
-      emptySlot.unitGroup = unitGroup;
-      return;
-    }
-
-    const emptyReserveSlot = this.reserveUnitSlots.find(slot => !slot.unitGroup);
-
-    if (emptyReserveSlot) {
-      emptyReserveSlot.unitGroup = unitGroup;
-    }
-  }
-
   hasFreeUnitSlots(): boolean {
     return this.hasFreeMainSlots() || this.hasFreeReserveSlots();
   }
@@ -243,12 +219,42 @@ export class Hero extends GameObject<HeroCreationParams> {
     return freeSlotsCount(this.reserveUnitSlots);
   }
 
-  setUnitGroups(unitGroups: UnitGroup[]): void {
+  setUnitGroups(unitGroups: UnitGroup[], updateSlots = true): void {
     this._unitGroups = unitGroups;
+
+
     this._unitGroups.forEach((unitGroup, i) => {
-      this.mainUnitSlots[i].unitGroup = unitGroup;
+      if (updateSlots) {
+        console.log('ever getting there?');
+        this.mainUnitSlots[i].unitGroup = unitGroup;
+      }
+
       this.updateUnitGroup(unitGroup);
     });
+  }
+
+  addUnitGroup(unitGroup: UnitGroup): void {
+    const wasIncluded = this.unitGroups.includes(unitGroup);
+
+    this._unitGroups.push(unitGroup);
+    this.updateUnitGroup(unitGroup);
+
+    if (wasIncluded) {
+      return;
+    }
+
+    const emptySlot = this.mainUnitSlots.find(slot => !slot.unitGroup);
+
+    if (emptySlot) {
+      emptySlot.unitGroup = unitGroup;
+      return;
+    }
+
+    const emptyReserveSlot = this.reserveUnitSlots.find(slot => !slot.unitGroup);
+
+    if (emptyReserveSlot) {
+      emptyReserveSlot.unitGroup = unitGroup;
+    }
   }
 
   refreshUnitGroupsOrderBySlots(): void {

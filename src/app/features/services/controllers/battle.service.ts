@@ -132,8 +132,17 @@ export class BattleController extends StoreClient() {
       });
 
       const finalCurrentUnitsOfPlayer = currentPlayerUnitGroups.filter(unit => !unit.modGroup.getModValue('isSummon'));
+      const currentHero = this.playersService.getCurrentPlayer().hero;
 
-      this.playersService.getCurrentPlayer().hero.setUnitGroups(finalCurrentUnitsOfPlayer);
+      // adjust slots
+      finalCurrentUnitsOfPlayer.filter(unitGroup => !unitGroup.fightInfo.isAlive).forEach((unitGroup) => {
+        const dyingUnitSlot = [...currentHero.mainUnitSlots, ...currentHero.reserveUnitSlots].find(slot => slot.unitGroup === unitGroup);
+        if (dyingUnitSlot) {
+          dyingUnitSlot.unitGroup = null;
+        }
+      });
+
+      currentHero.setUnitGroups(currentPlayerUnitGroups, false);
 
       currentStructure.isInactive = true;
 
