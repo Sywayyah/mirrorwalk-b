@@ -251,6 +251,7 @@ export class Hero extends GameObject<HeroCreationParams> {
 
     if (emptySlot) {
       emptySlot.unitGroup = unitGroup;
+      this.refreshUnitGroupsOrderBySlots();
       return;
     }
 
@@ -259,6 +260,7 @@ export class Hero extends GameObject<HeroCreationParams> {
     if (emptyReserveSlot) {
       emptyReserveSlot.unitGroup = unitGroup;
     }
+    this.refreshUnitGroupsOrderBySlots();
   }
 
   refreshUnitGroupsOrderBySlots(): void {
