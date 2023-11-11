@@ -202,9 +202,16 @@ export class Hero extends GameObject<HeroCreationParams> {
     }
 
     const emptySlot = this.unitSlots.find(slot => !slot.unitGroup);
-    console.log('empty slot?', emptySlot);
+
     if (emptySlot) {
       emptySlot.unitGroup = unitGroup;
+      return;
+    }
+
+    const emptyReserveSlot = this.reserveUnitSlots.find(slot => !slot.unitGroup);
+
+    if (emptyReserveSlot) {
+      emptyReserveSlot.unitGroup = unitGroup;
     }
   }
 
