@@ -6,7 +6,7 @@ import { UnitGroup } from '../unit-types';
 import { getDamageParts } from '../vfx';
 import { CanActivateSpellParams, SpellBaseType } from './types';
 
-export const createSpell = (spell: SpellBaseType): SpellBaseType => {
+export const createSpell = <T>(spell: SpellBaseType<T>): SpellBaseType<T> => {
   return spell
 };
 
