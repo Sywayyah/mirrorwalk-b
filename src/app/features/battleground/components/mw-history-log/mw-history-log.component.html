@@ -4,22 +4,22 @@
   <div class="history-log"
        #historyLog>
     @for (historyEntry of battleLogService.history; track $index) {
-      <div class="entry">
-        @switch (historyEntry.type) {
-          @case (types.SimpleMsg) {
-            <ng-container *ngTemplateOutlet="simple; context: { log: historyEntry }" />
-          }
-          @case (types.RoundInfoMsg) {
-            <ng-container *ngTemplateOutlet="roundInfoMsg; context: { log: historyEntry }" />
-          }
-          @case (types.DealtDamageMsg) {
-            <ng-container *ngTemplateOutlet="dealtDamageLog; context: { log: historyEntry }" />
-          }
-          @case (types.Html) {
-            <ng-container *ngTemplateOutlet="htmlLog; context: { log: historyEntry }" />
-          }
-        }
-      </div>
+    <div class="entry">
+      @switch (historyEntry.type) {
+      @case (types.SimpleMsg) {
+      <ng-container *ngTemplateOutlet="simple; context: { log: historyEntry }" />
+      }
+      @case (types.RoundInfoMsg) {
+      <ng-container *ngTemplateOutlet="roundInfoMsg; context: { log: historyEntry }" />
+      }
+      @case (types.DealtDamageMsg) {
+      <ng-container *ngTemplateOutlet="dealtDamageLog; context: { log: historyEntry }" />
+      }
+      @case (types.Html) {
+      <ng-container *ngTemplateOutlet="htmlLog; context: { log: historyEntry }" />
+      }
+      }
+    </div>
     }
   </div>
 </div>
@@ -39,7 +39,7 @@
              let-log="log">
   <div>
     <span [style.color]="log.attackingPlayer.color">{{log.attackersNumber}} {{log.attacker.name}}</span>
-    deal {{log.damage}} damage to
+    deal {{log.damage}} {{log.isCritical ? 'critical' : ''}} damage to
     <span [style.color]="log.attackedPlayer.color">{{log.attackedNumber}} {{log.attacked.name}}</span>
     , killing {{log.losses}} units
     <div *ngIf="log.damageBlocked">

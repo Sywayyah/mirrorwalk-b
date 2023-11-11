@@ -8,10 +8,11 @@ export const getDamageParts = (
   loss: number,
   isRanged: boolean = false,
   blockedDamage: number = 0,
+  isCritical: boolean = false,
 ): CustomizableAnimationData => {
   return {
     parts: [
-      { type: 'plainPart', icon: isRanged ? 'broadhead-arrow' : 'sword', text: damage, color: 'red' },
+      { type: 'plainPart', icon: isRanged ? 'broadhead-arrow' : 'sword', text: `<span style="${isCritical ? 'font-weight: 800;' : ''}">${damage}</span>`, color: isCritical ? '#ff8100' : 'red' },
       ...(blockedDamage ? [{ type: 'plainPart', icon: 'shield', color: 'yellow', text: blockedDamage }] : []),
       { type: 'plainPart', icon: 'skull', text: loss, color: 'white' },
     ],

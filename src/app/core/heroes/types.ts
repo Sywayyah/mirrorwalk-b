@@ -230,7 +230,6 @@ export class Hero extends GameObject<HeroCreationParams> {
 
     this._unitGroups.forEach((unitGroup, i) => {
       if (updateSlots) {
-        console.log('ever getting there?');
         this.mainUnitSlots[i].unitGroup = unitGroup;
       }
 

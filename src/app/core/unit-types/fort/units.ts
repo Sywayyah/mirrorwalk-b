@@ -32,8 +32,8 @@ const Clan = fortFraction.defineUnitType('Clan', {
 
   defaultModifiers: {
     counterattacks: true,
-    criticalDamageChance: 45,
-    criticalDamageMul: 2,
+    criticalDamageChance: 0.35,
+    criticalDamageMul: 1,
   },
 
   baseRequirements: {
@@ -68,8 +68,8 @@ fortFraction.defineUnitType('Raiders', {
 
   defaultModifiers: {
     counterattacks: true,
-    criticalDamageChance: 35,
-    criticalDamageMul: 2,
+    criticalDamageChance: 0.35,
+    criticalDamageMul: 1,
   },
 
   baseRequirements: {

@@ -38,4 +38,5 @@ export interface DealtDamageMessage extends HistoryLogModel<HistoryLogTypesEnum.
 
   stolenLife: number;
   stolenLifeUnitsRestored: number;
+  isCritical: boolean;
 }

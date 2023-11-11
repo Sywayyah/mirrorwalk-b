@@ -22,6 +22,7 @@ export type GroupDamagedByGroupEvent = props<'attackingGroup' | 'attackedGroup' 
   damageBlocked: number;
   lifeStolen: number;
   lifeStolenUnitsRestored: number;
+  isCritical: boolean;
 };
 
 export type RoundGroupSpendsTurnEvent = {
