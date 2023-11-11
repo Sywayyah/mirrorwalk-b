@@ -54,10 +54,8 @@ export const RainOfFireSpell: SpellBaseType = {
 
             const fullDamage = getDamageByLevel(spellInstance.currentLevel);
 
-            function dealDamageToTarget(target: UnitGroup, damage: number): void {
-              vfx.createEffectForUnitGroup(target, FireAnimation, {
-                duration: 850,
-              });
+            function dealDamageToTarget(target: UnitGroup, damage: number, index: number): void {
+
 
               actions.dealDamageTo(
                 target,
@@ -66,16 +64,23 @@ export const RainOfFireSpell: SpellBaseType = {
                 (actionInfo) => {
                   actions.historyLog(`${ownerHero.name} deals ${actionInfo.finalDamage} damage to ${actionInfo.initialUnitCount} ${target.type.name} with ${thisSpell.name}, ${actionInfo.unitLoss} units perish.`)
 
-                  vfx.createFloatingMessageForUnitGroup(
-                    target,
-                    getDamageParts(actionInfo.finalDamage, actionInfo.unitLoss),
-                    { duration: 1000 },
-                  );
+                  setTimeout(() => {
+                    vfx.createEffectForUnitGroup(target, FireAnimation, {
+                      duration: 850,
+                    });
+
+                    vfx.createFloatingMessageForUnitGroup(
+                      target,
+                      getDamageParts(actionInfo.finalDamage, actionInfo.unitLoss),
+                      { duration: 1200 }
+                    );
+                  }, index * 250);
+
                 },
               );
             }
 
-            dealDamageToTarget(event.target, fullDamage);
+            dealDamageToTarget(event.target, fullDamage, 0);
 
             // handle additional targets if fire mastery is present
             const fireMasteryLevel = ownerHero.specialtiesModGroup.getModValue('specialtyFireMastery') || 0;
@@ -90,7 +95,7 @@ export const RainOfFireSpell: SpellBaseType = {
                 const randomEnemies = CommonUtils.getRandomItems(aliveEnemyUnits, fireMasteryBonuses.targets);
 
                 randomEnemies.forEach((additionalTarget, index) => {
-                  dealDamageToTarget(additionalTarget, fullDamage * fireMasteryBonuses.damage[index]);
+                  dealDamageToTarget(additionalTarget, fullDamage * fireMasteryBonuses.damage[index], index + 1);
                 });
               }
             }
