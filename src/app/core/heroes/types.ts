@@ -96,6 +96,10 @@ export function swapUnitsInSlots(source: UnitGroupSlot, target: UnitGroupSlot): 
   target.unitGroup = temp;
 }
 
+export function freeSlotsCount(slots: UnitGroupSlot[]): number {
+  return slots.filter(slot => !slot.unitGroup).length;
+}
+
 export class Hero extends GameObject<HeroCreationParams> {
   public static readonly categoryId: string = 'hero';
   public name!: string | null;
@@ -150,7 +154,7 @@ export class Hero extends GameObject<HeroCreationParams> {
 
   private readonly destroyed$ = new Subject<void>();
 
-  readonly unitSlots: UnitGroupSlot[] = [
+  readonly mainUnitSlots: UnitGroupSlot[] = [
     { unitGroup: null },
     { unitGroup: null },
     { unitGroup: null },
@@ -201,7 +205,7 @@ export class Hero extends GameObject<HeroCreationParams> {
       return;
     }
 
-    const emptySlot = this.unitSlots.find(slot => !slot.unitGroup);
+    const emptySlot = this.mainUnitSlots.find(slot => !slot.unitGroup);
 
     if (emptySlot) {
       emptySlot.unitGroup = unitGroup;
@@ -215,16 +219,40 @@ export class Hero extends GameObject<HeroCreationParams> {
     }
   }
 
+  hasFreeUnitSlots(): boolean {
+    return this.hasFreeMainSlots() || this.hasFreeReserveSlots();
+  }
+
+  hasFreeMainSlots(): boolean {
+    return this.getFreeMainSlotsCount() !== 0;
+  }
+
+  hasFreeReserveSlots(): boolean {
+    return this.getFreeReserveSlotsCount() !== 0;
+  }
+
+  getFreeUnitSlotsCount(): number {
+    return this.getFreeMainSlotsCount() + this.getFreeReserveSlotsCount();
+  }
+
+  getFreeMainSlotsCount(): number {
+    return freeSlotsCount(this.mainUnitSlots);
+  }
+
+  getFreeReserveSlotsCount(): number {
+    return freeSlotsCount(this.reserveUnitSlots);
+  }
+
   setUnitGroups(unitGroups: UnitGroup[]): void {
     this._unitGroups = unitGroups;
     this._unitGroups.forEach((unitGroup, i) => {
-      this.unitSlots[i].unitGroup = unitGroup;
+      this.mainUnitSlots[i].unitGroup = unitGroup;
       this.updateUnitGroup(unitGroup);
     });
   }
 
   refreshUnitGroupsOrderBySlots(): void {
-    this._unitGroups = this.unitSlots.map(slot => slot.unitGroup).filter(Boolean) as UnitGroup[];
+    this._unitGroups = this.mainUnitSlots.map(slot => slot.unitGroup).filter(Boolean) as UnitGroup[];
   }
 
   assignOwnerPlayer(player: Player): void {

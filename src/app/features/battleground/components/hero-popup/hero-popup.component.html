@@ -18,7 +18,7 @@
       <mw-experience-bar style="width: 270px;" />
 
       <div class="unit-groups-slots">
-        @for (slot of hero.unitSlots; track $index) {
+        @for (slot of hero.mainUnitSlots; track $index) {
         @if (slot.unitGroup) {
         <div class="unit-slot"
              (mwNoContextMenu)="splitGroup(slot)"
