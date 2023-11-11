@@ -219,6 +219,10 @@ export class Hero extends GameObject<HeroCreationParams> {
     return freeSlotsCount(this.reserveUnitSlots);
   }
 
+  getAllSlots(): UnitGroupSlot[] {
+    return [...this.mainUnitSlots, ...this.reserveUnitSlots];
+  }
+
   setUnitGroups(unitGroups: UnitGroup[], updateSlots = true): void {
     this._unitGroups = unitGroups;
 
