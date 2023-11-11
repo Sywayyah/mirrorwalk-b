@@ -2,6 +2,7 @@ import { AssetsImages } from '../../assets';
 import { fortFraction } from '../../fractions';
 import { heroDescrElem } from '../../ui';
 import { simpleDescriptions } from '../utils';
+import { PoisonArrowsSpell } from './spells/poison-arrows';
 
 const defaultRewards = {
   experience: 0,
@@ -102,12 +103,16 @@ const GoblinShooters = fortFraction.defineUnitType('GoblinShooter', {
   },
 
   getDescription: simpleDescriptions([
-    heroDescrElem(`Tier 2 Fort ranged unit. Upgraded version of Goblin Archers.`),
+    heroDescrElem(`Tier 2 ranged unit of the Fort. Upgraded version of Goblin Archers.`),
     heroDescrElem(`<br>Basic archers that deal very low damage due to poor technologies, but mitigate that weakness by adding poison to their arrows.`),
     heroDescrElem(`<br>As an improved version of Goblin Archers they are equipped with primitive but fast-reloading crossbows, allowing them to attack 3 times per round.`),
   ]),
 
   defaultTurnsPerRound: 3,
+
+  defaultSpells: [
+    PoisonArrowsSpell,
+  ],
 
   baseRequirements: {
     gold: 60,
@@ -136,11 +141,15 @@ fortFraction.defineUnitType('GoblinArcher', {
   },
 
   getDescription: simpleDescriptions([
-    heroDescrElem(`Tier 2 Fort ranged unit. Can be upgraded into Goblin Shooters.`),
+    heroDescrElem(`Tier 2 ranged unit of the Fort. Can be upgraded into Goblin Shooters.`),
     heroDescrElem(`<br>Basic archers that deal very low damage due to poor technologies, but mitigate that weakness by adding poison to their arrows. Attacks twice per turn.`),
   ]),
 
   defaultTurnsPerRound: 2,
+
+  defaultSpells: [
+    PoisonArrowsSpell,
+  ],
 
   baseRequirements: {
     gold: 60,

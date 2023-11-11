@@ -97,7 +97,8 @@ export interface OnSpellAcquiredConfig<T> {
 
 export interface SpellConfig<SpellStateType> {
   init: (combatRefs: SpellCombatRefsModel<SpellStateType>) => void;
-  getManaCost: (spellInst: Spell<SpellStateType>) => number;
+  // if unspecified - always 0
+  getManaCost?: (spellInst: Spell<SpellStateType>) => number;
   /** Called on ability when unit acquires it or it levels up */
   onAcquired?: (onAquiredConfig: OnSpellAcquiredConfig<SpellStateType>) => void;
   targetCastConfig?: {
@@ -138,7 +139,11 @@ export class Spell<T = DefaultSpellStateType> extends GameObject<SpellCreationPa
     this.state = state;
     this.sourceInfo = {};
 
-    this.currentManaCost = this.baseType.type.spellConfig.getManaCost(this);
+    this.updateCurrentManaCost();
+  }
+
+  private updateCurrentManaCost() {
+    this.currentManaCost = this.baseType.type.spellConfig.getManaCost?.(this) || 0;
   }
 
   setOwnerObjectId(ownerUnitId: string): void {
@@ -151,7 +156,7 @@ export class Spell<T = DefaultSpellStateType> extends GameObject<SpellCreationPa
 
   levelUp(): void {
     this.currentLevel += 1;
-    this.currentManaCost = this.baseType.type.spellConfig.getManaCost(this);
+    this.updateCurrentManaCost();
 
     // If spell has ownerUnitId in source info - run onAcquired
     const ownerUnitObjectId = this.sourceInfo.ownerUnitObjectId;
