@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
 import { InitBuilding } from 'src/app/core/events';
 import { FormattedResource, Resources, formattedResources } from 'src/app/core/resources';
-import { Building, BuildingLevel } from 'src/app/core/towns';
+import { Building, BuildingLevel, TownEvents } from 'src/app/core/towns';
 import { MwPlayersService } from 'src/app/features/services';
+import { State } from 'src/app/features/services/state.service';
 import { BasicPopup } from 'src/app/features/shared/components';
 import { EventsService } from 'src/app/store';
 
@@ -24,6 +25,7 @@ export class BuildPopupComponent extends BasicPopup<{ building: Building, target
   constructor(
     private players: MwPlayersService,
     private events: EventsService,
+    private state: State,
   ) {
     super();
 
@@ -61,6 +63,7 @@ export class BuildPopupComponent extends BasicPopup<{ building: Building, target
       this.players.getCurrentPlayer(),
       this.getBuildingCost(),
     );
+    this.state.eventHandlers.buildings.triggerRefEventHandlers(this.data.building, TownEvents.Built());
 
     this.close();
   }

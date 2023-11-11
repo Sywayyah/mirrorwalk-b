@@ -6,6 +6,7 @@ export const BuildingsEventsGroup = createEventsGroup({
   prefix: 'Building', events: {
     NewDayBegins: townEvents(),
     NewWeekStarts: townEvents(),
+    Built: townEvents(),
   },
 });
 

@@ -190,9 +190,10 @@ export class Hero extends GameObject<HeroCreationParams> {
     }
   }
 
-  removeUnitGroup(unitGroup: UnitGroup): void {
-    // todo: unassign hero
-    CommonUtils.removeItem(this.unitGroups, unitGroup);
+  addReserveSlots(slotsCount: number) {
+    for (let i = 0; i < slotsCount; i++) {
+      this.reserveUnitSlots.push({ unitGroup: null, isReserve: true });
+    }
   }
 
   hasFreeUnitSlots(): boolean {
@@ -261,6 +262,11 @@ export class Hero extends GameObject<HeroCreationParams> {
       emptyReserveSlot.unitGroup = unitGroup;
     }
     this.refreshUnitGroupsOrderBySlots();
+  }
+
+  removeUnitGroup(unitGroup: UnitGroup): void {
+    // todo: unassign hero
+    CommonUtils.removeItem(this.unitGroups, unitGroup);
   }
 
   refreshUnitGroupsOrderBySlots(): void {

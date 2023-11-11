@@ -16,13 +16,16 @@ export type CastleTownBuildings =
 
 const townCenter: BuidlingBase = {
   name: 'Town Hall',
-  description: 'Earns 400 gold each day.',
+  description: 'Earns 400 gold each day and gives 1 additional reserve slot.',
   config: {
     init({ players, localEvents }) {
       localEvents.on({
         NewDayBegins() {
           players.giveResourcesToPlayer(players.getCurrentPlayer(), { gold: 400 });
         },
+        Built() {
+          players.getCurrentPlayer().hero.addReserveSlots(1);
+        }
       })
     }
   }
