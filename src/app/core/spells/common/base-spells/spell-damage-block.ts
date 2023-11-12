@@ -75,7 +75,6 @@ export const createDamageBlockSpell = (config: {
 
           ownerUnit!.addSpellMods(spellInstance.state.damageBlockMod);
         },
-        getManaCost() { return 0; },
         init() { },
       },
     },

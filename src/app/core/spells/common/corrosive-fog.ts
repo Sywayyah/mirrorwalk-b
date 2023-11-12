@@ -93,9 +93,6 @@ export const CorrosiveFogDebuff: SpellBaseType<undefined | { debuffRoundsLeft: n
   },
   type: {
     spellConfig: {
-      getManaCost(spellInst) {
-        return 0;
-      },
       init({ events, actions, thisSpell, spellInstance, vfx }) {
         events.on({
           SpellPlacedOnUnitGroup({ target }) {

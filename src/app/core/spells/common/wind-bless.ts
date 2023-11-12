@@ -56,7 +56,6 @@ export const WindBlessBuff: SpellBaseType<State> = {
         });
 
       },
-      getManaCost: (spell) => 0,
     },
   }
 };

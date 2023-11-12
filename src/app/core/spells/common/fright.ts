@@ -63,9 +63,6 @@ export const FrightSpellDebuff: SpellBaseType<{ frighter: UnitGroup }> = {
           },
         })
       },
-      getManaCost(spellInst) {
-        return 0;
-      },
     },
   },
 };
@@ -104,9 +101,6 @@ export const FrightSpell: SpellBaseType = {
             actions.addSpellToUnitGroup(attacked, frightSpellDebuff, ownerPlayer);
           },
         });
-      },
-      getManaCost(spellInst) {
-        return 0;
       },
     },
   },

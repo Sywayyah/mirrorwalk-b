@@ -61,10 +61,6 @@ export const FireShieldBuff: SpellBaseType = {
   },
   type: {
     spellConfig: {
-      getManaCost(spellInst) {
-        return 0;
-      },
-
       init: ({ events, actions, vfx }) => {
         // change it to non-conditional modifiers maybe
         const mods = actions.createModifiers({

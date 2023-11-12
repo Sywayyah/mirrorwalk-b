@@ -26,7 +26,6 @@ export const FireBreath: SpellBaseType = {
   },
   type: {
     spellConfig: {
-      getManaCost() { return 0; },
       init({ actions, vfx, ownerPlayer, ownerUnit, events, thisSpell }) {
         events.on({
           NewRoundBegins() {

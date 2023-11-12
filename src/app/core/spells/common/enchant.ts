@@ -21,10 +21,6 @@ export const EnchantBuff: SpellBaseType = {
   },
   type: {
     spellConfig: {
-      getManaCost(spellInst) {
-        return 0;
-      },
-
       init: ({ events, actions, vfx }) => {
         const mods = actions.createModifiers({
           amplifiedTakenMagicDamagePercent: damageIncreasePercent / 100,

@@ -23,10 +23,6 @@ export const KneelingLightDebuff: SpellBaseType = {
   },
   type: {
     spellConfig: {
-      getManaCost(spellInst) {
-        return 0;
-      },
-
       init: ({ events, actions, vfx }) => {
         events.on({
           SpellPlacedOnUnitGroup(event) {

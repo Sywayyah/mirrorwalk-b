@@ -66,10 +66,6 @@ export const FrozenArrowDebuff: SpellBaseType = {
   },
   type: {
     spellConfig: {
-      getManaCost(spellInst) {
-        return 0;
-      },
-
       init: ({ events, actions, vfx, thisSpell }) => {
         const mods = actions.createModifiers({
           unitGroupSpeedBonus: -slow,
