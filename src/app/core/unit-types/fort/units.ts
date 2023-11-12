@@ -87,7 +87,7 @@ fortFraction.defineUnitType('Raiders', {
 });
 
 const GoblinShooters = fortFraction.defineUnitType('GoblinShooter', {
-  mainPortraitUrl: AssetsImages.UnitMelee,
+  mainPortraitUrl: AssetsImages.UnitRanged,
   name: 'Goblin Shooters',
   level: 2,
 
@@ -125,7 +125,7 @@ const GoblinShooters = fortFraction.defineUnitType('GoblinShooter', {
 });
 
 fortFraction.defineUnitType('GoblinArcher', {
-  mainPortraitUrl: AssetsImages.UnitMelee,
+  mainPortraitUrl: AssetsImages.UnitRanged,
   name: 'Goblin Archers',
   level: 2,
 
