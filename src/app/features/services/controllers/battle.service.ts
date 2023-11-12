@@ -125,7 +125,7 @@ export class BattleController extends StoreClient() {
     if (!this.battleState.getAliveUnitsOfPlayer(enemyPlayer).length) {
       const deadUnitsOfCurrentPlayer = this.battleState.getDeadUnitsOfPlayer(currentPlayer);
       const deadUnitsOfEnemyPlayer = this.battleState.getDeadUnitsOfPlayer(enemyPlayer);
-      const summonedUnitsOfPlayer = this.battleState.getSummonsOfPlayer(enemyPlayer);
+      const summonedUnitsOfPlayer = this.battleState.getSummonsOfPlayer(currentPlayer);
 
       [...deadUnitsOfCurrentPlayer, ...deadUnitsOfEnemyPlayer, ...summonedUnitsOfPlayer].forEach((unitGroup) => {
         this.gameObjectsManager.destroyObject(unitGroup);
@@ -142,7 +142,7 @@ export class BattleController extends StoreClient() {
         }
       });
 
-      currentHero.setUnitGroups(currentPlayerUnitGroups, false);
+      currentHero.setUnitGroups(finalCurrentUnitsOfPlayer, false);
 
       currentStructure.isInactive = true;
 
