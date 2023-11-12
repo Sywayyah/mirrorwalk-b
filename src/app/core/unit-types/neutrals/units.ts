@@ -19,9 +19,6 @@ neutralsFraction.defineUnitType('Gnoll', {
     resistFire: 10,
   },
 
-  minQuantityPerStack: 5,
-  defaultTurnsPerRound: 1,
-
   baseRequirements: {
     gold: 100,
     redCrystals: 0,
@@ -45,9 +42,6 @@ neutralsFraction.defineUnitType('Thieves', {
 
   baseStats: createStats([[6, 7], 2, 1, 9, 16]),
 
-  minQuantityPerStack: 4,
-  defaultTurnsPerRound: 2,
-
   baseRequirements: {},
   neutralReward: {
     experience: 4.55,
@@ -67,9 +61,6 @@ neutralsFraction.defineUnitType('ForestTrolls', {
   ]),
 
   baseStats: createStats([[5, 7], 3, 4, 17, 10]),
-
-  minQuantityPerStack: 2,
-  defaultTurnsPerRound: 1,
 
   baseRequirements: {},
   neutralReward: {

@@ -42,9 +42,6 @@ const Wraiths: UnitBaseType = neutralsFraction.defineUnitType('SupremeGhosts', {
     return null;
   },
 
-  defaultTurnsPerRound: 1,
-  minQuantityPerStack: 1,
-
   defaultSpells: [
     FrightSpell,
   ],
@@ -87,9 +84,6 @@ neutralsFraction.defineUnitType('Ghosts', {
   },
 
   baseStats: createStats([[2, 3], 1, 2, 6, 8]),
-
-  defaultTurnsPerRound: 1,
-  minQuantityPerStack: 1,
 
   defaultSpells: [
     FrightSpell,
@@ -134,9 +128,6 @@ neutralsFraction.defineUnitType('Skeletons', {
 
   defaultSpells: [SkeletonsDamageBlock],
 
-  defaultTurnsPerRound: 1,
-  minQuantityPerStack: 1,
-
   baseRequirements: {
     gold: 55,
   },
@@ -176,9 +167,6 @@ const MasterLich = neutralsFraction.defineUnitType('MasterLich', {
     cannotBeSlowed: true,
   },
 
-  defaultTurnsPerRound: 1,
-  minQuantityPerStack: 1,
-
   baseRequirements: {
     gold: 400,
   },
@@ -187,7 +175,6 @@ const MasterLich = neutralsFraction.defineUnitType('MasterLich', {
     experience: 40,
     gold: 2,
   },
-
 });
 
 neutralsFraction.defineUnitType('Lich', {
@@ -217,9 +204,6 @@ neutralsFraction.defineUnitType('Lich', {
     isGhost: true,
     cannotBeSlowed: true,
   },
-
-  defaultTurnsPerRound: 1,
-  minQuantityPerStack: 1,
 
   baseRequirements: {
     gold: 400,

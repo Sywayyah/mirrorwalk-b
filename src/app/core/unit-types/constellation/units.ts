@@ -37,8 +37,6 @@ constellationFraction.defineUnitType('Sprite', {
     attackRating: 4,
   },
 
-  defaultTurnsPerRound: 1,
-  minQuantityPerStack: 1,
   neutralReward: {
     experience: 12,
     gold: 8,
@@ -66,8 +64,6 @@ constellationFraction.defineUnitType('Fencer', {
     attackRating: 5,
   },
 
-  defaultTurnsPerRound: 1,
-  minQuantityPerStack: 1,
   neutralReward: {
     experience: 12,
     gold: 8,
@@ -98,8 +94,6 @@ constellationFraction.defineUnitType('Sagittar', {
     attackRating: 5,
   },
 
-  defaultTurnsPerRound: 1,
-  minQuantityPerStack: 1,
   neutralReward: {
     experience: 18,
     gold: 14,
@@ -127,8 +121,6 @@ constellationFraction.defineUnitType('Chariot', {
     attackRating: 9,
   },
 
-  defaultTurnsPerRound: 1,
-  minQuantityPerStack: 1,
   neutralReward: {
     experience: 18,
     gold: 14,
@@ -161,9 +153,6 @@ constellationFraction.defineUnitType('NightWyvern', {
     health: 245,
     attackRating: 17,
   },
-
-  defaultTurnsPerRound: 1,
-  minQuantityPerStack: 1,
 
   neutralReward: {
     experience: 180,
@@ -201,9 +190,6 @@ constellationFraction.defineUnitType('StarDragon', {
     health: 175,
     attackRating: 16,
   },
-
-  defaultTurnsPerRound: 1,
-  minQuantityPerStack: 1,
 
   neutralReward: {
     experience: 180,
