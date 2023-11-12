@@ -26,7 +26,7 @@ export const ToothpickHero: HeroBase = fortFraction.createHero({
   ],
   resources: heroesDefaultResources,
   stats: {
-    mana: 14,
+    mana: 10,
     baseAttack: 2,
     baseDefence: 2,
   },

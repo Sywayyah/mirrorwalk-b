@@ -43,7 +43,7 @@ export const OnslaugtSpell = createSpell({
   }),
   type: {
     spellConfig: {
-      getManaCost: () => 3,
+      getManaCost: () => 1,
       init({ events, actions, vfx, ownerPlayer }) {
         events.on({
           PlayerTargetsSpell({ target }) {
