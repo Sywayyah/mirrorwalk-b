@@ -25,9 +25,14 @@
     </div>
   </div>
 
+  <!-- todo: Let player free slots, also handle let hire if there is a unit of same type -->
+  @if (!playerHasFreeSlots) {
+  <div>You don't have enough free slots in army.</div>
+  }
+
   <div>
     <button class="button"
-            [disabled]="!canConfirm"
+            [disabled]="!canConfirm || !playerHasFreeSlots"
             (click)="confirmHire()">
       Confirm
     </button>

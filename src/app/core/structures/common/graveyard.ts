@@ -35,7 +35,11 @@ export const GraveyardStructure: StructureGeneratorModel = {
 export const BeaconOfTheUndead: StructureGeneratorModel = {
   name: 'Beacon of the Undead',
   control: StuctureControl.Neutral,
-  description: 'Allows to upgrade your ghost units below level 4.',
+  description: () => ({
+    descriptions: [
+      'Allows to upgrade your ghost units below level 4.',
+    ]
+  }),
 
   /* todo: also, think about this. Maybe if we can have callbacks like this,
       then there is no need for 'onVisited'

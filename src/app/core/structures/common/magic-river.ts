@@ -4,7 +4,11 @@ export const MagicRiverStructure: StructureGeneratorModel = {
   control: StuctureControl.Neutral,
   actionPoints: 1,
   name: 'Magic River',
-  description: 'Walking near magic river, you feel your magical powers restored.\n\n+4 to mana and +2 to max mana',
+  description: () => ({
+    descriptions: [
+      'Walking near magic river, you feel your magical powers restored.\n\n+4 to mana and +2 to max mana',
+    ]
+  }),
 
   type: StructureType.Scripted,
 

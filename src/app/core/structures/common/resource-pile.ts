@@ -9,7 +9,9 @@ export const resPileStructure = (
   return {
     name: 'Pile of ' + resourceNames[resType],
     control: StuctureControl.Neutral,
-    description: `You found a pile of resources \n\n +${amount} ${resourceNames[resType]}`,
+    description: () => ({
+      descriptions: [`You found a pile of resources \n\n +${amount} ${resourceNames[resType]}`]
+    }),
 
     type: StructureType.Scripted,
 
@@ -32,10 +34,14 @@ export const resourcesPileStructure = (resources: Resources): StructureGenerator
   return {
     name: 'Pile of Resources',
     control: StuctureControl.Neutral,
-    description: `You found a pile of resources \n\n` + Object
-      .entries(resources)
-      .map(([resType, amount]) => `+${amount} ${resourceNames[resType as ResourceType]}`)
-      .join('\n'),
+    description: () => ({
+      descriptions: [
+        `You found a pile of resources \n\n` + Object
+          .entries(resources)
+          .map(([resType, amount]) => `+${amount} ${resourceNames[resType as ResourceType]}`)
+          .join('\n')
+      ],
+    }),
 
     type: StructureType.Scripted,
 

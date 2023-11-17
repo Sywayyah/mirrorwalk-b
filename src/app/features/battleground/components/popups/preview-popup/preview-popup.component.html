@@ -3,10 +3,12 @@
 </div>
 
 <div style="white-space: pre; padding: 16px;">
-  {{ data.struct.generator?.description }}
+  @if (struct.generator?.description) {
+  <mw-description [descriptions]="struct.generator?.description({thisStruct: struct})?.descriptions!" />
+  }
 </div>
 
 <div>
   <button (click)="closePopup()">Cancel</button>
-  <button (click)="accept()">Accept</button>
+  <button [disabled]="struct.controls?.accept === false" (click)="accept()">Accept</button>
 </div>

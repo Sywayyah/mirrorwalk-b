@@ -4,6 +4,7 @@ import { ItemBaseModel } from '../items';
 import { Player } from '../players';
 import { ResourceType } from '../resources';
 import { LocalEvents } from '../triggers';
+import { DescriptionElement } from '../ui';
 import { GenerationModel, UnitBaseType, UnitGroup } from '../unit-types';
 import { SturctEventsGroup } from './events';
 import { MapStructure } from './map-structures';
@@ -18,14 +19,14 @@ interface OnVisitedParams {
   spellsApi: SpellsApi,
   visitingPlayer: Player;
 }
-
+export type ControlsState = Record<'accept', boolean>;
 
 export type StructsAPI = {
-  players: PlayersApi,
-  localEvents: LocalEvents<typeof SturctEventsGroup>,
-  thisStruct: MapStructure,
-  eventFeed: EventFeedApi,
-  spells: SpellsApi,
+  players: PlayersApi;
+  localEvents: LocalEvents<typeof SturctEventsGroup>;
+  thisStruct: MapStructure;
+  eventFeed: EventFeedApi;
+  spells: SpellsApi;
 };
 
 export enum StructureType {
@@ -37,7 +38,8 @@ export interface StructureGeneratorModel {
   name: string;
   icon?: string;
   control: StuctureControl;
-  description?: string;
+  // turn into function
+  description?: (params: { thisStruct: MapStructure }) => { descriptions: (string | DescriptionElement)[] };
   actionPoints?: number;
   disableWeeklyGuardRise?: boolean;
 
@@ -51,7 +53,9 @@ export interface StructureGeneratorModel {
   // practically, this can be converted to local event
   // todo: might be obsolete
   onVisited?: (params: OnVisitedParams) => void;
-  config?: { init(api: StructsAPI): void };
+  config?: {
+    init(api: StructsAPI): void;
+  };
 }
 
 /* Rewarding resources models */

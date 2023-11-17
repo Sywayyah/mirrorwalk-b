@@ -24,14 +24,18 @@ export class HiringRewardPopupComponent extends BasicPopup<StructPopupData> impl
 
   public canConfirm: boolean = true;
 
+  playerHasFreeSlots: boolean = true;
+
   constructor(
     private readonly playersService: MwPlayersService,
     private readonly unitGroups: MwUnitGroupsService,
   ) {
     super();
+    this.playerHasFreeSlots = this.playersService.getCurrentPlayer().hero.hasFreeUnitSlots();
   }
 
   ngOnInit(): void {
+
     this.hiredGroups = (this.data.struct.reward as HiringReward).units.map(unit => {
       const baseCost: Partial<ResourcesModel> = {};
       const currentCost: Partial<ResourcesModel> = {};

@@ -171,6 +171,7 @@ export class InGameApiController extends StoreClient() {
 
   private createActionsApiRef(): CombatActionsRef {
     return {
+      getCurrentUnitGroup: () => this.battleState.currentUnitGroup,
       summonUnitsForPlayer: (ownerPlayer: Player, unitType: UnitBaseType, unitNumber: number) => {
         const summonedUnitGroup = this.battleState.summonUnitForPlayer(ownerPlayer, unitType, unitNumber);
         this.events.dispatch(UnitSummoned({ unitGroup: summonedUnitGroup }));

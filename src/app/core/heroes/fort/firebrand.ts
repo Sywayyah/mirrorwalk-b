@@ -7,7 +7,8 @@ import { Firestorm } from './spells/firestorm';
 
 export const FirebrandHero: HeroBase = fortFraction.createHero({
   name: 'Firebrand',
-  generalDescription: heroDescrElem(`A troll who harnessed the chaotic nature of fire magic that causes destruction both to enemies and allies. Starts with -15% Fire Resist.`),
+  // could also reduce gain of Fire Resist.
+  generalDescription: heroDescrElem(`A half-troll who harnessed the chaotic nature of fire magic, which ends up unfortunately both for his enemies and allies. All Fort units will start with -15% Fire Resist.`),
 
   image: AssetsImages.HeroKnight,
   abilities: [
@@ -30,6 +31,14 @@ export const FirebrandHero: HeroBase = fortFraction.createHero({
     baseDefence: 2,
   },
   defaultModifiers: {
-    resistFire: -15,
+    __unitConditionalMods(unitGroup) {
+      if (unitGroup.type.fraction === fortFraction) {
+        return {
+          resistFire: -15,
+        };
+      }
+
+      return null;
+    },
   },
 });
