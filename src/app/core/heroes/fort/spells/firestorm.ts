@@ -9,7 +9,7 @@ export const Firestorm = createSpell({
   activationType: SpellActivationType.Target,
   getDescription: () => ({
     descriptions: [
-      spellDescrElem(`Deals 100 fire damage to target and converts 30% to pure damage. Your current unit is going to suffer 25% of that damage.`),
+      spellDescrElem(`Deals 100 fire damage to target and converts 30% to pure damage. Your current unit is going to suffer 25% of that damage as fire damage.`),
     ],
   }),
   type: {
@@ -18,10 +18,14 @@ export const Firestorm = createSpell({
       init({ events, actions, vfx }) {
         events.on({
           PlayerTargetsSpell({ target }) {
-            actions.dealDamageTo(target, 70, DamageType.Fire);
-            actions.dealDamageTo(target, 30, DamageType.Magic);
+            const baseDamage = 100;
+            const targetFireDamage = baseDamage * 0.7;
+            const targetMagicDamage = baseDamage - targetFireDamage;
 
-            actions.dealDamageTo(actions.getCurrentUnitGroup(), 30, DamageType.Fire);
+            actions.dealDamageTo(target, targetFireDamage, DamageType.Fire);
+            actions.dealDamageTo(target, targetMagicDamage, DamageType.Magic);
+
+            actions.dealDamageTo(actions.getCurrentUnitGroup(), baseDamage * 0.25, DamageType.Fire);
           },
         })
 
