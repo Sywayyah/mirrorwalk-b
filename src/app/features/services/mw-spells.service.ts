@@ -44,7 +44,7 @@ export class MwSpellsService {
   }
 
   public canSpellBeCastOnUnit(spell: Spell, unitGroup: UnitGroup, isEnemy: boolean): boolean {
-    const spellConfig = spell.baseType.type.spellConfig;
+    const spellConfig = spell.baseType.config.spellConfig;
 
     const canActivateFn = spellConfig.targetCastConfig?.canActivate;
 

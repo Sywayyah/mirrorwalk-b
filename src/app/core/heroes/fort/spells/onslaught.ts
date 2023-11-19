@@ -12,7 +12,7 @@ export const OnslaughtBuffSpell = createSpell<{ mods: ModifiersModel }>({
       spellDescrElem(`This group of Raiders has increased stats and 40% lifesteal.`),
     ]
   }),
-  type: {
+  config: {
     spellConfig: {
       getManaCost: () => 3,
       init({ events, actions, vfx }) {
@@ -41,7 +41,7 @@ export const OnslaugtSpell = createSpell({
       spellDescrElem(`Can only be casted on Raiders. Increases their stats and grants lifesteal.`),
     ]
   }),
-  type: {
+  config: {
     spellConfig: {
       getManaCost: () => 1,
       init({ events, actions, vfx, ownerPlayer }) {

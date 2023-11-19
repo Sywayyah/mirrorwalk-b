@@ -25,6 +25,25 @@ const Halberdier = humansFraction.defineUnitType('Halberdier', {
 
   defaultModifiers: {
     counterattacks: true,
+    // maybe auras can only be granted from abilities..
+    // need to check and think.
+    __auraModifiers({
+      remoteness,
+      target,
+      thisUnit,
+    }) {
+      if (remoteness === 1) {
+        const count = thisUnit!.count * 0.8;
+
+        return {
+          chanceToBlock: 1,
+          damageBlockMin: count,
+          damageBlockMax: count,
+        };
+      }
+
+      return null;
+    }
   },
 
   baseRequirements: {

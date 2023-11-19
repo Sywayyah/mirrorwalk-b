@@ -56,14 +56,14 @@ export interface SpellDescription {
 
 export interface SpellBaseType<SpellStateType = DefaultSpellStateType> {
   name: string;
-  // level: number;
-  activationType: SpellActivationType;
-
-  getDescription(data: SpellDescriptionData<SpellStateType>): { descriptions: DescriptionElement[] };
-
-  type: SpellTypeConfig<SpellStateType>;
 
   icon: Icon;
+
+  activationType: SpellActivationType;
+
+  getDescription(data: SpellDescriptionData<SpellStateType>): { descriptions: (string | DescriptionElement)[] };
+
+  config: SpellTypeConfig<SpellStateType>;
 }
 
 export interface SpellTypeConfig<SpellStateType> {
@@ -143,7 +143,7 @@ export class Spell<T = DefaultSpellStateType> extends GameObject<SpellCreationPa
   }
 
   private updateCurrentManaCost() {
-    this.currentManaCost = this.baseType.type.spellConfig.getManaCost?.(this) || 0;
+    this.currentManaCost = this.baseType.config.spellConfig.getManaCost?.(this) || 0;
   }
 
   setOwnerObjectId(ownerUnitId: string): void {
@@ -161,7 +161,7 @@ export class Spell<T = DefaultSpellStateType> extends GameObject<SpellCreationPa
     // If spell has ownerUnitId in source info - run onAcquired
     const ownerUnitObjectId = this.sourceInfo.ownerUnitObjectId;
     if (ownerUnitObjectId) {
-      this.baseType.type.spellConfig.onAcquired?.({ spellInstance: this, ownerUnit: this.getApi().gameObjects.getObjectByFullId<UnitGroup>(ownerUnitObjectId) });
+      this.baseType.config.spellConfig.onAcquired?.({ spellInstance: this, ownerUnit: this.getApi().gameObjects.getObjectByFullId<UnitGroup>(ownerUnitObjectId) });
     }
   }
 

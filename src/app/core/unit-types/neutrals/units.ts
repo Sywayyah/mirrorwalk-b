@@ -42,6 +42,8 @@ neutralsFraction.defineUnitType('Thieves', {
 
   baseStats: createStats([[6, 7], 2, 1, 9, 16]),
 
+  defaultTurnsPerRound: 2,
+
   baseRequirements: {},
   neutralReward: {
     experience: 4.55,

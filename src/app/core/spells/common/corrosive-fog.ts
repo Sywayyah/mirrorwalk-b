@@ -91,7 +91,7 @@ export const CorrosiveFogDebuff: SpellBaseType<undefined | { debuffRoundsLeft: n
       ],
     }
   },
-  type: {
+  config: {
     spellConfig: {
       init({ events, actions, thisSpell, spellInstance, vfx }) {
         events.on({
@@ -143,7 +143,7 @@ export const CorrosiveFogSpell: SpellBaseType = {
       ],
     }
   },
-  type: {
+  config: {
     spellConfig: {
       targetCastConfig: {
         canActivate: canActivateOnEnemyFn,

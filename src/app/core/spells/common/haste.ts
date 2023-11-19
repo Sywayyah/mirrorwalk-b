@@ -59,7 +59,7 @@ export const HasteBuff: SpellBaseType = {
       ],
     }
   },
-  type: {
+  config: {
     spellConfig: {
       init: ({ events, actions, vfx }) => {
         const mods = actions.createModifiers({
@@ -91,7 +91,7 @@ export const HasteSpell: SpellBaseType = {
       ],
     }
   },
-  type: {
+  config: {
     spellConfig: {
       targetCastConfig: {
         canActivate: canActivateOnAllyFn,

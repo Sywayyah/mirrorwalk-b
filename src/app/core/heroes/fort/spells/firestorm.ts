@@ -12,7 +12,7 @@ export const Firestorm = createSpell({
       spellDescrElem(`Deals 100 fire damage to target and converts 30% to pure damage. Your current unit is going to suffer 25% of that damage as fire damage.`),
     ],
   }),
-  type: {
+  config: {
     spellConfig: {
       getManaCost: () => 3,
       init({ events, actions, vfx }) {

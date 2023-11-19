@@ -53,7 +53,7 @@ export class InGameApiController extends StoreClient() {
 
   @WireMethod(InitSpell)
   public initSpell({ spell, player, ownerUnit }: InitSpellAction): void {
-    spell.baseType.type.spellConfig.init({
+    spell.baseType.config.spellConfig.init({
       actions: this.createActionsApiRef(),
       events: {
         on: (handlers: SpellEventHandlers) => {

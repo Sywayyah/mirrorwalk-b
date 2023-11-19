@@ -64,7 +64,7 @@ export const FrozenArrowDebuff: SpellBaseType = {
       ],
     }
   },
-  type: {
+  config: {
     spellConfig: {
       init: ({ events, actions, vfx, thisSpell }) => {
         const mods = actions.createModifiers({
@@ -97,7 +97,7 @@ export const FrostArrowSpell: SpellBaseType = {
       ],
     }
   },
-  type: {
+  config: {
     spellConfig: {
       targetCastConfig: {
         canActivate: canActivateOnEnemyFn,

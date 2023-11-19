@@ -14,7 +14,7 @@ export const BlindnessSpell: SpellBaseType = {
       ],
     }
   },
-  type: {
+  config: {
     spellConfig: {
       getManaCost(spellInst) {
         return 0;

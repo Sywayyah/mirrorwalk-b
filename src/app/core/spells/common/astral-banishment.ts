@@ -12,7 +12,7 @@ export const AstralBanishmentSpell: SpellBaseType = {
   getDescription() { return { descriptions: [
     spellDescrElem(`Banishes unit into astral plane, where it cannot attack or be attacked, but receives increased magical damage.`),
   ] } },
-  type: {
+  config: {
     spellConfig: {
       getManaCost() { return 0; },
       init() { },

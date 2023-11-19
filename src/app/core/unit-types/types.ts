@@ -325,7 +325,7 @@ export class UnitGroup extends GameObject<UnitCreationParams> {
   addSpell(spell: Spell): void {
     this._spells.push(spell);
     spell.setOwnerObjectId(this.id);
-    spell.baseType.type.spellConfig.onAcquired?.({ spellInstance: spell, ownerUnit: this });
+    spell.baseType.config.spellConfig.onAcquired?.({ spellInstance: spell, ownerUnit: this });
     this.getApi().events.dispatch(GroupSpellsChanged({ unitGroup: this }));
     // todo: initialize listeners
   }

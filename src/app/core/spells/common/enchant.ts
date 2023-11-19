@@ -19,7 +19,7 @@ export const EnchantBuff: SpellBaseType = {
       ],
     }
   },
-  type: {
+  config: {
     spellConfig: {
       init: ({ events, actions, vfx }) => {
         const mods = actions.createModifiers({
@@ -50,7 +50,7 @@ export const EnchantSpell: SpellBaseType = {
       ],
     }
   },
-  type: {
+  config: {
     spellConfig: {
       targetCastConfig: {
         canActivate: canActivateOnEnemyFn,

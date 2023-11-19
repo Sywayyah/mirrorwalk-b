@@ -41,7 +41,7 @@ export const RainOfFireSpell: SpellBaseType = {
       descriptions,
     }
   },
-  type: {
+  config: {
     spellConfig: {
       targetCastConfig: {
         // can be changed to quicky test damage vs resists on your own units

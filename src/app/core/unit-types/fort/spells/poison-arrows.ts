@@ -12,7 +12,7 @@ export const PoisonArrowsDebuff = createSpell<{ poisonDamage: number }>({
       spellDescrElem(`This group is poisoned, receiving poison damage.`),
     ]
   }),
-  type: {
+  config: {
     spellConfig: {
       init({ events, actions, vfx, spellInstance }) {
         events.on({
@@ -36,7 +36,7 @@ export const PoisonArrowsSpell = createSpell({
       spellDescrElem(`Poisons enemy on attack, dealing ${ownerUnit!.count * 2} poison damage (2 damage per unit).`),
     ]
   }),
-  type: {
+  config: {
     spellConfig: {
       init({ events, actions, vfx, ownerUnit, ownerPlayer }) {
         events.on({

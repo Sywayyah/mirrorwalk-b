@@ -94,7 +94,7 @@ export const PoisonCloudDebuff: SpellBaseType<undefined | { debuffRoundsLeft: nu
       ],
     }
   },
-  type: {
+  config: {
     spellConfig: {
       init({ events, actions, thisSpell, spellInstance, vfx }) {
         events.on({
@@ -162,7 +162,7 @@ export const PoisonCloudSpell: SpellBaseType = {
       ],
     }
   },
-  type: {
+  config: {
     spellConfig: {
       targetCastConfig: {
         canActivate: canActivateOnEnemyFn,

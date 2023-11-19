@@ -53,7 +53,7 @@ export const HealSpell: SpellBaseType = {
       descriptions: [],
     }
   },
-  type: {
+  config: {
     spellConfig: {
       targetCastConfig: {
         canActivate: canActivateOnAllyFn,

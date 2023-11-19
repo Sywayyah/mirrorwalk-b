@@ -11,7 +11,7 @@ export const EssenceLeakDebuff = createSpell({
     ]
   }),
   name: 'Life loss',
-  type: {
+  config: {
     spellConfig: {
       getManaCost: () => 0,
       init() { },
@@ -30,7 +30,7 @@ export const EssenceLeak = createSpell({
       spellDescrElem('Places a curse on enemy. Any time target is attacked, the attacker will be healed by 1 point per each Sprite in the current group'),
     ]
   }),
-  type: {
+  config: {
     spellConfig: {
       getManaCost: () => 2,
       init({

@@ -40,7 +40,7 @@ export const createDamageBlockSpell = (config: {
         ]
       };
     },
-    type: {
+    config: {
       spellConfig: {
         onAcquired({ ownerUnit, spellInstance }) {
           console.log('Aquired', spellInstance);

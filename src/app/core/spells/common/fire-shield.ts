@@ -59,7 +59,7 @@ export const FireShieldBuff: SpellBaseType = {
       ],
     }
   },
-  type: {
+  config: {
     spellConfig: {
       init: ({ events, actions, vfx }) => {
         // change it to non-conditional modifiers maybe
@@ -98,7 +98,7 @@ export const FireShieldSpell: SpellBaseType = {
       ],
     }
   },
-  type: {
+  config: {
     spellConfig: {
       targetCastConfig: {
         canActivate: canActivateOnAllyFn,

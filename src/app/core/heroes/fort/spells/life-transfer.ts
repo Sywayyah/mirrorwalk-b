@@ -11,7 +11,7 @@ export const LifeTransferSpell = createSpell({
       spellDescrElem(`Reallocates health from enemies, dealing 20 damage to all enemies and equally distributing the dealt damage as healing among your army.`),
     ]
   }),
-  type: {
+  config: {
     spellConfig: {
       getManaCost: () => 3,
       init({ events, actions, vfx, ownerPlayer }) {

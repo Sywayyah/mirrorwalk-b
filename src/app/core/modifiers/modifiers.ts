@@ -31,7 +31,7 @@ export interface ModifiersModel extends Specialties {
   // to implement
   retaliationDamagePercent: number;
 
-// critical damage
+  // critical damage
   criticalDamageChance: number;
   criticalDamageMul: number;
 
@@ -71,7 +71,7 @@ export interface ModifiersModel extends Specialties {
 
   // might get obsolete.
   // same as above, but for auras.
-  __auraModifiers: () => Modifiers;
+  __auraModifiers: (params: { target: UnitGroup, thisUnit?: UnitGroup, remoteness?: number, currentGroupPosition?: number }) => Modifiers | null;
 }
 
 export type Modifiers = Partial<ModifiersModel>;

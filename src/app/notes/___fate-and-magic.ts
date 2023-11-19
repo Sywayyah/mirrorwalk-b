@@ -24,3 +24,7 @@
   Veasin: Adjust poison abilities, maybe could be Poisoned Weapons or Weakening,
     that makes enemy take additional damage each time he is attacked.
 */
+
+/*
+  Bracodeira Tarrasque
+*/

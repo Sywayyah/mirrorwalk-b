@@ -15,7 +15,7 @@ export const LifeObeliskSpell = createSpell({
       spellDescrElem(`Cannot be casted while there is another obelisk.`),
     ]
   }),
-  type: {
+  config: {
     spellConfig: {
       getManaCost: () => 3,
       init({ events, actions, vfx }) {

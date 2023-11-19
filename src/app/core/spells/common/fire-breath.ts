@@ -24,7 +24,7 @@ export const FireBreath: SpellBaseType = {
       ]
     };
   },
-  type: {
+  config: {
     spellConfig: {
       init({ actions, vfx, ownerPlayer, ownerUnit, events, thisSpell }) {
         events.on({

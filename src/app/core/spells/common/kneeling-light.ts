@@ -21,7 +21,7 @@ export const KneelingLightDebuff: SpellBaseType = {
       ],
     }
   },
-  type: {
+  config: {
     spellConfig: {
       init: ({ events, actions, vfx }) => {
         events.on({
@@ -58,7 +58,7 @@ export const KneelingLight: SpellBaseType = {
     }
   },
   activationType: SpellActivationType.Target,
-  type: {
+  config: {
     spellConfig: {
       targetCastConfig: {
         canActivate: canActivateOnEnemyFn,
