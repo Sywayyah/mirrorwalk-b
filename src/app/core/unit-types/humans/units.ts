@@ -304,7 +304,7 @@ humansFraction.defineUnitType('Cavalry', {
 
 const Firebirds = humansFraction.defineUnitType('Firebird', {
   name: 'Firebirds',
-  mainPortraitUrl: AssetsImages.UnitMelee,
+  mainPortraitUrl: AssetsImages.FireBird,
   level: 5,
 
   getDescription: simpleDescriptions([
@@ -335,7 +335,7 @@ const Firebirds = humansFraction.defineUnitType('Firebird', {
 
 humansFraction.defineUnitType('MysticBird', {
   name: 'Mystic Birds',
-  mainPortraitUrl: AssetsImages.UnitMelee,
+  mainPortraitUrl: AssetsImages.FireBird,
   level: 5,
 
   getDescription: simpleDescriptions([
