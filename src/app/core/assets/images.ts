@@ -18,4 +18,5 @@ export const AssetsImages = {
 
   HeroTaltir: heroes('hero-taltir'),
   HeroHelvetica: heroes('hero-helvetica'),
+  HeroBlackbird: heroes('hero-blackbird'),
 };
