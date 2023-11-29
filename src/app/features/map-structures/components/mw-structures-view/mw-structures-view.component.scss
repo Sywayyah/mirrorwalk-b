@@ -26,6 +26,16 @@
   pointer-events: none;
 }
 
+.struct:hover .path-line {
+  opacity: 0.6;
+
+  >.line {
+    stroke-width: 7;
+    animation: pathanim 2s linear infinite;
+  }
+
+}
+
 .line {
   stroke: rgb(0, 0, 0);
   stroke-width: 5;

@@ -29,15 +29,35 @@
   </div>
 
   <div class="groups-container">
+    @for (slot of player.hero.mainUnitSlots; track $index) {
+
+    @if (slot.unitGroup) {
     <div class="player-group-card"
          [style.background]="player.color"
-         (click)="displayUnitGroupInfo(group)"
-         (mwNoContextMenu)="displayUnitGroupInfo(group)"
-         [mwActionHint]="'Inspect group of ' + group.count + ' ' + group.type.name"
-         *ngFor="let group of player.hero.unitGroups">
-      <div class="group-name">{{group.type.name}}</div>
+         (click)="displayUnitGroupInfo(slot.unitGroup)"
+         (mwNoContextMenu)="displayUnitGroupInfo(slot.unitGroup)"
+         [mwActionHint]="'Inspect group of ' + slot.unitGroup.count + ' ' + slot.unitGroup.type.name">
+      <div class="group-name">{{slot.unitGroup.type.name}}</div>
 
-      <div>{{group.count}}</div>
+      <div>{{slot.unitGroup.count}}</div>
     </div>
+    }
+
+    }
+
+
+    @for (slot of player.hero.reserveUnitSlots; track $index) {
+    @if (slot.unitGroup) {
+    <div class="player-group-card reserve"
+         [style.background]="player.color"
+         (click)="displayUnitGroupInfo(slot.unitGroup)"
+         (mwNoContextMenu)="displayUnitGroupInfo(slot.unitGroup)"
+         [mwActionHint]="'Inspect group of ' + slot.unitGroup.count + ' ' + slot.unitGroup.type.name">
+      <div class="group-name">{{slot.unitGroup.type.name}}</div>
+
+      <div>{{slot.unitGroup.count}}</div>
+    </div>
+    }
+    }
   </div>
 </div>
