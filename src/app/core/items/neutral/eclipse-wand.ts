@@ -14,6 +14,7 @@ export const ItemEclipseWand: ItemBaseModel<{}> = {
     icon: 'crystal-wand',
   },
   cost: { gold: 550 },
+  sellingCost: { gold: 300 },
   defaultState: {},
   description({ thisItemBase }) {
     return {
