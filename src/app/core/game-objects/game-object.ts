@@ -59,6 +59,14 @@ export class GameObject<CreationParams extends object = object> {
 
   // method which is going to be called when object is being disposed
   onDestroy(): void { }
+
+  addCustomData<T extends object>(data: T): void {
+    this.api.gameObjects.addCustomData(this.id, data);
+  }
+
+  getCustomData<T extends object>(): T | undefined {
+    return this.api.gameObjects.getCustomData(this.id);
+  }
 }
 
 export type CreationParams<T> = T extends GameObject<infer K> ? K : never;

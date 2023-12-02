@@ -160,10 +160,10 @@ const itemMarket: BuidlingBase = {
   },
   description: 'Sells items',
   config: {
-    init({ localEvents, thisBuilding, gameObjects }) {
+    init({ localEvents, thisBuilding }) {
       localEvents.on({
         Built() {
-          gameObjects.addCustomData<SellingBuildingData>(thisBuilding, {
+          thisBuilding.addCustomData<SellingBuildingData>({
             items: [IronPikeItem, IrtonPlateItem],
             selling: true,
           });
