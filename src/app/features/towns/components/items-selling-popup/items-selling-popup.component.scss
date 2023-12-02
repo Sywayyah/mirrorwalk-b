@@ -1,10 +1,14 @@
 .item-list {
   display: flex;
-
+  gap: 8px;
+  justify-content: center;
 }
 
 .item {
   border: 1px solid gray;
+  border-radius: 4px;
+
   padding: 4px;
   font-size: 13px;
+  cursor: pointer;
 }
