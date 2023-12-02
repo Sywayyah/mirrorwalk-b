@@ -7,6 +7,10 @@ export const SwordOfTheBattleMageItem: ItemBaseModel = {
   icon: {
     icon: 'sword',
   },
+  cost: {
+    gold: 1000,
+    redCrystals: 1,
+  },
   slotType: ItemSlotType.Weapon,
   staticMods: {
     heroBonusAttack: 3,
@@ -18,10 +22,10 @@ export const SwordOfTheBattleMageItem: ItemBaseModel = {
     specialtyLightningMastery: 1,
 
   },
-  description({ thisItem }) {
+  description({ thisItem, thisItemBase }) {
     return {
       descriptions: [
-        itemStatsDescr(thisItem),
+        itemStatsDescr(thisItemBase),
       ],
     }
   },

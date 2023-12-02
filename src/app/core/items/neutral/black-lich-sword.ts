@@ -23,10 +23,14 @@ export const BlackLichSwordItem: ItemBaseModel = {
   icon: {
     icon: 'bat-sword',
   },
-  description({ thisItem }) {
+  cost: {
+    gold: 1000,
+    gems: 1,
+  },
+  description({ thisItemBase }) {
     return {
       descriptions: [
-        itemStatsDescr(thisItem),
+        itemStatsDescr(thisItemBase),
         spellDescrElem(`Grants ${lifestealValue}% Lifesteal to non-ranged units up to level 4.`),
       ],
     };

@@ -1,8 +1,17 @@
 <div>Items Market</div>
 
-@for (item of items; track $index) {
-{{item.name}}
-}
+<div class="item-list">
+  @for (item of items; track $index) {
+  <div class="item">
+    <mw-item-icon [itemBase]="item" />
+
+    {{item.name}}
+
+    <mw-resources-cost style="display: flex; flex-direction: column;"
+                       [cost]="item.cost" />
+  </div>
+  }
+</div>
 
 <button mw-main-button
         (click)="popup.close()">

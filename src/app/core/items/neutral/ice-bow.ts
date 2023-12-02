@@ -12,10 +12,13 @@ export const ItemIceBow: ItemBaseModel<{}> = {
     heroBonusAttack: 1,
     specialtyArchery: 1,
   },
-  description({ thisItem }) {
+  cost: {
+    gold: 500,
+  },
+  description({ thisItemBase }) {
     return {
       descriptions: [
-        itemStatsDescr(thisItem),
+        itemStatsDescr(thisItemBase),
         spellDescrElem('Bow which radiates cold, grants level 1 Frost Arrow'),
       ],
     };

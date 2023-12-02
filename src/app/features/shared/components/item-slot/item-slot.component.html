@@ -3,6 +3,7 @@
   <div *ngIf="isEquipped; else isUnequipped">
     <mw-item-icon class="hoverable"
                   [item]="equippedItem!"
+                  [itemBase]="equippedItem!.baseType"
                   [hintPos]="hintPos" />
   </div>
 
@@ -26,6 +27,7 @@
       <mw-item-icon *ngFor="let item of availableItemsForSlot"
                     class="hoverable"
                     [item]="item"
+                    [itemBase]="item.baseType"
                     hintPos="above"
                     (click)="equipItem(item)" />
     </div>

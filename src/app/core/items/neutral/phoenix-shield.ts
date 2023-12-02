@@ -7,6 +7,10 @@ export const PhoenixShieldItem = createItem({
   name: 'Phoenix Shield',
   icon: 'fire-shield',
   slot: ItemSlotType.Shield,
+  cost: {
+    gold: 750,
+    gems: 1,
+  },
   stats: {
     heroBonusDefence: 2,
     heroBonusAttack: 1,

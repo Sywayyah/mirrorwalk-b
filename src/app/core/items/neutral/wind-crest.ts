@@ -11,10 +11,13 @@ export const ItemWindCrest: ItemBaseModel = {
   icon: {
     icon: 'feather-wing',
   },
-  description({ thisItem }) {
+  cost: {
+    gold: 500,
+  },
+  description({ thisItem, thisItemBase }) {
     return {
       descriptions: [
-        itemStatsDescr(thisItem),
+        itemStatsDescr(thisItemBase),
         spellDescrElem('At the beginning of the fight, grants Wind Blessing (level 1) effect to your ranged units for 1 round.'),
       ],
     };

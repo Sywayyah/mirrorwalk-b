@@ -21,10 +21,14 @@ export const FamineScytheItem: ItemBaseModel = {
   icon: {
     icon: 'scythe',
   },
-  description({ thisItem }) {
+  cost: {
+    gold: 6000,
+    redCrystals: 3
+  },
+  description({ thisItemBase }) {
     return {
       descriptions: [
-        itemStatsDescr(thisItem),
+        itemStatsDescr(thisItemBase),
         spellDescrElem(`Decreases enemy attack and defence by 5, slows down all enemy units by 6`),
       ],
     };

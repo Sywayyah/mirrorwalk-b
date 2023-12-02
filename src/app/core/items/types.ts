@@ -4,6 +4,7 @@ import { GameObject } from '../game-objects';
 import { Hero } from '../heroes';
 import { Modifiers } from '../modifiers';
 import { Player } from '../players';
+import { Resources } from '../resources';
 import { SpellBaseType } from '../spells';
 import { DescriptionElement } from '../ui';
 import { UnitGroup } from '../unit-types';
@@ -26,7 +27,8 @@ export enum ItemSlotType {
 }
 
 export interface ItemDescriptionData<T extends object> {
-  thisItem: Item<T>;
+  thisItem?: Item<T>;
+  thisItemBase: ItemBaseModel<T>;
 }
 
 export interface ItemDescription {
@@ -40,6 +42,7 @@ export interface ItemsEventsRef {
 export interface ItemBaseModel<StateType extends object = object> {
   defaultState?: StateType;
 
+  cost?: Resources;
   slotType: ItemSlotType;
   name: string;
   icon: Icon;

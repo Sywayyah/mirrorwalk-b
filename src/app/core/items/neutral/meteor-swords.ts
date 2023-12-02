@@ -5,21 +5,23 @@ import { itemStatsDescr, spellDescrElem } from '../../ui';
 export const ItemMeteorSwords: ItemBaseModel<{}> = {
   name: 'Meteor Swords',
   slotType: ItemSlotType.Weapon,
+  icon: {
+    icon: 'dervish-swords',
+  },
   staticMods: {
     heroBonusAttack: 2,
     specialtyFireMastery: 1,
   },
-  icon: {
-    icon: 'dervish-swords',
+  cost: {
+    gold: 600,
   },
   bonusAbilities: [
     { spell: MeteorSpell, level: 1 },
   ],
-  defaultState: {},
-  description({ thisItem }) {
+  description({ thisItemBase }) {
     return {
       descriptions: [
-        itemStatsDescr(thisItem),
+        itemStatsDescr(thisItemBase),
         spellDescrElem('Two large black swords with an astronomical map depicted in gold on the blade. Grants Level 1 Meteor ability.'),
       ],
     };

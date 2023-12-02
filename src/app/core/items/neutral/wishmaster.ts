@@ -12,10 +12,10 @@ export const WishmasterItem: ItemBaseModel = {
   icon: {
     icon: 'feather-wing',
   },
-  description({ thisItem }) {
+  description({ thisItem, thisItemBase }) {
     return {
       descriptions: [
-        itemStatsDescr(thisItem),
+        itemStatsDescr(thisItemBase),
         spellDescrElem('An artefact of incredible strength.'),
       ],
     };
