@@ -15,9 +15,15 @@ export type GameObjectClass<T extends GameObject> = Type<T> & {
 };
 
 export interface GameObjectsManagerAPI {
-  createNewGameObject<T extends GameObject>(gameObjectClass: GameObjectClass<T>, creationParams: CreationParams<T>, id?: string): T;
+  createNewGameObject<T extends GameObject>(
+    gameObjectClass: GameObjectClass<T>,
+    creationParams: CreationParams<T>,
+    id?: string
+  ): T;
   getObjectByFullId<T extends GameObject>(gameObjectId: string): T;
   destroyObject<T extends GameObject>(object: T): void;
+  addCustomData<T extends object>(idOrObject: string | GameObject, data: T): void;
+  getCustomData<T extends object>(idOrObject: string | GameObject): T | undefined;
 }
 
 export interface EventFeedApi {

@@ -1,0 +1,10 @@
+<div>Items Market</div>
+
+@for (item of items; track $index) {
+{{item.name}}
+}
+
+<button mw-main-button
+        (click)="popup.close()">
+  Close
+</button>

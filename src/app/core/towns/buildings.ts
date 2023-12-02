@@ -1,12 +1,13 @@
-import { GlobalEventsApi, PlayersApi } from "../api/game-api";
-import { GameObject } from "../game-objects";
-import { Resources } from "../resources";
-import { LocalEvents } from "../triggers";
-import { UnitBaseType } from "../unit-types";
-import { BuildingsEventsGroup } from "./events";
+import { GlobalEventsApi, PlayersApi } from '../api/game-api';
+import { GameObject, GameObjectsManagerAPI } from '../game-objects';
+import { Resources } from '../resources';
+import { LocalEvents } from '../triggers';
+import { UnitBaseType } from '../unit-types';
+import { BuildingsEventsGroup } from './events';
 
 export enum ActivityTypes {
   Hiring,
+  ItemsSelling,
 }
 
 interface BuildingAcitivty<T extends ActivityTypes = ActivityTypes> {
@@ -29,6 +30,9 @@ export interface HiringActivity extends BuildingAcitivty<ActivityTypes.Hiring> {
   upgrade?: boolean;
 }
 
+export interface ItemsSellingActivity
+  extends BuildingAcitivty<ActivityTypes.ItemsSelling> {}
+
 // Events & APIs should be revised and possibly simplified
 /** Major possible improvement points:
  *
@@ -40,6 +44,8 @@ export type BuldingsAPI = {
   players: PlayersApi;
   localEvents: LocalEvents<typeof BuildingsEventsGroup>;
   globalEvents: GlobalEventsApi;
+  thisBuilding: Building;
+  gameObjects: GameObjectsManagerAPI;
 };
 
 export interface BuidlingBase {
@@ -58,7 +64,7 @@ export interface BuildingLevel {
 
 export interface BuildingDescription {
   description: string;
-  levels: { building: BuidlingBase, cost: Resources }[];
+  levels: { building: BuidlingBase; cost: Resources }[];
   icon: string;
   tier: number;
   baseName: string;

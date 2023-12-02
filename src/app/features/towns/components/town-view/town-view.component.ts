@@ -6,14 +6,14 @@ import { PopupService } from 'src/app/features/shared/components';
 import { EventsService } from 'src/app/store';
 import { BuildPopupComponent } from '../build-popup/build-popup.component';
 import { HiringPopupComponent } from '../hiring-popup/hiring-popup.component';
+import { ItemsSellingPopupComponent } from '../items-selling-popup/items-selling-popup.component';
 
 @Component({
   selector: 'mw-town-view',
   templateUrl: './town-view.component.html',
-  styleUrls: ['./town-view.component.scss']
+  styleUrls: ['./town-view.component.scss'],
 })
 export class TownViewComponent {
-
   public buildingsByTiers: Record<number, Building[]> = {};
   public town = this.state.createdGame.town;
   public builtColor: string = this.state.createdGame.selectedColor;
@@ -21,9 +21,11 @@ export class TownViewComponent {
   constructor(
     private state: State,
     private events: EventsService,
-    private popupService: PopupService,
+    private popupService: PopupService
   ) {
-    this.buildingsByTiers = Object.entries(this.town.base.availableBuildings).reduce((map, [id, building]) => {
+    this.buildingsByTiers = Object.entries(
+      this.town.base.availableBuildings
+    ).reduce((map, [id, building]) => {
       if (!map[building.tier]) {
         map[building.tier] = [this.town.buildings[id]];
       } else {
@@ -47,7 +49,7 @@ export class TownViewComponent {
           building,
           targetLevel: 1,
         },
-        class: 'dark'
+        class: 'dark',
       });
 
       return;
@@ -65,8 +67,13 @@ export class TownViewComponent {
             data: { building, town: this.town, hiringActivity },
             // class: 'dark',
           });
+          break;
+        case ActivityTypes.ItemsSelling:
+          this.popupService.createBasicPopup({
+            component: ItemsSellingPopupComponent,
+            data: { building },
+          });
       }
     }
-
   }
 }

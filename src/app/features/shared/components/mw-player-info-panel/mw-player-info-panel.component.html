@@ -29,7 +29,7 @@
   </div>
 
   <div class="groups-container">
-    @for (slot of player.hero.mainUnitSlots; track $index) {
+    @for (slot of player.hero.mainUnitSlots; track slot) {
 
     @if (slot.unitGroup) {
     <div class="player-group-card"
@@ -46,7 +46,7 @@
     }
 
 
-    @for (slot of player.hero.reserveUnitSlots; track $index) {
+    @for (slot of player.hero.reserveUnitSlots; track slot) {
     @if (slot.unitGroup) {
     <div class="player-group-card reserve"
          [style.background]="player.color"

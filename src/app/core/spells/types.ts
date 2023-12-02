@@ -68,6 +68,9 @@ export interface SpellBaseType<SpellStateType = DefaultSpellStateType> {
 
 export interface SpellTypeConfig<SpellStateType> {
   spellConfig: SpellConfig<SpellStateType>;
+  flags?: Partial<{
+    isAura: boolean,
+  }>,
 }
 
 export interface SpellCombatEventsRef {

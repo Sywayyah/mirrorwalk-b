@@ -53,7 +53,14 @@ export class InGameApiController extends StoreClient() {
 
   @WireMethod(InitSpell)
   public initSpell({ spell, player, ownerUnit }: InitSpellAction): void {
-    spell.baseType.config.spellConfig.init({
+    const baseType = spell.baseType;
+
+    // Aura spells have different lifecycle.
+    if (baseType.config.flags?.isAura) {
+      return;
+    }
+
+    baseType.config.spellConfig.init({
       actions: this.createActionsApiRef(),
       events: {
         on: (handlers: SpellEventHandlers) => {
@@ -123,6 +130,8 @@ export class InGameApiController extends StoreClient() {
         }
       },
       globalEvents: this.apiProvider.getGlobalEventsApi(),
+      thisBuilding: building,
+      gameObjects: this.gameObjectsManager,
     });
   }
 

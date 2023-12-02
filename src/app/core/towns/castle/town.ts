@@ -1,6 +1,8 @@
 import { MeditateActionCard } from '../../action-cards/player-actions';
 import { AddActionCardsToPlayer } from '../../events';
 import { HUMANS_UNIT_TYPES, humansFraction } from '../../fractions';
+import { IrtonPlateItem } from '../../items/neutral';
+import { IronPikeItem } from '../../items/neutral/iron-pike';
 import { ActivityTypes, BuidlingBase, HiringActivity } from '../buildings';
 import { TownBase } from '../types';
 
@@ -8,11 +10,15 @@ function createHiringActivity(
   unitType: HUMANS_UNIT_TYPES,
   growth: number,
   unitGrowthGroup: string,
-  upgrade: boolean = false,
+  upgrade: boolean = false
 ): HiringActivity {
   return {
     type: ActivityTypes.Hiring,
-    hiring: { type: humansFraction.getUnitType(unitType), growth, refillDaysInterval: 7 },
+    hiring: {
+      type: humansFraction.getUnitType(unitType),
+      growth,
+      refillDaysInterval: 7,
+    },
     unitGrowthGroup,
     growth,
     growthIntervalDays: 7,
@@ -24,6 +30,7 @@ export type CastleTownBuildings =
   | 'town-center'
   | 'market'
   | 'magic-school'
+  | 'items-market'
   | 'fate-halls'
   | 'tavern'
   | 'training-camp'
@@ -32,7 +39,6 @@ export type CastleTownBuildings =
   | 'cavalry-halls'
   | 'magic-tower';
 
-
 const townCenter: BuidlingBase = {
   name: 'Town Center',
   description: 'Earns 500 gold each day.',
@@ -40,11 +46,13 @@ const townCenter: BuidlingBase = {
     init({ players, localEvents }) {
       localEvents.on({
         NewDayBegins() {
-          players.giveResourcesToPlayer(players.getCurrentPlayer(), { gold: 500 });
+          players.giveResourcesToPlayer(players.getCurrentPlayer(), {
+            gold: 500,
+          });
         },
-      })
-    }
-  }
+      });
+    },
+  },
 };
 
 const market: BuidlingBase = {
@@ -53,24 +61,29 @@ const market: BuidlingBase = {
 
 const highTower: BuidlingBase = {
   name: 'High Tower',
-  description: 'Gives 1 Meditation action card instantly and at the beginning of each week.',
+  description:
+    'Gives 1 Meditation action card instantly and at the beginning of each week.',
   config: {
     init({ localEvents, players, globalEvents }) {
-      globalEvents.dispatch(AddActionCardsToPlayer({
-        actionCardStacks: [{ card: MeditateActionCard, count: 1 }],
-        player: players.getCurrentPlayer(),
-      }));
+      globalEvents.dispatch(
+        AddActionCardsToPlayer({
+          actionCardStacks: [{ card: MeditateActionCard, count: 1 }],
+          player: players.getCurrentPlayer(),
+        })
+      );
 
       localEvents.on({
         NewWeekStarts() {
-          globalEvents.dispatch(AddActionCardsToPlayer({
-            actionCardStacks: [{ card: MeditateActionCard, count: 1 }],
-            player: players.getCurrentPlayer(),
-          }));
+          globalEvents.dispatch(
+            AddActionCardsToPlayer({
+              actionCardStacks: [{ card: MeditateActionCard, count: 1 }],
+              player: players.getCurrentPlayer(),
+            })
+          );
         },
       });
     },
-  }
+  },
 };
 
 const tavern: BuidlingBase = {
@@ -140,6 +153,25 @@ const upgradedMagicTower: BuidlingBase = {
   activity: createHiringActivity('MysticBird', 2, 'firebirds', true),
 };
 
+const itemMarket: BuidlingBase = {
+  name: 'Item market',
+  activity: {
+    type: ActivityTypes.ItemsSelling,
+  },
+  description: 'Sells items',
+  config: {
+    init({ globalEvents, localEvents, players, thisBuilding, gameObjects }) {
+      localEvents.on({
+        Built() {
+          gameObjects.addCustomData(thisBuilding, {
+            items: [IronPikeItem, IrtonPlateItem],
+          });
+        },
+      });
+    },
+  },
+};
+
 // will be reworked, need somehow to process it in the fraction itself
 export const castleTownBase: TownBase<CastleTownBuildings> = {
   name: 'Castle',
@@ -147,47 +179,44 @@ export const castleTownBase: TownBase<CastleTownBuildings> = {
     'town-center': {
       baseName: 'Town Center',
       description: 'Grants you daily income',
-      levels: [
-        { building: townCenter, cost: { gold: 1000 } },
-      ],
+      levels: [{ building: townCenter, cost: { gold: 1000 } }],
       icon: 'capitol',
       tier: 1,
     },
-    'market': {
-      baseName: 'Market',
-      description: 'Allows to trade resources',
-      levels: [
-        { building: market, cost: { gold: 1500, wood: 2 } }
-      ],
-      icon: 'gavel',
+    'items-market': {
+      baseName: 'Items Market',
+      description: `Sells items`,
+      icon: 'key-basic',
+      levels: [{ building: itemMarket, cost: { gold: 500 } }],
       tier: 1,
     },
-    "magic-school": {
+    market: {
+      baseName: 'Market',
+      description: 'Allows to trade resources',
+      levels: [{ building: market, cost: { gold: 1500, wood: 2 } }],
+      icon: 'gavel',
+      tier: 2,
+    },
+    'magic-school': {
       baseName: 'Magic School',
       description: 'Allows you to learn spells for your hero',
-      levels: [
-        { building: highTower, cost: { gold: 1000, gems: 2 } }
-      ],
+      levels: [{ building: highTower, cost: { gold: 1000, gems: 2 } }],
       icon: 'burning-book',
       tier: 2,
     },
-    'tavern': {
+    tavern: {
       baseName: 'Tavern',
       description: 'Allows to hire neutral units',
-      levels: [
-        { building: tavern, cost: { gold: 1250, wood: 3 } },
-      ],
+      levels: [{ building: tavern, cost: { gold: 1250, wood: 3 } }],
       icon: 'hood',
       tier: 2,
     },
     'fate-halls': {
       baseName: 'Halls of Fate',
       description: 'Allows to develop your hero',
-      levels: [
-        { building: { name: 'Halls of Fate' }, cost: { gold: 1000 } },
-      ],
+      levels: [{ building: { name: 'Halls of Fate' }, cost: { gold: 1000 } }],
       icon: 'barrier',
-      tier: 2,
+      tier: 3,
     },
     'training-camp': {
       baseName: 'Training Camp',
@@ -283,18 +312,14 @@ export const castleTownBase: TownBase<CastleTownBuildings> = {
     'halls-of-knights': {
       baseName: 'Halls of Knights',
       description: 'Trains Knights',
-      levels: [
-        { building: hallsOfKnights, cost: { gold: 1000, wood: 5 } },
-      ],
+      levels: [{ building: hallsOfKnights, cost: { gold: 1000, wood: 5 } }],
       icon: 'crossed-swords',
       tier: 2,
     },
     'cavalry-halls': {
       baseName: 'Cavalry Halls',
       description: 'Trains Cavalry',
-      levels: [
-        { building: cavalryStalls, cost: { gold: 1200, wood: 7 } },
-      ],
+      levels: [{ building: cavalryStalls, cost: { gold: 1200, wood: 7 } }],
       icon: 'horseshoe',
       tier: 3,
     },
