@@ -43,6 +43,7 @@ export interface ItemBaseModel<StateType extends object = object> {
   defaultState?: StateType;
 
   cost?: Resources;
+  sellingCost?: Resources;
   slotType: ItemSlotType;
   name: string;
   icon: Icon;

@@ -11,6 +11,9 @@ export const LightBootsItem = createItem({
   cost: {
     gold: 425,
   },
+  sellingCost: {
+    gold: 200,
+  },
   stats: {
     heroBonusDefence: 1,
     __unitConditionalMods(unit) {

@@ -11,6 +11,9 @@ export const PhoenixShieldItem = createItem({
     gold: 750,
     gems: 1,
   },
+  sellingCost: {
+    gold: 400,
+  },
   stats: {
     heroBonusDefence: 2,
     heroBonusAttack: 1,

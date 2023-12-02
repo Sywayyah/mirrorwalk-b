@@ -8,6 +8,9 @@ export const IronPikeItem = createItem({
   cost: {
     gold: 420,
   },
+  sellingCost: {
+    gold: 250,
+  },
   stats: {
     specialtyCombatTactics: 1,
     heroBonusAttack: 1,

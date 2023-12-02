@@ -15,6 +15,9 @@ export const ItemMeteorSwords: ItemBaseModel<{}> = {
   cost: {
     gold: 600,
   },
+  sellingCost: {
+    gold: 360,
+  },
   bonusAbilities: [
     { spell: MeteorSpell, level: 1 },
   ],

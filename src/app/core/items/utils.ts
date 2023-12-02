@@ -3,7 +3,7 @@ import { Resources } from '../resources';
 import { itemStatsDescr, spellDescrElem } from '../ui';
 import { ItemBaseModel, ItemSlotType } from './types';
 
-export function createItem({ name, icon, slot, stats, enemyStats, abilityDescription, cost }: {
+export function createItem({ name, icon, slot, stats, enemyStats, abilityDescription, cost, sellingCost }: {
   name: string,
   icon: string,
   slot: ItemSlotType,
@@ -12,15 +12,17 @@ export function createItem({ name, icon, slot, stats, enemyStats, abilityDescrip
   // temp
   abilityDescription?: string,
   cost?: Resources,
+  sellingCost?: Resources,
 }): ItemBaseModel {
   return {
     name,
-    cost,
     icon: {
       icon,
     },
     staticMods: stats,
     slotType: slot,
+    cost,
+    sellingCost: sellingCost ?? { gold: 100 },
 
     staticEnemyMods: enemyStats,
     description({ thisItemBase }) {

@@ -11,6 +11,9 @@ export const SwordOfTheBattleMageItem: ItemBaseModel = {
     gold: 1000,
     redCrystals: 1,
   },
+  sellingCost: {
+    gold: 600,
+  },
   slotType: ItemSlotType.Weapon,
   staticMods: {
     heroBonusAttack: 3,

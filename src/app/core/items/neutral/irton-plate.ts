@@ -11,6 +11,9 @@ export const IrtonPlateItem: ItemBaseModel = {
   cost: {
     gold: 300,
   },
+  sellingCost: {
+    gold: 175,
+  },
   staticMods: {
     heroBonusDefence: 3,
   },

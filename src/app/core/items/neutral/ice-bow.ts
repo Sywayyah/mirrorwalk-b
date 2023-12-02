@@ -15,6 +15,9 @@ export const ItemIceBow: ItemBaseModel<{}> = {
   cost: {
     gold: 500,
   },
+  sellingCost: {
+    gold: 400,
+  },
   description({ thisItemBase }) {
     return {
       descriptions: [

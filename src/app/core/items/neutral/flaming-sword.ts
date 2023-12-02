@@ -15,6 +15,9 @@ export const FlamingSword: ItemBaseModel = {
   cost: {
     gold: 1500,
   },
+  sellingCost: {
+    gold: 800,
+  },
   description({ thisItemBase }) {
     return {
       descriptions: [

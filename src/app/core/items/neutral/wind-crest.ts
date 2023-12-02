@@ -14,6 +14,9 @@ export const ItemWindCrest: ItemBaseModel = {
   cost: {
     gold: 500,
   },
+  sellingCost: {
+    gold: 250,
+  },
   description({ thisItem, thisItemBase }) {
     return {
       descriptions: [

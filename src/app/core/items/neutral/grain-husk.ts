@@ -19,6 +19,9 @@ export const GrainHuskItem: ItemBaseModel = {
   cost: {
     gold: 1000,
   },
+  sellingCost: {
+    gold: 650,
+  },
   description({ thisItemBase }) {
     return {
       descriptions: [

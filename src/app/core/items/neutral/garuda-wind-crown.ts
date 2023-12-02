@@ -21,6 +21,11 @@ export const GarudaWindCrown: ItemBaseModel = {
     redCrystals: 2,
     gems: 2,
   },
+  sellingCost: {
+    gold: 2000,
+    redCrystals: 1,
+    gems: 1,
+  },
   description({ thisItemBase }) {
     return {
       descriptions: [
