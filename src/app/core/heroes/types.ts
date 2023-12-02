@@ -308,15 +308,7 @@ export class Hero extends GameObject<HeroCreationParams> {
     CommonUtils.removeItem(this.itemsBackpack, item);
 
     if (this.inventory.isItemEquipped(item)) {
-      this.inventory.unequipItem(item);
-    }
-
-    const itemModsGroup = this.getItemModsGroup();
-
-    // remove mods
-    if (item.baseType.staticMods) {
-      const mods = ModsRef.fromMods(item.baseType.staticMods);
-      itemModsGroup?.removeModsRef(mods);
+      this.unequipItem(item);
     }
   }
 
