@@ -49,6 +49,8 @@ export const DisplayPopup = gameEvent<PopupData>();
 
 export const PlayerReceivesItem = gameEvent<PlayerEquipsItemAction>();
 
+export const PlayerLosesItem = gameEvent<PlayerEquipsItemAction>();
+
 export const PlayerEquipsItem = gameEvent<PlayerEquipsItemAction>();
 
 export const PlayerUnequipsItem = gameEvent<PlayerUnequipsItemAction>();

@@ -1,9 +1,11 @@
 import { Component, computed, inject, signal } from '@angular/core';
+import { PlayerLosesItem, PlayerReceivesItem } from 'src/app/core/events';
 import { Item, ItemBaseModel } from 'src/app/core/items';
 import { Building, SellingBuildingData } from 'src/app/core/towns';
 import { CommonUtils } from 'src/app/core/utils';
 import { MwItemsService, MwPlayersService } from 'src/app/features/services';
 import { BasicPopup } from 'src/app/features/shared/components';
+import { EventsService } from 'src/app/store';
 
 @Component({
   selector: 'mw-items-selling-popup',
@@ -13,8 +15,10 @@ import { BasicPopup } from 'src/app/features/shared/components';
 export class ItemsSellingPopupComponent extends BasicPopup<{ building: Building }> {
   readonly players = inject(MwPlayersService);
   readonly itemsService = inject(MwItemsService);
+  readonly events = inject(EventsService);
 
-  readonly hero = this.players.getCurrentPlayer().hero;
+  readonly currentPlayer = this.players.getCurrentPlayer();
+  readonly hero = this.currentPlayer.hero;
 
   private readonly sellingData = this.data.building.getCustomData<SellingBuildingData>();
 
@@ -29,7 +33,7 @@ export class ItemsSellingPopupComponent extends BasicPopup<{ building: Building 
     // todo: quick workaround, to recalculate when itemToSell changes
     this.itemToSell();
 
-    return !!itemToBuy && this.players.playerHasResources(this.players.getCurrentPlayer(), itemToBuy.cost!);
+    return !!itemToBuy && this.players.playerHasResources(this.currentPlayer, itemToBuy.cost!);
   });
 
   canSell = computed(() => {
@@ -40,17 +44,20 @@ export class ItemsSellingPopupComponent extends BasicPopup<{ building: Building 
   buyItem(): void {
     const itemToBuy = this.itemToBuy()!;
     const newItem = this.itemsService.createItem(itemToBuy);
-    this.players.removeResourcesFromPlayer(this.players.getCurrentPlayer(), itemToBuy.cost || {});
-    this.hero.addItem(newItem);
+
+    this.players.removeResourcesFromPlayer(this.currentPlayer, itemToBuy.cost || {});
+    this.events.dispatch(PlayerReceivesItem({ item: newItem, player: this.currentPlayer }));
+
     CommonUtils.removeItem(this.items, itemToBuy);
     this.itemToBuy.set(null);
   }
 
   sellItem(): void {
     const item = this.itemToSell()!;
-    const currentPlayer = this.players.getCurrentPlayer();
-    this.players.addResourcesToPlayer(currentPlayer, item.baseType.sellingCost || {});
-    this.hero.removeItem(item);
+
+    this.players.addResourcesToPlayer(this.currentPlayer, item.baseType.sellingCost || {});
+    this.events.dispatch(PlayerLosesItem({ item: item, player: this.currentPlayer }));
+
     this.itemToSell.set(null);
   }
 }
