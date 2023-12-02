@@ -1,12 +1,16 @@
 import { NewWeekStarted } from '../events';
 import { GameObject } from '../game-objects';
-import { createEventFeedMsg } from '../ui';
+import { ItemBaseModel } from '../items';
 import { ActivityTypes, Building, BuildingDescription, HiringActivity } from './buildings';
 
 export interface TownBase<T extends string> {
   name: string;
   availableBuildings: Record<T, BuildingDescription>;
 }
+export interface SellingBuildingData {
+  items: ItemBaseModel[];
+  selling?: boolean;
+};
 
 interface TownCreationParams<T extends string> {
   townBase: TownBase<T>;

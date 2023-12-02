@@ -4,7 +4,7 @@ import { HUMANS_UNIT_TYPES, humansFraction } from '../../fractions';
 import { IrtonPlateItem } from '../../items/neutral';
 import { IronPikeItem } from '../../items/neutral/iron-pike';
 import { ActivityTypes, BuidlingBase, HiringActivity } from '../buildings';
-import { TownBase } from '../types';
+import { SellingBuildingData, TownBase } from '../types';
 
 function createHiringActivity(
   unitType: HUMANS_UNIT_TYPES,
@@ -160,11 +160,12 @@ const itemMarket: BuidlingBase = {
   },
   description: 'Sells items',
   config: {
-    init({ globalEvents, localEvents, players, thisBuilding, gameObjects }) {
+    init({ localEvents, thisBuilding, gameObjects }) {
       localEvents.on({
         Built() {
-          gameObjects.addCustomData(thisBuilding, {
+          gameObjects.addCustomData<SellingBuildingData>(thisBuilding, {
             items: [IronPikeItem, IrtonPlateItem],
+            selling: true,
           });
         },
       });

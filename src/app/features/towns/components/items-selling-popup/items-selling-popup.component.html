@@ -1,5 +1,7 @@
 <div>Items Market</div>
 
+<div class="header">Buy:</div>
+
 <div class="item-list">
   @for (item of items; track $index) {
   <div class="item">
@@ -13,6 +15,26 @@
   }
 </div>
 
+@if (allowsSelling) {
+
+<div class="header">Sell:</div>
+
+<div class="item-list">
+
+  @for (item of hero.itemsBackpack; track $index) {
+  <div class="item">
+    <mw-item-icon [itemBase]="item.baseType" />
+
+    {{item.baseType.name}}
+
+    <mw-resources-cost style="display: flex; flex-direction: column;"
+                       [cost]="item.baseType.cost" />
+  </div>
+  }
+
+</div>
+
+}
 <button mw-main-button
         (click)="popup.close()">
   Close

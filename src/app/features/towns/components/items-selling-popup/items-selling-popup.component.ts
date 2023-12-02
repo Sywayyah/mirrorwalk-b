@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
-import { ItemBaseModel } from 'src/app/core/items';
-import { Building } from 'src/app/core/towns';
+import { Building, SellingBuildingData } from 'src/app/core/towns';
+import { MwPlayersService } from 'src/app/features/services';
 import { GameObjectsManager } from 'src/app/features/services/game-objects-manager.service';
 import { BasicPopup } from 'src/app/features/shared/components';
 
@@ -11,6 +11,9 @@ import { BasicPopup } from 'src/app/features/shared/components';
 })
 export class ItemsSellingPopupComponent extends BasicPopup<{ building: Building }> {
   readonly gameObjects = inject(GameObjectsManager);
+  readonly players = inject(MwPlayersService);
 
-  items = this.gameObjects.getCustomData<{ items: ItemBaseModel[] }>(this.data.building.id)?.items;
+  hero = this.players.getCurrentPlayer().hero;
+  items = this.gameObjects.getCustomData<SellingBuildingData>(this.data.building.id)?.items;
+  allowsSelling = this.gameObjects.getCustomData<SellingBuildingData>(this.data.building.id)?.selling;
 }
