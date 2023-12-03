@@ -1,0 +1,9 @@
+mw-round-icon {
+  &:hover {
+    filter: brightness(1.1);
+  }
+
+  &:active {
+    filter: brightness(0.7);
+  }
+}

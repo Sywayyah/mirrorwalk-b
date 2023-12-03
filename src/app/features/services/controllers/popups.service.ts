@@ -1,12 +1,12 @@
 import { Injectable, Type } from '@angular/core';
-import { DisplayPlayerRewardAction, DisplayPlayerRewardPopup, DisplayPopup, DisplayReward, FightEnds, FightEndsEvent, GameEventsTypes, NeutralStructParams, OpenSettings, OpenSplitUnitGroupPopup, OpenUnitSlotsActionPopup, PlayerOpensActionCards, PlayerOpensHeroInfo, ShowGameOverPopup, StructSelected, StructSelectedEvent } from 'src/app/core/events';
+import { DisplayPlayerRewardAction, DisplayPlayerRewardPopup, DisplayPopup, DisplayReward, FightEnds, FightEndsEvent, GameEventsTypes, NeutralStructParams, OpenMainMenu, OpenSettings, OpenSplitUnitGroupPopup, OpenUnitSlotsActionPopup, PlayerOpensActionCards, PlayerOpensHeroInfo, ShowGameOverPopup, StructSelected, StructSelectedEvent } from 'src/app/core/events';
 import { NeutralRewardTypesEnum, StructureType } from 'src/app/core/structures';
 import { FightEndsPopup, LossModel, StructPopupData } from 'src/app/core/ui';
 import { Notify, StoreClient, WireMethod } from 'src/app/store';
 import { HiringRewardPopupComponent, ItemRewardPopupComponent, PostFightRewardPopupComponent, PreFightPopupComponent, PreviewPopupComponent, ResourcesRewardPopupComponent, ScriptedRewardPopupComponent, UpgradeRewardPopupComponent } from '../../battleground/components';
 import { HeroPopupComponent } from '../../battleground/components/hero-popup/hero-popup.component';
 import { SettingsPopupComponent } from '../../main-screen/components';
-import { GameOverPopupComponent, PopupData, PopupService, RewardPopupComponent, SplitUnitsPopupComponent, UnitSlotsActionPopupComponent } from '../../shared/components';
+import { GameOverPopupComponent, MainMenuPopupComponent, PopupData, PopupService, RewardPopupComponent, SplitUnitsPopupComponent, UnitSlotsActionPopupComponent } from '../../shared/components';
 import { ActionCardsPopupComponent } from '../../shared/components/action-cards-popup/action-cards-popup.component';
 import { BattleStateService } from '../mw-battle-state.service';
 import { MwPlayersService } from '../mw-players.service';
@@ -40,6 +40,14 @@ export class PopupsController extends StoreClient() {
   public openSettings(): void {
     this.popupService.createBasicPopup({
       component: SettingsPopupComponent,
+      data: {},
+    });
+  }
+
+  @Notify(OpenMainMenu)
+  public openMainMenu(): void {
+    this.popupService.createBasicPopup({
+      component: MainMenuPopupComponent,
       data: {},
     });
   }
