@@ -21,6 +21,40 @@
   font-size: 12px;
 }
 
+.unit-groups-slots {
+  display: flex;
+  padding-top: 6px;
+  gap: 4px;
+  text-align: center;
+
+  .unit-slot {
+    display: flex;
+    justify-content: center;
+    color: white;
+    flex-direction: column;
+    cursor: pointer;
+    width: 52px;
+    height: 52px;
+    border: 1px solid gray;
+    box-sizing: border-box;
+    border-radius: 4px;
+    user-select: none;
+
+    &.reserve {
+      width: 40px;
+      height: 40px;
+      font-size: 10px;
+      filter: brightness(0.8);
+    }
+
+    &.active {
+      border-color: gold;
+      border-width: 2px;
+    }
+  }
+}
+
+
 .stats-panel {
   position: absolute;
   right: -160px;

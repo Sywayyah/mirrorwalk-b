@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
-import { FightNextRoundStarts, FightStarts, PlayerEquipsItem, PlayerEquipsItemAction, PlayerReceivesItem, PlayerUnequipsItem, PlayerUnequipsItemAction } from 'src/app/core/events';
+import { FightNextRoundStarts, FightStarts, PlayerEquipsItem, PlayerEquipsItemAction, PlayerLosesItem, PlayerReceivesItem, PlayerUnequipsItem, PlayerUnequipsItemAction } from 'src/app/core/events';
 import { Notify, StoreClient, WireMethod } from 'src/app/store';
 import { MwCurrentPlayerStateService } from '../mw-current-player-state.service';
 import { MwItemsService } from '../mw-items.service';
-import { MwSpellsService } from '../mw-spells.service';
 import { State } from '../state.service';
 
 @Injectable()
@@ -12,7 +11,6 @@ export class PlayerController extends StoreClient() {
   constructor(
     private curPlayerState: MwCurrentPlayerStateService,
     private itemsService: MwItemsService,
-    private spellsService: MwSpellsService,
     private state: State,
   ) {
     super();
@@ -34,6 +32,13 @@ export class PlayerController extends StoreClient() {
     if (!hero.inventory.isSlotEquipped(item.baseType.slotType)) {
       this.events.dispatch(PlayerEquipsItem({ item, player }));
     }
+  }
+
+  @WireMethod(PlayerLosesItem)
+  public removeItemFromPlayer({ item, player }: PlayerEquipsItemAction): void {
+    const hero = player.hero;
+
+    hero.removeItem(item);
   }
 
   @WireMethod(PlayerEquipsItem)

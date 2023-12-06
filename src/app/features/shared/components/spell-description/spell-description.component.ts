@@ -26,7 +26,7 @@ export class SpellDescriptionComponent implements OnInit {
   @Input()
   public ownerUnit?: UnitGroup;
 
-  public descriptions!: DescriptionElement[];
+  public descriptions!: (DescriptionElement | string)[];
 
   constructor() { }
 

@@ -88,12 +88,12 @@ export class BattleStateService {
 
     const firstUnitGroup = this.fightQueue[0];
     const previousPlayer = this.currentPlayer;
-    this.currentPlayer = firstUnitGroup.ownerPlayerRef;
+    this.currentPlayer = firstUnitGroup.ownerPlayer;
     this.currentUnitGroup = firstUnitGroup;
     this.currentUnitGroup$.next(firstUnitGroup);
 
     if (!this.currentUnitGroup.modGroup.getModValue('defending')) {
-      this.currentGroupTurnsLeft = this.currentUnitGroup.type.defaultTurnsPerRound;
+      this.currentGroupTurnsLeft = this.currentUnitGroup.type.defaultTurnsPerRound || 1;
     } else {
       this.currentGroupTurnsLeft = this.currentUnitGroup.turnsLeft;
     }
@@ -113,12 +113,11 @@ export class BattleStateService {
   }
 
   public handleDefeatedUnitGroup(unitGroup: UnitGroup): void {
-    const enemyPlayer = unitGroup.ownerPlayerRef;
+    const enemyPlayer = unitGroup.ownerPlayer;
     const enemyPlayerGroups = this.heroesUnitGroupsMap.get(enemyPlayer) as UnitGroup[];
     const indexOfUnitGroup = enemyPlayerGroups?.indexOf(unitGroup);
     unitGroup.fightInfo.isAlive = false;
 
-    // enemyPlayerGroups.splice(indexOfUnitGroup, 1);
     this.heroesUnitGroupsMap.set(enemyPlayer, enemyPlayerGroups);
 
     const indexOfRemovedGroupInQueue = this.fightQueue.indexOf(unitGroup);
@@ -181,7 +180,7 @@ export class BattleStateService {
   }
 
   public summonUnitForPlayer(ownerPlayer: Player, unitType: UnitBaseType, unitNumber: number): UnitGroup {
-    const summonedUnitGroup = this.units.createUnitGroup(unitType, { count: unitNumber }, ownerPlayer) as UnitGroup;
+    const summonedUnitGroup = this.units.createUnitGroup(unitType, { count: unitNumber }, ownerPlayer.hero) as UnitGroup;
 
     const playerUnitGroups = this.heroesUnitGroupsMap.get(ownerPlayer)!;
 
@@ -196,7 +195,7 @@ export class BattleStateService {
 
   public registerPlayerUnitLoss(attackedGroup: UnitGroup, unitLoss: number): void {
     /* todo: Final reward seems to not match reward preview */
-    const playersLossesMap = this.playerLosses[attackedGroup.ownerPlayerRef.id];
+    const playersLossesMap = this.playerLosses[attackedGroup.ownerPlayer.id];
     const attackedGroupUnitType = attackedGroup.type;
     const typeLossCount = playersLossesMap.get(attackedGroupUnitType);
     if (typeLossCount) {
@@ -220,7 +219,8 @@ export class BattleStateService {
   }
 
   private resetGroupsTurnsLeft(): void {
-    this.fightQueue.forEach((unitGroup: UnitGroup) => unitGroup.turnsLeft = unitGroup.type.defaultTurnsPerRound);
+    // add method on game object level
+    this.fightQueue.forEach((unitGroup: UnitGroup) => unitGroup.turnsLeft = unitGroup.type.defaultTurnsPerRound || 1);
   }
 
   private sortUnitsBySpeed(units: UnitGroup[]): UnitGroup[] {
@@ -246,7 +246,7 @@ export class BattleStateService {
   private initPlayerUnitGroupsMap(unitGroups: UnitGroup[]): void {
     this.heroesUnitGroupsMap.clear();
     unitGroups.forEach(unitGroup => {
-      const unitGroupPlayer = unitGroup.ownerPlayerRef;
+      const unitGroupPlayer = unitGroup.ownerPlayer;
       const playerGroups = this.heroesUnitGroupsMap.get(unitGroupPlayer);
       if (playerGroups) {
         playerGroups.push(unitGroup);
@@ -258,7 +258,7 @@ export class BattleStateService {
 
   private updateGroupsTailHpAndCombatInfo(): void {
     this.players.forEach((player) => {
-      player.unitGroups.forEach(unitGroup => {
+      player.hero.unitGroups.forEach(unitGroup => {
         if (!unitGroup.tailUnitHp) {
           unitGroup.setTailUnitHp(unitGroup.type.baseStats.health);
         }
@@ -269,8 +269,8 @@ export class BattleStateService {
 
   private refreshUnitGroups(): void {
     this.players.forEach((player) => {
-      player.unitGroups.forEach(unitGroup => {
-        unitGroup.turnsLeft = unitGroup.type.defaultTurnsPerRound;
+      player.hero.unitGroups.forEach(unitGroup => {
+        unitGroup.turnsLeft = unitGroup.type.defaultTurnsPerRound || 1;
       })
     });
   }

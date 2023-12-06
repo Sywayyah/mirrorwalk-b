@@ -16,10 +16,10 @@ export const LifeformItem: ItemBaseModel = {
     resistLightning: 15,
     resistCold: 15,
   },
-  description({ thisItem }) {
+  description({ thisItemBase }) {
     return {
       descriptions: [
-        itemStatsDescr(thisItem),
+        itemStatsDescr(thisItemBase),
         spellDescrElem(`An incredible artifact that shimmers with bright colors and emits life aura. Heals all units by ${healValue} in the beginning of each round.`),
       ],
     }

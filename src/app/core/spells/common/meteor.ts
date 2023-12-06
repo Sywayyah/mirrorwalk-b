@@ -25,10 +25,7 @@ export const MeteorSpell: SpellBaseType = {
       ],
     }
   },
-  type: {
-    spellInfo: {
-      name: 'Meteor',
-    },
+  config: {
     spellConfig: {
       getManaCost: (spell) => {
         const manaCosts: Record<number, number> = {

@@ -23,7 +23,7 @@
 <ng-template #simple
              let-hint="hint">
   <span>Attack</span>
-  <span [style.color]="hint.attackedGroup.ownerPlayerRef.color">
+  <span [style.color]="hint.attackedGroup.ownerPlayer.color">
     {{hint.attackedGroup.type.name}}
   </span>
   <span>

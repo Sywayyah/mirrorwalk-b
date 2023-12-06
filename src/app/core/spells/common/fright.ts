@@ -21,10 +21,7 @@ export const FrightSpellDebuff: SpellBaseType<{ frighter: UnitGroup }> = {
       ],
     };
   },
-  type: {
-    spellInfo: {
-      name: 'Fright',
-    },
+  config: {
     spellConfig: {
       init({ actions, events, spellInstance, vfx, ownerHero }) {
         events.on({
@@ -66,9 +63,6 @@ export const FrightSpellDebuff: SpellBaseType<{ frighter: UnitGroup }> = {
           },
         })
       },
-      getManaCost(spellInst) {
-        return 0;
-      },
     },
   },
 };
@@ -86,10 +80,7 @@ export const FrightSpell: SpellBaseType = {
       ],
     }
   },
-  type: {
-    spellInfo: {
-      name: 'Fright',
-    },
+  config: {
     spellConfig: {
       init({ actions, events, ownerPlayer, ownerUnit }) {
         events.on({
@@ -110,9 +101,6 @@ export const FrightSpell: SpellBaseType = {
             actions.addSpellToUnitGroup(attacked, frightSpellDebuff, ownerPlayer);
           },
         });
-      },
-      getManaCost(spellInst) {
-        return 0;
       },
     },
   },

@@ -17,10 +17,7 @@ export const NULL_SPELL: SpellBaseType = {
       descriptions: [],
     }
   },
-  type: {
-    spellInfo: {
-      name: '',
-    },
+  config: {
     spellConfig: {
       getManaCost(spellInst) {
         return 0;

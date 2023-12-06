@@ -16,10 +16,20 @@ export const GarudaWindCrown: ItemBaseModel = {
   icon: {
     icon: 'feather-wing',
   },
-  description({ thisItem }) {
+  cost: {
+    gold: 5000,
+    redCrystals: 2,
+    gems: 2,
+  },
+  sellingCost: {
+    gold: 2000,
+    redCrystals: 1,
+    gems: 1,
+  },
+  description({ thisItemBase }) {
     return {
       descriptions: [
-        itemStatsDescr(thisItem),
+        itemStatsDescr(thisItemBase),
       ],
     };
   },

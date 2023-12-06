@@ -6,7 +6,7 @@ export const heroesDefaultResources: ResourcesModel = {
   gems: 0,
   gold: 1250,
   redCrystals: 0,
-  wood: 0,
+  wood: 2,
 };
 
 export const EMPTY_RESOURCES: ResourcesModel = {

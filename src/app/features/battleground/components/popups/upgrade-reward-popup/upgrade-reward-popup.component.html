@@ -5,7 +5,7 @@
 
   <div *ngIf="data.struct.generator?.description"
        class="description">
-    {{data.struct.generator?.description}}
+    <mw-description [descriptions]="data.struct.generator?.description({thisStruct: data.struct})?.descriptions!" />
   </div>
 
   <div class="units">

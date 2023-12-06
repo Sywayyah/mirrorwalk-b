@@ -74,7 +74,7 @@ export class MwStructuresViewComponent extends StoreClient() implements AfterVie
     }
 
     if (struct.guard) {
-      this.playersService.getEnemyPlayer().setUnitGroups(struct.guard);
+      this.playersService.getEnemyPlayer().hero.setUnitGroups(struct.guard);
     }
 
     this.events.dispatch(StructSelected({

@@ -53,6 +53,8 @@ export interface HeroStats {
 
 export interface HeroCreationParams {
   heroBase: HeroBase;
+  unitGroups?: UnitGroup[];
+  ownerPlayer?: Player;
 }
 
 export enum HeroMods {
@@ -82,6 +84,22 @@ export interface HeroStatsInfo {
   maxMana: number;
 }
 
+export interface UnitGroupSlot {
+  unitGroup: null | UnitGroup;
+  isReserve?: boolean;
+}
+
+export function swapUnitsInSlots(source: UnitGroupSlot, target: UnitGroupSlot): void {
+  const temp = source.unitGroup;
+
+  source.unitGroup = target.unitGroup;
+  target.unitGroup = temp;
+}
+
+export function freeSlotsCount(slots: UnitGroupSlot[]): number {
+  return slots.filter(slot => !slot.unitGroup).length;
+}
+
 export class Hero extends GameObject<HeroCreationParams> {
   public static readonly categoryId: string = 'hero';
   public name!: string | null;
@@ -104,6 +122,18 @@ export class Hero extends GameObject<HeroCreationParams> {
   public base!: HeroBase;
   public readonly inventory: InventoryItems = new InventoryItems();
 
+  private _ownerPlayer!: Player;
+
+  public get ownerPlayer(): Player {
+    return this._ownerPlayer;
+  }
+
+  public get unitGroups() {
+    return this._unitGroups;
+  }
+
+  private _unitGroups: UnitGroup[] = [];
+
   private readonly heroStats$ = new BehaviorSubject<HeroStatsInfo>({
     baseAttack: 0,
     bonusAttack: 0,
@@ -124,31 +154,131 @@ export class Hero extends GameObject<HeroCreationParams> {
 
   private readonly destroyed$ = new Subject<void>();
 
-  private ownerPlayer!: Player;
+  readonly mainUnitSlots: UnitGroupSlot[] = [
+    { unitGroup: null },
+    { unitGroup: null },
+    { unitGroup: null },
+    { unitGroup: null },
+  ];
 
-  create({ heroBase }: HeroCreationParams): void {
+  readonly reserveUnitSlots: UnitGroupSlot[] = [
+    { unitGroup: null, isReserve: true },
+    { unitGroup: null, isReserve: true },
+  ];
+
+
+  create({ heroBase, unitGroups, ownerPlayer }: HeroCreationParams): void {
     this.base = heroBase;
     this.name = heroBase.name;
 
     const heroBaseStats = heroBase.initialState.stats;
 
+    if (ownerPlayer) {
+      this._ownerPlayer = ownerPlayer;
+    }
+
     this.stats = {
       currentMana: heroBaseStats.mana,
     };
+
+    if (unitGroups) {
+      this.setUnitGroups(unitGroups);
+    }
+
+    if (heroBase.initialState.defaultModifiers) {
+      this.modGroup.addModsRef(ModsRef.fromMods(heroBase.initialState.defaultModifiers));
+    }
+  }
+
+  addReserveSlots(slotsCount: number) {
+    for (let i = 0; i < slotsCount; i++) {
+      this.reserveUnitSlots.push({ unitGroup: null, isReserve: true });
+    }
+  }
+
+  hasFreeUnitSlots(): boolean {
+    return this.hasFreeMainSlots() || this.hasFreeReserveSlots();
+  }
+
+  hasFreeMainSlots(): boolean {
+    return this.getFreeMainSlotsCount() !== 0;
+  }
+
+  hasFreeReserveSlots(): boolean {
+    return this.getFreeReserveSlotsCount() !== 0;
+  }
+
+  getFreeUnitSlotsCount(): number {
+    return this.getFreeMainSlotsCount() + this.getFreeReserveSlotsCount();
+  }
+
+  getFreeMainSlotsCount(): number {
+    return freeSlotsCount(this.mainUnitSlots);
+  }
+
+  getFreeReserveSlotsCount(): number {
+    return freeSlotsCount(this.reserveUnitSlots);
+  }
+
+  getAllSlots(): UnitGroupSlot[] {
+    return [...this.mainUnitSlots, ...this.reserveUnitSlots];
+  }
+
+  setUnitGroups(unitGroups: UnitGroup[], updateSlots = true): void {
+    this._unitGroups = unitGroups;
+
+
+    this._unitGroups.forEach((unitGroup, i) => {
+      if (updateSlots) {
+        this.mainUnitSlots[i].unitGroup = unitGroup;
+      }
+
+      this.updateUnitGroup(unitGroup);
+    });
+  }
+
+  addUnitGroup(unitGroup: UnitGroup): void {
+    const wasIncluded = this.unitGroups.includes(unitGroup);
+
+    this._unitGroups.push(unitGroup);
+    this.updateUnitGroup(unitGroup);
+
+    if (wasIncluded) {
+      return;
+    }
+
+    const emptySlot = this.mainUnitSlots.find(slot => !slot.unitGroup);
+
+    if (emptySlot) {
+      emptySlot.unitGroup = unitGroup;
+      this.refreshUnitGroupsOrderBySlots();
+      return;
+    }
+
+    const emptyReserveSlot = this.reserveUnitSlots.find(slot => !slot.unitGroup);
+
+    if (emptyReserveSlot) {
+      emptyReserveSlot.unitGroup = unitGroup;
+    }
+    this.refreshUnitGroupsOrderBySlots();
+  }
+
+  removeUnitGroup(unitGroup: UnitGroup): void {
+    // todo: unassign hero
+    CommonUtils.removeItem(this.unitGroups, unitGroup);
+  }
+
+  refreshUnitGroupsOrderBySlots(): void {
+    this._unitGroups = this.mainUnitSlots.map(slot => slot.unitGroup).filter(Boolean) as UnitGroup[];
   }
 
   assignOwnerPlayer(player: Player): void {
-    this.ownerPlayer = player;
+    this._ownerPlayer = player;
 
     // init mods after player is known, so there is access to unit groups
     /* todo: theoretically, unit groups can be defined on hero level instead of player */
     const heroBase = this.base;
     const heroInitState = heroBase.initialState;
-
-    if (heroBase.initialState.defaultModifiers) {
-      // for now, attach to this group.
-      this.modGroup.addModsRef(ModsRef.fromMods(heroBase.initialState.defaultModifiers));
-    }
 
     this.spells = heroInitState.abilities.map(spell => this.getApi().spells.createSpellInstance(spell));
 
@@ -160,30 +290,30 @@ export class Hero extends GameObject<HeroCreationParams> {
     complete(this.destroyed$);
   }
 
-  public getStats(): HeroStatsInfo {
+  getStats(): HeroStatsInfo {
     return this.heroStats$.getValue();
   }
 
-  public listenHeroStats(): Observable<HeroStatsInfo> {
+  listenHeroStats(): Observable<HeroStatsInfo> {
     return this.heroStats$.pipe(takeUntil(this.destroyed$));
   }
 
   /** Add item to backback */
-  public addItem(item: Item): void {
+  addItem(item: Item): void {
     this.itemsBackpack.push(item);
   }
 
   /** Removme item from backback and inventory (if equipped) */
-  public removeItem(item: Item): void {
+  removeItem(item: Item): void {
     CommonUtils.removeItem(this.itemsBackpack, item);
 
     if (this.inventory.isItemEquipped(item)) {
-      this.inventory.unequipItem(item);
+      this.unequipItem(item);
     }
   }
 
   /** Equips item and gains bonuses */
-  public equipItem(item: Item): void {
+  equipItem(item: Item): void {
     this.inventory.equipItem(item);
 
     const itemModsGroup = this.getItemModsGroup();
@@ -212,7 +342,7 @@ export class Hero extends GameObject<HeroCreationParams> {
   }
 
   /** Item becomes unequiped, losing bonuses */
-  public unequipItem(item: Item): void {
+  unequipItem(item: Item): void {
     this.inventory.unequipItem(item);
     const itemModsGroup = this.getItemModsGroup();
 
@@ -237,7 +367,7 @@ export class Hero extends GameObject<HeroCreationParams> {
   }
 
   updateUnitsSpecialtyAndConditionalMods(): void {
-    this.ownerPlayer.unitGroups.forEach((unitGroup) => this.updateUnitSpecialtyAndConditionalMods(unitGroup));
+    this.unitGroups.forEach((unitGroup) => this.updateUnitSpecialtyAndConditionalMods(unitGroup));
   }
 
   updateUnitSpecialtyAndConditionalMods(unitGroup: UnitGroup): void {
@@ -268,11 +398,11 @@ export class Hero extends GameObject<HeroCreationParams> {
     }
   }
 
-  public addStatsMods(mods: Modifiers): void {
+  addStatsMods(mods: Modifiers): void {
     this.modGroup.getNamedGroup(HeroMods.HeroStatMods)?.addModsRef(ModsRef.fromMods(mods));
   }
 
-  public addMana(mana: number) {
+  addMana(mana: number) {
     this.stats.currentMana += mana;
     const maxMana = this.getStats().maxMana;
 
@@ -286,6 +416,12 @@ export class Hero extends GameObject<HeroCreationParams> {
       ...currentState,
       currentMana: this.stats.currentMana,
     });
+  }
+
+  private updateUnitGroup(unitGroup: UnitGroup): void {
+    unitGroup.assignOwnerPlayer(this.ownerPlayer);
+    unitGroup.assignOwnerHero(this);
+    this.updateUnitSpecialtyAndConditionalMods(unitGroup);
   }
 
   private getItemModsGroup(): ModsRefsGroup | undefined {

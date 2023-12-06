@@ -12,10 +12,16 @@ export const FlamingSword: ItemBaseModel = {
     heroMaxMana: 6,
     specialtyFireMastery: 3,
   },
-  description({ thisItem }) {
+  cost: {
+    gold: 1500,
+  },
+  sellingCost: {
+    gold: 800,
+  },
+  description({ thisItemBase }) {
     return {
       descriptions: [
-        itemStatsDescr(thisItem),
+        itemStatsDescr(thisItemBase),
       ],
     }
   },

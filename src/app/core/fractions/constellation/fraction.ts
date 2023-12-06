@@ -22,6 +22,6 @@ export const constellationFraction = Fractions.createFraction<CONSTELLATION_UNIT
   FractionsEnum.Constellation,
   {
     title: 'Constellation',
-    icon: 'aquarius',
+    icon: 'arrow-cluster',
   },
 );

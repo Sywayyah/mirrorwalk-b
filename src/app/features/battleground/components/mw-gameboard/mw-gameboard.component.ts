@@ -133,8 +133,8 @@ export class MwGameboardComponent extends StoreClient() implements OnInit, After
 
     this.vfx.createFloatingMessageForUnitGroup(
       event.attackedGroup,
-      getDamageParts(event.damage, event.loss, isRanged, event.damageBlocked),
-      { duration: event.damageBlocked ? 1100 : 1000 }
+      getDamageParts(event.damage, event.loss, isRanged, event.damageBlocked, event.isCritical),
+      { duration: event.isCritical ? 1200 : event.damageBlocked ? 1100 : 1000 }
     );
   }
 

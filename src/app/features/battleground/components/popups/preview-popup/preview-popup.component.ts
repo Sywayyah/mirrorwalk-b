@@ -14,7 +14,7 @@ import { EventsService } from 'src/app/store';
   styleUrls: ['./preview-popup.component.scss']
 })
 export class PreviewPopupComponent extends BasicPopup<StructPopupData> {
-
+  struct = this.data.struct;
   constructor(
     private players: MwPlayersService,
     private apiProvider: ApiProvider,
@@ -22,6 +22,7 @@ export class PreviewPopupComponent extends BasicPopup<StructPopupData> {
     private events: EventsService,
   ) {
     super();
+    this.state.eventHandlers.structures.triggerRefEventHandlers(this.struct, StructEvents.StructInspected());
   }
 
   public closePopup(): void {

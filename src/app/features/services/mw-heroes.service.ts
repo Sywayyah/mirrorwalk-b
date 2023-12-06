@@ -4,6 +4,7 @@ import { EMPTY_RESOURCES, createHeroModelBase } from 'src/app/core/heroes/utils'
 import { Spell } from 'src/app/core/spells';
 import { heroDescrElem } from 'src/app/core/ui';
 import { GameObjectsManager } from './game-objects-manager.service';
+import { MwUnitGroupsService } from './mw-unit-groups.service';
 
 const neutralHeroBase = createHeroModelBase({
   name: 'neutral-hero',
@@ -25,6 +26,7 @@ const neutralHeroBase = createHeroModelBase({
 export class MwHeroesService {
   constructor(
     private gameObjectsManager: GameObjectsManager,
+    private unitGroups: MwUnitGroupsService,
   ) { }
 
   public addManaToHero(hero: Hero, mana: number): void {
@@ -38,6 +40,7 @@ export class MwHeroesService {
   public createHero(heroBase: HeroBase): Hero {
     return this.gameObjectsManager.createNewGameObject(Hero, {
       heroBase,
+      unitGroups: heroBase.initialState.army.length ? this.unitGroups.createUnitGroupFromGenModel(heroBase.initialState.army[0]) : [],
     });
   }
 

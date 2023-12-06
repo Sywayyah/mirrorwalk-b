@@ -1,6 +1,6 @@
 <mw-icon-btn mwActionHint="Go to {{state.createdGame.fraction.title}}"
              (click)="goToTown()"
-             [icon]="state.createdGame.fraction.icon" />
+             icon="castle-emblem" />
 
 <mw-icon-btn mwActionHint="Inspect Hero"
              (click)="openPlayerInfo()"
@@ -14,3 +14,8 @@
     <span>{{state.currentGame.actionPoints}}</span>
   </div>
 </mw-icon-btn>
+
+<div mwActionHint="Learn new abilities">
+  <mw-icon-btn [disabled]="true"
+               icon="barrier" />
+</div>

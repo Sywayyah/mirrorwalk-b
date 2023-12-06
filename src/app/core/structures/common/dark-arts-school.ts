@@ -4,7 +4,11 @@ export const DarkArtsSchool: StructureGeneratorModel = {
   control: StuctureControl.Neutral,
   actionPoints: 2,
   name: 'School of Dark Arts',
-  description: 'You are visiting the school of dark arts.\n\n+1 to Necromancy specialty',
+  description: () => ({
+    descriptions: [
+      'You are visiting the school of dark arts.\n\n+1 to Necromancy specialty',
+    ]
+  }),
 
   type: StructureType.Scripted,
 

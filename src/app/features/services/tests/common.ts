@@ -64,7 +64,6 @@ player.create({
   hero: hero,
   resources: { gems: 0, gold: 0, redCrystals: 0, wood: 0 },
   type: PlayerTypeEnum.Player,
-  unitGroups: [],
 });
 
 export const getCommonFunctions = (services: () => { unitsService: MwUnitGroupsService, unitState: MwUnitGroupStateService }) => {
@@ -72,7 +71,6 @@ export const getCommonFunctions = (services: () => { unitsService: MwUnitGroupsS
   const createTestUnitGroup = (count: number) => services().unitsService.createUnitGroup(
     testUnitTypeNoArmorNoRating,
     { count },
-    player
   ) as UnitGroup;
 
   const getDamageDetails = (attacker: UnitGroup, attacked: UnitGroup) => {

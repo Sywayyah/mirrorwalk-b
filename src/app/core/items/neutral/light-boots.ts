@@ -8,6 +8,12 @@ export const LightBootsItem = createItem({
   name: 'Light Boots',
   icon: 'boot-stomp',
   slot: ItemSlotType.Boots,
+  cost: {
+    gold: 425,
+  },
+  sellingCost: {
+    gold: 200,
+  },
   stats: {
     heroBonusDefence: 1,
     __unitConditionalMods(unit) {

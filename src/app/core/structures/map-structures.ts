@@ -1,4 +1,4 @@
-import { NeutralRewardModel, StructureGeneratorModel } from '.';
+import { ControlsState, NeutralRewardModel, StructureGeneratorModel } from '.';
 import { GameObject } from '../game-objects';
 import { Modifiers } from '../modifiers';
 import { Player } from '../players';
@@ -47,6 +47,7 @@ export interface ViewStructureCreationParams {
   actionPoints?: number;
 }
 
+
 // location/structure
 export class MapStructure extends GameObject<ViewStructureCreationParams> {
   public static categoryId: string = 'structure';
@@ -82,6 +83,8 @@ export class MapStructure extends GameObject<ViewStructureCreationParams> {
 
   public actionPoints: number = 0;
 
+  public controls?: ControlsState;
+
   // can be considered as Base Type for location
   // question: Shouldn't there always be a generator?
   // root is the only location that doesn't seem to posses generator
@@ -104,5 +107,13 @@ export class MapStructure extends GameObject<ViewStructureCreationParams> {
     this.actionPoints = actionPoints || generator?.actionPoints || 0;
     this.guardingPlayer = guardingPlayer;
     this.pathTo = pathTo;
+  }
+
+  setControls(controls: ControlsState): void {
+    if (this.controls) {
+      this.controls = { ...this.controls, ...controls };
+    } else {
+      this.controls = controls;
+    }
   }
 }

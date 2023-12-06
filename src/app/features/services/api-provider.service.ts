@@ -31,7 +31,7 @@ export class ApiProvider {
         this.players.addExperienceToPlayer(player.id, xpAmount);
       },
       addUnitGroupToPlayer: (player, unitType, count) => {
-        const unitGroup = this.unitGroups.createUnitGroup(unitType, { count }, player);
+        const unitGroup = this.unitGroups.createUnitGroup(unitType, { count }, player.hero);
         this.players.addUnitGroupToTypeStack(player, unitGroup);
       },
       addManaToPlayer: (player, mana) => {

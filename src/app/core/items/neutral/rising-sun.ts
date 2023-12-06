@@ -15,10 +15,10 @@ export const RisingSunPendant: ItemBaseModel = {
   staticMods: {
     heroBonusDefence: 2,
   },
-  description({ thisItem }) {
+  description({ thisItemBase }) {
     return {
       descriptions: [
-        itemStatsDescr(thisItem),
+        itemStatsDescr(thisItemBase),
         spellDescrElem(`Each round heals your units by ${healValue}`),
       ],
     }

@@ -59,15 +59,8 @@ export const FireShieldBuff: SpellBaseType = {
       ],
     }
   },
-  type: {
-    spellInfo: {
-      name: 'Haste',
-    },
+  config: {
     spellConfig: {
-      getManaCost(spellInst) {
-        return 0;
-      },
-
       init: ({ events, actions, vfx }) => {
         // change it to non-conditional modifiers maybe
         const mods = actions.createModifiers({
@@ -105,10 +98,7 @@ export const FireShieldSpell: SpellBaseType = {
       ],
     }
   },
-  type: {
-    spellInfo: {
-      name: 'Fire Shield',
-    },
+  config: {
     spellConfig: {
       targetCastConfig: {
         canActivate: canActivateOnAllyFn,

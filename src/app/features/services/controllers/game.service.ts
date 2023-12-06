@@ -54,15 +54,21 @@ export class GameController extends StoreClient() {
       ),
     );
 
+
     const neutralPlayer = this.players.createPlayer(PLAYER_IDS.Neutral, {
       color: PLAYER_COLORS.GRAY,
       type: PlayerTypeEnum.AI,
       hero: this.heroesService.createNeutralHero(),
-      unitGroups: [],
       resources: {
         ...heroesDefaultResources,
       },
     });
+
+    mainPlayer.hero.assignOwnerPlayer(mainPlayer);
+    neutralPlayer.hero.assignOwnerPlayer(neutralPlayer);
+
+    mainPlayer.hero.unitGroups.forEach(unitGroup => unitGroup.assignOwnerHero(mainPlayer.hero));
+    neutralPlayer.hero.unitGroups.forEach(unitGroup => unitGroup.assignOwnerHero(neutralPlayer.hero));
 
     this.state.gameState = {
       players: [mainPlayer, neutralPlayer],

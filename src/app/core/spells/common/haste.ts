@@ -59,15 +59,8 @@ export const HasteBuff: SpellBaseType = {
       ],
     }
   },
-  type: {
-    spellInfo: {
-      name: 'Haste',
-    },
+  config: {
     spellConfig: {
-      getManaCost(spellInst) {
-        return 0;
-      },
-
       init: ({ events, actions, vfx }) => {
         const mods = actions.createModifiers({
           unitGroupSpeedBonus: speedBonus,
@@ -94,13 +87,11 @@ export const HasteSpell: SpellBaseType = {
     return {
       descriptions: [
         spellDescrElem(`Target unit group is speeding up by ${speedBonus}.`),
+        spellDescrElem(`When upgraded, increases the speed bonus and starts to grant a chance to gain additional turn to units.`),
       ],
     }
   },
-  type: {
-    spellInfo: {
-      name: 'Haste',
-    },
+  config: {
     spellConfig: {
       targetCastConfig: {
         canActivate: canActivateOnAllyFn,

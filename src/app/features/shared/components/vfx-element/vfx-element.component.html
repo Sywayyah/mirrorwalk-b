@@ -31,5 +31,5 @@
 <ng-template #plainDamagePart
              let-part="part">
   <mw-ra-icon [icon]="part.icon" />
-  <span>{{part.text}}</span>
+  <span [innerHTML]="part.text | safeHtml"></span>
 </ng-template>

@@ -1,4 +1,5 @@
 import { humansFraction } from '../../fractions';
+import { spellDescrElem } from '../../ui';
 import { CommonUtils } from '../../utils';
 import { StructureGeneratorModel, StructureType, StuctureControl } from '../types';
 
@@ -6,7 +7,19 @@ export const MountainNestStructure: StructureGeneratorModel = {
   control: StuctureControl.Neutral,
   actionPoints: 2,
   name: 'Mountain Nest',
-  description: 'Walking through mountains, you find a very bright birdnest... \n\n1-2 Firebirds join your army.',
+  description: ({ thisStruct }) => {
+    const descriptions = [
+      spellDescrElem('Walking through mountains, you find a very bright birdnest... \n\n1-2 Firebirds join your army.'),
+    ];
+
+    if (thisStruct.controls?.accept === false) {
+      descriptions.push(spellDescrElem(`You have no free slots.`));
+    }
+
+    return {
+      descriptions,
+    }
+  },
 
   type: StructureType.Scripted,
 
@@ -17,7 +30,13 @@ export const MountainNestStructure: StructureGeneratorModel = {
           players.addUnitGroupToPlayer(visitingPlayer, humansFraction.getUnitType('Firebird'), CommonUtils.randIntInRange(1, 2));
 
           thisStruct.visited = true;
-        }
+        },
+
+        StructInspected() {
+          thisStruct.setControls({
+            accept: players.getCurrentPlayer().hero.hasFreeUnitSlots(),
+          });
+        },
       });
     }
   },

@@ -33,6 +33,14 @@
   font-size: 11px;
   margin: 3px;
   cursor: pointer;
+
+  &.reserve {
+    height: 40px;
+    width: 40px;
+    font-size: 10px;
+    // might switch to currentColor and adjust brightness
+    filter: brightness(0.7);
+  }
 }
 
 .group-name {

@@ -64,15 +64,8 @@ export const FrozenArrowDebuff: SpellBaseType = {
       ],
     }
   },
-  type: {
-    spellInfo: {
-      name: 'Freeze',
-    },
+  config: {
     spellConfig: {
-      getManaCost(spellInst) {
-        return 0;
-      },
-
       init: ({ events, actions, vfx, thisSpell }) => {
         const mods = actions.createModifiers({
           unitGroupSpeedBonus: -slow,
@@ -104,10 +97,7 @@ export const FrostArrowSpell: SpellBaseType = {
       ],
     }
   },
-  type: {
-    spellInfo: {
-      name: 'Frost Arrow',
-    },
+  config: {
     spellConfig: {
       targetCastConfig: {
         canActivate: canActivateOnEnemyFn,

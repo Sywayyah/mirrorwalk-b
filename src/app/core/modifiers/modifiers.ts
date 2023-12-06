@@ -31,7 +31,7 @@ export interface ModifiersModel extends Specialties {
   // to implement
   retaliationDamagePercent: number;
 
-  // critical damage (to be implemented)
+  // critical damage
   criticalDamageChance: number;
   criticalDamageMul: number;
 
@@ -65,14 +65,13 @@ export interface ModifiersModel extends Specialties {
   /* Modifiers can be returned on condition */
   __attackConditionalModifiers?: (params: ConditionalModifierParamsModel) => Modifiers;
 
-  // this can be used potentially to imlpement specialties.
   // mods from specialties can be added to hero, then
   // by this condition, applied/not applied somehow to units.
   __unitConditionalMods: (unitGroup: UnitGroup) => Modifiers | null;
 
   // might get obsolete.
   // same as above, but for auras.
-  __auraModifiers: () => Modifiers;
+  __auraModifiers: (params: { target: UnitGroup, thisUnit?: UnitGroup, remoteness?: number, currentGroupPosition?: number }) => Modifiers | null;
 }
 
 export type Modifiers = Partial<ModifiersModel>;

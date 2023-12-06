@@ -3,7 +3,8 @@
 
 <div #locationsContainer
      class="map-view">
-  <div *ngFor="let struct of structsService.viewStructures">
+  <div class="struct"
+       *ngFor="let struct of structsService.viewStructures">
     <div [style.left.px]="struct.x"
          [style.top.px]="struct.y"
          style="position: absolute;">

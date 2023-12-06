@@ -25,9 +25,26 @@ const Halberdier = humansFraction.defineUnitType('Halberdier', {
 
   defaultModifiers: {
     counterattacks: true,
+    // maybe auras can only be granted from abilities..
+    // need to check and think.
+    __auraModifiers({
+      remoteness,
+      target,
+      thisUnit,
+    }) {
+      if (remoteness === 1) {
+        const count = thisUnit!.count * 0.8;
+
+        return {
+          chanceToBlock: 1,
+          damageBlockMin: count,
+          damageBlockMax: count,
+        };
+      }
+
+      return null;
+    }
   },
-  minQuantityPerStack: 5,
-  defaultTurnsPerRound: 1,
 
   baseRequirements: {
     gold: 70,
@@ -74,8 +91,6 @@ const Pikemen = humansFraction.defineUnitType('Pikemen', {
       gold: 15,
     }
   },
-  defaultTurnsPerRound: 1,
-  minQuantityPerStack: 5,
 
   neutralReward: defaultRewards,
 });
@@ -120,9 +135,6 @@ const Crossbowmen = humansFraction.defineUnitType('Crossbowmen', {
     isRanged: true,
     blockPiercingPercent: 0.35,
   },
-
-  minQuantityPerStack: 12,
-  defaultTurnsPerRound: 2,
 
   upgraded: true,
 
@@ -237,9 +249,6 @@ humansFraction.defineUnitType('Knight', {
 
   baseStats: createStats([[6, 9], 6, 5, 17, 11]),
 
-  minQuantityPerStack: 2,
-  defaultTurnsPerRound: 1,
-
   baseRequirements: {
     gold: 120,
   },
@@ -278,9 +287,6 @@ humansFraction.defineUnitType('Cavalry', {
     speed: 16,
   },
 
-  defaultTurnsPerRound: 1,
-  minQuantityPerStack: 1,
-
   defaultModifiers: {
     blockPiercingPercent: 0.55,
   },
@@ -298,7 +304,7 @@ humansFraction.defineUnitType('Cavalry', {
 
 const Firebirds = humansFraction.defineUnitType('Firebird', {
   name: 'Firebirds',
-  mainPortraitUrl: AssetsImages.UnitMelee,
+  mainPortraitUrl: AssetsImages.FireBird,
   level: 5,
 
   getDescription: simpleDescriptions([
@@ -307,9 +313,6 @@ const Firebirds = humansFraction.defineUnitType('Firebird', {
   ]),
 
   baseStats: createStats([[23, 29], 12, 14, 57, 17]),
-
-  defaultTurnsPerRound: 1,
-  minQuantityPerStack: 1,
 
   defaultModifiers: {
     resistFire: 17,
@@ -332,7 +335,7 @@ const Firebirds = humansFraction.defineUnitType('Firebird', {
 
 humansFraction.defineUnitType('MysticBird', {
   name: 'Mystic Birds',
-  mainPortraitUrl: AssetsImages.UnitMelee,
+  mainPortraitUrl: AssetsImages.FireBird,
   level: 5,
 
   getDescription: simpleDescriptions([
@@ -341,9 +344,6 @@ humansFraction.defineUnitType('MysticBird', {
   ]),
 
   baseStats: createStats([[18, 26], 8, 10, 46, 16]),
-
-  defaultTurnsPerRound: 1,
-  minQuantityPerStack: 1,
 
   defaultSpells: [
     FirebirdHealSpell,

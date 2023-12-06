@@ -28,6 +28,8 @@ export const OpenNewGameScreen = commands('Open New Game Screen');
 
 export const OpenSettings = commands('Open Game settings');
 
+export const OpenMainMenu = commands('Open Main menu');
+
 export const GameOpenMapStructuresScreen = commands('Open map structures screen');
 
 export const DisplayPlayerRewardPopup = commands<DisplayPlayerRewardAction>();

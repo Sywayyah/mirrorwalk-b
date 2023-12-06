@@ -18,7 +18,7 @@ export const SummonSagittarSpell: SpellBaseType = {
       ],
     }
   },
-  type: {
+  config: {
     spellConfig: {
       getManaCost() { return 2; },
       init({ actions, ownerHero, ownerPlayer, events, vfx, thisSpell }) {
@@ -31,8 +31,5 @@ export const SummonSagittarSpell: SpellBaseType = {
         })
       },
     },
-    spellInfo: {
-      name: 'Summon Sagittar',
-    }
   }
 };

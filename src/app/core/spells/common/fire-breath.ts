@@ -24,9 +24,8 @@ export const FireBreath: SpellBaseType = {
       ]
     };
   },
-  type: {
+  config: {
     spellConfig: {
-      getManaCost() { return 0; },
       init({ actions, vfx, ownerPlayer, ownerUnit, events, thisSpell }) {
         events.on({
           NewRoundBegins() {
@@ -55,9 +54,6 @@ export const FireBreath: SpellBaseType = {
           },
         });
       },
-    },
-    spellInfo: {
-      name: '',
     },
   },
 };

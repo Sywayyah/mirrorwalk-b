@@ -16,8 +16,48 @@
       <div>Level {{hero.level}}</div>
 
       <mw-experience-bar style="width: 270px;" />
-    </div>
 
+      <div class="unit-groups-slots">
+        @for (slot of hero.mainUnitSlots; track $index) {
+        @if (slot.unitGroup) {
+        <div class="unit-slot"
+             (mwNoContextMenu)="splitGroup(slot)"
+             (click)="clickOnSlot(slot)"
+             [class.active]="slot === activeGroupSlot"
+             [style.background]="slot.unitGroup.ownerPlayer.color">
+          <span>{{slot.unitGroup.type.name}}</span>
+          <span>{{slot.unitGroup.count}}</span>
+        </div>
+        }
+        @else {
+        <div class="unit-slot"
+             (mwNoContextMenu)="splitGroup(slot)"
+             (click)="clickOnSlot(slot)"></div>
+        }
+        }
+      </div>
+
+      Reserve:
+      <div class="unit-groups-slots">
+        @for (slot of hero.reserveUnitSlots; track $index) {
+        @if (slot.unitGroup) {
+        <div class="unit-slot reserve"
+             (mwNoContextMenu)="splitGroup(slot)"
+             (click)="clickOnSlot(slot)"
+             [class.active]="slot === activeGroupSlot"
+             [style.background]="slot.unitGroup.ownerPlayer.color">
+          <span>{{slot.unitGroup.type.name}}</span>
+          <span>{{slot.unitGroup.count}}</span>
+        </div>
+        }
+        @else {
+        <div class="unit-slot reserve"
+             (mwNoContextMenu)="splitGroup(slot)"
+             (click)="clickOnSlot(slot)"></div>
+        }
+        }
+      </div>
+    </div>
   </div>
 
   <div class="buttons">
@@ -82,7 +122,8 @@
     <div style="display: flex; flex-direction: column; align-items: center;">
 
       <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 4px">
-        <div style="display: flex; flex-direction: column; align-items: center;" *ngFor="let spell of currentPlayer.hero.spells">
+        <div style="display: flex; flex-direction: column; align-items: center;"
+             *ngFor="let spell of currentPlayer.hero.spells">
 
           <mw-spell-button [spell]="spell"
                            [player]="currentPlayer"

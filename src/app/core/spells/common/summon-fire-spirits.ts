@@ -22,7 +22,7 @@ export const SummonFireSpiritsSpell: SpellBaseType = {
       ],
     }
   },
-  type: {
+  config: {
     spellConfig: {
       getManaCost(thisSpell) { return 2 + thisSpell.currentLevel; },
       init({ actions, spellInstance, ownerPlayer, events, vfx }) {
@@ -62,8 +62,6 @@ export const SummonFireSpiritsSpell: SpellBaseType = {
         })
       },
     },
-    spellInfo: {
-      name: 'Summon Fire Spirits',
-    }
+
   }
 };

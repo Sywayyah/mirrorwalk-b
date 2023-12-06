@@ -13,11 +13,13 @@ export const ItemEclipseWand: ItemBaseModel<{}> = {
   icon: {
     icon: 'crystal-wand',
   },
+  cost: { gold: 550 },
+  sellingCost: { gold: 300 },
   defaultState: {},
-  description({ thisItem }) {
+  description({ thisItemBase }) {
     return {
       descriptions: [
-        itemStatsDescr(thisItem),
+        itemStatsDescr(thisItemBase),
         spellDescrElem('At the beginning of the battle, applies level 1 Enchant to all enemy groups.')
       ],
     };

@@ -1,6 +1,10 @@
 <ng-container *ngIf="viewTypes.MainScreen !== currentView && viewTypes.NewGame !== currentView">
   <mw-player-resources class="resources-panel" />
   <mw-event-feed />
+  <div class="menu-panel">
+    <mw-round-icon-btn (click)="openMainMenu()" mwActionHint="Main Menu"
+                       icon="repair" />
+  </div>
 </ng-container>
 
 

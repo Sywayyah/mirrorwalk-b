@@ -19,15 +19,8 @@ export const EnchantBuff: SpellBaseType = {
       ],
     }
   },
-  type: {
-    spellInfo: {
-      name: 'Enchanted',
-    },
+  config: {
     spellConfig: {
-      getManaCost(spellInst) {
-        return 0;
-      },
-
       init: ({ events, actions, vfx }) => {
         const mods = actions.createModifiers({
           amplifiedTakenMagicDamagePercent: damageIncreasePercent / 100,
@@ -57,10 +50,7 @@ export const EnchantSpell: SpellBaseType = {
       ],
     }
   },
-  type: {
-    spellInfo: {
-      name: 'Enchant',
-    },
+  config: {
     spellConfig: {
       targetCastConfig: {
         canActivate: canActivateOnEnemyFn,

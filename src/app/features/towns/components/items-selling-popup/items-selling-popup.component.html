@@ -1,0 +1,56 @@
+<div class="header">Items Market</div>
+
+<div class="header">Buy:</div>
+
+<div class="item-list">
+  @for (item of items; track $index) {
+  <div class="item"
+       [class.active]="itemToBuy() === item"
+       (click)="itemToBuy.set(item)">
+    <mw-item-icon [itemBase]="item" />
+
+    {{item.name}}
+
+    <mw-resources-cost style="display: flex; flex-direction: column;"
+                       [cost]="item.cost" />
+  </div>
+  }
+</div>
+
+<button mw-main-button
+        [disabled]="!canBuy()"
+        (click)="buyItem()">
+  Buy
+</button>
+
+@if (allowsSelling) {
+
+<div class="header">Sell:</div>
+
+<div class="item-list">
+
+  @for (item of hero.itemsBackpack; track $index) {
+  <div class="item"
+       [class.active]="itemToSell() === item"
+       (click)="itemToSell.set(item)">
+    <mw-item-icon [itemBase]="item.baseType" />
+
+    {{item.baseType.name}}
+
+    <mw-resources-cost style="display: flex; flex-direction: column;"
+                       [cost]="item.baseType.sellingCost" />
+  </div>
+  }
+
+</div>
+
+<button mw-main-button
+        [disabled]="!canSell()"
+        (click)="sellItem()">
+  Sell
+</button>
+}
+<button mw-main-button
+        (click)="popup.close()">
+  Close
+</button>

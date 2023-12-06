@@ -21,15 +21,8 @@ export const KneelingLightDebuff: SpellBaseType = {
       ],
     }
   },
-  type: {
-    spellInfo: {
-      name: 'Slowed',
-    },
+  config: {
     spellConfig: {
-      getManaCost(spellInst) {
-        return 0;
-      },
-
       init: ({ events, actions, vfx }) => {
         events.on({
           SpellPlacedOnUnitGroup(event) {
@@ -65,10 +58,7 @@ export const KneelingLight: SpellBaseType = {
     }
   },
   activationType: SpellActivationType.Target,
-  type: {
-    spellInfo: {
-      name: 'Kneeling light',
-    },
+  config: {
     spellConfig: {
       targetCastConfig: {
         canActivate: canActivateOnEnemyFn,

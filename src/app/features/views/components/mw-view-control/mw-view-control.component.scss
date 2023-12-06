@@ -16,3 +16,10 @@ mw-event-feed {
   max-width: 400px;
   z-index: 10000;
 }
+
+.menu-panel {
+  position: fixed;
+  top: 0;
+  right: 0;
+  padding: 7px;
+}

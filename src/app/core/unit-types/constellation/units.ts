@@ -1,5 +1,7 @@
 import { AssetsImages } from '../../assets';
 import { constellationFraction } from '../../fractions/constellation/fraction';
+import { spellDescrElem } from '../../ui';
+import { EssenceLeak } from './spells/essence-leak';
 
 // Units of constellation might be more durable and slightly higher
 // quality then average units
@@ -10,22 +12,31 @@ constellationFraction.defineUnitType('Sprite', {
   mainPortraitUrl: AssetsImages.UnitMelee,
 
   baseRequirements: {
-    gold: 70,
+    gold: 75,
   },
+
+  getDescription: () => {
+    return {
+      descriptions: [
+        spellDescrElem('Tier 1 units of the Constellation.'),
+        spellDescrElem('<br>One of the strongest tier 1 unit types due to high-value abilities. Sprites can curse specific enemy to heal allied attackers.'),
+      ],
+    };
+  },
+
+  defaultSpells: [EssenceLeak],
 
   baseStats: {
     damageInfo: {
       minDamage: 2,
       maxDamage: 3,
     },
-    speed: 7,
+    speed: 8,
     defence: 4,
     health: 14,
     attackRating: 4,
   },
 
-  defaultTurnsPerRound: 1,
-  minQuantityPerStack: 1,
   neutralReward: {
     experience: 12,
     gold: 8,
@@ -53,8 +64,6 @@ constellationFraction.defineUnitType('Fencer', {
     attackRating: 5,
   },
 
-  defaultTurnsPerRound: 1,
-  minQuantityPerStack: 1,
   neutralReward: {
     experience: 12,
     gold: 8,
@@ -85,8 +94,6 @@ constellationFraction.defineUnitType('Sagittar', {
     attackRating: 5,
   },
 
-  defaultTurnsPerRound: 1,
-  minQuantityPerStack: 1,
   neutralReward: {
     experience: 18,
     gold: 14,
@@ -114,8 +121,6 @@ constellationFraction.defineUnitType('Chariot', {
     attackRating: 9,
   },
 
-  defaultTurnsPerRound: 1,
-  minQuantityPerStack: 1,
   neutralReward: {
     experience: 18,
     gold: 14,
@@ -148,9 +153,6 @@ constellationFraction.defineUnitType('NightWyvern', {
     health: 245,
     attackRating: 17,
   },
-
-  defaultTurnsPerRound: 1,
-  minQuantityPerStack: 1,
 
   neutralReward: {
     experience: 180,
@@ -188,9 +190,6 @@ constellationFraction.defineUnitType('StarDragon', {
     health: 175,
     attackRating: 16,
   },
-
-  defaultTurnsPerRound: 1,
-  minQuantityPerStack: 1,
 
   neutralReward: {
     experience: 180,

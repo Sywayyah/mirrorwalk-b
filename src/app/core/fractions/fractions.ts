@@ -2,7 +2,7 @@
 import { AssetsImages } from '../assets';
 import type { HeroBase } from '../heroes';
 import type { UnitBaseType } from '../unit-types';
-import { Fraction } from './types';
+import { Fraction, UnitTypeCreationParams } from './types';
 
 /* might be adjusted in the future */
 export const Fractions = {
@@ -33,8 +33,9 @@ export const Fractions = {
       getTownBase() {
         return this.townBase;
       },
-      defineUnitType(unitTypeName: T, data) {
-        const unitType = {
+      defineUnitType(unitTypeName: T, data: UnitTypeCreationParams) {
+        const unitType: UnitBaseType = {
+          defaultTurnsPerRound: 1,
           ...data,
           fraction: this,
           type: unitTypeName,
@@ -103,5 +104,6 @@ export const Fractions = {
 export enum FractionsEnum {
   Humans = 'humans',
   Neutrals = 'neutrals',
+  Fort = 'fort',
   Constellation = 'constellation',
 }

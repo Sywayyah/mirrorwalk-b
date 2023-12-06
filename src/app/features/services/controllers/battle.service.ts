@@ -107,7 +107,8 @@ export class BattleController extends StoreClient() {
 
     // if current player doesn't have unit groups left
     if (!currentPlayerUnitGroups.length) {
-      this.playersService.getCurrentPlayer().setUnitGroups(currentPlayerUnitGroups);
+      // todo: handle it differently, don't need to call this method
+      this.playersService.getCurrentPlayer().hero.setUnitGroups(currentPlayerUnitGroups);
 
       this.events.dispatch(FightEnds({
         struct: currentStructure,
@@ -124,15 +125,24 @@ export class BattleController extends StoreClient() {
     if (!this.battleState.getAliveUnitsOfPlayer(enemyPlayer).length) {
       const deadUnitsOfCurrentPlayer = this.battleState.getDeadUnitsOfPlayer(currentPlayer);
       const deadUnitsOfEnemyPlayer = this.battleState.getDeadUnitsOfPlayer(enemyPlayer);
-      const summonedUnitsOfPlayer = this.battleState.getDeadUnitsOfPlayer(enemyPlayer);
+      const summonedUnitsOfPlayer = this.battleState.getSummonsOfPlayer(currentPlayer);
 
       [...deadUnitsOfCurrentPlayer, ...deadUnitsOfEnemyPlayer, ...summonedUnitsOfPlayer].forEach((unitGroup) => {
         this.gameObjectsManager.destroyObject(unitGroup);
       });
 
       const finalCurrentUnitsOfPlayer = currentPlayerUnitGroups.filter(unit => !unit.modGroup.getModValue('isSummon'));
+      const currentHero = this.playersService.getCurrentPlayer().hero;
 
-      this.playersService.getCurrentPlayer().setUnitGroups(finalCurrentUnitsOfPlayer);
+      // adjust slots
+      finalCurrentUnitsOfPlayer.filter(unitGroup => !unitGroup.fightInfo.isAlive).forEach((unitGroup) => {
+        const dyingUnitSlot = currentHero.getAllSlots().find(slot => slot.unitGroup === unitGroup);
+        if (dyingUnitSlot) {
+          dyingUnitSlot.unitGroup = null;
+        }
+      });
+
+      currentHero.setUnitGroups(finalCurrentUnitsOfPlayer, false);
 
       currentStructure.isInactive = true;
 

@@ -94,14 +94,8 @@ export const PoisonCloudDebuff: SpellBaseType<undefined | { debuffRoundsLeft: nu
       ],
     }
   },
-  type: {
-    spellInfo: {
-      name: 'Poisoned'
-    },
+  config: {
     spellConfig: {
-      getManaCost(spellInst) {
-        return 0;
-      },
       init({ events, actions, thisSpell, spellInstance, vfx }) {
         events.on({
           SpellPlacedOnUnitGroup({ target }) {
@@ -168,10 +162,7 @@ export const PoisonCloudSpell: SpellBaseType = {
       ],
     }
   },
-  type: {
-    spellInfo: {
-      name: 'Poison Cloud',
-    },
+  config: {
     spellConfig: {
       targetCastConfig: {
         canActivate: canActivateOnEnemyFn,

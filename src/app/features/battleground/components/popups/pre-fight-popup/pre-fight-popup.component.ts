@@ -11,6 +11,7 @@ import { EventsService } from 'src/app/store';
 })
 export class PreFightPopupComponent extends BasicPopup<StructPopupData> implements OnInit {
 
+  struct = this.data.struct;
   public totalGoldReward: number = 0;
   public totalExpReward: number = 0;
 

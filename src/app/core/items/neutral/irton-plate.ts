@@ -8,13 +8,19 @@ export const IrtonPlateItem: ItemBaseModel = {
   icon: {
     icon: 'vest',
   },
+  cost: {
+    gold: 300,
+  },
+  sellingCost: {
+    gold: 175,
+  },
   staticMods: {
     heroBonusDefence: 3,
   },
-  description({ thisItem }) {
+  description({ thisItemBase }) {
     return {
       descriptions: [
-        itemStatsDescr(thisItem),
+        itemStatsDescr(thisItemBase),
       ],
     }
   },

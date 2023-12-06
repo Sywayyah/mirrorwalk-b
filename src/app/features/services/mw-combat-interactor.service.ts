@@ -21,6 +21,7 @@ interface ExtendedFinalDamageInfo extends FinalDamageInfo {
   blockedDamage: number;
   stolenLife: number;
   stolenLifeUnitsRestored: number;
+  isCritical: boolean;
 }
 @Injectable({
   providedIn: 'root'
@@ -55,6 +56,7 @@ export class CombatInteractorService extends StoreClient() {
     let blockedDamage = 0;
     let stolenLife = 0;
     let stolenLifeUnitsRestored = 0;
+    let isCritical = false;
 
     switch (damageType) {
       /* Normal Unit Group attack */
@@ -84,6 +86,17 @@ export class CombatInteractorService extends StoreClient() {
             ...attackerUnitConditionalModifiers.filter(nonNullish).map(ModsRef.fromMods),
             ...attackerModGroup.getAllRefs(),
           ]);
+
+          const criticalStrikeChance = attackerFinalMods.getModValue('criticalDamageChance');
+
+          if (criticalStrikeChance) {
+            const criticalChanceWorked = CommonUtils.chanceRoll(criticalStrikeChance);
+
+            if (criticalChanceWorked) {
+              isCritical = true;
+              finalDamage = finalDamage + (finalDamage * (attackerFinalMods.getModValue('criticalDamageMul') || 0));
+            }
+          }
 
           const targetConditionalModsGroup = ModsRefsGroup.withRefs(targetConditionalModifiers.map(ModsRef.fromMods));
 
@@ -139,7 +152,7 @@ export class CombatInteractorService extends StoreClient() {
 
           console.log(damage, damageType, 'resist:', finalResistValue);
 
-          // reduce damage basing on
+          // reduce damage basing on resist
           finalDamage = finalDamage - (finalDamage * (finalResistValue / 100));
         }
     }
@@ -178,14 +191,20 @@ export class CombatInteractorService extends StoreClient() {
 
     /* don't handle rest if this is a normal phys attack */
     if (damageType === DamageType.PhysicalAttack) {
-      return { ...finalDamageInfo, blockedDamage, stolenLife, stolenLifeUnitsRestored };
+      return {
+        ...finalDamageInfo,
+        blockedDamage,
+        stolenLife,
+        stolenLifeUnitsRestored,
+        isCritical,
+      };
     }
 
     if (finalDamageInfo.isDamageFatal) {
       this.battleState.handleDefeatedUnitGroup(target);
       this.events.dispatch(GroupDies({
         target: target,
-        targetPlayer: target.ownerPlayerRef,
+        targetPlayer: target.ownerPlayer,
         loss: finalDamageInfo.finalUnitLoss,
       }));
     }
@@ -197,7 +216,13 @@ export class CombatInteractorService extends StoreClient() {
       }));
     }
 
-    return { ...finalDamageInfo, blockedDamage, stolenLife, stolenLifeUnitsRestored };
+    return {
+      ...finalDamageInfo,
+      blockedDamage,
+      stolenLife,
+      stolenLifeUnitsRestored,
+      isCritical,
+    };
   }
 
   /* when group counterattacks and defeats enemy group, both are gone from queue */
@@ -265,6 +290,7 @@ export class CombatInteractorService extends StoreClient() {
         damageBlocked: finalDamageInfo.blockedDamage,
         lifeStolen: finalDamageInfo.stolenLife,
         lifeStolenUnitsRestored: finalDamageInfo.stolenLifeUnitsRestored,
+        isCritical: finalDamageInfo.isCritical,
       }));
     } else {
       this.events.dispatch(GroupCounterAttacked({
@@ -279,7 +305,7 @@ export class CombatInteractorService extends StoreClient() {
       this.battleState.handleDefeatedUnitGroup(attacked);
       this.events.dispatch(GroupDies({
         target: attacked,
-        targetPlayer: attacked.ownerPlayerRef,
+        targetPlayer: attacked.ownerPlayer,
         loss: finalDamageInfo.finalUnitLoss,
       }));
       attackActionState.action = CombatInteractionEnum.AttackInteractionCompleted;

@@ -35,8 +35,6 @@ neutralsFraction.defineUnitType('Devastator', {
   },
 
   baseRequirements: {},
-  defaultTurnsPerRound: 1,
-  minQuantityPerStack: 1,
 
   neutralReward: {
     experience: 120,

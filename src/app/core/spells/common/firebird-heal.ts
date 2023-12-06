@@ -74,10 +74,7 @@ export const FirebirdHealSpell: SpellBaseType = {
       ],
     }
   },
-  type: {
-    spellInfo: {
-      name: 'Heal',
-    },
+  config: {
     spellConfig: {
       targetCastConfig: {
         canActivate: canActivateOnAllyFn,

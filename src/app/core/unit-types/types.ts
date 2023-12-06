@@ -3,6 +3,7 @@ import { takeUntil } from 'rxjs/operators';
 import { GroupSpellsChanged } from '../events';
 import type { Fraction } from '../fractions/types';
 import { GameObject } from '../game-objects';
+import { Hero } from '../heroes';
 import { ModsRef, ModsRefsGroup, Specialties } from '../modifiers';
 import { Modifiers } from '../modifiers/modifiers';
 import type { Player } from '../players';
@@ -89,10 +90,10 @@ export interface UnitBaseType {
   defaultSpells?: SpellBaseType<any>[];
 
   /* minimal amount of units that can stack can be hired, sold or split by */
-  minQuantityPerStack: number;
+  minQuantityPerStack?: number;
 
-  /* How many attacks unit can make by default */
-  defaultTurnsPerRound: number;
+  /* How many attacks unit can make by default, if not specified - 1 */
+  defaultTurnsPerRound?: number;
 
   upgraded?: boolean;
 
@@ -107,12 +108,12 @@ export interface UnitBaseType {
 interface UnitCreationParams {
   count: number;
   unitBase: UnitBaseType;
-  ownerPlayer?: Player;
+  ownerHero?: Hero;
 }
 
 export enum UnitModGroups {
   /** Mods coming from player */
-  PlayerMods = 'pMods',
+  HeroMods = 'hMods',
 
   /** Mods attached to particular unit during the battle */
   CombatMods = 'cMods',
@@ -172,7 +173,16 @@ export class UnitGroup extends GameObject<UnitCreationParams> {
   }
 
   public type!: UnitBaseType;
-  public ownerPlayerRef!: Player;
+  private _ownerPlayer!: Player;
+  private _ownerHero!: Hero;
+
+  public get ownerHero(): Hero {
+    return this._ownerHero;
+  }
+
+  public get ownerPlayer(): Player {
+    return this._ownerPlayer;
+  }
 
   /* how much turns left during round, not sure if it's best to have it there */
   public turnsLeft!: number;
@@ -221,7 +231,7 @@ export class UnitGroup extends GameObject<UnitCreationParams> {
 
   private readonly destroyed$ = new Subject<void>();
 
-  create({ count, ownerPlayer, unitBase }: UnitCreationParams): void {
+  create({ count, unitBase, ownerHero }: UnitCreationParams): void {
     if (count <= 0 || !count) {
       console.warn(`Cannot create unit group with ${count} units. Setting count to 1.`, this);
 
@@ -231,11 +241,13 @@ export class UnitGroup extends GameObject<UnitCreationParams> {
     this.type = unitBase;
 
     // think about it later
-    if (ownerPlayer) {
-      this.assignOwnerPlayer(ownerPlayer);
+
+    if (ownerHero) {
+      this.assignOwnerHero(ownerHero);
+      this.assignOwnerPlayer(ownerHero.ownerPlayer);
     }
 
-    this.turnsLeft = unitBase.defaultTurnsPerRound;
+    this.turnsLeft = unitBase.defaultTurnsPerRound || 1;
     this._tailUnitHp = unitBase.baseStats.health;
 
     if (this.type.defaultModifiers) {
@@ -269,6 +281,13 @@ export class UnitGroup extends GameObject<UnitCreationParams> {
     this.setupStatsUpdating();
   }
 
+  assignOwnerHero(ownerHero: Hero): void {
+    this._ownerHero = ownerHero;
+    this._ownerPlayer = ownerHero.ownerPlayer;
+    this.modGroup.detachNamedParentGroup(UnitModGroups.HeroMods);
+    this.modGroup.attachNamedParentGroup(UnitModGroups.HeroMods, this._ownerHero.modGroup);
+  }
+
   onDestroy(): void {
     complete(this.destroyed$);
     this.spells.forEach(spell => this.getApi().gameObjects.destroyObject(spell));
@@ -276,13 +295,10 @@ export class UnitGroup extends GameObject<UnitCreationParams> {
 
   // can be more methods
   assignOwnerPlayer(player: Player): void {
-    this.ownerPlayerRef = player;
+    this._ownerPlayer = player;
 
     // think if I need to retach like that
-    this.modGroup.detachNamedParentGroup(UnitModGroups.PlayerMods);
-    this.modGroup.attachNamedParentGroup(UnitModGroups.PlayerMods, player.hero.modGroup);
   }
-
 
   addUnitsCount(addedCount: number): void {
     this.setUnitsCount(this._count + addedCount);
@@ -309,7 +325,7 @@ export class UnitGroup extends GameObject<UnitCreationParams> {
   addSpell(spell: Spell): void {
     this._spells.push(spell);
     spell.setOwnerObjectId(this.id);
-    spell.baseType.type.spellConfig.onAcquired?.({ spellInstance: spell, ownerUnit: this });
+    spell.baseType.config.spellConfig.onAcquired?.({ spellInstance: spell, ownerUnit: this });
     this.getApi().events.dispatch(GroupSpellsChanged({ unitGroup: this }));
     // todo: initialize listeners
   }
@@ -394,7 +410,7 @@ export class UnitGroup extends GameObject<UnitCreationParams> {
     this.modGroup.onValueChanges().pipe(takeUntil(this.destroyed$)).subscribe((mods) => {
       const baseStats = this.type.baseStats;
       // review later
-      const heroBaseStats = this.ownerPlayerRef?.hero.base.initialState.stats;
+      const heroBaseStats = this.ownerPlayer?.hero.base.initialState.stats;
 
       const baseAttack = baseStats.attackRating;
       const bonusAttack = (mods.heroBonusAttack || 0) + (heroBaseStats?.baseAttack || 0);

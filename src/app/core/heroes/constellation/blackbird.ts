@@ -9,7 +9,7 @@ import { heroDescrElem } from '../../ui';
 //  Summon Star Dragon.
 constellationFraction.createHero({
   name: 'Blackbird',
-  image: AssetsImages.HeroMelee,
+  image: AssetsImages.HeroBlackbird,
   abilities: [
     RainOfFireSpell,
     SummonSagittarSpell,

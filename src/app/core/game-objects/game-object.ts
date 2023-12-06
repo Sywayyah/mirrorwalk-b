@@ -15,9 +15,15 @@ export type GameObjectClass<T extends GameObject> = Type<T> & {
 };
 
 export interface GameObjectsManagerAPI {
-  createNewGameObject<T extends GameObject>(gameObjectClass: GameObjectClass<T>, creationParams: CreationParams<T>, id?: string): T;
+  createNewGameObject<T extends GameObject>(
+    gameObjectClass: GameObjectClass<T>,
+    creationParams: CreationParams<T>,
+    id?: string
+  ): T;
   getObjectByFullId<T extends GameObject>(gameObjectId: string): T;
   destroyObject<T extends GameObject>(object: T): void;
+  addCustomData<T extends object>(idOrObject: string | GameObject, data: T): void;
+  getCustomData<T extends object>(idOrObject: string | GameObject): T | undefined;
 }
 
 export interface EventFeedApi {
@@ -53,6 +59,14 @@ export class GameObject<CreationParams extends object = object> {
 
   // method which is going to be called when object is being disposed
   onDestroy(): void { }
+
+  addCustomData<T extends object>(data: T): void {
+    this.api.gameObjects.addCustomData(this.id, data);
+  }
+
+  getCustomData<T extends object>(): T | undefined {
+    return this.api.gameObjects.getCustomData(this.id);
+  }
 }
 
 export type CreationParams<T> = T extends GameObject<infer K> ? K : never;

@@ -27,6 +27,4 @@ neutralsFraction.defineUnitType('FireSpirits', {
     gold: 20,
   },
   defaultSpells: [],
-  defaultTurnsPerRound: 1,
-  minQuantityPerStack: 2,
 })

@@ -1,11 +1,11 @@
 import { Directive, ElementRef, Inject, InjectionToken, NgZone, OnInit, Renderer2 } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
+import { PlayerState } from 'src/app/core/players';
 import { UnitGroup } from 'src/app/core/unit-types';
-import { SpellCastCursorAnimation, StaticCursorAnimation } from 'src/app/core/vfx';
+import { CenteredStaticCursorAnimation, SpellCastCursorAnimation, StaticCursorAnimation } from 'src/app/core/vfx';
 import { MwCurrentPlayerStateService, MwPlayersService, MwSpellsService } from '../../services';
 import { CursorService } from '../components/custom-cursor/cursor.service';
 import { AnimatedCursor, MwCustomCursorDirective } from './mw-custom-cursor.directive';
-import { PlayerState } from 'src/app/core/players';
 
 export interface UIUnitProvider {
   getUnitGroup(): UnitGroup;
@@ -87,6 +87,18 @@ export class MwUnitEventsCursorDirective extends MwCustomCursorDirective impleme
   }
 
   private createStaticCursor(cursorIcon: string): AnimatedCursor {
+    if (cursorIcon === 'interdiction') {
+      return {
+        animation: CenteredStaticCursorAnimation,
+        data: {
+          custom: {
+            parts: [
+              { color: 'white', icon: cursorIcon, text: '', type: 'plainPart' },
+            ],
+          }
+        },
+      };
+    }
     return {
       animation: StaticCursorAnimation,
       data: {

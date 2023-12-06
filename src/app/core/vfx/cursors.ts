@@ -21,6 +21,18 @@ export const StaticCursorAnimation: EffectAnimation = createAnimation([
   ],
 ]);
 
+export const CenteredStaticCursorAnimation: EffectAnimation = createAnimation([
+  [
+    getCustomizableElement('elem'),
+    [],
+    {
+      fontSize: '24px',
+      color: 'white',
+      ...CursorStyles,
+    },
+  ],
+]);
+
 export const SpellCastCursorAnimation: EffectAnimation = createAnimation([
   [
     getIconElement('burning-book', 'bm'),

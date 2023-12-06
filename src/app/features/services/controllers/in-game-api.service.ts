@@ -53,7 +53,14 @@ export class InGameApiController extends StoreClient() {
 
   @WireMethod(InitSpell)
   public initSpell({ spell, player, ownerUnit }: InitSpellAction): void {
-    spell.baseType.type.spellConfig.init({
+    const baseType = spell.baseType;
+
+    // Aura spells have different lifecycle.
+    if (baseType.config.flags?.isAura) {
+      return;
+    }
+
+    baseType.config.spellConfig.init({
       actions: this.createActionsApiRef(),
       events: {
         on: (handlers: SpellEventHandlers) => {
@@ -74,7 +81,10 @@ export class InGameApiController extends StoreClient() {
         },
         createFloatingMessageForUnitGroup: (target, data, options) => {
           this.vfxService.createFloatingMessageForUnitGroup(target, data, options);
-        }
+        },
+        createDroppingMessageForUnitGroup: (id, data, options) => {
+          this.vfxService.createDroppingMessageForContainer(id, data, options);
+        },
       },
       thisSpell: spell.baseType,
       ownerPlayer: player,
@@ -120,6 +130,8 @@ export class InGameApiController extends StoreClient() {
         }
       },
       globalEvents: this.apiProvider.getGlobalEventsApi(),
+      thisBuilding: building,
+      gameObjects: this.gameObjectsManager,
     });
   }
 
@@ -168,6 +180,7 @@ export class InGameApiController extends StoreClient() {
 
   private createActionsApiRef(): CombatActionsRef {
     return {
+      getCurrentUnitGroup: () => this.battleState.currentUnitGroup,
       summonUnitsForPlayer: (ownerPlayer: Player, unitType: UnitBaseType, unitNumber: number) => {
         const summonedUnitGroup = this.battleState.summonUnitForPlayer(ownerPlayer, unitType, unitNumber);
         this.events.dispatch(UnitSummoned({ unitGroup: summonedUnitGroup }));

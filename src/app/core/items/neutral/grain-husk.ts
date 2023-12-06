@@ -1,4 +1,4 @@
-import { itemStatsDescr, spellDescrElem } from '../../ui';
+import { itemStatsDescr } from '../../ui';
 import { ItemBaseModel, ItemSlotType } from '../types';
 
 
@@ -16,10 +16,16 @@ export const GrainHuskItem: ItemBaseModel = {
   icon: {
     icon: 'scythe',
   },
-  description({ thisItem }) {
+  cost: {
+    gold: 1000,
+  },
+  sellingCost: {
+    gold: 650,
+  },
+  description({ thisItemBase }) {
     return {
       descriptions: [
-        itemStatsDescr(thisItem),
+        itemStatsDescr(thisItemBase),
       ],
     };
   },

@@ -29,20 +29,22 @@ export class BattleLogController extends StoreClient() {
 
     lifeStolen,
     lifeStolenUnitsRestored,
+    isCritical,
   }: GroupDamagedByGroupEvent): void {
     this.battleLog.logDealtDamageMessage({
       attacked: attackedGroup.type,
-      attackedPlayer: attackedGroup.ownerPlayerRef,
+      attackedPlayer: attackedGroup.ownerPlayer,
       attackersNumber: attackersCount,
       attackedNumber: attackedCount,
       attacker: attackingGroup.type,
-      attackingPlayer: attackingGroup.ownerPlayerRef,
+      attackingPlayer: attackingGroup.ownerPlayer,
       damage,
       damageBlocked,
       losses: loss,
 
       stolenLife: lifeStolen,
       stolenLifeUnitsRestored: lifeStolenUnitsRestored,
+      isCritical,
     });
   }
 
