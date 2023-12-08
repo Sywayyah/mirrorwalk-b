@@ -1,7 +1,7 @@
 import { DamageType } from '../../api/combat-api';
 import { spellDescrElem } from '../../ui';
 import { CommonUtils } from '../../utils';
-import { simpleConvergentBuffAnimation, getDamageParts } from '../../vfx';
+import { getDamageParts, messageWrapper, simpleConvergentBuffAnimation } from '../../vfx';
 import { SpellActivationType, SpellBaseType } from '../types';
 
 const minDamage = 82;
@@ -21,7 +21,7 @@ export const MeteorSpell: SpellBaseType = {
 
     return {
       descriptions: [
-        spellDescrElem(`Deals ${minDamage + damageBounsPerLevel}-${maxDamage + damageBounsPerLevel} fire damage to random enemy group`),
+        spellDescrElem(`Deals ${minDamage + damageBounsPerLevel}-${maxDamage + damageBounsPerLevel} fire damage to random enemy group, next 2 unit groups (enemies or allies) in fight queue will be stunned and will lose their turns.`),
       ],
     }
   },
@@ -41,6 +41,8 @@ export const MeteorSpell: SpellBaseType = {
       init({ events, actions, thisSpell, ownerHero, vfx, spellInstance }) {
         events.on({
           PlayerCastsInstantSpell(event) {
+            // todo: should stun happen after or before meteor damage?
+            // todo: should all turns be gone or only 1? scaling?
             const randomEnemyGroup = actions.getRandomEnemyPlayerGroup();
             const damageBounsPerLevel = dmgIncrementPerLevel * spellInstance.currentLevel;
 
@@ -64,6 +66,15 @@ export const MeteorSpell: SpellBaseType = {
                   { duration: 1000 },
                 );
               });
+
+            const unitsInQueue = actions.getUnitsFromFightQueue();
+            const unitsToStun = CommonUtils.selectItems(unitsInQueue, 2, 1);
+            console.log(unitsInQueue, unitsToStun);
+
+            unitsToStun.forEach(unit => {
+              actions.removeTurnsFromUnitGroup(unit);
+              vfx.createDroppingMessageForUnitGroup(unit.id, { html: messageWrapper(`Stunned!`) });
+            });
           },
         });
       },
