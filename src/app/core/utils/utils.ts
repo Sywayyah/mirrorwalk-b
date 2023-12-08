@@ -1,4 +1,7 @@
 export const CommonUtils = {
+  selectItems<T>(items: T[], count: number, after = 0): T[] {
+    return items.slice(after, after + count);
+  },
   randIndex<T>(array: Array<T>): number {
     return Math.round((array.length - 1) * Math.random());
   },

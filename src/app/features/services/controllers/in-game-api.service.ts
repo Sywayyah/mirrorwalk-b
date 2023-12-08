@@ -180,6 +180,7 @@ export class InGameApiController extends StoreClient() {
 
   private createActionsApiRef(): CombatActionsRef {
     return {
+      getUnitsFromFightQueue: () => this.battleState.getFightQueue(),
       removeTurnsFromUnitGroup: (target, turns = target.turnsLeft) => {
         target.turnsLeft -= turns;
 
