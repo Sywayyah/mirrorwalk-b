@@ -76,4 +76,6 @@ export interface CombatActionsRef extends SpellsApi {
   healUnit: (unit: UnitGroup, healValue: number) => HealingInfo;
 
   getCurrentUnitGroup: () => UnitGroup;
+
+  unitGroupAttack: (attacker: UnitGroup, attacked: UnitGroup) => void;
 }

@@ -119,6 +119,8 @@ const Crossbowmen = humansFraction.defineUnitType('Crossbowmen', {
     speed: 21,
   },
 
+  defaultTurnsPerRound: 2,
+
   getUnitTypeSpecialtyModifiers(specialties) {
     if (specialties.specialtyArchery === 1) {
       return { heroBonusAttack: 1, blockPiercingPercent: 0.20 };
@@ -273,7 +275,7 @@ humansFraction.defineUnitType('Cavalry', {
   mainPortraitUrl: AssetsImages.UnitMelee,
 
   getDescription: simpleDescriptions([
-    heroDescrElem(`Tier 4 Castle unit.`),
+    heroDescrElem(`Tier 4 Castle cavalry unit.`),
     heroDescrElem(`<br>Cavalry is armored unit type that also deals heavy damage with 55% block-piercing attack.`),
   ]),
 
@@ -289,6 +291,7 @@ humansFraction.defineUnitType('Cavalry', {
 
   defaultModifiers: {
     blockPiercingPercent: 0.55,
+    isCavalry: true,
   },
 
   baseRequirements: {

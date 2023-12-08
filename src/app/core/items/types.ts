@@ -39,6 +39,11 @@ export interface ItemsEventsRef {
   on: (handlers: ItemsEventsHandlers) => void;
 }
 
+export type SpellWithConfig = {
+  spell: SpellBaseType;
+  level: number;
+};
+
 export interface ItemBaseModel<StateType extends object = object> {
   defaultState?: StateType;
 
@@ -64,7 +69,7 @@ export interface ItemBaseModel<StateType extends object = object> {
       thisInstance: Item<StateType>,
     }) => void,
   },
-  bonusAbilities?: { spell: SpellBaseType, level: number }[];
+  bonusAbilities?: SpellWithConfig[];
 }
 
 export interface ItemCreationParams<T extends object = object> {

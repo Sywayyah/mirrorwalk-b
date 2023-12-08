@@ -3,6 +3,7 @@ import { AddActionCardsToPlayer } from '../../events';
 import { HUMANS_UNIT_TYPES, humansFraction } from '../../fractions';
 import { IrtonPlateItem } from '../../items/neutral';
 import { IronPikeItem } from '../../items/neutral/iron-pike';
+import { StormPikeItem } from '../../items/neutral/storm-pike';
 import { SwordOfTheBattleMageItem } from '../../items/neutral/sword-of-the-battle-mage';
 import { ActivityTypes, BuidlingBase, HiringActivity } from '../buildings';
 import { SellingBuildingData, TownBase } from '../types';
@@ -165,7 +166,7 @@ const itemMarket: BuidlingBase = {
       localEvents.on({
         Built() {
           thisBuilding.addCustomData<SellingBuildingData>({
-            items: [IronPikeItem, IrtonPlateItem, SwordOfTheBattleMageItem],
+            items: [IronPikeItem, IrtonPlateItem, StormPikeItem, SwordOfTheBattleMageItem],
             selling: true,
           });
         },

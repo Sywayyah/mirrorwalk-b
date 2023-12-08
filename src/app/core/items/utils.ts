@@ -1,9 +1,9 @@
 import { Modifiers } from '../modifiers';
 import { Resources } from '../resources';
 import { itemStatsDescr, spellDescrElem } from '../ui';
-import { ItemBaseModel, ItemSlotType } from './types';
+import { ItemBaseModel, ItemSlotType, SpellWithConfig } from './types';
 
-export function createItem({ name, icon, slot, stats, enemyStats, abilityDescription, cost, sellingCost }: {
+export function createItem({ name, icon, slot, stats, enemyStats, abilityDescription, cost, sellingCost, spells }: {
   name: string,
   icon: string,
   slot: ItemSlotType,
@@ -12,6 +12,7 @@ export function createItem({ name, icon, slot, stats, enemyStats, abilityDescrip
   // temp
   abilityDescription?: string,
   cost?: Resources,
+  spells?: SpellWithConfig[],
   sellingCost?: Resources,
 }): ItemBaseModel {
   return {
@@ -23,6 +24,7 @@ export function createItem({ name, icon, slot, stats, enemyStats, abilityDescrip
     slotType: slot,
     cost,
     sellingCost: sellingCost ?? { gold: 100 },
+    bonusAbilities: spells,
 
     staticEnemyMods: enemyStats,
     description({ thisItemBase }) {
