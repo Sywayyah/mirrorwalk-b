@@ -1,8 +1,9 @@
+import { DamageType } from '../../api/combat-api';
 import { spellDescrElem } from '../../ui';
+import { LightningAnimation } from '../../vfx';
 import { SpellActivationType } from '../types';
 import { createSpell } from '../utils';
 
-// Storm Pike Item
 export const ChargedStrikeSpell = createSpell({
   name: 'Charged Strike',
   activationType: SpellActivationType.Target,
@@ -23,7 +24,17 @@ export const ChargedStrikeSpell = createSpell({
           PlayerTargetsSpell({ target }) {
             const currentUnitGroup = actions.getCurrentUnitGroup();
 
+            const isCavalry = currentUnitGroup.modGroup.getModValue('isCavalry') as boolean;
+
+            const mods = actions.createModifiers({ criticalDamageMul: isCavalry ? 0.2 : 0.35, criticalDamageChance: 1 });
+            actions.addModifiersToUnitGroup(currentUnitGroup, mods);
+
+            actions.dealDamageTo(target, 40, DamageType.Lightning);
+
+            vfx.createEffectForUnitGroup(target, LightningAnimation);
+
             actions.unitGroupAttack(currentUnitGroup, target);
+            actions.removeModifiresFromUnitGroup(currentUnitGroup, mods);
           }
         });
 
