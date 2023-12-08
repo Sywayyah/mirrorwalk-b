@@ -160,9 +160,16 @@ export class MwPlayersService extends StoreClient() {
   public removeNUnitsFromGroup(player: Player, unitGroup: UnitGroup, count: number): void {
     unitGroup.addUnitsCount(-count);
 
+    // Handle hero, destroy unit group and remove it from slot
     if (unitGroup.count <= 0) {
       player.hero.removeUnitGroup(unitGroup);
-      // todo: maybe add here destroy
+
+      this.gameObjectsManager.destroyObject(unitGroup);
+      const stackWithRemovedUnit = unitGroup.ownerHero.getAllSlots().find(slot => slot.unitGroup === unitGroup);
+
+      if (stackWithRemovedUnit) {
+        stackWithRemovedUnit.unitGroup = null;
+      }
     }
   }
 

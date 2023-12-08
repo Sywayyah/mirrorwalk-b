@@ -240,16 +240,6 @@ export class HiringPopupComponent extends BasicPopup<HiringPopupData> implements
           const stackOfType = currentPlayer.hero.unitGroups.find(unitGroup => unitGroup.type === this.activity.hiring.type)!;
 
           this.playersService.removeNUnitsFromGroup(currentPlayer, stackOfType, group.count);
-
-          if (stackOfType.count === 0) {
-            this.gameObjectsManager.destroyObject(stackOfType);
-            const stackWithRemovedUnit = currentPlayer.hero.getAllSlots().find(slot => slot.unitGroup === stackOfType);
-
-            if (stackWithRemovedUnit) {
-              stackWithRemovedUnit.unitGroup = null;
-            }
-          }
-
           const unitGroup = this.unitsService.createUnitGroup(
             group.hire.unitType,
             { count: group.count },
