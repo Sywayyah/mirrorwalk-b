@@ -13,12 +13,13 @@ export const ItemMeteorSwords: ItemBaseModel<{}> = {
     specialtyFireMastery: 1,
   },
   cost: {
-    gold: 600,
+    gold: 1100,
   },
   sellingCost: {
-    gold: 360,
+    gold: 450,
   },
   bonusAbilities: [
+    // item version could have lesser damage and higher manacost
     { spell: MeteorSpell, level: 1 },
   ],
   description({ thisItemBase }) {

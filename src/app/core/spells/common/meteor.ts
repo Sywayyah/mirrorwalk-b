@@ -21,7 +21,7 @@ export const MeteorSpell: SpellBaseType = {
 
     return {
       descriptions: [
-        spellDescrElem(`Deals ${minDamage + damageBounsPerLevel}-${maxDamage + damageBounsPerLevel} fire damage to random enemy group, next 2 unit groups (enemies or allies) in fight queue will be stunned and will lose their turns.`),
+        spellDescrElem(`Meteor deals ${minDamage + damageBounsPerLevel}-${maxDamage + damageBounsPerLevel} fire damage to random enemy group, next 2 unit groups after current group in fight queue (enemies or allies) will be stunned and will lose their turns.`),
       ],
     }
   },
