@@ -93,7 +93,7 @@ export class BattleStateService {
     this.currentUnitGroup$.next(firstUnitGroup);
 
     if (!this.currentUnitGroup.modGroup.getModValue('defending')) {
-      this.currentGroupTurnsLeft = this.currentUnitGroup.type.defaultTurnsPerRound || 1;
+      this.currentGroupTurnsLeft = this.currentUnitGroup.turnsLeft || 1;
     } else {
       this.currentGroupTurnsLeft = this.currentUnitGroup.turnsLeft;
     }
@@ -156,6 +156,9 @@ export class BattleStateService {
     this.fightQueue = [this.fightQueue[0], ...this.sortUnitsBySpeed(this.fightQueue.slice(1))];
   }
 
+  public removeUnitsWithoutTurnsFromFightQueue(): void {
+    this.fightQueue = this.fightQueue.filter(unit => unit.turnsLeft);
+  }
 
   public getAliveUnitsOfPlayer(player: Player): UnitGroup[] {
     return (this.heroesUnitGroupsMap.get(player) as UnitGroup[]).filter(

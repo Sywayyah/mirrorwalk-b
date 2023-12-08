@@ -35,6 +35,9 @@ export interface HealingInfo {
 }
 
 export interface CombatActionsRef extends SpellsApi {
+  /** If turns aren't specified, removes all turns left */
+  removeTurnsFromUnitGroup(target: UnitGroup, turns?: number): void;
+
   summonUnitsForPlayer(ownerPlayer: Player, unitType: UnitBaseType, unitNumber: number): UnitGroup;
 
   dealDamageTo: (
@@ -76,4 +79,6 @@ export interface CombatActionsRef extends SpellsApi {
   healUnit: (unit: UnitGroup, healValue: number) => HealingInfo;
 
   getCurrentUnitGroup: () => UnitGroup;
+
+  unitGroupAttack: (attacker: UnitGroup, attacked: UnitGroup) => void;
 }

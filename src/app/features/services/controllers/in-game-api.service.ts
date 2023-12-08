@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { CombatActionsRef, SpellCreationOptions } from 'src/app/core/api/combat-api';
 import { EffectType, VfxElemEffect } from 'src/app/core/api/vfx-api';
-import { GroupModifiersChanged, GroupSpeedChanged, InitBuilding, InitBuildingAction, InitGameObjectApi, InitGameObjectApiParams, InitItem, InitItemAction, InitMapStructureAction, InitSpell, InitSpellAction, InitStructure, PlayerReceivesItem, PlayersInitialized, UnitHealed, UnitSummoned } from 'src/app/core/events';
+import { GroupAttacked, GroupModifiersChanged, GroupSpeedChanged, InitBuilding, InitBuildingAction, InitGameObjectApi, InitGameObjectApiParams, InitItem, InitItemAction, InitMapStructureAction, InitSpell, InitSpellAction, InitStructure, PlayerReceivesItem, PlayersInitialized, UnitHealed, UnitSummoned } from 'src/app/core/events';
 import { GameObjectApi } from 'src/app/core/game-objects';
 import { ItemEventNames, ItemsEventsGroup, ItemsEventsHandlers } from 'src/app/core/items';
 import { Player } from 'src/app/core/players';
@@ -180,6 +180,16 @@ export class InGameApiController extends StoreClient() {
 
   private createActionsApiRef(): CombatActionsRef {
     return {
+      removeTurnsFromUnitGroup: (target, turns = target.turnsLeft) => {
+        target.turnsLeft -= turns;
+
+        if (target.turnsLeft < 0) {
+          target.turnsLeft = 0;
+        }
+
+        this.battleState.removeUnitsWithoutTurnsFromFightQueue();
+      },
+      unitGroupAttack: (attacker, attacked) => this.events.dispatch(GroupAttacked({ attackingGroup: attacker, attackedGroup: attacked })),
       getCurrentUnitGroup: () => this.battleState.currentUnitGroup,
       summonUnitsForPlayer: (ownerPlayer: Player, unitType: UnitBaseType, unitNumber: number) => {
         const summonedUnitGroup = this.battleState.summonUnitForPlayer(ownerPlayer, unitType, unitNumber);

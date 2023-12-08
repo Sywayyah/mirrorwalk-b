@@ -58,6 +58,7 @@ export interface ModifiersModel extends Specialties {
   isGhost: boolean;
   isSummon: boolean;
   isBoss: boolean;
+  isCavalry: boolean;
 
   /* states */
   defending: true,
