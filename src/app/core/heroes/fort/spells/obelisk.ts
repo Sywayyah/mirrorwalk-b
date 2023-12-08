@@ -22,6 +22,7 @@ export const LifeObeliskSpell = createSpell({
         events.on({
           PlayerTargetsSpell({ target }) {
             vfx.createDroppingMessageForUnitGroup(target.id, { html: messageWrapper(`Stunned!`) });
+            actions.removeTurnsFromUnitGroup(target, 2);
           },
         })
 

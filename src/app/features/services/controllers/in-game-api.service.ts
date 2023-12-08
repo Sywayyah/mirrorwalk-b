@@ -180,6 +180,15 @@ export class InGameApiController extends StoreClient() {
 
   private createActionsApiRef(): CombatActionsRef {
     return {
+      removeTurnsFromUnitGroup: (target, turns = target.turnsLeft) => {
+        target.turnsLeft -= turns;
+
+        if (target.turnsLeft < 0) {
+          target.turnsLeft = 0;
+        }
+
+        this.battleState.removeUnitsWithoutTurnsFromFightQueue();
+      },
       unitGroupAttack: (attacker, attacked) => this.events.dispatch(GroupAttacked({ attackingGroup: attacker, attackedGroup: attacked })),
       getCurrentUnitGroup: () => this.battleState.currentUnitGroup,
       summonUnitsForPlayer: (ownerPlayer: Player, unitType: UnitBaseType, unitNumber: number) => {
