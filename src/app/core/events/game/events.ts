@@ -1,8 +1,8 @@
 import { PopupData } from 'src/app/features/shared/components';
 import { createEventType } from 'src/app/store';
-import { FightStartsEvent, NeutralStructParams, NewDayParams, NewWeekParams, PlayerEquipsItemAction, PlayerLevelsUpEvent, PlayerUnequipsItemAction, StructSelectedEvent } from "./types";
+import { Hero, UnitGroupSlot } from '../../heroes';
 import { UnitGroup } from '../../unit-types';
-import { UnitGroupSlot } from '../../heroes';
+import { FightStartsEvent, NeutralStructParams, NewDayParams, NewWeekParams, PlayerEquipsItemAction, PlayerLevelsUpEvent, PlayerUnequipsItemAction, StructSelectedEvent } from "./types";
 
 const gameEvent = createEventType;
 
@@ -56,3 +56,7 @@ export const PlayerEquipsItem = gameEvent<PlayerEquipsItemAction>();
 export const PlayerUnequipsItem = gameEvent<PlayerUnequipsItemAction>();
 
 export const PlayerLevelsUp = gameEvent<PlayerLevelsUpEvent>();
+
+export const UnitGroupAddedToHero = gameEvent<{ hero: Hero, unitGroup: UnitGroup }>();
+
+export const UnitGroupRemovedFromHero = gameEvent<{ hero: Hero, unitGroup: UnitGroup }>();

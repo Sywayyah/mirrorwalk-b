@@ -1,5 +1,6 @@
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { UnitGroupAddedToHero, UnitGroupRemovedFromHero } from '../events';
 import { GameObject } from '../game-objects';
 import { Item, ItemBaseModel } from '../items';
 import { InventoryItems } from '../items/inventory';
@@ -261,11 +262,15 @@ export class Hero extends GameObject<HeroCreationParams> {
       emptyReserveSlot.unitGroup = unitGroup;
     }
     this.refreshUnitGroupsOrderBySlots();
+
+    this.getApi().events.dispatch(UnitGroupAddedToHero({ hero: this, unitGroup }));
   }
 
   removeUnitGroup(unitGroup: UnitGroup): void {
     // todo: unassign hero
     CommonUtils.removeItem(this.unitGroups, unitGroup);
+
+    this.getApi().events.dispatch(UnitGroupRemovedFromHero({ hero: this, unitGroup }));
   }
 
   refreshUnitGroupsOrderBySlots(): void {

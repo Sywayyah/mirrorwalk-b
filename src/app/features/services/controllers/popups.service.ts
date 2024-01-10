@@ -33,6 +33,7 @@ export class PopupsController extends StoreClient() {
     this.popupService.createPopup({
       component: HeroPopupComponent,
       data: {},
+      escape: true,
     });
   }
 
@@ -41,6 +42,7 @@ export class PopupsController extends StoreClient() {
     this.popupService.createBasicPopup({
       component: SettingsPopupComponent,
       data: {},
+      escape: true,
     });
   }
 

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { PLAYER_COLORS } from 'src/app/core/assets';
-import { GameCreated, GameOpenMainScreen } from 'src/app/core/events';
+import { GameCreated, GameOpenMainScreen, ViewsEnum } from 'src/app/core/events';
 import { Fraction, Fractions, humansFraction } from 'src/app/core/fractions';
 import { neutralsFraction } from 'src/app/core/fractions/neutrals/fraction';
 import { HeroBase } from 'src/app/core/heroes';
@@ -8,6 +8,7 @@ import { Town, TownBase } from 'src/app/core/towns';
 import { CommonUtils } from 'src/app/core/utils';
 import { GameObjectsManager } from 'src/app/features/services/game-objects-manager.service';
 import { State } from 'src/app/features/services/state.service';
+import { escapeToView } from 'src/app/features/services/utils/view.util';
 import { EventsService } from 'src/app/store';
 
 // const nonPlayableFractions: Fraction<any>[] = [];
@@ -43,6 +44,7 @@ export class NewGameScreenComponent {
     private gameObjectsManager: GameObjectsManager,
   ) {
     this.selectFraction(humansFraction);
+    escapeToView(ViewsEnum.MainScreen);
   }
 
   public startGame(): void {
