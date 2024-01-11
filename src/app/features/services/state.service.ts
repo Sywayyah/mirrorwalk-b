@@ -57,6 +57,8 @@ export class State {
       mapDebug: true,
     };
 
+  public mainMenu: { isOpen?: boolean } = {};
+
   public gameState!: {
     players: Player[];
     currentPlayer: Player;
