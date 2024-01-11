@@ -40,7 +40,6 @@ export class MwStructuresViewComponent extends StoreClient() implements AfterVie
     this.player = this.playersService.getCurrentPlayer();
 
     onEscape(() => {
-      console.log(this.state.mainMenu.isOpen);
       if (!this.state.mainMenu.isOpen) {
         this.events.dispatch(OpenMainMenu());
       }
