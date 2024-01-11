@@ -1,5 +1,5 @@
 import { Type } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { EventData, EventType } from 'src/app/store';
 import { SpellsApi } from '../api/game-api';
 import { EventFeedMessage } from '../ui';
@@ -39,7 +39,7 @@ export interface GameObjectApi {
   gameObjects: GameObjectsManagerAPI;
 }
 
-export class GameObject<CreationParams extends object = object> {
+export class GameObject<CreationParams extends object = object, StateT extends object = any> {
   public readonly id: string;
 
   public static readonly categoryId: string = 'game-object';
@@ -48,6 +48,16 @@ export class GameObject<CreationParams extends object = object> {
 
   constructor(id: string) {
     this.id = id;
+  }
+
+  getState(): StateT {
+    console.info(`Game object doens't have state getter:`, this);
+    return null as unknown as StateT;
+  }
+
+  listenState(): Observable<StateT> {
+    console.info(`Game object doens't have state listener:`, this);
+    return of(null as unknown as StateT);
   }
 
   // method which is going to be called when object is created in order to initialize it.

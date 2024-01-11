@@ -1,15 +1,6 @@
 import { ChangeDetectorRef, Component } from '@angular/core';
-import { DisplayReward, GameOpenMainScreen, GameOpenMapStructuresScreen, NeutralStructParams, OpenMainMenu, OpenNewGameScreen, PlayerEntersTown, StructCompleted, StructFightConfirmed } from 'src/app/core/events';
+import { DisplayReward, GameCommandEvents, GameOpenMainScreen, GameOpenMapStructuresScreen, NavigateToView, NeutralStructParams, OpenMainMenu, OpenNewGameScreen, PlayerEntersTown, StructCompleted, StructFightConfirmed, ViewsEnum } from 'src/app/core/events';
 import { Notify, StoreClient, WireMethod } from 'src/app/store';
-
-enum ViewsEnum {
-  MainScreen = 'main-screen',
-  NewGame = 'new-game',
-
-  Structures = 'structures',
-  Battleground = 'battleground',
-  Town = 'town',
-}
 
 @Component({
   selector: 'mw-view-control',
@@ -28,31 +19,37 @@ export class MwViewControlComponent extends StoreClient() {
     this.events.dispatch(OpenMainMenu());
   }
 
+  @WireMethod(NavigateToView)
+  public navigateToView({ view }: GameCommandEvents['NavigateToView']): void {
+    this.currentView = view;
+  }
+
   @Notify(GameOpenMainScreen)
   public initScreen(): void {
-    this.currentView = ViewsEnum.MainScreen;
+    this.events.dispatch(NavigateToView({ view: ViewsEnum.MainScreen }));
   }
 
   @Notify(OpenNewGameScreen)
   public openMewGameScreen(): void {
-    this.currentView = ViewsEnum.NewGame;
+    this.events.dispatch(NavigateToView({ view: ViewsEnum.NewGame }));
   }
 
   @Notify(GameOpenMapStructuresScreen)
   public openMapStructuresScreen(): void {
-    this.currentView = ViewsEnum.Structures;
+    this.events.dispatch(NavigateToView({ view: ViewsEnum.Structures }));
   }
 
   @Notify(StructFightConfirmed)
   public playerAcceptsFight(): void {
-    this.currentView = ViewsEnum.Battleground;
+    this.events.dispatch(NavigateToView({ view: ViewsEnum.Battleground }));
     this.cdr.detectChanges();
   }
 
   @WireMethod(StructCompleted)
   public structIsCompleted(event: NeutralStructParams): void {
     event.struct.isInactive = true;
-    this.currentView = ViewsEnum.Structures;
+
+    this.events.dispatch(NavigateToView({ view: ViewsEnum.Structures }));
 
     this.events.dispatch(DisplayReward({
       struct: event.struct
