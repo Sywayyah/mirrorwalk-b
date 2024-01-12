@@ -17,7 +17,8 @@ TriggersRegistry.register(Triggers.PrepareGameEvent, {
 
     // change starting loc id depending on selected fraction
     if (event.selectedFraction === constellationFraction) {
-      startingLocId = 'const-start-1';
+      // todo: temp disable
+      // startingLocId = 'const-start-1';
     }
 
     console.log('Structures are prepared.');
