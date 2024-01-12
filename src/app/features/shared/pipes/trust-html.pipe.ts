@@ -5,7 +5,7 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
   name: 'safeHtml',
   pure: true,
 })
-export class MwSafeHtmlPipe implements PipeTransform {
+export class MwInfPipe implements PipeTransform {
   constructor(
     private readonly domSanitizer: DomSanitizer,
   ) { }

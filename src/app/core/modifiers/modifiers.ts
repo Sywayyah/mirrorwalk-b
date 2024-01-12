@@ -62,6 +62,7 @@ export interface ModifiersModel extends Specialties {
 
   /* states */
   defending: true,
+  __sourceObjectId: string;
 
   /* Modifiers can be returned on condition */
   __attackConditionalModifiers?: (params: ConditionalModifierParamsModel) => Modifiers;

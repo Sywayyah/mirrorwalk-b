@@ -2,10 +2,12 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { ActionCardComponent, ActionCardsPopupComponent, CustomCursorComponent, DescriptionComponent, EventFeedComponent, EventFeedMessageComponent, GameOverPopupComponent, HintsContainerComponent, HoverHintComponent, IconBtnComponent, ItemDescriptionComponent, ItemIconBaseComponent, ItemIconComponent, ItemSlotComponent, MainButtonComponent, MainMenuPopupComponent, MenuComponent, MwActionHintComponent, MwExperienceBarComponent, MwPlayerInfoPanelComponent, MwRaIconComponent, PlayerMapActionsPanelComponent, PopupContainerComponent, PopupWrapperComponent, RewardPopupComponent, RoundIconBtnComponent, RoundIconComponent, SharedTemplateDirective, SharedTemplatesComponent, SpellDescriptionComponent, SplitUnitsPopupComponent, UnitGroupInfoComponent, UnitGroupInfoPopupComponent, UnitGroupPortraitComponent, UnitGroupSpellIconComponent, UnitSlotsActionPopupComponent, ValueBarComponent, VfxContainerComponent, VfxElementComponent, VfxLayerComponent } from './components';
 import { ResourcesCostComponent } from './components/resources-cost/resources-cost.component';
-import { DisableContextMenuDirective, MwActionHintDirective, MwCustomCursorDirective, MwSafeHtmlPipe, MwUnitEventsCursorDirective, MwUnitGroupCombatActionDirective, NumberModifierDirective } from './directives';
+import { DisableContextMenuDirective, MwActionHintDirective, MwCustomCursorDirective, MwUnitEventsCursorDirective, MwUnitGroupCombatActionDirective, NumberModifierDirective } from './directives';
+import { MwInfPipe, MwSafeHtmlPipe } from './pipes';
 
 const pipes = [
   MwSafeHtmlPipe,
+  MwInfPipe,
 ];
 
 const directives = [

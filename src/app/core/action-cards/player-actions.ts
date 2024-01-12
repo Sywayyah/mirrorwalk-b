@@ -4,6 +4,22 @@ import { actionCardEvent } from '../vfx';
 import { ActionCard, ActionCardTypes } from './types';
 import { actionIcon, manaIcon } from './utils';
 
+export const SetupCamp: ActionCard = {
+  title: 'Set up Camp',
+  icon: 'campfire',
+  type: ActionCardTypes.PlayerAction,
+  bgColor: 'gray',
+  iconColor: '#ffae66',
+  description: 'You set up camp, skipping this day.',
+  config: {
+    onUsedInstantly({ events, actions }) {
+      events.dispatch(RemoveActionPoints({
+        points: actions.getActionPointsLeft()
+      }));
+    }
+  }
+};
+
 export const SkipDayActionCard: ActionCard = {
   title: 'Skip the day',
   icon: 'moon-sun',

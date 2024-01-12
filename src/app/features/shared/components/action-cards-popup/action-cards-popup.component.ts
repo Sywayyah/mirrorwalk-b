@@ -10,6 +10,7 @@ import { UiEventFeedService } from 'src/app/features/services/ui-event-feed.serv
 import { EventsService } from 'src/app/store';
 import { BasicPopup } from '../popup-container';
 import { VfxService } from '../vfx-layer';
+import { infNum } from 'src/app/core/utils/common';
 
 @Component({
   selector: 'mw-action-cards-popup',
@@ -46,7 +47,7 @@ export class ActionCardsPopupComponent extends BasicPopup<{}> {
       card.config?.onUsedInstantly?.(this.apiProvider.getGameApi());
     }
 
-    this.eventFeed.pushPlainMessage(`${actionCardEvent(card)} is used. Left: ${cardStack.count}`);
+    this.eventFeed.pushPlainMessage(`${actionCardEvent(card)} is used. Left: ${infNum(cardStack.count)}`);
 
     // close for now
     this.close();
