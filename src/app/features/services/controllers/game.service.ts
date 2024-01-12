@@ -14,6 +14,7 @@ import { MwPlayersService, PLAYER_IDS } from '../mw-players.service';
 import { MwStructuresService } from '../mw-structures.service';
 import { State } from '../state.service';
 import { UiEventFeedService } from '../ui-event-feed.service';
+import { infNum } from 'src/app/core/utils/common';
 
 @Injectable()
 export class GameController extends StoreClient() {
@@ -107,7 +108,7 @@ export class GameController extends StoreClient() {
   public addActionCardsToPlayer(event: GameCommandEvents['AddActionCardsToPlayer']): void {
     this.eventFeedUiService
       .pushPlainMessage(`Received action cards:<hr> ${event.actionCardStacks
-        .map(({ card, count }) => `x${count} ${actionCardEvent(card)}`)
+        .map(({ card, count }) => `x${infNum(count)} ${actionCardEvent(card)}`)
         .join('<br>')}`
       );
 
