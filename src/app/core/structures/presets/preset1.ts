@@ -2,6 +2,7 @@ import { ResourceType } from '../../resources';
 import { ArchersOutpostStructure, BanditCamp, BeaconOfTheUndead, BigCampStructure, CalavryStalls, GraveyardStructure, MagicRiverStructure, MountainNestStructure, RockyPassageStructure, ThievesLair, WitchHutStructure } from '../common';
 import { DarkArtsSchool } from '../common/dark-arts-school';
 import { FireRingStructure } from '../common/guard-location';
+import { SettlementLocation } from '../common/lock-location';
 import { Mausoleum } from '../common/mausoleum';
 import { dailyResourcesMineStructure } from '../common/resource-mine';
 import { resPileStructure, resourcesPileStructure } from '../common/resource-pile';
@@ -275,12 +276,29 @@ const tlBranch: StructureDescription[] = [
 const trBranch: StructureDescription[] = [
   {
     id: '4',
+    icon: 'locked-fortress',
     x: loc(60),
     y: loc(-30),
-    icon: 'lighthouse',
     pathTo: START_LOC_ID,
+    struct: SettlementLocation,
+  },
+  {
+    id: '4-1',
+    x: loc(80),
+    y: loc(-70),
+    icon: 'lighthouse',
+    pathTo: '4',
 
     struct: BeaconOfTheUndead,
+  },
+  {
+    id: '4-2',
+    actionPoints: 1,
+    icon: 'locked-fortress',
+    x: loc(-70),
+    y: loc(270),
+    pathTo: '4',
+    struct: resPileStructure(ResourceType.Gems, 2),
   },
 ];
 
@@ -291,6 +309,7 @@ export const structsPreset1: StructureDescription[] = [
     y: loc(0),
     icon: 'campfire',
   },
+
   ...fifthBranch,
   ...brBranch,
   ...blBranch,

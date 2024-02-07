@@ -22,6 +22,8 @@ import { MwSpellsService } from '../mw-spells.service';
 import { MwUnitGroupsService } from '../mw-unit-groups.service';
 import { State } from '../state.service';
 import { UiEventFeedService } from '../ui-event-feed.service';
+import { MwStructuresService } from '../mw-structures.service';
+import { MapStructure } from 'src/app/core/structures';
 
 @Injectable()
 export class InGameApiController extends StoreClient() {
@@ -38,6 +40,7 @@ export class InGameApiController extends StoreClient() {
     private state: State,
     private gameObjectsManager: GameObjectsManager,
     private eventFeed: UiEventFeedService,
+    private structures: MwStructuresService,
   ) {
     super();
   }
@@ -138,6 +141,14 @@ export class InGameApiController extends StoreClient() {
   @WireMethod(InitStructure)
   public initStructureGameObject({ structure }: InitMapStructureAction): void {
     structure.generator?.config?.init({
+      structures: {
+        updateAvailableLocations: () => this.structures.updateAvailableStructures(),
+        // might become an event
+        markLocationVisited: (struct: MapStructure) => {
+          struct.visited = true;
+          this.structures.updateAvailableStructures();
+        },
+      },
       players: this.apiProvider.getPlayerApi(),
       thisStruct: structure,
       localEvents: {

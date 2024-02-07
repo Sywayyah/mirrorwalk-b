@@ -20,3 +20,10 @@ export function formattedResources(resources: Resources): FormattedResource[] {
     count: count,
   })) as FormattedResource[];
 }
+
+export function joinedResourcesText(resources: Resources): string {
+  return Object
+    .entries(resources)
+    .map(([resType, amount]) => `+${amount} ${resourceNames[resType as ResourceType]}`)
+    .join('\n')
+}

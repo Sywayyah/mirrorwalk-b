@@ -62,7 +62,9 @@ export interface ModifiersModel extends Specialties {
 
   /* states */
   defending: true,
+
   __sourceObjectId: string;
+  __description: () => object;
 
   /* Modifiers can be returned on condition */
   __attackConditionalModifiers?: (params: ConditionalModifierParamsModel) => Modifiers;
@@ -73,6 +75,7 @@ export interface ModifiersModel extends Specialties {
 
   // might get obsolete.
   // same as above, but for auras.
+  // todo: remoteness is also a question, because remoteness is different in different views
   __auraModifiers: (params: { target: UnitGroup, thisUnit?: UnitGroup, remoteness?: number, currentGroupPosition?: number }) => Modifiers | null;
 }
 

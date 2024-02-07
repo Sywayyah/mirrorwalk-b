@@ -21,12 +21,18 @@ interface OnVisitedParams {
 }
 export type ControlsState = Record<'accept', boolean>;
 
+interface StructuresApi {
+  updateAvailableLocations(): void;
+  markLocationVisited(struct: MapStructure): void;
+}
+
 export type StructsAPI = {
   players: PlayersApi;
   localEvents: LocalEvents<typeof SturctEventsGroup>;
   thisStruct: MapStructure;
   eventFeed: EventFeedApi;
   spells: SpellsApi;
+  structures: StructuresApi;
 };
 
 export enum StructureType {
