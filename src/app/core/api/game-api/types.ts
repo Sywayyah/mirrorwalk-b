@@ -17,8 +17,10 @@ export interface PlayersApi {
   addUnitGroupToPlayer: (player: Player, unitType: UnitBaseType, count: number) => void;
   addExperienceToPlayer: (player: Player, xpAmount: number) => void;
 
+  playerHasResources: (player: Player, resources: Resources) => boolean;
   giveResourceToPlayer: (player: Player, type: ResourceType, amount: number) => void;
   giveResourcesToPlayer: (player: Player, resources: Resources) => void;
+  removeResourcesFromPlayer: (player: Player, resources: Resources) => void;
 }
 
 export interface SpellsApi {
