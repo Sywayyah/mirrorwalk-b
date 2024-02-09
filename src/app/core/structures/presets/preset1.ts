@@ -274,32 +274,32 @@ const tlBranch: StructureDescription[] = [
 ];
 
 const trBranch: StructureDescription[] = [
-  {
-    id: '4',
-    icon: 'locked-fortress',
-    x: loc(60),
-    y: loc(-30),
-    pathTo: START_LOC_ID,
-    struct: SettlementLocation,
-  },
+  // {
+  //   id: '4',
+  //   icon: 'locked-fortress',
+  //   x: loc(60),
+  //   y: loc(-30),
+  //   pathTo: START_LOC_ID,
+  //   struct: SettlementLocation,
+  // },
   {
     id: '4-1',
     x: loc(80),
     y: loc(-70),
     icon: 'lighthouse',
-    pathTo: '4',
+    pathTo: START_LOC_ID,
 
     struct: BeaconOfTheUndead,
   },
-  {
-    id: '4-2',
-    actionPoints: 1,
-    icon: 'locked-fortress',
-    x: loc(-70),
-    y: loc(270),
-    pathTo: '4',
-    struct: resPileStructure(ResourceType.Gems, 2),
-  },
+  // {
+  //   id: '4-2',
+  //   actionPoints: 1,
+  //   icon: 'locked-fortress',
+  //   x: loc(-70),
+  //   y: loc(270),
+  //   pathTo: '4',
+  //   struct: resPileStructure(ResourceType.Gems, 2),
+  // },
 ];
 
 export const structsPreset1: StructureDescription[] = [
