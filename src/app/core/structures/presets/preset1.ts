@@ -284,8 +284,8 @@ const trBranch: StructureDescription[] = [
   // },
   {
     id: '4-1',
-    x: loc(80),
-    y: loc(-70),
+    x: loc(35),
+    y: loc(-50),
     icon: 'lighthouse',
     pathTo: START_LOC_ID,
 
