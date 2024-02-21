@@ -270,12 +270,48 @@ humansFraction.defineUnitType('Knight', {
   },
 });
 
+const HeavyCavalry = humansFraction.defineUnitType('HeavyCavalry', {
+  name: 'Heavy Cavalry',
+  mainPortraitUrl: AssetsImages.UnitMelee,
+
+  getDescription: simpleDescriptions([
+    heroDescrElem(`Tier 4 Castle cavalry unit, upgraded version of Cavalry.`),
+    heroDescrElem(`<br>Cavalry is armored unit type that also deals heavy damage with 55% block-piercing attack.`),
+  ]),
+
+  level: 4,
+
+  baseStats: {
+    damageInfo: { minDamage: 14, maxDamage: 19, },
+    attackRating: 9,
+    defence: 10,
+    health: 33,
+    speed: 16,
+  },
+
+  defaultModifiers: {
+    blockPiercingPercent: 0.55,
+    isCavalry: true,
+  },
+
+  baseRequirements: {
+    gold: 310,
+    wood: 1,
+    // redCrystals: 1
+  },
+  neutralReward: {
+    experience: 25,
+    gold: 35,
+  },
+  upgraded: true,
+});
+
 humansFraction.defineUnitType('Cavalry', {
   name: 'Cavalry',
   mainPortraitUrl: AssetsImages.UnitMelee,
 
   getDescription: simpleDescriptions([
-    heroDescrElem(`Tier 4 Castle cavalry unit.`),
+    heroDescrElem(`Tier 4 Castle cavalry unit, can be upgraded into Heavy Cavalry.`),
     heroDescrElem(`<br>Cavalry is armored unit type that also deals heavy damage with 55% block-piercing attack.`),
   ]),
 
@@ -302,6 +338,12 @@ humansFraction.defineUnitType('Cavalry', {
   neutralReward: {
     experience: 20,
     gold: 25,
+  },
+  upgradeDetails: {
+    target: HeavyCavalry,
+    upgradeCost: {
+      gold: 85,
+    },
   },
 });
 
