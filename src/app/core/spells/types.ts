@@ -96,13 +96,14 @@ export interface CanActivateSpellParams {
 export interface OnSpellAcquiredConfig<T> {
   spellInstance: Spell<T>;
   ownerUnit?: UnitGroup;
+  ownerHero?: Hero;
 }
 
 export interface SpellConfig<SpellStateType> {
   init: (combatRefs: SpellCombatRefsModel<SpellStateType>) => void;
   // if unspecified - always 0
   getManaCost?: (spellInst: Spell<SpellStateType>) => number;
-  /** Called on ability when unit acquires it or it levels up */
+  /** Called on ability when it's being acquired or it levels up */
   onAcquired?: (onAquiredConfig: OnSpellAcquiredConfig<SpellStateType>) => void;
   targetCastConfig?: {
     canActivate?: (info: CanActivateSpellParams) => boolean,

@@ -2,6 +2,7 @@ import { AssetsImages } from '../../assets';
 import { humansFraction } from '../../fractions/humans/fraction';
 import { FirebirdHealSpell } from '../../spells/common';
 import { KnightsDamageBlock } from '../../spells/common/damage-block/knights-damage-block';
+import { ProtectionAura } from '../../spells/common/protection';
 import { heroDescrElem } from '../../ui';
 import { createStats, simpleDescriptions } from '../utils';
 
@@ -11,6 +12,7 @@ const defaultRewards = {
 };
 
 const Halberdier = humansFraction.defineUnitType('Halberdier', {
+  id: '#ut-h01',
   mainPortraitUrl: AssetsImages.UnitMelee,
   name: 'Halberdier',
   level: 1,
@@ -56,6 +58,7 @@ const Halberdier = humansFraction.defineUnitType('Halberdier', {
 });
 
 const Pikemen = humansFraction.defineUnitType('Pikemen', {
+  id: '#ut-h00',
   name: 'Pikemen',
   level: 1,
   mainPortraitUrl: AssetsImages.UnitMelee,
@@ -69,6 +72,10 @@ const Pikemen = humansFraction.defineUnitType('Pikemen', {
     heroDescrElem(`<br>While possessing good average stats, Pikemen also strikes back at any attacker.`),
     heroDescrElem(`<br>Receives bonuses from Combat Tactics speciality.`),
   ]),
+
+  defaultSpells: [
+    ProtectionAura,
+  ],
 
   defaultModifiers: {
     counterattacks: true,
@@ -87,6 +94,7 @@ const Pikemen = humansFraction.defineUnitType('Pikemen', {
 
   upgradeDetails: {
     target: Halberdier,
+    // targetId: '#ut-h01',
     upgradeCost: {
       gold: 15,
     }
@@ -96,6 +104,8 @@ const Pikemen = humansFraction.defineUnitType('Pikemen', {
 });
 
 const Crossbowmen = humansFraction.defineUnitType('Crossbowmen', {
+  id: '#ut-h11',
+
   mainPortraitUrl: AssetsImages.UnitRanged,
   name: 'Crossbowmen',
   level: 2,
@@ -152,6 +162,8 @@ const Crossbowmen = humansFraction.defineUnitType('Crossbowmen', {
 
 // add action points required for location
 humansFraction.defineUnitType('Archer', {
+  id: '#ut-h10',
+
   mainPortraitUrl: AssetsImages.UnitRanged,
   name: 'Archers',
   level: 2,
@@ -177,6 +189,7 @@ humansFraction.defineUnitType('Archer', {
 
   upgradeDetails: {
     target: Crossbowmen,
+    // targetId: '#ut-h11',
     upgradeCost: {
       gold: 25,
     }
@@ -239,6 +252,7 @@ humansFraction.defineUnitType('Archer', {
 });
 
 humansFraction.defineUnitType('Knight', {
+  id: '#ut-h20',
   mainPortraitUrl: AssetsImages.UnitMelee,
   name: 'Knights',
   level: 3,
@@ -258,6 +272,8 @@ humansFraction.defineUnitType('Knight', {
   defaultSpells: [
     KnightsDamageBlock,
   ],
+  // spells: ['#sp-h0'],
+
   defaultModifiers: {
     resistFire: 12,
     resistCold: 12,
@@ -271,6 +287,7 @@ humansFraction.defineUnitType('Knight', {
 });
 
 const HeavyCavalry = humansFraction.defineUnitType('HeavyCavalry', {
+  id: '#ut-h31',
   name: 'Heavy Cavalry',
   mainPortraitUrl: AssetsImages.UnitMelee,
 
@@ -307,6 +324,7 @@ const HeavyCavalry = humansFraction.defineUnitType('HeavyCavalry', {
 });
 
 humansFraction.defineUnitType('Cavalry', {
+  id: '#ut-h30',
   name: 'Cavalry',
   mainPortraitUrl: AssetsImages.UnitMelee,
 
@@ -341,6 +359,7 @@ humansFraction.defineUnitType('Cavalry', {
   },
   upgradeDetails: {
     target: HeavyCavalry,
+    // targetId: '#ut-h31',
     upgradeCost: {
       gold: 85,
     },
@@ -348,6 +367,7 @@ humansFraction.defineUnitType('Cavalry', {
 });
 
 const Firebirds = humansFraction.defineUnitType('Firebird', {
+  id: '#ut-h41',
   name: 'Firebirds',
   mainPortraitUrl: AssetsImages.FireBird,
   level: 5,
@@ -379,6 +399,8 @@ const Firebirds = humansFraction.defineUnitType('Firebird', {
 });
 
 humansFraction.defineUnitType('MysticBird', {
+  id: '#ut-h40',
+
   name: 'Mystic Birds',
   mainPortraitUrl: AssetsImages.FireBird,
   level: 5,
@@ -393,6 +415,7 @@ humansFraction.defineUnitType('MysticBird', {
   defaultSpells: [
     FirebirdHealSpell,
   ],
+  // spells: ['#sp-firebird-heal'],
 
   defaultModifiers: {
     resistFire: 10,
@@ -404,6 +427,8 @@ humansFraction.defineUnitType('MysticBird', {
   },
   upgradeDetails: {
     target: Firebirds,
+    // targetId: '#ut-h41',
+
     upgradeCost: {
       gold: 125,
     },

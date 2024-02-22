@@ -6,6 +6,8 @@ import { neutralsFraction } from '../../../fractions/neutrals/fraction';
 import { simpleDescriptions } from '../../utils';
 
 neutralsFraction.defineUnitType('Devastator', {
+  id: '#ut-neut-boss-devastator',
+
   name: 'Devastator',
   mainPortraitUrl: AssetsImages.UnitMelee,
 

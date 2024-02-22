@@ -7,19 +7,14 @@ import { Hero } from '../heroes';
 import { ModsRef, ModsRefsGroup, Specialties } from '../modifiers';
 import { Modifiers } from '../modifiers/modifiers';
 import type { Player } from '../players';
+import { Entity } from '../registries';
 import { ResourcesModel } from '../resources';
 import { Spell, SpellBaseType } from '../spells';
 import { DescriptionElement } from '../ui';
 import { CommonUtils } from '../utils';
 import { complete } from '../utils/observables';
 
-interface RequirementModel extends Partial<ResourcesModel> {
-  /* heroLevel?: number;
-  gold?: number;
-  redCrystals?: number;
-  glory?: number;
-  gems?: number; */
-}
+type RequirementModel = Partial<ResourcesModel>;
 
 enum UnitDamageTypesEnum {
   Physical,
@@ -59,7 +54,8 @@ export interface UnitDescriptions {
   descriptions: DescriptionElement[];
 }
 
-export interface UnitBaseType {
+export interface UnitBaseType extends Entity {
+  id: `#ut-${string}`;
   type: string;
 
   fraction: Fraction<any>;
@@ -88,6 +84,7 @@ export interface UnitBaseType {
   defaultModifiers?: Modifiers;
 
   defaultSpells?: SpellBaseType<any>[];
+  // spells?: EntityId[];
 
   /* minimal amount of units that can stack can be hired, sold or split by */
   minQuantityPerStack?: number;
@@ -99,6 +96,7 @@ export interface UnitBaseType {
 
   upgradeDetails?: {
     target: UnitBaseType,
+    // targetId: EntityId,
     upgradeCost: Partial<ResourcesModel>,
   };
 

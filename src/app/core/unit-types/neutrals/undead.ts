@@ -11,6 +11,8 @@ import { createStats } from '../utils';
   Also, there might be some batch creation, like 'defineUnitTypes'
  */
 const Wraiths: UnitBaseType = neutralsFraction.defineUnitType('SupremeGhosts', {
+  id: '#ut-neut-ghost-1',
+
   mainPortraitUrl: AssetsImages.UnitMelee,
   name: 'Wraiths',
   level: 1,
@@ -58,6 +60,8 @@ const Wraiths: UnitBaseType = neutralsFraction.defineUnitType('SupremeGhosts', {
 });
 
 neutralsFraction.defineUnitType('Ghosts', {
+  id: '#ut-neut-ghost-0',
+
   mainPortraitUrl: AssetsImages.UnitMelee,
   name: 'Ghosts',
   level: 1,
@@ -94,6 +98,7 @@ neutralsFraction.defineUnitType('Ghosts', {
   },
   upgradeDetails: {
     target: Wraiths,
+    // targetId: '#ut-neut-ghost-1',
     upgradeCost: {
       gold: 25,
     }
@@ -104,6 +109,8 @@ neutralsFraction.defineUnitType('Ghosts', {
 });
 
 neutralsFraction.defineUnitType('Skeletons', {
+  id: '#ut-neut-skel-0',
+
   name: 'Skeletons',
   mainPortraitUrl: AssetsImages.UnitMelee,
   level: 1,
@@ -140,6 +147,8 @@ neutralsFraction.defineUnitType('Skeletons', {
 });
 
 const MasterLich = neutralsFraction.defineUnitType('MasterLich', {
+  id: '#ut-neut-lich-1',
+
   name: 'Master Liches',
   mainPortraitUrl: AssetsImages.UnitMelee,
   level: 4,
@@ -178,6 +187,8 @@ const MasterLich = neutralsFraction.defineUnitType('MasterLich', {
 });
 
 neutralsFraction.defineUnitType('Lich', {
+  id: '#ut-neut-lich-0',
+
   name: 'Liches',
   mainPortraitUrl: AssetsImages.UnitMelee,
   level: 4,
@@ -216,6 +227,8 @@ neutralsFraction.defineUnitType('Lich', {
 
   upgradeDetails: {
     target: MasterLich,
+    // targetId: '#ut-neut-lich-1',
+
     upgradeCost: {
       gold: 100
     },

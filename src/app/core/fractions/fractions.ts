@@ -1,6 +1,7 @@
 
 import { AssetsImages } from '../assets';
 import type { HeroBase } from '../heroes';
+import { registerEntity } from '../registries';
 import type { UnitBaseType } from '../unit-types';
 import { Fraction, UnitTypeCreationParams } from './types';
 
@@ -40,6 +41,8 @@ export const Fractions = {
           fraction: this,
           type: unitTypeName,
         };
+
+        registerEntity(unitType);
 
         this.unitTypes[unitTypeName] = unitType;
 

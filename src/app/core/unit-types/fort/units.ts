@@ -10,6 +10,7 @@ const defaultRewards = {
 };
 
 const Clan = fortFraction.defineUnitType('Clan', {
+  id: '#ut-f01',
   mainPortraitUrl: AssetsImages.UnitMelee,
   name: 'Clan',
   level: 1,
@@ -26,7 +27,7 @@ const Clan = fortFraction.defineUnitType('Clan', {
   },
 
   getDescription: simpleDescriptions([
-    heroDescrElem(`Tier 1 Fort unit. Can be upgraded into Clan.`),
+    heroDescrElem(`Tier 1 Fort unit, upgraded version of Raiders.`),
     heroDescrElem(`<br>The main attacking mass of the Fort, the goblins with long sharp spears. They are cheap and fragile, but swift, allowing to get an earlier turn and can be dangerous due to the chance of dealing critical damage.`),
   ]),
 
@@ -46,6 +47,7 @@ const Clan = fortFraction.defineUnitType('Clan', {
 });
 
 fortFraction.defineUnitType('Raiders', {
+  id: '#ut-f00',
   mainPortraitUrl: AssetsImages.UnitMelee,
   name: 'Raiders',
   level: 1,
@@ -79,6 +81,7 @@ fortFraction.defineUnitType('Raiders', {
 
   upgradeDetails: {
     target: Clan,
+    // targetId: '#ut-f01',
     upgradeCost: {
       gold: 20,
     },
@@ -87,6 +90,8 @@ fortFraction.defineUnitType('Raiders', {
 });
 
 const GoblinShooters = fortFraction.defineUnitType('GoblinShooter', {
+  id: '#ut-f11',
+
   mainPortraitUrl: AssetsImages.UnitRanged,
   name: 'Goblin Shooters',
   level: 2,
@@ -125,6 +130,7 @@ const GoblinShooters = fortFraction.defineUnitType('GoblinShooter', {
 });
 
 fortFraction.defineUnitType('GoblinArcher', {
+  id: '#ut-10',
   mainPortraitUrl: AssetsImages.UnitRanged,
   name: 'Goblin Archers',
   level: 2,
@@ -157,6 +163,7 @@ fortFraction.defineUnitType('GoblinArcher', {
   },
 
   upgradeDetails: {
+    // targetId: '#ut-11',
     target: GoblinShooters,
     upgradeCost: {
       gold: 20,

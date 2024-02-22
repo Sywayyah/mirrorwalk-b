@@ -10,6 +10,7 @@ export type HUMANS_UNIT_TYPES =
   | 'Knight'
 
   | 'Cavalry'
+  | 'HeavyCavalry'
 
   | 'MysticBird'
   | 'Firebird';
