@@ -1,7 +1,7 @@
 
 import { AssetsImages } from '../assets';
 import type { HeroBase } from '../heroes';
-import { registerEntity } from '../registries';
+import { FactionId, registerEntity } from '../registries';
 import type { UnitBaseType } from '../unit-types';
 import { Fraction, UnitTypeCreationParams } from './types';
 
@@ -13,15 +13,13 @@ export const Fractions = {
     return [...this.fractionsMap.values()];
   },
 
-  createFraction<T extends string>(fractionName: string, { icon, title }: {
-    title: string,
-    icon: string,
-  }): Fraction<T> {
+  createFraction<T extends string>({ id, fractionName, icon, title }: { id: FactionId, fractionName: string, icon: string, title: string; }): Fraction<T> {
     if (this.fractionsMap.has(fractionName)) {
       throw new Error(`Fraction ${fractionName} was already created.`);
     }
 
     const fraction: Fraction<T> = {
+      id,
       name: fractionName,
       unitTypes: {},
       heroes: [],
@@ -96,6 +94,8 @@ export const Fractions = {
         return this.heroes;
       }
     };
+
+    registerEntity(fraction);
 
     this.fractionsMap.set(fractionName, fraction);
 

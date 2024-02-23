@@ -10,10 +10,9 @@ export type FORT_UNIT_TYPES =
   | 'WolfRiders'
   ;
 
-export const fortFraction = Fractions.createFraction<FORT_UNIT_TYPES>(
-  FractionsEnum.Fort,
-  {
-    title: 'Fort',
-    icon: 'spikeball',
-  },
-);
+export const fortFraction = Fractions.createFraction<FORT_UNIT_TYPES>({
+  id: '#faction-fort',
+  fractionName: FractionsEnum.Fort,
+  title: 'Fort',
+  icon: 'spikeball',
+});

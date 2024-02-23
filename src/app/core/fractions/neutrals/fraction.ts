@@ -23,7 +23,9 @@ const defaultReward = {
   experience: 0,
 };
 
-export const neutralsFraction = Fractions.createFraction<NEUTRAL_UNIT_TYPES>(FractionsEnum.Neutrals, {
+export const neutralsFraction = Fractions.createFraction<NEUTRAL_UNIT_TYPES>({
+  id: '#faction-neutrals',
+  fractionName: FractionsEnum.Neutrals,
   title: 'Neutrals',
   icon: 'monster-skull',
 });

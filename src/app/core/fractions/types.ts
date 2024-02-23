@@ -1,4 +1,5 @@
 import type { HeroBase, HeroBaseStats } from '../heroes';
+import { Entity, FactionId } from '../registries';
 import type { TownBase } from '../towns';
 import type { UnitBaseType } from '../unit-types';
 
@@ -6,7 +7,8 @@ import type { UnitBaseType } from '../unit-types';
 
 export type UnitTypeCreationParams = Omit<UnitBaseType, 'type' | 'fraction'>;
 
-export interface Fraction<T extends string> {
+export interface Fraction<T extends string> extends Entity {
+  id: FactionId;
   name: string;
   heroes: HeroBase[];
   title: string;

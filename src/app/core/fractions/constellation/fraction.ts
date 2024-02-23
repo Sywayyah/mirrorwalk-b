@@ -18,10 +18,10 @@ export type CONSTELLATION_UNIT_TYPES = 'Sprite'
   | 'StarDragon'
   ;
 
-export const constellationFraction = Fractions.createFraction<CONSTELLATION_UNIT_TYPES>(
-  FractionsEnum.Constellation,
-  {
-    title: 'Constellation',
-    icon: 'arrow-cluster',
-  },
+export const constellationFraction = Fractions.createFraction<CONSTELLATION_UNIT_TYPES>({
+  id: '#faction-constellation',
+  fractionName: FractionsEnum.Constellation,
+  title: 'Constellation',
+  icon: 'arrow-cluster',
+},
 );
