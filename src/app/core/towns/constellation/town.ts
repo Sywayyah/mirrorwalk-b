@@ -55,6 +55,7 @@ const moonArch = {
 };
 
 export const castleTownBase: TownBase<ConstellationTownBuildings> = {
+  id: '#town-constellation',
   name: 'Constellation',
   availableBuildings: {
     'town-center': {

@@ -66,6 +66,7 @@ const upgradedStockade: BuidlingBase = {
 
 // will be reworked, need somehow to process it in the fraction itself
 export const factionTownBase: TownBase<CastleTownBuildings> = {
+  id: '#town-fort',
   name: 'Castle',
   availableBuildings: {
     'town-hall': {

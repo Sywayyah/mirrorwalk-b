@@ -1,12 +1,15 @@
 import { NewWeekStarted } from '../events';
 import { GameObject } from '../game-objects';
 import { ItemBaseModel } from '../items';
+import { Entity, TownId } from '../registries';
 import { ActivityTypes, Building, BuildingDescription, HiringActivity } from './buildings';
 
-export interface TownBase<T extends string> {
+export interface TownBase<T extends string> extends Entity {
+  id: TownId;
   name: string;
   availableBuildings: Record<T, BuildingDescription>;
 }
+
 export interface SellingBuildingData {
   items: ItemBaseModel[];
   selling?: boolean;

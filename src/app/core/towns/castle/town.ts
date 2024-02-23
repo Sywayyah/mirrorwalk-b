@@ -177,6 +177,7 @@ const itemMarket: BuidlingBase = {
 
 // will be reworked, need somehow to process it in the fraction itself
 export const castleTownBase: TownBase<CastleTownBuildings> = {
+  id: '#town-castle',
   name: 'Castle',
   availableBuildings: {
     'town-center': {

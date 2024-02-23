@@ -28,6 +28,7 @@ export const Fractions = {
       townBase: null,
       setTownBase(townBase) {
         this.townBase = townBase;
+        registerEntity(townBase);
       },
       getTownBase() {
         return this.townBase;
