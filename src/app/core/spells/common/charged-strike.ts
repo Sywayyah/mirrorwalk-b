@@ -4,7 +4,9 @@ import { LightningAnimation } from '../../vfx';
 import { SpellActivationType } from '../types';
 import { createSpell } from '../utils';
 
+/* Maybe rather convert. */
 export const ChargedStrikeSpell = createSpell({
+  id: '#spell-charged-strike',
   name: 'Charged Strike',
   activationType: SpellActivationType.Target,
   icon: { icon: 'lightning' },

@@ -4,6 +4,8 @@ import { spellDescrElem } from 'src/app/core/ui';
 
 
 export const Firestorm = createSpell({
+  id: '#spell-firestorm',
+
   name: 'Firestorm',
   icon: { icon: 'flaming-claw' },
   activationType: SpellActivationType.Target,

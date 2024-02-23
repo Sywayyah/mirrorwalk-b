@@ -2,13 +2,16 @@ import { neutralsFraction } from '../../fractions/neutrals/fraction';
 import { spellDescrElem } from '../../ui';
 import { FireAnimation } from '../../vfx';
 import { SpellActivationType, SpellBaseType } from '../types';
+import { createSpell } from '../utils';
 import { FireShieldSpell } from './fire-shield';
 
 const unitCount = 3;
 const unitGrowthPerLevel = 2;
 
 // todo: despawn summoned spirits when fight ends
-export const SummonFireSpiritsSpell: SpellBaseType = {
+export const SummonFireSpiritsSpell: SpellBaseType = createSpell({
+  id: '#spell-summon-fire-spirits',
+
   name: 'Fire Spirits',
   activationType: SpellActivationType.Instant,
   icon: {
@@ -64,4 +67,4 @@ export const SummonFireSpiritsSpell: SpellBaseType = {
     },
 
   }
-};
+});

@@ -3,6 +3,7 @@ import { spellDescrElem } from '../../ui';
 import { CommonUtils } from '../../utils';
 import { getDamageParts, messageWrapper, simpleConvergentBuffAnimation } from '../../vfx';
 import { SpellActivationType, SpellBaseType } from '../types';
+import { createSpell } from '../utils';
 
 const minDamage = 82;
 const maxDamage = 124;
@@ -10,7 +11,8 @@ const maxDamage = 124;
 const dmgIncrementPerLevel = 31;
 
 /* todo: maybe change the bonus gained with level */
-export const MeteorSpell: SpellBaseType = {
+export const MeteorSpell: SpellBaseType = createSpell({
+  id: '#spell-meteor',
   name: 'Meteor',
   activationType: SpellActivationType.Instant,
   icon: {
@@ -80,4 +82,4 @@ export const MeteorSpell: SpellBaseType = {
       },
     }
   }
-}
+})

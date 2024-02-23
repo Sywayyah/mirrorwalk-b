@@ -3,7 +3,7 @@ import { EffectAnimation } from '../../api/vfx-api';
 import { spellDescrElem } from '../../ui';
 import { createAnimation, getDamageParts, getIconElement, getPlainAppearanceFrames, getPlainBlurFrames, getReversePulseKeyframes } from '../../vfx';
 import { SpellActivationType, SpellBaseType } from '../types';
-import { canActivateOnEnemyFn, debuffColors } from '../utils';
+import { canActivateOnEnemyFn, createSpell, debuffColors } from '../utils';
 
 const icon = 'frost-emblem';
 
@@ -49,7 +49,8 @@ const attackPenalty = 3;
 
 
 // practically, I can create some util function for debuffs.
-export const FrozenArrowDebuff: SpellBaseType = {
+export const FrozenArrowDebuff: SpellBaseType = createSpell({
+  id: '#spell-frost-arrow-debuff',
   name: 'Freeze',
   activationType: SpellActivationType.Debuff,
   icon: {
@@ -82,9 +83,11 @@ export const FrozenArrowDebuff: SpellBaseType = {
       }
     }
   },
-};
+});
 
-export const FrostArrowSpell: SpellBaseType = {
+export const FrostArrowSpell: SpellBaseType = createSpell({
+  id: '#spell-frost-arrow',
+
   name: 'Frost Arrow',
   activationType: SpellActivationType.Target,
   icon: {
@@ -135,4 +138,4 @@ export const FrostArrowSpell: SpellBaseType = {
       },
     },
   },
-};
+});

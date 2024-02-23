@@ -3,6 +3,8 @@ import { spellDescrElem } from 'src/app/core/ui';
 import { frontStackingBuffAnimation } from 'src/app/core/vfx';
 
 export const EssenceLeakDebuff = createSpell({
+  id: '#spell-essence-leak-debuff',
+
   activationType: SpellActivationType.Debuff,
   icon: { icon: 'implosion' },
   getDescription: () => ({
@@ -22,6 +24,8 @@ export const EssenceLeakDebuff = createSpell({
 });
 
 export const EssenceLeak = createSpell({
+  id: '#spell-essence-leak',
+
   name: 'Essence Leak',
   icon: { icon: 'implosion' },
   activationType: SpellActivationType.Target,

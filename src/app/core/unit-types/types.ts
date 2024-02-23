@@ -7,7 +7,7 @@ import { Hero } from '../heroes';
 import { ModsRef, ModsRefsGroup, Specialties } from '../modifiers';
 import { Modifiers } from '../modifiers/modifiers';
 import type { Player } from '../players';
-import { Entity } from '../registries';
+import { Entity, UnitId } from '../registries';
 import { ResourcesModel } from '../resources';
 import { Spell, SpellBaseType } from '../spells';
 import { DescriptionElement } from '../ui';
@@ -55,7 +55,7 @@ export interface UnitDescriptions {
 }
 
 export interface UnitBaseType extends Entity {
-  id: `#ut-${string}`;
+  id: UnitId;
   type: string;
 
   fraction: Fraction<any>;

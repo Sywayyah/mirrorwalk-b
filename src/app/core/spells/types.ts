@@ -4,6 +4,7 @@ import { Icon } from '../assets';
 import { GameObject } from '../game-objects';
 import { Hero } from '../heroes';
 import { Player } from '../players';
+import { Entity, SpellId } from '../registries';
 import { DescriptionElement } from '../ui/descriptions';
 import { UnitGroup } from '../unit-types';
 import { SpellEventHandlers } from './spell-events';
@@ -54,7 +55,8 @@ export interface SpellDescription {
   descriptions: DescriptionElement[]
 }
 
-export interface SpellBaseType<SpellStateType = DefaultSpellStateType> {
+export interface SpellBaseType<SpellStateType = DefaultSpellStateType> extends Entity {
+  id: SpellId;
   name: string;
 
   icon: Icon;

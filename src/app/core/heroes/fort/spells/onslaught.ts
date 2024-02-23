@@ -4,6 +4,8 @@ import { spellDescrElem } from 'src/app/core/ui';
 import { frontStackingBuffAnimation } from 'src/app/core/vfx';
 
 export const OnslaughtBuffSpell = createSpell<{ mods: ModifiersModel }>({
+  id: '#spell-onslaught-buff',
+
   name: 'Onslaught',
   icon: { icon: 'spear-head', bgClr: 'orange', iconClr: '#f10c0c' },
   activationType: SpellActivationType.Buff,
@@ -33,6 +35,7 @@ export const OnslaughtBuffSpell = createSpell<{ mods: ModifiersModel }>({
 })
 
 export const OnslaugtSpell = createSpell({
+  id: '#spell-onslaught',
   name: 'Onslaught',
   icon: { icon: 'spear-head' },
   activationType: SpellActivationType.Target,

@@ -3,6 +3,7 @@ import { SpellBaseType } from '../../types';
 import { createDamageBlockSpell, rangedChanceDescription } from '../base-spells/spell-damage-block';
 
 export const DevastatorScaleArmorDamageBlock: SpellBaseType<{ damageBlockMod: Modifiers }> = createDamageBlockSpell({
+  id: '#spell-devastator-block',
   name: 'Scale Armor',
   icon: 'dragon-wing',
   blockConfig: {

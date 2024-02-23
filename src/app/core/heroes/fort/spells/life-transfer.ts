@@ -4,6 +4,8 @@ import { spellDescrElem } from 'src/app/core/ui';
 
 
 export const LifeTransferSpell = createSpell({
+  id: '#spell-life-transfer',
+
   name: 'Life Transfer',
   icon: { icon: 'health-decrease' },
   activationType: SpellActivationType.Instant,

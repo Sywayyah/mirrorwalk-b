@@ -2,10 +2,13 @@ import { constellationFraction } from '../../fractions/constellation/fraction';
 import { spellDescrElem } from '../../ui';
 import { FireAnimation, simpleConvergentBuffAnimation } from '../../vfx';
 import { SpellActivationType, SpellBaseType } from '../types';
+import { createSpell } from '../utils';
 
 const unitCount = 4;
 
-export const SummonSagittarSpell: SpellBaseType = {
+export const SummonSagittarSpell: SpellBaseType = createSpell({
+  id: '#spell-summon-sagittar',
+
   name: 'Summon Sagittar',
   activationType: SpellActivationType.Instant,
   icon: {
@@ -32,4 +35,4 @@ export const SummonSagittarSpell: SpellBaseType = {
       },
     },
   }
-};
+});

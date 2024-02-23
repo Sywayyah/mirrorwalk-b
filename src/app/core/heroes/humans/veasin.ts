@@ -8,7 +8,6 @@ import { CorrosiveFogSpell } from '../../spells/common/corrosive-fog';
 import { heroDescrElem } from '../../ui';
 import { HeroBase } from '../types';
 
-
 /* Poison Assassin hero, might become a hero of Garden */
 /*  Poison cloud needs some improvements. It might weaken enemy's defence and attack, as well as deal some initial damage  */
 /* There might be a new stat for heroes: Mysticism. Different abilities may gain different effects from it, and

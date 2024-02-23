@@ -3,6 +3,8 @@ import { SpellActivationType } from '../types';
 import { createSpell } from '../utils';
 
 export const ProtectionAuraBuff = createSpell({
+  id: '#spell-protection-aura',
+
   name: 'Protected',
   activationType: SpellActivationType.Buff,
   icon: { icon: 'spear-head' },
@@ -18,6 +20,8 @@ export const ProtectionAuraBuff = createSpell({
 });
 
 export const ProtectionAura = createSpell({
+  id: '#spell-protection',
+
   name: 'Protection',
   icon: { icon: 'spear-head' },
   activationType: SpellActivationType.Passive,

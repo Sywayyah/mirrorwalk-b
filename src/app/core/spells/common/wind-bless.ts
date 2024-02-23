@@ -4,6 +4,7 @@ import { spellPlainDescription } from '../../ui';
 import { UnitGroup } from '../../unit-types';
 import { uiPercentSign } from '../../vfx';
 import { SpellActivationType, SpellBaseType } from '../types';
+import { createSpell } from '../utils';
 
 type State = {
   roundsLeft: number,
@@ -14,7 +15,9 @@ type State = {
 const attackBonus = 2;
 const blockPiercing = 0.17;
 
-export const WindBlessBuff: SpellBaseType<State> = {
+export const WindBlessBuff: SpellBaseType<State> = createSpell({
+  id: '#spell-wind-bless-buff',
+
   name: 'Wind Bless',
   icon: {
     icon: 'feather-wing',
@@ -58,4 +61,4 @@ export const WindBlessBuff: SpellBaseType<State> = {
       },
     },
   }
-};
+});
