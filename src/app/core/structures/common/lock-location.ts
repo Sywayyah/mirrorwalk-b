@@ -1,8 +1,11 @@
+import { StructId } from '../../registries';
 import { Resources, joinedResourcesText } from '../../resources';
 import { StructureGeneratorModel, StructureType, StuctureControl } from '../types';
+import { createStructure } from '../utils';
 
-export const lockLocation = (config: { icon: string; actionPoints?: number; name: string; descr: string; resources: Resources }): StructureGeneratorModel => {
-  const location: StructureGeneratorModel = {
+export const lockLocation = (config: { id: StructId, icon: string; actionPoints?: number; name: string; descr: string; resources: Resources }): StructureGeneratorModel => {
+  const location: StructureGeneratorModel = createStructure({
+    id: config.id,
     control: StuctureControl.Neutral,
     actionPoints: config.actionPoints ?? 1,
     name: config.name,
@@ -27,12 +30,13 @@ export const lockLocation = (config: { icon: string; actionPoints?: number; name
         });
       }
     },
-  };
+  });
 
   return location;
 };
 
 export const SettlementLocation: StructureGeneratorModel = lockLocation({
+  id: '#struct-settlement',
   descr: 'A ravaged settlement. Rebuilding it will let you access some related locations.',
   icon: 'locked-fortress',
   name: 'Settlement',

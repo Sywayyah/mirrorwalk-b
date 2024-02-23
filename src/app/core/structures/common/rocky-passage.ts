@@ -1,7 +1,10 @@
 import { neutralsFraction } from '../../fractions/neutrals/fraction';
 import { NeutralRewardTypesEnum, StructureGeneratorModel, StuctureControl } from '../types';
+import { createStructure } from '../utils';
 
-export const RockyPassageStructure: StructureGeneratorModel = {
+export const RockyPassageStructure: StructureGeneratorModel = createStructure({
+  id: '#struct-rocky-passage',
+
   name: 'Rocky Passage',
   actionPoints: 2,
 
@@ -32,4 +35,4 @@ export const RockyPassageStructure: StructureGeneratorModel = {
       type: NeutralRewardTypesEnum.NoReward,
     };
   }
-};
+});

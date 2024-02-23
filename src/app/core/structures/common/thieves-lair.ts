@@ -4,8 +4,11 @@ import { IrtonPlateItem } from '../../items/neutral/irton-plate';
 import { PhoenixShieldItem } from '../../items/neutral/phoenix-shield';
 import { GenerationModel } from '../../unit-types';
 import { ItemReward, NeutralRewardTypesEnum, StructureGeneratorModel, StuctureControl } from '../types';
+import { createStructure } from '../utils';
 
-export const ThievesLair: StructureGeneratorModel = {
+export const ThievesLair: StructureGeneratorModel = createStructure({
+  id: '#struct-thief-lair',
+
   name: 'Thieves\' Lair',
   actionPoints: 2,
   control: StuctureControl.Neutral,
@@ -35,4 +38,4 @@ export const ThievesLair: StructureGeneratorModel = {
 
     return itemReward;
   },
-};
+});

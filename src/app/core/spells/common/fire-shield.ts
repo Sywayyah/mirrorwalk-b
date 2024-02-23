@@ -88,7 +88,7 @@ export const FireShieldBuff: SpellBaseType = createSpell({
 });
 
 export const FireShieldSpell: SpellBaseType = createSpell({
-  id: '#spell-fire-shield-buff',
+  id: '#spell-fire-shield',
 
   name: 'Fire Shield',
   activationType: SpellActivationType.Target,

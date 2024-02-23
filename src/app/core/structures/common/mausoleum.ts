@@ -1,8 +1,11 @@
 import { neutralsFraction } from '../../fractions/neutrals/fraction';
 import { GenerationModel } from '../../unit-types';
 import { StructureGeneratorModel, StuctureControl } from '../types';
+import { createStructure } from '../utils';
 
-export const Mausoleum: StructureGeneratorModel = {
+export const Mausoleum: StructureGeneratorModel = createStructure({
+  id: '#struct-mausoleum',
+
   name: 'Mausoleum',
   actionPoints: 1,
   control: StuctureControl.Neutral,
@@ -19,4 +22,4 @@ export const Mausoleum: StructureGeneratorModel = {
 
     return guard;
   },
-};
+});

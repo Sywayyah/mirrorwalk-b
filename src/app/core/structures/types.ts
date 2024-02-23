@@ -2,6 +2,7 @@ import { PlayersApi, SpellsApi } from '../api/game-api';
 import { EventFeedApi } from '../game-objects';
 import { ItemBaseModel } from '../items';
 import { Player } from '../players';
+import { Entity, StructId } from '../registries';
 import { ResourceType } from '../resources';
 import { LocalEvents } from '../triggers';
 import { DescriptionElement } from '../ui';
@@ -40,7 +41,8 @@ export enum StructureType {
 }
 
 /* This base type for structures will be expanded and, most likely, will have an access to events and API. */
-export interface StructureGeneratorModel {
+export interface StructureGeneratorModel extends Entity {
+  id: StructId;
   name: string;
   icon?: string;
   control: StuctureControl;

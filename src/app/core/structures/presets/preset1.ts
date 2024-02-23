@@ -2,7 +2,6 @@ import { ResourceType } from '../../resources';
 import { ArchersOutpostStructure, BanditCamp, BeaconOfTheUndead, BigCampStructure, CalavryStalls, GraveyardStructure, MagicRiverStructure, MountainNestStructure, RockyPassageStructure, ThievesLair, WitchHutStructure } from '../common';
 import { DarkArtsSchool } from '../common/dark-arts-school';
 import { FireRingStructure } from '../common/guard-location';
-import { SettlementLocation } from '../common/lock-location';
 import { Mausoleum } from '../common/mausoleum';
 import { dailyResourcesMineStructure } from '../common/resource-mine';
 import { resPileStructure, resourcesPileStructure } from '../common/resource-pile';
@@ -31,6 +30,10 @@ function loc(location: number): number {
   return location + shift;
 }
 
+const woodPile = dailyResourcesMineStructure({ id: '#struct-wood-mine-1', resources: { wood: 1 } });
+
+const woodPile4 = resPileStructure({ id: '#struct-wood-4', resType: ResourceType.Wood, amount: 4 });
+
 const brBranch: StructureDescription[] = [
   {
     id: '2',
@@ -58,7 +61,7 @@ const brBranch: StructureDescription[] = [
     pathTo: '5',
     actionPoints: 1,
 
-    struct: resPileStructure(ResourceType.Wood, 4),
+    struct: woodPile4,
   },
   {
     id: '17',
@@ -113,7 +116,7 @@ const brBranch: StructureDescription[] = [
     icon: 'hand-saw',
     pathTo: '22',
 
-    struct: dailyResourcesMineStructure({ wood: 1 }),
+    struct: woodPile,
   },
   {
     id: '20',
@@ -136,7 +139,7 @@ const fifthBranch: StructureDescription[] = [
     y: loc(70),
     icon: 'gold-bar',
     actionPoints: 1,
-    struct: resPileStructure(ResourceType.Gold, 650),
+    struct: resPileStructure({ id: '#struct-gold-650', resType: ResourceType.Gold, amount: 650 }),
   },
 ];
 
@@ -184,7 +187,7 @@ const blBranch: StructureDescription[] = [
     icon: 'crystals',
     pathTo: 'left-5',
 
-    struct: dailyResourcesMineStructure({ redCrystals: 1 }),
+    struct: dailyResourcesMineStructure({ id: '#struct-mine', resources: { redCrystals: 1 } }),
   },
   {
     id: '54',
@@ -268,7 +271,7 @@ const tlBranch: StructureDescription[] = [
     y: loc(-170),
     icon: 'emerald',
     pathTo: '15',
-    struct: resPileStructure(ResourceType.Gems, 3),
+    struct: resPileStructure({ id: '#struct-gems-3', resType: ResourceType.Gems, amount: 3 }),
   },
 
 ];

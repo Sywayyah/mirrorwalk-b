@@ -1,8 +1,10 @@
 import { neutralsFraction } from '../../fractions/neutrals/fraction';
 import { NeutralRewardTypesEnum, StructureGeneratorModel, StuctureControl } from '../types';
+import { createStructure } from '../utils';
 
+export const FireRingStructure: StructureGeneratorModel = createStructure({
+  id: '#struct-fire-ring',
 
-export const FireRingStructure: StructureGeneratorModel = {
   name: 'Fire Ring',
   actionPoints: 2,
 
@@ -21,4 +23,4 @@ export const FireRingStructure: StructureGeneratorModel = {
       type: NeutralRewardTypesEnum.NoReward,
     };
   }
-};
+});

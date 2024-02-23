@@ -1,8 +1,15 @@
+import { StructId, registerEntity } from '../registries';
 import { GenerationModel } from '../unit-types';
 import { HiringReward, HiringRewardModel, NeutralRewardTypesEnum, StructureGeneratorModel, StuctureControl } from './types';
 
-export function createHireStructure(name: string, guard: GenerationModel, unitsForHire: HiringRewardModel[]): StructureGeneratorModel {
+export function createStructure(base: StructureGeneratorModel): StructureGeneratorModel {
+  registerEntity(base);
+  return base;
+}
+
+export function createHireStructure({ id, name, guard, unitsForHire }: { id: StructId, name: string; guard: GenerationModel; unitsForHire: HiringRewardModel[]; }): StructureGeneratorModel {
   return {
+    id,
     name: name,
     actionPoints: 1,
     control: StuctureControl.Neutral,

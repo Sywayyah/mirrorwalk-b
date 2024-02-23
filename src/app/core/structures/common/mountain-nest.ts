@@ -2,8 +2,11 @@ import { humansFraction } from '../../fractions';
 import { spellDescrElem } from '../../ui';
 import { CommonUtils } from '../../utils';
 import { StructureGeneratorModel, StructureType, StuctureControl } from '../types';
+import { createStructure } from '../utils';
 
-export const MountainNestStructure: StructureGeneratorModel = {
+export const MountainNestStructure: StructureGeneratorModel = createStructure({
+  id: '#struct-mountain-nest',
+
   control: StuctureControl.Neutral,
   actionPoints: 2,
   name: 'Mountain Nest',
@@ -40,4 +43,4 @@ export const MountainNestStructure: StructureGeneratorModel = {
       });
     }
   },
-};
+});

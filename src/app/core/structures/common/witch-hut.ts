@@ -1,7 +1,10 @@
 import { EnchantSpell } from '../../spells/common';
 import { StructureGeneratorModel, StructureType, StuctureControl } from '../types';
+import { createStructure } from '../utils';
 
-export const WitchHutStructure: StructureGeneratorModel = {
+export const WitchHutStructure: StructureGeneratorModel = createStructure({
+  id: '#struct-witch-hut',
+
   control: StuctureControl.Neutral,
   actionPoints: 1,
   name: 'Witch Hut',
@@ -25,4 +28,4 @@ export const WitchHutStructure: StructureGeneratorModel = {
       });
     }
   },
-};
+});

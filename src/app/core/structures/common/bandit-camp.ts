@@ -5,9 +5,11 @@ import { ResourceType } from '../../resources';
 import { GenerationModel } from '../../unit-types';
 import { CommonUtils } from '../../utils';
 import { ItemReward, NeutralRewardTypesEnum, ResourcesReward, StructureGeneratorModel, StuctureControl } from '../types';
+import { createStructure } from '../utils';
 
 
-export const BanditCamp: StructureGeneratorModel = {
+export const BanditCamp: StructureGeneratorModel = createStructure({
+  id: '#struct-bandit-camp',
   name: 'Bandit Camp',
   actionPoints: 1,
   control: StuctureControl.Neutral,
@@ -56,6 +58,6 @@ export const BanditCamp: StructureGeneratorModel = {
       return itemReward;
     }
   },
-};
+});
 
 

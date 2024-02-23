@@ -1,7 +1,9 @@
 import { neutralsFraction } from '../../fractions/neutrals/fraction';
 import { NeutralRewardTypesEnum, ScriptedReward, StructureGeneratorModel, StuctureControl } from '../types';
+import { createStructure } from '../utils';
 
-export const BigCampStructure: StructureGeneratorModel = {
+export const BigCampStructure: StructureGeneratorModel = createStructure({
+  id: '#struct-big-camp',
   name: 'Big Camp',
   actionPoints: 1,
   generateGuard() {
@@ -30,4 +32,4 @@ export const BigCampStructure: StructureGeneratorModel = {
       },
     } as ScriptedReward;
   }
-};
+});
