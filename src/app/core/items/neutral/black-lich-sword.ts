@@ -1,12 +1,16 @@
 import { itemStatsDescr, spellDescrElem } from '../../ui';
 import { ItemBaseModel, ItemSlotType } from '../types';
+import { createItem } from '../utils';
 
 const lifestealValue = 18;
 
-export const BlackLichSwordItem: ItemBaseModel = {
+export const BlackLichSwordItem: ItemBaseModel = createItem({
+  id: '#item-blacklich-swords',
+
   name: 'Black Lich Sword',
-  slotType: ItemSlotType.Weapon,
-  staticMods: {
+  icon: 'bat-sword',
+  slot: ItemSlotType.Weapon,
+  stats: {
     heroBonusAttack: 3,
     specialtyNecromancy: 1,
 
@@ -20,9 +24,6 @@ export const BlackLichSwordItem: ItemBaseModel = {
       return null;
     },
   },
-  icon: {
-    icon: 'bat-sword',
-  },
   cost: {
     gold: 1000,
     gems: 1,
@@ -35,7 +36,4 @@ export const BlackLichSwordItem: ItemBaseModel = {
       ],
     };
   },
-  config: {
-    init() { }
-  },
-};
+});

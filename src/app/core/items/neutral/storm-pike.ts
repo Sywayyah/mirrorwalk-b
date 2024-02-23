@@ -3,6 +3,8 @@ import { ItemSlotType } from '../types';
 import { createItem } from '../utils';
 
 export const StormPikeItem = createItem({
+  id: '#item-storm-pike',
+
   name: 'Storm Pike',
   icon: 'spear-head',
   slot: ItemSlotType.Weapon,

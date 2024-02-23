@@ -5,6 +5,8 @@ const speedBonus = 2;
 const speedBonusUpgraded = speedBonus + 3;
 
 export const LightBootsItem = createItem({
+  id: '#item-light-boots',
+
   name: 'Light Boots',
   icon: 'boot-stomp',
   slot: ItemSlotType.Boots,

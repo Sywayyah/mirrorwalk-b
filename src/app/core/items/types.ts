@@ -4,6 +4,7 @@ import { GameObject } from '../game-objects';
 import { Hero } from '../heroes';
 import { Modifiers } from '../modifiers';
 import { Player } from '../players';
+import { Entity, ItemId } from '../registries';
 import { Resources } from '../resources';
 import { SpellBaseType } from '../spells';
 import { DescriptionElement } from '../ui';
@@ -44,7 +45,20 @@ export type SpellWithConfig = {
   level: number;
 };
 
-export interface ItemBaseModel<StateType extends object = object> {
+export type ItemAbilityDescriptionGetter<StateType extends object> = (itemData: ItemDescriptionData<StateType>) => ItemDescription;
+
+export type ItemConfig<StateType extends object> = {
+  init: (combatRefs: {
+    actions: CombatActionsRef;
+    events: ItemsEventsRef;
+    ownerPlayer: Player;
+    ownerHero: Hero;
+    thisInstance: Item<StateType>;
+  }) => void;
+};
+
+export interface ItemBaseModel<StateType extends object = object> extends Entity {
+  id: ItemId;
   defaultState?: StateType;
 
   cost?: Resources;
@@ -59,16 +73,8 @@ export interface ItemBaseModel<StateType extends object = object> {
   /* There could be some requirements: */
   // requirements: ItemRequirementModel[],
 
-  description: (itemData: ItemDescriptionData<StateType>) => ItemDescription;
-  config: {
-    init: (combatRefs: {
-      actions: CombatActionsRef,
-      events: ItemsEventsRef,
-      ownerPlayer: Player,
-      ownerHero: Hero,
-      thisInstance: Item<StateType>,
-    }) => void,
-  },
+  description: ItemAbilityDescriptionGetter<StateType>;
+  config: ItemConfig<StateType>,
   bonusAbilities?: SpellWithConfig[];
 }
 

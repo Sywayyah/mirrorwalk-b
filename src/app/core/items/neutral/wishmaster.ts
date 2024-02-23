@@ -1,17 +1,18 @@
 import { itemStatsDescr, spellDescrElem } from '../../ui';
 import { ItemBaseModel, ItemSlotType } from '../types';
+import { createItem } from '../utils';
 
-export const WishmasterItem: ItemBaseModel = {
+export const WishmasterItem: ItemBaseModel = createItem({
+  id: '#item-wishmaster',
+
   name: 'Wishmaster',
-  slotType: ItemSlotType.Headgear,
-  staticMods: {
+  slot: ItemSlotType.Headgear,
+  stats: {
     heroBonusAttack: 5,
     heroBonusDefence: 4,
     resistAll: 13,
   },
-  icon: {
-    icon: 'feather-wing',
-  },
+  icon: 'feather-wing',
   description({ thisItem, thisItemBase }) {
     return {
       descriptions: [
@@ -20,9 +21,4 @@ export const WishmasterItem: ItemBaseModel = {
       ],
     };
   },
-  config: {
-    init: () => {
-
-    },
-  },
-}
+})
