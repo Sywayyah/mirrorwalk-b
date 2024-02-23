@@ -21,6 +21,8 @@ import { heroesDefaultResources } from '../utils';
 const defaultAllResists = 12;
 
 export const TaltirHero: HeroBase = humansFraction.createHero({
+  id: '#hero-taltir',
+
   name: 'Taltir',
   // todo: maybe allow for custom descriptions
   generalDescription: heroDescrElem(`Taltir specializes at utilizing Fire Spells, summoning Fire Spirits and devastating Meteors. Knowledge in magic defenses makes him start with +${defaultAllResists}% to all resists.`),

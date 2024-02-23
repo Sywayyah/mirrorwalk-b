@@ -7,6 +7,8 @@ import { OnslaugtSpell } from './spells/onslaught';
 
 // ability: Onset. Gives +40% lifesteal, 3 attack and 2 speed to Raiders. Later on also starts to grant additional turn.
 export const ToothpickHero: HeroBase = fortFraction.createHero({
+  id: '#hero-toothpick',
+
   name: 'Toothpick',
   generalDescription: heroDescrElem(`Toothpick is a famous captain of Raiders, their effectiveness excels under his command.`),
 

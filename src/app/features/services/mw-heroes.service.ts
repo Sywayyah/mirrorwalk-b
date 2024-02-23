@@ -7,6 +7,7 @@ import { GameObjectsManager } from './game-objects-manager.service';
 import { MwUnitGroupsService } from './mw-unit-groups.service';
 
 const neutralHeroBase = createHeroModelBase({
+  id: '#hero-non-player-neutral',
   name: 'neutral-hero',
   generalDescription: heroDescrElem(''),
   abilities: [],

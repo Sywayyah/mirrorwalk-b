@@ -13,6 +13,8 @@ import { LifeObeliskSpell } from './spells/obelisk';
 // Life tansfer: Reallocates health from your enemies to your army, dealing 15 damage to everyone and equally distributing the total damage as healing.
 //  When life totem is present on the battlefield, effect of this ability is increased by 30%.
 export const BlightHero: HeroBase = fortFraction.createHero({
+  id: '#hero-blight',
+
   name: 'Blight',
   generalDescription: heroDescrElem(`A rotting ent called Blight. His army is weakened by -10% All Resist and -5 Defence, but compensating it with abilities and providing many ways to heal.`),
 

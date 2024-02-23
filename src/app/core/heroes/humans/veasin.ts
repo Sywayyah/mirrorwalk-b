@@ -38,6 +38,8 @@ import { HeroBase } from '../types';
     with unshared cooldowns / abilities with charges.
 */
 export const VeasinHero: HeroBase = humansFraction.createHero({
+  id: '#hero-veasin',
+
   name: 'Veasin',
   generalDescription: heroDescrElem(`Veasin makes use of her poison abilities, weakening enemies and dealing damage over time.`),
   image: AssetsImages.HeroMage,

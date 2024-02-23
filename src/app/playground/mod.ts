@@ -4,6 +4,7 @@ import { heroDescrElem } from '../core/ui';
 
 
 humansFraction.createHero({
+  id: '#hero-ironsight',
   name: 'Ironsight',
   generalDescription: heroDescrElem(`Ironsight makes great use of his increased combat stats and strong army.`),
   abilities: [],

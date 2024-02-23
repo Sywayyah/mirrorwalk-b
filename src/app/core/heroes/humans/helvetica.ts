@@ -15,6 +15,8 @@ import { HeroBase } from '../types';
       Rain of Fire
 */
 export const HelveticaHero: HeroBase = humansFraction.createHero({
+  id: '#hero-helvetica',
+
   name: 'Helvetica',
   generalDescription: heroDescrElem(`Helvetica is the mage who supports her own army with offensive fire spells as well as increasing their speed.`),
   image: AssetsImages.HeroHelvetica,

@@ -6,6 +6,8 @@ import { heroDescrElem } from '../../ui';
 
 // new possible constellation hero
 constellationFraction.createHero({
+  id: '#hero-luminous',
+
   name: 'Luminuous',
   abilities: [
     RainOfFireSpell,

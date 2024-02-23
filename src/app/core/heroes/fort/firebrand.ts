@@ -6,6 +6,8 @@ import { heroesDefaultResources } from '../utils';
 import { Firestorm } from './spells/firestorm';
 
 export const FirebrandHero: HeroBase = fortFraction.createHero({
+  id: '#hero-firebrand',
+
   name: 'Firebrand',
   // could also reduce gain of Fire Resist.
   generalDescription: heroDescrElem(`A half-troll who harnessed the chaotic nature of fire magic, which ends up unfortunately both for his enemies and allies. All Fort units will start with -15% Fire Resist.`),

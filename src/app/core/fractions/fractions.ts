@@ -59,6 +59,7 @@ export const Fractions = {
         heroConfig,
       ): HeroBase {
         const {
+          id,
           abilities,
           army,
           items,
@@ -71,6 +72,7 @@ export const Fractions = {
         } = heroConfig;
 
         const newHero = {
+          id,
           name,
           generalDescription,
           initialState: {
@@ -83,6 +85,8 @@ export const Fractions = {
           },
           image: image ?? AssetsImages.HeroMage,
         };
+
+        registerEntity(newHero);
 
         this.heroes.push(newHero);
 
