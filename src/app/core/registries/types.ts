@@ -24,19 +24,20 @@ export class Registry<T extends object = object> {
   }
 }
 
-export class Registries {
+export class EntitiesRegisty {
   private static readonly allEntitiesMap = new Map<string, Entity>();
   private static readonly registriesMap = new Map<string, Registry>();
 
-  static create<T extends object>(registryId: string): Registry<T> {
-    const newRegistry = new Registry<T>(registryId);
+  // todo: check if sub-registries are needed
+  // static create<T extends object>(registryId: string): Registry<T> {
+  //   const newRegistry = new Registry<T>(registryId);
 
-    this.registriesMap.set(registryId, newRegistry);
+  //   this.registriesMap.set(registryId, newRegistry);
 
-    return newRegistry;
-  }
+  //   return newRegistry;
+  // }
 
-  static resolveEntity<T extends object>(entityId: string): T {
+  static resolve<T extends object>(entityId: string): T {
     const entity = this.allEntitiesMap.get(entityId);
 
     if (!entity) {
@@ -45,15 +46,7 @@ export class Registries {
 
     return entity as T;
   }
-  static getEntity<T>(key: EntityId): T {
-    const entity = this.allEntitiesMap.get(key);
 
-    if (!entity) {
-      throw new Error(`Could not resolve entity by id ${key}`);
-    }
-
-    return entity as T;
-  }
   static register(entity: Entity): void {
     if (this.allEntitiesMap.has(entity.id)) {
       console.error(`Entity ${entity.id} is already registered, registering:`, entity);
@@ -64,14 +57,14 @@ export class Registries {
   }
 }
 
-(window as any).entities = Registries;
+(window as any).entities = EntitiesRegisty;
 
 export function registerEntity(entity: Entity): void {
-  Registries.register(entity);
+  EntitiesRegisty.register(entity);
 }
 
 export function resolveEntity<T extends Entity>(id: string | EntityId): T {
-  return Registries.resolveEntity<T>(id);
+  return EntitiesRegisty.resolve<T>(id);
 }
 
 // test
