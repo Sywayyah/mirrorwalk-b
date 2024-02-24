@@ -4,7 +4,7 @@ import { actionCardEvent } from '../vfx';
 import { ActionCard, ActionCardTypes } from './types';
 import { actionIcon, manaIcon } from './utils';
 
-export const SetupCamp: ActionCard = {
+export const SetupCampActionCard: ActionCard = {
   title: 'Set up Camp',
   icon: 'campfire',
   type: ActionCardTypes.PlayerAction,
