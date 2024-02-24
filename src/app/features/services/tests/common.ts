@@ -7,6 +7,7 @@ import { Hero, createHeroModelBase } from 'src/app/core/heroes';
 import { DescriptionElementType } from 'src/app/core/ui';
 
 export const testUnitTypeNoArmorNoRating: UnitBaseType = {
+  id: '#unit-test',
   name: 'Test Unit (No Armor/Attack Rating)',
   type: 'test-plain-stats',
   baseRequirements: {},

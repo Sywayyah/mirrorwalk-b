@@ -4,7 +4,7 @@ import { heroDescrElem } from '../../ui';
 import { createStats, simpleDescriptions } from '../utils';
 
 neutralsFaction.defineUnitType('Gnoll', {
-  id: '#ut-neut-gnoll',
+  id: '#unit-neut-gnoll',
 
   mainPortraitUrl: AssetsImages.UnitMelee,
   name: 'Gnolls',
@@ -33,7 +33,7 @@ neutralsFaction.defineUnitType('Gnoll', {
 });
 
 neutralsFaction.defineUnitType('Thieves', {
-  id: '#ut-neut-thief',
+  id: '#unit-neut-thief',
 
   mainPortraitUrl: AssetsImages.UnitMelee,
   name: 'Thieves',
@@ -57,7 +57,7 @@ neutralsFaction.defineUnitType('Thieves', {
 
 // maybe add crushing blow, ability that reduces damage of the attacked unit group
 neutralsFaction.defineUnitType('ForestTrolls', {
-  id: '#ut-neut-forest-troll',
+  id: '#unit-neut-forest-troll',
 
   mainPortraitUrl: AssetsImages.UnitMelee,
   name: 'Forest Trolls',

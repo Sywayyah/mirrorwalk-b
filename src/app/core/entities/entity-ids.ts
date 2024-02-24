@@ -1,6 +1,6 @@
 enum EntityPrefix {
   Hero = 'hero',
-  Unit = 'ut',
+  Unit = 'unit',
   Item = 'item',
   Spell = 'spell',
   Struct = 'struct',

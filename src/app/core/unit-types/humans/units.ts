@@ -13,7 +13,7 @@ const defaultRewards = {
 
 
 humansFaction.defineUnitType('Pikemen', {
-  id: '#ut-h00',
+  id: '#unit-h00',
   name: 'Pikemen',
   level: 1,
   mainPortraitUrl: AssetsImages.UnitMelee,
@@ -48,8 +48,8 @@ humansFaction.defineUnitType('Pikemen', {
   },
 
   upgradeDetails: {
-    target: '#ut-h01',
-    // targetId: '#ut-h01',
+    target: '#unit-h01',
+    // targetId: '#unit-h01',
     upgradeCost: {
       gold: 15,
     }
@@ -59,7 +59,7 @@ humansFaction.defineUnitType('Pikemen', {
 });
 
 humansFaction.defineUnitType('Halberdier', {
-  id: '#ut-h01',
+  id: '#unit-h01',
   mainPortraitUrl: AssetsImages.UnitMelee,
   name: 'Halberdier',
   level: 1,
@@ -107,7 +107,7 @@ humansFaction.defineUnitType('Halberdier', {
 
 // add action points required for location
 humansFaction.defineUnitType('Archer', {
-  id: '#ut-h10',
+  id: '#unit-h10',
 
   mainPortraitUrl: AssetsImages.UnitRanged,
   name: 'Archers',
@@ -133,8 +133,8 @@ humansFaction.defineUnitType('Archer', {
   },
 
   upgradeDetails: {
-    target: '#ut-h11',
-    // targetId: '#ut-h11',
+    target: '#unit-h11',
+    // targetId: '#unit-h11',
     upgradeCost: {
       gold: 25,
     }
@@ -197,7 +197,7 @@ humansFaction.defineUnitType('Archer', {
 });
 
 humansFaction.defineUnitType('Crossbowmen', {
-  id: '#ut-h11',
+  id: '#unit-h11',
 
   mainPortraitUrl: AssetsImages.UnitRanged,
   name: 'Crossbowmen',
@@ -254,7 +254,7 @@ humansFaction.defineUnitType('Crossbowmen', {
 })
 
 humansFaction.defineUnitType('Knight', {
-  id: '#ut-h20',
+  id: '#unit-h20',
   mainPortraitUrl: AssetsImages.UnitMelee,
   name: 'Knights',
   level: 3,
@@ -289,7 +289,7 @@ humansFaction.defineUnitType('Knight', {
 });
 
 humansFaction.defineUnitType('Cavalry', {
-  id: '#ut-h30',
+  id: '#unit-h30',
   name: 'Cavalry',
   mainPortraitUrl: AssetsImages.UnitMelee,
 
@@ -323,7 +323,7 @@ humansFaction.defineUnitType('Cavalry', {
     gold: 25,
   },
   upgradeDetails: {
-    target: '#ut-h31',
+    target: '#unit-h31',
     upgradeCost: {
       gold: 85,
     },
@@ -331,7 +331,7 @@ humansFaction.defineUnitType('Cavalry', {
 });
 
 humansFaction.defineUnitType('HeavyCavalry', {
-  id: '#ut-h31',
+  id: '#unit-h31',
   name: 'Heavy Cavalry',
   mainPortraitUrl: AssetsImages.UnitMelee,
 
@@ -368,7 +368,7 @@ humansFaction.defineUnitType('HeavyCavalry', {
 });
 
 humansFaction.defineUnitType('MysticBird', {
-  id: '#ut-h40',
+  id: '#unit-h40',
 
   name: 'Mystic Birds',
   mainPortraitUrl: AssetsImages.FireBird,
@@ -395,7 +395,7 @@ humansFaction.defineUnitType('MysticBird', {
     wood: 1,
   },
   upgradeDetails: {
-    target: '#ut-h41',
+    target: '#unit-h41',
     upgradeCost: {
       gold: 125,
     },
@@ -407,7 +407,7 @@ humansFaction.defineUnitType('MysticBird', {
 });
 
 humansFaction.defineUnitType('Firebird', {
-  id: '#ut-h41',
+  id: '#unit-h41',
   name: 'Firebirds',
   mainPortraitUrl: AssetsImages.FireBird,
   level: 5,
