@@ -4,6 +4,7 @@ import { ActionCardComponent, ActionCardsPopupComponent, CustomCursorComponent, 
 import { ResourcesCostComponent } from './components/resources-cost/resources-cost.component';
 import { DisableContextMenuDirective, MwActionHintDirective, MwCustomCursorDirective, MwUnitEventsCursorDirective, MwUnitGroupCombatActionDirective, NumberModifierDirective } from './directives';
 import { MwInfPipe, MwSafeHtmlPipe } from './pipes';
+import { ActionCardItemStackComponent } from './components/action-card-stack-item/action-card-item.component';
 
 const pipes = [
   MwSafeHtmlPipe,
@@ -27,6 +28,7 @@ const components = [
 
   ActionCardComponent,
   ActionCardsPopupComponent,
+  ActionCardItemStackComponent,
 
   GameOverPopupComponent,
   SharedTemplateDirective,

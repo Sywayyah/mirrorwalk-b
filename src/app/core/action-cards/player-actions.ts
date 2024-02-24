@@ -77,6 +77,7 @@ export const MeditateActionCard: ActionCard = {
 };
 
 // Restore action can be given by High Tower from the city, and some locations on the map
+// todo: Convert action cards to Entities, make dynamic descriptions
 export const RestoreActionCard: ActionCard = {
   title: 'Restore Mana',
   icon: 'barrier',
@@ -86,6 +87,19 @@ export const RestoreActionCard: ActionCard = {
   description: `You restore 3 points of mana (+2 per point of Restoration specialty), consumes 1 action point.`,
 
   actionPoints: 1,
+
+  config: {
+    onUsedInstantly({ events, players }) {
+      const currentPlayer = players.getCurrentPlayer();
+      const hero = currentPlayer.hero;
+      const recoveryLevel = hero.specialtiesModGroup.getModValue('specialtyMagicRecovery') || 0;
+
+      const restoredMana = 3 + recoveryLevel * 2;
+
+      players.addManaToPlayer(currentPlayer, restoredMana);
+      events.dispatch(PushEventFeedMessage({ message: [{ type: DescriptionElementType.FreeHtml, htmlContent: `${actionCardEvent(RestoreActionCard)}: Restored ${manaIcon(restoredMana)} Mana.` }] }));
+    },
+  },
 };
 
 // Recruitting action
