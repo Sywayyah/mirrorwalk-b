@@ -1,2 +1,2 @@
-export * from './types';
-export * from './entities';
+export * from './entities-registry';
+export * from './entity-ids';
