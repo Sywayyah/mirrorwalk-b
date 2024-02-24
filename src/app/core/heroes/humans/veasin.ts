@@ -1,7 +1,7 @@
 
 
 import { AssetsImages } from '../../assets';
-import { humansFraction } from '../../fractions';
+import { humansFraction } from '../../factions';
 import { ItemWindCrest } from '../../items/neutral';
 import { PoisonCloudSpell } from '../../spells/common';
 import { CorrosiveFogSpell } from '../../spells/common/corrosive-fog';

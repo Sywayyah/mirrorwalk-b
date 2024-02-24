@@ -1,5 +1,5 @@
 import { AssetsImages } from '../../assets';
-import { humansFraction } from '../../fractions';
+import { humansFraction } from '../../factions';
 import { ItemWindCrest } from '../../items/neutral';
 import { HasteSpell, RainOfFireSpell } from '../../spells/common';
 import { heroDescrElem } from '../../ui';

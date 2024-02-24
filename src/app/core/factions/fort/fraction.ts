@@ -1,4 +1,4 @@
-import { Fractions, FractionsEnum } from '../fractions';
+import { Fractions, FractionsEnum } from '../factions';
 
 export type FORT_UNIT_TYPES =
   | 'Raiders'

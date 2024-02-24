@@ -1,6 +1,6 @@
 import { MeditateActionCard } from '../../action-cards/player-actions';
 import { AddActionCardsToPlayer } from '../../events';
-import { HUMANS_UNIT_TYPES, humansFraction } from '../../fractions';
+import { HUMANS_UNIT_TYPES, humansFraction } from '../../factions';
 import { IrtonPlateItem } from '../../items/neutral';
 import { IronPikeItem } from '../../items/neutral/iron-pike';
 import { StormPikeItem } from '../../items/neutral/storm-pike';

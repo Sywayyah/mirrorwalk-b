@@ -1,4 +1,4 @@
-import { constellationFraction } from '../../fractions/constellation/fraction';
+import { constellationFraction } from '../../factions/constellation/fraction';
 import { WishmasterItem } from '../../items/neutral';
 import { KneelingLight, RainOfFireSpell } from '../../spells/common';
 import { SummonSagittarSpell } from '../../spells/common/summon-sagittar';

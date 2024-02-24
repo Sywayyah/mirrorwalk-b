@@ -1,4 +1,4 @@
-import { humansFraction } from '../core/fractions';
+import { humansFraction } from '../core/factions';
 import { PhoenixShieldItem } from '../core/items/neutral/phoenix-shield';
 import { heroDescrElem } from '../core/ui';
 

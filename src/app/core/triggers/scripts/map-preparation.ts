@@ -1,7 +1,7 @@
 import { MeditateActionCard, SetupCamp, SkipDayActionCard } from '../../action-cards/player-actions';
 import { AddActionCardsToPlayer, DefaultGameModes, DisplayPlayerRewardPopup, NewWeekStarted, PlayerLevelsUp, PlayersInitialized, PushPlainEventFeedMessage, Triggers } from '../../events';
-import { Fraction } from '../../fractions';
-import { constellationFraction } from '../../fractions/constellation/fraction';
+import { Fraction } from '../../factions';
+import { constellationFraction } from '../../factions/constellation/fraction';
 import { LevelMap } from '../../maps';
 import { START_LOC_ID, structsPreset1 } from '../../structures';
 import { TriggersRegistry } from '../registry';

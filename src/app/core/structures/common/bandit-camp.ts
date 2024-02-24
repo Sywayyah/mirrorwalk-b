@@ -1,4 +1,4 @@
-import { neutralsFraction } from '../../fractions/neutrals/fraction';
+import { neutralsFraction } from '../../factions/neutrals/fraction';
 import { ItemEclipseWand, ItemIceBow, ItemMeteorSwords, ItemWindCrest } from '../../items/neutral';
 import { LightBootsItem } from '../../items/neutral/light-boots';
 import { ResourceType } from '../../resources';

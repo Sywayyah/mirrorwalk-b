@@ -1,4 +1,4 @@
-import { constellationFraction } from '../../fractions/constellation/fraction';
+import { constellationFraction } from '../../factions/constellation/fraction';
 import { spellDescrElem } from '../../ui';
 import { FireAnimation, simpleConvergentBuffAnimation } from '../../vfx';
 import { SpellActivationType, SpellBaseType } from '../types';

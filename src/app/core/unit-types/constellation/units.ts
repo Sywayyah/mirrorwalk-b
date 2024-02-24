@@ -1,5 +1,5 @@
 import { AssetsImages } from '../../assets';
-import { constellationFraction } from '../../fractions/constellation/fraction';
+import { constellationFraction } from '../../factions/constellation/fraction';
 import { spellDescrElem } from '../../ui';
 import { EssenceLeak } from './spells/essence-leak';
 

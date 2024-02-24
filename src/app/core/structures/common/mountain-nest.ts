@@ -1,4 +1,4 @@
-import { humansFraction } from '../../fractions';
+import { humansFraction } from '../../factions';
 import { spellDescrElem } from '../../ui';
 import { CommonUtils } from '../../utils';
 import { StructureGeneratorModel, StructureType, StuctureControl } from '../types';

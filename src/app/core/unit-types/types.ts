@@ -1,7 +1,7 @@
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { GroupSpellsChanged } from '../events';
-import type { Fraction } from '../fractions/types';
+import type { Fraction } from '../factions/types';
 import { GameObject } from '../game-objects';
 import { Hero } from '../heroes';
 import { ModsRef, ModsRefsGroup, Specialties } from '../modifiers';

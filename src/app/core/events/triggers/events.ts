@@ -1,6 +1,6 @@
 import { createEventType } from 'src/app/store';
 import { DefaultGameModes, GamePreparedEvent } from './types';
-import { Fraction } from '../../fractions';
+import { Fraction } from '../../factions';
 
 const createTriggerEvent = createEventType;
 

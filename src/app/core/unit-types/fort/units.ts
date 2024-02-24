@@ -1,5 +1,5 @@
 import { AssetsImages } from '../../assets';
-import { fortFraction } from '../../fractions';
+import { fortFraction } from '../../factions';
 import { heroDescrElem } from '../../ui';
 import { simpleDescriptions } from '../utils';
 import { PoisonArrowsSpell } from './spells/poison-arrows';

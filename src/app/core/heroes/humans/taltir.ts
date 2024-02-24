@@ -1,5 +1,5 @@
 import { AssetsImages } from '../../assets';
-import { humansFraction } from '../../fractions';
+import { humansFraction } from '../../factions';
 import { IrtonPlateItem } from '../../items/neutral/irton-plate';
 import { LightBootsItem } from '../../items/neutral/light-boots';
 import { MeteorSpell } from '../../spells/common';

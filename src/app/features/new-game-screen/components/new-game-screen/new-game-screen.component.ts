@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { PLAYER_COLORS } from 'src/app/core/assets';
 import { GameCreated, GameOpenMainScreen, ViewsEnum } from 'src/app/core/events';
-import { Fraction, Fractions, humansFraction } from 'src/app/core/fractions';
-import { neutralsFraction } from 'src/app/core/fractions/neutrals/fraction';
+import { Fraction, Fractions, humansFraction } from 'src/app/core/factions';
+import { neutralsFraction } from 'src/app/core/factions/neutrals/fraction';
 import { HeroBase } from 'src/app/core/heroes';
 import { Town, TownBase } from 'src/app/core/towns';
 import { CommonUtils } from 'src/app/core/utils';

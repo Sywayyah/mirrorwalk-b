@@ -1,5 +1,5 @@
 import { AssetsImages } from '../../assets';
-import { fortFraction } from '../../fractions';
+import { fortFraction } from '../../factions';
 import { heroDescrElem } from '../../ui';
 import { HeroBase } from '../types';
 import { heroesDefaultResources } from '../utils';

@@ -1,5 +1,5 @@
 import { AssetsImages } from '../../assets';
-import { humansFraction } from '../../fractions/humans/fraction';
+import { humansFraction } from '../../factions/humans/fraction';
 import { FirebirdHealSpell } from '../../spells/common';
 import { KnightsDamageBlock } from '../../spells/common/damage-block/knights-damage-block';
 import { ProtectionAura } from '../../spells/common/protection';

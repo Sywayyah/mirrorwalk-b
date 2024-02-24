@@ -1,4 +1,4 @@
-import { fortFraction } from '../../fractions';
+import { fortFraction } from '../../factions';
 import { BuidlingBase } from '../buildings';
 import { TownBase } from '../types';
 import { createBuildingType, createHiringActivity } from '../utils';
