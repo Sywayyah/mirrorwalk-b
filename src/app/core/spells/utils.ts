@@ -2,12 +2,15 @@ import { CombatActionsRef, PostDamageInfo } from '../api/combat-api';
 import { VfxApi } from '../api/vfx-api';
 import { Colors } from '../assets';
 import { Hero } from '../heroes';
+import { registerEntity } from '../entities';
 import { UnitGroup } from '../unit-types';
 import { getDamageParts } from '../vfx';
 import { CanActivateSpellParams, SpellBaseType } from './types';
 
 export const createSpell = <T>(spell: SpellBaseType<T>): SpellBaseType<T> => {
-  return spell
+  registerEntity(spell);
+
+  return spell;
 };
 
 export const canActivateOnEnemyFn = ({ isEnemy, unitGroup }: CanActivateSpellParams): boolean => {

@@ -27,6 +27,8 @@ export class ApiProvider {
 
   public getPlayerApi(): PlayersApi {
     return {
+      playerHasResources: (player, res) => this.players.playerHasResources(player, res),
+      removeResourcesFromPlayer: (player, res) => this.players.removeResourcesFromPlayer(player, res),
       addExperienceToPlayer: (player, xpAmount) => {
         this.players.addExperienceToPlayer(player.id, xpAmount);
       },

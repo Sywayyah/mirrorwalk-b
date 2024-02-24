@@ -1,5 +1,6 @@
 import { GlobalEventsApi, PlayersApi } from '../api/game-api';
 import { GameObject, GameObjectsManagerAPI } from '../game-objects';
+import { BuildingId, Entity } from '../entities';
 import { Resources } from '../resources';
 import { LocalEvents } from '../triggers';
 import { UnitBaseType } from '../unit-types';
@@ -48,7 +49,8 @@ export type BuldingsAPI = {
   gameObjects: GameObjectsManagerAPI;
 };
 
-export interface BuidlingBase {
+export interface BuidlingBase extends Entity {
+  id: BuildingId;
   name: string;
   // cost: Resources;
   description?: string;

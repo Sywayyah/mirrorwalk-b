@@ -1,5 +1,5 @@
 import { AssetsImages } from '../../assets';
-import { humansFraction } from '../../fractions';
+import { humansFaction } from '../../factions';
 import { ItemWindCrest } from '../../items/neutral';
 import { HasteSpell, RainOfFireSpell } from '../../spells/common';
 import { heroDescrElem } from '../../ui';
@@ -14,7 +14,9 @@ import { HeroBase } from '../types';
       Shock
       Rain of Fire
 */
-export const HelveticaHero: HeroBase = humansFraction.createHero({
+export const HelveticaHero: HeroBase = humansFaction.createHero({
+  id: '#hero-helvetica',
+
   name: 'Helvetica',
   generalDescription: heroDescrElem(`Helvetica is the mage who supports her own army with offensive fire spells as well as increasing their speed.`),
   image: AssetsImages.HeroHelvetica,
@@ -30,9 +32,9 @@ export const HelveticaHero: HeroBase = humansFraction.createHero({
     maxUnitGroups: 2,
     minUnitGroups: 2,
     units: [
-      [humansFraction.getUnitType('Archer'), 12, 18, 1],
-      [humansFraction.getUnitType('Knight'), 6, 11, 1],
-      [humansFraction.getUnitType('Pikemen'), 20, 32, 1],
+      [humansFaction.getUnitType('Archer'), 12, 18, 1],
+      [humansFaction.getUnitType('Knight'), 6, 11, 1],
+      [humansFaction.getUnitType('Pikemen'), 20, 32, 1],
     ],
   }],
   items: [

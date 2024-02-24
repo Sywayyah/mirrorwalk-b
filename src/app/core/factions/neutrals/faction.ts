@@ -1,4 +1,4 @@
-import { Fractions, FractionsEnum } from '../fractions';
+import { Factions, FactionsEnum } from '../factions';
 
 export type NEUTRAL_UNIT_TYPES =
   'Ghosts'
@@ -23,7 +23,9 @@ const defaultReward = {
   experience: 0,
 };
 
-export const neutralsFraction = Fractions.createFraction<NEUTRAL_UNIT_TYPES>(FractionsEnum.Neutrals, {
+export const neutralsFaction = Factions.createFaction<NEUTRAL_UNIT_TYPES>({
+  id: '#faction-neutrals',
+  factionName: FactionsEnum.Neutrals,
   title: 'Neutrals',
   icon: 'monster-skull',
 });

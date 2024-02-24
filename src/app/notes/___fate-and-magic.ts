@@ -8,7 +8,7 @@
     Purchasing of abilities can be limited to 1 per week (normally).
 
     Players might have an ability to learn abilities of the heroes from
-    the same fraction.
+    the same faction.
 
     Players might also learn abilities for their army, and specialties
     can just increase the effect of these abilities.

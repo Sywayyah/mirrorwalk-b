@@ -1,7 +1,7 @@
 import { EffectAnimation } from '../../api/vfx-api';
 import { createAnimation, getHealParts, getIconElement, getPlainAppearanceFrames, getPlainBlurFrames, getReversePulseKeyframes } from '../../vfx';
 import { SpellActivationType, SpellBaseType } from '../types';
-import { canActivateOnAllyFn } from '../utils';
+import { canActivateOnAllyFn, createSpell } from '../utils';
 
 const icon = 'hospital-cross';
 
@@ -42,7 +42,9 @@ const HealAnimation: EffectAnimation = createAnimation([
 ]);
 
 
-export const HealSpell: SpellBaseType = {
+export const HealSpell: SpellBaseType = createSpell({
+  id: '#spell-heal',
+
   name: 'Heal',
   activationType: SpellActivationType.Target,
   icon: {
@@ -101,4 +103,4 @@ export const HealSpell: SpellBaseType = {
       },
     },
   },
-};
+});

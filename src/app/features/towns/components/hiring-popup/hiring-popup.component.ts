@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { resolveEntity } from 'src/app/core/entities';
 import { ResourceType, Resources, ResourcesModel } from 'src/app/core/resources';
 import { BuidlingBase, Building, HiringActivity, HiringDetails, Town } from 'src/app/core/towns';
 import { UnitBaseType } from 'src/app/core/unit-types';
@@ -179,7 +180,7 @@ export class HiringPopupComponent extends BasicPopup<HiringPopupData> implements
           (activity.hiring.type.upgradeDetails?.target
             ? [{
               growth: 0,
-              type: activity.hiring.type.upgradeDetails.target,
+              type: resolveEntity<UnitBaseType>(activity.hiring.type.upgradeDetails.target),
             }]
             : [])
         ];
@@ -187,7 +188,7 @@ export class HiringPopupComponent extends BasicPopup<HiringPopupData> implements
       return [...(activity.hiring.type.upgradeDetails?.target
         ? [{
           growth: 0,
-          type: activity.hiring.type.upgradeDetails.target,
+          type: resolveEntity<UnitBaseType>(activity.hiring.type.upgradeDetails.target),
         }]
         : [])];
     }

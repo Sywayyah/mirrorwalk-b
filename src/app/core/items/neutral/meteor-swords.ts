@@ -1,14 +1,15 @@
 import { ItemBaseModel, ItemSlotType } from '..';
 import { MeteorSpell } from '../../spells/common';
 import { itemStatsDescr, spellDescrElem } from '../../ui';
+import { createItem } from '../utils';
 
-export const ItemMeteorSwords: ItemBaseModel<{}> = {
+export const ItemMeteorSwords: ItemBaseModel<{}> = createItem({
+  id: '#item-meteor-sword',
+
   name: 'Meteor Swords',
-  slotType: ItemSlotType.Weapon,
-  icon: {
-    icon: 'dervish-swords',
-  },
-  staticMods: {
+  slot: ItemSlotType.Weapon,
+  icon: 'dervish-swords',
+  stats: {
     heroBonusAttack: 2,
     specialtyFireMastery: 1,
   },
@@ -18,7 +19,7 @@ export const ItemMeteorSwords: ItemBaseModel<{}> = {
   sellingCost: {
     gold: 450,
   },
-  bonusAbilities: [
+  spells: [
     // item version could have lesser damage and higher manacost
     { spell: MeteorSpell, level: 1 },
   ],
@@ -30,8 +31,4 @@ export const ItemMeteorSwords: ItemBaseModel<{}> = {
       ],
     };
   },
-  config: {
-    init: ({ actions, events, ownerPlayer }) => {
-    },
-  }
-};
+});

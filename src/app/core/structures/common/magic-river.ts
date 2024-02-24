@@ -1,6 +1,9 @@
 import { StructureGeneratorModel, StructureType, StuctureControl } from '../types';
+import { createStructure } from '../utils';
 
-export const MagicRiverStructure: StructureGeneratorModel = {
+export const MagicRiverStructure: StructureGeneratorModel = createStructure({
+  id: '#struct-magic-river',
+
   control: StuctureControl.Neutral,
   actionPoints: 1,
   name: 'Magic River',
@@ -23,4 +26,4 @@ export const MagicRiverStructure: StructureGeneratorModel = {
       });
     }
   },
-};
+});

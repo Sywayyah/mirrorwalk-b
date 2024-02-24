@@ -6,6 +6,7 @@ import { Item, ItemBaseModel } from '../items';
 import { InventoryItems } from '../items/inventory';
 import { Modifiers, ModsRef, ModsRefsGroup, Specialties, filterSpecialties } from '../modifiers';
 import { Player } from '../players';
+import { Entity, HeroId } from '../entities';
 import { ResourcesModel } from '../resources';
 import { Spell, SpellBaseType } from '../spells';
 import { DescriptionElement } from '../ui';
@@ -29,7 +30,9 @@ export interface HeroBaseStats {
 }
 
 /* Base type for a hero */
-export interface HeroBase {
+export interface HeroBase extends Entity {
+  id: HeroId;
+
   name: string;
   generalDescription: DescriptionElement;
   initialState: {

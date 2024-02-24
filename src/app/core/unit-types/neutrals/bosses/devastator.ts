@@ -2,10 +2,12 @@ import { DevastatorScaleArmorDamageBlock } from 'src/app/core/spells/common/dama
 import { FireBreath } from 'src/app/core/spells/common/fire-breath';
 import { heroDescrElem } from 'src/app/core/ui';
 import { AssetsImages } from '../../../assets';
-import { neutralsFraction } from '../../../fractions/neutrals/fraction';
+import { neutralsFaction } from '../../../factions/neutrals/faction';
 import { simpleDescriptions } from '../../utils';
 
-neutralsFraction.defineUnitType('Devastator', {
+neutralsFaction.defineUnitType('Devastator', {
+  id: '#ut-neut-boss-devastator',
+
   name: 'Devastator',
   mainPortraitUrl: AssetsImages.UnitMelee,
 

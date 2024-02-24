@@ -1,8 +1,27 @@
+import { Modifiers } from '../../modifiers';
 import { SpellActivationType } from '../types';
 import { createSpell } from '../utils';
 
+export const ProtectionAuraBuff = createSpell({
+  id: '#spell-protection-aura',
 
-export const Protection = createSpell({
+  name: 'Protected',
+  activationType: SpellActivationType.Buff,
+  icon: { icon: 'spear-head' },
+  getDescription: () => ({ descriptions: [`Unit is being protected`] }),
+  config: {
+    spellConfig: {
+      onAcquired({ ownerUnit, spellInstance }) {
+        // ownerUnit?.addCombatMods({blco})
+      },
+      init({ }) { }
+    }
+  },
+});
+
+export const ProtectionAura = createSpell({
+  id: '#spell-protection',
+
   name: 'Protection',
   icon: { icon: 'spear-head' },
   activationType: SpellActivationType.Passive,
@@ -12,8 +31,26 @@ export const Protection = createSpell({
     ]
   }),
   config: {
+    flags: {
+      // aura might be established in another lifecycle, other than other spells
+      // or maybe actually not.
+      isAura: true,
+    },
     spellConfig: {
-      init({ ownerUnit }) { },
+      onAcquired({ spellInstance, ownerUnit }) {
+        // ownerUnit?.ownerHero.addAuraMod({
+        //   __auraModifiers: () => ({ heroBonusAttack: 2 }),
+        // } as Modifiers);
+      },
+      init({ ownerUnit, events, actions }) {
+        // the question is: spells currently work only within battle it would seem.
+        // what could it be like?
+        events.on({
+          AuraCheck({ target }) {
+
+          }
+        });
+      },
     },
   },
 });

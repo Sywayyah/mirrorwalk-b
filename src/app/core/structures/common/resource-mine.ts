@@ -1,9 +1,12 @@
+import { StructId } from '../../entities';
 import { ResourceType, Resources, resourceNames } from "../../resources";
 import { StructureGeneratorModel, StructureType, StuctureControl } from "../types";
+import { createStructure } from '../utils';
 
 
-export const dailyResourcesMineStructure = (resources: Resources): StructureGeneratorModel => {
-  return {
+export const dailyResourcesMineStructure = ({ id, resources }: { id: StructId, resources: Resources; }): StructureGeneratorModel => {
+  return createStructure({
+    id,
     name: 'Mine with Resources',
     control: StuctureControl.Neutral,
     // description can become similar to new approach with for descriptions
@@ -36,5 +39,5 @@ export const dailyResourcesMineStructure = (resources: Resources): StructureGene
         })
       },
     },
-  };
+  });
 };

@@ -33,6 +33,7 @@
   <div class="item"
        [class.active]="itemToSell() === item"
        (click)="itemToSell.set(item)">
+    <!-- Indicate equipped items -->
     <mw-item-icon [itemBase]="item.baseType" />
 
     {{item.baseType.name}}

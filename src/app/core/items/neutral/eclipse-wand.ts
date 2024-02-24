@@ -1,21 +1,21 @@
 import { EnchantBuff } from '../../spells/common';
 import { itemStatsDescr, spellDescrElem } from '../../ui';
 import { ItemBaseModel, ItemSlotType } from '../types';
+import { createItem } from '../utils';
 
-export const ItemEclipseWand: ItemBaseModel<{}> = {
+export const ItemEclipseWand: ItemBaseModel<{}> = createItem({
+  id: '#item-eclipse-wand',
+
   name: 'Eclipse Wand',
-  slotType: ItemSlotType.Weapon,
-  staticMods: {
+  slot: ItemSlotType.Weapon,
+  stats: {
     specialtyMagic: 1,
     specialtyMagicRecovery: 1,
     heroMaxMana: 5,
   },
-  icon: {
-    icon: 'crystal-wand',
-  },
+  icon: 'crystal-wand',
   cost: { gold: 550 },
   sellingCost: { gold: 300 },
-  defaultState: {},
   description({ thisItemBase }) {
     return {
       descriptions: [
@@ -44,4 +44,4 @@ export const ItemEclipseWand: ItemBaseModel<{}> = {
 
     },
   }
-};
+});

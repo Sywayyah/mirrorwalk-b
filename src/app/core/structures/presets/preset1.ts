@@ -30,6 +30,10 @@ function loc(location: number): number {
   return location + shift;
 }
 
+const woodPile = dailyResourcesMineStructure({ id: '#struct-wood-mine-1', resources: { wood: 1 } });
+
+const woodPile4 = resPileStructure({ id: '#struct-wood-4', resType: ResourceType.Wood, amount: 4 });
+
 const brBranch: StructureDescription[] = [
   {
     id: '2',
@@ -57,7 +61,7 @@ const brBranch: StructureDescription[] = [
     pathTo: '5',
     actionPoints: 1,
 
-    struct: resPileStructure(ResourceType.Wood, 4),
+    struct: woodPile4,
   },
   {
     id: '17',
@@ -112,7 +116,7 @@ const brBranch: StructureDescription[] = [
     icon: 'hand-saw',
     pathTo: '22',
 
-    struct: dailyResourcesMineStructure({ wood: 1 }),
+    struct: woodPile,
   },
   {
     id: '20',
@@ -135,7 +139,7 @@ const fifthBranch: StructureDescription[] = [
     y: loc(70),
     icon: 'gold-bar',
     actionPoints: 1,
-    struct: resPileStructure(ResourceType.Gold, 650),
+    struct: resPileStructure({ id: '#struct-gold-650', resType: ResourceType.Gold, amount: 650 }),
   },
 ];
 
@@ -183,7 +187,7 @@ const blBranch: StructureDescription[] = [
     icon: 'crystals',
     pathTo: 'left-5',
 
-    struct: dailyResourcesMineStructure({ redCrystals: 1 }),
+    struct: dailyResourcesMineStructure({ id: '#struct-mine', resources: { redCrystals: 1 } }),
   },
   {
     id: '54',
@@ -267,21 +271,38 @@ const tlBranch: StructureDescription[] = [
     y: loc(-170),
     icon: 'emerald',
     pathTo: '15',
-    struct: resPileStructure(ResourceType.Gems, 3),
+    struct: resPileStructure({ id: '#struct-gems-3', resType: ResourceType.Gems, amount: 3 }),
   },
 
 ];
 
 const trBranch: StructureDescription[] = [
+  // {
+  //   id: '4',
+  //   icon: 'locked-fortress',
+  //   x: loc(60),
+  //   y: loc(-30),
+  //   pathTo: START_LOC_ID,
+  //   struct: SettlementLocation,
+  // },
   {
-    id: '4',
-    x: loc(60),
-    y: loc(-30),
+    id: '4-1',
+    x: loc(35),
+    y: loc(-50),
     icon: 'lighthouse',
     pathTo: START_LOC_ID,
 
     struct: BeaconOfTheUndead,
   },
+  // {
+  //   id: '4-2',
+  //   actionPoints: 1,
+  //   icon: 'locked-fortress',
+  //   x: loc(-70),
+  //   y: loc(270),
+  //   pathTo: '4',
+  //   struct: resPileStructure(ResourceType.Gems, 2),
+  // },
 ];
 
 export const structsPreset1: StructureDescription[] = [
@@ -291,6 +312,7 @@ export const structsPreset1: StructureDescription[] = [
     y: loc(0),
     icon: 'campfire',
   },
+
   ...fifthBranch,
   ...brBranch,
   ...blBranch,

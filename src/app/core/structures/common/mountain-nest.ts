@@ -1,9 +1,12 @@
-import { humansFraction } from '../../fractions';
+import { humansFaction } from '../../factions';
 import { spellDescrElem } from '../../ui';
 import { CommonUtils } from '../../utils';
 import { StructureGeneratorModel, StructureType, StuctureControl } from '../types';
+import { createStructure } from '../utils';
 
-export const MountainNestStructure: StructureGeneratorModel = {
+export const MountainNestStructure: StructureGeneratorModel = createStructure({
+  id: '#struct-mountain-nest',
+
   control: StuctureControl.Neutral,
   actionPoints: 2,
   name: 'Mountain Nest',
@@ -27,7 +30,7 @@ export const MountainNestStructure: StructureGeneratorModel = {
     init({ localEvents, players, thisStruct }) {
       localEvents.on({
         StructVisited({ visitingPlayer }) {
-          players.addUnitGroupToPlayer(visitingPlayer, humansFraction.getUnitType('Firebird'), CommonUtils.randIntInRange(1, 2));
+          players.addUnitGroupToPlayer(visitingPlayer, humansFaction.getUnitType('Firebird'), CommonUtils.randIntInRange(1, 2));
 
           thisStruct.visited = true;
         },
@@ -40,4 +43,4 @@ export const MountainNestStructure: StructureGeneratorModel = {
       });
     }
   },
-};
+});

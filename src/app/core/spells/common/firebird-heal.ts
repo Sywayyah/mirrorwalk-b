@@ -2,7 +2,7 @@ import { EffectAnimation } from '../../api/vfx-api';
 import { spellDescrElem } from '../../ui';
 import { createAnimation, getHealParts, getIconElement, getPlainAppearanceFrames, getPlainBlurFrames, getReversePulseKeyframes } from '../../vfx';
 import { SpellActivationType, SpellBaseType } from '../types';
-import { canActivateOnAllyFn } from '../utils';
+import { canActivateOnAllyFn, createSpell } from '../utils';
 
 // Theoretically, I can increase heal value along with manacost
 const icon = 'hospital-cross';
@@ -46,7 +46,9 @@ const HealAnimation: EffectAnimation = createAnimation([
 /* Maybe make it ranged */
 const healPerBird = 20;
 
-export const FirebirdHealSpell: SpellBaseType = {
+export const FirebirdHealSpell: SpellBaseType = createSpell({
+  id: '#spell-revitalize',
+
   name: 'Revitalize',
   activationType: SpellActivationType.Target,
   icon: {
@@ -111,4 +113,4 @@ export const FirebirdHealSpell: SpellBaseType = {
       },
     },
   },
-};
+});

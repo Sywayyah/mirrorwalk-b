@@ -2,7 +2,7 @@ import { EffectAnimation } from '../../api/vfx-api';
 import { spellDescrElem } from '../../ui';
 import { createAnimation, getIconElement, getPlainAppearanceFrames, getPlainBlurFrames, getReversePulseKeyframes } from '../../vfx';
 import { SpellActivationType, SpellBaseType } from '../types';
-import { buffColors, canActivateOnAllyFn } from '../utils';
+import { buffColors, canActivateOnAllyFn, createSpell } from '../utils';
 
 const icon = 'boot-stomp';
 
@@ -45,7 +45,8 @@ const HasteAnimation: EffectAnimation = createAnimation([
 const speedBonus = 5;
 
 
-export const HasteBuff: SpellBaseType = {
+export const HasteBuff: SpellBaseType = createSpell({
+  id: '#spell-haste-buff',
   name: 'Haste',
   activationType: SpellActivationType.Buff,
   icon: {
@@ -75,9 +76,11 @@ export const HasteBuff: SpellBaseType = {
       }
     }
   },
-};
+});
 
-export const HasteSpell: SpellBaseType = {
+export const HasteSpell: SpellBaseType = createSpell({
+  id: '#spell-haste',
+
   name: 'Haste',
   activationType: SpellActivationType.Target,
   icon: {
@@ -117,4 +120,4 @@ export const HasteSpell: SpellBaseType = {
       },
     },
   },
-};
+});

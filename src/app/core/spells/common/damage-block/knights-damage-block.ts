@@ -3,6 +3,7 @@ import { SpellBaseType } from '../../types';
 import { createDamageBlockSpell, rangedChanceDescription } from '../base-spells/spell-damage-block';
 
 export const KnightsDamageBlock: SpellBaseType<{ damageBlockMod: Modifiers }> = createDamageBlockSpell({
+  id: '#spell-knight-block',
   name: 'Damage Block',
   icon: 'heavy-shield',
   blockConfig: {

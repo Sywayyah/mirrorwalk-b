@@ -2,6 +2,8 @@ import { ItemSlotType } from '../types';
 import { createItem } from '../utils';
 
 export const IronPikeItem = createItem({
+  id: '#item-iron-pike',
+
   name: 'Iron Pike',
   icon: 'spear-head',
   slot: ItemSlotType.Weapon,

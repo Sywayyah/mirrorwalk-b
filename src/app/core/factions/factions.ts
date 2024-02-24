@@ -1,27 +1,26 @@
 
 import { AssetsImages } from '../assets';
 import type { HeroBase } from '../heroes';
+import { FactionId, registerEntity } from '../entities';
 import type { UnitBaseType } from '../unit-types';
-import { Fraction, UnitTypeCreationParams } from './types';
+import { Faction, UnitTypeCreationParams } from './types';
 
 /* might be adjusted in the future */
-export const Fractions = {
-  fractionsMap: new Map<string, Fraction<any>>(),
+export const Factions = {
+  factionsMap: new Map<string, Faction<any>>(),
 
-  getAllFractions(): Fraction<any>[] {
-    return [...this.fractionsMap.values()];
+  getAllFactions(): Faction<any>[] {
+    return [...this.factionsMap.values()];
   },
 
-  createFraction<T extends string>(fractionName: string, { icon, title }: {
-    title: string,
-    icon: string,
-  }): Fraction<T> {
-    if (this.fractionsMap.has(fractionName)) {
-      throw new Error(`Fraction ${fractionName} was already created.`);
+  createFaction<T extends string>({ id, factionName, icon, title }: { id: FactionId, factionName: string, icon: string, title: string; }): Faction<T> {
+    if (this.factionsMap.has(factionName)) {
+      throw new Error(`Faction ${factionName} was already created.`);
     }
 
-    const fraction: Fraction<T> = {
-      name: fractionName,
+    const faction: Faction<T> = {
+      id,
+      name: factionName,
       unitTypes: {},
       heroes: [],
       title,
@@ -29,6 +28,7 @@ export const Fractions = {
       townBase: null,
       setTownBase(townBase) {
         this.townBase = townBase;
+        registerEntity(townBase);
       },
       getTownBase() {
         return this.townBase;
@@ -37,9 +37,11 @@ export const Fractions = {
         const unitType: UnitBaseType = {
           defaultTurnsPerRound: 1,
           ...data,
-          fraction: this,
+          faction: this,
           type: unitTypeName,
         };
+
+        registerEntity(unitType);
 
         this.unitTypes[unitTypeName] = unitType;
 
@@ -47,7 +49,7 @@ export const Fractions = {
       },
       findBaseUnitType(upgradedType) {
         /* todo: fix this place later, remove any */
-        return Object.values<any>(this.unitTypes).find((unitType: UnitBaseType) => unitType.upgradeDetails?.target === upgradedType) as UnitBaseType;
+        return Object.values<any>(this.unitTypes).find((unitType: UnitBaseType) => unitType.upgradeDetails?.target === upgradedType.id) as UnitBaseType;
       },
       getUnitType(unitTypeName: T): UnitBaseType {
         return this.unitTypes[unitTypeName]!;
@@ -56,6 +58,7 @@ export const Fractions = {
         heroConfig,
       ): HeroBase {
         const {
+          id,
           abilities,
           army,
           items,
@@ -68,6 +71,7 @@ export const Fractions = {
         } = heroConfig;
 
         const newHero = {
+          id,
           name,
           generalDescription,
           initialState: {
@@ -81,6 +85,8 @@ export const Fractions = {
           image: image ?? AssetsImages.HeroMage,
         };
 
+        registerEntity(newHero);
+
         this.heroes.push(newHero);
 
         return newHero;
@@ -90,18 +96,20 @@ export const Fractions = {
       }
     };
 
-    this.fractionsMap.set(fractionName, fraction);
+    registerEntity(faction);
 
-    return fraction;
+    this.factionsMap.set(factionName, faction);
+
+    return faction;
   },
 
-  getFraction(name: string): Fraction<any> {
-    return this.fractionsMap.get(name)!;
+  getFaction(name: string): Faction<any> {
+    return this.factionsMap.get(name)!;
   }
 } as const;
 
 
-export enum FractionsEnum {
+export enum FactionsEnum {
   Humans = 'humans',
   Neutrals = 'neutrals',
   Fort = 'fort',

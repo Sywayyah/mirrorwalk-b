@@ -21,7 +21,7 @@ export const testUnitTypeNoArmorNoRating: UnitBaseType = {
     speed: 4,
   },
   defaultTurnsPerRound: 1,
-  fraction: {} as any,
+  faction: {} as any,
   level: 1,
   minQuantityPerStack: 1,
   neutralReward: {
@@ -38,6 +38,7 @@ const hero = new Hero('0');
 
 hero.create({
   heroBase: createHeroModelBase({
+    id: '#hero-test',
     abilities: [],
     army: [],
     generalDescription: { type: DescriptionElementType.FreeHtml },

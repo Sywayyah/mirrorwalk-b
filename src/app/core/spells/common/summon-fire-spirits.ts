@@ -1,14 +1,17 @@
-import { neutralsFraction } from '../../fractions/neutrals/fraction';
+import { neutralsFaction } from '../../factions/neutrals/faction';
 import { spellDescrElem } from '../../ui';
 import { FireAnimation } from '../../vfx';
 import { SpellActivationType, SpellBaseType } from '../types';
+import { createSpell } from '../utils';
 import { FireShieldSpell } from './fire-shield';
 
 const unitCount = 3;
 const unitGrowthPerLevel = 2;
 
 // todo: despawn summoned spirits when fight ends
-export const SummonFireSpiritsSpell: SpellBaseType = {
+export const SummonFireSpiritsSpell: SpellBaseType = createSpell({
+  id: '#spell-summon-fire-spirits',
+
   name: 'Fire Spirits',
   activationType: SpellActivationType.Instant,
   icon: {
@@ -28,7 +31,7 @@ export const SummonFireSpiritsSpell: SpellBaseType = {
       init({ actions, spellInstance, ownerPlayer, events, vfx }) {
         events.on({
           PlayerCastsInstantSpell() {
-            const summonedUnitGroup = actions.summonUnitsForPlayer(ownerPlayer, neutralsFraction.getUnitType('FireSpirits'), unitCount + unitGrowthPerLevel * spellInstance.currentLevel);
+            const summonedUnitGroup = actions.summonUnitsForPlayer(ownerPlayer, neutralsFaction.getUnitType('FireSpirits'), unitCount + unitGrowthPerLevel * spellInstance.currentLevel);
 
             const fireShieldSpell = actions.createSpellInstance(FireShieldSpell, { initialLevel: 1 });
 
@@ -64,4 +67,4 @@ export const SummonFireSpiritsSpell: SpellBaseType = {
     },
 
   }
-};
+});

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { resolveEntity } from 'src/app/core/entities';
 import { ResourceType, ResourcesModel } from 'src/app/core/resources';
 import { HiringRewardModel, UnitUpgradeReward } from 'src/app/core/structures';
 import { StructPopupData } from 'src/app/core/ui';
@@ -65,7 +66,7 @@ export class UpgradeRewardPopupComponent extends BasicPopup<StructPopupData> imp
         return {
           hire: {
             maxCount: unit.count,
-            unitType: unit.type.upgradeDetails?.target as UnitBaseType,
+            unitType: resolveEntity<UnitBaseType>(unit.type.upgradeDetails?.target as string),
           },
           count: 0,
           baseCost: baseCost,

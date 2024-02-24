@@ -20,7 +20,7 @@ export const constellationSpawn: StructureDescription[] = [
     ...locCoord(90, -60),
     icon: 'gold-bar',
     actionPoints: 2,
-    struct: resPileStructure(ResourceType.Gold, 650),
+    struct: resPileStructure({ id: '#struct-gold-650-2', resType: ResourceType.Gold, amount: 650 }),
   },
   {
     id: id('loc-2'),

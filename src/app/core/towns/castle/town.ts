@@ -1,12 +1,13 @@
 import { MeditateActionCard } from '../../action-cards/player-actions';
 import { AddActionCardsToPlayer } from '../../events';
-import { HUMANS_UNIT_TYPES, humansFraction } from '../../fractions';
+import { HUMANS_UNIT_TYPES, humansFaction } from '../../factions';
 import { IrtonPlateItem } from '../../items/neutral';
 import { IronPikeItem } from '../../items/neutral/iron-pike';
 import { StormPikeItem } from '../../items/neutral/storm-pike';
 import { SwordOfTheBattleMageItem } from '../../items/neutral/sword-of-the-battle-mage';
 import { ActivityTypes, BuidlingBase, HiringActivity } from '../buildings';
 import { SellingBuildingData, TownBase } from '../types';
+import { createBuildingType } from '../utils';
 
 function createHiringActivity(
   unitType: HUMANS_UNIT_TYPES,
@@ -17,7 +18,7 @@ function createHiringActivity(
   return {
     type: ActivityTypes.Hiring,
     hiring: {
-      type: humansFraction.getUnitType(unitType),
+      type: humansFaction.getUnitType(unitType),
       growth,
       refillDaysInterval: 7,
     },
@@ -41,7 +42,9 @@ export type CastleTownBuildings =
   | 'cavalry-halls'
   | 'magic-tower';
 
-const townCenter: BuidlingBase = {
+const townCenter: BuidlingBase = createBuildingType({
+  id: '#build-castle-town-center',
+
   name: 'Town Center',
   description: 'Earns 500 gold each day.',
   config: {
@@ -55,13 +58,17 @@ const townCenter: BuidlingBase = {
       });
     },
   },
-};
+});
 
-const market: BuidlingBase = {
+const market = createBuildingType({
+  id: '#build-castle-market',
+
   name: 'Market',
-};
+});
 
-const highTower: BuidlingBase = {
+const highTower = createBuildingType({
+  id: '#build-castle-high-tower',
+
   name: 'High Tower',
   description:
     'Gives 1 Meditation action card instantly and at the beginning of each week.',
@@ -86,11 +93,13 @@ const highTower: BuidlingBase = {
       });
     },
   },
-};
+});
 
-const tavern: BuidlingBase = {
+const tavern = createBuildingType({
+  id: '#build-castle-tavern',
+
   name: 'Tavern',
-};
+});
 
 /*
   Buildings might be reworked
@@ -107,55 +116,73 @@ const tavern: BuidlingBase = {
   is going to be created from buildings with hiring activity
   type
 */
-const trainingCamp: BuidlingBase = {
+const trainingCamp = createBuildingType({
+  id: '#build-castle-taining-camp-1',
+
   name: 'Training Camp',
   description: 'Allows to train Pikemans that can be upgraded.',
   activity: createHiringActivity('Pikemen', 18, 'pikeman'),
-};
+});
 
-const upgradedTrainingCamp: BuidlingBase = {
+const upgradedTrainingCamp = createBuildingType({
+  id: '#build-castle-taining-camp-2',
+
   name: 'Upg. Training Camp',
   description: 'Allows to hire and upgrade Halberdiers',
   activity: createHiringActivity('Pikemen', 18, 'pikeman', true),
-};
+});
 
-const archersOutpost = {
+const archersOutpost = createBuildingType({
+  id: '#build-castle-archers-1',
+
   name: 'Archers Outpost',
   description: 'Allows to train Archers',
   activity: createHiringActivity('Archer', 12, 'archers'),
-};
+});
 
-const upgradedArchersOutpost = {
+const upgradedArchersOutpost = createBuildingType({
+  id: '#build-castle-archers-2',
+
   name: 'Upg. Archers Outpost',
   description: 'Allows to train Archers and Crossbowmen',
   activity: createHiringActivity('Archer', 12, 'archers', true),
-};
+});
 
-const hallsOfKnights = {
+const hallsOfKnights = createBuildingType({
+  id: '#build-castle-knights-1',
+
   name: 'Halls of Knights',
   description: 'Allows to train Knights',
   activity: createHiringActivity('Knight', 4, 'knights'),
-};
+});
 
-const cavalryStalls = {
+const cavalryStalls = createBuildingType({
+  id: '#build-castle-cavalry-1',
+
   name: 'Cavalry Stalls',
   description: 'Allows to train Cavalry',
   activity: createHiringActivity('Cavalry', 2, 'cavalry'),
-};
+});
 
-const magicTower: BuidlingBase = {
+const magicTower = createBuildingType({
+  id: '#build-castle-magic-tower-1',
+
   name: 'Magic Tower',
   description: 'Allows to train Mystical Birds',
   activity: createHiringActivity('MysticBird', 2, 'firebirds'),
-};
+});
 
-const upgradedMagicTower: BuidlingBase = {
+const upgradedMagicTower = createBuildingType({
+  id: '#build-castle-magic-tower-2',
+
   name: 'Upg. Magic Tower',
   description: 'Allows to train Mystical Birds and Firebirds',
   activity: createHiringActivity('MysticBird', 2, 'firebirds', true),
-};
+});
 
-const itemMarket: BuidlingBase = {
+const itemMarket = createBuildingType({
+  id: '#build-castle-items-market',
+
   name: 'Item market',
   activity: {
     type: ActivityTypes.ItemsSelling,
@@ -173,10 +200,16 @@ const itemMarket: BuidlingBase = {
       });
     },
   },
-};
+});
 
-// will be reworked, need somehow to process it in the fraction itself
+const hallsOfFate = createBuildingType({
+  id: '#build-castle-halls-of-fate',
+  name: 'Halls of Fate'
+});
+
+// will be reworked, need somehow to process it in the faction itself
 export const castleTownBase: TownBase<CastleTownBuildings> = {
+  id: '#town-castle',
   name: 'Castle',
   availableBuildings: {
     'town-center': {
@@ -217,7 +250,7 @@ export const castleTownBase: TownBase<CastleTownBuildings> = {
     'fate-halls': {
       baseName: 'Halls of Fate',
       description: 'Allows to develop your hero',
-      levels: [{ building: { name: 'Halls of Fate' }, cost: { gold: 1000 } }],
+      levels: [{ building: hallsOfFate, cost: { gold: 1000 } }],
       icon: 'barrier',
       tier: 3,
     },
@@ -339,4 +372,4 @@ export const castleTownBase: TownBase<CastleTownBuildings> = {
   },
 };
 
-humansFraction.setTownBase(castleTownBase);
+humansFaction.setTownBase(castleTownBase);

@@ -1,5 +1,12 @@
+import { registerEntity } from '../entities';
 import { UnitBaseType } from '../unit-types';
-import { ActivityTypes, HiringActivity } from './buildings';
+import { ActivityTypes, BuidlingBase, HiringActivity } from './buildings';
+
+export function createBuildingType(building: BuidlingBase): BuidlingBase {
+  registerEntity(building);
+
+  return building;
+}
 
 export function createHiringActivity<T extends string>(
   unitType: UnitBaseType,

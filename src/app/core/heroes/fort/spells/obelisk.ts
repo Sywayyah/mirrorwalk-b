@@ -4,6 +4,8 @@ import { messageWrapper } from 'src/app/core/vfx';
 
 
 export const LifeObeliskSpell = createSpell({
+  id: '#spell-obelisk',
+
   name: 'Life Obelisk',
   icon: { icon: 'arena' },
   activationType: SpellActivationType.Target,

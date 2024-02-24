@@ -1,15 +1,16 @@
 import { itemStatsDescr, spellDescrElem } from '../../ui';
 import { ItemBaseModel, ItemSlotType } from '../types';
+import { createItem } from '../utils';
 
 const healValue = 50;
 
-export const LifeformItem: ItemBaseModel = {
+export const LifeformItem: ItemBaseModel = createItem({
+  id: '#item-lifeform',
+
   name: 'Lifeform',
-  slotType: ItemSlotType.Armor,
-  icon: {
-    icon: 'vest',
-  },
-  staticMods: {
+  slot: ItemSlotType.Armor,
+  icon: 'vest',
+  stats: {
     heroBonusDefence: 7,
     resistFire: 25,
     resistPoison: 20,
@@ -37,4 +38,4 @@ export const LifeformItem: ItemBaseModel = {
       })
     }
   },
-};
+});

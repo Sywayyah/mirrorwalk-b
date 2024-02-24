@@ -1,17 +1,18 @@
 import { itemStatsDescr, spellDescrElem } from '../../ui';
 import { ItemBaseModel, ItemSlotType } from '../types';
+import { createItem } from '../utils';
 
-export const ItemDoomstring: ItemBaseModel = {
+export const ItemDoomstring: ItemBaseModel = createItem({
+  id: '#item-doomstring',
+
   name: 'Doomstring',
-  slotType: ItemSlotType.Weapon,
-  staticMods: {
+  slot: ItemSlotType.Weapon,
+  icon: 'crossbow',
+  stats: {
     heroBonusAttack: 8,
     specialtyOffence: 3,
     specialtyArchery: 2,
     specialtyFireMastery: 1,
-  },
-  icon: {
-    icon: 'crossbow',
   },
   cost: {
     gold: 5000,
@@ -27,7 +28,4 @@ export const ItemDoomstring: ItemBaseModel = {
       ],
     };
   },
-  config: {
-    init: () => { },
-  }
-};
+});

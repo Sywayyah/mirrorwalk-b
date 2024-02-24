@@ -5,8 +5,8 @@
         Player:
       </div>
 
-      <div class="fraction">
-        Fraction:
+      <div class="faction">
+        Faction:
       </div>
 
       <div class="hero">
@@ -21,17 +21,17 @@
     <div class="player players-row">
       <div class="name">Player 1</div>
 
-      <div class="fraction">
-        <mw-menu [menuBody]="fractionsMenu"
+      <div class="faction">
+        <mw-menu [menuBody]="factionsMenu"
                  [pos]="'below'">
-          <div *ngIf="selectedFraction; else randomFraction">
+          <div *ngIf="selectedFaction; else randomFaction">
             <mw-ra-icon class="item-icon"
-                        [icon]="selectedFraction.icon" />
+                        [icon]="selectedFaction.icon" />
 
-            <span class="icon-subtext">{{selectedFraction.title}}</span>
+            <span class="icon-subtext">{{selectedFaction.title}}</span>
           </div>
 
-          <ng-template #randomFraction>
+          <ng-template #randomFaction>
             <div>
               <mw-ra-icon class="item-icon"
                           icon="perspective-dice-four" />
@@ -41,22 +41,22 @@
           </ng-template>
         </mw-menu>
 
-        <ng-template #fractionsMenu>
-          <mw-ra-icon (click)="selectFraction()"
+        <ng-template #factionsMenu>
+          <mw-ra-icon (click)="selectFaction()"
                       class="item-icon"
                       icon="perspective-dice-four" />
 
-          <mw-ra-icon *ngFor="let fraction of playableFractions"
-                      (click)="selectFraction(fraction)"
+          <mw-ra-icon *ngFor="let faction of playableFactions"
+                      (click)="selectFaction(faction)"
                       class="item-icon"
-                      [icon]="fraction.icon" />
+                      [icon]="faction.icon" />
         </ng-template>
       </div>
 
       <div class="hero">
         <mw-menu [menuBody]="heroesMenu"
                  [pos]="'below'">
-          <div *ngIf="selectedHero; else randomFraction">
+          <div *ngIf="selectedHero; else randomFaction">
             <!-- todo: introduce component for character icon -->
             <div [style.background-image]="'url(\'assets/' + selectedHero.image + '\')'"
                  class="item-icon hero-icon">
@@ -177,12 +177,12 @@
                     icon="perspective-dice-four" />
 
         <div class="description">
-          <span *ngIf="selectedFraction; else allRandomHero">
-            Play as random hero of {{selectedFraction.title}} fraction.
+          <span *ngIf="selectedFaction; else allRandomHero">
+            Play as random hero of {{selectedFaction.title}} faction.
           </span>
 
           <ng-template #allRandomHero>
-            <span>Play as random hero of any fraction.</span>
+            <span>Play as random hero of any faction.</span>
           </ng-template>
         </div>
       </div>

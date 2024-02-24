@@ -1,6 +1,8 @@
 import { StructureGeneratorModel, StructureType, StuctureControl } from '../types';
+import { createStructure } from '../utils';
 
-export const DarkArtsSchool: StructureGeneratorModel = {
+export const DarkArtsSchool: StructureGeneratorModel = createStructure({
+  id: '#struct-dark-arts-school',
   control: StuctureControl.Neutral,
   actionPoints: 2,
   name: 'School of Dark Arts',
@@ -22,4 +24,4 @@ export const DarkArtsSchool: StructureGeneratorModel = {
       });
     }
   },
-};
+});

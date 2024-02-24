@@ -1,22 +1,22 @@
 import { MeditateActionCard, SetupCamp, SkipDayActionCard } from '../../action-cards/player-actions';
 import { AddActionCardsToPlayer, DefaultGameModes, DisplayPlayerRewardPopup, NewWeekStarted, PlayerLevelsUp, PlayersInitialized, PushPlainEventFeedMessage, Triggers } from '../../events';
-import { Fraction } from '../../fractions';
-import { constellationFraction } from '../../fractions/constellation/fraction';
+import { Faction } from '../../factions';
+import { constellationFaction } from '../../factions/constellation/faction';
 import { LevelMap } from '../../maps';
 import { START_LOC_ID, structsPreset1 } from '../../structures';
 import { TriggersRegistry } from '../registry';
 
 TriggersRegistry.register(Triggers.PrepareGameEvent, {
   // supply some more api here
-  fn: (event: { gameMode: DefaultGameModes, selectedFraction?: Fraction<string> }, { events }) => {
+  fn: (event: { gameMode: DefaultGameModes, selectedFaction?: Faction<string> }, { events }) => {
     if (event.gameMode !== DefaultGameModes.Normal) {
       return;
     }
 
     let startingLocId = START_LOC_ID;
 
-    // change starting loc id depending on selected fraction
-    if (event.selectedFraction === constellationFraction) {
+    // change starting loc id depending on selected faction
+    if (event.selectedFaction === constellationFaction) {
       // todo: temp disable
       // startingLocId = 'const-start-1';
     }

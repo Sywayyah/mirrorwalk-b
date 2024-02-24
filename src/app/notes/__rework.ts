@@ -45,7 +45,7 @@
           Also, from now it is easier to introduce new screens, to declare reusable
           components and keep it all distunguished from everything else.
 
-          For now, heroes and unit groups are created from fractions.
+          For now, heroes and unit groups are created from factions.
 
         Changed project structure from dict/models to grouped related entities:
           Now it's more concise, early on it was messy and it was hard to
@@ -60,10 +60,10 @@
           There might be something still coming, something like state,
           but with controllers it already a lesser need.
 
-        Fractions:
-          Now fractions are defined rather as simple map, where each base type
+        Factions:
+          Now factions are defined rather as simple map, where each base type
           for unit is created as plain object. It could be useful to have
-          fraction itself as a separate object with it's own name, state and
+          faction itself as a separate object with it's own name, state and
           rest, but also from it will be possible to create base types for
           units.
 

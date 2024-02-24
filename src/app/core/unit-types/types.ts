@@ -1,25 +1,20 @@
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { GroupSpellsChanged } from '../events';
-import type { Fraction } from '../fractions/types';
+import type { Faction } from '../factions/types';
 import { GameObject } from '../game-objects';
 import { Hero } from '../heroes';
 import { ModsRef, ModsRefsGroup, Specialties } from '../modifiers';
 import { Modifiers } from '../modifiers/modifiers';
 import type { Player } from '../players';
+import { Entity, EntityId, UnitId } from '../entities';
 import { ResourcesModel } from '../resources';
 import { Spell, SpellBaseType } from '../spells';
 import { DescriptionElement } from '../ui';
 import { CommonUtils } from '../utils';
 import { complete } from '../utils/observables';
 
-interface RequirementModel extends Partial<ResourcesModel> {
-  /* heroLevel?: number;
-  gold?: number;
-  redCrystals?: number;
-  glory?: number;
-  gems?: number; */
-}
+type RequirementModel = Partial<ResourcesModel>;
 
 enum UnitDamageTypesEnum {
   Physical,
@@ -59,10 +54,11 @@ export interface UnitDescriptions {
   descriptions: DescriptionElement[];
 }
 
-export interface UnitBaseType {
+export interface UnitBaseType extends Entity {
+  id: UnitId;
   type: string;
 
-  fraction: Fraction<any>;
+  faction: Faction<any>;
   /* displayed name */
   name: string;
   // todo: practically, here I can configure how names can be displayed in different places
@@ -88,6 +84,7 @@ export interface UnitBaseType {
   defaultModifiers?: Modifiers;
 
   defaultSpells?: SpellBaseType<any>[];
+  // spells?: EntityId[];
 
   /* minimal amount of units that can stack can be hired, sold or split by */
   minQuantityPerStack?: number;
@@ -98,7 +95,7 @@ export interface UnitBaseType {
   upgraded?: boolean;
 
   upgradeDetails?: {
-    target: UnitBaseType,
+    target: EntityId,
     upgradeCost: Partial<ResourcesModel>,
   };
 

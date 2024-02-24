@@ -1,16 +1,17 @@
 import { ItemBaseModel, ItemSlotType } from '..';
 import { WindBlessBuff } from '../../spells/common';
 import { itemStatsDescr, spellDescrElem } from '../../ui';
+import { createItem } from '../utils';
 
-export const ItemWindCrest: ItemBaseModel = {
+export const ItemWindCrest: ItemBaseModel = createItem({
+  id: '#item-wind-crest',
+
   name: 'Wind Crest',
-  slotType: ItemSlotType.Headgear,
-  staticMods: {
+  slot: ItemSlotType.Headgear,
+  stats: {
     heroBonusDefence: 1,
   },
-  icon: {
-    icon: 'feather-wing',
-  },
+  icon: 'feather-wing',
   cost: {
     gold: 500,
   },
@@ -44,4 +45,4 @@ export const ItemWindCrest: ItemBaseModel = {
       })
     },
   },
-}
+})

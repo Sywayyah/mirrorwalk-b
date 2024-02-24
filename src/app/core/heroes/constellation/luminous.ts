@@ -1,11 +1,13 @@
-import { constellationFraction } from '../../fractions/constellation/fraction';
+import { constellationFaction } from '../../factions/constellation/faction';
 import { WishmasterItem } from '../../items/neutral';
 import { KneelingLight, RainOfFireSpell } from '../../spells/common';
 import { SummonSagittarSpell } from '../../spells/common/summon-sagittar';
 import { heroDescrElem } from '../../ui';
 
 // new possible constellation hero
-constellationFraction.createHero({
+constellationFaction.createHero({
+  id: '#hero-luminous',
+
   name: 'Luminuous',
   abilities: [
     RainOfFireSpell,
@@ -17,24 +19,24 @@ constellationFraction.createHero({
       maxUnitGroups: 3,
       minUnitGroups: 3,
       units: [
-        [constellationFraction.getUnitType('Sprite'), 6, 11, 2],
-        [constellationFraction.getUnitType('Sagittar'), 3, 5, 1],
+        [constellationFaction.getUnitType('Sprite'), 6, 11, 2],
+        [constellationFaction.getUnitType('Sagittar'), 3, 5, 1],
       ],
     },
     {
       maxUnitGroups: 2,
       minUnitGroups: 2,
       units: [
-        [constellationFraction.getUnitType('Sprite'), 12, 18, 1],
-        [constellationFraction.getUnitType('Sagittar'), 7, 12, 1],
+        [constellationFaction.getUnitType('Sprite'), 12, 18, 1],
+        [constellationFaction.getUnitType('Sagittar'), 7, 12, 1],
       ],
     },
     {
       maxUnitGroups: 3,
       minUnitGroups: 3,
       units: [
-        [constellationFraction.getUnitType('Sprite'), 6, 10, 1],
-        [constellationFraction.getUnitType('Sagittar'), 4, 6, 2],
+        [constellationFaction.getUnitType('Sprite'), 6, 10, 1],
+        [constellationFaction.getUnitType('Sagittar'), 4, 6, 2],
       ],
     }
   ],

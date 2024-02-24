@@ -4,6 +4,7 @@ import { spellDescrElem } from '../../ui';
 import { CommonUtils } from '../../utils';
 import { getDamageParts, simpleConvergentBuffAnimation } from '../../vfx';
 import { SpellActivationType, SpellBaseType } from '../types';
+import { createSpell } from '../utils';
 
 const minDmg = 20;
 const maxDmg = 30;
@@ -11,7 +12,9 @@ const unitsCount = 2;
 
 const FireBreathVfx: EffectAnimation = simpleConvergentBuffAnimation('dragon-breath');
 
-export const FireBreath: SpellBaseType = {
+export const FireBreath: SpellBaseType = createSpell({
+  id: '#spell-fire-breath',
+
   name: 'Fire Breath',
   activationType: SpellActivationType.Passive,
   icon: {
@@ -56,5 +59,5 @@ export const FireBreath: SpellBaseType = {
       },
     },
   },
-};
+});
 

@@ -4,12 +4,14 @@ import { spellDescrElem } from 'src/app/core/ui';
 
 
 export const Firestorm = createSpell({
+  id: '#spell-firestorm',
+
   name: 'Firestorm',
   icon: { icon: 'flaming-claw' },
   activationType: SpellActivationType.Target,
   getDescription: () => ({
     descriptions: [
-      spellDescrElem(`Deals 100 fire damage to target and converts 30% to pure damage. Your current unit is going to suffer 25% of that damage as fire damage.`),
+      spellDescrElem(`Deals 100 damage to the target as fire damage while converting 30% of it to pure damage. Your current unit is going to suffer 25% of that damage as fire damage.`),
     ],
   }),
   config: {
@@ -26,6 +28,7 @@ export const Firestorm = createSpell({
             actions.dealDamageTo(target, targetMagicDamage, DamageType.Magic);
 
             actions.dealDamageTo(actions.getCurrentUnitGroup(), baseDamage * 0.25, DamageType.Fire);
+            // actions.historyLog(``)
           },
         })
 

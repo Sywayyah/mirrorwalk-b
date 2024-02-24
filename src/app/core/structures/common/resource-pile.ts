@@ -1,12 +1,16 @@
+import { StructId } from '../../entities';
 import { resourceNames, Resources, ResourceType } from '../../resources';
 import { StructureGeneratorModel, StructureType, StuctureControl } from '../types';
+import { createStructure } from '../utils';
 
+
+// todo: need to parametrize locations
 export const resPileStructure = (
-  resType: ResourceType,
-  amount: number,
+{ id, resType, amount }: { id: StructId, resType: ResourceType; amount: number; },
 ): StructureGeneratorModel => {
 
-  return {
+  return createStructure({
+    id,
     name: 'Pile of ' + resourceNames[resType],
     control: StuctureControl.Neutral,
     description: () => ({
@@ -25,13 +29,14 @@ export const resPileStructure = (
         });
       }
     },
-  };
+  });
 };
 
 
 export const resourcesPileStructure = (resources: Resources): StructureGeneratorModel => {
 
-  return {
+  return createStructure({
+    id: '#struct-res-pile',
     name: 'Pile of Resources',
     control: StuctureControl.Neutral,
     description: () => ({
@@ -59,5 +64,5 @@ export const resourcesPileStructure = (resources: Resources): StructureGenerator
 
       }
     },
-  };
+  });
 };

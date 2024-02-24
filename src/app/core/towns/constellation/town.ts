@@ -1,6 +1,7 @@
-import { CONSTELLATION_UNIT_TYPES, constellationFraction } from '../../fractions/constellation/fraction';
+import { CONSTELLATION_UNIT_TYPES, constellationFaction } from '../../factions/constellation/faction';
 import { ActivityTypes, BuidlingBase, HiringActivity } from '../buildings';
 import { TownBase } from '../types';
+import { createBuildingType } from '../utils';
 
 
 function createHiringActivity(
@@ -11,7 +12,7 @@ function createHiringActivity(
 ): HiringActivity {
   return {
     type: ActivityTypes.Hiring,
-    hiring: { type: constellationFraction.getUnitType(unitType), growth, refillDaysInterval: 7 },
+    hiring: { type: constellationFaction.getUnitType(unitType), growth, refillDaysInterval: 7 },
     unitGrowthGroup,
     growth,
     growthIntervalDays: 7,
@@ -27,34 +28,47 @@ export type ConstellationTownBuildings = 'town-center'
   | 'spirit-towers'
   | 'moon-arch';
 
-const townCenter: BuidlingBase = {
+const townCenter = createBuildingType({
+  id: '#build-stellar-town-center-1',
+
   name: 'Town Center',
-};
+});
 
-const market: BuidlingBase = {
+const market = createBuildingType({
+  id: '#build-stellar-market',
+
   name: 'Market',
-};
+});
 
-const highTower: BuidlingBase = {
+const highTower = createBuildingType({
+  id: '#build-stellar-high-tower',
+
   name: 'High Tower',
-};
+});
 
-const tavern: BuidlingBase = {
+const tavern = createBuildingType({
+  id: '#build-stellar-tavern',
+
   name: 'Tavern',
-};
+});
 
-const spiritTowers: BuidlingBase = {
+const spiritTowers = createBuildingType({
+  id: '#build-stellar-spirit-towers',
   name: 'Spirit Towers',
   description: 'Allows to train Sprites.',
   activity: createHiringActivity('Sprite', 10, 'sprite'),
-};
+});
 
-const moonArch = {
+const moonArch = createBuildingType({
+  id: '#build-stellar-moon-arch-1',
+
   name: 'Moon Arch',
   activity: createHiringActivity('Sagittar', 8, 'saggitar'),
-};
+});
 
+const hallsOfFate = createBuildingType({ id: '#build-stellar-fate-halls', name: 'Halls of Fate' });
 export const castleTownBase: TownBase<ConstellationTownBuildings> = {
+  id: '#town-constellation',
   name: 'Constellation',
   availableBuildings: {
     'town-center': {
@@ -97,7 +111,7 @@ export const castleTownBase: TownBase<ConstellationTownBuildings> = {
       baseName: 'Halls of Fate',
       description: 'Allows to develop your hero',
       levels: [
-        { building: { name: 'Halls of Fate' }, cost: { gold: 1500 } },
+        { building: hallsOfFate, cost: { gold: 1500 } },
       ],
       icon: 'barrier',
       tier: 2,
@@ -123,4 +137,4 @@ export const castleTownBase: TownBase<ConstellationTownBuildings> = {
   },
 };
 
-constellationFraction.setTownBase(castleTownBase);
+constellationFaction.setTownBase(castleTownBase);

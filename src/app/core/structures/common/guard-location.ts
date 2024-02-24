@@ -1,8 +1,10 @@
-import { neutralsFraction } from '../../fractions/neutrals/fraction';
+import { neutralsFaction } from '../../factions/neutrals/faction';
 import { NeutralRewardTypesEnum, StructureGeneratorModel, StuctureControl } from '../types';
+import { createStructure } from '../utils';
 
+export const FireRingStructure: StructureGeneratorModel = createStructure({
+  id: '#struct-fire-ring',
 
-export const FireRingStructure: StructureGeneratorModel = {
   name: 'Fire Ring',
   actionPoints: 2,
 
@@ -11,7 +13,7 @@ export const FireRingStructure: StructureGeneratorModel = {
       maxUnitGroups: 3,
       minUnitGroups: 3,
       units: [
-        [neutralsFraction.getUnitType('FireSpirits'), 7, 9, 3],
+        [neutralsFaction.getUnitType('FireSpirits'), 7, 9, 3],
       ],
     };
   },
@@ -21,4 +23,4 @@ export const FireRingStructure: StructureGeneratorModel = {
       type: NeutralRewardTypesEnum.NoReward,
     };
   }
-};
+});
