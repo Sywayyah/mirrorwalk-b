@@ -15,7 +15,7 @@ export const GraveyardStructure: StructureGeneratorModel = createStructure({
       minUnitGroups: 3,
       units: [
         [neutralsFaction.getUnitType('Ghosts'), 14, 18, 3],
-        // [neutralsFraction.getUnitType('Skeletons'), 16, 24, 1],
+        // [neutralsFaction.getUnitType('Skeletons'), 16, 24, 1],
       ],
     } as GenerationModel;
 

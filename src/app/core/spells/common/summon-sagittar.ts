@@ -1,4 +1,4 @@
-import { constellationFraction } from '../../factions/constellation/faction';
+import { constellationFaction } from '../../factions/constellation/faction';
 import { spellDescrElem } from '../../ui';
 import { FireAnimation, simpleConvergentBuffAnimation } from '../../vfx';
 import { SpellActivationType, SpellBaseType } from '../types';
@@ -27,7 +27,7 @@ export const SummonSagittarSpell: SpellBaseType = createSpell({
       init({ actions, ownerHero, ownerPlayer, events, vfx, thisSpell }) {
         events.on({
           PlayerCastsInstantSpell() {
-            const summonedUnitGroup = actions.summonUnitsForPlayer(ownerPlayer, constellationFraction.getUnitType('Sagittar'), unitCount);
+            const summonedUnitGroup = actions.summonUnitsForPlayer(ownerPlayer, constellationFaction.getUnitType('Sagittar'), unitCount);
 
             vfx.createEffectForUnitGroup(summonedUnitGroup, simpleConvergentBuffAnimation('arrow-cluster', 'rgb(190, 190, 231)'), { duration: 1000 });
           },

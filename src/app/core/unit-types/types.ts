@@ -58,7 +58,7 @@ export interface UnitBaseType extends Entity {
   id: UnitId;
   type: string;
 
-  fraction: Faction<any>;
+  faction: Faction<any>;
   /* displayed name */
   name: string;
   // todo: practically, here I can configure how names can be displayed in different places

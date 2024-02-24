@@ -36,7 +36,7 @@ export class State {
   public createdGame!: {
     selectedHero: HeroBase;
     selectedColor: string;
-    fraction: Faction<any>;
+    faction: Faction<any>;
     town: Town<any>;
   };
 

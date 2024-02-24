@@ -1,4 +1,4 @@
-import { fortFraction } from '../../factions';
+import { fortFaction } from '../../factions';
 import { BuidlingBase } from '../buildings';
 import { TownBase } from '../types';
 import { createBuildingType, createHiringActivity } from '../utils';
@@ -47,32 +47,32 @@ const goblinHuts: BuidlingBase = createBuildingType({
   id: '#build-fort-goblin-huts-1',
   name: 'Goblin Huts',
   description: 'Allows to train Raiders that can be upgraded.',
-  activity: createHiringActivity(fortFraction.getUnitType('Raiders'), 18, 'raiders'),
+  activity: createHiringActivity(fortFaction.getUnitType('Raiders'), 18, 'raiders'),
 });
 
 const upgradedGoblinHuts = createBuildingType({
   id: '#build-fort-goblin-huts-2',
   name: 'Upg. Goblin Huts',
   description: 'Allows to train Raiders and Clan.',
-  activity: createHiringActivity(fortFraction.getUnitType('Raiders'), 18, 'raiders', true),
+  activity: createHiringActivity(fortFaction.getUnitType('Raiders'), 18, 'raiders', true),
 });
 
 const stockade = createBuildingType({
   id: '#build-fort-stockade-1',
   name: 'Stockade',
   description: 'Allows to train Goblin Archers that can be upgraded.',
-  activity: createHiringActivity(fortFraction.getUnitType('GoblinArcher'), 18, 'goblinArcher'),
+  activity: createHiringActivity(fortFaction.getUnitType('GoblinArcher'), 18, 'goblinArcher'),
 });
 
 const upgradedStockade = createBuildingType({
   id: '#build-fort-stockade-2',
   name: 'Upg. Stockade',
   description: 'Allows to train Goblin Archers and Goblin Shooters.',
-  activity: createHiringActivity(fortFraction.getUnitType('GoblinArcher'), 18, 'goblinArcher', true),
+  activity: createHiringActivity(fortFaction.getUnitType('GoblinArcher'), 18, 'goblinArcher', true),
 });
 
 
-// will be reworked, need somehow to process it in the fraction itself
+// will be reworked, need somehow to process it in the faction itself
 export const factionTownBase: TownBase<CastleTownBuildings> = {
   id: '#town-fort',
   name: 'Castle',
@@ -128,4 +128,4 @@ export const factionTownBase: TownBase<CastleTownBuildings> = {
   },
 };
 
-fortFraction.setTownBase(factionTownBase);
+fortFaction.setTownBase(factionTownBase);

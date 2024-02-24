@@ -18,7 +18,7 @@ export type CONSTELLATION_UNIT_TYPES = 'Sprite'
   | 'StarDragon'
   ;
 
-export const constellationFraction = Factions.createFaction<CONSTELLATION_UNIT_TYPES>({
+export const constellationFaction = Factions.createFaction<CONSTELLATION_UNIT_TYPES>({
   id: '#faction-constellation',
   factionName: FactionsEnum.Constellation,
   title: 'Constellation',

@@ -1,4 +1,4 @@
-import { CONSTELLATION_UNIT_TYPES, constellationFraction } from '../../factions/constellation/faction';
+import { CONSTELLATION_UNIT_TYPES, constellationFaction } from '../../factions/constellation/faction';
 import { ActivityTypes, BuidlingBase, HiringActivity } from '../buildings';
 import { TownBase } from '../types';
 import { createBuildingType } from '../utils';
@@ -12,7 +12,7 @@ function createHiringActivity(
 ): HiringActivity {
   return {
     type: ActivityTypes.Hiring,
-    hiring: { type: constellationFraction.getUnitType(unitType), growth, refillDaysInterval: 7 },
+    hiring: { type: constellationFaction.getUnitType(unitType), growth, refillDaysInterval: 7 },
     unitGrowthGroup,
     growth,
     growthIntervalDays: 7,
@@ -137,4 +137,4 @@ export const castleTownBase: TownBase<ConstellationTownBuildings> = {
   },
 };
 
-constellationFraction.setTownBase(castleTownBase);
+constellationFaction.setTownBase(castleTownBase);

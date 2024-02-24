@@ -18,7 +18,7 @@ export const Factions = {
       throw new Error(`Faction ${factionName} was already created.`);
     }
 
-    const fraction: Faction<T> = {
+    const faction: Faction<T> = {
       id,
       name: factionName,
       unitTypes: {},
@@ -37,7 +37,7 @@ export const Factions = {
         const unitType: UnitBaseType = {
           defaultTurnsPerRound: 1,
           ...data,
-          fraction: this,
+          faction: this,
           type: unitTypeName,
         };
 
@@ -96,14 +96,14 @@ export const Factions = {
       }
     };
 
-    registerEntity(fraction);
+    registerEntity(faction);
 
-    this.factionsMap.set(factionName, fraction);
+    this.factionsMap.set(factionName, faction);
 
-    return fraction;
+    return faction;
   },
 
-  getFraction(name: string): Faction<any> {
+  getFaction(name: string): Faction<any> {
     return this.factionsMap.get(name)!;
   }
 } as const;

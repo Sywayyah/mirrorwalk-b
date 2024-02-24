@@ -10,7 +10,7 @@ export type FORT_UNIT_TYPES =
   | 'WolfRiders'
   ;
 
-export const fortFraction = Factions.createFaction<FORT_UNIT_TYPES>({
+export const fortFaction = Factions.createFaction<FORT_UNIT_TYPES>({
   id: '#faction-fort',
   factionName: FactionsEnum.Fort,
   title: 'Fort',

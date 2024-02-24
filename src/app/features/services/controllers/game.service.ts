@@ -81,7 +81,7 @@ export class GameController extends StoreClient() {
     };
 
     this.events.dispatch(PlayersInitialized({}));
-    this.events.dispatch(Triggers.PrepareGameEvent({ gameMode: DefaultGameModes.Normal, selectedFaction: this.state.createdGame.fraction }));
+    this.events.dispatch(Triggers.PrepareGameEvent({ gameMode: DefaultGameModes.Normal, selectedFaction: this.state.createdGame.faction }));
     this.events.dispatch(GameOpenMapStructuresScreen());
   }
 

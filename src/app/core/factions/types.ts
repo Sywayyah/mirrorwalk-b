@@ -5,7 +5,7 @@ import type { UnitBaseType } from '../unit-types';
 
 /* might be adjusted in the future */
 
-export type UnitTypeCreationParams = Omit<UnitBaseType, 'type' | 'fraction'>;
+export type UnitTypeCreationParams = Omit<UnitBaseType, 'type' | 'faction'>;
 
 export interface Faction<T extends string> extends Entity {
   id: FactionId;

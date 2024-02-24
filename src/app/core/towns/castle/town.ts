@@ -207,7 +207,7 @@ const hallsOfFate = createBuildingType({
   name: 'Halls of Fate'
 });
 
-// will be reworked, need somehow to process it in the fraction itself
+// will be reworked, need somehow to process it in the faction itself
 export const castleTownBase: TownBase<CastleTownBuildings> = {
   id: '#town-castle',
   name: 'Castle',

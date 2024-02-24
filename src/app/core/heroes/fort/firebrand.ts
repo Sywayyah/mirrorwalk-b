@@ -1,11 +1,11 @@
 import { AssetsImages } from '../../assets';
-import { fortFraction } from '../../factions';
+import { fortFaction } from '../../factions';
 import { heroDescrElem } from '../../ui';
 import { HeroBase } from '../types';
 import { heroesDefaultResources } from '../utils';
 import { Firestorm } from './spells/firestorm';
 
-export const FirebrandHero: HeroBase = fortFraction.createHero({
+export const FirebrandHero: HeroBase = fortFaction.createHero({
   id: '#hero-firebrand',
 
   name: 'Firebrand',
@@ -20,8 +20,8 @@ export const FirebrandHero: HeroBase = fortFraction.createHero({
     maxUnitGroups: 2,
     minUnitGroups: 2,
     units: [
-      [fortFraction.getUnitType('Raiders'), 16, 18, 1],
-      [fortFraction.getUnitType('GoblinArcher'), 10, 10, 1],
+      [fortFaction.getUnitType('Raiders'), 16, 18, 1],
+      [fortFaction.getUnitType('GoblinArcher'), 10, 10, 1],
     ],
   }],
   items: [
@@ -34,7 +34,7 @@ export const FirebrandHero: HeroBase = fortFraction.createHero({
   },
   defaultModifiers: {
     __unitConditionalMods(unitGroup) {
-      if (unitGroup.type.fraction === fortFraction) {
+      if (unitGroup.type.faction === fortFaction) {
         return {
           resistFire: -15,
         };

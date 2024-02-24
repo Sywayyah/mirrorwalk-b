@@ -1,5 +1,5 @@
 import { AssetsImages } from '../../assets';
-import { fortFraction } from '../../factions';
+import { fortFaction } from '../../factions';
 import { heroDescrElem } from '../../ui';
 import { simpleDescriptions } from '../utils';
 import { PoisonArrowsSpell } from './spells/poison-arrows';
@@ -9,7 +9,7 @@ const defaultRewards = {
   gold: 0,
 };
 
-fortFraction.defineUnitType('Raiders', {
+fortFaction.defineUnitType('Raiders', {
   id: '#ut-f00',
   mainPortraitUrl: AssetsImages.UnitMelee,
   name: 'Raiders',
@@ -50,7 +50,7 @@ fortFraction.defineUnitType('Raiders', {
   },
   neutralReward: defaultRewards,
 });
-fortFraction.defineUnitType('Clan', {
+fortFaction.defineUnitType('Clan', {
   id: '#ut-f01',
   mainPortraitUrl: AssetsImages.UnitMelee,
   name: 'Clan',
@@ -88,7 +88,7 @@ fortFraction.defineUnitType('Clan', {
 });
 
 
-fortFraction.defineUnitType('GoblinArcher', {
+fortFaction.defineUnitType('GoblinArcher', {
   id: '#ut-10',
   mainPortraitUrl: AssetsImages.UnitRanged,
   name: 'Goblin Archers',
@@ -132,7 +132,7 @@ fortFraction.defineUnitType('GoblinArcher', {
   neutralReward: defaultRewards,
 });
 
-fortFraction.defineUnitType('GoblinShooter', {
+fortFaction.defineUnitType('GoblinShooter', {
   id: '#ut-f11',
 
   mainPortraitUrl: AssetsImages.UnitRanged,

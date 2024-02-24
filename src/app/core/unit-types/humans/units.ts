@@ -446,5 +446,5 @@ humansFaction.defineUnitType('Firebird', {
 // possible tier 7 for humans
 //   fast, normal tier 7 stats
 //   can deal lightning damage
-// humansFraction.defineUnitType('Thunderer', {});
-// humansFraction.defineUnitType('Valkyrie', {});
+// humansFaction.defineUnitType('Thunderer', {});
+// humansFaction.defineUnitType('Valkyrie', {});
