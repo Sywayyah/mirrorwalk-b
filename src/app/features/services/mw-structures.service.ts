@@ -74,6 +74,7 @@ export class MwStructuresService {
         isRoot: struct.id === this.startingLocationId,
         pathTo: struct.pathTo ? this.gameObjectsManager.getObjectId(MapStructure, struct.pathTo) : undefined,
         actionPoints: struct.actionPoints,
+        structParams: struct.structParams,
       },
       struct.id,
     ));
