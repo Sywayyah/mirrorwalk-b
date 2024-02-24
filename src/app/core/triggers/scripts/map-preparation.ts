@@ -1,4 +1,4 @@
-import { MeditateActionCard, SetupCamp, SkipDayActionCard } from '../../action-cards/player-actions';
+import { MeditateActionCard, SetupCampActionCard, SkipDayActionCard } from '../../action-cards/player-actions';
 import { AddActionCardsToPlayer, DefaultGameModes, DisplayPlayerRewardPopup, NewWeekStarted, PlayerLevelsUp, PlayersInitialized, PushPlainEventFeedMessage, Triggers } from '../../events';
 import { Faction } from '../../factions';
 import { constellationFaction } from '../../factions/constellation/faction';
@@ -37,7 +37,7 @@ TriggersRegistry.register(PlayersInitialized, {
   fn: (_, api) => {
     // could rely on random
     const initialActionCards = [
-      { card: SetupCamp, count: Infinity },
+      { card: SetupCampActionCard, count: Infinity },
       { card: MeditateActionCard, count: 1 },
       { card: SkipDayActionCard, count: 1 },
     ];

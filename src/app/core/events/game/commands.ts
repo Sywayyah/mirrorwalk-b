@@ -53,4 +53,6 @@ export const PushPlainEventFeedMessage = commands<{ message: string, delay?: num
 
 export const RemoveActionPoints = commands<{ points: number }>();
 
+export const ActivateActionCard = commands<{ player: Player; cardStack: ActionCardStack }>();
+
 export const AddActionCardsToPlayer = commands<{ player: Player, actionCardStacks: ActionCardStack[] }>();
