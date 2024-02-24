@@ -1,8 +1,4 @@
-export type EntityId = `#${string}`;
-
-export interface Entity {
-  id: EntityId;
-}
+import { Entity, EntityId } from './types';
 
 // todo: need to think if it makes sense to create sub-registries
 export class Registry<T extends object = object> {
@@ -25,8 +21,9 @@ export class Registry<T extends object = object> {
 }
 
 export class EntitiesRegisty {
-  private static readonly allEntitiesMap = new Map<string, Entity>();
-  private static readonly registriesMap = new Map<string, Registry>();
+  private static readonly allEntitiesMap = new Map<EntityId, Entity>();
+  private static readonly entitiesByPrefixMap = new Map<string, Entity[]>();
+  // private static readonly registriesMap = new Map<string, Registry>();
 
   // todo: check if sub-registries are needed
   // static create<T extends object>(registryId: string): Registry<T> {
@@ -38,7 +35,7 @@ export class EntitiesRegisty {
   // }
 
   static resolve<T extends object>(entityId: string): T {
-    const entity = this.allEntitiesMap.get(entityId);
+    const entity = this.allEntitiesMap.get(entityId as EntityId);
 
     if (!entity) {
       console.error(`Couldn't resolve entity ${entityId}`);
@@ -53,11 +50,25 @@ export class EntitiesRegisty {
       return;
     }
 
+    const idPrefix = getIdPrefix(entity.id);
+
+    const entitiesByPrefix = this.entitiesByPrefixMap.get(idPrefix);
+
+    if (entitiesByPrefix) {
+      entitiesByPrefix.push(entity);
+    } else {
+      this.entitiesByPrefixMap.set(idPrefix, [entity]);
+    }
+
     this.allEntitiesMap.set(entity.id, entity);
   }
 }
 
 (window as any).entities = EntitiesRegisty;
+
+function getIdPrefix(entityId: string): string {
+  return entityId.split('-')[0];
+}
 
 export function registerEntity(entity: Entity): void {
   EntitiesRegisty.register(entity);
