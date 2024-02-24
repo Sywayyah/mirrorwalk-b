@@ -16,13 +16,14 @@
 </mw-icon-btn>
 
 
+<div mwActionHint="Learn new abilities">
+  <mw-icon-btn [disabled]="true"
+               icon="barrier" />
+</div>
+
+<!-- todo: confirmation popup? -->
 <mw-icon-btn [mwActionHint]="'Set up Camp<hr>Skips current day'"
              class="camp-action"
              (click)="setupCampAction()">
   <mw-ra-icon icon="campfire" />
 </mw-icon-btn>
-
-<div mwActionHint="Learn new abilities">
-  <mw-icon-btn [disabled]="true"
-               icon="barrier" />
-</div>
