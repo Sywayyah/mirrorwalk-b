@@ -7,7 +7,7 @@ import { EssenceLeak } from './spells/essence-leak';
 // quality then average units
 
 constellationFaction.defineUnitType('Sprite', {
-  id: '#ut-c00',
+  id: '#ug-c00',
   name: 'Sprite',
   level: 1,
   mainPortraitUrl: AssetsImages.UnitMelee,
@@ -46,7 +46,7 @@ constellationFaction.defineUnitType('Sprite', {
 
 // block/retaliation mechanics
 constellationFaction.defineUnitType('Fencer', {
-  id: '#ut-c10',
+  id: '#ug-c10',
 
   name: 'Fencer',
   level: 2,
@@ -74,7 +74,7 @@ constellationFaction.defineUnitType('Fencer', {
 });
 
 constellationFaction.defineUnitType('Sagittar', {
-  id: '#ut-c20',
+  id: '#ug-c20',
 
   name: 'Saggitar',
   level: 3,
@@ -107,7 +107,7 @@ constellationFaction.defineUnitType('Sagittar', {
 
 // potential level 5
 constellationFaction.defineUnitType('Chariot', {
-  id: '#ut-c30',
+  id: '#ug-c30',
 
   name: 'Chariot',
   level: 4,
@@ -135,7 +135,7 @@ constellationFaction.defineUnitType('Chariot', {
 })
 
 constellationFaction.defineUnitType('StarDragon', {
-  id: '#ut-c60',
+  id: '#ug-c60',
 
   name: 'Star Dragon',
   level: 7,
@@ -148,7 +148,7 @@ constellationFaction.defineUnitType('StarDragon', {
   },
 
   upgradeDetails: {
-    target: '#ut-c61',
+    target: '#ug-c61',
     upgradeCost: {
       gold: 500,
       gems: 1,
@@ -178,7 +178,7 @@ constellationFaction.defineUnitType('StarDragon', {
 //  Gives +10%/+15% to All Resists to units around. May also provide armor with aura.
 
 constellationFaction.defineUnitType('NightWyvern', {
-  id: '#ut-c61',
+  id: '#ug-c61',
 
   name: 'Night Wyvern',
   level: 7,

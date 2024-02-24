@@ -5,7 +5,7 @@ import { createStats, simpleDescriptions } from '../utils';
 
 
 neutralsFaction.defineUnitType('FireSpirits', {
-  id: '#ut-neut-fire-spirits',
+  id: '#ug-neut-fire-spirits',
   name: 'Fire Spirits',
   mainPortraitUrl: AssetsImages.UnitMelee,
   baseRequirements: {},

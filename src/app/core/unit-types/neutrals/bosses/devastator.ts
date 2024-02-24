@@ -6,7 +6,7 @@ import { neutralsFaction } from '../../../factions/neutrals/faction';
 import { simpleDescriptions } from '../../utils';
 
 neutralsFaction.defineUnitType('Devastator', {
-  id: '#ut-neut-boss-devastator',
+  id: '#ug-neut-boss-devastator',
 
   name: 'Devastator',
   mainPortraitUrl: AssetsImages.UnitMelee,
