@@ -1,4 +1,4 @@
-import { neutralsFraction } from '../../factions/neutrals/fraction';
+import { neutralsFaction } from '../../factions/neutrals/fraction';
 import { GenerationModel } from '../../unit-types';
 import { HiringReward, NeutralRewardTypesEnum, StructureGeneratorModel, StuctureControl, UnitUpgradeReward } from '../types';
 import { createStructure } from '../utils';
@@ -14,7 +14,7 @@ export const GraveyardStructure: StructureGeneratorModel = createStructure({
       maxUnitGroups: 2,
       minUnitGroups: 3,
       units: [
-        [neutralsFraction.getUnitType('Ghosts'), 14, 18, 3],
+        [neutralsFaction.getUnitType('Ghosts'), 14, 18, 3],
         // [neutralsFraction.getUnitType('Skeletons'), 16, 24, 1],
       ],
     } as GenerationModel;
@@ -26,7 +26,7 @@ export const GraveyardStructure: StructureGeneratorModel = createStructure({
     const hiringReward: HiringReward = {
       type: NeutralRewardTypesEnum.UnitsHire,
       units: [
-        { unitType: neutralsFraction.getUnitType('Ghosts'), maxCount: 24 },
+        { unitType: neutralsFaction.getUnitType('Ghosts'), maxCount: 24 },
       ],
     };
 

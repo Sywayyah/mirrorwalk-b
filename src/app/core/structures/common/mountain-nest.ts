@@ -1,4 +1,4 @@
-import { humansFraction } from '../../factions';
+import { humansFaction } from '../../factions';
 import { spellDescrElem } from '../../ui';
 import { CommonUtils } from '../../utils';
 import { StructureGeneratorModel, StructureType, StuctureControl } from '../types';
@@ -30,7 +30,7 @@ export const MountainNestStructure: StructureGeneratorModel = createStructure({
     init({ localEvents, players, thisStruct }) {
       localEvents.on({
         StructVisited({ visitingPlayer }) {
-          players.addUnitGroupToPlayer(visitingPlayer, humansFraction.getUnitType('Firebird'), CommonUtils.randIntInRange(1, 2));
+          players.addUnitGroupToPlayer(visitingPlayer, humansFaction.getUnitType('Firebird'), CommonUtils.randIntInRange(1, 2));
 
           thisStruct.visited = true;
         },

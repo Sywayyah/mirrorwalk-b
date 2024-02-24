@@ -1,6 +1,6 @@
 import { MeditateActionCard, SetupCamp, SkipDayActionCard } from '../../action-cards/player-actions';
 import { AddActionCardsToPlayer, DefaultGameModes, DisplayPlayerRewardPopup, NewWeekStarted, PlayerLevelsUp, PlayersInitialized, PushPlainEventFeedMessage, Triggers } from '../../events';
-import { Fraction } from '../../factions';
+import { Faction } from '../../factions';
 import { constellationFraction } from '../../factions/constellation/fraction';
 import { LevelMap } from '../../maps';
 import { START_LOC_ID, structsPreset1 } from '../../structures';
@@ -8,7 +8,7 @@ import { TriggersRegistry } from '../registry';
 
 TriggersRegistry.register(Triggers.PrepareGameEvent, {
   // supply some more api here
-  fn: (event: { gameMode: DefaultGameModes, selectedFraction?: Fraction<string> }, { events }) => {
+  fn: (event: { gameMode: DefaultGameModes, selectedFraction?: Faction<string> }, { events }) => {
     if (event.gameMode !== DefaultGameModes.Normal) {
       return;
     }

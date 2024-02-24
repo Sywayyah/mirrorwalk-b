@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { PLAYER_COLORS } from 'src/app/core/assets';
 import { GameCreated, GameOpenMainScreen, ViewsEnum } from 'src/app/core/events';
-import { Fraction, Fractions, humansFraction } from 'src/app/core/factions';
-import { neutralsFraction } from 'src/app/core/factions/neutrals/fraction';
+import { Faction, Factions, humansFaction } from 'src/app/core/factions';
+import { neutralsFaction } from 'src/app/core/factions/neutrals/fraction';
 import { HeroBase } from 'src/app/core/heroes';
 import { Town, TownBase } from 'src/app/core/towns';
 import { CommonUtils } from 'src/app/core/utils';
@@ -12,7 +12,7 @@ import { escapeToView } from 'src/app/features/services/utils/view.util';
 import { EventsService } from 'src/app/store';
 
 // const nonPlayableFractions: Fraction<any>[] = [];
-const nonPlayableFractions: Fraction<any>[] = [neutralsFraction];
+const nonPlayableFractions: Faction<any>[] = [neutralsFaction];
 
 @Component({
   selector: 'mw-new-game-screen',
@@ -20,13 +20,13 @@ const nonPlayableFractions: Fraction<any>[] = [neutralsFraction];
   styleUrls: ['./new-game-screen.component.scss']
 })
 export class NewGameScreenComponent {
-  public playableFractions: Fraction<any>[] = Fractions
-    .getAllFractions()
+  public playableFractions: Faction<any>[] = Factions
+    .getAllFactions()
     .filter((fraction) => !nonPlayableFractions.includes(fraction));
 
   public heroes?: HeroBase[] | null = null;
 
-  public selectedFraction?: Fraction<any>;
+  public selectedFraction?: Faction<any>;
 
   public selectedHero: HeroBase | null = null;
 
@@ -43,7 +43,7 @@ export class NewGameScreenComponent {
     private state: State,
     private gameObjectsManager: GameObjectsManager,
   ) {
-    this.selectFraction(humansFraction);
+    this.selectFraction(humansFaction);
     escapeToView(ViewsEnum.MainScreen);
   }
 
@@ -69,7 +69,7 @@ export class NewGameScreenComponent {
     this.events.dispatch(GameOpenMainScreen());
   }
 
-  public selectFraction(fraction?: Fraction<any>): void {
+  public selectFraction(fraction?: Faction<any>): void {
     this.selectedFraction = fraction;
     console.log(fraction);
     if (fraction) {

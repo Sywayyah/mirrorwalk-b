@@ -1,6 +1,6 @@
 import { MeditateActionCard } from '../../action-cards/player-actions';
 import { AddActionCardsToPlayer } from '../../events';
-import { HUMANS_UNIT_TYPES, humansFraction } from '../../factions';
+import { HUMANS_UNIT_TYPES, humansFaction } from '../../factions';
 import { IrtonPlateItem } from '../../items/neutral';
 import { IronPikeItem } from '../../items/neutral/iron-pike';
 import { StormPikeItem } from '../../items/neutral/storm-pike';
@@ -18,7 +18,7 @@ function createHiringActivity(
   return {
     type: ActivityTypes.Hiring,
     hiring: {
-      type: humansFraction.getUnitType(unitType),
+      type: humansFaction.getUnitType(unitType),
       growth,
       refillDaysInterval: 7,
     },
@@ -372,4 +372,4 @@ export const castleTownBase: TownBase<CastleTownBuildings> = {
   },
 };
 
-humansFraction.setTownBase(castleTownBase);
+humansFaction.setTownBase(castleTownBase);

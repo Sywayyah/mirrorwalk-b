@@ -3,24 +3,24 @@ import { AssetsImages } from '../assets';
 import type { HeroBase } from '../heroes';
 import { FactionId, registerEntity } from '../registries';
 import type { UnitBaseType } from '../unit-types';
-import { Fraction, UnitTypeCreationParams } from './types';
+import { Faction, UnitTypeCreationParams } from './types';
 
 /* might be adjusted in the future */
-export const Fractions = {
-  fractionsMap: new Map<string, Fraction<any>>(),
+export const Factions = {
+  factionsMap: new Map<string, Faction<any>>(),
 
-  getAllFractions(): Fraction<any>[] {
-    return [...this.fractionsMap.values()];
+  getAllFactions(): Faction<any>[] {
+    return [...this.factionsMap.values()];
   },
 
-  createFraction<T extends string>({ id, fractionName, icon, title }: { id: FactionId, fractionName: string, icon: string, title: string; }): Fraction<T> {
-    if (this.fractionsMap.has(fractionName)) {
-      throw new Error(`Fraction ${fractionName} was already created.`);
+  createFaction<T extends string>({ id, factionName, icon, title }: { id: FactionId, factionName: string, icon: string, title: string; }): Faction<T> {
+    if (this.factionsMap.has(factionName)) {
+      throw new Error(`Faction ${factionName} was already created.`);
     }
 
-    const fraction: Fraction<T> = {
+    const fraction: Faction<T> = {
       id,
-      name: fractionName,
+      name: factionName,
       unitTypes: {},
       heroes: [],
       title,
@@ -98,18 +98,18 @@ export const Fractions = {
 
     registerEntity(fraction);
 
-    this.fractionsMap.set(fractionName, fraction);
+    this.factionsMap.set(factionName, fraction);
 
     return fraction;
   },
 
-  getFraction(name: string): Fraction<any> {
-    return this.fractionsMap.get(name)!;
+  getFraction(name: string): Faction<any> {
+    return this.factionsMap.get(name)!;
   }
 } as const;
 
 
-export enum FractionsEnum {
+export enum FactionsEnum {
   Humans = 'humans',
   Neutrals = 'neutrals',
   Fort = 'fort',

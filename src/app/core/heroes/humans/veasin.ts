@@ -1,7 +1,7 @@
 
 
 import { AssetsImages } from '../../assets';
-import { humansFraction } from '../../factions';
+import { humansFaction } from '../../factions';
 import { ItemWindCrest } from '../../items/neutral';
 import { PoisonCloudSpell } from '../../spells/common';
 import { CorrosiveFogSpell } from '../../spells/common/corrosive-fog';
@@ -37,7 +37,7 @@ import { HeroBase } from '../types';
   Another possible special treat of Veasin might be having lots of spells
     with unshared cooldowns / abilities with charges.
 */
-export const VeasinHero: HeroBase = humansFraction.createHero({
+export const VeasinHero: HeroBase = humansFaction.createHero({
   id: '#hero-veasin',
 
   name: 'Veasin',
@@ -51,9 +51,9 @@ export const VeasinHero: HeroBase = humansFraction.createHero({
     maxUnitGroups: 2,
     minUnitGroups: 2,
     units: [
-      [humansFraction.getUnitType('Cavalry'), 3, 5, 1],
-      [humansFraction.getUnitType('Knight'), 6, 11, 2],
-      [humansFraction.getUnitType('Archer'), 6, 11, 1],
+      [humansFaction.getUnitType('Cavalry'), 3, 5, 1],
+      [humansFaction.getUnitType('Knight'), 6, 11, 2],
+      [humansFaction.getUnitType('Archer'), 6, 11, 1],
     ],
   }],
   items: [

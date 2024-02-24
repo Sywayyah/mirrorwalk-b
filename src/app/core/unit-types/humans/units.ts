@@ -1,5 +1,5 @@
 import { AssetsImages } from '../../assets';
-import { humansFraction } from '../../factions/humans/fraction';
+import { humansFaction } from '../../factions/humans/fraction';
 import { FirebirdHealSpell } from '../../spells/common';
 import { KnightsDamageBlock } from '../../spells/common/damage-block/knights-damage-block';
 import { ProtectionAura } from '../../spells/common/protection';
@@ -12,7 +12,7 @@ const defaultRewards = {
 };
 
 
-humansFraction.defineUnitType('Pikemen', {
+humansFaction.defineUnitType('Pikemen', {
   id: '#ut-h00',
   name: 'Pikemen',
   level: 1,
@@ -58,7 +58,7 @@ humansFraction.defineUnitType('Pikemen', {
   neutralReward: defaultRewards,
 });
 
-humansFraction.defineUnitType('Halberdier', {
+humansFaction.defineUnitType('Halberdier', {
   id: '#ut-h01',
   mainPortraitUrl: AssetsImages.UnitMelee,
   name: 'Halberdier',
@@ -106,7 +106,7 @@ humansFraction.defineUnitType('Halberdier', {
 
 
 // add action points required for location
-humansFraction.defineUnitType('Archer', {
+humansFaction.defineUnitType('Archer', {
   id: '#ut-h10',
 
   mainPortraitUrl: AssetsImages.UnitRanged,
@@ -196,7 +196,7 @@ humansFraction.defineUnitType('Archer', {
   },
 });
 
-humansFraction.defineUnitType('Crossbowmen', {
+humansFaction.defineUnitType('Crossbowmen', {
   id: '#ut-h11',
 
   mainPortraitUrl: AssetsImages.UnitRanged,
@@ -253,7 +253,7 @@ humansFraction.defineUnitType('Crossbowmen', {
   },
 })
 
-humansFraction.defineUnitType('Knight', {
+humansFaction.defineUnitType('Knight', {
   id: '#ut-h20',
   mainPortraitUrl: AssetsImages.UnitMelee,
   name: 'Knights',
@@ -288,7 +288,7 @@ humansFraction.defineUnitType('Knight', {
   },
 });
 
-humansFraction.defineUnitType('Cavalry', {
+humansFaction.defineUnitType('Cavalry', {
   id: '#ut-h30',
   name: 'Cavalry',
   mainPortraitUrl: AssetsImages.UnitMelee,
@@ -330,7 +330,7 @@ humansFraction.defineUnitType('Cavalry', {
   },
 });
 
-humansFraction.defineUnitType('HeavyCavalry', {
+humansFaction.defineUnitType('HeavyCavalry', {
   id: '#ut-h31',
   name: 'Heavy Cavalry',
   mainPortraitUrl: AssetsImages.UnitMelee,
@@ -367,7 +367,7 @@ humansFraction.defineUnitType('HeavyCavalry', {
   upgraded: true,
 });
 
-humansFraction.defineUnitType('MysticBird', {
+humansFaction.defineUnitType('MysticBird', {
   id: '#ut-h40',
 
   name: 'Mystic Birds',
@@ -406,7 +406,7 @@ humansFraction.defineUnitType('MysticBird', {
   },
 });
 
-humansFraction.defineUnitType('Firebird', {
+humansFaction.defineUnitType('Firebird', {
   id: '#ut-h41',
   name: 'Firebirds',
   mainPortraitUrl: AssetsImages.FireBird,

@@ -1,7 +1,7 @@
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { GroupSpellsChanged } from '../events';
-import type { Fraction } from '../factions/types';
+import type { Faction } from '../factions/types';
 import { GameObject } from '../game-objects';
 import { Hero } from '../heroes';
 import { ModsRef, ModsRefsGroup, Specialties } from '../modifiers';
@@ -58,7 +58,7 @@ export interface UnitBaseType extends Entity {
   id: UnitId;
   type: string;
 
-  fraction: Fraction<any>;
+  fraction: Faction<any>;
   /* displayed name */
   name: string;
   // todo: practically, here I can configure how names can be displayed in different places

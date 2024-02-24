@@ -1,4 +1,4 @@
-import { Fractions, FractionsEnum } from '../factions';
+import { Factions, FactionsEnum } from '../factions';
 
 export type FORT_UNIT_TYPES =
   | 'Raiders'
@@ -10,9 +10,9 @@ export type FORT_UNIT_TYPES =
   | 'WolfRiders'
   ;
 
-export const fortFraction = Fractions.createFraction<FORT_UNIT_TYPES>({
+export const fortFraction = Factions.createFaction<FORT_UNIT_TYPES>({
   id: '#faction-fort',
-  fractionName: FractionsEnum.Fort,
+  factionName: FactionsEnum.Fort,
   title: 'Fort',
   icon: 'spikeball',
 });

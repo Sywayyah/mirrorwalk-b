@@ -1,4 +1,4 @@
-import { neutralsFraction } from '../../factions/neutrals/fraction';
+import { neutralsFaction } from '../../factions/neutrals/fraction';
 import { GenerationModel } from '../../unit-types';
 import { StructureGeneratorModel, StuctureControl } from '../types';
 import { createStructure } from '../utils';
@@ -15,8 +15,8 @@ export const Mausoleum: StructureGeneratorModel = createStructure({
       minUnitGroups: 3,
       maxUnitGroups: 3,
       units: [
-        [neutralsFraction.getUnitType('Skeletons'), 22, 34, 2],
-        [neutralsFraction.getUnitType('Lich'), 3, 4, 1],
+        [neutralsFaction.getUnitType('Skeletons'), 22, 34, 2],
+        [neutralsFaction.getUnitType('Lich'), 3, 4, 1],
       ],
     } as GenerationModel;
 

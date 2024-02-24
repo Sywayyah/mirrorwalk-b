@@ -1,4 +1,4 @@
-import { neutralsFraction } from '../../factions/neutrals/fraction';
+import { neutralsFaction } from '../../factions/neutrals/fraction';
 import { NeutralRewardTypesEnum, StructureGeneratorModel, StuctureControl } from '../types';
 import { createStructure } from '../utils';
 
@@ -24,7 +24,7 @@ export const RockyPassageStructure: StructureGeneratorModel = createStructure({
       // Could be another interesting mechanic, if player isn't going to
       //  defeat this camp by day 14, he will be automatically forced to fight them.
       units: [
-        [neutralsFraction.getUnitType('Devastator'), 1, 1, 1],
+        [neutralsFaction.getUnitType('Devastator'), 1, 1, 1],
       ],
     };
   },

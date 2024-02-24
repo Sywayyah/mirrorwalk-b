@@ -1,4 +1,4 @@
-import { Fractions, FractionsEnum } from '../factions';
+import { Factions, FactionsEnum } from '../factions';
 
 export type HUMANS_UNIT_TYPES =
   | 'Pikemen'
@@ -15,12 +15,12 @@ export type HUMANS_UNIT_TYPES =
   | 'MysticBird'
   | 'Firebird';
 
-export const humansFraction = Fractions.createFraction<HUMANS_UNIT_TYPES>({
+export const humansFaction = Factions.createFaction<HUMANS_UNIT_TYPES>({
   id: '#faction-castle',
-  fractionName: FractionsEnum.Humans,
+  factionName: FactionsEnum.Humans,
   title: 'Castle',
   icon: 'castle-emblem',
 });
 
 /* just to test dynamically loaded scripts */
-(window as any).mw = { humansFraction };
+(window as any).mw = { humansFaction: humansFaction };

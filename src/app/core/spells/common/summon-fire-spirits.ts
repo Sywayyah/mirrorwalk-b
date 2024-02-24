@@ -1,4 +1,4 @@
-import { neutralsFraction } from '../../factions/neutrals/fraction';
+import { neutralsFaction } from '../../factions/neutrals/fraction';
 import { spellDescrElem } from '../../ui';
 import { FireAnimation } from '../../vfx';
 import { SpellActivationType, SpellBaseType } from '../types';
@@ -31,7 +31,7 @@ export const SummonFireSpiritsSpell: SpellBaseType = createSpell({
       init({ actions, spellInstance, ownerPlayer, events, vfx }) {
         events.on({
           PlayerCastsInstantSpell() {
-            const summonedUnitGroup = actions.summonUnitsForPlayer(ownerPlayer, neutralsFraction.getUnitType('FireSpirits'), unitCount + unitGrowthPerLevel * spellInstance.currentLevel);
+            const summonedUnitGroup = actions.summonUnitsForPlayer(ownerPlayer, neutralsFaction.getUnitType('FireSpirits'), unitCount + unitGrowthPerLevel * spellInstance.currentLevel);
 
             const fireShieldSpell = actions.createSpellInstance(FireShieldSpell, { initialLevel: 1 });
 

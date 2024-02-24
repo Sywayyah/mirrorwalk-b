@@ -1,4 +1,4 @@
-import { Fractions, FractionsEnum } from '../factions';
+import { Factions, FactionsEnum } from '../factions';
 
 export type CONSTELLATION_UNIT_TYPES = 'Sprite'
   | 'Fencer'
@@ -18,9 +18,9 @@ export type CONSTELLATION_UNIT_TYPES = 'Sprite'
   | 'StarDragon'
   ;
 
-export const constellationFraction = Fractions.createFraction<CONSTELLATION_UNIT_TYPES>({
+export const constellationFraction = Factions.createFaction<CONSTELLATION_UNIT_TYPES>({
   id: '#faction-constellation',
-  fractionName: FractionsEnum.Constellation,
+  factionName: FactionsEnum.Constellation,
   title: 'Constellation',
   icon: 'arrow-cluster',
 },

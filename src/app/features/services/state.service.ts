@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Fraction } from 'src/app/core/factions';
+import { Faction } from 'src/app/core/factions';
 import { HeroBase } from 'src/app/core/heroes';
 import { Item } from 'src/app/core/items';
 import { LevelMap } from 'src/app/core/maps';
@@ -36,7 +36,7 @@ export class State {
   public createdGame!: {
     selectedHero: HeroBase;
     selectedColor: string;
-    fraction: Fraction<any>;
+    fraction: Faction<any>;
     town: Town<any>;
   };
 
