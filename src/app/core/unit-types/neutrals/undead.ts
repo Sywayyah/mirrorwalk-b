@@ -6,7 +6,7 @@ import { heroDescrElem } from '../../ui';
 import { createStats } from '../utils';
 
 neutralsFaction.defineUnitType('Ghosts', {
-  id: '#ut-neut-ghost-0',
+  id: '#unit-neut-ghost-0',
 
   mainPortraitUrl: AssetsImages.UnitMelee,
   name: 'Ghosts',
@@ -43,7 +43,7 @@ neutralsFaction.defineUnitType('Ghosts', {
     gold: 3,
   },
   upgradeDetails: {
-    target: '#ut-neut-ghost-1',
+    target: '#unit-neut-ghost-1',
     upgradeCost: {
       gold: 25,
     }
@@ -54,7 +54,7 @@ neutralsFaction.defineUnitType('Ghosts', {
 });
 
 neutralsFaction.defineUnitType('SupremeGhosts', {
-  id: '#ut-neut-ghost-1',
+  id: '#unit-neut-ghost-1',
 
   mainPortraitUrl: AssetsImages.UnitMelee,
   name: 'Wraiths',
@@ -103,7 +103,7 @@ neutralsFaction.defineUnitType('SupremeGhosts', {
 });
 
 neutralsFaction.defineUnitType('Skeletons', {
-  id: '#ut-neut-skel-0',
+  id: '#unit-neut-skel-0',
 
   name: 'Skeletons',
   mainPortraitUrl: AssetsImages.UnitMelee,
@@ -141,7 +141,7 @@ neutralsFaction.defineUnitType('Skeletons', {
 });
 
 neutralsFaction.defineUnitType('Lich', {
-  id: '#ut-neut-lich-0',
+  id: '#unit-neut-lich-0',
 
   name: 'Liches',
   mainPortraitUrl: AssetsImages.UnitMelee,
@@ -180,7 +180,7 @@ neutralsFaction.defineUnitType('Lich', {
   },
 
   upgradeDetails: {
-    target: '#ut-neut-lich-1',
+    target: '#unit-neut-lich-1',
 
     upgradeCost: {
       gold: 100
@@ -190,7 +190,7 @@ neutralsFaction.defineUnitType('Lich', {
 });
 
 const MasterLich = neutralsFaction.defineUnitType('MasterLich', {
-  id: '#ut-neut-lich-1',
+  id: '#unit-neut-lich-1',
 
   name: 'Master Liches',
   mainPortraitUrl: AssetsImages.UnitMelee,

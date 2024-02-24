@@ -10,7 +10,7 @@ const defaultRewards = {
 };
 
 fortFaction.defineUnitType('Raiders', {
-  id: '#ut-f00',
+  id: '#unit-f00',
   mainPortraitUrl: AssetsImages.UnitMelee,
   name: 'Raiders',
   level: 1,
@@ -43,7 +43,7 @@ fortFaction.defineUnitType('Raiders', {
   },
 
   upgradeDetails: {
-    target: '#ut-f01',
+    target: '#unit-f01',
     upgradeCost: {
       gold: 20,
     },
@@ -51,7 +51,7 @@ fortFaction.defineUnitType('Raiders', {
   neutralReward: defaultRewards,
 });
 fortFaction.defineUnitType('Clan', {
-  id: '#ut-f01',
+  id: '#unit-f01',
   mainPortraitUrl: AssetsImages.UnitMelee,
   name: 'Clan',
   level: 1,
@@ -89,7 +89,7 @@ fortFaction.defineUnitType('Clan', {
 
 
 fortFaction.defineUnitType('GoblinArcher', {
-  id: '#ut-10',
+  id: '#unit-10',
   mainPortraitUrl: AssetsImages.UnitRanged,
   name: 'Goblin Archers',
   level: 2,
@@ -122,7 +122,7 @@ fortFaction.defineUnitType('GoblinArcher', {
   },
 
   upgradeDetails: {
-    target: '#ut-11',
+    target: '#unit-11',
     // target: GoblinShooters,
     upgradeCost: {
       gold: 20,
@@ -133,7 +133,7 @@ fortFaction.defineUnitType('GoblinArcher', {
 });
 
 fortFaction.defineUnitType('GoblinShooter', {
-  id: '#ut-f11',
+  id: '#unit-f11',
 
   mainPortraitUrl: AssetsImages.UnitRanged,
   name: 'Goblin Shooters',
