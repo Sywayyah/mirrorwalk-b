@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { PLAYER_COLORS } from 'src/app/core/assets';
 import { GameCreated, GameOpenMainScreen, ViewsEnum } from 'src/app/core/events';
 import { Faction, Factions, humansFaction } from 'src/app/core/factions';
-import { neutralsFaction } from 'src/app/core/factions/neutrals/fraction';
+import { neutralsFaction } from 'src/app/core/factions/neutrals/faction';
 import { HeroBase } from 'src/app/core/heroes';
 import { Town, TownBase } from 'src/app/core/towns';
 import { CommonUtils } from 'src/app/core/utils';

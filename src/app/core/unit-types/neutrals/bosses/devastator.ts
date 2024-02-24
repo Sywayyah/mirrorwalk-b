@@ -2,7 +2,7 @@ import { DevastatorScaleArmorDamageBlock } from 'src/app/core/spells/common/dama
 import { FireBreath } from 'src/app/core/spells/common/fire-breath';
 import { heroDescrElem } from 'src/app/core/ui';
 import { AssetsImages } from '../../../assets';
-import { neutralsFaction } from '../../../factions/neutrals/fraction';
+import { neutralsFaction } from '../../../factions/neutrals/faction';
 import { simpleDescriptions } from '../../utils';
 
 neutralsFaction.defineUnitType('Devastator', {

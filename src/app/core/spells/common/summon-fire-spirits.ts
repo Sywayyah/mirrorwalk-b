@@ -1,4 +1,4 @@
-import { neutralsFaction } from '../../factions/neutrals/fraction';
+import { neutralsFaction } from '../../factions/neutrals/faction';
 import { spellDescrElem } from '../../ui';
 import { FireAnimation } from '../../vfx';
 import { SpellActivationType, SpellBaseType } from '../types';

@@ -1,4 +1,4 @@
-export * from './fort/fraction';
+export * from './fort/faction';
 export * from './factions';
-export * from './humans/fraction';
+export * from './humans/faction';
 export * from './types';

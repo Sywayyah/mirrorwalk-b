@@ -1,5 +1,5 @@
 import { AssetsImages } from '../../assets';
-import { neutralsFaction } from '../../factions/neutrals/fraction';
+import { neutralsFaction } from '../../factions/neutrals/faction';
 import { FrightSpell } from '../../spells/common';
 import { SkeletonsDamageBlock } from '../../spells/common/damage-block/skeletons-damage-block';
 import { heroDescrElem } from '../../ui';

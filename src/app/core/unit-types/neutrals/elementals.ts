@@ -1,5 +1,5 @@
 import { AssetsImages } from '../../assets';
-import { neutralsFaction } from '../../factions/neutrals/fraction';
+import { neutralsFaction } from '../../factions/neutrals/faction';
 import { heroDescrElem } from '../../ui';
 import { createStats, simpleDescriptions } from '../utils';
 

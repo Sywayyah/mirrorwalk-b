@@ -1,5 +1,5 @@
 import { AssetsImages } from '../../assets';
-import { constellationFraction } from '../../factions/constellation/fraction';
+import { constellationFraction } from '../../factions/constellation/faction';
 import { WishmasterItem } from '../../items/neutral';
 import { KneelingLight, RainOfFireSpell } from '../../spells/common';
 import { SummonSagittarSpell } from '../../spells/common/summon-sagittar';

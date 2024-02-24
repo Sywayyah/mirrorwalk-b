@@ -1,4 +1,4 @@
-import { neutralsFaction } from '../../factions/neutrals/fraction';
+import { neutralsFaction } from '../../factions/neutrals/faction';
 import { NeutralRewardTypesEnum, StructureGeneratorModel, StuctureControl } from '../types';
 import { createStructure } from '../utils';
 

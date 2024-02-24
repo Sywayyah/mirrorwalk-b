@@ -1,4 +1,4 @@
-import { CONSTELLATION_UNIT_TYPES, constellationFraction } from '../../factions/constellation/fraction';
+import { CONSTELLATION_UNIT_TYPES, constellationFraction } from '../../factions/constellation/faction';
 import { ActivityTypes, BuidlingBase, HiringActivity } from '../buildings';
 import { TownBase } from '../types';
 import { createBuildingType } from '../utils';

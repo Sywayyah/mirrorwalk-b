@@ -1,4 +1,4 @@
-import { neutralsFaction } from '../../factions/neutrals/fraction';
+import { neutralsFaction } from '../../factions/neutrals/faction';
 import { BlackLichSwordItem } from '../../items/neutral/black-lich-sword';
 import { IrtonPlateItem } from '../../items/neutral/irton-plate';
 import { PhoenixShieldItem } from '../../items/neutral/phoenix-shield';
