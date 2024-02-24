@@ -21,9 +21,14 @@ export function formattedResources(resources: Resources): FormattedResource[] {
   })) as FormattedResource[];
 }
 
-export function joinedResourcesText(resources: Resources): string {
+
+export function getResourcesAsText(resources: Resources): string[] {
   return Object
     .entries(resources)
-    .map(([resType, amount]) => `+${amount} ${resourceNames[resType as ResourceType]}`)
-    .join('\n')
+    .map(([resType, amount]) => `+${amount} ${resourceNames[resType as ResourceType]}`);
 }
+
+export function getResourcesAsJoinedText(resources: Resources): string {
+  return getResourcesAsText(resources).join('\n')
+}
+

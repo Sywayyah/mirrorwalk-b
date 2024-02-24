@@ -1,4 +1,4 @@
-import { ResourceType, Resources, resourceNames } from "../../resources";
+import { Resources, getResourcesAsJoinedText } from "../../resources";
 import { StructureType, StuctureControl } from "../types";
 import { createStructure } from '../utils';
 
@@ -9,10 +9,7 @@ export const DailyResourcesMineStructure = createStructure({
   // description can become similar to new approach with for descriptions
   description: ({ thisStruct }) => ({
     descriptions: [
-      `You found a mine with resources, each day it will bring you:\n\n` + Object
-        .entries(thisStruct.structParams as Resources)
-        .map(([resType, amount]) => `+${amount} ${resourceNames[resType as ResourceType]}`)
-        .join('\n')
+      `You found a mine with resources, each day it will bring you:\n\n` + getResourcesAsJoinedText(thisStruct.structParams as Resources),
     ]
   }),
 

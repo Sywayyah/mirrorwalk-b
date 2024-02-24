@@ -1,4 +1,4 @@
-import { resourceNames, Resources, ResourceType } from '../../resources';
+import { formattedResources, getResourcesAsJoinedText, Resources } from '../../resources';
 import { StructureType, StuctureControl } from '../types';
 import { createStructure } from '../utils';
 
@@ -10,14 +10,17 @@ export const ResourcesPileStructure = createStructure({
   id: '#struct-res-pile',
   name: 'Pile of Resources',
   control: StuctureControl.Neutral,
-  description: ({ thisStruct }) => ({
-    descriptions: [
-      `You found a pile of resources \n\n` + Object
-        .entries(thisStruct.structParams as Resources)
-        .map(([resType, amount]) => `+${amount} ${resourceNames[resType as ResourceType]}`)
-        .join('\n')
-    ],
-  }),
+  description: ({ thisStruct }) => {
+    const resources = thisStruct.structParams as Resources;
+    const formattedRes = formattedResources(resources);
+
+    return {
+      name: formattedRes.length > 1 ? 'Pile of Resources' : `Pile of ${formattedRes[0].resName}`,
+      descriptions: [
+        `You found a pile of resources \n\n` + getResourcesAsJoinedText(resources),
+      ],
+    };
+  },
 
   type: StructureType.Scripted,
 
@@ -36,3 +39,4 @@ export const ResourcesPileStructure = createStructure({
     }
   },
 });
+

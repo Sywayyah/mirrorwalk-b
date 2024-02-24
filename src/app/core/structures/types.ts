@@ -40,14 +40,21 @@ export enum StructureType {
   Scripted,
 }
 
+interface StructureDescriptions {
+  // will override name defind on generator level
+  name?: string;
+  descriptions: (string | DescriptionElement)[];
+}
+
 /* This base type for structures will be expanded and, most likely, will have an access to events and API. */
 export interface StructureGeneratorModel extends Entity {
   id: StructId;
   name: string;
   icon?: string;
   control: StuctureControl;
-  // turn into function
-  description?: (params: { thisStruct: MapStructure }) => { descriptions: (string | DescriptionElement)[] };
+
+  description?: (params: { thisStruct: MapStructure }) => StructureDescriptions;
+
   actionPoints?: number;
   disableWeeklyGuardRise?: boolean;
 

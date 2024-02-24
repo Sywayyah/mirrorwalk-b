@@ -106,13 +106,15 @@ export class MapStructure extends GameObject<ViewStructureCreationParams> {
     this.icon = iconName;
     this.isRoot = isRoot;
     this.generator = generator;
+    this.structParams = structParams;
+
     if (generator) {
-      this.name = generator.name;
+      this.name = generator.description?.({ thisStruct: this }).name ?? generator.name;
     }
+
     this.actionPoints = actionPoints || generator?.actionPoints || 0;
     this.guardingPlayer = guardingPlayer;
     this.pathTo = pathTo;
-    this.structParams = structParams;
   }
 
   setControls(controls: ControlsState): void {

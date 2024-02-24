@@ -1,8 +1,9 @@
 import { StructId } from '../../entities';
-import { Resources, joinedResourcesText } from '../../resources';
+import { Resources, getResourcesAsJoinedText } from '../../resources';
 import { StructureGeneratorModel, StructureType, StuctureControl } from '../types';
 import { createStructure } from '../utils';
 
+// todo: remove function
 export const lockLocation = (config: { id: StructId, icon: string; actionPoints?: number; name: string; descr: string; resources: Resources }): StructureGeneratorModel => {
   const location: StructureGeneratorModel = createStructure({
     id: config.id,
@@ -12,7 +13,7 @@ export const lockLocation = (config: { id: StructId, icon: string; actionPoints?
     type: StructureType.Scripted,
     icon: config.icon,
     description: () => ({
-      descriptions: [config.descr, '\nRequired Resources:', joinedResourcesText(config.resources)],
+      descriptions: [config.descr, '\nRequired Resources:', getResourcesAsJoinedText(config.resources)],
     }),
     config: {
       init({ localEvents, players, thisStruct, structures }) {
