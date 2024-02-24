@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { resolveEntity } from 'src/app/core/registries';
+import { resolveEntity } from 'src/app/core/entities';
 import { ResourceType, Resources, ResourcesModel } from 'src/app/core/resources';
 import { BuidlingBase, Building, HiringActivity, HiringDetails, Town } from 'src/app/core/towns';
 import { UnitBaseType } from 'src/app/core/unit-types';

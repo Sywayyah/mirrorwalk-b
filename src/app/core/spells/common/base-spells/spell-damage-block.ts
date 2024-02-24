@@ -1,5 +1,5 @@
 import { Modifiers } from 'src/app/core/modifiers';
-import { SpellId } from 'src/app/core/registries';
+import { SpellId } from 'src/app/core/entities';
 import { spellDescrElem } from 'src/app/core/ui';
 import { uiPercent, uiValueRange } from 'src/app/core/vfx';
 import { SpellActivationType, SpellBaseType } from '../../types';

@@ -1,4 +1,4 @@
-import { StructId } from '../../registries';
+import { StructId } from '../../entities';
 import { resourceNames, Resources, ResourceType } from '../../resources';
 import { StructureGeneratorModel, StructureType, StuctureControl } from '../types';
 import { createStructure } from '../utils';

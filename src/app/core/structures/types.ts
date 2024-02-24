@@ -2,7 +2,7 @@ import { PlayersApi, SpellsApi } from '../api/game-api';
 import { EventFeedApi } from '../game-objects';
 import { ItemBaseModel } from '../items';
 import { Player } from '../players';
-import { Entity, StructId } from '../registries';
+import { Entity, StructId } from '../entities';
 import { ResourceType } from '../resources';
 import { LocalEvents } from '../triggers';
 import { DescriptionElement } from '../ui';

@@ -1,7 +1,7 @@
 
 import { AssetsImages } from '../assets';
 import type { HeroBase } from '../heroes';
-import { FactionId, registerEntity } from '../registries';
+import { FactionId, registerEntity } from '../entities';
 import type { UnitBaseType } from '../unit-types';
 import { Faction, UnitTypeCreationParams } from './types';
 

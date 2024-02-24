@@ -1,4 +1,4 @@
-import { StructId, registerEntity } from '../registries';
+import { StructId, registerEntity } from '../entities';
 import { GenerationModel } from '../unit-types';
 import { HiringReward, HiringRewardModel, NeutralRewardTypesEnum, StructureGeneratorModel, StuctureControl } from './types';
 

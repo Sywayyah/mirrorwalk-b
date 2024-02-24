@@ -1,5 +1,5 @@
 import { AssetsImages } from '../assets';
-import { registerEntity } from '../registries';
+import { registerEntity } from '../entities';
 import { ResourcesModel } from '../resources';
 import { HeroBase, HeroBaseStats } from './types';
 

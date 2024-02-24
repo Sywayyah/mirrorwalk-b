@@ -1,5 +1,5 @@
 import type { HeroBase, HeroBaseStats } from '../heroes';
-import { Entity, FactionId } from '../registries';
+import { Entity, FactionId } from '../entities';
 import type { TownBase } from '../towns';
 import type { UnitBaseType } from '../unit-types';
 

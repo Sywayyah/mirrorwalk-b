@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { resolveEntity } from 'src/app/core/registries';
+import { resolveEntity } from 'src/app/core/entities';
 import { ResourceType, ResourcesModel } from 'src/app/core/resources';
 import { HiringRewardModel, UnitUpgradeReward } from 'src/app/core/structures';
 import { StructPopupData } from 'src/app/core/ui';

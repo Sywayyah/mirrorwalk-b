@@ -2,7 +2,7 @@ import { CombatActionsRef, PostDamageInfo } from '../api/combat-api';
 import { VfxApi } from '../api/vfx-api';
 import { Colors } from '../assets';
 import { Hero } from '../heroes';
-import { registerEntity } from '../registries';
+import { registerEntity } from '../entities';
 import { UnitGroup } from '../unit-types';
 import { getDamageParts } from '../vfx';
 import { CanActivateSpellParams, SpellBaseType } from './types';

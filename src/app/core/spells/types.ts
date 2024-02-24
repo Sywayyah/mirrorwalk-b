@@ -4,7 +4,7 @@ import { Icon } from '../assets';
 import { GameObject } from '../game-objects';
 import { Hero } from '../heroes';
 import { Player } from '../players';
-import { Entity, SpellId } from '../registries';
+import { Entity, SpellId } from '../entities';
 import { DescriptionElement } from '../ui/descriptions';
 import { UnitGroup } from '../unit-types';
 import { SpellEventHandlers } from './spell-events';

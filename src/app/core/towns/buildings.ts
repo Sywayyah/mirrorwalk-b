@@ -1,6 +1,6 @@
 import { GlobalEventsApi, PlayersApi } from '../api/game-api';
 import { GameObject, GameObjectsManagerAPI } from '../game-objects';
-import { BuildingId, Entity } from '../registries';
+import { BuildingId, Entity } from '../entities';
 import { Resources } from '../resources';
 import { LocalEvents } from '../triggers';
 import { UnitBaseType } from '../unit-types';

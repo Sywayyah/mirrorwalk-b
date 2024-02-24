@@ -1,5 +1,5 @@
 import { Modifiers } from '../modifiers';
-import { ItemId, registerEntity } from '../registries';
+import { ItemId, registerEntity } from '../entities';
 import { Resources } from '../resources';
 import { itemStatsDescr, spellDescrElem } from '../ui';
 import { ItemAbilityDescriptionGetter, ItemBaseModel, ItemConfig, ItemSlotType, SpellWithConfig } from './types';

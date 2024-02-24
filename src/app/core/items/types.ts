@@ -4,7 +4,7 @@ import { GameObject } from '../game-objects';
 import { Hero } from '../heroes';
 import { Modifiers } from '../modifiers';
 import { Player } from '../players';
-import { Entity, ItemId } from '../registries';
+import { Entity, ItemId } from '../entities';
 import { Resources } from '../resources';
 import { SpellBaseType } from '../spells';
 import { DescriptionElement } from '../ui';

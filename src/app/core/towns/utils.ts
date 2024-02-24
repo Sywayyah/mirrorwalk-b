@@ -1,4 +1,4 @@
-import { registerEntity } from '../registries';
+import { registerEntity } from '../entities';
 import { UnitBaseType } from '../unit-types';
 import { ActivityTypes, BuidlingBase, HiringActivity } from './buildings';
 
