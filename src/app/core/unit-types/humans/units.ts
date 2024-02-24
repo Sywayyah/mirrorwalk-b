@@ -11,7 +11,54 @@ const defaultRewards = {
   gold: 0,
 };
 
-const Halberdier = humansFraction.defineUnitType('Halberdier', {
+
+humansFraction.defineUnitType('Pikemen', {
+  id: '#ut-h00',
+  name: 'Pikemen',
+  level: 1,
+  mainPortraitUrl: AssetsImages.UnitMelee,
+
+  baseRequirements: {
+    gold: 55,
+  },
+
+  getDescription: simpleDescriptions([
+    heroDescrElem(`Tier 1 Castle unit. Can be upgraded into Halberdier.`),
+    heroDescrElem(`<br>While possessing good average stats, Pikemen also strikes back at any attacker.`),
+    heroDescrElem(`<br>Receives bonuses from Combat Tactics speciality.`),
+  ]),
+
+  defaultSpells: [
+    ProtectionAura,
+  ],
+
+  defaultModifiers: {
+    counterattacks: true,
+  },
+
+  baseStats: {
+    damageInfo: {
+      minDamage: 2,
+      maxDamage: 3,
+    },
+    attackRating: 2,
+    defence: 2,
+    health: 8,
+    speed: 13,
+  },
+
+  upgradeDetails: {
+    target: '#ut-h01',
+    // targetId: '#ut-h01',
+    upgradeCost: {
+      gold: 15,
+    }
+  },
+
+  neutralReward: defaultRewards,
+});
+
+humansFraction.defineUnitType('Halberdier', {
   id: '#ut-h01',
   mainPortraitUrl: AssetsImages.UnitMelee,
   name: 'Halberdier',
@@ -57,108 +104,6 @@ const Halberdier = humansFraction.defineUnitType('Halberdier', {
   neutralReward: defaultRewards,
 });
 
-const Pikemen = humansFraction.defineUnitType('Pikemen', {
-  id: '#ut-h00',
-  name: 'Pikemen',
-  level: 1,
-  mainPortraitUrl: AssetsImages.UnitMelee,
-
-  baseRequirements: {
-    gold: 55,
-  },
-
-  getDescription: simpleDescriptions([
-    heroDescrElem(`Tier 1 Castle unit. Can be upgraded into Halberdier.`),
-    heroDescrElem(`<br>While possessing good average stats, Pikemen also strikes back at any attacker.`),
-    heroDescrElem(`<br>Receives bonuses from Combat Tactics speciality.`),
-  ]),
-
-  defaultSpells: [
-    ProtectionAura,
-  ],
-
-  defaultModifiers: {
-    counterattacks: true,
-  },
-
-  baseStats: {
-    damageInfo: {
-      minDamage: 2,
-      maxDamage: 3,
-    },
-    attackRating: 2,
-    defence: 2,
-    health: 8,
-    speed: 13,
-  },
-
-  upgradeDetails: {
-    target: Halberdier,
-    // targetId: '#ut-h01',
-    upgradeCost: {
-      gold: 15,
-    }
-  },
-
-  neutralReward: defaultRewards,
-});
-
-const Crossbowmen = humansFraction.defineUnitType('Crossbowmen', {
-  id: '#ut-h11',
-
-  mainPortraitUrl: AssetsImages.UnitRanged,
-  name: 'Crossbowmen',
-  level: 2,
-
-  // todo: Crossbowmen, attack penalty
-  getDescription: simpleDescriptions([
-    heroDescrElem(`Tier 2 Castle ranged unit. Upgraded version of Archers.`),
-    heroDescrElem(`<br>Crossbowmen are one of the fastest units, allowing hero to have an early turn against most early foes. Attacks twice per turn.`),
-    heroDescrElem(`<br>Crossbowmen have higher base stats and less fragile than Archers, but also have 35% block-piercing attack.`),
-    heroDescrElem(`<br>Receives bonuses from Archery specialty, granting bonus Attack Rating and Block-piercing.`),
-  ]),
-
-  baseStats: {
-    damageInfo: {
-      minDamage: 3,
-      maxDamage: 4,
-    },
-    attackRating: 4,
-    defence: 3,
-    health: 14,
-    speed: 21,
-  },
-
-  defaultTurnsPerRound: 2,
-
-  getUnitTypeSpecialtyModifiers(specialties) {
-    if (specialties.specialtyArchery === 1) {
-      return { heroBonusAttack: 1, blockPiercingPercent: 0.20 };
-    }
-
-    if (specialties.specialtyArchery >= 2) {
-      return { heroBonusAttack: 2, blockPiercingPercent: 0.30 };
-    }
-
-    return {};
-  },
-
-  defaultModifiers: {
-    isRanged: true,
-    blockPiercingPercent: 0.35,
-  },
-
-  upgraded: true,
-
-  baseRequirements: {
-    gold: 120,
-  },
-
-  neutralReward: {
-    experience: 4.5,
-    gold: 7,
-  },
-})
 
 // add action points required for location
 humansFraction.defineUnitType('Archer', {
@@ -188,7 +133,7 @@ humansFraction.defineUnitType('Archer', {
   },
 
   upgradeDetails: {
-    target: Crossbowmen,
+    target: '#ut-h11',
     // targetId: '#ut-h11',
     upgradeCost: {
       gold: 25,
@@ -251,6 +196,63 @@ humansFraction.defineUnitType('Archer', {
   },
 });
 
+humansFraction.defineUnitType('Crossbowmen', {
+  id: '#ut-h11',
+
+  mainPortraitUrl: AssetsImages.UnitRanged,
+  name: 'Crossbowmen',
+  level: 2,
+
+  // todo: Crossbowmen, attack penalty
+  getDescription: simpleDescriptions([
+    heroDescrElem(`Tier 2 Castle ranged unit. Upgraded version of Archers.`),
+    heroDescrElem(`<br>Crossbowmen are one of the fastest units, allowing hero to have an early turn against most early foes. Attacks twice per turn.`),
+    heroDescrElem(`<br>Crossbowmen have higher base stats and less fragile than Archers, but also have 35% block-piercing attack.`),
+    heroDescrElem(`<br>Receives bonuses from Archery specialty, granting bonus Attack Rating and Block-piercing.`),
+  ]),
+
+  baseStats: {
+    damageInfo: {
+      minDamage: 3,
+      maxDamage: 4,
+    },
+    attackRating: 4,
+    defence: 3,
+    health: 14,
+    speed: 21,
+  },
+
+  defaultTurnsPerRound: 2,
+
+  getUnitTypeSpecialtyModifiers(specialties) {
+    if (specialties.specialtyArchery === 1) {
+      return { heroBonusAttack: 1, blockPiercingPercent: 0.20 };
+    }
+
+    if (specialties.specialtyArchery >= 2) {
+      return { heroBonusAttack: 2, blockPiercingPercent: 0.30 };
+    }
+
+    return {};
+  },
+
+  defaultModifiers: {
+    isRanged: true,
+    blockPiercingPercent: 0.35,
+  },
+
+  upgraded: true,
+
+  baseRequirements: {
+    gold: 120,
+  },
+
+  neutralReward: {
+    experience: 4.5,
+    gold: 7,
+  },
+})
+
 humansFraction.defineUnitType('Knight', {
   id: '#ut-h20',
   mainPortraitUrl: AssetsImages.UnitMelee,
@@ -284,43 +286,6 @@ humansFraction.defineUnitType('Knight', {
     experience: 10,
     gold: 7,
   },
-});
-
-const HeavyCavalry = humansFraction.defineUnitType('HeavyCavalry', {
-  id: '#ut-h31',
-  name: 'Heavy Cavalry',
-  mainPortraitUrl: AssetsImages.UnitMelee,
-
-  getDescription: simpleDescriptions([
-    heroDescrElem(`Tier 4 Castle cavalry unit, upgraded version of Cavalry.`),
-    heroDescrElem(`<br>Cavalry is armored unit type that also deals heavy damage with 55% block-piercing attack.`),
-  ]),
-
-  level: 4,
-
-  baseStats: {
-    damageInfo: { minDamage: 14, maxDamage: 19, },
-    attackRating: 9,
-    defence: 10,
-    health: 33,
-    speed: 16,
-  },
-
-  defaultModifiers: {
-    blockPiercingPercent: 0.55,
-    isCavalry: true,
-  },
-
-  baseRequirements: {
-    gold: 310,
-    wood: 1,
-    // redCrystals: 1
-  },
-  neutralReward: {
-    experience: 25,
-    gold: 35,
-  },
-  upgraded: true,
 });
 
 humansFraction.defineUnitType('Cavalry', {
@@ -358,44 +323,48 @@ humansFraction.defineUnitType('Cavalry', {
     gold: 25,
   },
   upgradeDetails: {
-    target: HeavyCavalry,
-    // targetId: '#ut-h31',
+    target: '#ut-h31',
     upgradeCost: {
       gold: 85,
     },
   },
 });
 
-const Firebirds = humansFraction.defineUnitType('Firebird', {
-  id: '#ut-h41',
-  name: 'Firebirds',
-  mainPortraitUrl: AssetsImages.FireBird,
-  level: 5,
+humansFraction.defineUnitType('HeavyCavalry', {
+  id: '#ut-h31',
+  name: 'Heavy Cavalry',
+  mainPortraitUrl: AssetsImages.UnitMelee,
 
   getDescription: simpleDescriptions([
-    heroDescrElem(`Tier 5 Castle majestic creatures of fire, an upgraded version of Mystic Birds.`),
-    heroDescrElem(`<br>Powerful creatures of fire that can heal and resurrect allied units, has better stats than Mystical Birds and +17% fire resistance.`),
+    heroDescrElem(`Tier 4 Castle cavalry unit, upgraded version of Cavalry.`),
+    heroDescrElem(`<br>Cavalry is armored unit type that also deals heavy damage with 55% block-piercing attack.`),
   ]),
 
-  baseStats: createStats([[23, 29], 12, 14, 57, 17]),
+  level: 4,
+
+  baseStats: {
+    damageInfo: { minDamage: 14, maxDamage: 19, },
+    attackRating: 9,
+    defence: 10,
+    health: 33,
+    speed: 16,
+  },
 
   defaultModifiers: {
-    resistFire: 17,
+    blockPiercingPercent: 0.55,
+    isCavalry: true,
   },
-
-  defaultSpells: [
-    FirebirdHealSpell,
-  ],
 
   baseRequirements: {
-    gold: 475,
+    gold: 310,
     wood: 1,
+    // redCrystals: 1
   },
-
   neutralReward: {
-    experience: 45,
-    gold: 60,
+    experience: 25,
+    gold: 35,
   },
+  upgraded: true,
 });
 
 humansFraction.defineUnitType('MysticBird', {
@@ -426,9 +395,7 @@ humansFraction.defineUnitType('MysticBird', {
     wood: 1,
   },
   upgradeDetails: {
-    target: Firebirds,
-    // targetId: '#ut-h41',
-
+    target: '#ut-h41',
     upgradeCost: {
       gold: 125,
     },
@@ -438,6 +405,38 @@ humansFraction.defineUnitType('MysticBird', {
     gold: 60,
   },
 });
+
+humansFraction.defineUnitType('Firebird', {
+  id: '#ut-h41',
+  name: 'Firebirds',
+  mainPortraitUrl: AssetsImages.FireBird,
+  level: 5,
+
+  getDescription: simpleDescriptions([
+    heroDescrElem(`Tier 5 Castle majestic creatures of fire, an upgraded version of Mystic Birds.`),
+    heroDescrElem(`<br>Powerful creatures of fire that can heal and resurrect allied units, has better stats than Mystical Birds and +17% fire resistance.`),
+  ]),
+
+  baseStats: createStats([[23, 29], 12, 14, 57, 17]),
+
+  defaultModifiers: {
+    resistFire: 17,
+  },
+
+  defaultSpells: [
+    FirebirdHealSpell,
+  ],
+
+  baseRequirements: {
+    gold: 475,
+    wood: 1,
+  },
+
+  neutralReward: {
+    experience: 45,
+    gold: 60,
+  },
+})
 
 // possible tier 4-6 unit: Monks, might increase your magical capabilities
 // Knights could have a branching: Paladins, or something else

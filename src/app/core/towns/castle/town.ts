@@ -181,7 +181,7 @@ const upgradedMagicTower = createBuildingType({
 });
 
 const itemMarket = createBuildingType({
-  id: '#build-castle-market',
+  id: '#build-castle-items-market',
 
   name: 'Item market',
   activity: {

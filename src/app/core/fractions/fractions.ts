@@ -49,7 +49,7 @@ export const Fractions = {
       },
       findBaseUnitType(upgradedType) {
         /* todo: fix this place later, remove any */
-        return Object.values<any>(this.unitTypes).find((unitType: UnitBaseType) => unitType.upgradeDetails?.target === upgradedType) as UnitBaseType;
+        return Object.values<any>(this.unitTypes).find((unitType: UnitBaseType) => unitType.upgradeDetails?.target === upgradedType.id) as UnitBaseType;
       },
       getUnitType(unitTypeName: T): UnitBaseType {
         return this.unitTypes[unitTypeName]!;

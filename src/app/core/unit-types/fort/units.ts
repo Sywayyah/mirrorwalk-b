@@ -9,7 +9,48 @@ const defaultRewards = {
   gold: 0,
 };
 
-const Clan = fortFraction.defineUnitType('Clan', {
+fortFraction.defineUnitType('Raiders', {
+  id: '#ut-f00',
+  mainPortraitUrl: AssetsImages.UnitMelee,
+  name: 'Raiders',
+  level: 1,
+
+  baseStats: {
+    damageInfo: {
+      minDamage: 1,
+      maxDamage: 2,
+    },
+    attackRating: 1,
+    speed: 16,
+    defence: 2,
+    health: 9,
+  },
+
+  getDescription: simpleDescriptions([
+    heroDescrElem(`Tier 1 Fort unit. Can be upgraded into Clan.`),
+    heroDescrElem(`<br>The main attacking mass of the Fort, the goblins with long sharp spears. They are cheap and fragile, but swift, allowing to get an earlier turn and can be dangerous due to the chance of dealing critical damage.`),
+  ]),
+
+  defaultModifiers: {
+    counterattacks: true,
+    criticalDamageChance: 0.35,
+    criticalDamageMul: 1,
+  },
+
+  baseRequirements: {
+    gold: 35,
+    redCrystals: 0,
+  },
+
+  upgradeDetails: {
+    target: '#ut-f01',
+    upgradeCost: {
+      gold: 20,
+    },
+  },
+  neutralReward: defaultRewards,
+});
+fortFraction.defineUnitType('Clan', {
   id: '#ut-f01',
   mainPortraitUrl: AssetsImages.UnitMelee,
   name: 'Clan',
@@ -46,88 +87,6 @@ const Clan = fortFraction.defineUnitType('Clan', {
   neutralReward: defaultRewards,
 });
 
-fortFraction.defineUnitType('Raiders', {
-  id: '#ut-f00',
-  mainPortraitUrl: AssetsImages.UnitMelee,
-  name: 'Raiders',
-  level: 1,
-
-  baseStats: {
-    damageInfo: {
-      minDamage: 1,
-      maxDamage: 2,
-    },
-    attackRating: 1,
-    speed: 16,
-    defence: 2,
-    health: 9,
-  },
-
-  getDescription: simpleDescriptions([
-    heroDescrElem(`Tier 1 Fort unit. Can be upgraded into Clan.`),
-    heroDescrElem(`<br>The main attacking mass of the Fort, the goblins with long sharp spears. They are cheap and fragile, but swift, allowing to get an earlier turn and can be dangerous due to the chance of dealing critical damage.`),
-  ]),
-
-  defaultModifiers: {
-    counterattacks: true,
-    criticalDamageChance: 0.35,
-    criticalDamageMul: 1,
-  },
-
-  baseRequirements: {
-    gold: 35,
-    redCrystals: 0,
-  },
-
-  upgradeDetails: {
-    target: Clan,
-    // targetId: '#ut-f01',
-    upgradeCost: {
-      gold: 20,
-    },
-  },
-  neutralReward: defaultRewards,
-});
-
-const GoblinShooters = fortFraction.defineUnitType('GoblinShooter', {
-  id: '#ut-f11',
-
-  mainPortraitUrl: AssetsImages.UnitRanged,
-  name: 'Goblin Shooters',
-  level: 2,
-
-  baseStats: {
-    damageInfo: {
-      minDamage: 1,
-      maxDamage: 1,
-    },
-    attackRating: 1,
-    speed: 14,
-    defence: 4,
-    health: 18,
-  },
-
-  getDescription: simpleDescriptions([
-    heroDescrElem(`Tier 2 ranged unit of the Fort. Upgraded version of Goblin Archers.`),
-    heroDescrElem(`<br>Basic archers that deal very low damage due to poor technologies, but mitigate that weakness by adding poison to their arrows.`),
-    heroDescrElem(`<br>As an improved version of Goblin Archers they are equipped with primitive but fast-reloading crossbows, allowing them to attack 3 times per round.`),
-  ]),
-
-  defaultTurnsPerRound: 3,
-
-  defaultSpells: [
-    PoisonArrowsSpell,
-  ],
-
-  baseRequirements: {
-    gold: 60,
-    redCrystals: 0,
-  },
-
-  upgraded: true,
-
-  neutralReward: defaultRewards,
-});
 
 fortFraction.defineUnitType('GoblinArcher', {
   id: '#ut-10',
@@ -163,12 +122,52 @@ fortFraction.defineUnitType('GoblinArcher', {
   },
 
   upgradeDetails: {
-    // targetId: '#ut-11',
-    target: GoblinShooters,
+    target: '#ut-11',
+    // target: GoblinShooters,
     upgradeCost: {
       gold: 20,
     },
   },
+
+  neutralReward: defaultRewards,
+});
+
+fortFraction.defineUnitType('GoblinShooter', {
+  id: '#ut-f11',
+
+  mainPortraitUrl: AssetsImages.UnitRanged,
+  name: 'Goblin Shooters',
+  level: 2,
+
+  baseStats: {
+    damageInfo: {
+      minDamage: 1,
+      maxDamage: 1,
+    },
+    attackRating: 1,
+    speed: 14,
+    defence: 4,
+    health: 18,
+  },
+
+  getDescription: simpleDescriptions([
+    heroDescrElem(`Tier 2 ranged unit of the Fort. Upgraded version of Goblin Archers.`),
+    heroDescrElem(`<br>Basic archers that deal very low damage due to poor technologies, but mitigate that weakness by adding poison to their arrows.`),
+    heroDescrElem(`<br>As an improved version of Goblin Archers they are equipped with primitive but fast-reloading crossbows, allowing them to attack 3 times per round.`),
+  ]),
+
+  defaultTurnsPerRound: 3,
+
+  defaultSpells: [
+    PoisonArrowsSpell,
+  ],
+
+  baseRequirements: {
+    gold: 60,
+    redCrystals: 0,
+  },
+
+  upgraded: true,
 
   neutralReward: defaultRewards,
 });

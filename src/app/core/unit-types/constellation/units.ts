@@ -132,10 +132,48 @@ constellationFraction.defineUnitType('Chariot', {
     experience: 18,
     gold: 14,
   },
+})
+
+constellationFraction.defineUnitType('StarDragon', {
+  id: '#ut-c60',
+
+  name: 'Star Dragon',
+  level: 7,
+  mainPortraitUrl: AssetsImages.UnitMelee,
+
+  baseRequirements: {
+    gold: 1000,
+    gems: 1,
+    redCrystals: 1,
+  },
+
+  upgradeDetails: {
+    target: '#ut-c61',
+    upgradeCost: {
+      gold: 500,
+      gems: 1,
+    },
+  },
+
+  baseStats: {
+    damageInfo: {
+      minDamage: 40,
+      maxDamage: 60,
+    },
+    speed: 20,
+    defence: 18,
+    health: 175,
+    attackRating: 16,
+  },
+
+  neutralReward: {
+    experience: 180,
+    gold: 150,
+  },
 });
 
-/* Star Dragon/Night Wyvern, potential level 7 unit type for Constellation */
 // Main feature: Dream Aura
+/* Star Dragon/Night Wyvern, potential level 7 unit type for Constellation */
 // Dream Aura: Some events around Night Wyverns become a part of their dream.
 //  Gives +10%/+15% to All Resists to units around. May also provide armor with aura.
 
@@ -168,43 +206,4 @@ constellationFraction.defineUnitType('NightWyvern', {
     gold: 150,
   },
   upgraded: true,
-})
-
-constellationFraction.defineUnitType('StarDragon', {
-  id: '#ut-c60',
-
-  name: 'Star Dragon',
-  level: 7,
-  mainPortraitUrl: AssetsImages.UnitMelee,
-
-  baseRequirements: {
-    gold: 1000,
-    gems: 1,
-    redCrystals: 1,
-  },
-
-  upgradeDetails: {
-    target: constellationFraction.getUnitType('NightWyvern'),
-    // targetId: '#ut-c61',
-    upgradeCost: {
-      gold: 500,
-      gems: 1,
-    },
-  },
-
-  baseStats: {
-    damageInfo: {
-      minDamage: 40,
-      maxDamage: 60,
-    },
-    speed: 20,
-    defence: 18,
-    health: 175,
-    attackRating: 16,
-  },
-
-  neutralReward: {
-    experience: 180,
-    gold: 150,
-  },
 });

@@ -7,7 +7,7 @@ import { Hero } from '../heroes';
 import { ModsRef, ModsRefsGroup, Specialties } from '../modifiers';
 import { Modifiers } from '../modifiers/modifiers';
 import type { Player } from '../players';
-import { Entity, UnitId } from '../registries';
+import { Entity, EntityId, UnitId } from '../registries';
 import { ResourcesModel } from '../resources';
 import { Spell, SpellBaseType } from '../spells';
 import { DescriptionElement } from '../ui';
@@ -95,8 +95,7 @@ export interface UnitBaseType extends Entity {
   upgraded?: boolean;
 
   upgradeDetails?: {
-    target: UnitBaseType,
-    // targetId: EntityId,
+    target: EntityId,
     upgradeCost: Partial<ResourcesModel>,
   };
 

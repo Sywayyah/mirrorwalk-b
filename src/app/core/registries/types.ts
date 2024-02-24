@@ -37,7 +37,13 @@ export class Registries {
   }
 
   static resolveEntity<T extends object>(entityId: string): T {
-    return {} as T;
+    const entity = this.allEntitiesMap.get(entityId);
+
+    if (!entity) {
+      console.error(`Couldn't resolve entity ${entityId}`);
+    }
+
+    return entity as T;
   }
   static getEntity<T>(key: EntityId): T {
     const entity = this.allEntitiesMap.get(key);
@@ -62,6 +68,10 @@ export class Registries {
 
 export function registerEntity(entity: Entity): void {
   Registries.register(entity);
+}
+
+export function resolveEntity<T extends Entity>(id: string | EntityId): T {
+  return Registries.resolveEntity<T>(id);
 }
 
 // test

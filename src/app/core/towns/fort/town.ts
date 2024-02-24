@@ -51,7 +51,7 @@ const goblinHuts: BuidlingBase = createBuildingType({
 });
 
 const upgradedGoblinHuts = createBuildingType({
-  id: '#build-fort-goblin-huts-1',
+  id: '#build-fort-goblin-huts-2',
   name: 'Upg. Goblin Huts',
   description: 'Allows to train Raiders and Clan.',
   activity: createHiringActivity(fortFraction.getUnitType('Raiders'), 18, 'raiders', true),
