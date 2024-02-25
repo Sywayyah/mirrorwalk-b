@@ -1,10 +1,12 @@
 import { PushEventFeedMessage, RemoveActionPoints } from '../events';
 import { DescriptionElementType } from '../ui';
 import { actionCardEvent } from '../vfx';
-import { ActionCard, ActionCardTypes } from './types';
-import { actionIcon, manaIcon } from './utils';
+import { ActionCardTypes } from './types';
+import { actionIcon, createActionCard, manaIcon } from './utils';
 
-export const SetupCampActionCard: ActionCard = {
+export const SetupCampActionCard = createActionCard({
+  id: '#acard-setup-camp',
+
   title: 'Set up Camp',
   icon: 'campfire',
   type: ActionCardTypes.PlayerAction,
@@ -18,9 +20,11 @@ export const SetupCampActionCard: ActionCard = {
       }));
     }
   }
-};
+});
 
-export const SkipDayActionCard: ActionCard = {
+export const SkipDayActionCard = createActionCard({
+  id: '#acard-skip-the-day',
+
   title: 'Skip the day',
   icon: 'moon-sun',
   type: ActionCardTypes.PlayerAction,
@@ -49,10 +53,12 @@ export const SkipDayActionCard: ActionCard = {
       }));
     }
   }
-};
+});
 
 // could be that it takes full day and recovers more mana per action point left?
-export const MeditateActionCard: ActionCard = {
+export const MeditateActionCard = createActionCard({
+  id: '#acard-meditate',
+
   title: 'Meditate',
   icon: 'barrier',
   bgColor: 'rgb(39 57 89)',
@@ -74,11 +80,12 @@ export const MeditateActionCard: ActionCard = {
       events.dispatch(PushEventFeedMessage({ message: [{ type: DescriptionElementType.FreeHtml, htmlContent: `${actionCardEvent(MeditateActionCard)}: Restored ${manaIcon(restoredMana)} Mana.` }] }));
     },
   },
-};
+});
 
 // Restore action can be given by High Tower from the city, and some locations on the map
-// todo: Convert action cards to Entities, make dynamic descriptions
-export const RestoreActionCard: ActionCard = {
+// todo: make dynamic descriptions
+export const RestoreActionCard = createActionCard({
+  id: '#acard-restore-mana',
   title: 'Restore Mana',
   icon: 'barrier',
   bgColor: 'rgb(39 57 89)',
@@ -100,17 +107,19 @@ export const RestoreActionCard: ActionCard = {
       events.dispatch(PushEventFeedMessage({ message: [{ type: DescriptionElementType.FreeHtml, htmlContent: `${actionCardEvent(RestoreActionCard)}: Restored ${manaIcon(restoredMana)} Mana.` }] }));
     },
   },
-};
+});
 
 // Recruitting action
-export const RecruitActionCard: ActionCard = {
+export const RecruitActionCard = createActionCard({
+  id: '#acard-recruit',
+
   title: 'Recruit',
   icon: 'knight-helmet',
   bgColor: 'rgb(39 57 89)',
   iconColor: '#d9f2fd',
   type: ActionCardTypes.PlayerAction,
   description: `Gives you additional units below tier 3, consumes 2 action points.`,
-};
+});
 
 // practically, a Tavern can be implemented via cards.
 // building a Tavern will give you 2 cards for Recruiting.
