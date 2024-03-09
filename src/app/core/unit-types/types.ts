@@ -1,5 +1,6 @@
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { Entity, EntityId, UnitId } from '../entities';
 import { GroupSpellsChanged } from '../events';
 import type { Faction } from '../factions/types';
 import { GameObject } from '../game-objects';
@@ -7,7 +8,6 @@ import { Hero } from '../heroes';
 import { ModsRef, ModsRefsGroup, Specialties } from '../modifiers';
 import { Modifiers } from '../modifiers/modifiers';
 import type { Player } from '../players';
-import { Entity, EntityId, UnitId } from '../entities';
 import { ResourcesModel } from '../resources';
 import { Spell, SpellBaseType } from '../spells';
 import { DescriptionElement } from '../ui';
@@ -149,6 +149,8 @@ export interface UnitStatsInfo {
   totalMinDamage: number;
   totalMaxDamage: number;
   avgTotalDamage: number;
+
+  position: number;
 }
 
 export class UnitGroup extends GameObject<UnitCreationParams> {
@@ -224,6 +226,8 @@ export class UnitGroup extends GameObject<UnitCreationParams> {
     totalMinDamage: 0,
     totalMaxDamage: 0,
     avgTotalDamage: 0,
+
+    position: 0,
   });
 
   private readonly destroyed$ = new Subject<void>();
@@ -276,6 +280,15 @@ export class UnitGroup extends GameObject<UnitCreationParams> {
     }
 
     this.setupStatsUpdating();
+  }
+
+  setPosition(pos: number): void {
+    const stats = this.getStats();
+
+    if (stats.position !== pos) {
+      stats.position = pos;
+      this.unitStats$.next(stats);
+    }
   }
 
   assignOwnerHero(ownerHero: Hero): void {
@@ -455,6 +468,7 @@ export class UnitGroup extends GameObject<UnitCreationParams> {
         totalMinDamage: previousStats.totalMaxDamage,
         totalMaxDamage: previousStats.totalMinDamage,
         avgTotalDamage: previousStats.avgTotalDamage,
+        position: previousStats.position,
       };
 
       this.unitStats$.next(stats);
