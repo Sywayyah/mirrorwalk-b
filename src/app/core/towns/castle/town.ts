@@ -3,6 +3,7 @@ import { AddActionCardsToPlayer } from '../../events';
 import { HUMANS_UNIT_TYPES, humansFaction } from '../../factions';
 import { IrtonPlateItem } from '../../items/neutral';
 import { IronPikeItem } from '../../items/neutral/iron-pike';
+import { KiteShieldItem } from '../../items/neutral/kite-shield';
 import { StormPikeItem } from '../../items/neutral/storm-pike';
 import { SwordOfTheBattleMageItem } from '../../items/neutral/sword-of-the-battle-mage';
 import { ActivityTypes, BuidlingBase, HiringActivity } from '../buildings';
@@ -193,7 +194,7 @@ const itemMarket = createBuildingType({
       localEvents.on({
         Built() {
           thisBuilding.addCustomData<SellingBuildingData>({
-            items: [IronPikeItem, IrtonPlateItem, StormPikeItem, SwordOfTheBattleMageItem],
+            items: [IronPikeItem, IrtonPlateItem, KiteShieldItem, StormPikeItem, SwordOfTheBattleMageItem],
             selling: true,
           });
         },
