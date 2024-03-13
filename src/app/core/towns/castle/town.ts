@@ -6,6 +6,7 @@ import { IronPikeItem } from '../../items/neutral/iron-pike';
 import { KiteShieldItem } from '../../items/neutral/kite-shield';
 import { StormPikeItem } from '../../items/neutral/storm-pike';
 import { SwordOfTheBattleMageItem } from '../../items/neutral/sword-of-the-battle-mage';
+import { CommonUtils } from '../../utils';
 import { ActivityTypes, BuidlingBase, HiringActivity } from '../buildings';
 import { SellingBuildingData, TownBase } from '../types';
 import { createBuildingType } from '../utils';
@@ -194,7 +195,7 @@ const itemMarket = createBuildingType({
       localEvents.on({
         Built() {
           thisBuilding.addCustomData<SellingBuildingData>({
-            items: [IronPikeItem, IrtonPlateItem, KiteShieldItem, StormPikeItem, SwordOfTheBattleMageItem],
+            items: ['#item-iron-pike', '#item-irton-plate', '#item-kite-shield', '#item-storm-pike', '#item-battlemage-sword'],
             selling: true,
           });
         },

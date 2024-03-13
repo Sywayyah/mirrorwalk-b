@@ -8,3 +8,7 @@ export * from './meteor-swords';
 export * from './wind-crest';
 export * from './wishmaster';
 export * from './rising-sun';
+export * from './iron-pike';
+export * from './storm-pike';
+export * from './sword-of-the-battle-mage';
+export * from './kite-shield';

@@ -6,7 +6,7 @@ import { CommonUtils } from 'src/app/core/utils';
 export class UiEventFeedService {
   public readonly visibleMessages: EventFeedMessage[] = [];
 
-  private allMessages: EventFeedMessage[] = [];
+  private readonly allMessages: EventFeedMessage[] = [];
 
   pushEventFeedMessage(message: EventFeedMessage): void {
     this.allMessages.push(message);
@@ -20,6 +20,16 @@ export class UiEventFeedService {
     };
 
     this.pushEventFeedMessage(message);
+  }
+
+  pushSystemError(error: any): void {
+    const message: EventFeedMessage = {
+      message: [{ htmlContent: `<div style="background: red; font-size: 15px; font-weight: 500">${error}</div>`, type: DescriptionElementType.FreeHtml }],
+      delay: 5000,
+    };
+
+    this.pushEventFeedMessage(message);
+
   }
 
   removeMessage(eventMessage: EventFeedMessage): void {

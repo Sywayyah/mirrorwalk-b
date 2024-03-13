@@ -38,10 +38,14 @@ export class EntitiesRegisty {
     const entity = this.allEntitiesMap.get(entityId as EntityId);
 
     if (!entity) {
-      console.error(`Couldn't resolve entity ${entityId}`);
+      throw new Error(`Couldn't resolve entity ${entityId}`);
     }
 
     return entity as T;
+  }
+
+  static resolveMany<T extends object>(ids: EntityId[]): T[] {
+    return ids.map(id => this.resolve(id));
   }
 
   static register(entity: Entity): void {
@@ -76,6 +80,10 @@ export function registerEntity(entity: Entity): void {
 
 export function resolveEntity<T extends Entity>(id: string | EntityId): T {
   return EntitiesRegisty.resolve<T>(id);
+}
+
+export function resolveEntities<T extends Entity>(ids: (string | EntityId)[]): T[] {
+  return EntitiesRegisty.resolveMany<T>(ids as EntityId[]);
 }
 
 // test
