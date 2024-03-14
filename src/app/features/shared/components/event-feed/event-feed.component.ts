@@ -5,7 +5,7 @@ import { UiEventFeedService } from 'src/app/features/services/ui-event-feed.serv
 @Component({
   selector: 'mw-event-feed',
   templateUrl: './event-feed.component.html',
-  styleUrls: ['./event-feed.component.scss']
+  styleUrls: ['./event-feed.component.scss'],
 })
 export class EventFeedComponent {
   constructor(public readonly eventFeed: UiEventFeedService) { }

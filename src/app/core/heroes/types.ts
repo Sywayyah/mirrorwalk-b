@@ -224,6 +224,16 @@ export class Hero extends GameObject<HeroCreationParams> {
     return freeSlotsCount(this.reserveUnitSlots);
   }
 
+  getMainFilledUnitSlots(): UnitGroupSlot[] {
+    return this.mainUnitSlots.filter(slot => slot.unitGroup);
+  }
+
+  updateUnitGroupPositions(): void {
+    this.getMainFilledUnitSlots().forEach((slot, i) => {
+      slot?.unitGroup?.setPosition(i);
+    });
+  }
+
   getAllSlots(): UnitGroupSlot[] {
     return [...this.mainUnitSlots, ...this.reserveUnitSlots];
   }
@@ -239,6 +249,8 @@ export class Hero extends GameObject<HeroCreationParams> {
 
       this.updateUnitGroup(unitGroup);
     });
+
+    this.updateUnitGroupPositions();
   }
 
   addUnitGroup(unitGroup: UnitGroup): void {
@@ -267,6 +279,7 @@ export class Hero extends GameObject<HeroCreationParams> {
     this.refreshUnitGroupsOrderBySlots();
 
     this.getApi().events.dispatch(UnitGroupAddedToHero({ hero: this, unitGroup }));
+    this.updateUnitGroupPositions();
   }
 
   removeUnitGroup(unitGroup: UnitGroup): void {
@@ -274,6 +287,8 @@ export class Hero extends GameObject<HeroCreationParams> {
     CommonUtils.removeItem(this.unitGroups, unitGroup);
 
     this.getApi().events.dispatch(UnitGroupRemovedFromHero({ hero: this, unitGroup }));
+    this.updateUnitGroupPositions();
+
   }
 
   refreshUnitGroupsOrderBySlots(): void {
@@ -292,6 +307,7 @@ export class Hero extends GameObject<HeroCreationParams> {
 
     this.initParentModGroups();
     this.setupStatsUpdating(heroBase);
+    this.updateUnitGroupPositions();
   }
 
   onDestroy(): void {

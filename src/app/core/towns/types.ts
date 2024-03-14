@@ -1,7 +1,6 @@
+import { Entity, ItemId, TownId } from '../entities';
 import { NewWeekStarted } from '../events';
 import { GameObject } from '../game-objects';
-import { ItemBaseModel } from '../items';
-import { Entity, TownId } from '../entities';
 import { ActivityTypes, Building, BuildingDescription, HiringActivity } from './buildings';
 
 export interface TownBase<T extends string> extends Entity {
@@ -11,7 +10,7 @@ export interface TownBase<T extends string> extends Entity {
 }
 
 export interface SellingBuildingData {
-  items: ItemBaseModel[];
+  items: ItemId[];
   selling?: boolean;
 };
 

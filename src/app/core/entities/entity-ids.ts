@@ -7,6 +7,7 @@ enum EntityPrefix {
   Faction = 'faction',
   Town = 'town',
   Building = 'build',
+  ActionCard = 'acard'
 }
 
 export type SpellId = `#${EntityPrefix.Spell}-${string}`;
@@ -17,3 +18,4 @@ export type StructId = `#${EntityPrefix.Struct}-${string}`;
 export type FactionId = `#${EntityPrefix.Faction}-${string}`;
 export type TownId = `#${EntityPrefix.Town}-${string}`;
 export type BuildingId = `#${EntityPrefix.Building}-${string}`;
+export type ActionCardId = `#${EntityPrefix.ActionCard}-${string}`;

@@ -4,7 +4,14 @@ import { StructureGeneratorModel, StructureType, StuctureControl } from '../type
 import { createStructure } from '../utils';
 
 // todo: remove function
-export const lockLocation = (config: { id: StructId, icon: string; actionPoints?: number; name: string; descr: string; resources: Resources }): StructureGeneratorModel => {
+export const createResourceLockLocation = (config: {
+  id: StructId,
+  icon: string;
+  actionPoints?: number;
+  name: string;
+  descr: string;
+  resources: Resources
+}): StructureGeneratorModel => {
   const location: StructureGeneratorModel = createStructure({
     id: config.id,
     control: StuctureControl.Neutral,
@@ -36,7 +43,7 @@ export const lockLocation = (config: { id: StructId, icon: string; actionPoints?
   return location;
 };
 
-export const SettlementLocation: StructureGeneratorModel = lockLocation({
+export const SettlementLocation: StructureGeneratorModel = createResourceLockLocation({
   id: '#struct-settlement',
   descr: 'A ravaged settlement. Rebuilding it will let you access some related locations.',
   icon: 'locked-fortress',
