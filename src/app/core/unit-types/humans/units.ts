@@ -34,6 +34,7 @@ humansFaction.defineUnitType('Pikemen', {
 
   defaultModifiers: {
     counterattacks: true,
+    retaliationDamagePercent: 0.7,
   },
 
   baseStats: {
@@ -74,6 +75,8 @@ humansFaction.defineUnitType('Halberdier', {
 
   defaultModifiers: {
     counterattacks: true,
+    retaliationDamagePercent: 0.85,
+
     // maybe auras can only be granted from abilities..
     // need to check and think.
     __auraModifiers({

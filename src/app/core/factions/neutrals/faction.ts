@@ -1,5 +1,6 @@
 import { Factions, FactionsEnum } from '../factions';
 
+// need to remove it.
 export type NEUTRAL_UNIT_TYPES =
   'Ghosts'
   | 'SupremeGhosts'
@@ -16,6 +17,7 @@ export type NEUTRAL_UNIT_TYPES =
 
   // bosses
   | 'Devastator'
+  | 'Imperial Guard'
   ;
 
 const defaultReward = {
