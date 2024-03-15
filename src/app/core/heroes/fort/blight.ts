@@ -27,8 +27,8 @@ export const BlightHero: HeroBase = fortFaction.createHero({
     maxUnitGroups: 2,
     minUnitGroups: 2,
     units: [
-      [fortFaction.getUnitType('Raiders'), 13, 16, 2],
-      [fortFaction.getUnitType('GoblinArcher'), 10, 14, 1],
+      ['#unit-f00', 13, 16, 2],
+      ['#unit-f10', 10, 14, 1],
     ],
   }],
   items: [

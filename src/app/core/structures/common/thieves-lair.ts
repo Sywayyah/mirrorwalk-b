@@ -1,4 +1,3 @@
-import { neutralsFaction } from '../../factions/neutrals/faction';
 import { BlackLichSwordItem } from '../../items/neutral/black-lich-sword';
 import { IrtonPlateItem } from '../../items/neutral/irton-plate';
 import { PhoenixShieldItem } from '../../items/neutral/phoenix-shield';
@@ -18,8 +17,8 @@ export const ThievesLair: StructureGeneratorModel = createStructure({
       maxUnitGroups: 3,
       minUnitGroups: 3,
       units: [
-        [neutralsFaction.getUnitType('Thieves'), 12, 14, 2],
-        [neutralsFaction.getUnitType('Gnoll'), 14, 24, 3],
+        ['#unit-neut-thief-0', 12, 14, 2],
+        ['#unit-neut-gnoll-0', 14, 24, 3],
       ],
     } as GenerationModel;
 

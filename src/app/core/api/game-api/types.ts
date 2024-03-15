@@ -1,8 +1,9 @@
 import { EventData } from 'src/app/store';
+import { UnitTypeId } from '../../entities';
 import { Player } from '../../players';
 import { Resources, ResourceType } from '../../resources';
 import { Spell, SpellBaseType } from '../../spells';
-import { UnitBaseType, UnitGroup } from '../../unit-types';
+import { UnitGroup } from '../../unit-types';
 import { SpellCreationOptions } from '../combat-api';
 
 export interface PlayersApi {
@@ -14,7 +15,7 @@ export interface PlayersApi {
   getCurrentPlayer: () => Player;
   getCurrentPlayerUnitGroups: () => UnitGroup[];
 
-  addUnitGroupToPlayer: (player: Player, unitType: UnitBaseType, count: number) => void;
+  addUnitGroupToPlayer: (player: Player, unitTypeId: UnitTypeId, count: number) => void;
   addExperienceToPlayer: (player: Player, xpAmount: number) => void;
 
   playerHasResources: (player: Player, resources: Resources) => boolean;

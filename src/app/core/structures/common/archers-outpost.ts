@@ -1,4 +1,3 @@
-import { humansFaction } from '../../factions';
 import { StructureGeneratorModel } from '../types';
 import { createHireStructure } from '../utils';
 
@@ -9,11 +8,11 @@ export const ArchersOutpostStructure: StructureGeneratorModel = createHireStruct
     maxUnitGroups: 3,
     minUnitGroups: 3,
     units: [
-      [humansFaction.getUnitType('Archer'), 8, 11, 3],
+      ['#unit-h10', 8, 11, 3],
     ],
   },
   unitsForHire: [
-    { unitType: humansFaction.getUnitType('Archer'), maxCount: 12 },
+    { unitTypeId: '#unit-h10', maxCount: 12 },
   ]
 },
 );

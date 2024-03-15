@@ -6,7 +6,7 @@
   <div class="units">
     <div *ngFor="let unitType of hiredGroups"
          class="unit-column">
-      <div>{{unitType.hire.unitType.name}}</div>
+      <div>{{(unitType.hire.unitTypeId | entity).name}}</div>
       <div>{{unitType.count}}</div>
       <input type="range"
              [min]="0"

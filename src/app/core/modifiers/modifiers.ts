@@ -28,7 +28,6 @@ export interface ModifiersModel extends Specialties {
   fixedSpeed: number;
 
   lifesteal: number;
-  // to implement
   retaliationDamagePercent: number;
 
   // critical damage

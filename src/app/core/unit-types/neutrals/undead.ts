@@ -5,7 +5,7 @@ import { SkeletonsDamageBlock } from '../../spells/common/damage-block/skeletons
 import { heroDescrElem } from '../../ui';
 import { createStats } from '../utils';
 
-neutralsFaction.defineUnitType('Ghosts', {
+neutralsFaction.defineUnitType({
   id: '#unit-neut-ghost-0',
 
   mainPortraitUrl: AssetsImages.UnitMelee,
@@ -53,7 +53,7 @@ neutralsFaction.defineUnitType('Ghosts', {
   }
 });
 
-neutralsFaction.defineUnitType('SupremeGhosts', {
+neutralsFaction.defineUnitType({
   id: '#unit-neut-ghost-1',
 
   mainPortraitUrl: AssetsImages.UnitMelee,
@@ -102,8 +102,8 @@ neutralsFaction.defineUnitType('SupremeGhosts', {
   upgraded: true,
 });
 
-neutralsFaction.defineUnitType('Skeletons', {
-  id: '#unit-neut-skel-0',
+neutralsFaction.defineUnitType({
+  id: '#unit-neut-skeleton-0',
 
   name: 'Skeletons',
   mainPortraitUrl: AssetsImages.UnitMelee,
@@ -140,7 +140,7 @@ neutralsFaction.defineUnitType('Skeletons', {
 
 });
 
-neutralsFaction.defineUnitType('Lich', {
+neutralsFaction.defineUnitType({
   id: '#unit-neut-lich-0',
 
   name: 'Liches',
@@ -189,7 +189,7 @@ neutralsFaction.defineUnitType('Lich', {
 
 });
 
-const MasterLich = neutralsFaction.defineUnitType('MasterLich', {
+const MasterLich = neutralsFaction.defineUnitType({
   id: '#unit-neut-lich-1',
 
   name: 'Master Liches',

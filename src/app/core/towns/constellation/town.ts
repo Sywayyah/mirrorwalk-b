@@ -1,18 +1,19 @@
-import { CONSTELLATION_UNIT_TYPES, constellationFaction } from '../../factions/constellation/faction';
-import { ActivityTypes, BuidlingBase, HiringActivity } from '../buildings';
+import { UnitTypeId } from '../../entities';
+import { constellationFaction } from '../../factions/constellation/faction';
+import { ActivityTypes, HiringActivity } from '../buildings';
 import { TownBase } from '../types';
 import { createBuildingType } from '../utils';
 
 
 function createHiringActivity(
-  unitType: CONSTELLATION_UNIT_TYPES,
+  unitType: UnitTypeId,
   growth: number,
   unitGrowthGroup: string,
   upgrade: boolean = false,
 ): HiringActivity {
   return {
     type: ActivityTypes.Hiring,
-    hiring: { type: constellationFaction.getUnitType(unitType), growth, refillDaysInterval: 7 },
+    hiring: { unitTypeId: unitType, growth, refillDaysInterval: 7 },
     unitGrowthGroup,
     growth,
     growthIntervalDays: 7,
@@ -56,14 +57,14 @@ const spiritTowers = createBuildingType({
   id: '#build-stellar-spirit-towers',
   name: 'Spirit Towers',
   description: 'Allows to train Sprites.',
-  activity: createHiringActivity('Sprite', 10, 'sprite'),
+  activity: createHiringActivity('#unit-c00', 10, 'sprite'),
 });
 
 const moonArch = createBuildingType({
   id: '#build-stellar-moon-arch-1',
 
   name: 'Moon Arch',
-  activity: createHiringActivity('Sagittar', 8, 'saggitar'),
+  activity: createHiringActivity('#unit-c00', 8, 'saggitar'),
 });
 
 const hallsOfFate = createBuildingType({ id: '#build-stellar-fate-halls', name: 'Halls of Fate' });

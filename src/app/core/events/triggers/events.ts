@@ -6,7 +6,7 @@ const createTriggerEvent = createEventType;
 
 export const PrepareGameEvent = createTriggerEvent<{
   gameMode: DefaultGameModes;
-  selectedFaction?: Faction<string>;
+  selectedFaction?: Faction;
 }>(
   'Player started new game, waiting for GamePreparationFinished event to prepare the map.',
 );

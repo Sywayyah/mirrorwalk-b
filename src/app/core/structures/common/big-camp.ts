@@ -1,4 +1,3 @@
-import { neutralsFaction } from '../../factions/neutrals/faction';
 import { NeutralRewardTypesEnum, ScriptedReward, StructureGeneratorModel, StuctureControl } from '../types';
 import { createStructure } from '../utils';
 
@@ -11,9 +10,9 @@ export const BigCampStructure: StructureGeneratorModel = createStructure({
       maxUnitGroups: 3,
       minUnitGroups: 3,
       units: [
-        [neutralsFaction.getUnitType('ForestTrolls'), 23, 25, 1],
-        [neutralsFaction.getUnitType('Gnoll'), 28, 36, 1],
-        [neutralsFaction.getUnitType('Thieves'), 15, 18, 1],
+        ['#unit-neut-forest-troll-0', 23, 25, 1],
+        ['#unit-neut-gnoll-0', 28, 36, 1],
+        ['#unit-neut-thief-0', 15, 18, 1],
       ],
     };
   },

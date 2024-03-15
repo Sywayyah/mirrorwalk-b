@@ -13,7 +13,7 @@
          class="unit-column">
       <div>{{hiredGroupInfo.originalGroup.count}} {{hiredGroupInfo.originalGroup.type.name}}</div>
       <div>to</div>
-      <div>{{hiredGroupInfo.count}} {{hiredGroupInfo.hire.unitType.name}}</div>
+      <div>{{hiredGroupInfo.count}} {{(hiredGroupInfo.hire.unitTypeId | entity).name}}</div>
 
       <input type="range"
              [min]="0"

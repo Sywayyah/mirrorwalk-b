@@ -1,4 +1,3 @@
-import { humansFaction } from '../../factions';
 import { StructureGeneratorModel } from '../types';
 import { createHireStructure } from '../utils';
 
@@ -9,11 +8,11 @@ export const CalavryStalls: StructureGeneratorModel = createHireStructure({
     maxUnitGroups: 2,
     minUnitGroups: 2,
     units: [
-      [humansFaction.getUnitType('Cavalry'), 3, 3, 2],
+      ['#unit-h30', 3, 3, 2],
     ],
   },
   unitsForHire: [
-    { unitType: humansFaction.getUnitType('Cavalry'), maxCount: 4 },
+    { unitTypeId: '#unit-h30', maxCount: 4 },
   ]
 },
 );

@@ -6,7 +6,6 @@ import { infNum } from 'src/app/core/utils/common';
   pure: true,
 })
 export class MwSafeHtmlPipe implements PipeTransform {
-
   transform(num: number): number | string {
     return infNum(num);
   }

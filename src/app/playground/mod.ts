@@ -12,8 +12,8 @@ humansFaction.createHero({
     minUnitGroups: 2,
     maxUnitGroups: 2,
     units: [
-      [humansFaction.getUnitType('Archer'), 14, 16, 1],
-      [humansFaction.getUnitType('Knight'), 8, 10, 1],
+      ['#unit-h10', 14, 16, 1],
+      ['#unit-h20', 8, 10, 1],
     ],
   }],
   items: [

@@ -51,9 +51,9 @@ export const VeasinHero: HeroBase = humansFaction.createHero({
     maxUnitGroups: 2,
     minUnitGroups: 2,
     units: [
-      [humansFaction.getUnitType('Cavalry'), 3, 5, 1],
-      [humansFaction.getUnitType('Knight'), 6, 11, 2],
-      [humansFaction.getUnitType('Archer'), 6, 11, 1],
+      ['#unit-h01', 10, 18, 2],
+      ['#unit-h20', 6, 11, 1],
+      ['#unit-h30', 3, 5, 1],
     ],
   }],
   items: [

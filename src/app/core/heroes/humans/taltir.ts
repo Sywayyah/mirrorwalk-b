@@ -36,9 +36,9 @@ export const TaltirHero: HeroBase = humansFaction.createHero({
     maxUnitGroups: 2,
     minUnitGroups: 2,
     units: [
-      [humansFaction.getUnitType('Knight'), 6, 11, 2],
-      [humansFaction.getUnitType('Cavalry'), 3, 6, 2],
-      [humansFaction.getUnitType('Pikemen'), 25, 30, 1],
+      ['#unit-h20', 6, 11, 2],
+      ['#unit-h30', 3, 6, 2],
+      ['#unit-h00', 25, 30, 1],
     ],
   }],
   items: [

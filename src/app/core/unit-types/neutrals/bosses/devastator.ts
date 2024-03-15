@@ -5,7 +5,7 @@ import { AssetsImages } from '../../../assets';
 import { neutralsFaction } from '../../../factions/neutrals/faction';
 import { simpleDescriptions } from '../../utils';
 
-neutralsFaction.defineUnitType('Devastator', {
+neutralsFaction.defineUnitType({
   id: '#unit-neut-boss-devastator',
 
   name: 'Devastator',

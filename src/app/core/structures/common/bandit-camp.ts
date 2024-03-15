@@ -1,4 +1,3 @@
-import { neutralsFaction } from '../../factions/neutrals/faction';
 import { ItemEclipseWand, ItemIceBow, ItemMeteorSwords, ItemWindCrest } from '../../items/neutral';
 import { LightBootsItem } from '../../items/neutral/light-boots';
 import { ResourceType } from '../../resources';
@@ -19,8 +18,8 @@ export const BanditCamp: StructureGeneratorModel = createStructure({
       maxUnitGroups: 2,
       minUnitGroups: 1,
       units: [
-        [neutralsFaction.getUnitType('Thieves'), 14, 24, 1],
-        [neutralsFaction.getUnitType('Gnoll'), 14, 24, 3],
+        ['#unit-neut-thief-0', 14, 24, 1],
+        ['#unit-neut-gnoll-0', 14, 24, 3],
       ],
     } as GenerationModel;
 

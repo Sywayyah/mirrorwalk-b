@@ -1,12 +1,13 @@
 import { MeditateActionCard } from '../../action-cards/player-actions';
+import { UnitTypeId } from '../../entities';
 import { AddActionCardsToPlayer } from '../../events';
-import { HUMANS_UNIT_TYPES, humansFaction } from '../../factions';
+import { humansFaction } from '../../factions';
 import { ActivityTypes, BuidlingBase, HiringActivity } from '../buildings';
 import { SellingBuildingData, TownBase } from '../types';
 import { createBuildingType } from '../utils';
 
 function createHiringActivity(
-  unitType: HUMANS_UNIT_TYPES,
+  unitType: UnitTypeId,
   growth: number,
   unitGrowthGroup: string,
   upgrade: boolean = false
@@ -14,7 +15,7 @@ function createHiringActivity(
   return {
     type: ActivityTypes.Hiring,
     hiring: {
-      type: humansFaction.getUnitType(unitType),
+      unitTypeId: unitType,
       growth,
       refillDaysInterval: 7,
     },
@@ -117,7 +118,7 @@ const trainingCamp = createBuildingType({
 
   name: 'Training Camp',
   description: 'Allows to train Pikemans that can be upgraded.',
-  activity: createHiringActivity('Pikemen', 18, 'pikeman'),
+  activity: createHiringActivity('#unit-h00', 18, 'pikeman'),
 });
 
 const upgradedTrainingCamp = createBuildingType({
@@ -125,7 +126,7 @@ const upgradedTrainingCamp = createBuildingType({
 
   name: 'Upg. Training Camp',
   description: 'Allows to hire and upgrade Halberdiers',
-  activity: createHiringActivity('Pikemen', 18, 'pikeman', true),
+  activity: createHiringActivity('#unit-h00', 18, 'pikeman', true),
 });
 
 const archersOutpost = createBuildingType({
@@ -133,7 +134,7 @@ const archersOutpost = createBuildingType({
 
   name: 'Archers Outpost',
   description: 'Allows to train Archers',
-  activity: createHiringActivity('Archer', 12, 'archers'),
+  activity: createHiringActivity('#unit-h10', 12, 'archers'),
 });
 
 const upgradedArchersOutpost = createBuildingType({
@@ -141,7 +142,7 @@ const upgradedArchersOutpost = createBuildingType({
 
   name: 'Upg. Archers Outpost',
   description: 'Allows to train Archers and Crossbowmen',
-  activity: createHiringActivity('Archer', 12, 'archers', true),
+  activity: createHiringActivity('#unit-h10', 12, 'archers', true),
 });
 
 const hallsOfKnights = createBuildingType({
@@ -149,7 +150,7 @@ const hallsOfKnights = createBuildingType({
 
   name: 'Halls of Knights',
   description: 'Allows to train Knights',
-  activity: createHiringActivity('Knight', 4, 'knights'),
+  activity: createHiringActivity('#unit-h20', 4, 'knights'),
 });
 
 const cavalryStalls = createBuildingType({
@@ -157,7 +158,7 @@ const cavalryStalls = createBuildingType({
 
   name: 'Cavalry Stalls',
   description: 'Allows to train Cavalry',
-  activity: createHiringActivity('Cavalry', 2, 'cavalry'),
+  activity: createHiringActivity('#unit-h30', 2, 'cavalry'),
 });
 
 const magicTower = createBuildingType({
@@ -165,7 +166,7 @@ const magicTower = createBuildingType({
 
   name: 'Magic Tower',
   description: 'Allows to train Mystical Birds',
-  activity: createHiringActivity('MysticBird', 2, 'firebirds'),
+  activity: createHiringActivity('#unit-h40', 2, 'firebirds'),
 });
 
 const upgradedMagicTower = createBuildingType({
@@ -173,7 +174,7 @@ const upgradedMagicTower = createBuildingType({
 
   name: 'Upg. Magic Tower',
   description: 'Allows to train Mystical Birds and Firebirds',
-  activity: createHiringActivity('MysticBird', 2, 'firebirds', true),
+  activity: createHiringActivity('#unit-h40', 2, 'firebirds', true),
 });
 
 const itemMarket = createBuildingType({

@@ -12,7 +12,7 @@ import { escapeToView } from 'src/app/features/services/utils/view.util';
 import { EventsService } from 'src/app/store';
 
 // const nonPlayableFactions: Faction<any>[] = [];
-const nonPlayableFactions: Faction<any>[] = [neutralsFaction];
+const nonPlayableFactions: Faction[] = [neutralsFaction];
 
 @Component({
   selector: 'mw-new-game-screen',
@@ -20,13 +20,13 @@ const nonPlayableFactions: Faction<any>[] = [neutralsFaction];
   styleUrls: ['./new-game-screen.component.scss']
 })
 export class NewGameScreenComponent {
-  public playableFactions: Faction<any>[] = Factions
+  public playableFactions: Faction[] = Factions
     .getAllFactions()
     .filter((faction) => !nonPlayableFactions.includes(faction));
 
   public heroes?: HeroBase[] | null = null;
 
-  public selectedFaction?: Faction<any>;
+  public selectedFaction?: Faction;
 
   public selectedHero: HeroBase | null = null;
 
@@ -69,7 +69,7 @@ export class NewGameScreenComponent {
     this.events.dispatch(GameOpenMainScreen());
   }
 
-  public selectFaction(faction?: Faction<any>): void {
+  public selectFaction(faction?: Faction): void {
     this.selectedFaction = faction;
     console.log(faction);
     if (faction) {

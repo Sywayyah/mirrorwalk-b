@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
+import { UnitTypeId } from 'src/app/core/entities';
 import { PlayerLevelsUp, PlayerReceivesItem, PlayerUnequipsItem } from 'src/app/core/events';
 import { HERO_LEVELS_BREAKPOINTS, HeroBase } from 'src/app/core/heroes';
 import { Item } from 'src/app/core/items';
 import { Player, PlayerCreationModel, PlayerTypeEnum } from 'src/app/core/players';
 import { ResourceType, Resources, ResourcesModel } from 'src/app/core/resources';
-import { UnitBaseType, UnitGroup } from 'src/app/core/unit-types';
+import { UnitGroup } from 'src/app/core/unit-types';
 import { StoreClient } from 'src/app/store';
 import { MwHeroesService, MwUnitGroupsService } from './';
 import { GameObjectsManager } from './game-objects-manager.service';
@@ -105,8 +106,8 @@ export class MwPlayersService extends StoreClient() {
     return this.getUnitGroupsOfPlayer(this.getEnemyPlayer().id).includes(unitGroup);
   }
 
-  public getPlayerUnitsCountOfType(player: Player, unitType: UnitBaseType): number {
-    return player.hero.unitGroups.reduce((totalCount, nextUnitGroupType) => totalCount + (nextUnitGroupType.type === unitType ? nextUnitGroupType.count : 0), 0);
+  public getPlayerUnitsCountOfType(player: Player, unitType: UnitTypeId): number {
+    return player.hero.unitGroups.reduce((totalCount, nextUnitGroupType) => totalCount + (nextUnitGroupType.type.id === unitType ? nextUnitGroupType.count : 0), 0);
   }
 
   public addExperienceToPlayer(playerId: string, experience: number): void {

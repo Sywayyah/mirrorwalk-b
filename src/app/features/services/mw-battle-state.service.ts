@@ -5,6 +5,7 @@ import { Player } from 'src/app/core/players';
 import { UnitBaseType, UnitGroup } from 'src/app/core/unit-types';
 import { EventsService } from 'src/app/store';
 import { MwUnitGroupsService } from './mw-unit-groups.service';
+import { UnitTypeId } from 'src/app/core/entities';
 
 
 @Injectable({
@@ -182,7 +183,7 @@ export class BattleStateService {
     return this.getAliveUnitsOfPlayer(player).length !== 0;
   }
 
-  public summonUnitForPlayer(ownerPlayer: Player, unitType: UnitBaseType, unitNumber: number): UnitGroup {
+  public summonUnitForPlayer(ownerPlayer: Player, unitType: UnitTypeId, unitNumber: number): UnitGroup {
     const summonedUnitGroup = this.units.createUnitGroup(unitType, { count: unitNumber }, ownerPlayer.hero) as UnitGroup;
 
     const playerUnitGroups = this.heroesUnitGroupsMap.get(ownerPlayer)!;
