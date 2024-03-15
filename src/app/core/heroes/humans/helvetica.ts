@@ -32,9 +32,9 @@ export const HelveticaHero: HeroBase = humansFaction.createHero({
     maxUnitGroups: 2,
     minUnitGroups: 2,
     units: [
-      [humansFaction.getUnitType('Archer'), 12, 18, 1],
-      [humansFaction.getUnitType('Knight'), 6, 11, 1],
-      [humansFaction.getUnitType('Pikemen'), 20, 32, 1],
+      ['#unit-h00', 20, 32, 1],
+      ['#unit-h10', 12, 18, 1],
+      ['#unit-h20', 6, 11, 1],
     ],
   }],
   items: [

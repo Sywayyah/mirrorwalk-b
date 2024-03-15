@@ -1,26 +1,25 @@
 
 import { AssetsImages } from '../assets';
-import type { HeroBase } from '../heroes';
 import { FactionId, registerEntity } from '../entities';
+import type { HeroBase } from '../heroes';
 import type { UnitBaseType } from '../unit-types';
 import { Faction, UnitTypeCreationParams } from './types';
 
 /* might be adjusted in the future */
 export const Factions = {
-  factionsMap: new Map<string, Faction<any>>(),
+  factionsMap: new Map<string, Faction>(),
 
-  getAllFactions(): Faction<any>[] {
+  getAllFactions(): Faction[] {
     return [...this.factionsMap.values()];
   },
 
-  createFaction<T extends string>({ id, factionName, icon, title }: { id: FactionId, factionName: string, icon: string, title: string; }): Faction<T> {
-    if (this.factionsMap.has(factionName)) {
-      throw new Error(`Faction ${factionName} was already created.`);
+  createFaction({ id, icon, title }: { id: FactionId, icon: string, title: string; }): Faction {
+    if (this.factionsMap.has(id)) {
+      throw new Error(`Faction ${id} was already created.`);
     }
 
-    const faction: Faction<T> = {
+    const faction: Faction = {
       id,
-      name: factionName,
       unitTypes: {},
       heroes: [],
       title,
@@ -33,26 +32,20 @@ export const Factions = {
       getTownBase() {
         return this.townBase;
       },
-      defineUnitType(unitTypeName: T, data: UnitTypeCreationParams) {
+      defineUnitType(data: UnitTypeCreationParams) {
         const unitType: UnitBaseType = {
           defaultTurnsPerRound: 1,
           ...data,
           faction: this,
-          type: unitTypeName,
         };
 
         registerEntity(unitType);
-
-        this.unitTypes[unitTypeName] = unitType;
 
         return unitType;
       },
       findBaseUnitType(upgradedType) {
         /* todo: fix this place later, remove any */
         return Object.values<any>(this.unitTypes).find((unitType: UnitBaseType) => unitType.upgradeDetails?.target === upgradedType.id) as UnitBaseType;
-      },
-      getUnitType(unitTypeName: T): UnitBaseType {
-        return this.unitTypes[unitTypeName]!;
       },
       createHero(
         heroConfig,
@@ -98,20 +91,11 @@ export const Factions = {
 
     registerEntity(faction);
 
-    this.factionsMap.set(factionName, faction);
+    this.factionsMap.set(id, faction);
 
     return faction;
   },
-
-  getFaction(name: string): Faction<any> {
+  getFaction(name: string): Faction {
     return this.factionsMap.get(name)!;
   }
 } as const;
-
-
-export enum FactionsEnum {
-  Humans = 'humans',
-  Neutrals = 'neutrals',
-  Fort = 'fort',
-  Constellation = 'constellation',
-}

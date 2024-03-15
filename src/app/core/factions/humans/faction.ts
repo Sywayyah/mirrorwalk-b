@@ -1,23 +1,7 @@
-import { Factions, FactionsEnum } from '../factions';
+import { Factions } from '../factions';
 
-export type HUMANS_UNIT_TYPES =
-  | 'Pikemen'
-  | 'Halberdier'
-
-  | 'Archer'
-  | 'Crossbowmen'
-
-  | 'Knight'
-
-  | 'Cavalry'
-  | 'HeavyCavalry'
-
-  | 'MysticBird'
-  | 'Firebird';
-
-export const humansFaction = Factions.createFaction<HUMANS_UNIT_TYPES>({
+export const humansFaction = Factions.createFaction({
   id: '#faction-castle',
-  factionName: FactionsEnum.Humans,
   title: 'Castle',
   icon: 'castle-emblem',
 });

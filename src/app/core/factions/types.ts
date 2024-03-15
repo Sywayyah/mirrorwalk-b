@@ -1,5 +1,5 @@
 import type { HeroBase, HeroBaseStats } from '../heroes';
-import { Entity, FactionId } from '../entities';
+import { Entity, FactionId, UnitTypeId } from '../entities';
 import type { TownBase } from '../towns';
 import type { UnitBaseType } from '../unit-types';
 
@@ -7,16 +7,14 @@ import type { UnitBaseType } from '../unit-types';
 
 export type UnitTypeCreationParams = Omit<UnitBaseType, 'type' | 'faction'>;
 
-export interface Faction<T extends string> extends Entity {
+export interface Faction extends Entity {
   id: FactionId;
-  name: string;
   heroes: HeroBase[];
   title: string;
   icon: string;
   townBase: TownBase<any> | null;
-  unitTypes: { [key in T]?: UnitBaseType };
-  defineUnitType(unitTypeName: T, params: UnitTypeCreationParams): UnitBaseType;
-  getUnitType(unitTypeName: T): UnitBaseType;
+  unitTypes: Record<UnitTypeId, UnitBaseType>;
+  defineUnitType(params: UnitTypeCreationParams): UnitBaseType;
   createHero(config: Pick<HeroBase, 'name' | 'id'> & HeroBaseStats): HeroBase;
   getAllHeroes(): HeroBase[];
   findBaseUnitType(upgradedType: UnitBaseType): UnitBaseType;

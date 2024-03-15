@@ -1,4 +1,3 @@
-import { neutralsFaction } from '../../factions/neutrals/faction';
 import { NeutralRewardTypesEnum, StructureGeneratorModel, StuctureControl } from '../types';
 import { createStructure } from '../utils';
 
@@ -13,7 +12,7 @@ export const FireRingStructure: StructureGeneratorModel = createStructure({
       maxUnitGroups: 3,
       minUnitGroups: 3,
       units: [
-        [neutralsFaction.getUnitType('FireSpirits'), 7, 9, 3],
+        ['#unit-neut-fire-spirit-0', 7, 9, 3],
       ],
     };
   },

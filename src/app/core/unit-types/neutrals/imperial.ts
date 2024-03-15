@@ -3,7 +3,7 @@ import { TowerShieldsDamageBlock } from '../../spells/common/damage-block/knight
 import { spellDescrElem } from '../../ui';
 
 
-neutralsFaction.defineUnitType('Imperial Guard', {
+neutralsFaction.defineUnitType({
   id: '#unit-neut-imperial-guard',
   name: 'Imperial Guard',
   level: 3,

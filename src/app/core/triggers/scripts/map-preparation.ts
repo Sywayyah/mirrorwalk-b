@@ -8,7 +8,7 @@ import { TriggersRegistry } from '../registry';
 
 TriggersRegistry.register(Triggers.PrepareGameEvent, {
   // supply some more api here
-  fn: (event: { gameMode: DefaultGameModes, selectedFaction?: Faction<string> }, { events }) => {
+  fn: (event: { gameMode: DefaultGameModes, selectedFaction?: Faction }, { events }) => {
     if (event.gameMode !== DefaultGameModes.Normal) {
       return;
     }

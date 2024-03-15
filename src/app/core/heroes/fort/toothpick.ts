@@ -20,8 +20,8 @@ export const ToothpickHero: HeroBase = fortFaction.createHero({
     maxUnitGroups: 2,
     minUnitGroups: 2,
     units: [
-      [fortFaction.getUnitType('Raiders'), 16, 18, 1],
-      [fortFaction.getUnitType('GoblinArcher'), 10, 10, 1],
+      ['#unit-f00', 16, 18, 1],
+      ['#unit-f10', 10, 10, 1],
     ],
   }],
   items: [

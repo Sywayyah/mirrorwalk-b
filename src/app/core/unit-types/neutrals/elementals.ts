@@ -4,8 +4,8 @@ import { heroDescrElem } from '../../ui';
 import { createStats, simpleDescriptions } from '../utils';
 
 
-neutralsFaction.defineUnitType('FireSpirits', {
-  id: '#unit-neut-fire-spirits',
+neutralsFaction.defineUnitType({
+  id: '#unit-neut-fire-spirit-0',
   name: 'Fire Spirits',
   mainPortraitUrl: AssetsImages.UnitMelee,
   baseRequirements: {},

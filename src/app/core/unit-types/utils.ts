@@ -1,9 +1,10 @@
+import { UnitTypeId, resolveEntity } from '../entities';
 import { DescriptionElement } from '../ui';
 import { CommonUtils } from '../utils';
 import { UnitBaseType, UnitDescriptions, UnitTypeBaseStatsModel } from './types';
 
 /* unit type, minCount, maxCount, maxGroupsOfThisType */
-type UnitModel = [unitType: UnitBaseType, min: number, max: number, maxOfThisType: number | void];
+type UnitModel = [unitType: UnitTypeId, min: number, max: number, maxOfThisType: number | void];
 
 export interface GenerationModel {
   minUnitGroups: number;
@@ -31,7 +32,7 @@ export const createStats = ([[minDmg, maxDmg], attack, defence, health, speed]: 
 
 
 interface GenerationDescription {
-  unitType: UnitBaseType;
+  unitType: UnitTypeId;
   min: number;
   max: number;
   maxGroupsOfThisType: number;
@@ -40,7 +41,11 @@ interface GenerationDescription {
 
 interface UnitGenerationModel {
   count: number;
-  unitType: UnitBaseType;
+  unitType: UnitTypeId;
+}
+
+export function resolveUnitType(unitTypeId: UnitTypeId): UnitBaseType {
+  return resolveEntity(unitTypeId);
 }
 
 export const UnitsUtils = {

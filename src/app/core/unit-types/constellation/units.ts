@@ -6,7 +6,7 @@ import { EssenceLeak } from './spells/essence-leak';
 // Units of constellation might be more durable and slightly higher
 // quality then average units
 
-constellationFaction.defineUnitType('Sprite', {
+constellationFaction.defineUnitType({
   id: '#unit-c00',
   name: 'Sprite',
   level: 1,
@@ -45,7 +45,7 @@ constellationFaction.defineUnitType('Sprite', {
 });
 
 // block/retaliation mechanics
-constellationFaction.defineUnitType('Fencer', {
+constellationFaction.defineUnitType({
   id: '#unit-c10',
 
   name: 'Fencer',
@@ -73,7 +73,7 @@ constellationFaction.defineUnitType('Fencer', {
   },
 });
 
-constellationFaction.defineUnitType('Sagittar', {
+constellationFaction.defineUnitType({
   id: '#unit-c20',
 
   name: 'Saggitar',
@@ -106,7 +106,7 @@ constellationFaction.defineUnitType('Sagittar', {
 })
 
 // potential level 5
-constellationFaction.defineUnitType('Chariot', {
+constellationFaction.defineUnitType({
   id: '#unit-c30',
 
   name: 'Chariot',
@@ -134,7 +134,7 @@ constellationFaction.defineUnitType('Chariot', {
   },
 })
 
-constellationFaction.defineUnitType('StarDragon', {
+constellationFaction.defineUnitType({
   id: '#unit-c60',
 
   name: 'Star Dragon',
@@ -177,7 +177,7 @@ constellationFaction.defineUnitType('StarDragon', {
 // Dream Aura: Some events around Night Wyverns become a part of their dream.
 //  Gives +10%/+15% to All Resists to units around. May also provide armor with aura.
 
-constellationFaction.defineUnitType('NightWyvern', {
+constellationFaction.defineUnitType({
   id: '#unit-c61',
 
   name: 'Night Wyvern',

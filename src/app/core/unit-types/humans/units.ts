@@ -12,7 +12,7 @@ const defaultRewards = {
 };
 
 
-humansFaction.defineUnitType('Pikemen', {
+humansFaction.defineUnitType({
   id: '#unit-h00',
   name: 'Pikemen',
   level: 1,
@@ -50,7 +50,6 @@ humansFaction.defineUnitType('Pikemen', {
 
   upgradeDetails: {
     target: '#unit-h01',
-    // targetId: '#unit-h01',
     upgradeCost: {
       gold: 15,
     }
@@ -59,7 +58,7 @@ humansFaction.defineUnitType('Pikemen', {
   neutralReward: defaultRewards,
 });
 
-humansFaction.defineUnitType('Halberdier', {
+humansFaction.defineUnitType({
   id: '#unit-h01',
   mainPortraitUrl: AssetsImages.UnitMelee,
   name: 'Halberdier',
@@ -109,7 +108,7 @@ humansFaction.defineUnitType('Halberdier', {
 
 
 // add action points required for location
-humansFaction.defineUnitType('Archer', {
+humansFaction.defineUnitType({
   id: '#unit-h10',
 
   mainPortraitUrl: AssetsImages.UnitRanged,
@@ -137,7 +136,6 @@ humansFaction.defineUnitType('Archer', {
 
   upgradeDetails: {
     target: '#unit-h11',
-    // targetId: '#unit-h11',
     upgradeCost: {
       gold: 25,
     }
@@ -199,7 +197,7 @@ humansFaction.defineUnitType('Archer', {
   },
 });
 
-humansFaction.defineUnitType('Crossbowmen', {
+humansFaction.defineUnitType({
   id: '#unit-h11',
 
   mainPortraitUrl: AssetsImages.UnitRanged,
@@ -256,7 +254,7 @@ humansFaction.defineUnitType('Crossbowmen', {
   },
 })
 
-humansFaction.defineUnitType('Knight', {
+humansFaction.defineUnitType({
   id: '#unit-h20',
   mainPortraitUrl: AssetsImages.UnitMelee,
   name: 'Knights',
@@ -291,7 +289,7 @@ humansFaction.defineUnitType('Knight', {
   },
 });
 
-humansFaction.defineUnitType('Cavalry', {
+humansFaction.defineUnitType({
   id: '#unit-h30',
   name: 'Cavalry',
   mainPortraitUrl: AssetsImages.UnitMelee,
@@ -333,7 +331,7 @@ humansFaction.defineUnitType('Cavalry', {
   },
 });
 
-humansFaction.defineUnitType('HeavyCavalry', {
+humansFaction.defineUnitType({
   id: '#unit-h31',
   name: 'Heavy Cavalry',
   mainPortraitUrl: AssetsImages.UnitMelee,
@@ -370,7 +368,7 @@ humansFaction.defineUnitType('HeavyCavalry', {
   upgraded: true,
 });
 
-humansFaction.defineUnitType('MysticBird', {
+humansFaction.defineUnitType( {
   id: '#unit-h40',
 
   name: 'Mystic Birds',
@@ -409,7 +407,7 @@ humansFaction.defineUnitType('MysticBird', {
   },
 });
 
-humansFaction.defineUnitType('Firebird', {
+humansFaction.defineUnitType({
   id: '#unit-h41',
   name: 'Firebirds',
   mainPortraitUrl: AssetsImages.FireBird,

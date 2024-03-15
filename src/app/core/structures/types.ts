@@ -1,12 +1,12 @@
 import { PlayersApi, SpellsApi } from '../api/game-api';
+import { Entity, StructId, UnitTypeId } from '../entities';
 import { EventFeedApi } from '../game-objects';
 import { ItemBaseModel } from '../items';
 import { Player } from '../players';
-import { Entity, StructId } from '../entities';
 import { ResourceType } from '../resources';
 import { LocalEvents } from '../triggers';
 import { DescriptionElement } from '../ui';
-import { GenerationModel, UnitBaseType, UnitGroup } from '../unit-types';
+import { GenerationModel, UnitGroup } from '../unit-types';
 import { SturctEventsGroup } from './events';
 import { MapStructure } from './map-structures';
 
@@ -80,7 +80,7 @@ export interface ResourceRewardModel {
 }
 
 export interface HiringRewardModel {
-  unitType: UnitBaseType;
+  unitTypeId: UnitTypeId;
   maxCount: number;
 }
 

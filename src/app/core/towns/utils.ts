@@ -1,5 +1,4 @@
-import { registerEntity } from '../entities';
-import { UnitBaseType } from '../unit-types';
+import { UnitTypeId, registerEntity } from '../entities';
 import { ActivityTypes, BuidlingBase, HiringActivity } from './buildings';
 
 export function createBuildingType(building: BuidlingBase): BuidlingBase {
@@ -8,15 +7,15 @@ export function createBuildingType(building: BuidlingBase): BuidlingBase {
   return building;
 }
 
-export function createHiringActivity<T extends string>(
-  unitType: UnitBaseType,
+export function createHiringActivity(
+  unitType: UnitTypeId,
   growth: number,
   unitGrowthGroup: string,
   upgrade: boolean = false,
 ): HiringActivity {
   return {
     type: ActivityTypes.Hiring,
-    hiring: { type: unitType, growth, refillDaysInterval: 7 },
+    hiring: { unitTypeId: unitType, growth, refillDaysInterval: 7 },
     unitGrowthGroup,
     growth,
     growthIntervalDays: 7,

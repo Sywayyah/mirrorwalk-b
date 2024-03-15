@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ResourceType, Resources, ResourcesModel } from 'src/app/core/resources';
 import { HiringReward, HiringRewardModel } from 'src/app/core/structures';
 import { StructPopupData } from 'src/app/core/ui';
+import { resolveUnitType } from 'src/app/core/unit-types';
 import { MwPlayersService, MwUnitGroupsService } from 'src/app/features/services';
 import { BasicPopup } from 'src/app/features/shared/components';
 
@@ -40,7 +41,7 @@ export class HiringRewardPopupComponent extends BasicPopup<StructPopupData> impl
       const baseCost: Partial<ResourcesModel> = {};
       const currentCost: Partial<ResourcesModel> = {};
 
-      const unitReqs = unit.unitType.baseRequirements;
+      const unitReqs = resolveUnitType(unit.unitTypeId).baseRequirements;
 
       const resourceTypes: ResourceType[] = [
         ResourceType.Gems,
@@ -87,7 +88,7 @@ export class HiringRewardPopupComponent extends BasicPopup<StructPopupData> impl
     this.hiredGroups.forEach(group => {
       if (group.count) {
         const unitGroup = this.unitGroups.createUnitGroup(
-          group.hire.unitType,
+          group.hire.unitTypeId,
           { count: group.count },
           currentPlayer.hero,
         );

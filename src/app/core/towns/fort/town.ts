@@ -47,28 +47,28 @@ const goblinHuts: BuidlingBase = createBuildingType({
   id: '#build-fort-goblin-huts-1',
   name: 'Goblin Huts',
   description: 'Allows to train Raiders that can be upgraded.',
-  activity: createHiringActivity(fortFaction.getUnitType('Raiders'), 18, 'raiders'),
+  activity: createHiringActivity('#unit-f00', 18, 'raiders'),
 });
 
 const upgradedGoblinHuts = createBuildingType({
   id: '#build-fort-goblin-huts-2',
   name: 'Upg. Goblin Huts',
   description: 'Allows to train Raiders and Clan.',
-  activity: createHiringActivity(fortFaction.getUnitType('Raiders'), 18, 'raiders', true),
+  activity: createHiringActivity('#unit-f00', 18, 'raiders', true),
 });
 
 const stockade = createBuildingType({
   id: '#build-fort-stockade-1',
   name: 'Stockade',
   description: 'Allows to train Goblin Archers that can be upgraded.',
-  activity: createHiringActivity(fortFaction.getUnitType('GoblinArcher'), 18, 'goblinArcher'),
+  activity: createHiringActivity('#unit-f10', 18, 'goblinArcher'),
 });
 
 const upgradedStockade = createBuildingType({
   id: '#build-fort-stockade-2',
   name: 'Upg. Stockade',
   description: 'Allows to train Goblin Archers and Goblin Shooters.',
-  activity: createHiringActivity(fortFaction.getUnitType('GoblinArcher'), 18, 'goblinArcher', true),
+  activity: createHiringActivity('#unit-f10', 18, 'goblinArcher', true),
 });
 
 

@@ -1,9 +1,8 @@
 import { GlobalEventsApi, PlayersApi } from '../api/game-api';
+import { BuildingId, Entity, UnitTypeId } from '../entities';
 import { GameObject, GameObjectsManagerAPI } from '../game-objects';
-import { BuildingId, Entity } from '../entities';
 import { Resources } from '../resources';
 import { LocalEvents } from '../triggers';
-import { UnitBaseType } from '../unit-types';
 import { BuildingsEventsGroup } from './events';
 
 export enum ActivityTypes {
@@ -16,7 +15,7 @@ interface BuildingAcitivty<T extends ActivityTypes = ActivityTypes> {
 }
 
 export interface HiringDetails {
-  type: UnitBaseType;
+  unitTypeId: UnitTypeId;
   growth: number;
   // optional, default is 7
   refillDaysInterval?: number;
@@ -32,7 +31,7 @@ export interface HiringActivity extends BuildingAcitivty<ActivityTypes.Hiring> {
 }
 
 export interface ItemsSellingActivity
-  extends BuildingAcitivty<ActivityTypes.ItemsSelling> {}
+  extends BuildingAcitivty<ActivityTypes.ItemsSelling> { }
 
 // Events & APIs should be revised and possibly simplified
 /** Major possible improvement points:

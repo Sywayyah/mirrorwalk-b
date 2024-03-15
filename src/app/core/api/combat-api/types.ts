@@ -1,7 +1,8 @@
+import { UnitTypeId } from '../../entities';
 import { Modifiers } from '../../modifiers';
 import { Player } from '../../players';
 import { DefaultSpellStateType, Spell } from '../../spells';
-import { UnitBaseType, UnitGroup } from '../../unit-types';
+import { UnitGroup } from '../../unit-types';
 import { SpellsApi } from '../game-api';
 
 export interface PostDamageInfo {
@@ -40,7 +41,7 @@ export interface CombatActionsRef extends SpellsApi {
   /** If turns aren't specified, removes all turns left */
   removeTurnsFromUnitGroup(target: UnitGroup, turns?: number): void;
 
-  summonUnitsForPlayer(ownerPlayer: Player, unitType: UnitBaseType, unitNumber: number): UnitGroup;
+  summonUnitsForPlayer(ownerPlayer: Player, unitTypeId: UnitTypeId, unitCount: number): UnitGroup;
 
   dealDamageTo: (
     target: UnitGroup,
