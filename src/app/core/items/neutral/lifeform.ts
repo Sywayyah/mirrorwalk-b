@@ -1,25 +1,26 @@
 import { itemStatsDescr, spellDescrElem } from '../../ui';
 import { ItemBaseModel, ItemSlotType } from '../types';
+import { createItem } from '../utils';
 
 const healValue = 50;
 
-export const LifeformItem: ItemBaseModel = {
+export const LifeformItem: ItemBaseModel = createItem({
+  id: '#item-lifeform',
+
   name: 'Lifeform',
-  slotType: ItemSlotType.Armor,
-  icon: {
-    icon: 'vest',
-  },
-  staticMods: {
+  slot: ItemSlotType.Armor,
+  icon: 'vest',
+  stats: {
     heroBonusDefence: 7,
     resistFire: 25,
     resistPoison: 20,
     resistLightning: 15,
     resistCold: 15,
   },
-  description({ thisItem }) {
+  description({ thisItemBase }) {
     return {
       descriptions: [
-        itemStatsDescr(thisItem),
+        itemStatsDescr(thisItemBase),
         spellDescrElem(`An incredible artifact that shimmers with bright colors and emits life aura. Heals all units by ${healValue} in the beginning of each round.`),
       ],
     }
@@ -37,4 +38,4 @@ export const LifeformItem: ItemBaseModel = {
       })
     }
   },
-};
+});

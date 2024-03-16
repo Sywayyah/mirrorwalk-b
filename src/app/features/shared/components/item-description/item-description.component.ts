@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
-import { Item } from 'src/app/core/items';
+import { Item, ItemBaseModel } from 'src/app/core/items';
 import { DescriptionElement } from 'src/app/core/ui/descriptions';
 
 @Component({
@@ -11,15 +11,21 @@ import { DescriptionElement } from 'src/app/core/ui/descriptions';
 export class ItemDescriptionComponent implements OnInit {
 
   @Input()
-  public item!: Item;
+  public item?: Item;
+
+  @Input({ required: true })
+  public itemBase!: ItemBaseModel;
 
   public descriptions!: DescriptionElement[];
 
   constructor() { }
 
   ngOnInit(): void {
-    this.descriptions = this.item.baseType.description({
+    const baseType = this.item?.baseType || this.itemBase;
+
+    this.descriptions = baseType.description({
       thisItem: this.item,
+      thisItemBase: baseType,
     }).descriptions;
   }
 

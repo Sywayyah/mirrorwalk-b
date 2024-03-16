@@ -23,6 +23,7 @@ interface ExtendedFinalDamageInfo extends FinalDamageInfo {
   stolenLifeUnitsRestored: number;
   isCritical: boolean;
 }
+
 @Injectable({
   providedIn: 'root'
 })
@@ -50,7 +51,7 @@ export class CombatInteractorService extends StoreClient() {
     damageType: DamageType = DamageType.PhysicalAttack,
     postActionFn?: (actionInfo: PostDamageInfo) => void,
     /* options object, contains values depending on situation */
-    options: { attackerUnit?: UnitGroup } = {},
+    options: { attackerUnit?: UnitGroup, isCounterattack?: boolean } = {},
   ): ExtendedFinalDamageInfo {
     let finalDamage = damage;
     let blockedDamage = 0;
@@ -122,6 +123,13 @@ export class CombatInteractorService extends StoreClient() {
           console.log(`damage reduced by ${damagePercentMod}%`);
 
           finalDamage = CommonUtils.nonNegative(Math.round(finalDamage + finalDamage * damagePercentMod) - blockedDamage);
+
+          // retaliation percent
+          const retaliationPercent = attackerFinalMods.getModValue('retaliationDamagePercent');
+
+          if (options.isCounterattack && retaliationPercent) {
+            finalDamage *= retaliationPercent;
+          }
 
           if (lifesteal) {
             stolenLife = Math.round(finalDamage * (lifesteal / 100));
@@ -256,7 +264,7 @@ export class CombatInteractorService extends StoreClient() {
       damageInfo.finalDamage,
       DamageType.PhysicalAttack,
       undefined,
-      { attackerUnit: attacker },
+      { attackerUnit: attacker, isCounterattack },
     );
 
     if (isCounterattack) {

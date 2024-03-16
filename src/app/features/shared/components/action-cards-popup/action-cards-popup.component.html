@@ -17,6 +17,6 @@
     <mw-action-card [actionCard]="actionCard.card"
                     [mwActionHint]="'Use ' + actionCard.card.title"
                     (click)="handleCardClick(actionCard)" />
-    <div class="cards-left">Left: {{actionCard.count}}</div>
+    <div class="cards-left">Left: {{actionCard.count | infNum}}</div>
   </div>
 </div>

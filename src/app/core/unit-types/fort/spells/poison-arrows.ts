@@ -4,6 +4,8 @@ import { spellDescrElem } from 'src/app/core/ui';
 import { messageWrapper } from 'src/app/core/vfx';
 
 export const PoisonArrowsDebuff = createSpell<{ poisonDamage: number }>({
+  id: '#spell-unit-poison-arrows-debuff',
+
   name: 'Poisoned',
   icon: { icon: 'chemical-arrow', bgClr: 'green' },
   activationType: SpellActivationType.Passive,
@@ -28,6 +30,7 @@ export const PoisonArrowsDebuff = createSpell<{ poisonDamage: number }>({
 });
 
 export const PoisonArrowsSpell = createSpell({
+  id: '#spell-unit-poison-arrows',
   name: 'Poison Arrows',
   icon: { icon: 'chemical-arrow', },
   activationType: SpellActivationType.Passive,

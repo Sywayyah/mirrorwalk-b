@@ -13,3 +13,7 @@ export const getKeys = <T extends object>(obj: T) => Object.keys(obj) as (keyof 
 export function nonNullish<T>(val: T | null | undefined): val is T {
   return val !== null && val !== undefined;
 }
+
+export function infNum(num: number): number | string {
+  return num === Infinity ? '∞' : num;
+}

@@ -1,26 +1,22 @@
 import { itemStatsDescr } from '../../ui';
 import { ItemBaseModel, ItemSlotType } from '../types';
+import { createItem } from '../utils';
 
-export const FlamingSword: ItemBaseModel = {
+export const FlamingSword: ItemBaseModel = createItem({
+  id: '#item-flaming-sword',
+
   name: 'Flaming Sword',
-  icon: {
-    icon: 'sword',
-  },
-  slotType: ItemSlotType.Weapon,
-  staticMods: {
+  icon: 'sword',
+  slot: ItemSlotType.Weapon,
+  stats: {
     heroBonusAttack: 3,
     heroMaxMana: 6,
     specialtyFireMastery: 3,
   },
-  description({ thisItem }) {
-    return {
-      descriptions: [
-        itemStatsDescr(thisItem),
-      ],
-    }
+  cost: {
+    gold: 1500,
   },
-  config: {
-    init() {
-    }
+  sellingCost: {
+    gold: 800,
   },
-};
+});

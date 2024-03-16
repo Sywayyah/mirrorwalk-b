@@ -4,7 +4,7 @@ import { UnitGroup } from '../../unit-types';
 import { CommonUtils } from '../../utils';
 import { FireAnimation, getDamageParts, uiPercentSign } from '../../vfx';
 import { SpellActivationType, SpellBaseType } from '../types';
-import { canActivateOnEnemyFn, getLevelScalingValueFn } from '../utils';
+import { canActivateOnEnemyFn, createSpell, getLevelScalingValueFn } from '../utils';
 
 const baseDamage = 65;
 const bonusDmgPerLevel = 25;
@@ -18,7 +18,9 @@ const fireMasteryBonusesByLevels = [
   { targets: 2, damage: [0.65, 0.25] },
 ];
 
-export const RainOfFireSpell: SpellBaseType = {
+export const RainOfFireSpell: SpellBaseType = createSpell({
+  id: '#spell-rain-of-fire',
+
   name: 'Rain of Fire',
   activationType: SpellActivationType.Target,
   icon: {
@@ -120,4 +122,4 @@ export const RainOfFireSpell: SpellBaseType = {
       },
     },
   }
-};
+});

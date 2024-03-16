@@ -16,6 +16,7 @@ export interface StructureDescription {
   attackerStaticMods?: Modifiers;
   tags?: string[];
   actionPoints?: number;
+  structParams?: object;
 }
 
 type SvgPath = {
@@ -45,6 +46,8 @@ export interface ViewStructureCreationParams {
 
   iconName: string;
   actionPoints?: number;
+
+  structParams?: object;
 }
 
 
@@ -74,6 +77,8 @@ export class MapStructure extends GameObject<ViewStructureCreationParams> {
 
   public guardingPlayer?: Player;
 
+  public structParams?: object;
+
   // theoretically, reward can be programmed.
   // On the other hand, I can still have
   // this declarative approach.
@@ -95,15 +100,18 @@ export class MapStructure extends GameObject<ViewStructureCreationParams> {
   // in the future, could be stored separately.
   public svg?: SvgPath;
 
-  create({ iconName, x, y, isRoot, generator, guardingPlayer, pathTo, actionPoints }: ViewStructureCreationParams): void {
+  create({ iconName, x, y, isRoot, generator, guardingPlayer, pathTo, actionPoints, structParams }: ViewStructureCreationParams): void {
     this.x = x;
     this.y = y;
     this.icon = iconName;
     this.isRoot = isRoot;
     this.generator = generator;
+    this.structParams = structParams;
+
     if (generator) {
-      this.name = generator.name;
+      this.name = generator.description?.({ thisStruct: this }).name ?? generator.name;
     }
+
     this.actionPoints = actionPoints || generator?.actionPoints || 0;
     this.guardingPlayer = guardingPlayer;
     this.pathTo = pathTo;

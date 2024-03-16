@@ -2,13 +2,14 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { PlayerCastsInstantSpell, PlayersInitialized } from 'src/app/core/events';
 import { Player, PlayerState } from 'src/app/core/players';
-import { Spell, SpellActivationType, SpellBaseType } from 'src/app/core/spells';
+import { Spell, SpellActivationType, SpellBaseType, createSpell } from 'src/app/core/spells';
 import { UnitGroup } from 'src/app/core/unit-types';
 import { Notify, StoreClient } from 'src/app/store';
 import { MwPlayersService } from './';
 import { GameObjectsManager } from './game-objects-manager.service';
 
-export const NULL_SPELL: SpellBaseType = {
+export const NULL_SPELL: SpellBaseType = createSpell({
+  id: '#spell-null',
   activationType: SpellActivationType.Instant,
   name: '',
   icon: { icon: '' },
@@ -25,7 +26,7 @@ export const NULL_SPELL: SpellBaseType = {
       init: () => { },
     }
   }
-};
+});
 
 @Injectable({
   providedIn: 'root'

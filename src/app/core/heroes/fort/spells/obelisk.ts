@@ -4,6 +4,8 @@ import { messageWrapper } from 'src/app/core/vfx';
 
 
 export const LifeObeliskSpell = createSpell({
+  id: '#spell-obelisk',
+
   name: 'Life Obelisk',
   icon: { icon: 'arena' },
   activationType: SpellActivationType.Target,
@@ -22,6 +24,7 @@ export const LifeObeliskSpell = createSpell({
         events.on({
           PlayerTargetsSpell({ target }) {
             vfx.createDroppingMessageForUnitGroup(target.id, { html: messageWrapper(`Stunned!`) });
+            actions.removeTurnsFromUnitGroup(target, 2);
           },
         })
 

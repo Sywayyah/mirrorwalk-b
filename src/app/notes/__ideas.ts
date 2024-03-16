@@ -83,9 +83,9 @@
     from mines, units growth in the town).
 
   IDEA: Some town/hero upgrades may require objectives on the map.
-    For instance, most of fractions might not have direct access to
+    For instance, most of factions might not have direct access to
     the market, you would need to find market location on the map.
-    But some fractions might access them without such requirements.
+    But some factions might access them without such requirements.
 
     It might also be applied to the development of the character.
     Some skills might be discovered after some locations on the

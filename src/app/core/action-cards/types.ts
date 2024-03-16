@@ -1,3 +1,4 @@
+import { ActionCardId, Entity } from '../entities';
 import { GameApi } from '../triggers';
 
 export enum ActionCardTypes {
@@ -6,7 +7,8 @@ export enum ActionCardTypes {
   PlayerAction,
 }
 
-export interface ActionCard {
+export interface ActionCard extends Entity {
+  id: ActionCardId;
   title: string;
   type: ActionCardTypes;
   description: string;

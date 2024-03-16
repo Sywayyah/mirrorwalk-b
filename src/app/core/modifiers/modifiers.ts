@@ -28,7 +28,6 @@ export interface ModifiersModel extends Specialties {
   fixedSpeed: number;
 
   lifesteal: number;
-  // to implement
   retaliationDamagePercent: number;
 
   // critical damage
@@ -58,9 +57,13 @@ export interface ModifiersModel extends Specialties {
   isGhost: boolean;
   isSummon: boolean;
   isBoss: boolean;
+  isCavalry: boolean;
 
   /* states */
   defending: true,
+
+  __sourceObjectId: string;
+  __description: () => object;
 
   /* Modifiers can be returned on condition */
   __attackConditionalModifiers?: (params: ConditionalModifierParamsModel) => Modifiers;
@@ -71,6 +74,7 @@ export interface ModifiersModel extends Specialties {
 
   // might get obsolete.
   // same as above, but for auras.
+  // todo: remoteness is also a question, because remoteness is different in different views
   __auraModifiers: (params: { target: UnitGroup, thisUnit?: UnitGroup, remoteness?: number, currentGroupPosition?: number }) => Modifiers | null;
 }
 

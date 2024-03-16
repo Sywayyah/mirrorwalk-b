@@ -1,29 +1,31 @@
 import { itemStatsDescr, spellDescrElem } from '../../ui';
 import { ItemBaseModel, ItemSlotType } from '../types';
+import { createItem } from '../utils';
 
-export const ItemDoomstring: ItemBaseModel<{}> = {
+export const ItemDoomstring: ItemBaseModel = createItem({
+  id: '#item-doomstring',
+
   name: 'Doomstring',
-  slotType: ItemSlotType.Weapon,
-  staticMods: {
+  slot: ItemSlotType.Weapon,
+  icon: 'crossbow',
+  stats: {
     heroBonusAttack: 8,
     specialtyOffence: 3,
     specialtyArchery: 2,
     specialtyFireMastery: 1,
   },
-  icon: {
-    icon: 'crossbow',
+  cost: {
+    gold: 5000,
+    redCrystals: 2,
+    gems: 1,
   },
-  defaultState: {},
-  description: ({ thisItem }) => {
+  description: ({ thisItemBase }) => {
     return {
       descriptions: [
-        itemStatsDescr(thisItem),
+        itemStatsDescr(thisItemBase),
         spellDescrElem(`An ancient ballista made in infernal abyss.`),
         spellDescrElem(`Grants ability: Doom. Doomed target looses 50% of armor and receives 50% increased physical damage.`),
       ],
     };
   },
-  config: {
-    init: () => { },
-  }
-};
+});

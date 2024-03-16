@@ -2,7 +2,7 @@ import { EffectAnimation } from '../../api/vfx-api';
 import { spellDescrElem, strPercent } from '../../ui';
 import { createAnimation, getIconElement, getPlainBlurFrames, getReversePulseKeyframes } from '../../vfx';
 import { SpellActivationType, SpellBaseType } from '../types';
-import { canActivateOnEnemyFn, debuffColors } from '../utils';
+import { canActivateOnEnemyFn, createSpell, debuffColors } from '../utils';
 
 const damageReduction = 0.14;
 const uiPercent = strPercent(damageReduction);
@@ -77,7 +77,9 @@ const CorrosiveFogAnimation: EffectAnimation = createAnimation([
 ]);
 
 
-export const CorrosiveFogDebuff: SpellBaseType<undefined | { debuffRoundsLeft: number }> = {
+export const CorrosiveFogDebuff: SpellBaseType<undefined | { debuffRoundsLeft: number }> = createSpell({
+  id: '#spell-corrosive-fog-debuff',
+
   name: 'Corrosion',
   activationType: SpellActivationType.Debuff,
   icon: {
@@ -128,9 +130,10 @@ export const CorrosiveFogDebuff: SpellBaseType<undefined | { debuffRoundsLeft: n
       }
     }
   }
-};
+});
 
-export const CorrosiveFogSpell: SpellBaseType = {
+export const CorrosiveFogSpell: SpellBaseType = ({
+  id: '#spell-corrosive-fog',
   name: 'Corrosive Fog',
   activationType: SpellActivationType.Target,
   icon: {
@@ -172,4 +175,4 @@ export const CorrosiveFogSpell: SpellBaseType = {
       }
     }
   }
-};
+});

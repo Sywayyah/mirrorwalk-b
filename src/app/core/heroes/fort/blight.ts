@@ -1,5 +1,5 @@
 import { AssetsImages } from '../../assets';
-import { fortFraction } from '../../fractions';
+import { fortFaction } from '../../factions';
 import { heroDescrElem } from '../../ui';
 import { HeroBase } from '../types';
 import { heroesDefaultResources } from '../utils';
@@ -12,7 +12,9 @@ import { LifeObeliskSpell } from './spells/obelisk';
 
 // Life tansfer: Reallocates health from your enemies to your army, dealing 15 damage to everyone and equally distributing the total damage as healing.
 //  When life totem is present on the battlefield, effect of this ability is increased by 30%.
-export const BlightHero: HeroBase = fortFraction.createHero({
+export const BlightHero: HeroBase = fortFaction.createHero({
+  id: '#hero-blight',
+
   name: 'Blight',
   generalDescription: heroDescrElem(`A rotting ent called Blight. His army is weakened by -10% All Resist and -5 Defence, but compensating it with abilities and providing many ways to heal.`),
 
@@ -25,8 +27,8 @@ export const BlightHero: HeroBase = fortFraction.createHero({
     maxUnitGroups: 2,
     minUnitGroups: 2,
     units: [
-      [fortFraction.getUnitType('Raiders'), 13, 16, 2],
-      [fortFraction.getUnitType('GoblinArcher'), 10, 14, 1],
+      ['#unit-f00', 13, 16, 2],
+      ['#unit-f10', 10, 14, 1],
     ],
   }],
   items: [

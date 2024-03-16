@@ -124,19 +124,21 @@ export class BattleController extends StoreClient() {
     // todo: handle the case then only summons left
     if (!this.battleState.getAliveUnitsOfPlayer(enemyPlayer).length) {
       const deadUnitsOfCurrentPlayer = this.battleState.getDeadUnitsOfPlayer(currentPlayer);
-      const deadUnitsOfEnemyPlayer = this.battleState.getDeadUnitsOfPlayer(enemyPlayer);
-      const summonedUnitsOfPlayer = this.battleState.getSummonsOfPlayer(currentPlayer);
+      const summonedUnitsOfCurrentPlayer = this.battleState.getSummonsOfPlayer(currentPlayer);
 
-      [...deadUnitsOfCurrentPlayer, ...deadUnitsOfEnemyPlayer, ...summonedUnitsOfPlayer].forEach((unitGroup) => {
+      const deadUnitsOfEnemyPlayer = this.battleState.getDeadUnitsOfPlayer(enemyPlayer);
+
+      [...deadUnitsOfCurrentPlayer, ...deadUnitsOfEnemyPlayer, ...summonedUnitsOfCurrentPlayer].forEach((unitGroup) => {
         this.gameObjectsManager.destroyObject(unitGroup);
       });
 
       const finalCurrentUnitsOfPlayer = currentPlayerUnitGroups.filter(unit => !unit.modGroup.getModValue('isSummon'));
       const currentHero = this.playersService.getCurrentPlayer().hero;
 
-      // adjust slots
-      finalCurrentUnitsOfPlayer.filter(unitGroup => !unitGroup.fightInfo.isAlive).forEach((unitGroup) => {
+      // remove dead units from slots
+      currentHero.unitGroups.filter(unitGroup => !unitGroup.fightInfo.isAlive).forEach((unitGroup) => {
         const dyingUnitSlot = currentHero.getAllSlots().find(slot => slot.unitGroup === unitGroup);
+
         if (dyingUnitSlot) {
           dyingUnitSlot.unitGroup = null;
         }

@@ -1,10 +1,12 @@
-import { neutralsFraction } from '../../fractions/neutrals/fraction';
 import { NeutralRewardTypesEnum, StructureGeneratorModel, StuctureControl } from '../types';
+import { createStructure } from '../utils';
 
-export const RockyPassageStructure: StructureGeneratorModel = {
+export const RockyPassageStructure: StructureGeneratorModel = createStructure({
+  id: '#struct-rocky-passage',
+
   name: 'Rocky Passage',
   actionPoints: 2,
-  // Make new descriptions later
+
   description: () => ({ descriptions: ['A rocky passage held by a powerful dragon.'] }),
   disableWeeklyGuardRise: true,
 
@@ -21,7 +23,7 @@ export const RockyPassageStructure: StructureGeneratorModel = {
       // Could be another interesting mechanic, if player isn't going to
       //  defeat this camp by day 14, he will be automatically forced to fight them.
       units: [
-        [neutralsFraction.getUnitType('Devastator'), 1, 1, 1],
+        ['#unit-neut-boss-devastator', 1, 1, 1],
       ],
     };
   },
@@ -32,4 +34,4 @@ export const RockyPassageStructure: StructureGeneratorModel = {
       type: NeutralRewardTypesEnum.NoReward,
     };
   }
-};
+});

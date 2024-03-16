@@ -1,13 +1,12 @@
 
 
 import { AssetsImages } from '../../assets';
-import { humansFraction } from '../../fractions';
+import { humansFaction } from '../../factions';
 import { ItemWindCrest } from '../../items/neutral';
 import { PoisonCloudSpell } from '../../spells/common';
 import { CorrosiveFogSpell } from '../../spells/common/corrosive-fog';
 import { heroDescrElem } from '../../ui';
 import { HeroBase } from '../types';
-
 
 /* Poison Assassin hero, might become a hero of Garden */
 /*  Poison cloud needs some improvements. It might weaken enemy's defence and attack, as well as deal some initial damage  */
@@ -38,7 +37,9 @@ import { HeroBase } from '../types';
   Another possible special treat of Veasin might be having lots of spells
     with unshared cooldowns / abilities with charges.
 */
-export const VeasinHero: HeroBase = humansFraction.createHero({
+export const VeasinHero: HeroBase = humansFaction.createHero({
+  id: '#hero-veasin',
+
   name: 'Veasin',
   generalDescription: heroDescrElem(`Veasin makes use of her poison abilities, weakening enemies and dealing damage over time.`),
   image: AssetsImages.HeroMage,
@@ -50,9 +51,9 @@ export const VeasinHero: HeroBase = humansFraction.createHero({
     maxUnitGroups: 2,
     minUnitGroups: 2,
     units: [
-      [humansFraction.getUnitType('Cavalry'), 3, 5, 1],
-      [humansFraction.getUnitType('Knight'), 6, 11, 2],
-      [humansFraction.getUnitType('Archer'), 6, 11, 1],
+      ['#unit-h01', 10, 18, 2],
+      ['#unit-h20', 6, 11, 1],
+      ['#unit-h30', 3, 5, 1],
     ],
   }],
   items: [

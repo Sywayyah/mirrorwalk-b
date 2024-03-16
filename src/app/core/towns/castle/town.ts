@@ -1,18 +1,24 @@
 import { MeditateActionCard } from '../../action-cards/player-actions';
+import { UnitTypeId } from '../../entities';
 import { AddActionCardsToPlayer } from '../../events';
-import { HUMANS_UNIT_TYPES, humansFraction } from '../../fractions';
+import { humansFaction } from '../../factions';
 import { ActivityTypes, BuidlingBase, HiringActivity } from '../buildings';
-import { TownBase } from '../types';
+import { SellingBuildingData, TownBase } from '../types';
+import { createBuildingType } from '../utils';
 
 function createHiringActivity(
-  unitType: HUMANS_UNIT_TYPES,
+  unitType: UnitTypeId,
   growth: number,
   unitGrowthGroup: string,
-  upgrade: boolean = false,
+  upgrade: boolean = false
 ): HiringActivity {
   return {
     type: ActivityTypes.Hiring,
-    hiring: { type: humansFraction.getUnitType(unitType), growth, refillDaysInterval: 7 },
+    hiring: {
+      unitTypeId: unitType,
+      growth,
+      refillDaysInterval: 7,
+    },
     unitGrowthGroup,
     growth,
     growthIntervalDays: 7,
@@ -24,6 +30,7 @@ export type CastleTownBuildings =
   | 'town-center'
   | 'market'
   | 'magic-school'
+  | 'items-market'
   | 'fate-halls'
   | 'tavern'
   | 'training-camp'
@@ -32,50 +39,64 @@ export type CastleTownBuildings =
   | 'cavalry-halls'
   | 'magic-tower';
 
+const townCenter: BuidlingBase = createBuildingType({
+  id: '#build-castle-town-center',
 
-const townCenter: BuidlingBase = {
   name: 'Town Center',
   description: 'Earns 500 gold each day.',
   config: {
     init({ players, localEvents }) {
       localEvents.on({
         NewDayBegins() {
-          players.giveResourcesToPlayer(players.getCurrentPlayer(), { gold: 500 });
-        },
-      })
-    }
-  }
-};
-
-const market: BuidlingBase = {
-  name: 'Market',
-};
-
-const highTower: BuidlingBase = {
-  name: 'High Tower',
-  description: 'Gives 1 Meditation action card instantly and at the beginning of each week.',
-  config: {
-    init({ localEvents, players, globalEvents }) {
-      globalEvents.dispatch(AddActionCardsToPlayer({
-        actionCardStacks: [{ card: MeditateActionCard, count: 1 }],
-        player: players.getCurrentPlayer(),
-      }));
-
-      localEvents.on({
-        NewWeekStarts() {
-          globalEvents.dispatch(AddActionCardsToPlayer({
-            actionCardStacks: [{ card: MeditateActionCard, count: 1 }],
-            player: players.getCurrentPlayer(),
-          }));
+          players.giveResourcesToPlayer(players.getCurrentPlayer(), {
+            gold: 500,
+          });
         },
       });
     },
-  }
-};
+  },
+});
 
-const tavern: BuidlingBase = {
+const market = createBuildingType({
+  id: '#build-castle-market',
+
+  name: 'Market',
+});
+
+const highTower = createBuildingType({
+  id: '#build-castle-high-tower',
+
+  name: 'High Tower',
+  description:
+    'Gives 1 Meditation action card instantly and at the beginning of each week.',
+  config: {
+    init({ localEvents, players, globalEvents }) {
+      globalEvents.dispatch(
+        AddActionCardsToPlayer({
+          actionCardStacks: [{ card: MeditateActionCard, count: 1 }],
+          player: players.getCurrentPlayer(),
+        })
+      );
+
+      localEvents.on({
+        NewWeekStarts() {
+          globalEvents.dispatch(
+            AddActionCardsToPlayer({
+              actionCardStacks: [{ card: MeditateActionCard, count: 1 }],
+              player: players.getCurrentPlayer(),
+            })
+          );
+        },
+      });
+    },
+  },
+});
+
+const tavern = createBuildingType({
+  id: '#build-castle-tavern',
+
   name: 'Tavern',
-};
+});
 
 /*
   Buildings might be reworked
@@ -92,102 +113,143 @@ const tavern: BuidlingBase = {
   is going to be created from buildings with hiring activity
   type
 */
-const trainingCamp: BuidlingBase = {
+const trainingCamp = createBuildingType({
+  id: '#build-castle-taining-camp-1',
+
   name: 'Training Camp',
   description: 'Allows to train Pikemans that can be upgraded.',
-  activity: createHiringActivity('Pikemen', 18, 'pikeman'),
-};
+  activity: createHiringActivity('#unit-h00', 18, 'pikeman'),
+});
 
-const upgradedTrainingCamp: BuidlingBase = {
+const upgradedTrainingCamp = createBuildingType({
+  id: '#build-castle-taining-camp-2',
+
   name: 'Upg. Training Camp',
   description: 'Allows to hire and upgrade Halberdiers',
-  activity: createHiringActivity('Pikemen', 18, 'pikeman', true),
-};
+  activity: createHiringActivity('#unit-h00', 18, 'pikeman', true),
+});
 
-const archersOutpost = {
+const archersOutpost = createBuildingType({
+  id: '#build-castle-archers-1',
+
   name: 'Archers Outpost',
   description: 'Allows to train Archers',
-  activity: createHiringActivity('Archer', 12, 'archers'),
-};
+  activity: createHiringActivity('#unit-h10', 12, 'archers'),
+});
 
-const upgradedArchersOutpost = {
+const upgradedArchersOutpost = createBuildingType({
+  id: '#build-castle-archers-2',
+
   name: 'Upg. Archers Outpost',
   description: 'Allows to train Archers and Crossbowmen',
-  activity: createHiringActivity('Archer', 12, 'archers', true),
-};
+  activity: createHiringActivity('#unit-h10', 12, 'archers', true),
+});
 
-const hallsOfKnights = {
+const hallsOfKnights = createBuildingType({
+  id: '#build-castle-knights-1',
+
   name: 'Halls of Knights',
   description: 'Allows to train Knights',
-  activity: createHiringActivity('Knight', 4, 'knights'),
-};
+  activity: createHiringActivity('#unit-h20', 4, 'knights'),
+});
 
-const cavalryStalls = {
+const cavalryStalls = createBuildingType({
+  id: '#build-castle-cavalry-1',
+
   name: 'Cavalry Stalls',
   description: 'Allows to train Cavalry',
-  activity: createHiringActivity('Cavalry', 2, 'cavalry'),
-};
+  activity: createHiringActivity('#unit-h30', 2, 'cavalry'),
+});
 
-const magicTower: BuidlingBase = {
+const magicTower = createBuildingType({
+  id: '#build-castle-magic-tower-1',
+
   name: 'Magic Tower',
   description: 'Allows to train Mystical Birds',
-  activity: createHiringActivity('MysticBird', 2, 'firebirds'),
-};
+  activity: createHiringActivity('#unit-h40', 2, 'firebirds'),
+});
 
-const upgradedMagicTower: BuidlingBase = {
+const upgradedMagicTower = createBuildingType({
+  id: '#build-castle-magic-tower-2',
+
   name: 'Upg. Magic Tower',
   description: 'Allows to train Mystical Birds and Firebirds',
-  activity: createHiringActivity('MysticBird', 2, 'firebirds', true),
-};
+  activity: createHiringActivity('#unit-h40', 2, 'firebirds', true),
+});
 
-// will be reworked, need somehow to process it in the fraction itself
+const itemMarket = createBuildingType({
+  id: '#build-castle-items-market',
+
+  name: 'Item market',
+  activity: {
+    type: ActivityTypes.ItemsSelling,
+  },
+  description: 'Sells items',
+  config: {
+    init({ localEvents, thisBuilding }) {
+      localEvents.on({
+        Built() {
+          thisBuilding.addCustomData<SellingBuildingData>({
+            items: ['#item-iron-pike', '#item-irton-plate', '#item-kite-shield', '#item-storm-pike', '#item-battlemage-sword'],
+            selling: true,
+          });
+        },
+      });
+    },
+  },
+});
+
+const hallsOfFate = createBuildingType({
+  id: '#build-castle-halls-of-fate',
+  name: 'Halls of Fate'
+});
+
+// will be reworked, need somehow to process it in the faction itself
 export const castleTownBase: TownBase<CastleTownBuildings> = {
+  id: '#town-castle',
   name: 'Castle',
   availableBuildings: {
     'town-center': {
       baseName: 'Town Center',
       description: 'Grants you daily income',
-      levels: [
-        { building: townCenter, cost: { gold: 1000 } },
-      ],
+      levels: [{ building: townCenter, cost: { gold: 1000 } }],
       icon: 'capitol',
       tier: 1,
     },
-    'market': {
-      baseName: 'Market',
-      description: 'Allows to trade resources',
-      levels: [
-        { building: market, cost: { gold: 1500, wood: 2 } }
-      ],
-      icon: 'gavel',
+    'items-market': {
+      baseName: 'Items Market',
+      description: `Sells items`,
+      icon: 'key-basic',
+      levels: [{ building: itemMarket, cost: { gold: 500 } }],
       tier: 1,
     },
-    "magic-school": {
+    market: {
+      baseName: 'Market',
+      description: 'Allows to trade resources',
+      levels: [{ building: market, cost: { gold: 1500, wood: 2 } }],
+      icon: 'gavel',
+      tier: 2,
+    },
+    'magic-school': {
       baseName: 'Magic School',
       description: 'Allows you to learn spells for your hero',
-      levels: [
-        { building: highTower, cost: { gold: 1000, gems: 2 } }
-      ],
+      levels: [{ building: highTower, cost: { gold: 1000, gems: 2 } }],
       icon: 'burning-book',
       tier: 2,
     },
-    'tavern': {
+    tavern: {
       baseName: 'Tavern',
       description: 'Allows to hire neutral units',
-      levels: [
-        { building: tavern, cost: { gold: 1250, wood: 3 } },
-      ],
+      levels: [{ building: tavern, cost: { gold: 1250, wood: 3 } }],
       icon: 'hood',
       tier: 2,
     },
     'fate-halls': {
       baseName: 'Halls of Fate',
       description: 'Allows to develop your hero',
-      levels: [
-        { building: { name: 'Halls of Fate' }, cost: { gold: 1000 } },
-      ],
+      levels: [{ building: hallsOfFate, cost: { gold: 1000 } }],
       icon: 'barrier',
-      tier: 2,
+      tier: 3,
     },
     'training-camp': {
       baseName: 'Training Camp',
@@ -283,18 +345,14 @@ export const castleTownBase: TownBase<CastleTownBuildings> = {
     'halls-of-knights': {
       baseName: 'Halls of Knights',
       description: 'Trains Knights',
-      levels: [
-        { building: hallsOfKnights, cost: { gold: 1000, wood: 5 } },
-      ],
+      levels: [{ building: hallsOfKnights, cost: { gold: 1000, wood: 5 } }],
       icon: 'crossed-swords',
       tier: 2,
     },
     'cavalry-halls': {
       baseName: 'Cavalry Halls',
       description: 'Trains Cavalry',
-      levels: [
-        { building: cavalryStalls, cost: { gold: 1200, wood: 7 } },
-      ],
+      levels: [{ building: cavalryStalls, cost: { gold: 1200, wood: 7 } }],
       icon: 'horseshoe',
       tier: 3,
     },
@@ -311,4 +369,4 @@ export const castleTownBase: TownBase<CastleTownBuildings> = {
   },
 };
 
-humansFraction.setTownBase(castleTownBase);
+humansFaction.setTownBase(castleTownBase);

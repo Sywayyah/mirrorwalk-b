@@ -3,8 +3,9 @@
   {{data.struct.generator?.name}}
 </div>
 
-<div class="description" *ngIf="data.struct.generator?.description">
-  {{data.struct.generator?.description}}
+<div class="description"
+     *ngIf="data.struct.generator?.description">
+  <mw-description [descriptions]="data.struct.generator?.description({thisStruct: data.struct})?.descriptions!" />
 </div>
 
 <div>

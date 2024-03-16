@@ -1,5 +1,5 @@
 import { Type } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { EventData, EventType } from 'src/app/store';
 import { SpellsApi } from '../api/game-api';
 import { EventFeedMessage } from '../ui';
@@ -15,9 +15,15 @@ export type GameObjectClass<T extends GameObject> = Type<T> & {
 };
 
 export interface GameObjectsManagerAPI {
-  createNewGameObject<T extends GameObject>(gameObjectClass: GameObjectClass<T>, creationParams: CreationParams<T>, id?: string): T;
+  createNewGameObject<T extends GameObject>(
+    gameObjectClass: GameObjectClass<T>,
+    creationParams: CreationParams<T>,
+    id?: string
+  ): T;
   getObjectByFullId<T extends GameObject>(gameObjectId: string): T;
   destroyObject<T extends GameObject>(object: T): void;
+  addCustomData<T extends object>(idOrObject: string | GameObject, data: T): void;
+  getCustomData<T extends object>(idOrObject: string | GameObject): T | undefined;
 }
 
 export interface EventFeedApi {
@@ -33,7 +39,7 @@ export interface GameObjectApi {
   gameObjects: GameObjectsManagerAPI;
 }
 
-export class GameObject<CreationParams extends object = object> {
+export class GameObject<CreationParams extends object = object, StateT extends object = any> {
   public readonly id: string;
 
   public static readonly categoryId: string = 'game-object';
@@ -42,6 +48,16 @@ export class GameObject<CreationParams extends object = object> {
 
   constructor(id: string) {
     this.id = id;
+  }
+
+  getState(): StateT {
+    console.info(`Game object doens't have state getter:`, this);
+    return null as unknown as StateT;
+  }
+
+  listenState(): Observable<StateT> {
+    console.info(`Game object doens't have state listener:`, this);
+    return of(null as unknown as StateT);
   }
 
   // method which is going to be called when object is created in order to initialize it.
@@ -53,6 +69,14 @@ export class GameObject<CreationParams extends object = object> {
 
   // method which is going to be called when object is being disposed
   onDestroy(): void { }
+
+  addCustomData<T extends object>(data: T): void {
+    this.api.gameObjects.addCustomData(this.id, data);
+  }
+
+  getCustomData<T extends object>(): T | undefined {
+    return this.api.gameObjects.getCustomData(this.id);
+  }
 }
 
 export type CreationParams<T> = T extends GameObject<infer K> ? K : never;

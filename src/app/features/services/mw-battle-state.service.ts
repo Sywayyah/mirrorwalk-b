@@ -5,6 +5,7 @@ import { Player } from 'src/app/core/players';
 import { UnitBaseType, UnitGroup } from 'src/app/core/unit-types';
 import { EventsService } from 'src/app/store';
 import { MwUnitGroupsService } from './mw-unit-groups.service';
+import { UnitTypeId } from 'src/app/core/entities';
 
 
 @Injectable({
@@ -93,7 +94,7 @@ export class BattleStateService {
     this.currentUnitGroup$.next(firstUnitGroup);
 
     if (!this.currentUnitGroup.modGroup.getModValue('defending')) {
-      this.currentGroupTurnsLeft = this.currentUnitGroup.type.defaultTurnsPerRound || 1;
+      this.currentGroupTurnsLeft = this.currentUnitGroup.turnsLeft || 1;
     } else {
       this.currentGroupTurnsLeft = this.currentUnitGroup.turnsLeft;
     }
@@ -149,13 +150,16 @@ export class BattleStateService {
 
   public resortFightQueue(includeFirst: boolean = false): void {
     if (includeFirst) {
-      this.fightQueue = [...this.sortUnitsBySpeed(this.fightQueue.slice(0))];
+      this.fightQueue = this.getUnitsSortedBySpeed(this.fightQueue);
       return;
     }
 
-    this.fightQueue = [this.fightQueue[0], ...this.sortUnitsBySpeed(this.fightQueue.slice(1))];
+    this.fightQueue = [this.fightQueue[0], ...this.getUnitsSortedBySpeed(this.fightQueue.slice(1))];
   }
 
+  public removeUnitsWithoutTurnsFromFightQueue(): void {
+    this.fightQueue = this.fightQueue.filter(unit => unit.turnsLeft);
+  }
 
   public getAliveUnitsOfPlayer(player: Player): UnitGroup[] {
     return (this.heroesUnitGroupsMap.get(player) as UnitGroup[]).filter(
@@ -179,12 +183,14 @@ export class BattleStateService {
     return this.getAliveUnitsOfPlayer(player).length !== 0;
   }
 
-  public summonUnitForPlayer(ownerPlayer: Player, unitType: UnitBaseType, unitNumber: number): UnitGroup {
+  public summonUnitForPlayer(ownerPlayer: Player, unitType: UnitTypeId, unitNumber: number): UnitGroup {
     const summonedUnitGroup = this.units.createUnitGroup(unitType, { count: unitNumber }, ownerPlayer.hero) as UnitGroup;
 
     const playerUnitGroups = this.heroesUnitGroupsMap.get(ownerPlayer)!;
 
+    const initialGroupsCount = playerUnitGroups.length;
     playerUnitGroups.push(summonedUnitGroup as UnitGroup);
+    summonedUnitGroup.setPosition(initialGroupsCount);
 
     this.units.addModifierToUnitGroup(summonedUnitGroup, { isSummon: true });
 
@@ -223,14 +229,14 @@ export class BattleStateService {
     this.fightQueue.forEach((unitGroup: UnitGroup) => unitGroup.turnsLeft = unitGroup.type.defaultTurnsPerRound || 1);
   }
 
-  private sortUnitsBySpeed(units: UnitGroup[]): UnitGroup[] {
-    return units.sort((a, b) => {
+  private getUnitsSortedBySpeed(units: UnitGroup[]): UnitGroup[] {
+    return [...units].sort((a, b) => {
       return this.units.getUnitGroupSpeed(b) - this.units.getUnitGroupSpeed(a);
     });
   }
 
   private resetFightQueue(): void {
-    this.fightQueue = this.sortUnitsBySpeed([
+    this.fightQueue = this.getUnitsSortedBySpeed([
       ...this.getAliveUnitsOfPlayer(this.players[0]),
       ...this.getAliveUnitsOfPlayer(this.players[1]),
     ]);
@@ -248,11 +254,18 @@ export class BattleStateService {
     unitGroups.forEach(unitGroup => {
       const unitGroupPlayer = unitGroup.ownerPlayer;
       const playerGroups = this.heroesUnitGroupsMap.get(unitGroupPlayer);
+
       if (playerGroups) {
         playerGroups.push(unitGroup);
       } else {
         this.heroesUnitGroupsMap.set(unitGroupPlayer, [unitGroup]);
       }
+    });
+
+    this.heroesUnitGroupsMap.forEach((unitGroups) => {
+      unitGroups.forEach((unit, i) => {
+        unit.setPosition(i);
+      });
     });
   }
 
@@ -277,7 +290,7 @@ export class BattleStateService {
 
   // Resorts units so that current unit remains on top, the rest are all alive units with turns left sorted by their speed.
   private resortFigthQueueWithNewUnits(): void {
-    this.fightQueue = [this.fightQueue[0], ...this.sortUnitsBySpeed(this.getAllAliveUnitsWithTurnsExcept(this.fightQueue[0]))];
+    this.fightQueue = [this.fightQueue[0], ...this.getUnitsSortedBySpeed(this.getAllAliveUnitsWithTurnsExcept(this.fightQueue[0]))];
   }
 
   private getAllAliveUnitsWithTurnsExcept(unit: UnitGroup): UnitGroup[] {

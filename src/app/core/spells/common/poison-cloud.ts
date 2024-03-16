@@ -4,7 +4,7 @@ import { spellDescrElem } from '../../ui';
 import { CommonUtils } from '../../utils';
 import { createAnimation, getDamageParts, getIconElement, getPlainBlurFrames, getReversePulseKeyframes } from '../../vfx';
 import { SpellActivationType, SpellBaseType } from '../types';
-import { canActivateOnEnemyFn, debuffColors } from '../utils';
+import { canActivateOnEnemyFn, createSpell, debuffColors } from '../utils';
 
 /* In general.. this skill might reduce speed. Or maybe even a chance to skip attack */
 const attackReduction = 5;
@@ -80,7 +80,8 @@ const PoisonCloudAnimation: EffectAnimation = createAnimation([
 ]);
 
 
-export const PoisonCloudDebuff: SpellBaseType<undefined | { debuffRoundsLeft: number }> = {
+export const PoisonCloudDebuff: SpellBaseType<undefined | { debuffRoundsLeft: number }> = createSpell({
+  id: '#spell-poison-cloud-debuff',
   name: 'Poisoned',
   activationType: SpellActivationType.Debuff,
   icon: {
@@ -147,9 +148,11 @@ export const PoisonCloudDebuff: SpellBaseType<undefined | { debuffRoundsLeft: nu
       }
     }
   }
-};
+});
 
-export const PoisonCloudSpell: SpellBaseType = {
+export const PoisonCloudSpell: SpellBaseType = createSpell({
+  id: '#spell-poison-cloud',
+
   name: 'Poison Cloud',
   activationType: SpellActivationType.Target,
   icon: {
@@ -191,4 +194,4 @@ export const PoisonCloudSpell: SpellBaseType = {
       }
     }
   }
-};
+});

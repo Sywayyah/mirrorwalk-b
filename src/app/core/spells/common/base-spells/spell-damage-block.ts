@@ -1,7 +1,9 @@
 import { Modifiers } from 'src/app/core/modifiers';
+import { SpellId } from 'src/app/core/entities';
 import { spellDescrElem } from 'src/app/core/ui';
 import { uiPercent, uiValueRange } from 'src/app/core/vfx';
 import { SpellActivationType, SpellBaseType } from '../../types';
+import { createSpell } from '../../utils';
 
 interface DamageBlockPerLevelConfig {
   minDamage: number[],
@@ -15,12 +17,15 @@ export const rangedChanceDescription = (meleeChance: string | number, rangedChan
 
 export const createDamageBlockSpell = (config: {
   name: string,
+  id: SpellId,
   icon: string,
   blockConfig: DamageBlockPerLevelConfig,
   description: (data: { meleeChance: string, rangedChance: string, blockValue: string }) => string,
 }): SpellBaseType<{ damageBlockMod: Modifiers }> => {
   const { icon, name, blockConfig, description } = config;
-  return {
+
+  return createSpell({
+    id: config.id,
     name: name,
     activationType: SpellActivationType.Passive,
     icon: {
@@ -78,5 +83,5 @@ export const createDamageBlockSpell = (config: {
         init() { },
       },
     },
-  };
+  });
 };

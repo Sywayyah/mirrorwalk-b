@@ -1,12 +1,13 @@
 import { AssetsImages } from '../../assets';
-import { constellationFraction } from '../../fractions/constellation/fraction';
+import { constellationFaction } from '../../factions/constellation/faction';
 import { spellDescrElem } from '../../ui';
 import { EssenceLeak } from './spells/essence-leak';
 
 // Units of constellation might be more durable and slightly higher
 // quality then average units
 
-constellationFraction.defineUnitType('Sprite', {
+constellationFaction.defineUnitType({
+  id: '#unit-c00',
   name: 'Sprite',
   level: 1,
   mainPortraitUrl: AssetsImages.UnitMelee,
@@ -44,7 +45,9 @@ constellationFraction.defineUnitType('Sprite', {
 });
 
 // block/retaliation mechanics
-constellationFraction.defineUnitType('Fencer', {
+constellationFaction.defineUnitType({
+  id: '#unit-c10',
+
   name: 'Fencer',
   level: 2,
   mainPortraitUrl: AssetsImages.UnitMelee,
@@ -70,7 +73,9 @@ constellationFraction.defineUnitType('Fencer', {
   },
 });
 
-constellationFraction.defineUnitType('Sagittar', {
+constellationFaction.defineUnitType({
+  id: '#unit-c20',
+
   name: 'Saggitar',
   level: 3,
   mainPortraitUrl: AssetsImages.UnitRanged,
@@ -101,7 +106,9 @@ constellationFraction.defineUnitType('Sagittar', {
 })
 
 // potential level 5
-constellationFraction.defineUnitType('Chariot', {
+constellationFaction.defineUnitType({
+  id: '#unit-c30',
+
   name: 'Chariot',
   level: 4,
   mainPortraitUrl: AssetsImages.UnitMelee,
@@ -125,14 +132,54 @@ constellationFraction.defineUnitType('Chariot', {
     experience: 18,
     gold: 14,
   },
+})
+
+constellationFaction.defineUnitType({
+  id: '#unit-c60',
+
+  name: 'Star Dragon',
+  level: 7,
+  mainPortraitUrl: AssetsImages.UnitMelee,
+
+  baseRequirements: {
+    gold: 1000,
+    gems: 1,
+    redCrystals: 1,
+  },
+
+  upgradeDetails: {
+    target: '#unit-c61',
+    upgradeCost: {
+      gold: 500,
+      gems: 1,
+    },
+  },
+
+  baseStats: {
+    damageInfo: {
+      minDamage: 40,
+      maxDamage: 60,
+    },
+    speed: 20,
+    defence: 18,
+    health: 175,
+    attackRating: 16,
+  },
+
+  neutralReward: {
+    experience: 180,
+    gold: 150,
+  },
 });
 
-/* Star Dragon/Night Wyvern, potential level 7 unit type for Constellation */
 // Main feature: Dream Aura
+/* Star Dragon/Night Wyvern, potential level 7 unit type for Constellation */
 // Dream Aura: Some events around Night Wyverns become a part of their dream.
 //  Gives +10%/+15% to All Resists to units around. May also provide armor with aura.
 
-constellationFraction.defineUnitType('NightWyvern', {
+constellationFaction.defineUnitType({
+  id: '#unit-c61',
+
   name: 'Night Wyvern',
   level: 7,
   mainPortraitUrl: AssetsImages.UnitMelee,
@@ -159,40 +206,4 @@ constellationFraction.defineUnitType('NightWyvern', {
     gold: 150,
   },
   upgraded: true,
-})
-
-constellationFraction.defineUnitType('StarDragon', {
-  name: 'Star Dragon',
-  level: 7,
-  mainPortraitUrl: AssetsImages.UnitMelee,
-
-  baseRequirements: {
-    gold: 1000,
-    gems: 1,
-    redCrystals: 1,
-  },
-
-  upgradeDetails: {
-    target: constellationFraction.getUnitType('NightWyvern'),
-    upgradeCost: {
-      gold: 500,
-      gems: 1,
-    },
-  },
-
-  baseStats: {
-    damageInfo: {
-      minDamage: 40,
-      maxDamage: 60,
-    },
-    speed: 20,
-    defence: 18,
-    health: 175,
-    attackRating: 16,
-  },
-
-  neutralReward: {
-    experience: 180,
-    gold: 150,
-  },
 });

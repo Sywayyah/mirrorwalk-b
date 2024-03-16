@@ -1,28 +1,30 @@
 import { itemStatsDescr, spellDescrElem } from '../../ui';
 import { ItemBaseModel, ItemSlotType } from '../types';
+import { createItem } from '../utils';
 
 const healValue = 50;
 
 // Ideas for healing items:
 //  1. Heal random amount of units.
 //  2. Heal with ranged value (e.g. 25-40)
-export const RisingSunPendant: ItemBaseModel = {
+export const RisingSunPendant: ItemBaseModel = createItem({
+  id: '#item-rising-sun',
+
   name: 'Rising Sun',
-  icon: {
-    icon: 'gem-pendant',
-  },
-  slotType: ItemSlotType.Amulet,
-  staticMods: {
+  icon: 'gem-pendant',
+  slot: ItemSlotType.Amulet,
+  stats: {
     heroBonusDefence: 2,
   },
-  description({ thisItem }) {
+  description({ thisItemBase }) {
     return {
       descriptions: [
-        itemStatsDescr(thisItem),
+        itemStatsDescr(thisItemBase),
         spellDescrElem(`Each round heals your units by ${healValue}`),
       ],
     }
   },
+
   config: {
     // todo: provide vfx
     init({ events, actions, ownerPlayer }) {
@@ -37,4 +39,4 @@ export const RisingSunPendant: ItemBaseModel = {
       })
     }
   },
-};
+});

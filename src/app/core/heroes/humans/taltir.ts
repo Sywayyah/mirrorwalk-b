@@ -1,5 +1,5 @@
 import { AssetsImages } from '../../assets';
-import { humansFraction } from '../../fractions';
+import { humansFaction } from '../../factions';
 import { IrtonPlateItem } from '../../items/neutral/irton-plate';
 import { LightBootsItem } from '../../items/neutral/light-boots';
 import { MeteorSpell } from '../../spells/common';
@@ -20,7 +20,9 @@ import { heroesDefaultResources } from '../utils';
 
 const defaultAllResists = 12;
 
-export const TaltirHero: HeroBase = humansFraction.createHero({
+export const TaltirHero: HeroBase = humansFaction.createHero({
+  id: '#hero-taltir',
+
   name: 'Taltir',
   // todo: maybe allow for custom descriptions
   generalDescription: heroDescrElem(`Taltir specializes at utilizing Fire Spells, summoning Fire Spirits and devastating Meteors. Knowledge in magic defenses makes him start with +${defaultAllResists}% to all resists.`),
@@ -34,9 +36,9 @@ export const TaltirHero: HeroBase = humansFraction.createHero({
     maxUnitGroups: 2,
     minUnitGroups: 2,
     units: [
-      [humansFraction.getUnitType('Knight'), 6, 11, 2],
-      [humansFraction.getUnitType('Cavalry'), 3, 6, 2],
-      [humansFraction.getUnitType('Pikemen'), 25, 30, 1],
+      ['#unit-h20', 6, 11, 2],
+      ['#unit-h30', 3, 6, 2],
+      ['#unit-h00', 25, 30, 1],
     ],
   }],
   items: [

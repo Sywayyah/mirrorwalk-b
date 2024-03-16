@@ -1,12 +1,18 @@
+import { Entity, ItemId, TownId } from '../entities';
 import { NewWeekStarted } from '../events';
 import { GameObject } from '../game-objects';
-import { createEventFeedMsg } from '../ui';
 import { ActivityTypes, Building, BuildingDescription, HiringActivity } from './buildings';
 
-export interface TownBase<T extends string> {
+export interface TownBase<T extends string> extends Entity {
+  id: TownId;
   name: string;
   availableBuildings: Record<T, BuildingDescription>;
 }
+
+export interface SellingBuildingData {
+  items: ItemId[];
+  selling?: boolean;
+};
 
 interface TownCreationParams<T extends string> {
   townBase: TownBase<T>;

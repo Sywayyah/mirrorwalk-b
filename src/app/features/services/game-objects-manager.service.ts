@@ -1,7 +1,11 @@
 import { Injectable } from '@angular/core';
 import { CONFIG } from 'src/app/core/config';
 import { InitGameObjectApi } from 'src/app/core/events';
-import { CreationParams, GameObject, GameObjectClass } from 'src/app/core/game-objects';
+import {
+  CreationParams,
+  GameObject,
+  GameObjectClass,
+} from 'src/app/core/game-objects';
 import { EventsService } from 'src/app/store';
 
 const ID_SEPARATOR = ':';
@@ -17,23 +21,29 @@ function getIdParts(fullId: string): [categoryId: string, objectId: string] {
 interface ObjectsRegistry<T extends GameObject = GameObject> {
   latestId: 0;
   objects: Set<T>;
-};
+}
 
 @Injectable({
   providedIn: 'root',
 })
 export class GameObjectsManager {
-  // I'll keep id allocation per category, it can be changed after if needed
   private readonly internalRegistries: Map<string, ObjectsRegistry> = new Map();
 
   private readonly allObjects: Map<string, GameObject> = new Map();
+
+  // allows to attach custom data to any game object
+  private readonly objectsCustomData = new Map<string, object>();
 
   constructor(private readonly events: EventsService) {
     // expose game object into window for debugging
     (window as any).gameObjects = this;
   }
 
-  createNewGameObject<T extends GameObject>(gameObjectClass: GameObjectClass<T>, creationParams: CreationParams<T>, id?: string): T {
+  createNewGameObject<T extends GameObject>(
+    gameObjectClass: GameObjectClass<T>,
+    creationParams: CreationParams<T>,
+    id?: string
+  ): T {
     const categoryId = gameObjectClass.categoryId;
 
     const unitsRegistry = this.getOrCreateCategoryRegistry(categoryId);
@@ -44,7 +54,11 @@ export class GameObjectsManager {
       const targetedId = createId(categoryId, id);
 
       if (this.allObjects.has(targetedId)) {
-        console.error(`Game object with id '${targetedId}' already exists! New params/old object:`, creationParams, this.allObjects.get(targetedId));
+        console.error(
+          `Game object with id '${targetedId}' already exists! New params/old object:`,
+          creationParams,
+          this.allObjects.get(targetedId)
+        );
         throw new Error(`Game object with id '${targetedId}' already exists!`);
       }
 
@@ -70,7 +84,10 @@ export class GameObjectsManager {
     return newGameObject;
   }
 
-  getObjectById<T extends GameObject>(gameObjectClass: GameObjectClass<T>, id: string): T {
+  getObjectById<T extends GameObject>(
+    gameObjectClass: GameObjectClass<T>,
+    id: string
+  ): T {
     return this.getObjectByFullId(createId(gameObjectClass.categoryId, id));
   }
 
@@ -78,13 +95,17 @@ export class GameObjectsManager {
     const idParts = getIdParts(fullId);
 
     if (idParts.length !== 2) {
-      throw new Error(`Getting object by id '${fullId}' failed, id doesn't follow format 'CategoryId${ID_SEPARATOR}ObjectId'`);
+      throw new Error(
+        `Getting object by id '${fullId}' failed, id doesn't follow format 'CategoryId${ID_SEPARATOR}ObjectId'`
+      );
     }
 
     const object = this.allObjects.get(fullId);
 
     if (!object) {
-      throw new Error(`Failed to get object by '${fullId}' id: Object doens't exist`);
+      throw new Error(
+        `Failed to get object by '${fullId}' id: Object doens't exist`
+      );
     }
 
     return object as T;
@@ -101,10 +122,15 @@ export class GameObjectsManager {
 
     object.onDestroy();
 
+    this.objectsCustomData.delete(object.id);
+
     this.allObjects.delete(object.id);
   }
 
-  getObjectId<T extends GameObject>(gameObjectClass: GameObjectClass<T>, id: string): string {
+  getObjectId<T extends GameObject>(
+    gameObjectClass: GameObjectClass<T>,
+    id: string
+  ): string {
     // check if id is already complete
     const idParts = id.split(':');
 
@@ -113,6 +139,21 @@ export class GameObjectsManager {
     }
 
     return createId(gameObjectClass.categoryId, id);
+  }
+
+  /** Attaches some custom data to game object by id. Data is merged in shallow approach. */
+  addCustomData<T extends object>(idOrObject: string | GameObject, newData: T): void {
+    const id = typeof idOrObject === 'object' ? idOrObject.id : idOrObject;
+
+    const objectCustomData = this.objectsCustomData.get(id) as T | undefined;
+
+    this.objectsCustomData.set(id, { ...objectCustomData, ...newData });
+  }
+
+  getCustomData<T extends object>(idOrObject: string | GameObject): T | undefined {
+    const newLocal = this.objectsCustomData.get(typeof idOrObject === 'string' ? idOrObject : idOrObject.id) as T | undefined;
+    console.log('Getting custom data:', newLocal);
+    return newLocal;
   }
 
   private getOrCreateCategoryRegistry(categoryId: string): ObjectsRegistry {

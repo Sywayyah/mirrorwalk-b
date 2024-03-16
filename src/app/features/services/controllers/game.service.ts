@@ -1,13 +1,17 @@
 import { Injectable } from '@angular/core';
+import { ActionCardTypes } from 'src/app/core/action-cards';
 import { PLAYER_COLORS } from 'src/app/core/assets';
-import { AddActionCardsToPlayer, BeforeBattleInit, DefaultGameModes, FightStarts, FightStartsEvent, GameCommandEvents, GameCreated, GameEventsTypes, GameOpenMainScreen, GameOpenMapStructuresScreen, GamePreparedEvent, GameStarted, NeutralStructParams, NewDayStarted, NewWeekStarted, PlayerLeavesTown, PlayerStartsFight, PlayersInitialized, PushEventFeedMessage, PushPlainEventFeedMessage, StructFightConfirmed, StructSelected, StructSelectedEvent, Triggers } from 'src/app/core/events';
+import { ActivateActionCard, AddActionCardsToPlayer, BeforeBattleInit, DefaultGameModes, FightStarts, FightStartsEvent, GameCommandEvents, GameCreated, GameEventsTypes, GameOpenMainScreen, GameOpenMapStructuresScreen, GamePreparedEvent, GameStarted, NeutralStructParams, NewDayStarted, NewWeekStarted, PlayerLeavesTown, PlayerStartsFight, PlayersInitialized, PushEventFeedMessage, PushPlainEventFeedMessage, RemoveActionPoints, StructFightConfirmed, StructSelected, StructSelectedEvent, Triggers } from 'src/app/core/events';
 import { heroesDefaultResources } from 'src/app/core/heroes';
 import { PlayerTypeEnum } from 'src/app/core/players';
 import { StructEvents } from 'src/app/core/structures/events';
 import { TownEvents } from 'src/app/core/towns';
 import { DescriptionElementType } from 'src/app/core/ui';
+import { CommonUtils } from 'src/app/core/utils';
+import { infNum } from 'src/app/core/utils/common';
 import { actionCardEvent } from 'src/app/core/vfx';
 import { Notify, StoreClient, WireMethod } from 'src/app/store';
+import { ApiProvider } from '../api-provider.service';
 import { BattleStateService } from '../mw-battle-state.service';
 import { MwHeroesService } from '../mw-heroes.service';
 import { MwPlayersService, PLAYER_IDS } from '../mw-players.service';
@@ -25,6 +29,8 @@ export class GameController extends StoreClient() {
     private heroesService: MwHeroesService,
     private state: State,
     private eventFeedUiService: UiEventFeedService,
+    private gameApiProvider: ApiProvider,
+    private eventFeed: UiEventFeedService,
   ) {
     super();
   }
@@ -80,7 +86,7 @@ export class GameController extends StoreClient() {
     };
 
     this.events.dispatch(PlayersInitialized({}));
-    this.events.dispatch(Triggers.PrepareGameEvent({ gameMode: DefaultGameModes.Normal, selectedFraction: this.state.createdGame.fraction }));
+    this.events.dispatch(Triggers.PrepareGameEvent({ gameMode: DefaultGameModes.Normal, selectedFaction: this.state.createdGame.faction }));
     this.events.dispatch(GameOpenMapStructuresScreen());
   }
 
@@ -107,13 +113,35 @@ export class GameController extends StoreClient() {
   public addActionCardsToPlayer(event: GameCommandEvents['AddActionCardsToPlayer']): void {
     this.eventFeedUiService
       .pushPlainMessage(`Received action cards:<hr> ${event.actionCardStacks
-        .map(({ card, count }) => `x${count} ${actionCardEvent(card)}`)
+        .map(({ card, count }) => `x${infNum(count)} ${actionCardEvent(card)}`)
         .join('<br>')}`
       );
 
     event.actionCardStacks.forEach(({ card, count }) => {
       event.player.addActionCards(card, count);
     });
+  }
+
+  @WireMethod(ActivateActionCard)
+  public activateActionCard({ player, cardStack }: GameCommandEvents['ActivateActionCard']): void {
+    console.log(cardStack);
+    const card = cardStack.card;
+
+    cardStack.count--;
+
+    if (card.actionPoints) {
+      this.events.dispatch(RemoveActionPoints({ points: card.actionPoints }));
+    }
+
+    if (!cardStack.count) {
+      CommonUtils.removeItem(player.actionCards, cardStack);
+    }
+
+    if (card.type === ActionCardTypes.PlayerAction) {
+      card.config?.onUsedInstantly?.(this.gameApiProvider.getGameApi());
+    }
+
+    this.eventFeed.pushPlainMessage(`${actionCardEvent(card)} is used. Left: ${infNum(cardStack.count)}`);
   }
 
   @WireMethod(NewWeekStarted)

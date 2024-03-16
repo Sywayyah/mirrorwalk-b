@@ -1,30 +1,33 @@
 import { ItemBaseModel, ItemSlotType } from '..';
 import { FrostArrowSpell } from '../../spells/common';
 import { itemStatsDescr, spellDescrElem } from '../../ui';
+import { createItem } from '../utils';
 
-export const ItemIceBow: ItemBaseModel<{}> = {
+export const ItemIceBow: ItemBaseModel<{}> = createItem({
+  id: '#item-ice-bow',
+
   name: 'Ice Bow',
-  slotType: ItemSlotType.Weapon,
-  icon: {
-    icon: 'frozen-arrow',
-  },
-  staticMods: {
+  slot: ItemSlotType.Weapon,
+  icon: 'frozen-arrow',
+  stats: {
     heroBonusAttack: 1,
     specialtyArchery: 1,
   },
-  description({ thisItem }) {
+  cost: {
+    gold: 500,
+  },
+  sellingCost: {
+    gold: 400,
+  },
+  description({ thisItemBase }) {
     return {
       descriptions: [
-        itemStatsDescr(thisItem),
+        itemStatsDescr(thisItemBase),
         spellDescrElem('Bow which radiates cold, grants level 1 Frost Arrow'),
       ],
     };
   },
-  bonusAbilities: [
+  spells: [
     { level: 1, spell: FrostArrowSpell },
   ],
-  defaultState: {},
-  config: {
-    init: () => { },
-  }
-};
+});

@@ -1,10 +1,9 @@
-import { ResourceType } from '../../resources';
 import { ArchersOutpostStructure, BanditCamp, BeaconOfTheUndead, BigCampStructure, CalavryStalls, GraveyardStructure, MagicRiverStructure, MountainNestStructure, RockyPassageStructure, ThievesLair, WitchHutStructure } from '../common';
 import { DarkArtsSchool } from '../common/dark-arts-school';
 import { FireRingStructure } from '../common/guard-location';
 import { Mausoleum } from '../common/mausoleum';
-import { dailyResourcesMineStructure } from '../common/resource-mine';
-import { resPileStructure, resourcesPileStructure } from '../common/resource-pile';
+import { DailyResourcesMineStructure } from '../common/resource-mine';
+import { getResPileParams, ResourcesPileStructure } from '../common/resource-pile';
 import { StructureDescription } from '../map-structures';
 import { constellationSpawn } from './preset1-const-spawn';
 
@@ -29,6 +28,7 @@ export const START_LOC_ID = 'start';
 function loc(location: number): number {
   return location + shift;
 }
+
 
 const brBranch: StructureDescription[] = [
   {
@@ -57,7 +57,8 @@ const brBranch: StructureDescription[] = [
     pathTo: '5',
     actionPoints: 1,
 
-    struct: resPileStructure(ResourceType.Wood, 4),
+    struct: ResourcesPileStructure,
+    structParams: getResPileParams({ wood: 4 })
   },
   {
     id: '17',
@@ -112,7 +113,8 @@ const brBranch: StructureDescription[] = [
     icon: 'hand-saw',
     pathTo: '22',
 
-    struct: dailyResourcesMineStructure({ wood: 1 }),
+    struct: DailyResourcesMineStructure,
+    structParams: getResPileParams({ wood: 1 }),
   },
   {
     id: '20',
@@ -124,8 +126,8 @@ const brBranch: StructureDescription[] = [
 
     struct: BigCampStructure,
   },
-
 ];
+
 
 const fifthBranch: StructureDescription[] = [
   {
@@ -135,7 +137,8 @@ const fifthBranch: StructureDescription[] = [
     y: loc(70),
     icon: 'gold-bar',
     actionPoints: 1,
-    struct: resPileStructure(ResourceType.Gold, 650),
+    struct: ResourcesPileStructure,
+    structParams: getResPileParams({ gold: 650 }),
   },
 ];
 
@@ -183,7 +186,8 @@ const blBranch: StructureDescription[] = [
     icon: 'crystals',
     pathTo: 'left-5',
 
-    struct: dailyResourcesMineStructure({ redCrystals: 1 }),
+    struct: DailyResourcesMineStructure,
+    structParams: getResPileParams({ redCrystals: 1 }),
   },
   {
     id: '54',
@@ -225,7 +229,8 @@ const blBranch: StructureDescription[] = [
     icon: 'mine-wagon',
     pathTo: 'left-2',
 
-    struct: resourcesPileStructure({ gold: 450, redCrystals: 1, gems: 1 }),
+    struct: ResourcesPileStructure,
+    structParams: getResPileParams({ gold: 450, redCrystals: 1, gems: 1 })
   },
 ];
 
@@ -267,21 +272,39 @@ const tlBranch: StructureDescription[] = [
     y: loc(-170),
     icon: 'emerald',
     pathTo: '15',
-    struct: resPileStructure(ResourceType.Gems, 3),
+    struct: ResourcesPileStructure,
+    structParams: getResPileParams({ gems: 3 }),
   },
 
 ];
 
 const trBranch: StructureDescription[] = [
+  // {
+  //   id: '4',
+  //   icon: 'locked-fortress',
+  //   x: loc(60),
+  //   y: loc(-30),
+  //   pathTo: START_LOC_ID,
+  //   struct: SettlementLocation,
+  // },
   {
-    id: '4',
-    x: loc(60),
-    y: loc(-30),
+    id: '4-1',
+    x: loc(35),
+    y: loc(-50),
     icon: 'lighthouse',
     pathTo: START_LOC_ID,
 
     struct: BeaconOfTheUndead,
   },
+  // {
+  //   id: '4-2',
+  //   actionPoints: 1,
+  //   icon: 'locked-fortress',
+  //   x: loc(-70),
+  //   y: loc(270),
+  //   pathTo: '4',
+  //   struct: resPileStructure(ResourceType.Gems, 2),
+  // },
 ];
 
 export const structsPreset1: StructureDescription[] = [
@@ -291,6 +314,7 @@ export const structsPreset1: StructureDescription[] = [
     y: loc(0),
     icon: 'campfire',
   },
+
   ...fifthBranch,
   ...brBranch,
   ...blBranch,

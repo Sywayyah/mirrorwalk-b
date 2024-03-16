@@ -1,7 +1,8 @@
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { Entity, EntityId, UnitTypeId } from '../entities';
 import { GroupSpellsChanged } from '../events';
-import type { Fraction } from '../fractions/types';
+import type { Faction } from '../factions/types';
 import { GameObject } from '../game-objects';
 import { Hero } from '../heroes';
 import { ModsRef, ModsRefsGroup, Specialties } from '../modifiers';
@@ -13,13 +14,7 @@ import { DescriptionElement } from '../ui';
 import { CommonUtils } from '../utils';
 import { complete } from '../utils/observables';
 
-interface RequirementModel extends Partial<ResourcesModel> {
-  /* heroLevel?: number;
-  gold?: number;
-  redCrystals?: number;
-  glory?: number;
-  gems?: number; */
-}
+type RequirementModel = Partial<ResourcesModel>;
 
 enum UnitDamageTypesEnum {
   Physical,
@@ -59,10 +54,10 @@ export interface UnitDescriptions {
   descriptions: DescriptionElement[];
 }
 
-export interface UnitBaseType {
-  type: string;
+export interface UnitBaseType extends Entity {
+  id: UnitTypeId;
 
-  fraction: Fraction<any>;
+  faction: Faction;
   /* displayed name */
   name: string;
   // todo: practically, here I can configure how names can be displayed in different places
@@ -88,6 +83,7 @@ export interface UnitBaseType {
   defaultModifiers?: Modifiers;
 
   defaultSpells?: SpellBaseType<any>[];
+  // spells?: EntityId[];
 
   /* minimal amount of units that can stack can be hired, sold or split by */
   minQuantityPerStack?: number;
@@ -98,7 +94,7 @@ export interface UnitBaseType {
   upgraded?: boolean;
 
   upgradeDetails?: {
-    target: UnitBaseType,
+    target: EntityId,
     upgradeCost: Partial<ResourcesModel>,
   };
 
@@ -152,6 +148,8 @@ export interface UnitStatsInfo {
   totalMinDamage: number;
   totalMaxDamage: number;
   avgTotalDamage: number;
+
+  position: number;
 }
 
 export class UnitGroup extends GameObject<UnitCreationParams> {
@@ -227,6 +225,8 @@ export class UnitGroup extends GameObject<UnitCreationParams> {
     totalMinDamage: 0,
     totalMaxDamage: 0,
     avgTotalDamage: 0,
+
+    position: 0,
   });
 
   private readonly destroyed$ = new Subject<void>();
@@ -279,6 +279,15 @@ export class UnitGroup extends GameObject<UnitCreationParams> {
     }
 
     this.setupStatsUpdating();
+  }
+
+  setPosition(pos: number): void {
+    const stats = this.getStats();
+
+    if (stats.position !== pos) {
+      stats.position = pos;
+      this.unitStats$.next(stats);
+    }
   }
 
   assignOwnerHero(ownerHero: Hero): void {
@@ -458,6 +467,7 @@ export class UnitGroup extends GameObject<UnitCreationParams> {
         totalMinDamage: previousStats.totalMaxDamage,
         totalMaxDamage: previousStats.totalMinDamage,
         avgTotalDamage: previousStats.avgTotalDamage,
+        position: previousStats.position,
       };
 
       this.unitStats$.next(stats);

@@ -1,14 +1,15 @@
 import { itemStatsDescr } from '../../ui';
 import { ItemBaseModel, ItemSlotType } from '../types';
+import { createItem } from '../utils';
 
 // + max mana
-export const SwordOfTheBattleMageItem: ItemBaseModel = {
+export const SwordOfTheBattleMageItem: ItemBaseModel = createItem({
+  id: '#item-battlemage-sword',
+
   name: 'Sword of the Battle Mage',
-  icon: {
-    icon: 'sword',
-  },
-  slotType: ItemSlotType.Weapon,
-  staticMods: {
+  slot: ItemSlotType.Weapon,
+  icon: 'sword',
+  stats: {
     heroBonusAttack: 3,
     heroMaxMana: 8,
     specialtyMagicRecovery: 2,
@@ -18,15 +19,19 @@ export const SwordOfTheBattleMageItem: ItemBaseModel = {
     specialtyLightningMastery: 1,
 
   },
-  description({ thisItem }) {
+  cost: {
+    gold: 1000,
+    redCrystals: 1,
+  },
+  sellingCost: {
+    gold: 600,
+  },
+
+  description({ thisItem, thisItemBase }) {
     return {
       descriptions: [
-        itemStatsDescr(thisItem),
+        itemStatsDescr(thisItemBase),
       ],
     }
-  },
-  config: {
-    init() {
-    }
-  },
-};
+  }
+});

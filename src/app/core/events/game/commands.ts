@@ -2,7 +2,7 @@ import { createEventType } from 'src/app/store';
 import { ActionCardStack } from '../../action-cards';
 import { Player } from '../../players';
 import { DescHtmlElement } from '../../ui';
-import { DisplayPlayerRewardAction, InitBuildingAction, InitGameObjectApiParams, InitItemAction, InitMapStructureAction, InitSpellAction, PanMapCameraCenterAction } from './types';
+import { DisplayPlayerRewardAction, InitBuildingAction, InitGameObjectApiParams, InitItemAction, InitMapStructureAction, InitSpellAction, PanMapCameraCenterAction, ViewsEnum } from './types';
 
 
 const commands = createEventType;
@@ -28,6 +28,10 @@ export const OpenNewGameScreen = commands('Open New Game Screen');
 
 export const OpenSettings = commands('Open Game settings');
 
+export const OpenMainMenu = commands('Open Main menu');
+
+export const NavigateToView = commands<{ view: ViewsEnum }>('Navigate To View');
+
 export const GameOpenMapStructuresScreen = commands('Open map structures screen');
 
 export const DisplayPlayerRewardPopup = commands<DisplayPlayerRewardAction>();
@@ -48,5 +52,7 @@ export const PushEventFeedMessage = commands<{ message: DescHtmlElement[], delay
 export const PushPlainEventFeedMessage = commands<{ message: string, delay?: number; }>();
 
 export const RemoveActionPoints = commands<{ points: number }>();
+
+export const ActivateActionCard = commands<{ player: Player; cardStack: ActionCardStack }>();
 
 export const AddActionCardsToPlayer = commands<{ player: Player, actionCardStacks: ActionCardStack[] }>();

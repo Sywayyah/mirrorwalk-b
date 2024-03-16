@@ -4,6 +4,8 @@ import { GameObject } from '../game-objects';
 import { Hero } from '../heroes';
 import { Modifiers } from '../modifiers';
 import { Player } from '../players';
+import { Entity, ItemId } from '../entities';
+import { Resources } from '../resources';
 import { SpellBaseType } from '../spells';
 import { DescriptionElement } from '../ui';
 import { UnitGroup } from '../unit-types';
@@ -26,7 +28,8 @@ export enum ItemSlotType {
 }
 
 export interface ItemDescriptionData<T extends object> {
-  thisItem: Item<T>;
+  thisItem?: Item<T>;
+  thisItemBase: ItemBaseModel<T>;
 }
 
 export interface ItemDescription {
@@ -37,9 +40,29 @@ export interface ItemsEventsRef {
   on: (handlers: ItemsEventsHandlers) => void;
 }
 
-export interface ItemBaseModel<StateType extends object = object> {
+export type SpellWithConfig = {
+  spell: SpellBaseType;
+  level: number;
+};
+
+export type ItemAbilityDescriptionGetter<StateType extends object> = (itemData: ItemDescriptionData<StateType>) => ItemDescription;
+
+export type ItemConfig<StateType extends object> = {
+  init: (combatRefs: {
+    actions: CombatActionsRef;
+    events: ItemsEventsRef;
+    ownerPlayer: Player;
+    ownerHero: Hero;
+    thisInstance: Item<StateType>;
+  }) => void;
+};
+
+export interface ItemBaseModel<StateType extends object = object> extends Entity {
+  id: ItemId;
   defaultState?: StateType;
 
+  cost?: Resources;
+  sellingCost?: Resources;
   slotType: ItemSlotType;
   name: string;
   icon: Icon;
@@ -50,17 +73,9 @@ export interface ItemBaseModel<StateType extends object = object> {
   /* There could be some requirements: */
   // requirements: ItemRequirementModel[],
 
-  description: (itemData: ItemDescriptionData<StateType>) => ItemDescription;
-  config: {
-    init: (combatRefs: {
-      actions: CombatActionsRef,
-      events: ItemsEventsRef,
-      ownerPlayer: Player,
-      ownerHero: Hero,
-      thisInstance: Item<StateType>,
-    }) => void,
-  },
-  bonusAbilities?: { spell: SpellBaseType, level: number }[];
+  description: ItemAbilityDescriptionGetter<StateType>;
+  config: ItemConfig<StateType>,
+  bonusAbilities?: SpellWithConfig[];
 }
 
 export interface ItemCreationParams<T extends object = object> {

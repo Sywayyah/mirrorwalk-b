@@ -5,7 +5,7 @@
 
   <div *ngIf="data.struct.generator?.description"
        class="description">
-    {{data.struct.generator?.description}}
+    <mw-description [descriptions]="data.struct.generator?.description({thisStruct: data.struct})?.descriptions!" />
   </div>
 
   <div class="units">
@@ -13,7 +13,7 @@
          class="unit-column">
       <div>{{hiredGroupInfo.originalGroup.count}} {{hiredGroupInfo.originalGroup.type.name}}</div>
       <div>to</div>
-      <div>{{hiredGroupInfo.count}} {{hiredGroupInfo.hire.unitType.name}}</div>
+      <div>{{hiredGroupInfo.count}} {{(hiredGroupInfo.hire.unitTypeId | entity).name}}</div>
 
       <input type="range"
              [min]="0"

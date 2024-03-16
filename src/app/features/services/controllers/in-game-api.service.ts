@@ -1,14 +1,16 @@
 import { Injectable } from '@angular/core';
 import { CombatActionsRef, SpellCreationOptions } from 'src/app/core/api/combat-api';
 import { EffectType, VfxElemEffect } from 'src/app/core/api/vfx-api';
-import { GroupModifiersChanged, GroupSpeedChanged, InitBuilding, InitBuildingAction, InitGameObjectApi, InitGameObjectApiParams, InitItem, InitItemAction, InitMapStructureAction, InitSpell, InitSpellAction, InitStructure, PlayerReceivesItem, PlayersInitialized, UnitHealed, UnitSummoned } from 'src/app/core/events';
+import { UnitTypeId } from 'src/app/core/entities';
+import { GroupAttacked, GroupModifiersChanged, GroupSpeedChanged, InitBuilding, InitBuildingAction, InitGameObjectApi, InitGameObjectApiParams, InitItem, InitItemAction, InitMapStructureAction, InitSpell, InitSpellAction, InitStructure, PlayerReceivesItem, PlayersInitialized, UnitHealed, UnitSummoned } from 'src/app/core/events';
 import { GameObjectApi } from 'src/app/core/game-objects';
 import { ItemEventNames, ItemsEventsGroup, ItemsEventsHandlers } from 'src/app/core/items';
 import { Player } from 'src/app/core/players';
 import { Spell, SpellBaseType, SpellEventHandlers, SpellEventNames, SpellEventsGroup } from 'src/app/core/spells';
+import { MapStructure } from 'src/app/core/structures';
 import { StructEventUtilTypes, SturctEventsGroup } from 'src/app/core/structures/events';
 import { BuildingEventNames, BuildingEventsHandlers, BuildingsEventsGroup } from 'src/app/core/towns/events';
-import { UnitBaseType, UnitGroup } from 'src/app/core/unit-types';
+import { UnitGroup } from 'src/app/core/unit-types';
 import { Notify, StoreClient, WireMethod } from 'src/app/store';
 import { VfxService } from '../../shared/components';
 import { ApiProvider } from '../api-provider.service';
@@ -19,6 +21,7 @@ import { CombatInteractorService } from '../mw-combat-interactor.service';
 import { MwItemsService } from '../mw-items.service';
 import { MwPlayersService } from '../mw-players.service';
 import { MwSpellsService } from '../mw-spells.service';
+import { MwStructuresService } from '../mw-structures.service';
 import { MwUnitGroupsService } from '../mw-unit-groups.service';
 import { State } from '../state.service';
 import { UiEventFeedService } from '../ui-event-feed.service';
@@ -38,6 +41,7 @@ export class InGameApiController extends StoreClient() {
     private state: State,
     private gameObjectsManager: GameObjectsManager,
     private eventFeed: UiEventFeedService,
+    private structures: MwStructuresService,
   ) {
     super();
   }
@@ -53,7 +57,14 @@ export class InGameApiController extends StoreClient() {
 
   @WireMethod(InitSpell)
   public initSpell({ spell, player, ownerUnit }: InitSpellAction): void {
-    spell.baseType.config.spellConfig.init({
+    const baseType = spell.baseType;
+
+    // Aura spells have different lifecycle.
+    if (baseType.config.flags?.isAura) {
+      return;
+    }
+
+    baseType.config.spellConfig.init({
       actions: this.createActionsApiRef(),
       events: {
         on: (handlers: SpellEventHandlers) => {
@@ -123,12 +134,22 @@ export class InGameApiController extends StoreClient() {
         }
       },
       globalEvents: this.apiProvider.getGlobalEventsApi(),
+      thisBuilding: building,
+      gameObjects: this.gameObjectsManager,
     });
   }
 
   @WireMethod(InitStructure)
   public initStructureGameObject({ structure }: InitMapStructureAction): void {
     structure.generator?.config?.init({
+      structures: {
+        updateAvailableLocations: () => this.structures.updateAvailableStructures(),
+        // might become an event
+        markLocationVisited: (struct: MapStructure) => {
+          struct.visited = true;
+          this.structures.updateAvailableStructures();
+        },
+      },
       players: this.apiProvider.getPlayerApi(),
       thisStruct: structure,
       localEvents: {
@@ -171,9 +192,20 @@ export class InGameApiController extends StoreClient() {
 
   private createActionsApiRef(): CombatActionsRef {
     return {
+      getUnitsFromFightQueue: () => this.battleState.getFightQueue(),
+      removeTurnsFromUnitGroup: (target, turns = target.turnsLeft) => {
+        target.turnsLeft -= turns;
+
+        if (target.turnsLeft < 0) {
+          target.turnsLeft = 0;
+        }
+
+        this.battleState.removeUnitsWithoutTurnsFromFightQueue();
+      },
+      unitGroupAttack: (attacker, attacked) => this.events.dispatch(GroupAttacked({ attackingGroup: attacker, attackedGroup: attacked })),
       getCurrentUnitGroup: () => this.battleState.currentUnitGroup,
-      summonUnitsForPlayer: (ownerPlayer: Player, unitType: UnitBaseType, unitNumber: number) => {
-        const summonedUnitGroup = this.battleState.summonUnitForPlayer(ownerPlayer, unitType, unitNumber);
+      summonUnitsForPlayer: (ownerPlayer: Player, unitTypeId: UnitTypeId, unitNumber: number) => {
+        const summonedUnitGroup = this.battleState.summonUnitForPlayer(ownerPlayer, unitTypeId, unitNumber);
         this.events.dispatch(UnitSummoned({ unitGroup: summonedUnitGroup }));
         return summonedUnitGroup;
       },

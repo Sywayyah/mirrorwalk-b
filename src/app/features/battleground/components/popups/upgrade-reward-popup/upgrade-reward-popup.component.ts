@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { UnitTypeId } from 'src/app/core/entities';
 import { ResourceType, ResourcesModel } from 'src/app/core/resources';
 import { HiringRewardModel, UnitUpgradeReward } from 'src/app/core/structures';
 import { StructPopupData } from 'src/app/core/ui';
-import { UnitBaseType, UnitGroup } from 'src/app/core/unit-types';
+import { UnitGroup } from 'src/app/core/unit-types';
 import { MwPlayersService, MwUnitGroupsService } from 'src/app/features/services';
 import { ApiProvider } from 'src/app/features/services/api-provider.service';
 import { BasicPopup } from 'src/app/features/shared/components';
@@ -65,7 +66,7 @@ export class UpgradeRewardPopupComponent extends BasicPopup<StructPopupData> imp
         return {
           hire: {
             maxCount: unit.count,
-            unitType: unit.type.upgradeDetails?.target as UnitBaseType,
+            unitTypeId: unit.type.upgradeDetails?.target as UnitTypeId,
           },
           count: 0,
           baseCost: baseCost,
@@ -111,7 +112,7 @@ export class UpgradeRewardPopupComponent extends BasicPopup<StructPopupData> imp
         this.playersService.removeNUnitsFromGroup(currentPlayer, group.originalGroup, group.count);
 
         const unitGroup = this.unitGroups.createUnitGroup(
-          group.hire.unitType,
+          group.hire.unitTypeId,
           { count: group.count },
           currentPlayer.hero
         );

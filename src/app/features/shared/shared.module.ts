@@ -1,10 +1,15 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { ActionCardComponent, ActionCardsPopupComponent, CustomCursorComponent, DescriptionComponent, EventFeedComponent, EventFeedMessageComponent, GameOverPopupComponent, HintsContainerComponent, HoverHintComponent, IconBtnComponent, ItemDescriptionComponent, ItemIconBaseComponent, ItemIconComponent, ItemSlotComponent, MainButtonComponent, MenuComponent, MwActionHintComponent, MwExperienceBarComponent, MwPlayerInfoPanelComponent, MwRaIconComponent, PlayerMapActionsPanelComponent, PopupContainerComponent, PopupWrapperComponent, RewardPopupComponent, SharedTemplateDirective, SharedTemplatesComponent, SpellDescriptionComponent, SplitUnitsPopupComponent, UnitGroupInfoComponent, UnitGroupInfoPopupComponent, UnitGroupPortraitComponent, UnitGroupSpellIconComponent, UnitSlotsActionPopupComponent, ValueBarComponent, VfxContainerComponent, VfxElementComponent, VfxLayerComponent } from './components';
-import { DisableContextMenuDirective, MwActionHintDirective, MwCustomCursorDirective, MwSafeHtmlPipe, MwUnitEventsCursorDirective, MwUnitGroupCombatActionDirective, NumberModifierDirective } from './directives';
+import { ActionCardComponent, ActionCardsPopupComponent, CustomCursorComponent, DescriptionComponent, EventFeedComponent, EventFeedMessageComponent, GameOverPopupComponent, HintsContainerComponent, HoverHintComponent, IconBtnComponent, ItemDescriptionComponent, ItemIconBaseComponent, ItemIconComponent, ItemSlotComponent, MainButtonComponent, MainMenuPopupComponent, MenuComponent, MwActionHintComponent, MwExperienceBarComponent, MwPlayerInfoPanelComponent, MwRaIconComponent, PlayerMapActionsPanelComponent, PopupContainerComponent, PopupWrapperComponent, RewardPopupComponent, RoundIconBtnComponent, RoundIconComponent, SharedTemplateDirective, SharedTemplatesComponent, SpellDescriptionComponent, SplitUnitsPopupComponent, UnitGroupInfoComponent, UnitGroupInfoPopupComponent, UnitGroupPortraitComponent, UnitGroupSpellIconComponent, UnitSlotsActionPopupComponent, ValueBarComponent, VfxContainerComponent, VfxElementComponent, VfxLayerComponent } from './components';
+import { ActionCardItemStackComponent } from './components/action-card-stack-item/action-card-item.component';
+import { ResourcesCostComponent } from './components/resources-cost/resources-cost.component';
+import { DisableContextMenuDirective, MwActionHintDirective, MwCustomCursorDirective, MwUnitEventsCursorDirective, MwUnitGroupCombatActionDirective, NumberModifierDirective } from './directives';
+import { MwEntityPipe, MwInfPipe, MwSafeHtmlPipe } from './pipes';
 
 const pipes = [
+  MwEntityPipe,
   MwSafeHtmlPipe,
+  MwInfPipe,
 ];
 
 const directives = [
@@ -20,8 +25,11 @@ const components = [
   ...directives,
   ...pipes,
 
+  ResourcesCostComponent,
+
   ActionCardComponent,
   ActionCardsPopupComponent,
+  ActionCardItemStackComponent,
 
   GameOverPopupComponent,
   SharedTemplateDirective,
@@ -58,6 +66,8 @@ const components = [
   IconBtnComponent,
   MainButtonComponent,
   ValueBarComponent,
+  RoundIconComponent,
+  RoundIconBtnComponent,
 
   PlayerMapActionsPanelComponent,
   MwPlayerInfoPanelComponent,
@@ -65,6 +75,7 @@ const components = [
   RewardPopupComponent,
   SplitUnitsPopupComponent,
   UnitSlotsActionPopupComponent,
+  MainMenuPopupComponent,
 ];
 
 @NgModule({

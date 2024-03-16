@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HealingInfo } from 'src/app/core/api/combat-api';
+import { UnitTypeId } from 'src/app/core/entities';
 import { AddCombatModifiersToUnit, RemoveCombatModifiersFromUnit } from 'src/app/core/events/battle/commands';
 import { Hero } from 'src/app/core/heroes';
 import { Modifiers } from 'src/app/core/modifiers';
-import { Player } from 'src/app/core/players';
-import { GenerationModel, UnitBaseType, UnitGroup, UnitsUtils } from 'src/app/core/unit-types';
+import { GenerationModel, UnitGroup, UnitsUtils, resolveUnitType } from 'src/app/core/unit-types';
 import { EventsService } from 'src/app/store';
 import { GameObjectsManager } from './game-objects-manager.service';
 import { MwSpellsService } from './mw-spells.service';
@@ -33,7 +33,7 @@ export class MwUnitGroupsService {
   /*  todo: figure out diff between UnitGroupModel and Inst */
 
   public createUnitGroup(
-    type: UnitBaseType,
+    unitTypeId: UnitTypeId,
     options: { count: number },
     ownerHero?: Hero,
   ): UnitGroup {
@@ -42,7 +42,7 @@ export class MwUnitGroupsService {
       {
         count: options.count,
         ownerHero: ownerHero,
-        unitBase: type,
+        unitBase: resolveUnitType(unitTypeId),
       },
     );
 

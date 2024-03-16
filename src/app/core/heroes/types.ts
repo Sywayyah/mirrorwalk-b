@@ -1,10 +1,12 @@
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { UnitGroupAddedToHero, UnitGroupRemovedFromHero } from '../events';
 import { GameObject } from '../game-objects';
 import { Item, ItemBaseModel } from '../items';
 import { InventoryItems } from '../items/inventory';
 import { Modifiers, ModsRef, ModsRefsGroup, Specialties, filterSpecialties } from '../modifiers';
 import { Player } from '../players';
+import { Entity, HeroId } from '../entities';
 import { ResourcesModel } from '../resources';
 import { Spell, SpellBaseType } from '../spells';
 import { DescriptionElement } from '../ui';
@@ -28,7 +30,9 @@ export interface HeroBaseStats {
 }
 
 /* Base type for a hero */
-export interface HeroBase {
+export interface HeroBase extends Entity {
+  id: HeroId;
+
   name: string;
   generalDescription: DescriptionElement;
   initialState: {
@@ -220,6 +224,16 @@ export class Hero extends GameObject<HeroCreationParams> {
     return freeSlotsCount(this.reserveUnitSlots);
   }
 
+  getMainFilledUnitSlots(): UnitGroupSlot[] {
+    return this.mainUnitSlots.filter(slot => slot.unitGroup);
+  }
+
+  updateUnitGroupPositions(): void {
+    this.getMainFilledUnitSlots().forEach((slot, i) => {
+      slot?.unitGroup?.setPosition(i);
+    });
+  }
+
   getAllSlots(): UnitGroupSlot[] {
     return [...this.mainUnitSlots, ...this.reserveUnitSlots];
   }
@@ -235,6 +249,8 @@ export class Hero extends GameObject<HeroCreationParams> {
 
       this.updateUnitGroup(unitGroup);
     });
+
+    this.updateUnitGroupPositions();
   }
 
   addUnitGroup(unitGroup: UnitGroup): void {
@@ -261,11 +277,18 @@ export class Hero extends GameObject<HeroCreationParams> {
       emptyReserveSlot.unitGroup = unitGroup;
     }
     this.refreshUnitGroupsOrderBySlots();
+
+    this.getApi().events.dispatch(UnitGroupAddedToHero({ hero: this, unitGroup }));
+    this.updateUnitGroupPositions();
   }
 
   removeUnitGroup(unitGroup: UnitGroup): void {
     // todo: unassign hero
     CommonUtils.removeItem(this.unitGroups, unitGroup);
+
+    this.getApi().events.dispatch(UnitGroupRemovedFromHero({ hero: this, unitGroup }));
+    this.updateUnitGroupPositions();
+
   }
 
   refreshUnitGroupsOrderBySlots(): void {
@@ -284,6 +307,7 @@ export class Hero extends GameObject<HeroCreationParams> {
 
     this.initParentModGroups();
     this.setupStatsUpdating(heroBase);
+    this.updateUnitGroupPositions();
   }
 
   onDestroy(): void {
@@ -308,7 +332,7 @@ export class Hero extends GameObject<HeroCreationParams> {
     CommonUtils.removeItem(this.itemsBackpack, item);
 
     if (this.inventory.isItemEquipped(item)) {
-      this.inventory.unequipItem(item);
+      this.unequipItem(item);
     }
   }
 

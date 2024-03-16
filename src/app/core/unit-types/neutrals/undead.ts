@@ -1,16 +1,61 @@
 import { AssetsImages } from '../../assets';
-import { neutralsFraction } from '../../fractions/neutrals/fraction';
+import { neutralsFaction } from '../../factions/neutrals/faction';
 import { FrightSpell } from '../../spells/common';
 import { SkeletonsDamageBlock } from '../../spells/common/damage-block/skeletons-damage-block';
 import { heroDescrElem } from '../../ui';
-import { UnitBaseType } from '../types';
 import { createStats } from '../utils';
 
-/*
-  Theoretically, I can set default values for some params when creating fraction.
-  Also, there might be some batch creation, like 'defineUnitTypes'
- */
-const Wraiths: UnitBaseType = neutralsFraction.defineUnitType('SupremeGhosts', {
+neutralsFaction.defineUnitType({
+  id: '#unit-neut-ghost-0',
+
+  mainPortraitUrl: AssetsImages.UnitMelee,
+  name: 'Ghosts',
+  level: 1,
+  baseRequirements: {
+    gold: 30,
+  },
+
+  getDescription(data) {
+    return {
+      descriptions: [
+        heroDescrElem('Undead unit.'),
+        heroDescrElem('<br>Possesses no outstanding qualities outside of low price and passive ability Fright. Gains improvements from Necromancy.'),
+        heroDescrElem('<br>Can be upgraded into Wraiths, faster unit with better stats, inheriting Fright ability.'),
+      ],
+    }
+  },
+
+  getUnitTypeSpecialtyModifiers: (specialties) => {
+    if (specialties.specialtyNecromancy > 1) {
+      return { unitGroupSpeedBonus: 4, heroBonusDefence: 1 };
+    }
+
+    return null;
+  },
+
+  baseStats: createStats([[2, 3], 1, 2, 6, 8]),
+
+  defaultSpells: [
+    FrightSpell,
+  ],
+  neutralReward: {
+    experience: 2.3,
+    gold: 3,
+  },
+  upgradeDetails: {
+    target: '#unit-neut-ghost-1',
+    upgradeCost: {
+      gold: 25,
+    }
+  },
+  defaultModifiers: {
+    isGhost: true,
+  }
+});
+
+neutralsFaction.defineUnitType({
+  id: '#unit-neut-ghost-1',
+
   mainPortraitUrl: AssetsImages.UnitMelee,
   name: 'Wraiths',
   level: 1,
@@ -57,53 +102,9 @@ const Wraiths: UnitBaseType = neutralsFraction.defineUnitType('SupremeGhosts', {
   upgraded: true,
 });
 
-neutralsFraction.defineUnitType('Ghosts', {
-  mainPortraitUrl: AssetsImages.UnitMelee,
-  name: 'Ghosts',
-  level: 1,
-  baseRequirements: {
-    gold: 30,
-  },
+neutralsFaction.defineUnitType({
+  id: '#unit-neut-skeleton-0',
 
-  getDescription(data) {
-    return {
-      descriptions: [
-        heroDescrElem('Undead unit.'),
-        heroDescrElem('<br>Possesses no outstanding qualities outside of low price and passive ability Fright. Gains improvements from Necromancy.'),
-        heroDescrElem('<br>Can be upgraded into Wraiths, faster unit with better stats, inheriting Fright ability.'),
-      ],
-    }
-  },
-
-  getUnitTypeSpecialtyModifiers: (specialties) => {
-    if (specialties.specialtyNecromancy > 1) {
-      return { unitGroupSpeedBonus: 4, heroBonusDefence: 1 };
-    }
-
-    return null;
-  },
-
-  baseStats: createStats([[2, 3], 1, 2, 6, 8]),
-
-  defaultSpells: [
-    FrightSpell,
-  ],
-  neutralReward: {
-    experience: 2.3,
-    gold: 3,
-  },
-  upgradeDetails: {
-    target: Wraiths,
-    upgradeCost: {
-      gold: 25,
-    }
-  },
-  defaultModifiers: {
-    isGhost: true,
-  }
-});
-
-neutralsFraction.defineUnitType('Skeletons', {
   name: 'Skeletons',
   mainPortraitUrl: AssetsImages.UnitMelee,
   level: 1,
@@ -139,45 +140,9 @@ neutralsFraction.defineUnitType('Skeletons', {
 
 });
 
-const MasterLich = neutralsFraction.defineUnitType('MasterLich', {
-  name: 'Master Liches',
-  mainPortraitUrl: AssetsImages.UnitMelee,
-  level: 4,
+neutralsFaction.defineUnitType({
+  id: '#unit-neut-lich-0',
 
-  getDescription() {
-    return {
-      descriptions: [
-        heroDescrElem(`Tier 4 Undead unit, an upgraded version of Liches.`),
-        heroDescrElem(`<br>Powerful undead creatures, standing in the head of undead armies. Masterful wielders of long swords, they possess improved 45% lifesteal and cannot be slowed down.`),
-      ],
-    }
-  },
-
-  baseStats: {
-    damageInfo: { minDamage: 14, maxDamage: 19, },
-    attackRating: 7,
-    defence: 7,
-    health: 35,
-    speed: 15,
-  },
-
-  defaultModifiers: {
-    lifesteal: 45,
-    isGhost: true,
-    cannotBeSlowed: true,
-  },
-
-  baseRequirements: {
-    gold: 400,
-  },
-
-  neutralReward: {
-    experience: 40,
-    gold: 2,
-  },
-});
-
-neutralsFraction.defineUnitType('Lich', {
   name: 'Liches',
   mainPortraitUrl: AssetsImages.UnitMelee,
   level: 4,
@@ -215,10 +180,51 @@ neutralsFraction.defineUnitType('Lich', {
   },
 
   upgradeDetails: {
-    target: MasterLich,
+    target: '#unit-neut-lich-1',
+
     upgradeCost: {
       gold: 100
     },
   },
 
+});
+
+const MasterLich = neutralsFaction.defineUnitType({
+  id: '#unit-neut-lich-1',
+
+  name: 'Master Liches',
+  mainPortraitUrl: AssetsImages.UnitMelee,
+  level: 4,
+
+  getDescription() {
+    return {
+      descriptions: [
+        heroDescrElem(`Tier 4 Undead unit, an upgraded version of Liches.`),
+        heroDescrElem(`<br>Powerful undead creatures, standing in the head of undead armies. Masterful wielders of long swords, they possess improved 45% lifesteal and cannot be slowed down.`),
+      ],
+    }
+  },
+
+  baseStats: {
+    damageInfo: { minDamage: 14, maxDamage: 19, },
+    attackRating: 7,
+    defence: 7,
+    health: 35,
+    speed: 15,
+  },
+
+  defaultModifiers: {
+    lifesteal: 45,
+    isGhost: true,
+    cannotBeSlowed: true,
+  },
+
+  baseRequirements: {
+    gold: 400,
+  },
+
+  neutralReward: {
+    experience: 40,
+    gold: 2,
+  },
 });

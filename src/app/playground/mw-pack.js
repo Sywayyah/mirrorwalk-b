@@ -1,18 +1,17 @@
-// import { humansFraction } from '../core/fractions';
+// import { humansFaction } from '../core/factions';
 // import { PhoenixShieldItem } from '../core/items/neutral/phoenix-shield';
 
-const humansFraction = window.mw.humansFraction;
-//
+const humansFaction = window.mw.humansFaction;
 
-humansFraction.createHero({
+humansFaction.createHero({
   name: 'Ironsight',
   abilities: [],
   army: [{
     minUnitGroups: 2,
     maxUnitGroups: 2,
     units: [
-      [humansFraction.getUnitType('Archer'), 14, 16, 1],
-      [humansFraction.getUnitType('Knight'), 8, 10, 1],
+      [humansFaction.getUnitType('Archer'), 14, 16, 1],
+      [humansFaction.getUnitType('Knight'), 8, 10, 1],
     ],
   }],
   items: [

@@ -2,7 +2,7 @@ import { EffectAnimation } from '../../api/vfx-api';
 import { spellDescrElem } from '../../ui';
 import { createAnimation, getIconElement, getPlainAppearanceFrames, getPlainBlurFrames, getReversePulseKeyframes } from '../../vfx';
 import { SpellActivationType, SpellBaseType } from '../types';
-import { buffColors, canActivateOnAllyFn } from '../utils';
+import { buffColors, canActivateOnAllyFn, createSpell } from '../utils';
 
 const icon = 'fire-shield';
 
@@ -45,7 +45,9 @@ const HasteAnimation: EffectAnimation = createAnimation([
 const speedBonus = 5;
 
 
-export const FireShieldBuff: SpellBaseType = {
+export const FireShieldBuff: SpellBaseType = createSpell({
+  id: '#spell-fire-shield-buff',
+
   name: 'Fire Shield',
   activationType: SpellActivationType.Buff,
   icon: {
@@ -83,9 +85,11 @@ export const FireShieldBuff: SpellBaseType = {
       }
     }
   },
-};
+});
 
-export const FireShieldSpell: SpellBaseType = {
+export const FireShieldSpell: SpellBaseType = createSpell({
+  id: '#spell-fire-shield',
+
   name: 'Fire Shield',
   activationType: SpellActivationType.Target,
   icon: {
@@ -124,4 +128,4 @@ export const FireShieldSpell: SpellBaseType = {
       },
     },
   },
-};
+});

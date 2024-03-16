@@ -1,8 +1,9 @@
 import { DamageType } from '../../api/combat-api';
 import { spellDescrElem } from '../../ui';
 import { CommonUtils } from '../../utils';
-import { simpleConvergentBuffAnimation, getDamageParts } from '../../vfx';
+import { getDamageParts, messageWrapper, simpleConvergentBuffAnimation } from '../../vfx';
 import { SpellActivationType, SpellBaseType } from '../types';
+import { createSpell } from '../utils';
 
 const minDamage = 82;
 const maxDamage = 124;
@@ -10,7 +11,8 @@ const maxDamage = 124;
 const dmgIncrementPerLevel = 31;
 
 /* todo: maybe change the bonus gained with level */
-export const MeteorSpell: SpellBaseType = {
+export const MeteorSpell: SpellBaseType = createSpell({
+  id: '#spell-meteor',
   name: 'Meteor',
   activationType: SpellActivationType.Instant,
   icon: {
@@ -21,7 +23,7 @@ export const MeteorSpell: SpellBaseType = {
 
     return {
       descriptions: [
-        spellDescrElem(`Deals ${minDamage + damageBounsPerLevel}-${maxDamage + damageBounsPerLevel} fire damage to random enemy group`),
+        spellDescrElem(`Meteor deals ${minDamage + damageBounsPerLevel}-${maxDamage + damageBounsPerLevel} fire damage to random enemy group, next 2 unit groups after current group in fight queue (enemies or allies) will be stunned and will lose their turns.`),
       ],
     }
   },
@@ -29,10 +31,10 @@ export const MeteorSpell: SpellBaseType = {
     spellConfig: {
       getManaCost: (spell) => {
         const manaCosts: Record<number, number> = {
-          1: 4,
-          2: 5,
-          3: 5,
-          4: 6,
+          1: 6,
+          2: 7,
+          3: 7,
+          4: 8,
         };
 
         return manaCosts[spell.currentLevel];
@@ -41,6 +43,8 @@ export const MeteorSpell: SpellBaseType = {
       init({ events, actions, thisSpell, ownerHero, vfx, spellInstance }) {
         events.on({
           PlayerCastsInstantSpell(event) {
+            // todo: should stun happen after or before meteor damage?
+            // todo: should all turns be gone or only 1? scaling?
             const randomEnemyGroup = actions.getRandomEnemyPlayerGroup();
             const damageBounsPerLevel = dmgIncrementPerLevel * spellInstance.currentLevel;
 
@@ -64,9 +68,18 @@ export const MeteorSpell: SpellBaseType = {
                   { duration: 1000 },
                 );
               });
+
+            const unitsInQueue = actions.getUnitsFromFightQueue();
+            const unitsToStun = CommonUtils.selectItems(unitsInQueue, 2, 1);
+            console.log(unitsInQueue, unitsToStun);
+
+            unitsToStun.forEach(unit => {
+              actions.removeTurnsFromUnitGroup(unit);
+              vfx.createDroppingMessageForUnitGroup(unit.id, { html: messageWrapper(`Stunned!`) });
+            });
           },
         });
       },
     }
   }
-}
+})

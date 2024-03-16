@@ -1,11 +1,14 @@
 import { itemStatsDescr } from '../../ui';
 import { ItemBaseModel, ItemSlotType } from '../types';
+import { createItem } from '../utils';
 
-export const GarudaWindCrown: ItemBaseModel = {
+export const GarudaWindCrown: ItemBaseModel = createItem({
+  id: '#item-garuda-wind-crown',
+
   name: `Garuda's Wind Crown`,
-  slotType: ItemSlotType.Headgear,
+  slot: ItemSlotType.Headgear,
 
-  staticMods: {
+  stats: {
     heroBonusAttack: 3,
     heroBonusDefence: 6,
     resistAll: 10,
@@ -13,17 +16,15 @@ export const GarudaWindCrown: ItemBaseModel = {
     specialtyArchery: 2,
     cannotBeSlowed: true,
   },
-  icon: {
-    icon: 'feather-wing',
+  icon: 'feather-wing',
+  cost: {
+    gold: 5000,
+    redCrystals: 2,
+    gems: 2,
   },
-  description({ thisItem }) {
-    return {
-      descriptions: [
-        itemStatsDescr(thisItem),
-      ],
-    };
+  sellingCost: {
+    gold: 2000,
+    redCrystals: 1,
+    gems: 1,
   },
-  config: {
-    init: () => { },
-  },
-}
+})

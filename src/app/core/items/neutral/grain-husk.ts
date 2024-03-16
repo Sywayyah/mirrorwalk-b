@@ -1,29 +1,26 @@
-import { itemStatsDescr, spellDescrElem } from '../../ui';
+import { itemStatsDescr } from '../../ui';
 import { ItemBaseModel, ItemSlotType } from '../types';
+import { createItem } from '../utils';
 
 
-export const GrainHuskItem: ItemBaseModel = {
+export const GrainHuskItem: ItemBaseModel = createItem({
+  id: '#item-grain-husk',
+
   name: 'Grain Husk',
-  slotType: ItemSlotType.Weapon,
-  staticMods: {
+  slot: ItemSlotType.Weapon,
+  icon: 'scythe',
+  stats: {
     heroBonusAttack: 2,
   },
-  staticEnemyMods: {
+  enemyStats: {
     heroBonusDefence: -3,
     heroBonusAttack: -3,
     unitGroupSpeedBonus: -2,
   },
-  icon: {
-    icon: 'scythe',
+  cost: {
+    gold: 1000,
   },
-  description({ thisItem }) {
-    return {
-      descriptions: [
-        itemStatsDescr(thisItem),
-      ],
-    };
+  sellingCost: {
+    gold: 650,
   },
-  config: {
-    init() { }
-  },
-};
+});

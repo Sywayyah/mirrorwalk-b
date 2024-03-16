@@ -1,12 +1,12 @@
 import { createEventType } from 'src/app/store';
 import { DefaultGameModes, GamePreparedEvent } from './types';
-import { Fraction } from '../../fractions';
+import { Faction } from '../../factions';
 
 const createTriggerEvent = createEventType;
 
 export const PrepareGameEvent = createTriggerEvent<{
   gameMode: DefaultGameModes;
-  selectedFraction?: Fraction<string>;
+  selectedFaction?: Faction;
 }>(
   'Player started new game, waiting for GamePreparationFinished event to prepare the map.',
 );

@@ -7,6 +7,15 @@ import { Hero } from '../../heroes';
 import { MapStructure } from '../../structures';
 import { Building } from '../../towns';
 
+export enum ViewsEnum {
+  MainScreen = 'main-screen',
+  NewGame = 'new-game',
+
+  Structures = 'structures',
+  Battleground = 'battleground',
+  Town = 'town',
+}
+
 export type StructSelectedEvent = { struct: MapStructure };
 export type NeutralStructParams = { struct: MapStructure };
 export type NewDayParams = { day: number };

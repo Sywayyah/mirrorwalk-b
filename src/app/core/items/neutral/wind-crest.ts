@@ -1,20 +1,27 @@
 import { ItemBaseModel, ItemSlotType } from '..';
 import { WindBlessBuff } from '../../spells/common';
 import { itemStatsDescr, spellDescrElem } from '../../ui';
+import { createItem } from '../utils';
 
-export const ItemWindCrest: ItemBaseModel = {
+export const ItemWindCrest: ItemBaseModel = createItem({
+  id: '#item-wind-crest',
+
   name: 'Wind Crest',
-  slotType: ItemSlotType.Headgear,
-  staticMods: {
+  slot: ItemSlotType.Headgear,
+  stats: {
     heroBonusDefence: 1,
   },
-  icon: {
-    icon: 'feather-wing',
+  icon: 'feather-wing',
+  cost: {
+    gold: 500,
   },
-  description({ thisItem }) {
+  sellingCost: {
+    gold: 250,
+  },
+  description({ thisItem, thisItemBase }) {
     return {
       descriptions: [
-        itemStatsDescr(thisItem),
+        itemStatsDescr(thisItemBase),
         spellDescrElem('At the beginning of the fight, grants Wind Blessing (level 1) effect to your ranged units for 1 round.'),
       ],
     };
@@ -38,4 +45,4 @@ export const ItemWindCrest: ItemBaseModel = {
       })
     },
   },
-}
+})

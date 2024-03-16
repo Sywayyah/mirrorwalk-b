@@ -1,31 +1,34 @@
 import { ItemBaseModel, ItemSlotType } from '..';
 import { MeteorSpell } from '../../spells/common';
 import { itemStatsDescr, spellDescrElem } from '../../ui';
+import { createItem } from '../utils';
 
-export const ItemMeteorSwords: ItemBaseModel<{}> = {
+export const ItemMeteorSwords: ItemBaseModel<{}> = createItem({
+  id: '#item-meteor-sword',
+
   name: 'Meteor Swords',
-  slotType: ItemSlotType.Weapon,
-  staticMods: {
+  slot: ItemSlotType.Weapon,
+  icon: 'dervish-swords',
+  stats: {
     heroBonusAttack: 2,
     specialtyFireMastery: 1,
   },
-  icon: {
-    icon: 'dervish-swords',
+  cost: {
+    gold: 1100,
   },
-  bonusAbilities: [
+  sellingCost: {
+    gold: 450,
+  },
+  spells: [
+    // item version could have lesser damage and higher manacost
     { spell: MeteorSpell, level: 1 },
   ],
-  defaultState: {},
-  description({ thisItem }) {
+  description({ thisItemBase }) {
     return {
       descriptions: [
-        itemStatsDescr(thisItem),
+        itemStatsDescr(thisItemBase),
         spellDescrElem('Two large black swords with an astronomical map depicted in gold on the blade. Grants Level 1 Meteor ability.'),
       ],
     };
   },
-  config: {
-    init: ({ actions, events, ownerPlayer }) => {
-    },
-  }
-};
+});

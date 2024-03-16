@@ -1,8 +1,9 @@
-import { neutralsFraction } from '../../fractions/neutrals/fraction';
 import { GenerationModel } from '../../unit-types';
 import { HiringReward, NeutralRewardTypesEnum, StructureGeneratorModel, StuctureControl, UnitUpgradeReward } from '../types';
+import { createStructure } from '../utils';
 
-export const GraveyardStructure: StructureGeneratorModel = {
+export const GraveyardStructure: StructureGeneratorModel = createStructure({
+  id: '#struct-graveyard',
   name: 'Graveyard',
   actionPoints: 1,
   control: StuctureControl.Neutral,
@@ -12,8 +13,7 @@ export const GraveyardStructure: StructureGeneratorModel = {
       maxUnitGroups: 2,
       minUnitGroups: 3,
       units: [
-        [neutralsFraction.getUnitType('Ghosts'), 14, 18, 3],
-        // [neutralsFraction.getUnitType('Skeletons'), 16, 24, 1],
+        ['#unit-neut-ghost-0', 14, 18, 3],
       ],
     } as GenerationModel;
 
@@ -24,15 +24,17 @@ export const GraveyardStructure: StructureGeneratorModel = {
     const hiringReward: HiringReward = {
       type: NeutralRewardTypesEnum.UnitsHire,
       units: [
-        { unitType: neutralsFraction.getUnitType('Ghosts'), maxCount: 24 },
+        { unitTypeId: '#unit-neut-ghost-0', maxCount: 24 },
       ],
     };
 
     return hiringReward;
   },
-};
+});
 
-export const BeaconOfTheUndead: StructureGeneratorModel = {
+export const BeaconOfTheUndead: StructureGeneratorModel = createStructure({
+  id: '#struct-undead-beacon',
+
   name: 'Beacon of the Undead',
   control: StuctureControl.Neutral,
   description: () => ({
@@ -58,4 +60,4 @@ export const BeaconOfTheUndead: StructureGeneratorModel = {
       },
     } as UnitUpgradeReward;
   },
-};
+});

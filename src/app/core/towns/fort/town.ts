@@ -1,7 +1,7 @@
-import { fortFraction } from '../../fractions';
+import { fortFaction } from '../../factions';
 import { BuidlingBase } from '../buildings';
 import { TownBase } from '../types';
-import { createHiringActivity } from '../utils';
+import { createBuildingType, createHiringActivity } from '../utils';
 
 export type CastleTownBuildings =
   | 'town-hall'
@@ -14,7 +14,9 @@ export type CastleTownBuildings =
   | 'tavern';
 
 
-const townCenter: BuidlingBase = {
+const townCenter: BuidlingBase = createBuildingType({
+  id: '#build-fort-town-hall-1',
+
   name: 'Town Hall',
   description: 'Earns 400 gold each day and gives 1 additional reserve slot.',
   config: {
@@ -29,43 +31,50 @@ const townCenter: BuidlingBase = {
       })
     }
   }
-};
+});
 
-const market: BuidlingBase = {
+const market: BuidlingBase = createBuildingType({
+  id: '#build-fort-market',
   name: 'Market',
-};
+});
 
-const tavern: BuidlingBase = {
+const tavern: BuidlingBase = createBuildingType({
+  id: '#build-fort-tavern',
   name: 'Tavern',
-};
+});
 
-const goblinHuts: BuidlingBase = {
+const goblinHuts: BuidlingBase = createBuildingType({
+  id: '#build-fort-goblin-huts-1',
   name: 'Goblin Huts',
   description: 'Allows to train Raiders that can be upgraded.',
-  activity: createHiringActivity(fortFraction.getUnitType('Raiders'), 18, 'raiders'),
-};
+  activity: createHiringActivity('#unit-f00', 18, 'raiders'),
+});
 
-const upgradedGoblinHuts: BuidlingBase = {
+const upgradedGoblinHuts = createBuildingType({
+  id: '#build-fort-goblin-huts-2',
   name: 'Upg. Goblin Huts',
   description: 'Allows to train Raiders and Clan.',
-  activity: createHiringActivity(fortFraction.getUnitType('Raiders'), 18, 'raiders', true),
-};
+  activity: createHiringActivity('#unit-f00', 18, 'raiders', true),
+});
 
-const stockade: BuidlingBase = {
+const stockade = createBuildingType({
+  id: '#build-fort-stockade-1',
   name: 'Stockade',
   description: 'Allows to train Goblin Archers that can be upgraded.',
-  activity: createHiringActivity(fortFraction.getUnitType('GoblinArcher'), 18, 'goblinArcher'),
-};
+  activity: createHiringActivity('#unit-f10', 18, 'goblinArcher'),
+});
 
-const upgradedStockade: BuidlingBase = {
+const upgradedStockade = createBuildingType({
+  id: '#build-fort-stockade-2',
   name: 'Upg. Stockade',
   description: 'Allows to train Goblin Archers and Goblin Shooters.',
-  activity: createHiringActivity(fortFraction.getUnitType('GoblinArcher'), 18, 'goblinArcher', true),
-};
+  activity: createHiringActivity('#unit-f10', 18, 'goblinArcher', true),
+});
 
 
-// will be reworked, need somehow to process it in the fraction itself
+// will be reworked, need somehow to process it in the faction itself
 export const factionTownBase: TownBase<CastleTownBuildings> = {
+  id: '#town-fort',
   name: 'Castle',
   availableBuildings: {
     'town-hall': {
@@ -119,4 +128,4 @@ export const factionTownBase: TownBase<CastleTownBuildings> = {
   },
 };
 
-fortFraction.setTownBase(factionTownBase);
+fortFaction.setTownBase(factionTownBase);

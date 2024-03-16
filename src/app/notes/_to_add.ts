@@ -45,7 +45,7 @@
     Desirable ideas:
       * Markets, so player can trade resources. ALso, Markets may have different levels,
         and they might allow to cell/buy more types of resources, or reduce trading costs
-        in some fractions.
+        in some factions.
 
     Just ideas:
       * There can be items (shields mostly) that reduce received damage if you are not

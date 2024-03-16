@@ -15,6 +15,9 @@ export const SpellEventsGroup = createEventsGroup({
       attacker: UnitGroup;
       attacked: UnitGroup;
     }>(''),
+    AuraCheck: createEventType<{
+      target: UnitGroup,
+    }>(),
   },
 });
 

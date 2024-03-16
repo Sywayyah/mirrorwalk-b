@@ -1,4 +1,4 @@
-/* 
+/*
     For having doomstring. What can be better? On the one hand,
         I do want to have this item. But also, how should it work?
         Should all ranged units use its effects, or maybe you
@@ -15,10 +15,10 @@
 
     Sustaining an army. The interesting question. Is it possible for
         a player to lose before the end? It it likely that yes.
-        In this case, hero and his army may become ghosts, 
+        In this case, hero and his army may become ghosts,
         enabling some disadvantages and advantages.
 
-        On the other hand, there is more to it. How do player 
+        On the other hand, there is more to it. How do player
         sustain army? Maybe there can be couple ways.
 
         Hero might have an ability to heal groups after or during
@@ -37,7 +37,7 @@
         that most common and least dangerous neutral groups
         will have to attack second, dealing reduced damage,
         or dealing no damage at all.
-        
+
     Resources. I do want to have crystals. Crystals will be
         something rare, and what enables you in the most cases
         to buy higher level creatures. I would also love to have
@@ -53,7 +53,7 @@
         can have couple of branches for upgrade. Also, it can be so that
         type will be upgraded into higher levels than initial.
         (lvl.2 Archers -> lvl.4 Crossbowmen or lvl.5 Elite Archers or
-        something). I'm not sure about if each fraction has to have
+        something). I'm not sure about if each faction has to have
         1-7 levels, or strictly 7 unit types, will see.
 
         This will also introduce more gameplay styles (for different races
@@ -62,7 +62,7 @@
         high at some conditions).
 
         Some other base unit types, on the other hand, could be risky.
-        Bases can be not so strong, but upgrades can be great. 
+        Bases can be not so strong, but upgrades can be great.
         Risk-reward kind of thing..
-    
+
 */

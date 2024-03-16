@@ -1,10 +1,11 @@
 import { AssetsImages } from '../../assets';
-import { neutralsFraction } from '../../fractions/neutrals/fraction';
+import { neutralsFaction } from '../../factions/neutrals/faction';
 import { heroDescrElem } from '../../ui';
 import { createStats, simpleDescriptions } from '../utils';
 
 
-neutralsFraction.defineUnitType('FireSpirits', {
+neutralsFaction.defineUnitType({
+  id: '#unit-neut-fire-spirit-0',
   name: 'Fire Spirits',
   mainPortraitUrl: AssetsImages.UnitMelee,
   baseRequirements: {},
