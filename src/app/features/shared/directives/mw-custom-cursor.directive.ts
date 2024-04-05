@@ -1,7 +1,7 @@
 import { Directive, HostListener, NgZone, OnDestroy, Renderer2, inject } from '@angular/core';
 import { Subject } from 'rxjs';
 import { CustomAnimationData, EffectAnimation, EffectOptions } from 'src/app/core/api/vfx-api';
-import { injectHostElem } from 'src/app/core/utils/dependencies';
+import { injectHostElem } from 'src/app/core/utils';
 import { CursorService } from '../components/custom-cursor/cursor.service';
 
 export interface AnimatedCursor {
