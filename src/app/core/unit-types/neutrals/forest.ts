@@ -33,19 +33,20 @@ neutralsFaction.defineUnitType({
 
 
 neutralsFaction.defineUnitType({
-  id: '#unit-poison-ivy-0',
+  id: '#unit-neut-poison-ivy-0',
 
   mainPortraitUrl: AssetsImages.UnitMelee,
   name: 'Poison Ivy',
   level: 2,
 
-  baseStats: createStats([[3, 4], 1, 1, 10, 12]),
+  baseStats: createStats([[3, 4], 1, 1, 10, 10]),
 
   getDescription: simpleDescriptions([
     heroDescrElem('Poison Ivy are tier 2 neutral units with average stats.'),
   ]),
 
   defaultModifiers: {
+    resistAll: -15,
   },
 
   baseRequirements: {

@@ -1,6 +1,7 @@
+import { GenerationModel } from '../../unit-types';
 import { ArchersOutpostStructure, BanditCamp, BeaconOfTheUndead, BigCampStructure, CalavryStalls, GraveyardStructure, MagicRiverStructure, MountainNestStructure, RockyPassageStructure, ThievesLair, WitchHutStructure } from '../common';
 import { DarkArtsSchool } from '../common/dark-arts-school';
-import { FireRingStructure } from '../common/guard-location';
+import { FireRingStructure, GenericGuardStructure } from '../common/guard-location';
 import { Mausoleum } from '../common/mausoleum';
 import { DailyResourcesMineStructure } from '../common/resource-mine';
 import { getResPileParams, ResourcesPileStructure } from '../common/resource-pile';
@@ -285,6 +286,21 @@ const tlBranch: StructureDescription[] = createLocationsBranch('start-top-left',
 
 ]);
 
+const postBossBranch = createLocationsBranch('post-boss-1', [
+  {
+    id: 'entry',
+    x: 194,
+    y: 338,
+    actionPoints: 1,
+
+    icon: 'sword',
+    pathTo: 'start-bottom-left-post-boss',
+    toOuterBranch: true,
+    struct: GenericGuardStructure,
+    structParams: { name: 'Swamp', guards: { units: [['#unit-neut-poison-ivy-0', 20, 20, 3]], maxUnitGroups: 3, minUnitGroups: 3 } as GenerationModel }
+  },
+]);
+
 const trBranch: StructureDescription[] = createLocationsBranch('start-top-right', [
   // {
   //   id: '4',
@@ -329,4 +345,5 @@ export const structsPreset1: StructureDescription[] = [
   ...tlBranch,
   ...trBranch,
   ...constellationSpawn,
+  ...postBossBranch,
 ];
