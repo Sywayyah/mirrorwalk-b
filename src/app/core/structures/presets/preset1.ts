@@ -33,30 +33,32 @@ function loc(location: number): number {
 
 const brBranch: StructureDescription[] = createLocationsBranch('start-bottom-right', [
   {
-    id: '1',
+    id: 'entry',
     x: loc(60),
     y: loc(30),
     icon: 'tombstone',
+
     pathTo: START_LOC_ID,
+    toOuterBranch: true,
+
     struct: GraveyardStructure,
     tags: [''],
-    toOuterBranch: true,
   },
   {
-    id: '2',
+    id: '1',
     x: loc(120),
     y: loc(40),
     icon: 'sword',
-    pathTo: '1',
+    pathTo: 'entry',
 
     struct: BanditCamp,
   },
   {
-    id: '3',
+    id: '1-1',
     x: loc(140),
     y: loc(-10),
     icon: 'hand-saw',
-    pathTo: '2',
+    pathTo: '1',
     actionPoints: 1,
 
     struct: ResourcesPileStructure,
@@ -67,7 +69,7 @@ const brBranch: StructureDescription[] = createLocationsBranch('start-bottom-rig
     x: loc(180),
     y: loc(60),
     icon: 'book',
-    pathTo: '2',
+    pathTo: '1',
 
     struct: WitchHutStructure,
   },
@@ -76,7 +78,7 @@ const brBranch: StructureDescription[] = createLocationsBranch('start-bottom-rig
     x: loc(120),
     y: loc(90),
     icon: 'sword',
-    pathTo: '2',
+    pathTo: '1',
 
 
     struct: BanditCamp,
