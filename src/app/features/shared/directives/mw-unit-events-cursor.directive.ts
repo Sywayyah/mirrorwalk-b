@@ -1,39 +1,28 @@
-import { Directive, ElementRef, Inject, InjectionToken, NgZone, OnInit, Renderer2 } from '@angular/core';
+import { Directive, InjectionToken, OnInit, inject } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 import { PlayerState } from 'src/app/core/players';
 import { UnitGroup } from 'src/app/core/unit-types';
 import { CenteredStaticCursorAnimation, SpellCastCursorAnimation, StaticCursorAnimation } from 'src/app/core/vfx';
 import { MwCurrentPlayerStateService, MwPlayersService, MwSpellsService } from '../../services';
-import { CursorService } from '../components/custom-cursor/cursor.service';
 import { AnimatedCursor, MwCustomCursorDirective } from './mw-custom-cursor.directive';
 
 export interface UIUnitProvider {
   getUnitGroup(): UnitGroup;
 }
 
-export const PROVIDE_UI_UNIT_GROUP: InjectionToken<string> = new InjectionToken('UI element unit group provider');
+export const PROVIDE_UI_UNIT_GROUP: InjectionToken<UIUnitProvider> = new InjectionToken('UI element unit group provider');
 
 
 @Directive({
   selector: '[mwUnitEventsCursor]'
 })
 export class MwUnitEventsCursorDirective extends MwCustomCursorDirective implements OnInit {
+  private readonly curPlayerState = inject(MwCurrentPlayerStateService);
+  private readonly spells = inject(MwSpellsService);
+  private readonly players = inject(MwPlayersService);
+  private readonly unitGroupProvider = inject(PROVIDE_UI_UNIT_GROUP);
+
   private unitGroup!: UnitGroup;
-
-  constructor(
-    vfx: CursorService,
-    hostElem: ElementRef,
-    renderer: Renderer2,
-    private curPlayerState: MwCurrentPlayerStateService,
-    private spells: MwSpellsService,
-    private players: MwPlayersService,
-
-    @Inject(PROVIDE_UI_UNIT_GROUP)
-    private unitGroupProvider: UIUnitProvider,
-    protected ngZone: NgZone,
-  ) {
-    super(vfx, hostElem, renderer, ngZone);
-  }
 
   public ngOnInit(): void {
     this.unitGroup = this.unitGroupProvider.getUnitGroup();
