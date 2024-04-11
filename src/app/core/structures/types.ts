@@ -60,7 +60,7 @@ export interface StructureGeneratorModel extends Entity {
 
   type?: StructureType;
 
-  generateGuard?: () => GenerationModel;
+  generateGuard?: (params: { thisStruct: MapStructure }) => GenerationModel;
 
   /* todo: Array of rewards? */
   generateReward?: () => NeutralRewardModel;

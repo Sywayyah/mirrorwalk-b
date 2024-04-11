@@ -23,11 +23,37 @@ neutralsFaction.defineUnitType({
 
   baseRequirements: {
     gold: 100,
-    redCrystals: 0,
   },
 
   neutralReward: {
     experience: 3.3,
+    gold: 3.2,
+  },
+});
+
+
+neutralsFaction.defineUnitType({
+  id: '#unit-poison-ivy-0',
+
+  mainPortraitUrl: AssetsImages.UnitMelee,
+  name: 'Poison Ivy',
+  level: 2,
+
+  baseStats: createStats([[3, 4], 1, 1, 10, 12]),
+
+  getDescription: simpleDescriptions([
+    heroDescrElem('Poison Ivy are tier 2 neutral units with average stats.'),
+  ]),
+
+  defaultModifiers: {
+  },
+
+  baseRequirements: {
+    gold: 10,
+  },
+
+  neutralReward: {
+    experience: 4.5,
     gold: 3.2,
   },
 });

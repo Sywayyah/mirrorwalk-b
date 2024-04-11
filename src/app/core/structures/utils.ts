@@ -1,5 +1,6 @@
 import { StructId, registerEntity } from '../entities';
 import { GenerationModel } from '../unit-types';
+import { StructureDescription } from './map-structures';
 import { HiringReward, HiringRewardModel, NeutralRewardTypesEnum, StructureGeneratorModel, StuctureControl } from './types';
 
 export function createStructure(base: StructureGeneratorModel): StructureGeneratorModel {
@@ -27,4 +28,8 @@ export function createHireStructure({ id, name, guard, unitsForHire }: { id: Str
       return hiringReward;
     },
   };
+}
+
+export function createLocationsBranch(idsPrefix: string, structs: (StructureDescription & { toOuterBranch?: boolean })[]): StructureDescription[] {
+  return structs.map(struct => ({ ...struct, id: `${idsPrefix}-${struct.id}`, pathTo: !struct.pathTo ? undefined : struct.toOuterBranch ? struct.pathTo : `${idsPrefix}-${struct.pathTo}` }));
 }
