@@ -1,3 +1,8 @@
+/* 
+  Garrison - populated randomly with units of your town or tavern
+  units can be took for 1 day and will leave army next day.
+*/
+
 /*
   I can concentrate more on content creation for the game, and some new ideas.
     1. Halberdiers can block damage based on their count (0.5/0.7 per Pikeman/Halberdier).
