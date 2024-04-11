@@ -1,21 +1,21 @@
 import { BanditCamp } from '../common';
 import { getResPileParams, ResourcesPileStructure } from '../common/resource-pile';
 import { StructureDescription } from '../map-structures';
+import { createLocationsBranch } from '../utils';
 
 
 const locCoord = (x: number, y: number) => ({ x: x + 1700, y: y + 1500 });
 
-const id = (id: string) => `const-${id}`;
 
-export const constellationSpawn: StructureDescription[] = [
+export const constellationSpawn: StructureDescription[] = createLocationsBranch('const-start', [
   {
-    id: id('start-1'),
+    id: 'start',
     ...locCoord(0, 0),
     icon: 'campfire',
   },
   {
-    id: id('loc-1'),
-    pathTo: id('start-1'),
+    id: '1',
+    pathTo: 'start',
     ...locCoord(90, -60),
     icon: 'gold-bar',
     actionPoints: 2,
@@ -23,10 +23,10 @@ export const constellationSpawn: StructureDescription[] = [
     structParams: getResPileParams({ gold: 650 }),
   },
   {
-    id: id('loc-2'),
-    pathTo: id('start-1'),
+    id: '2',
+    pathTo: 'start',
     ...locCoord(10, -70),
     icon: 'sword',
     struct: BanditCamp,
   }
-];
+]);

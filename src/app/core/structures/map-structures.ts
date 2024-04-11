@@ -124,4 +124,9 @@ export class MapStructure extends GameObject<ViewStructureCreationParams> {
       this.controls = controls;
     }
   }
+
+  getStructParams<T>(): T {
+    return this.structParams as T;
+  }
+
 }
