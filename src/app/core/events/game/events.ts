@@ -60,3 +60,5 @@ export const PlayerLevelsUp = gameEvent<PlayerLevelsUpEvent>();
 export const UnitGroupAddedToHero = gameEvent<{ hero: Hero, unitGroup: UnitGroup }>();
 
 export const UnitGroupRemovedFromHero = gameEvent<{ hero: Hero, unitGroup: UnitGroup }>();
+
+export const ScheduleAction = gameEvent<{ action: () => void, dayOffset: number }>();

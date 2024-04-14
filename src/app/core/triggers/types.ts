@@ -12,6 +12,7 @@ export interface GameApi {
   actions: {
     getMapStructures(): MapStructure[];
     getActionPointsLeft(): number;
+    scheduleAction(action: () => void, days: number): void;
   },
 }
 

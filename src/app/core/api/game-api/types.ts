@@ -7,6 +7,7 @@ import { UnitGroup } from '../../unit-types';
 import { SpellCreationOptions } from '../combat-api';
 
 export interface PlayersApi {
+  removeUnitTypeFromPlayer(currentPlayer: Player, unitType: UnitTypeId, count: number): void;
   addManaToPlayer: (player: Player, mana: number) => void;
   addMaxManaToPlayer: (player: Player, plusToMaxMana: number) => void;
 

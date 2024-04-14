@@ -1,5 +1,3 @@
-
-
 import { AssetsImages } from '../../assets';
 import { humansFaction } from '../../factions';
 import { ItemWindCrest } from '../../items/neutral';

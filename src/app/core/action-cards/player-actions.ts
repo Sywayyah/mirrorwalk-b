@@ -131,8 +131,10 @@ export const RangersHorn = createActionCard({
   type: ActionCardTypes.PlayerAction,
   config: {
     onUsedInstantly({ actions, players }) {
-      players.addUnitGroupToPlayer(players.getCurrentPlayer(), '#unit-neut-ranger-0', 8);
-      // players.
+      const unitType = '#unit-neut-ranger-0';
+      const currentPlayer = players.getCurrentPlayer();
+      players.addUnitGroupToPlayer(currentPlayer, unitType, 8);
+      actions.scheduleAction(() => players.removeUnitTypeFromPlayer(currentPlayer, unitType, 8), 2);
     }
   }
 })
