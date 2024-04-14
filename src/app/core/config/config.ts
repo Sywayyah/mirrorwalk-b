@@ -5,5 +5,5 @@ export const CONFIG = {
   logGameObjects: true,
   logObjectsOnRightClick: true,
 
-  showLocationsNames: false,
+  showLocationsIds: false,
 } as const;

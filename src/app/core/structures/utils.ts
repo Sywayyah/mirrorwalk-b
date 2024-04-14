@@ -31,5 +31,5 @@ export function createHireStructure({ id, name, guard, unitsForHire }: { id: Str
 }
 
 export function createLocationsBranch(idsPrefix: string, structs: (StructureDescription & { toOuterBranch?: boolean })[]): StructureDescription[] {
-  return structs.map(struct => ({ ...struct, id: `${idsPrefix}-${struct.id}`, pathTo: !struct.pathTo ? undefined : struct.toOuterBranch ? struct.pathTo : `${idsPrefix}-${struct.pathTo}` }));
+  return structs.map(struct => ({ ...struct, id: `${idsPrefix}.${struct.id}`, pathTo: !struct.pathTo ? undefined : struct.toOuterBranch ? struct.pathTo : `${idsPrefix}.${struct.pathTo}` }));
 }
