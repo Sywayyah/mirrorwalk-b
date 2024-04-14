@@ -55,6 +55,7 @@ export interface ModifiersModel extends Specialties {
   isRanged: boolean;
   counterattacks: boolean;
   isGhost: boolean;
+  isForest: boolean;
   isSummon: boolean;
   isBoss: boolean;
   isCavalry: boolean;

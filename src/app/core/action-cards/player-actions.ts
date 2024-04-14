@@ -121,6 +121,24 @@ export const RecruitActionCard = createActionCard({
   description: `Gives you additional units below tier 3, consumes 2 action points.`,
 });
 
+export const RangersHorn = createActionCard({
+  id: '#acard-rangers-horn',
+
+  title: `Ranger's Horn`,
+  description: '8 Rangers will join your army for 3 days. Rangers are effective against forest dwellers.',
+  bgColor: '#3c843c',
+  icon: 'hood',
+  type: ActionCardTypes.PlayerAction,
+  config: {
+    onUsedInstantly({ actions, players }) {
+      const unitType = '#unit-neut-ranger-0';
+      const currentPlayer = players.getCurrentPlayer();
+      players.addUnitGroupToPlayer(currentPlayer, unitType, 8);
+      actions.scheduleAction(() => players.removeUnitTypeFromPlayer(currentPlayer, unitType, 8), 2);
+    }
+  }
+})
+
 // practically, a Tavern can be implemented via cards.
 // building a Tavern will give you 2 cards for Recruiting.
 //  one more card will be given per each level of Tavern

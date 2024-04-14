@@ -25,6 +25,7 @@ export class StructuresController extends StoreClient() {
 
     if (currentGame.actionPoints <= 0) {
       currentGame.day += 1;
+      currentGame.globalDay += 1;
       currentGame.actionPoints += defaultActionPointsPerDay;
 
       this.events.dispatch(NewDayStarted({
