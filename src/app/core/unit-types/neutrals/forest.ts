@@ -13,12 +13,13 @@ neutralsFaction.defineUnitType({
   baseStats: createStats([[3, 4], 1, 1, 10, 12]),
 
   getDescription: simpleDescriptions([
-    heroDescrElem('Gnolls are tier 1 neutral units with average stats.'),
+    heroDescrElem('Gnolls are tier 1 forest dwellers with average stats.'),
     heroDescrElem('Mostly known for being bandits, they possess a fire resistant fur, giving them +10% to Fire Resist.'),
   ]),
 
   defaultModifiers: {
     resistFire: 10,
+    isForest: true,
   },
 
   baseRequirements: {
@@ -42,11 +43,13 @@ neutralsFaction.defineUnitType({
   baseStats: createStats([[3, 4], 1, 1, 10, 10]),
 
   getDescription: simpleDescriptions([
-    heroDescrElem('Poison Ivy are tier 2 neutral units with average stats.'),
+    heroDescrElem('Tier 2 forest dweller.'),
+    heroDescrElem('A mutated plant, a sturdy enemy with venomous attack, but vulnerable to any magic damage.'),
   ]),
 
   defaultModifiers: {
-    resistAll: -15,
+    resistAll: -20,
+    isForest: true,
   },
 
   baseRequirements: {
@@ -67,13 +70,16 @@ neutralsFaction.defineUnitType({
   level: 2,
 
   getDescription: simpleDescriptions([
-    heroDescrElem('Thieves are tier 2 neutral units.'),
+    heroDescrElem('Tier 2 forest dweller.'),
     heroDescrElem('<br>Thieves are very dangerous despite being fragile. Their high speed allows them to have their turn earlier, and ability to attack twice, along with high damage, can result in heavy losses.'),
   ]),
 
   baseStats: createStats([[6, 7], 2, 1, 9, 16]),
 
   defaultTurnsPerRound: 2,
+  defaultModifiers: {
+    isForest: true,
+  },
 
   baseRequirements: {},
   neutralReward: {
@@ -91,11 +97,15 @@ neutralsFaction.defineUnitType({
   level: 3,
 
   getDescription: simpleDescriptions([
-    heroDescrElem('Forest Trolls are tier 3 neutral units.'),
+    heroDescrElem('Tier 3 forest dweller.'),
     heroDescrElem('<br>Durable and strong, groups of Forest Trolls can absorb big damage, but their slowness usually makes them use their move last.'),
   ]),
 
   baseStats: createStats([[5, 7], 3, 4, 17, 10]),
+
+  defaultModifiers: {
+    isForest: true,
+  },
 
   baseRequirements: {},
   neutralReward: {

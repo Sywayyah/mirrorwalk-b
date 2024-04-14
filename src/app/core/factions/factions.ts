@@ -36,6 +36,7 @@ export const Factions = {
         const unitType: UnitBaseType = {
           defaultTurnsPerRound: 1,
           ...data,
+          mainPortraitUrl: data.mainPortraitUrl ?? AssetsImages.UnitMelee,
           faction: this,
         };
 
