@@ -239,23 +239,7 @@ export class HiringPopupComponent extends BasicPopup<HiringPopupData> implements
     } else {
       this.hirableGroups.forEach(group => {
         if (group.count) {
-          const stacksOfType = currentPlayer.hero.unitGroups.filter(unitGroup => unitGroup.type.id === this.activity.hiring.unitTypeId)!;
-
-          console.log(stacksOfType);
-          let i = 0;
-          let unitsToRemove = group.count;
-
-          while (unitsToRemove > 0) {
-            const stackOfType = stacksOfType[i++];
-
-            const stackCount = stackOfType.count;
-
-            const toRemoveFromStack = unitsToRemove > stackCount ? stackCount : unitsToRemove;
-
-            this.playersService.removeNUnitsFromGroup(currentPlayer, stackOfType, toRemoveFromStack);
-
-            unitsToRemove -= toRemoveFromStack;
-          }
+          this.playersService.removeUnitTypeCountFromPlayer(currentPlayer, this.activity.hiring.unitTypeId, group.count);
 
           const unitGroup = this.unitsService.createUnitGroup(
             group.hire.unitType.id,
