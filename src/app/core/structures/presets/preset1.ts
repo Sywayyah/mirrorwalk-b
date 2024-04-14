@@ -294,7 +294,7 @@ const postBossBranch = createLocationsBranch('post-boss-1', [
     actionPoints: 1,
 
     icon: 'sword',
-    pathTo: 'start-bottom-left-post-boss',
+    pathTo: 'start-bottom-left.post-boss',
     toOuterBranch: true,
     struct: GenericGuardStructure,
     structParams: { name: 'Swamp', guards: { units: [['#unit-neut-poison-ivy-0', 20, 20, 3]], maxUnitGroups: 3, minUnitGroups: 3 } as GenerationModel }

@@ -26,7 +26,7 @@ export class MwStructuresViewComponent extends StoreClient() implements AfterVie
 
   public player: Player;
 
-  public isLocNameVisible = CONFIG.showLocationsNames;
+  public isLocIdVisible = CONFIG.showLocationsIds;
 
   constructor(
     private readonly playersService: MwPlayersService,
