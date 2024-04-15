@@ -1,5 +1,6 @@
 import { AssetsImages } from '../../assets';
 import { constellationFaction } from '../../factions/constellation/faction';
+import { DreamAura } from '../../spells/common/dream-aura';
 import { spellDescrElem } from '../../ui';
 import { EssenceLeak } from './spells/essence-leak';
 
@@ -200,6 +201,15 @@ constellationFaction.defineUnitType({
     health: 245,
     attackRating: 17,
   },
+
+  defaultModifiers: {
+    counterattacks: true,
+    retaliationDamagePercent: 0.5
+  },
+
+  defaultSpells: [
+    DreamAura,
+  ],
 
   neutralReward: {
     experience: 180,
