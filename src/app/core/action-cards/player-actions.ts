@@ -133,9 +133,13 @@ export const RangersHorn = createActionCard({
     onUsedInstantly({ actions, players, events }) {
       const unitType = '#unit-neut-ranger-0';
       const currentPlayer = players.getCurrentPlayer();
-      players.addUnitGroupToPlayer(currentPlayer, unitType, 8);
+      const count = 8;
+
+      players.addUnitGroupToPlayer(currentPlayer, unitType, count);
+      events.dispatch(PushPlainEventFeedMessage({ message: `${count} Rangers joined your army.` }));
+
       actions.scheduleAction(() => {
-        players.removeUnitTypeFromPlayer(currentPlayer, unitType, 8);
+        players.removeUnitTypeFromPlayer(currentPlayer, unitType, count);
         events.dispatch(PushPlainEventFeedMessage({ message: `Summoned Rangers have left your army.` }));
       }, 2);
     }
