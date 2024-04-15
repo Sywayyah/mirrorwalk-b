@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ActionCardTypes } from 'src/app/core/action-cards';
 import { PLAYER_COLORS } from 'src/app/core/assets';
-import { ActivateActionCard, AddActionCardsToPlayer, BeforeBattleInit, DefaultGameModes, FightStarts, FightStartsEvent, GameCommandEvents, GameCreated, GameEventsTypes, GameOpenMainScreen, GameOpenMapStructuresScreen, GamePreparedEvent, GameStarted, NeutralStructParams, NewDayStarted, NewWeekStarted, PlayerLeavesTown, PlayerStartsFight, PlayersInitialized, PushEventFeedMessage, PushPlainEventFeedMessage, RemoveActionPoints, StructFightConfirmed, StructSelected, StructSelectedEvent, Triggers } from 'src/app/core/events';
+import { ActivateActionCard, AddActionCardsToPlayer, BeforeBattleInit, DefaultGameModes, FightStarts, FightStartsEvent, GameCommandEvents, GameCreated, GameEventsTypes, GameOpenMainScreen, GameOpenMapStructuresScreen, GamePreparedEvent, GameStarted, NeutralStructParams, NewDayStarted, NewWeekStarted, PlayerLeavesTown, PlayerStartsFight, PlayersInitialized, PushEventFeedMessage, PushPlainEventFeedMessage, RemoveActionPoints, ScheduleAction, StructFightConfirmed, StructSelected, StructSelectedEvent, Triggers } from 'src/app/core/events';
 import { heroesDefaultResources } from 'src/app/core/heroes';
 import { PlayerTypeEnum } from 'src/app/core/players';
 import { StructEvents } from 'src/app/core/structures/events';
@@ -21,6 +21,7 @@ import { UiEventFeedService } from '../ui-event-feed.service';
 
 @Injectable()
 export class GameController extends StoreClient() {
+  private scheduledActions: { day: number, action: () => void }[] = [];
 
   constructor(
     private battleState: BattleStateService,
@@ -94,6 +95,11 @@ export class GameController extends StoreClient() {
   public notifyBuildingsNewDayStarted(): void {
     this.state.eventHandlers.buildings.triggerAllHandlersByEvent(TownEvents.NewDayBegins());
     this.state.eventHandlers.structures.triggerAllHandlersByEvent(StructEvents.NewDayBegins());
+
+    const currentGlobalDay = this.state.currentGame.globalDay;
+    const currentDayActions = this.scheduledActions.filter(action => action.day === currentGlobalDay);
+    currentDayActions.forEach(action => action.action());
+    this.scheduledActions = this.scheduledActions.filter(action => action.day !== currentGlobalDay);
   }
 
   @WireMethod(PushEventFeedMessage)
@@ -149,6 +155,11 @@ export class GameController extends StoreClient() {
     this.eventFeedUiService.pushPlainMessage(`Week ${event.week} started`);
     this.state.eventHandlers.buildings.triggerAllHandlersByEvent(TownEvents.NewWeekStarts());
     this.state.eventHandlers.structures.triggerAllHandlersByEvent(StructEvents.NewWeekBegins());
+  }
+
+  @WireMethod(ScheduleAction)
+  public scheduleAction(event: GameEventsTypes['ScheduleAction']): void {
+    this.scheduledActions.push({ action: event.action, day: this.state.currentGame.globalDay + event.dayOffset })
   }
 
   @Notify(PlayerLeavesTown)

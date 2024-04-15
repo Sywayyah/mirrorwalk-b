@@ -1,8 +1,9 @@
-import { Component, ElementRef, EventEmitter, NgZone, OnInit, Output, Renderer2, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, NgZone, OnInit, Output, Renderer2, ViewChild, isDevMode } from '@angular/core';
 import { fromEvent, merge } from 'rxjs';
 import { map, switchMap, take, takeUntil } from 'rxjs/operators';
 import { MapPanCameraCenterTo, PanMapCameraCenterAction } from 'src/app/core/events';
 import { LevelMap } from 'src/app/core/maps';
+import { injectHostElem } from 'src/app/core/utils';
 import { State } from 'src/app/features/services/state.service';
 import { StoreClient, WireMethod } from 'src/app/store';
 
@@ -17,6 +18,8 @@ export interface MapDragEvent {
   styleUrls: ['./map-canvas.component.scss']
 })
 export class MapCanvasComponent extends StoreClient() implements OnInit {
+  private readonly hostElem = injectHostElem();
+
   @ViewChild('mapCanvas', { static: true })
   public mapCanvasRef!: ElementRef;
 
@@ -31,8 +34,6 @@ export class MapCanvasComponent extends StoreClient() implements OnInit {
 
   private underlayElem!: HTMLElement;
 
-  private hostElem!: HTMLElement;
-
   private currentMap!: LevelMap;
 
   private cellSize: number = 0;
@@ -46,8 +47,10 @@ export class MapCanvasComponent extends StoreClient() implements OnInit {
   private mapTotalWidth = 0;
   private mapTotalHeight = 0;
 
+  private offsetX = 0;
+  private offsetY = 0;
+
   constructor(
-    private readonly hostRef: ElementRef,
     private readonly state: State,
     private readonly ngZone: NgZone,
     private readonly renderer: Renderer2,
@@ -56,8 +59,6 @@ export class MapCanvasComponent extends StoreClient() implements OnInit {
   }
 
   ngOnInit(): void {
-    this.hostElem = this.hostRef.nativeElement;
-
     this.canvasElem = this.mapCanvasRef.nativeElement;
     this.canvasCtx = this.canvasElem.getContext('2d')!;
 
@@ -70,6 +71,18 @@ export class MapCanvasComponent extends StoreClient() implements OnInit {
     this.setupMapDragging();
     this.resetCanvasPosition();
   }
+
+  onMapClick(event: MouseEvent): void {
+    if (isDevMode()) {
+      console.log({
+        id: 'new-id',
+        x: event.clientX - this.offsetX,
+        y: event.clientY - this.offsetY,
+        icon: 'sword',
+      });
+
+    }
+  };
 
   @WireMethod(MapPanCameraCenterTo)
   public panCameraCenterTo(action: PanMapCameraCenterAction): void {
@@ -144,11 +157,17 @@ export class MapCanvasComponent extends StoreClient() implements OnInit {
   }
 
   private setMapElementsPosition(x: number, y: number): void {
+    this.offsetX = x;
+    this.offsetY = y;
+
     this.renderer.setStyle(this.canvasElem, 'left', `${x}px`);
     this.renderer.setStyle(this.canvasElem, 'top', `${y}px`);
   }
 
   private resetCanvasPosition(): void {
+    this.offsetX = 0;
+    this.offsetY = 0;
+
     this.renderer.setStyle(this.canvasElem, 'left', `${0}px`);
     this.renderer.setStyle(this.canvasElem, 'top', `${0}px`);
   }

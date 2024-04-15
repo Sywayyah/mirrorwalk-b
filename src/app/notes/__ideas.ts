@@ -1,3 +1,8 @@
+/* 
+  Garrison - populated randomly with units of your town or tavern
+  units can be took for 1 day and will leave army next day.
+*/
+
 /*
   Special counterattacks - with a certain chance, a unit can deal increased retaliation damage
 

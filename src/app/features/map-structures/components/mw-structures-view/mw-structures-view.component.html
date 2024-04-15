@@ -15,12 +15,12 @@
                         (structSelected)="onStructureSelected($event)" />
     </div>
 
-    <div *ngIf="isLocNameVisible"
+    <div *ngIf="isLocIdVisible"
          style="position: absolute;"
          [style.left.px]="struct.x"
          [style.top.px]="struct.y">
       <span class="loc-name">
-        {{struct.name}}
+        {{struct.id}}
       </span>
     </div>
 

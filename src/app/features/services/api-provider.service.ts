@@ -8,6 +8,7 @@ import { MwSpellsService } from './mw-spells.service';
 import { MwStructuresService } from './mw-structures.service';
 import { MwUnitGroupsService } from './mw-unit-groups.service';
 import { State } from './state.service';
+import { ScheduleAction } from 'src/app/core/events';
 
 @Injectable({
   providedIn: 'root',
@@ -27,6 +28,7 @@ export class ApiProvider {
 
   public getPlayerApi(): PlayersApi {
     return {
+      removeUnitTypeFromPlayer: (player, unitType, count) => this.players.removeUnitTypeCountFromPlayer(player, unitType, count),
       playerHasResources: (player, res) => this.players.playerHasResources(player, res),
       removeResourcesFromPlayer: (player, res) => this.players.removeResourcesFromPlayer(player, res),
       addExperienceToPlayer: (player, xpAmount) => {
@@ -70,7 +72,10 @@ export class ApiProvider {
       players: this.getPlayerApi(),
       actions: {
         getMapStructures: () => this.structures.viewStructures,
-        getActionPointsLeft: () => this.state.currentGame.actionPoints
+        getActionPointsLeft: () => this.state.currentGame.actionPoints,
+        scheduleAction: (action, days) => {
+          this.events.dispatch(ScheduleAction({ action, dayOffset: days }))
+        },
       },
     }
   }

@@ -174,6 +174,26 @@ export class MwPlayersService extends StoreClient() {
     }
   }
 
+  // add check for reserve
+  removeUnitTypeCountFromPlayer(player: Player, unitType: UnitTypeId, count: number): void {
+    const stacksOfType = player.hero.unitGroups.filter(unitGroup => unitGroup.type.id === unitType);
+
+    let i = 0;
+    let unitsToRemove = count;
+
+    while (unitsToRemove > 0) {
+      const stackOfType = stacksOfType[i++];
+
+      const stackCount = stackOfType.count;
+
+      const toRemoveFromStack = unitsToRemove > stackCount ? stackCount : unitsToRemove;
+
+      this.removeNUnitsFromGroup(player, stackOfType, toRemoveFromStack);
+
+      unitsToRemove -= toRemoveFromStack;
+    }
+  }
+
   public addManaToPlayer(player: Player, mana: number): void {
     player.hero.addMana(mana);
   }
