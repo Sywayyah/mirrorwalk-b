@@ -1,4 +1,4 @@
-import { PushEventFeedMessage, RemoveActionPoints } from '../events';
+import { PushEventFeedMessage, PushPlainEventFeedMessage, RemoveActionPoints } from '../events';
 import { DescriptionElementType } from '../ui';
 import { actionCardEvent } from '../vfx';
 import { ActionCardTypes } from './types';
@@ -130,11 +130,18 @@ export const RangersHorn = createActionCard({
   icon: 'hood',
   type: ActionCardTypes.PlayerAction,
   config: {
-    onUsedInstantly({ actions, players }) {
+    onUsedInstantly({ actions, players, events }) {
       const unitType = '#unit-neut-ranger-0';
       const currentPlayer = players.getCurrentPlayer();
-      players.addUnitGroupToPlayer(currentPlayer, unitType, 8);
-      actions.scheduleAction(() => players.removeUnitTypeFromPlayer(currentPlayer, unitType, 8), 2);
+      const count = 8;
+
+      players.addUnitGroupToPlayer(currentPlayer, unitType, count);
+      events.dispatch(PushPlainEventFeedMessage({ message: `${count} Rangers joined your army.` }));
+
+      actions.scheduleAction(() => {
+        players.removeUnitTypeFromPlayer(currentPlayer, unitType, count);
+        events.dispatch(PushPlainEventFeedMessage({ message: `Summoned Rangers have left your army.` }));
+      }, 2);
     }
   }
 })

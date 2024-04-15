@@ -143,11 +143,11 @@ export class GameController extends StoreClient() {
       CommonUtils.removeItem(player.actionCards, cardStack);
     }
 
+    this.eventFeed.pushPlainMessage(`${actionCardEvent(card)} is used. Left: ${infNum(cardStack.count)}`);
+
     if (card.type === ActionCardTypes.PlayerAction) {
       card.config?.onUsedInstantly?.(this.gameApiProvider.getGameApi());
     }
-
-    this.eventFeed.pushPlainMessage(`${actionCardEvent(card)} is used. Left: ${infNum(cardStack.count)}`);
   }
 
   @WireMethod(NewWeekStarted)
