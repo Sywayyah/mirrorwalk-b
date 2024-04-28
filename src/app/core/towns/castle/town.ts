@@ -224,9 +224,13 @@ const Garrison = createBuildingType({
         Built() {
           const currentPlayer = players.getCurrentPlayer()
           currentPlayer.garrisons.set('castle-garrison', {
-            groups: [{ cost: { gold: 200, }, type: resolveEntity('#unit-h00') }],
+            groups: [
+              { cost: { gold: 200, }, type: resolveEntity('#unit-h00'), count: 16 },
+              { cost: { gold: 340, }, type: resolveEntity('#unit-h20'), count: 6 },
+            ],
             name: 'Castle Garrison',
           });
+
         },
         NewWeekStarts() { },
       })
@@ -279,7 +283,7 @@ export const castleTownBase: TownBase<CastleTownBuildings> = {
       description: 'Allows to hire units temorary',
       icon: '',
       tier: 1,
-      levels: [{ building: Garrison, cost: { wood: 2, gold: 1000 } }],
+      levels: [{ building: Garrison, cost: { wood: 2, gold: 500 } }],
     },
     'fate-halls': {
       baseName: 'Halls of Fate',

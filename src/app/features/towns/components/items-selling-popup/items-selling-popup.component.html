@@ -6,7 +6,6 @@
   </div>
 
   <div popupContent>
-
     <div class="item-list">
       @for (item of items; track $index) {
       <div class="item" [class.active]="itemToBuy() === item" (click)="itemToBuy.set(item)">

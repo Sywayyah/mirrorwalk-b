@@ -1,5 +1,6 @@
 import { ActionCard, ActionCardStack } from '../action-cards';
 import { GameObject } from '../game-objects';
+import { GarrisonsMap } from '../garrisons/types';
 import { Hero } from '../heroes';
 import { Resources, ResourcesModel } from '../resources';
 import { UnitBaseType } from '../unit-types';
@@ -40,7 +41,7 @@ export class Player extends GameObject<PlayerCreationModel> {
 
   public type!: PlayerTypeEnum;
 
-  public garrisons = new Map<string, { name: string, groups: { type: UnitBaseType, cost: Resources }[] }>();
+  public garrisons: GarrisonsMap = new Map();
 
   public hero!: Hero;
 

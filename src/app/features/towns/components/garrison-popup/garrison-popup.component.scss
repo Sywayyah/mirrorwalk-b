@@ -1,0 +1,15 @@
+.groups {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+
+  .group {
+    width: 60px;
+    border: 1px solid black;
+    cursor: pointer;
+
+    &.selected {
+      border: 1px solid gold;
+    }
+  }
+}
