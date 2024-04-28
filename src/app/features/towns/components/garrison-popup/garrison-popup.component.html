@@ -23,17 +23,17 @@
     </div>
 
     @if (!canHire) {
-      <span>You don't have enough resources</span>
+    <span>You don't have enough resources</span>
     }
   </div>
 
   <div popupButtons>
-    <button mw-main-button [disabled]="!selectedGroup || !this.canHire" (click)="hire()">
-      Hire
-    </button>
-
     <button mw-main-button (click)="close()">
       Leave
+    </button>
+
+    <button mw-main-button [disabled]="!selectedGroup || !this.canHire" (click)="hire()">
+      Hire
     </button>
   </div>
 </mw-popup-base-content>
