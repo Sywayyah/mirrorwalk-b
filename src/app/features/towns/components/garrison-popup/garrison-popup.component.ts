@@ -1,8 +1,10 @@
 import { Component, inject } from '@angular/core';
-import { GarrisonHirableGroup, GarrisonModel } from 'src/app/core/garrisons/types';
+import { PushPlainEventFeedMessage, ScheduleAction } from 'src/app/core/events';
+import { GarrisonHirableGroup, GarrisonModel } from 'src/app/core/garrisons';
 import { CommonUtils } from 'src/app/core/utils';
 import { MwPlayersService, MwUnitGroupsService } from 'src/app/features/services';
 import { BasicPopup } from 'src/app/features/shared/components';
+import { EventsService } from 'src/app/store';
 
 @Component({
   selector: 'mw-garrison-popup',
@@ -12,6 +14,7 @@ import { BasicPopup } from 'src/app/features/shared/components';
 export class GarrisonPopupComponent extends BasicPopup<{}> {
   private readonly players = inject(MwPlayersService);
   private readonly unitsService = inject(MwUnitGroupsService);
+  private readonly events = inject(EventsService);
 
   readonly currentPlayer = this.players.getCurrentPlayer();
 
@@ -43,6 +46,16 @@ export class GarrisonPopupComponent extends BasicPopup<{}> {
     );
 
     this.players.addUnitGroupToTypeStack(this.currentPlayer, newUnitGroup);
+
+    this.events.dispatch(ScheduleAction({
+      action: () => {
+        const removedCount = this.players.removeUnitTypeCountFromPlayer(this.currentPlayer, group.type.id, group.count);
+
+        if (removedCount) {
+          this.events.dispatch(PushPlainEventFeedMessage({ message: `${removedCount} ${group.type.name} have left your army.` }));
+        }
+      }, dayOffset: 3,
+    }));
 
     this.selectedGarrison = undefined;
     this.selectedGroup = undefined;

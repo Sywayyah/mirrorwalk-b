@@ -10,6 +10,7 @@ import { StoreClient } from 'src/app/store';
 import { MwHeroesService, MwUnitGroupsService } from './';
 import { GameObjectsManager } from './game-objects-manager.service';
 import { State } from './state.service';
+import { CommonUtils } from 'src/app/core/utils';
 
 export enum PLAYER_IDS {
   Main = 'main',
@@ -175,8 +176,9 @@ export class MwPlayersService extends StoreClient() {
   }
 
   // add check for reserve
-  removeUnitTypeCountFromPlayer(player: Player, unitType: UnitTypeId, count: number): void {
+  removeUnitTypeCountFromPlayer(player: Player, unitType: UnitTypeId, count: number): number {
     const stacksOfType = player.hero.unitGroups.filter(unitGroup => unitGroup.type.id === unitType);
+    const totalCount = stacksOfType.reduce((acc, nextUnit) => nextUnit.count + acc, 0);
 
     let i = 0;
     let unitsToRemove = count;
@@ -192,6 +194,8 @@ export class MwPlayersService extends StoreClient() {
 
       unitsToRemove -= toRemoveFromStack;
     }
+
+    return totalCount < count ? totalCount : count;
   }
 
   public addManaToPlayer(player: Player, mana: number): void {
