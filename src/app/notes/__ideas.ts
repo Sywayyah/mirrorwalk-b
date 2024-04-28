@@ -4,6 +4,17 @@
 */
 
 /*
+  Special counterattacks - with a certain chance, a unit can deal increased retaliation damage
+
+  Also can be accompanied with block
+
+  And floating text can tell about improved version of counterattack
+
+  ---
+  Days before change of time period.
+*/
+
+/*
   I can concentrate more on content creation for the game, and some new ideas.
     1. Halberdiers can block damage based on their count (0.5/0.7 per Pikeman/Halberdier).
         giving some static percent makes it feel less important when units are being lost.

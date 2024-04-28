@@ -1,4 +1,4 @@
-import { MeditateActionCard } from '../../action-cards/player-actions';
+import { MeditateActionCard, RangersHorn } from '../../action-cards/player-actions';
 import { UnitTypeId, resolveEntity } from '../../entities';
 import { AddActionCardsToPlayer } from '../../events';
 import { humansFaction } from '../../factions';
@@ -97,6 +97,16 @@ const tavern = createBuildingType({
   id: '#build-castle-tavern',
 
   name: 'Tavern',
+  config: {
+    init({ globalEvents, players }) {
+      globalEvents.dispatch(
+        AddActionCardsToPlayer({
+          actionCardStacks: [{ card: RangersHorn, count: 1 }],
+          player: players.getCurrentPlayer(),
+        })
+      );
+    }
+  }
 });
 
 /*
@@ -260,7 +270,7 @@ export const castleTownBase: TownBase<CastleTownBuildings> = {
     tavern: {
       baseName: 'Tavern',
       description: 'Allows to hire neutral units',
-      levels: [{ building: tavern, cost: { gold: 1250, wood: 3 } }],
+      levels: [{ building: tavern, cost: { gold: 850, wood: 1 } }],
       icon: 'hood',
       tier: 2,
     },
