@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { PlayerLeavesTown, ViewsEnum } from 'src/app/core/events';
+import { OpenGarrisonPopup, PlayerLeavesTown, ViewsEnum } from 'src/app/core/events';
 import { ActivityTypes, Building, HiringActivity } from 'src/app/core/towns';
 import { State } from 'src/app/features/services/state.service';
 import { PopupService } from 'src/app/features/shared/components';
@@ -60,23 +60,29 @@ export class TownViewComponent {
 
     const activity = building.currentBuilding.activity;
 
-    if (activity) {
-      switch (activity.type) {
-        case ActivityTypes.Hiring:
-          const hiringActivity = activity as HiringActivity;
+    if (!activity) {
+      return;
+    }
 
-          this.popupService.createBasicPopup({
-            component: HiringPopupComponent,
-            data: { building, town: this.town, hiringActivity },
-            // class: 'dark',
-          });
-          break;
-        case ActivityTypes.ItemsSelling:
-          this.popupService.createBasicPopup({
-            component: ItemsSellingPopupComponent,
-            data: { building },
-          });
-      }
+    switch (activity.type) {
+      case ActivityTypes.Hiring:
+        const hiringActivity = activity as HiringActivity;
+
+        this.popupService.createBasicPopup({
+          component: HiringPopupComponent,
+          data: { building, town: this.town, hiringActivity },
+          // class: 'dark',
+        });
+        break;
+      case ActivityTypes.ItemsSelling:
+        this.popupService.createBasicPopup({
+          component: ItemsSellingPopupComponent,
+          data: { building },
+        });
+        break;
+      case ActivityTypes.Garrison:
+        this.events.dispatch(OpenGarrisonPopup());
+        break;
     }
   }
 }

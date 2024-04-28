@@ -218,6 +218,7 @@ const hallsOfFate = createBuildingType({
 const Garrison = createBuildingType({
   id: '#build-castle-garrison',
   name: 'Garrison',
+  activity: { type: ActivityTypes.Garrison },
   config: {
     init({ localEvents, players }) {
       localEvents.on({
@@ -281,7 +282,7 @@ export const castleTownBase: TownBase<CastleTownBuildings> = {
     garrison: {
       baseName: 'Garrison',
       description: 'Allows to hire units temorary',
-      icon: '',
+      icon: 'guarded-tower',
       tier: 1,
       levels: [{ building: Garrison, cost: { wood: 2, gold: 500 } }],
     },
