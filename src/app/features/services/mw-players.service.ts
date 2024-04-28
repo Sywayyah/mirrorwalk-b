@@ -175,7 +175,6 @@ export class MwPlayersService extends StoreClient() {
     }
   }
 
-  // add check for reserve
   removeUnitTypeCountFromPlayer(player: Player, unitType: UnitTypeId, count: number): number {
     const stacksOfType = player.hero.getAllUnitsFromSlots().filter(unitGroup => unitGroup.type.id === unitType);
 
