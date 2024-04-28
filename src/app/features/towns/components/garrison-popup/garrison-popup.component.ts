@@ -17,17 +17,22 @@ export class GarrisonPopupComponent extends BasicPopup<{}> {
   selectedGroup?: GarrisonHirableGroup;
   selectedGarrison?: GarrisonModel;
 
+  canHire: boolean = true;
+
   selectItem(hirableGroup: GarrisonHirableGroup, garrison: GarrisonModel): void {
     this.selectedGroup = hirableGroup;
     this.selectedGarrison = garrison;
+
+    this.canHire = this.players.playerHasResources(this.currentPlayer, hirableGroup.cost);
   }
 
   hire(): void {
-    if (!this.selectedGroup || !this.selectedGarrison) {
+    if (!this.selectedGroup || !this.selectedGarrison || !this.canHire) {
       return;
     }
 
     CommonUtils.removeItem(this.selectedGarrison.groups, this.selectedGroup);
+    this.players.removeResourcesFromPlayer(this.currentPlayer, this.selectedGroup.cost);
 
     this.selectedGarrison = undefined;
     this.selectedGroup = undefined;
