@@ -180,22 +180,24 @@ export class MwPlayersService extends StoreClient() {
     const stacksOfType = player.hero.unitGroups.filter(unitGroup => unitGroup.type.id === unitType);
     const totalCount = stacksOfType.reduce((acc, nextUnit) => nextUnit.count + acc, 0);
 
-    let i = 0;
-    let unitsToRemove = count;
+    const totalUnitsToRemove = totalCount < count ? totalCount : count;
+    let unitsLeftToRemove = totalUnitsToRemove;
 
-    while (unitsToRemove > 0) {
+    let i = 0;
+
+    while (unitsLeftToRemove > 0) {
       const stackOfType = stacksOfType[i++];
 
       const stackCount = stackOfType.count;
 
-      const toRemoveFromStack = unitsToRemove > stackCount ? stackCount : unitsToRemove;
+      const toRemoveFromStack = unitsLeftToRemove > stackCount ? stackCount : unitsLeftToRemove;
 
       this.removeNUnitsFromGroup(player, stackOfType, toRemoveFromStack);
 
-      unitsToRemove -= toRemoveFromStack;
+      unitsLeftToRemove -= toRemoveFromStack;
     }
 
-    return totalCount < count ? totalCount : count;
+    return totalUnitsToRemove;
   }
 
   public addManaToPlayer(player: Player, mana: number): void {

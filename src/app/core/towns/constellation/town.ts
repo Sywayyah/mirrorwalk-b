@@ -1,4 +1,4 @@
-import { UnitTypeId } from '../../entities';
+import { UnitTypeId, resolveEntity } from '../../entities';
 import { constellationFaction } from '../../factions/constellation/faction';
 import { ActivityTypes, HiringActivity } from '../buildings';
 import { TownBase } from '../types';
@@ -25,6 +25,7 @@ export type ConstellationTownBuildings = 'town-center'
   | 'market'
   | 'magic-school'
   | 'fate-halls'
+  | 'star-gate'
   | 'tavern'
   | 'spirit-towers'
   | 'moon-arch';
@@ -51,6 +52,30 @@ const tavern = createBuildingType({
   id: '#build-stellar-tavern',
 
   name: 'Tavern',
+});
+
+const starGate = createBuildingType({
+  id: '#build-stellar-solar-gate',
+  name: 'Solar Gate',
+  description: 'Allows to hire units temporarily',
+  activity: { type: ActivityTypes.Garrison },
+  config: {
+    init({ localEvents, players }) {
+      localEvents.on({
+        Built() {
+          const currentPlayer = players.getCurrentPlayer();
+          currentPlayer.garrisons.set('solar-gate', {
+            name: 'Solar Gate',
+            groups: [
+              { cost: { gold: 130 }, count: 8, type: resolveEntity('#unit-c00') },
+              { cost: { gold: 130 }, count: 8, type: resolveEntity('#unit-c00') },
+              { cost: { gold: 180 }, count: 8, type: resolveEntity('#unit-c20') },
+            ],
+          });
+        }
+      });
+    }
+  },
 });
 
 const spiritTowers = createBuildingType({
@@ -89,6 +114,13 @@ export const castleTownBase: TownBase<ConstellationTownBuildings> = {
       ],
       icon: 'gavel',
       tier: 1,
+    },
+    "star-gate": {
+      baseName: 'Solar Gate',
+      description: 'Allows to temporarily summon units for reduced cost',
+      icon: 'heavy-fall',
+      tier: 1,
+      levels: [{ building: starGate, cost: { gold: 500, wood: 1 } }],
     },
     "magic-school": {
       baseName: 'Magic School',
