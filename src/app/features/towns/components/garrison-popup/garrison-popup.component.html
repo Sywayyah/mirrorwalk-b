@@ -13,8 +13,9 @@
       <div class="groups">
         @for (group of garrison.value.groups; track $index) {
         <div class="group" [class.selected]="selectedGroup === group" (click)="selectItem(group, garrison.value)">
-          {{group.count}} {{group.type.name}}
+          <div class="group-name">{{group.count}} {{group.type.name}}</div>
 
+          <hr>
           <mw-resources-cost [cost]="group.cost" />
         </div>
         }
