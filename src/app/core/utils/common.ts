@@ -17,3 +17,7 @@ export function nonNullish<T>(val: T | null | undefined): val is T {
 export function infNum(num: number): number | string {
   return num === Infinity ? '∞' : num;
 }
+
+export function isNotNullish<T>(value: T | null | undefined): value is T {
+  return value !== null && value !== undefined;
+}
