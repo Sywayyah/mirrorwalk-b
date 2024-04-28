@@ -1,5 +1,5 @@
 import { MeditateActionCard } from '../../action-cards/player-actions';
-import { UnitTypeId } from '../../entities';
+import { UnitTypeId, resolveEntity } from '../../entities';
 import { AddActionCardsToPlayer } from '../../events';
 import { humansFaction } from '../../factions';
 import { ActivityTypes, BuidlingBase, HiringActivity } from '../buildings';
@@ -33,6 +33,7 @@ export type CastleTownBuildings =
   | 'items-market'
   | 'fate-halls'
   | 'tavern'
+  | 'garrison'
   | 'training-camp'
   | 'archers-outpost'
   | 'halls-of-knights'
@@ -204,6 +205,25 @@ const hallsOfFate = createBuildingType({
   name: 'Halls of Fate'
 });
 
+const Garrison = createBuildingType({
+  id: '#build-castle-garrison',
+  name: 'Garrison',
+  config: {
+    init({ localEvents, players }) {
+      localEvents.on({
+        Built() {
+          const currentPlayer = players.getCurrentPlayer()
+          currentPlayer.garrisons.set('castle-garrison', {
+            groups: [{ cost: { gold: 200, }, type: resolveEntity('#unit-h00') }],
+            name: 'Castle Garrison',
+          });
+        },
+        NewWeekStarts() { },
+      })
+    }
+  }
+});
+
 // will be reworked, need somehow to process it in the faction itself
 export const castleTownBase: TownBase<CastleTownBuildings> = {
   id: '#town-castle',
@@ -243,6 +263,13 @@ export const castleTownBase: TownBase<CastleTownBuildings> = {
       levels: [{ building: tavern, cost: { gold: 1250, wood: 3 } }],
       icon: 'hood',
       tier: 2,
+    },
+    garrison: {
+      baseName: 'Garrison',
+      description: 'Allows to hire units temorary',
+      icon: '',
+      tier: 1,
+      levels: [{ building: Garrison, cost: { wood: 2, gold: 1000 } }],
     },
     'fate-halls': {
       baseName: 'Halls of Fate',

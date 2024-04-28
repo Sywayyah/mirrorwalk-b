@@ -1,7 +1,8 @@
 import { ActionCard, ActionCardStack } from '../action-cards';
 import { GameObject } from '../game-objects';
 import { Hero } from '../heroes';
-import { ResourcesModel } from '../resources';
+import { Resources, ResourcesModel } from '../resources';
+import { UnitBaseType } from '../unit-types';
 
 export enum PlayerTypeEnum {
   Player = 'Player',
@@ -38,6 +39,8 @@ export class Player extends GameObject<PlayerCreationModel> {
   public resources!: ResourcesModel;
 
   public type!: PlayerTypeEnum;
+
+  public garrisons = new Map<string, { name: string, groups: { type: UnitBaseType, cost: Resources }[] }>();
 
   public hero!: Hero;
 

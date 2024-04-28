@@ -1,14 +1,9 @@
-<mw-icon-btn mwActionHint="Go to {{state.createdGame.faction.title}}"
-             (click)="goToTown()"
-             icon="castle-emblem" />
+<mw-icon-btn mwActionHint="Go to {{state.createdGame.faction.title}}" (click)="goToTown()" icon="castle-emblem" />
 
-<mw-icon-btn mwActionHint="Inspect Hero"
-             (click)="openPlayerInfo()"
-             icon="aura" />
+<mw-icon-btn mwActionHint="Inspect Hero" (click)="openPlayerInfo()" icon="aura" />
 
 <mw-icon-btn [mwActionHint]="'Action Cards<hr>' + state.currentGame.actionPoints + ' action points left'"
-             class="action-points"
-             (click)="openActionCards()">
+  class="action-points" (click)="openActionCards()">
   <div class="action-info">
     <mw-ra-icon icon="feather-wing" />
     <span>{{state.currentGame.actionPoints}}</span>
@@ -17,13 +12,14 @@
 
 
 <div mwActionHint="Learn new abilities">
-  <mw-icon-btn [disabled]="true"
-               icon="barrier" />
+  <mw-icon-btn [disabled]="true" icon="barrier" />
+</div>
+
+<div [mwActionHint]="currentPlayer.garrisons.size !== 0 ? 'Garrison' : 'Garrison <hr> No garrisons to hire'">
+  <mw-icon-btn [disabled]="currentPlayer.garrisons.size === 0" icon="guarded-tower" (click)="openGarrison()"/>
 </div>
 
 <!-- todo: confirmation popup? -->
-<mw-icon-btn [mwActionHint]="'Set up Camp<hr>Skips current day'"
-             class="camp-action"
-             (click)="setupCampAction()">
+<mw-icon-btn [mwActionHint]="'Set up Camp<hr>Skips current day'" class="camp-action" (click)="setupCampAction()">
   <mw-ra-icon icon="campfire" />
 </mw-icon-btn>
