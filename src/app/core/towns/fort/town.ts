@@ -1,5 +1,6 @@
+import { resolveEntity } from '../../entities';
 import { fortFaction } from '../../factions';
-import { BuidlingBase } from '../buildings';
+import { ActivityTypes, BuidlingBase } from '../buildings';
 import { TownBase } from '../types';
 import { createBuildingType, createHiringActivity } from '../utils';
 
@@ -8,6 +9,7 @@ export type CastleTownBuildings =
 
   | 'goblin-huts'
   | 'stockade'
+  | 'rocky-caves'
 
   | 'market'
 
@@ -41,6 +43,29 @@ const market: BuidlingBase = createBuildingType({
 const tavern: BuidlingBase = createBuildingType({
   id: '#build-fort-tavern',
   name: 'Tavern',
+});
+
+const rockyCaves = createBuildingType({
+  id: '#build-fort-rocky-caves',
+  name: 'Rocky Caves',
+  description: 'Allows to hire units temporarily',
+  activity: { type: ActivityTypes.Garrison },
+  config: {
+    init({ localEvents, players }) {
+      localEvents.on({
+        Built() {
+          const currentPlayer = players.getCurrentPlayer();
+          currentPlayer.garrisons.set('rocky-caves', {
+            groups: [
+              { cost: { gold: 100 }, count: 8, type: resolveEntity('#unit-f00') },
+              { cost: { gold: 100 }, count: 8, type: resolveEntity('#unit-f00') },
+              { cost: { gold: 100 }, count: 8, type: resolveEntity('#unit-f00') },
+            ], name: 'Rocky Caves'
+          });
+        }
+      });
+    }
+  },
 });
 
 const goblinHuts: BuidlingBase = createBuildingType({
@@ -93,6 +118,13 @@ export const factionTownBase: TownBase<CastleTownBuildings> = {
         { building: market, cost: { gold: 1500, wood: 2 } }
       ],
       icon: 'gavel',
+      tier: 1,
+    },
+    "rocky-caves": {
+      baseName: 'Rocky Caves',
+      description: 'Allows to hire units temporarily',
+      icon: 'guarded-tower',
+      levels: [{ building: rockyCaves, cost: { gold: 200, wood: 2 } }],
       tier: 1,
     },
     'tavern': {
