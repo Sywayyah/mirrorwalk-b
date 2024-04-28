@@ -1,0 +1,39 @@
+<mw-popup-base-content>
+  <div popupHeader>Garrison</div>
+
+  <div popupContent>
+    <div class="sub-info">
+      <p>Hire units temporarily (3 days) for reduced cost.</p>
+      <p>Garrison is reset each week.</p>
+    </div>
+
+    <div class="hiring-section" *ngFor="let garrison of currentPlayer.garrisons | keyvalue">
+      <div class="header">{{garrison.value.name}}</div>
+
+      <div class="groups">
+        @for (group of garrison.value.groups; track $index) {
+        <div class="group" [class.selected]="selectedGroup === group" (click)="selectItem(group, garrison.value)">
+          <div class="group-name">{{group.count}} {{group.type.name}}</div>
+
+          <hr>
+          <mw-resources-cost [cost]="group.cost" />
+        </div>
+        }
+      </div>
+    </div>
+
+    @if (!canHire) {
+    <span>You don't have enough resources</span>
+    }
+  </div>
+
+  <div popupButtons>
+    <button mw-main-button (click)="close()">
+      Leave
+    </button>
+
+    <button mw-main-button [disabled]="!selectedGroup || !this.canHire" (click)="hire()">
+      Hire
+    </button>
+  </div>
+</mw-popup-base-content>

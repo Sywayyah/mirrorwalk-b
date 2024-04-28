@@ -47,6 +47,8 @@ export const StructFightConfirmed = gameEvent<NeutralStructParams>();
 
 export const DisplayPopup = gameEvent<PopupData>();
 
+export const OpenGarrisonPopup = gameEvent();
+
 export const PlayerReceivesItem = gameEvent<PlayerEquipsItemAction>();
 
 export const PlayerLosesItem = gameEvent<PlayerEquipsItemAction>();

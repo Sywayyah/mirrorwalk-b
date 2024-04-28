@@ -11,7 +11,6 @@ const defaultRewards = {
   gold: 0,
 };
 
-
 humansFaction.defineUnitType({
   id: '#unit-h00',
   name: 'Pikemen',

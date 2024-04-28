@@ -7,7 +7,6 @@ import { BasicPopup } from '../popup-container';
 @Component({
   selector: 'mw-split-units-popup',
   templateUrl: './split-units-popup.component.html',
-  styleUrl: './split-units-popup.component.scss'
 })
 export class SplitUnitsPopupComponent extends BasicPopup<{ unitGroup: UnitGroup }> {
   private readonly players = inject(MwPlayersService);

@@ -90,7 +90,7 @@ fortFaction.defineUnitType({
 
 
 fortFaction.defineUnitType({
-  id: '#unit-10',
+  id: '#unit-f10',
   mainPortraitUrl: AssetsImages.UnitRanged,
   name: 'Goblin Archers',
   level: 2,
@@ -123,7 +123,7 @@ fortFaction.defineUnitType({
   },
 
   upgradeDetails: {
-    target: '#unit-11',
+    target: '#unit-f11',
     upgradeCost: {
       gold: 20,
     },

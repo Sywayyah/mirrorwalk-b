@@ -1,0 +1,21 @@
+<mw-popup-base-content>
+  <div popupHeader>
+    {{ data.struct.name }}
+  </div>
+
+  <div popupContent>
+    <div style="white-space: pre; padding: 16px;">
+      @if (struct.generator?.description) {
+      <mw-description [descriptions]="struct.generator?.description({thisStruct: struct})?.descriptions!" />
+      }
+    </div>
+  </div>
+
+  <div popupButtons>
+    <div>
+      <button [disabled]="struct.controls?.accept === false" (click)="accept()">Accept</button>
+
+      <button (click)="closePopup()">Cancel</button>
+    </div>
+  </div>
+</mw-popup-base-content>
