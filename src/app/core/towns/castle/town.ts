@@ -100,6 +100,7 @@ const tavern = createBuildingType({
     type: ActivityTypes.Garrison,
   },
   name: 'Tavern',
+  description: 'Allows to hire more units, including neutral ones, from your garrison',
   config: {
     init({ globalEvents, players, localEvents }) {
       globalEvents.dispatch(
@@ -229,9 +230,10 @@ const hallsOfFate = createBuildingType({
   name: 'Halls of Fate'
 });
 
-const Garrison = createBuildingType({
+const garrison = createBuildingType({
   id: '#build-castle-garrison',
   name: 'Garrison',
+  description: 'Allows to hire groups of units temporarily for reduced cost.',
   activity: { type: ActivityTypes.Garrison },
   config: {
     init({ localEvents, players }) {
@@ -298,7 +300,7 @@ export const castleTownBase: TownBase<CastleTownBuildings> = {
       description: 'Allows to hire units temorary',
       icon: 'guarded-tower',
       tier: 1,
-      levels: [{ building: Garrison, cost: { wood: 2, gold: 500 } }],
+      levels: [{ building: garrison, cost: { wood: 2, gold: 500 } }],
     },
     'fate-halls': {
       baseName: 'Halls of Fate',
