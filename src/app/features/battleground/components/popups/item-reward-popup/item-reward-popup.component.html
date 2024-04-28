@@ -1,25 +1,27 @@
-<div style="text-align: center; padding-bottom: 20px;">
-  Select Item
-</div>
+<mw-popup-base-content>
+  <div popupHeader>
+    <div style="text-align: center; padding-bottom: 20px;">
+      Select Item
+    </div>
+  </div>
 
-<div class="reward-container">
-  <div class="items-group"
-       *ngFor="let items of itemGroups"
-       [class.selected]="items === selectedGroup"
-       (click)="setSelectedGroup(items)">
-    <div *ngFor="let item of items" style="display: flex; flex-direction: column; align-items: center;">
-      <mw-item-icon [item]="item"
-                    [hintPos]="'above'" />
-      <div style="font-size: 11px; text-align: center;">
-        {{item.baseType.name}}
+  <div popupContent>
+    <div class="reward-container">
+      <div class="items-group" *ngFor="let items of itemGroups" [class.selected]="items === selectedGroup"
+        (click)="setSelectedGroup(items)">
+        <div *ngFor="let item of items" style="display: flex; flex-direction: column; align-items: center;">
+          <mw-item-icon [item]="item" [hintPos]="'above'" />
+          <div style="font-size: 11px; text-align: center;">
+            {{item.baseType.name}}
+          </div>
+        </div>
       </div>
     </div>
   </div>
-</div>
 
-<div style="display: flex; justify-content: center; padding-top: 18px">
-  <button [disabled]="!selectedGroup"
-          (click)="onSubmit()">
-    Submit
-  </button>
-</div>
+  <div popupButtons style=" padding-top: 18px">
+    <button [disabled]="!selectedGroup" (click)="onSubmit()">
+      Submit
+    </button>
+  </div>
+</mw-popup-base-content>

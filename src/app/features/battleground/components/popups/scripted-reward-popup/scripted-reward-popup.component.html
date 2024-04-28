@@ -1,10 +1,13 @@
-<div class="popup">
+<mw-popup-base-content>
+  <div popupHeader>
+    Victory!
+  </div>
 
-  <div>Victory!</div>
+  <div popupContent>
+    <div style="padding: 10px 8px;">{{description}}</div>
+  </div>
 
-  <div style="padding: 10px 8px;">{{description}}</div>
-
-  <div style="display: flex; justify-content: center;">
+  <div popupButtons>
     <button (click)="closePopup()">Continue</button>
   </div>
-</div>
+</mw-popup-base-content>

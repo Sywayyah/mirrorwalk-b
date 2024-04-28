@@ -1,40 +1,32 @@
 .units {
-    display: flex;
-    justify-content: center;
+  display: flex;
+  justify-content: center;
 }
 
-.header {
-    text-align: center;
-}
 
 .description {
-    text-align: center;
-    font-size: 13px;
-    padding: 7px;
+  text-align: center;
+  font-size: 13px;
+  padding: 7px;
 }
 
 .unit-column {
-    display: flex;
-    flex-direction: column;
-    border: 1px solid gray;
-    padding: 10px;
-    margin: 6px;
-    width: 160px;
-    align-items: center;
-    font-size: 13px;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid gray;
+  padding: 10px;
+  margin: 6px;
+  width: 160px;
+  align-items: center;
+  font-size: 13px;
 }
 
 .cost {
-    display: flex;
+  display: flex;
 }
 
 .resource {
-    border: 1px solid gray;
-    border-radius: 4px;
-    padding: 7px;
-}
-
-.button {
-    margin: auto;
-    display: block;
+  border: 1px solid gray;
+  border-radius: 4px;
+  padding: 7px;
 }
