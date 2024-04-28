@@ -13,8 +13,9 @@
 
   <div popupButtons>
     <div>
-      <button (click)="closePopup()">Cancel</button>
       <button [disabled]="struct.controls?.accept === false" (click)="accept()">Accept</button>
+
+      <button (click)="closePopup()">Cancel</button>
     </div>
   </div>
 </mw-popup-base-content>

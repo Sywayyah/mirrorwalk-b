@@ -43,14 +43,16 @@
   </div>
 
   <div popupButtons>
-    <button mw-main-button (click)="close()">
-      Close
+    <button mw-main-button [disabled]="!canConfirm || (countToHire - plannedToHire) < 0" (click)="confirmHire()">
+      Hire
     </button>
+
     <button mw-main-button (click)="upgradeBuilding()" style="font-size: 12px;" *ngIf="canBeUpgraded">
       Upgrade Building
     </button>
-    <button mw-main-button [disabled]="!canConfirm || (countToHire - plannedToHire) < 0" (click)="confirmHire()">
-      Hire
+
+    <button mw-main-button (click)="close()">
+      Close
     </button>
   </div>
 </mw-popup-base-content>

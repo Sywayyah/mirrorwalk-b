@@ -96,15 +96,29 @@ const highTower = createBuildingType({
 const tavern = createBuildingType({
   id: '#build-castle-tavern',
 
+  activity: {
+    type: ActivityTypes.Garrison,
+  },
   name: 'Tavern',
   config: {
-    init({ globalEvents, players }) {
+    init({ globalEvents, players, localEvents }) {
       globalEvents.dispatch(
         AddActionCardsToPlayer({
           actionCardStacks: [{ card: RangersHorn, count: 1 }],
           player: players.getCurrentPlayer(),
         })
       );
+      localEvents.on({
+        Built() {
+          const currentPlayer = players.getCurrentPlayer();
+          currentPlayer.garrisons.set('castle-tavern', {
+            groups: [{ cost: { gold: 200 }, count: 8, type: resolveEntity('#unit-neut-ranger-0') }],
+            name: 'Castle Tavern',
+          })
+        },
+        NewWeekStarts() {}
+      });
+
     }
   }
 });
