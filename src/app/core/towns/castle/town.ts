@@ -410,7 +410,7 @@ export const castleTownBase: TownBase<CastleTownBuildings> = {
     'cavalry-halls': {
       baseName: 'Cavalry Halls',
       description: 'Trains Cavalry',
-      levels: [{ building: cavalryStalls, cost: { gold: 1200, wood: 7 } }],
+      levels: [{ building: cavalryStalls, cost: { gold: 1000, wood: 5 } }],
       icon: 'horseshoe',
       tier: 3,
     },
@@ -418,7 +418,7 @@ export const castleTownBase: TownBase<CastleTownBuildings> = {
       baseName: 'Magic Tower',
       description: 'Trains Firebirds and Mystical Birds',
       levels: [
-        { building: magicTower, cost: { gold: 1500, wood: 10 } },
+        { building: magicTower, cost: { gold: 1500, wood: 5 } },
         { building: upgradedMagicTower, cost: { gold: 600, wood: 5 } },
       ],
       icon: 'tower',

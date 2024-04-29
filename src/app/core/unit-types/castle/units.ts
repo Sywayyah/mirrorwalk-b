@@ -367,7 +367,7 @@ humansFaction.defineUnitType({
   upgraded: true,
 });
 
-humansFaction.defineUnitType( {
+humansFaction.defineUnitType({
   id: '#unit-h40',
 
   name: 'Mystic Birds',
@@ -375,8 +375,9 @@ humansFaction.defineUnitType( {
   level: 5,
 
   getDescription: simpleDescriptions([
-    heroDescrElem(`Tier 5 Castle majestic creatures of fire. Can be upgraded into Firebirds.`),
-    heroDescrElem(`<br>Powerful creatures of fire that can heal and resurrect allied units, also has 10% resist against fire.`),
+    heroDescrElem(`Tier 5 Castle magical creatures of fire. Can be upgraded to Firebirds.`),
+    heroDescrElem(`<br>Majestic and powerful creatures of fire that can heal and resurrect allied units, also has 10% resist against fire.`),
+    heroDescrElem(`<br>Deal 20% more damage against magical creatures.`),
   ]),
 
   baseStats: createStats([[18, 26], 8, 10, 46, 16]),
@@ -388,6 +389,17 @@ humansFaction.defineUnitType( {
 
   defaultModifiers: {
     resistFire: 10,
+
+    isMagical: true,
+    __attackConditionalModifiers({ attacked }) {
+      if (attacked.modGroup.getModValue('isMagical')) {
+        return {
+          baseDamagePercentModifier: 0.2
+        };
+      }
+
+      return {};
+    }
   },
 
   baseRequirements: {
@@ -413,14 +425,27 @@ humansFaction.defineUnitType({
   level: 5,
 
   getDescription: simpleDescriptions([
-    heroDescrElem(`Tier 5 Castle majestic creatures of fire, an upgraded version of Mystic Birds.`),
-    heroDescrElem(`<br>Powerful creatures of fire that can heal and resurrect allied units, has better stats than Mystical Birds and +17% fire resistance.`),
+    heroDescrElem(`Tier 5 Castle magical creatures of fire, an upgraded version of Mystic Birds.`),
+    heroDescrElem(`<br>Majestic and powerful of fire that can heal and resurrect allied units, has better stats than Mystical Birds and +17% fire resistance.`),
+    heroDescrElem(`<br>Deal 30% more damage against magical creatures.`),
   ]),
 
   baseStats: createStats([[23, 29], 12, 14, 57, 17]),
 
   defaultModifiers: {
     resistFire: 17,
+
+    isMagical: true,
+
+    __attackConditionalModifiers({ attacked }) {
+      if (attacked.modGroup.getModValue('isMagical')) {
+        return {
+          baseDamagePercentModifier: 0.3
+        };
+      }
+
+      return {};
+    }
   },
 
   defaultSpells: [
