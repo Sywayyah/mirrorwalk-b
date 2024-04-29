@@ -7,12 +7,15 @@
       <p>Garrison is reset each week.</p>
     </div>
 
-    <div class="hiring-section" *ngFor="let garrison of currentPlayer.garrisons | keyvalue">
+    <div class="hiring-section"
+         *ngFor="let garrison of currentPlayer.garrisons | keyvalue">
       <div class="header">{{garrison.value.name}}</div>
 
       <div class="groups">
         @for (group of garrison.value.groups; track $index) {
-        <div class="group" [class.selected]="selectedGroup === group" (click)="selectItem(group, garrison.value)">
+        <div class="group"
+             [class.selected]="selectedGroup === group"
+             (click)="selectItem(group, garrison.value)">
           <div class="group-name">{{group.count}} {{group.type.name}}</div>
 
           <hr>
@@ -28,12 +31,16 @@
   </div>
 
   <div popupButtons>
-    <button mw-main-button (click)="close()">
-      Leave
+    <button mw-main-button
+            [disabled]="!selectedGroup || !this.canHire"
+            (click)="hire()">
+      <mw-ra-icon icon="guarded-tower" />
+      Hire
     </button>
 
-    <button mw-main-button [disabled]="!selectedGroup || !this.canHire" (click)="hire()">
-      Hire
+    <button mw-main-button
+            (click)="close()">
+      Leave
     </button>
   </div>
 </mw-popup-base-content>
