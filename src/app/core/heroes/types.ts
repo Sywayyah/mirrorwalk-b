@@ -1,17 +1,18 @@
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { Entity, HeroId } from '../entities';
 import { UnitGroupAddedToHero, UnitGroupRemovedFromHero } from '../events';
 import { GameObject } from '../game-objects';
 import { Item, ItemBaseModel } from '../items';
 import { InventoryItems } from '../items/inventory';
 import { Modifiers, ModsRef, ModsRefsGroup, Specialties, filterSpecialties } from '../modifiers';
 import { Player } from '../players';
-import { Entity, HeroId } from '../entities';
 import { ResourcesModel } from '../resources';
 import { Spell, SpellBaseType } from '../spells';
 import { DescriptionElement } from '../ui';
 import { GenerationModel, UnitGroup } from '../unit-types';
 import { CommonUtils } from '../utils';
+import { isNotNullish } from '../utils/common';
 import { complete } from '../utils/observables';
 
 export interface HeroBaseStats {
@@ -236,6 +237,10 @@ export class Hero extends GameObject<HeroCreationParams> {
 
   getAllSlots(): UnitGroupSlot[] {
     return [...this.mainUnitSlots, ...this.reserveUnitSlots];
+  }
+
+  getAllUnitsFromSlots(): UnitGroup[] {
+    return this.getAllSlots().map(slot => slot.unitGroup).filter(isNotNullish);
   }
 
   setUnitGroups(unitGroups: UnitGroup[], updateSlots = true): void {

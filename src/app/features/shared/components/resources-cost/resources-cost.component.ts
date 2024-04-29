@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, HostBinding, Input } from '@angular/core';
 import { Resources } from 'src/app/core/resources';
 
 @Component({
@@ -8,4 +8,7 @@ import { Resources } from 'src/app/core/resources';
 })
 export class ResourcesCostComponent {
   @Input() cost?: Resources;
+
+  @HostBinding('class.capitalize')
+  @Input() capitalize = true;
 }

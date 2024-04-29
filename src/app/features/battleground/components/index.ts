@@ -5,7 +5,5 @@ export * from './mw-items-panel/mw-items-panel.component';
 export * from './mw-player-resources/mw-player-resources.component';
 export * from './mw-spell-button/mw-spell-button.component';
 export * from './mw-unit-group-card/mw-unit-group-card.component';
-export * from './mw-unit-groups-list/mw-unit-groups-list.component';
 export * from './unit-group-buff/unit-group-buff.component';
 export * from './unit-group-spell/unit-group-spell.component';
-export * from './popups';

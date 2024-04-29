@@ -1,24 +1,27 @@
-<div>
-  These groups are of the same type
-</div>
+<mw-popup-base-content>
+  <div popupHeader>
+    <div>
+      These groups are of the same type
+    </div>
+  </div>
 
-<div>
-  What do you want to do?
-</div>
+  <div popupContent>
+    <div>
+      What do you want to do?
+    </div>
+  </div>
 
-<div style="display: flex;">
-  <button mw-main-button
-          (click)="merge()">
-    Merge
-  </button>
+  <div popupButtons>
+    <button mw-main-button (click)="merge()">
+      Merge
+    </button>
 
-  <button mw-main-button
-          (click)="swap()">
-    Swap
-  </button>
+    <button mw-main-button (click)="swap()">
+      Swap
+    </button>
 
-  <button mw-main-button
-          (click)="popup.close()">
-    Cancel
-  </button>
-</div>
+    <button mw-main-button (click)="popup.close()">
+      Cancel
+    </button>
+  </div>
+</mw-popup-base-content>

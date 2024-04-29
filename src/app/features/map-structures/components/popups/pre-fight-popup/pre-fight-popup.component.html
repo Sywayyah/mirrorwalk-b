@@ -1,0 +1,26 @@
+<mw-popup-base-content>
+  <div popupHeader>
+    {{data.struct.generator?.name}}
+    <!-- {{popup.struct.type}} -->
+  </div>
+
+  <div popupContent>
+    <div class="description" *ngIf="data.struct.generator?.description">
+      <mw-description [descriptions]="data.struct.generator?.description({thisStruct: data.struct})?.descriptions!" />
+    </div>
+
+    <div>
+      <mw-unit-groups-list [unitGroups]="data.struct.guard!" />
+    </div>
+
+    <div>
+      <!-- <div>Gold: {{totalGoldReward}}</div> -->
+      <div>Experience: {{totalExpReward}}</div>
+    </div>
+  </div>
+
+  <div popupButtons>
+    <button (click)="close()">Cancel</button>
+    <button (click)="onBattleConfirmed()">Fight</button>
+  </div>
+</mw-popup-base-content>

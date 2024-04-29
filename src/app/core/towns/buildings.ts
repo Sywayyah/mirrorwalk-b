@@ -7,6 +7,7 @@ import { BuildingsEventsGroup } from './events';
 
 export enum ActivityTypes {
   Hiring,
+  Garrison,
   ItemsSelling,
 }
 

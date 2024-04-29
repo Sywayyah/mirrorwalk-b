@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { PlayerLeavesTown, ViewsEnum } from 'src/app/core/events';
+import { Component, inject } from '@angular/core';
+import { OpenGarrisonPopup, PlayerLeavesTown, ViewsEnum } from 'src/app/core/events';
 import { ActivityTypes, Building, HiringActivity } from 'src/app/core/towns';
 import { State } from 'src/app/features/services/state.service';
 import { PopupService } from 'src/app/features/shared/components';
@@ -8,6 +8,7 @@ import { BuildPopupComponent } from '../build-popup/build-popup.component';
 import { HiringPopupComponent } from '../hiring-popup/hiring-popup.component';
 import { ItemsSellingPopupComponent } from '../items-selling-popup/items-selling-popup.component';
 import { escapeToView } from 'src/app/features/services/utils/view.util';
+import { MwPlayersService } from 'src/app/features/services';
 
 @Component({
   selector: 'mw-town-view',
@@ -15,6 +16,8 @@ import { escapeToView } from 'src/app/features/services/utils/view.util';
   styleUrls: ['./town-view.component.scss'],
 })
 export class TownViewComponent {
+  private readonly players = inject(MwPlayersService);
+
   public buildingsByTiers: Record<number, Building[]> = {};
   public town = this.state.createdGame.town;
   public builtColor: string = this.state.createdGame.selectedColor;
@@ -60,23 +63,31 @@ export class TownViewComponent {
 
     const activity = building.currentBuilding.activity;
 
-    if (activity) {
-      switch (activity.type) {
-        case ActivityTypes.Hiring:
-          const hiringActivity = activity as HiringActivity;
+    if (!activity) {
+      return;
+    }
 
-          this.popupService.createBasicPopup({
-            component: HiringPopupComponent,
-            data: { building, town: this.town, hiringActivity },
-            // class: 'dark',
-          });
-          break;
-        case ActivityTypes.ItemsSelling:
-          this.popupService.createBasicPopup({
-            component: ItemsSellingPopupComponent,
-            data: { building },
-          });
-      }
+    switch (activity.type) {
+      case ActivityTypes.Hiring:
+        const hiringActivity = activity as HiringActivity;
+
+        this.popupService.createBasicPopup({
+          component: HiringPopupComponent,
+          data: { building, town: this.town, hiringActivity },
+          // class: 'dark',
+        });
+        break;
+      case ActivityTypes.ItemsSelling:
+        this.popupService.createBasicPopup({
+          component: ItemsSellingPopupComponent,
+          data: { building },
+        });
+        break;
+      case ActivityTypes.Garrison:
+        if (this.players.getCurrentPlayer().garrisons) {
+          this.events.dispatch(OpenGarrisonPopup());
+        }
+        break;
     }
   }
 }

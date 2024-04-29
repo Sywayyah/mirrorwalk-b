@@ -1,0 +1,29 @@
+mw-popup-base-content {
+  display: block;
+  padding: 16px;
+
+
+  [popupHeader] {
+    text-align: center;
+    margin-bottom: 4px;
+  }
+
+  [popupContent] {
+    text-align: center;
+
+    .sub-info {
+      p {
+        margin: 0;
+        font-size: 12px;
+      }
+    }
+  }
+
+  [popupButtons] {
+    display: flex;
+    justify-content: center;
+    gap: 4px;
+    margin-top: 4px;
+  }
+
+}
