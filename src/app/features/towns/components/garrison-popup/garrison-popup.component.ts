@@ -46,6 +46,8 @@ export class GarrisonPopupComponent extends BasicPopup<{}> {
     );
 
     this.players.addUnitGroupToTypeStack(this.currentPlayer, newUnitGroup);
+    this.events.dispatch(PushPlainEventFeedMessage({ message: `${group.count} ${group.type.name} joined your army for 3 days.` }));
+
 
     this.events.dispatch(ScheduleAction({
       action: () => {

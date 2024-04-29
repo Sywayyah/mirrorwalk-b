@@ -9,29 +9,38 @@
     </div>
 
     <div style="display: flex; justify-content: center;">
-      <div class="type" [class.active]="currentMode === 'hire'" (click)="setMode('hire')">
+      <div class="type"
+           [class.active]="currentMode === 'hire'"
+           (click)="setMode('hire')">
         Hire: {{countToHire - plannedToHire}}
       </div>
 
-      <div class="type" *ngIf="activity.upgrade" [class.active]="currentMode === 'upgrade'"
-        (click)="setMode('upgrade')">
+      <div class="type"
+           *ngIf="activity.upgrade"
+           [class.active]="currentMode === 'upgrade'"
+           (click)="setMode('upgrade')">
         Upgrade: {{countToUpgrade - plannedToUpgrade}}
       </div>
     </div>
 
     <div class="hiring-panel">
-      <div *ngFor="let unitType of hirableGroups" class="unit-column">
+      <div *ngFor="let unitType of hirableGroups"
+           class="unit-column">
         <div>{{unitType.hire.unitType.name}}</div>
 
         <div>{{unitType.count}}</div>
 
-        <input type="range" [min]="0" [max]="unitType.hire.maxCount" (input)="updateCountForGroup(unitType, $event)"
-          [value]="0">
+        <input type="range"
+               [min]="0"
+               [max]="unitType.hire.maxCount"
+               (input)="updateCountForGroup(unitType, $event)"
+               [value]="0">
 
         <div>Cost:</div>
 
         <div class="cost">
-          <div class="resource" *ngFor="let resource of (unitType.currentCost | keyvalue)">
+          <div class="resource"
+               *ngFor="let resource of (unitType.currentCost | keyvalue)">
             <div>{{resource.key}}</div>
 
             <div>{{resource.value}}</div>
@@ -43,16 +52,22 @@
   </div>
 
   <div popupButtons>
-    <button mw-main-button (click)="close()">
-      Close
+    <button mw-main-button
+            [disabled]="!canConfirm || (countToHire - plannedToHire) < 0"
+            (click)="confirmHire()">
+      Hire
     </button>
 
-    <button mw-main-button (click)="upgradeBuilding()" style="font-size: 12px;" *ngIf="canBeUpgraded">
+    <button mw-main-button
+            (click)="upgradeBuilding()"
+            style="font-size: 12px;"
+            *ngIf="canBeUpgraded">
       Upgrade Building
     </button>
 
-    <button mw-main-button [disabled]="!canConfirm || (countToHire - plannedToHire) < 0" (click)="confirmHire()">
-      Hire
+    <button mw-main-button
+            (click)="close()">
+      Close
     </button>
   </div>
 </mw-popup-base-content>

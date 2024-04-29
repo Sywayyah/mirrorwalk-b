@@ -5,7 +5,8 @@
   </div>
 
   <div popupContent>
-    <div class="description" *ngIf="data.struct.generator?.description">
+    <div class="description"
+         *ngIf="data.struct.generator?.description">
       <mw-description [descriptions]="data.struct.generator?.description({thisStruct: data.struct})?.descriptions!" />
     </div>
 
@@ -20,7 +21,15 @@
   </div>
 
   <div popupButtons>
-    <button (click)="close()">Cancel</button>
-    <button (click)="onBattleConfirmed()">Fight</button>
+    <button mw-main-button
+            (click)="onBattleConfirmed()">
+      <mw-ra-icon icon="crossed-swords" />
+      Fight
+    </button>
+
+    <button mw-main-button
+            (click)="close()">
+      Cancel
+    </button>
   </div>
 </mw-popup-base-content>

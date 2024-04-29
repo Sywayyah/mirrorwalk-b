@@ -58,6 +58,7 @@ export interface ModifiersModel extends Specialties {
   isForest: boolean;
   isSummon: boolean;
   isBoss: boolean;
+  isMagical: boolean;
   isCavalry: boolean;
 
   /* states */
