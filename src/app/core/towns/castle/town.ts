@@ -115,9 +115,15 @@ const tavern = createBuildingType({
           currentPlayer.garrisons.set('castle-tavern', {
             groups: [{ cost: { gold: 200 }, count: 8, type: resolveEntity('#unit-neut-ranger-0') }],
             name: 'Castle Tavern',
-          })
+          });
         },
-        NewWeekStarts() {}
+        NewWeekStarts() {
+          const currentPlayer = players.getCurrentPlayer();
+          currentPlayer.garrisons.set('castle-tavern', {
+            groups: [{ cost: { gold: 200 }, count: 8, type: resolveEntity('#unit-neut-ranger-0') }],
+            name: 'Castle Tavern',
+          });
+        }
       });
 
     }

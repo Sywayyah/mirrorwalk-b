@@ -3,6 +3,8 @@ import { SpellActivationType, createSpell } from 'src/app/core/spells';
 import { spellDescrElem } from 'src/app/core/ui';
 import { frontStackingBuffAnimation } from 'src/app/core/vfx';
 
+// it can be funny to have only basic Raiders affected by this spell, and maybe
+// advanced version when at higher levels
 export const OnslaughtBuffSpell = createSpell<{ mods: ModifiersModel }>({
   id: '#spell-onslaught-buff',
 

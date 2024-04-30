@@ -62,6 +62,16 @@ const rockyCaves = createBuildingType({
               { cost: { gold: 100 }, count: 8, type: resolveEntity('#unit-f00') },
             ], name: 'Rocky Caves'
           });
+        },
+        NewWeekStarts() {
+          const currentPlayer = players.getCurrentPlayer();
+          currentPlayer.garrisons.set('rocky-caves', {
+            groups: [
+              { cost: { gold: 100 }, count: 8, type: resolveEntity('#unit-f00') },
+              { cost: { gold: 100 }, count: 8, type: resolveEntity('#unit-f00') },
+              { cost: { gold: 100 }, count: 8, type: resolveEntity('#unit-f00') },
+            ], name: 'Rocky Caves'
+          });
         }
       });
     }
