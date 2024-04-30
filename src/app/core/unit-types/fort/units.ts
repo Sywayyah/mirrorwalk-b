@@ -113,6 +113,9 @@ fortFaction.defineUnitType({
 
   defaultTurnsPerRound: 2,
 
+  defaultModifiers: {
+    isRanged: true,
+  },
   defaultSpells: [
     PoisonArrowsSpell,
   ],
@@ -155,6 +158,11 @@ fortFaction.defineUnitType({
     heroDescrElem(`<br>Basic archers that deal very low damage due to poor technologies, but mitigate that weakness by adding poison to their arrows.`),
     heroDescrElem(`<br>As an improved version of Goblin Archers they are equipped with primitive but fast-reloading crossbows, allowing them to attack 3 times per round.`),
   ]),
+
+
+  defaultModifiers: {
+    isRanged: true,
+  },
 
   defaultTurnsPerRound: 3,
 
