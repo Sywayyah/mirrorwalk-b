@@ -464,8 +464,8 @@ export class UnitGroup extends GameObject<UnitCreationParams> {
         poisonResist: (mods.resistPoison || 0) + allResist,
 
         totalHealth: previousStats.totalHealth,
-        totalMinDamage: previousStats.totalMaxDamage,
-        totalMaxDamage: previousStats.totalMinDamage,
+        totalMinDamage: previousStats.totalMinDamage,
+        totalMaxDamage: previousStats.totalMaxDamage,
         avgTotalDamage: previousStats.avgTotalDamage,
         position: previousStats.position,
       };

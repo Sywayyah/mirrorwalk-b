@@ -21,6 +21,7 @@
         <div class="col">
           <div class="stat">
             <mw-ra-icon icon="sword" />
+
             {{baseStats.damageInfo.minDamage}}-{{baseStats.damageInfo.maxDamage}}
           </div>
 
@@ -46,7 +47,7 @@
     <div class="description">
       <hr>
       <mw-description *ngIf="description.descriptions.length; else noDescription"
-                      [descriptions]="description.descriptions"></mw-description>
+                      [descriptions]="description.descriptions" />
 
       <ng-template #noDescription>
         No Description.
@@ -63,7 +64,7 @@
       <div class="col">
         <div class="stat">
           <mw-ra-icon icon="sword" />
-          {{_unitStats.totalMinDamage}}-{{_unitStats.totalMaxDamage}}, avg. {{_unitStats.avgTotalDamage}}
+          {{_unitStats.totalMinDamage}}-{{_unitStats.totalMaxDamage}} (avg. {{_unitStats.avgTotalDamage}})
         </div>
 
         <div class="stat">
