@@ -1,6 +1,5 @@
 <ng-container *ngIf="unitStats$ | async as _unitStats">
-  <mw-unit-group-portrait class="unit-portrait"
-                          [unitGroup]="unitGroup" />
+  <mw-unit-group-portrait class="unit-portrait" size="big" [unitGroup]="unitGroup" />
 
   <div class="main-group">
     <div class="info-header">
@@ -47,7 +46,7 @@
     <div class="description">
       <hr>
       <mw-description *ngIf="description.descriptions.length; else noDescription"
-                      [descriptions]="description.descriptions" />
+        [descriptions]="description.descriptions" />
 
       <ng-template #noDescription>
         No Description.
@@ -103,8 +102,7 @@
         </div>
 
 
-        <div class="abilities"
-             *ngIf="spells.length">
+        <div class="abilities" *ngIf="spells.length">
           <hr>
 
           <div class="title">
@@ -112,16 +110,12 @@
           </div>
 
           <div class="abilities-list">
-            <mw-unit-group-spell-icon *ngFor="let spell of spells"
-                                      [hero]="unitGroup.ownerPlayer.hero"
-                                      [spell]="spell"
-                                      [hintPos]="'above'"
-                                      [owner]="unitGroup" />
+            <mw-unit-group-spell-icon *ngFor="let spell of spells" [hero]="unitGroup.ownerPlayer.hero" [spell]="spell"
+              [hintPos]="'above'" [owner]="unitGroup" />
           </div>
         </div>
 
-        <div class="abilities"
-             *ngIf="effects.length">
+        <div class="abilities" *ngIf="effects.length">
           <hr>
 
           <div class="title">
@@ -129,11 +123,8 @@
           </div>
 
           <div class="abilities-list">
-            <mw-unit-group-spell-icon *ngFor="let spell of effects"
-                                      [hero]="unitGroup.ownerPlayer.hero"
-                                      [spell]="spell"
-                                      [hintPos]="'above'"
-                                      [owner]="unitGroup" />
+            <mw-unit-group-spell-icon *ngFor="let spell of effects" [hero]="unitGroup.ownerPlayer.hero" [spell]="spell"
+              [hintPos]="'above'" [owner]="unitGroup" />
           </div>
         </div>
       </div>
