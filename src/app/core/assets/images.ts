@@ -11,6 +11,8 @@ export const AssetsImages = {
   UnitMelee: units('common-melee'),
   UnitRanged: units('common-ranged'),
   FireBird: units('fire-bird'),
+  Archer: units('archer'),
+  Pikemen: units('pikemen'),
 
   HeroMelee: heroes('hero-melee'),
   HeroMage: heroes('hero-mage'),

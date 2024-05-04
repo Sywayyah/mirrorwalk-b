@@ -15,7 +15,7 @@ humansFaction.defineUnitType({
   id: '#unit-h00',
   name: 'Pikemen',
   level: 1,
-  mainPortraitUrl: AssetsImages.UnitMelee,
+  mainPortraitUrl: AssetsImages.Pikemen,
 
   baseRequirements: {
     gold: 55,
@@ -59,7 +59,7 @@ humansFaction.defineUnitType({
 
 humansFaction.defineUnitType({
   id: '#unit-h01',
-  mainPortraitUrl: AssetsImages.UnitMelee,
+  mainPortraitUrl: AssetsImages.Pikemen,
   name: 'Halberdier',
   level: 1,
 
@@ -110,7 +110,7 @@ humansFaction.defineUnitType({
 humansFaction.defineUnitType({
   id: '#unit-h10',
 
-  mainPortraitUrl: AssetsImages.UnitRanged,
+  mainPortraitUrl: AssetsImages.Archer,
   name: 'Archers',
   level: 2,
 
@@ -199,7 +199,7 @@ humansFaction.defineUnitType({
 humansFaction.defineUnitType({
   id: '#unit-h11',
 
-  mainPortraitUrl: AssetsImages.UnitRanged,
+  mainPortraitUrl: AssetsImages.Archer,
   name: 'Crossbowmen',
   level: 2,
 

@@ -38,4 +38,5 @@ export * from './value-bar/value-bar.component';
 export * from './vfx-container/vfx-container.component';
 export * from './vfx-element/vfx-element.component';
 export * from './vfx-layer';
+export * from './unit-group-preview/unit-group-preview.component';
 

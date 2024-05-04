@@ -115,11 +115,11 @@ export class Hero extends GameObject<HeroCreationParams> {
 
   public spells: Spell[] = [];
 
-  public readonly modGroup: ModsRefsGroup = ModsRefsGroup.empty();
+  public readonly modGroup = ModsRefsGroup.empty();
 
-  public readonly unitAurasModGroup: ModsRefsGroup = ModsRefsGroup.empty();
+  public readonly unitAurasModGroup = ModsRefsGroup.empty();
 
-  public readonly specialtiesModGroup: ModsRefsGroup = ModsRefsGroup.empty();
+  public readonly specialtiesModGroup = ModsRefsGroup.empty();
 
   /** All items that hero possesses (not all might be equiped) */
   public itemsBackpack: Item[] = [];
@@ -170,7 +170,6 @@ export class Hero extends GameObject<HeroCreationParams> {
     { unitGroup: null, isReserve: true },
     { unitGroup: null, isReserve: true },
   ];
-
 
   create({ heroBase, unitGroups, ownerPlayer }: HeroCreationParams): void {
     this.base = heroBase;
