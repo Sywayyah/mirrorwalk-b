@@ -13,4 +13,8 @@ export class UnitGroupPortraitComponent {
   @Input()
   @HostBinding('class.to-right')
   toRight: boolean = true;
+
+  @Input()
+  @HostBinding('class')
+  size?: 'big';
 }
