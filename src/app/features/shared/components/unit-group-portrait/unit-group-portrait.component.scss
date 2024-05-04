@@ -3,7 +3,7 @@
   user-select: none;
   display: inline-block;
 
-  :host.to-right {
+  &.to-right {
     scale: -1 1;
   }
 
