@@ -255,7 +255,16 @@ const garrison = createBuildingType({
           });
 
         },
-        NewWeekStarts() { },
+        NewWeekStarts() {
+          const currentPlayer = players.getCurrentPlayer()
+          currentPlayer.garrisons.set('castle-garrison', {
+            groups: [
+              { cost: { gold: 200, }, type: resolveEntity('#unit-h00'), count: 16 },
+              { cost: { gold: 340, }, type: resolveEntity('#unit-h20'), count: 6 },
+            ],
+            name: 'Castle Garrison',
+          });
+        },
       })
     }
   }
