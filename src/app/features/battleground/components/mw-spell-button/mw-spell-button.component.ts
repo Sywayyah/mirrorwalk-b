@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, input, output } from '@angular/core';
 import { Hero } from 'src/app/core/heroes';
 import { Player } from 'src/app/core/players';
 import { Spell, SpellActivationType } from 'src/app/core/spells';
@@ -7,39 +7,26 @@ import { HintAttachment } from 'src/app/features/shared/components';
 @Component({
   selector: 'mw-spell-button',
   templateUrl: './mw-spell-button.component.html',
-  styleUrls: ['./mw-spell-button.component.scss']
+  styleUrls: ['./mw-spell-button.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MwSpellButtonComponent {
+  spell = input.required<Spell>();
+  player = input.required<Player>();
+  hero = input.required<Hero>();
 
-  @Input()
-  public spell!: Spell;
+  onCooldown = input(false);
 
-  @Input()
-  public onCooldown = false;
+  disabled = input(false);
 
-  @Input()
-  public disabled = false;
+  isActive = input(false);
 
-  @Input()
-  public isActive = false;
+  hintPos = input<HintAttachment>('above');
 
-  @Input()
-  public player!: Player;
+  clicked = output<Spell>();
 
-  @Input()
-  public hero!: Hero;
+  isCurrentSpell = computed(() => this.isActive() && this.spell().baseType.activationType === this.activationTypes.Target);
+  uiSpellIcon = computed(() => this.spell().baseType.icon);
 
-  @Input()
-  public hintPos: HintAttachment = 'above';
-
-  @Output()
-  public clicked = new EventEmitter<Spell>();
-
-  public activationTypes = SpellActivationType;
-
-  constructor() { }
-
-  public onClick(): void {
-    this.clicked.emit(this.spell);
-  }
+  readonly activationTypes = SpellActivationType;
 }
