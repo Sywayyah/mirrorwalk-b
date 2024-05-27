@@ -1,24 +1,22 @@
-import { ChangeDetectionStrategy, Component, Input } from "@angular/core";
-import { UnitBaseType, UnitGroup } from "src/app/core/unit-types";
+import { ChangeDetectionStrategy, Component, input } from "@angular/core";
+import { UnitBaseType } from "src/app/core/unit-types";
 
 
 @Component({
   selector: 'mw-unit-group-preview',
   template: `
     <div style="display: flex; flex-direction: column;">
-      <img src="../assets/{{unitType.mainPortraitUrl}}">
+      <img src="../assets/{{unitType().mainPortraitUrl}}">
 
       <div>
-        {{unitType.name}} ({{count}})
+        {{unitType().name}} ({{count()}})
       </div>
     </div>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class UnitGroupPreview {
-  @Input()
-  unitType!: UnitBaseType;
+export class UnitGroupPreviewComponent {
+  unitType = input.required<UnitBaseType>();
 
-  @Input()
-  count?: number;
+  count = input.required<number>();
 }
