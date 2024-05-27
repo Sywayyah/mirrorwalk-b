@@ -1,32 +1,32 @@
 <mw-hover-hint [hintBody]="buffHint"
-               [hintPos]="hintPos">
-  <div [ngClass]="{ 'disabled': onCooldown || disabled }">
+               [hintPos]="hintPos()">
+  <div [ngClass]="{ 'disabled': onCooldown() || disabled() }">
     <mw-ra-icon class="spell-icon"
-                [icon]="spell.baseType.icon.icon"
-                [ngStyle]="{ 'color': spell.baseType.icon.iconClr , 'background': spell.baseType.icon.bgClr }" />
+                [icon]="icon().icon"
+                [ngStyle]="{ 'color': icon().iconClr , 'background': icon().bgClr }" />
   </div>
 </mw-hover-hint>
 
 <ng-template #buffHint>
   <div style="display: flex">
-    <mw-ra-icon [icon]="icon.icon"
+    <mw-ra-icon [icon]="icon().icon"
                 class="hint-icon"
-                [ngStyle]="{ 'color': icon.iconClr , 'background': icon.bgClr }" />
+                [ngStyle]="{ 'color': icon().iconClr , 'background': icon().bgClr }" />
 
     <div style="padding: 4px; font-size: 14px;">
-      <div>{{baseType.name}}</div>
-      <div style="font-size: 12px;">Level {{spell.currentLevel}}</div>
+      <div>{{baseType().name}}</div>
+      <div style="font-size: 12px;">Level {{spell().currentLevel}}</div>
       <div style="font-size: 12px;"
-           *ngIf="!isPassive">
-        Mana Cost: {{spell.currentManaCost}}
+           *ngIf="!isPassive()">
+        Mana Cost: {{spell().currentManaCost}}
       </div>
     </div>
   </div>
 
   <div style="padding: 4px; font-size: 13px; max-width: 240px;">
-    <mw-spell-description [spell]="spell"
-                          [player]="owner.ownerPlayer"
-                          [ownerUnit]="owner"
-                          [hero]="hero" />
+    <mw-spell-description [spell]="spell()"
+                          [player]="owner().ownerPlayer"
+                          [ownerUnit]="owner()"
+                          [hero]="hero()" />
   </div>
 </ng-template>

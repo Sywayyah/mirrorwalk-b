@@ -14,7 +14,7 @@ export class SpellDescriptionComponent {
   public spell = input.required<Spell>();
 
   /* todo: this is possibly bad, maybe hero can be attached to spell itself. */
-  public hero = input.required<Hero>();
+  public hero = input<Hero>();
 
   public player = input.required<Player>();
 
@@ -23,7 +23,7 @@ export class SpellDescriptionComponent {
   public descriptions = computed(() => this.spell().baseType.getDescription({
     thisSpell: this.spell().baseType,
     spellInstance: this.spell(),
-    ownerHero: this.hero(),
+    ownerHero: this.hero() as Hero,
     ownerPlayer: this.player(),
     ownerUnit: this.ownerUnit(),
   }).descriptions);
