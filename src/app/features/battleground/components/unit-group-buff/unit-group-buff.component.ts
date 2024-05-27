@@ -1,37 +1,20 @@
-import { Component, Input, OnChanges } from '@angular/core';
-import { Icon } from 'src/app/core/assets';
-// import { PlayerInstanceModel } from 'src/app/core/players';
-import { Spell, SpellBaseType } from 'src/app/core/spells';
+import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
+import { Spell } from 'src/app/core/spells';
 import { UnitGroup } from 'src/app/core/unit-types';
-import { TypedChanges } from 'src/app/core/utils';
 import { HintAttachment } from 'src/app/features/shared/components';
 
 @Component({
   selector: 'mw-unit-group-buff',
   templateUrl: './unit-group-buff.component.html',
-  styleUrls: ['./unit-group-buff.component.scss']
+  styleUrls: ['./unit-group-buff.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class UnitGroupBuffComponent implements OnChanges {
+export class UnitGroupBuffComponent {
+  public buff = input.required<Spell>();
+  public ownerUnit = input.required<UnitGroup>();
+  public hintPos = input<HintAttachment>('above');
 
-  @Input()
-  public buff!: Spell;
+  public baseType = computed(() => this.buff().baseType);
 
-  @Input()
-  public ownerUnit!: UnitGroup;
-
-  @Input()
-  public hintPos: HintAttachment = 'above';
-
-  public baseType!: SpellBaseType;
-
-  public icon!: Icon;
-
-  constructor() { }
-
-  public ngOnChanges(changes: TypedChanges<this>): void {
-    if (changes.buff) {
-      this.baseType = this.buff.baseType;
-      this.icon = this.baseType.icon;
-    }
-  }
+  public icon = computed(() => this.baseType().icon);
 }
