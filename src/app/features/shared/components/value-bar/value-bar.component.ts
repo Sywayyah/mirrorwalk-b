@@ -1,4 +1,5 @@
-import { ChangeDetectionStrategy, Component, ElementRef, Input, OnChanges, Renderer2, SimpleChanges } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, effect, input } from '@angular/core';
+import { injectHostElem, injectRenderer } from 'src/app/core/utils';
 
 /*
   For now, I'm not sure if I want to use it for showing amount of units.
@@ -12,38 +13,29 @@ import { ChangeDetectionStrategy, Component, ElementRef, Input, OnChanges, Rende
   styleUrls: ['./value-bar.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ValueBarComponent implements OnChanges {
+export class ValueBarComponent {
+  private readonly hostElem = injectHostElem();
+  private readonly renderer = injectRenderer();
 
-  @Input()
-  public maxValue: number = 0;
+  public maxValue = input.required<number>();
 
-  @Input()
-  public barStyle: 'normal' | 'static' = 'normal';
+  public barStyle = input<'normal' | 'static'>('normal');
 
-  @Input()
-  public showMax: boolean = false;
+  public showMax = input(false);
 
-  @Input()
-  public currentValue: number = 0;
+  public currentValue = input(0);
 
-  @Input()
-  public color: string = 'red';
+  public color = input('red');
 
-  @Input()
-  public barHeight: number = 3;
+  public barHeight = input(3);
 
-  @Input()
-  public side: 'left' | 'right' = 'right';
+  public side = input<'left' | 'right'>('left');
 
-  constructor(
-    private host: ElementRef,
-    private renderer: Renderer2,
-  ) { }
+  public uiBarWidth = computed(() => this.currentValue() / this.maxValue() * 100);
 
-  public ngOnChanges(changes: SimpleChanges): void {
-    if (changes.barHeight) {
-      this.renderer.setStyle(this.host.nativeElement, 'height', `${this.barHeight}px`);
-    }
+  constructor() {
+    effect(() => {
+      this.renderer.setStyle(this.hostElem, 'height', `${this.barHeight()}px`);
+    });
   }
-
 }

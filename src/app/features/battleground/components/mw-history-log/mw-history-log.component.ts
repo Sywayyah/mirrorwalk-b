@@ -1,6 +1,5 @@
-import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { Component, ElementRef, ViewChild } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { HistoryLogTypesEnum } from 'src/app/core/ui';
 import { MwBattleLogService } from 'src/app/features/services';
 
@@ -9,20 +8,16 @@ import { MwBattleLogService } from 'src/app/features/services';
   templateUrl: './mw-history-log.component.html',
   styleUrls: ['./mw-history-log.component.scss']
 })
-export class MwHistoryLogComponent implements OnInit, OnDestroy {
+export class MwHistoryLogComponent {
   @ViewChild('historyLog', { static: true }) public historyLogElem!: ElementRef;
 
   public types: typeof HistoryLogTypesEnum = HistoryLogTypesEnum;
 
-  private destroyed$ = new Subject<void>();
-
   constructor(
     public readonly battleLogService: MwBattleLogService,
-  ) { }
-
-  public ngOnInit(): void {
+  ) {
     this.battleLogService.historyEvent$.pipe(
-      takeUntil(this.destroyed$),
+      takeUntilDestroyed(),
     ).subscribe(() => {
       const historyElem = this.historyLogElem.nativeElement;
       setTimeout(() => {
@@ -30,10 +25,4 @@ export class MwHistoryLogComponent implements OnInit, OnDestroy {
       }, 0);
     });
   }
-
-  public ngOnDestroy(): void {
-    this.destroyed$.next();
-    this.destroyed$.complete();
-  }
-
 }

@@ -1,10 +1,11 @@
-import { Component, HostBinding, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostBinding, Input, input } from '@angular/core';
 import { UnitGroup } from 'src/app/core/unit-types';
 
 @Component({
   selector: 'mw-unit-group-portrait',
   templateUrl: './unit-group-portrait.component.html',
-  styleUrls: ['./unit-group-portrait.component.scss']
+  styleUrls: ['./unit-group-portrait.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UnitGroupPortraitComponent {
   @Input()
