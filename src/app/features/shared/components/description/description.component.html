@@ -1,4 +1,4 @@
-<ng-container *ngFor="let description of descriptions">
+<ng-container *ngFor="let description of descriptions()">
   <ng-container *ngTemplateOutlet="freeHtml; context: { $implicit: description }" />
 </ng-container>
 
