@@ -1,6 +1,7 @@
-import { Component, OnDestroy } from '@angular/core';
-import { BehaviorSubject, Subject, combineLatest } from 'rxjs';
-import { map, takeUntil, tap } from 'rxjs/operators';
+import { Component } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { BehaviorSubject, combineLatest } from 'rxjs';
+import { map, tap } from 'rxjs/operators';
 import { ActionHintModel, ActionHintTypeEnum } from 'src/app/core/ui';
 import { MwPlayersService } from 'src/app/features/services';
 import { ActionHintService } from 'src/app/features/services/mw-action-hint.service';
@@ -11,13 +12,10 @@ import { EventsService } from 'src/app/store';
   templateUrl: './mw-action-hint.component.html',
   styleUrls: ['./mw-action-hint.component.scss']
 })
-export class MwActionHintComponent implements OnDestroy {
-
+export class MwActionHintComponent {
   public hintActionTypes: typeof ActionHintTypeEnum = ActionHintTypeEnum;
 
-  public hint$: BehaviorSubject<ActionHintModel | null> = new BehaviorSubject<ActionHintModel | null>(null);
-
-  private destroyed$ = new Subject<void>();
+  public readonly hint$: BehaviorSubject<ActionHintModel | null> = new BehaviorSubject<ActionHintModel | null>(null);
 
   constructor(
     // public readonly mwBattleState: BattleStateService,
@@ -38,12 +36,7 @@ export class MwActionHintComponent implements OnDestroy {
         return actionHint;
       }),
       tap(actionHint => this.hint$.next(actionHint)),
-      takeUntil(this.destroyed$),
+      takeUntilDestroyed(),
     ).subscribe();
-  }
-
-  public ngOnDestroy(): void {
-    this.destroyed$.next();
-    this.destroyed$.complete();
   }
 }
