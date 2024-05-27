@@ -2,7 +2,7 @@
                [hintPos]="hintPos()">
   <div class="ability spell-icon"
        (click)="clicked.emit(spell())"
-       [class.disabled]="disabled"
+       [class.disabled]="disabled()"
        [class.current-ability]="isCurrentSpell()"
        [ngStyle]="{ 'color': uiSpellIcon().iconClr , 'background': uiSpellIcon().bgClr }">
     <mw-ra-icon [icon]="uiSpellIcon().icon" />
