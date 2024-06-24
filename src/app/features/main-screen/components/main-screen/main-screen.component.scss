@@ -3,6 +3,43 @@
   position: relative;
 }
 
+// rework
+$color-back: rgb(29, 29, 29);
+
+.backdrop {
+  background: $color-back;
+
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+}
+
+.background {
+  width: 100vw;
+  height: 100vh;
+  background-size: auto 125%;
+  background-repeat: no-repeat;
+  background-position: center 0px;
+  position: fixed;
+  left: -100px;
+}
+
+.gradient {
+  position: fixed;
+  left: 53px;
+  width: 80.5vw;
+  height: 100vh;
+  background: rgb(38, 38, 38);
+  background: linear-gradient(
+    90deg,
+    $color-back 0%,
+    rgba(33, 33, 33, 0.272233893557423) 5%,
+    rgba(255, 255, 255, 0) 50%,
+    rgba(32, 32, 32, 0.1966036414565826) 95%,
+    $color-back 100%
+  );
+}
+
 .block {
   position: fixed;
   right: 0;
