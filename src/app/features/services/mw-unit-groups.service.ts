@@ -80,7 +80,7 @@ export class MwUnitGroupsService {
   }
 
   public getUnitGroupSpeed(unitGroup: UnitGroup): number {
-    return unitGroup.getStats().finalSpeed;
+    return unitGroup.getState().groupStats.finalSpeed;
   }
 
   // todo: review, maybe some stats can be used

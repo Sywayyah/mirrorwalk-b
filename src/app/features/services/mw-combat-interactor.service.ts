@@ -152,7 +152,7 @@ export class CombatInteractorService extends StoreClient() {
           finalDamage = Math.round(finalDamage);
 
           // damage resists
-          let finalResistValue = target.getStats()[resistsMapping[damageType] as keyof UnitStatsInfo] as number;
+          let finalResistValue = target.getState().groupStats[resistsMapping[damageType] as keyof UnitStatsInfo] as number;
 
           if (finalResistValue > defaultResistCap) {
             finalResistValue = defaultResistCap;

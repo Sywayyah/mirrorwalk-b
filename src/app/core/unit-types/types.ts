@@ -1,3 +1,4 @@
+import { Signal, signal } from '@angular/core';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Entity, EntityId, UnitTypeId } from '../entities';
@@ -152,11 +153,26 @@ export interface UnitStatsInfo {
   position: number;
 }
 
-export class UnitGroup extends GameObject<UnitCreationParams> {
+export interface UnitGroupStackState {
+  count: number;
+  tailHp: number;
+  isAlive: boolean;
+  position: number;
+  turnsLeft: number;
+}
+
+export interface UnitGroupState {
+  groupState: UnitGroupStackState;
+  groupStats: UnitStatsInfo;
+  // spells
+}
+
+export class UnitGroup extends GameObject<UnitCreationParams, UnitGroupState> {
   public static readonly categoryId: string = 'unit-group';
 
   // todo: many properties can become getters
 
+  // introduce state for it
   private _count!: number;
   /* the last unit hp tail. */
   // todo: recheck how it works, maybe shouldn't be undefined anymore
@@ -183,6 +199,7 @@ export class UnitGroup extends GameObject<UnitCreationParams> {
   }
 
   /* how much turns left during round, not sure if it's best to have it there */
+
   public turnsLeft!: number;
 
   public fightInfo!: {
@@ -201,33 +218,45 @@ export class UnitGroup extends GameObject<UnitCreationParams> {
   public readonly modGroup: ModsRefsGroup = ModsRefsGroup.empty();
 
   // final stats used by the game
-  private readonly unitStats$ = new BehaviorSubject<UnitStatsInfo>({
-    baseAttack: 0,
-    bonusAttack: 0,
-    finalAttack: 0,
+  private readonly unitStats$ = new BehaviorSubject<UnitGroupState>({
+    groupState: {
+      // todo: wire to real values
+      count: 0,
+      isAlive: true,
+      tailHp: 0,
+      position: 0,
+      turnsLeft: 0,
+    },
+    groupStats: {
+      baseAttack: 0,
+      bonusAttack: 0,
+      finalAttack: 0,
 
-    baseDefence: 0,
-    bonusDefence: 0,
-    finalDefence: 0,
+      baseDefence: 0,
+      bonusDefence: 0,
+      finalDefence: 0,
 
-    defends: false,
+      defends: false,
 
-    baseSpeed: 0,
-    speedBonus: 0,
-    finalSpeed: 0,
+      baseSpeed: 0,
+      speedBonus: 0,
+      finalSpeed: 0,
 
-    fireResist: 0,
-    coldResist: 0,
-    lightningResist: 0,
-    poisonResist: 0,
+      fireResist: 0,
+      coldResist: 0,
+      lightningResist: 0,
+      poisonResist: 0,
 
-    totalHealth: 0,
-    totalMinDamage: 0,
-    totalMaxDamage: 0,
-    avgTotalDamage: 0,
+      totalHealth: 0,
+      totalMinDamage: 0,
+      totalMaxDamage: 0,
+      avgTotalDamage: 0,
 
-    position: 0,
+      position: 0,
+    },
   });
+
+  readonly unitState = signal(this.unitStats$.getValue());
 
   private readonly destroyed$ = new Subject<void>();
 
@@ -281,12 +310,16 @@ export class UnitGroup extends GameObject<UnitCreationParams> {
     this.setupStatsUpdating();
   }
 
-  setPosition(pos: number): void {
-    const stats = this.getStats();
+  getStateSignal(): Signal<UnitGroupState> {
+    return this.unitState;
+  }
 
-    if (stats.position !== pos) {
-      stats.position = pos;
-      this.unitStats$.next(stats);
+  setPosition(pos: number): void {
+    const newLocal = this.getState();
+    const { groupState: state } = newLocal;
+
+    if (state.position !== pos) {
+      this.pushState({ ...newLocal, groupState: { ...state, position: pos } });
     }
   }
 
@@ -327,7 +360,7 @@ export class UnitGroup extends GameObject<UnitCreationParams> {
     this.recalcHealthBasedStats();
   }
 
-  listenStats(): Observable<UnitStatsInfo> {
+  listenStats(): Observable<UnitGroupState> {
     return this.unitStats$.pipe(takeUntil(this.destroyed$));
   }
 
@@ -359,8 +392,7 @@ export class UnitGroup extends GameObject<UnitCreationParams> {
     }
   }
 
-
-  getStats(): UnitStatsInfo {
+  getState(): UnitGroupState {
     return this.unitStats$.getValue();
   }
 
@@ -402,13 +434,22 @@ export class UnitGroup extends GameObject<UnitCreationParams> {
     const currentUnitStats = this.unitStats$.getValue();
     const baseStats = this.type.baseStats;
     const unitCount = this._count;
+    const stats = currentUnitStats.groupStats;
 
-    currentUnitStats.totalHealth = baseStats.health * (unitCount - 1) + (this.tailUnitHp ?? 0);
-    currentUnitStats.totalMinDamage = unitCount * baseStats.damageInfo.minDamage;
-    currentUnitStats.totalMaxDamage = unitCount * baseStats.damageInfo.maxDamage;
-    currentUnitStats.avgTotalDamage = (currentUnitStats.totalMinDamage + currentUnitStats.totalMaxDamage) / 2;
-
-    this.unitStats$.next(currentUnitStats);
+    this.pushState({
+      ...currentUnitStats,
+      groupState: {
+        ...currentUnitStats.groupState,
+        count: unitCount,
+      },
+      groupStats: {
+        ...stats,
+        totalHealth: baseStats.health * (unitCount - 1) + (this.tailUnitHp ?? 0),
+        totalMinDamage: unitCount * baseStats.damageInfo.minDamage,
+        totalMaxDamage: unitCount * baseStats.damageInfo.maxDamage,
+        avgTotalDamage: (stats.totalMinDamage + stats.totalMaxDamage) / 2,
+      },
+    });
   }
 
   private getSpecialtyAndConditionalModsGroup(): ModsRefsGroup {
@@ -443,6 +484,7 @@ export class UnitGroup extends GameObject<UnitCreationParams> {
 
       const previousStats = this.unitStats$.getValue();
 
+      const unitStats = previousStats.groupStats;
       const stats: UnitStatsInfo = {
         baseAttack,
         bonusAttack,
@@ -463,14 +505,22 @@ export class UnitGroup extends GameObject<UnitCreationParams> {
         lightningResist: (mods.resistLightning || 0) + allResist,
         poisonResist: (mods.resistPoison || 0) + allResist,
 
-        totalHealth: previousStats.totalHealth,
-        totalMinDamage: previousStats.totalMinDamage,
-        totalMaxDamage: previousStats.totalMaxDamage,
-        avgTotalDamage: previousStats.avgTotalDamage,
-        position: previousStats.position,
+        totalHealth: unitStats.totalHealth,
+        totalMinDamage: unitStats.totalMinDamage,
+        totalMaxDamage: unitStats.totalMaxDamage,
+        avgTotalDamage: unitStats.avgTotalDamage,
+        position: unitStats.position,
       };
 
-      this.unitStats$.next(stats);
+      this.pushState({
+        ...previousStats,
+        groupStats: stats,
+      });
     });
+  }
+
+  private pushState(state: UnitGroupState): void {
+    this.unitStats$.next(state);
+    this.unitState.set(this.unitStats$.getValue());
   }
 }
