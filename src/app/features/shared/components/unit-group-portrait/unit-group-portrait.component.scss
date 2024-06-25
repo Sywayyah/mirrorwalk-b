@@ -7,12 +7,12 @@
     scale: -1 1;
   }
 
-  .portrait-frame {
+  >.portrait-frame {
     height: 130px;
     width: 121px;
   }
 
-  .portrait {
+  >.portrait {
     position: absolute;
     z-index: -1;
 
@@ -22,16 +22,31 @@
     top: 20px;
   }
 
+  &.is-hero {
+    >.portrait {
+      width: 72px;
+      height: 72px;
+    }
+
+    &.big {
+      >.portrait {
+        width: 91px;
+        height: 91px;
+      }
+    }
+  }
+
   &.big {
-    .portrait-frame {
+    >.portrait-frame {
       height: 170px;
       width: 144px;
     }
 
-    .portrait {
+    >.portrait {
       width: 78px;
       height: 102px;
       top: 26px;
     }
   }
+
 }

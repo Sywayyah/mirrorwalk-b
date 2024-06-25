@@ -42,7 +42,7 @@
           </div>
 
           <!-- this info will have to be updated -->
-          <div *ngIf="!isBoss">
+          <div *ngIf="!isBoss || unitGroup.type.isHero">
             <mw-ra-icon icon="health" />
             {{ _unitStats.groupStats.totalHealth }}
           </div>
@@ -72,14 +72,15 @@
     <div class="portrait-container">
 
       <mw-unit-group-portrait [unitGroup]="unitGroup"
-                              [toRight]="side === 'left'" />
+                              [toRight]="side === 'left'"
+                              [isHero]="unitGroup.type.isHero" />
 
       <!-- #4f52bd -->
       <!-- "linear-gradient(180deg, rgba(255,77,93,1) 0%, rgba(129,25,25,1) 100%)" -->
       <!-- rgb(201, 45, 45) -->
       <!-- rgb(80 89 165) -->
       <mw-value-bar class="health-bar"
-                    *ngIf="isBoss"
+                    *ngIf="isBoss || unitGroup.type.isHero"
                     barStyle="normal"
                     [side]="side"
                     color="rgb(201, 45, 45)"

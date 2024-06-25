@@ -5,6 +5,7 @@ import { Spell } from 'src/app/core/spells';
 import { heroDescrElem } from 'src/app/core/ui';
 import { GameObjectsManager } from './game-objects-manager.service';
 import { MwUnitGroupsService } from './mw-unit-groups.service';
+import { CONFIG } from 'src/app/core/config';
 
 const neutralHeroBase = createHeroModelBase({
   id: '#hero-non-player-neutral',
@@ -41,7 +42,12 @@ export class MwHeroesService {
   public createHero(heroBase: HeroBase): Hero {
     return this.gameObjectsManager.createNewGameObject(Hero, {
       heroBase,
-      unitGroups: heroBase.initialState.army.length ? this.unitGroups.createUnitGroupFromGenModel(heroBase.initialState.army[0]) : [],
+      unitGroups: heroBase.initialState.army.length
+        ? [
+          ...this.unitGroups.createUnitGroupFromGenModel(heroBase.initialState.army[0]),
+          ...CONFIG.enableHeroUnits ? [this.unitGroups.createUnitGroup(`#unit-!hero-${heroBase.id}`, { count: 1 })] : [],
+        ]
+        : [],
     });
   }
 

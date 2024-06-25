@@ -68,6 +68,7 @@ export interface UnitBaseType extends Entity {
 
   level: number;
 
+  isHero?: boolean;
   baseStats: UnitTypeBaseStatsModel;
 
   getDescription?: (params: UnitDescriptionParams) => UnitDescriptions,

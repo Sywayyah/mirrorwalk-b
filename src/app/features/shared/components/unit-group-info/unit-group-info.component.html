@@ -1,7 +1,8 @@
 <ng-container *ngIf="unitStats$ | async as _unitStats">
   <mw-unit-group-portrait class="unit-portrait"
                           size="big"
-                          [unitGroup]="unitGroup" />
+                          [unitGroup]="unitGroup"
+                          [isHero]="unitGroup.type.isHero" />
 
   <div class="main-group">
     <div class="info-header">
