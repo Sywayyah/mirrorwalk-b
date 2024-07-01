@@ -7,5 +7,5 @@ export const CONFIG = {
 
   showLocationsIds: false,
 
-  enableHeroUnits: false,
+  enableHeroUnits: true,
 } as const;
