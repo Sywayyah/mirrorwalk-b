@@ -4,6 +4,8 @@
 // $ra-font-path: '../node_modules/rpg-awesome/scss/_variables';
 // @import url('../node_modules/rpg-awesome/css/rpg-awesome.css');
 
+@import '@angular/cdk/overlay-prebuilt.css';
+
 body {
   font-family: 'Segoe UI';
   margin: 0;
