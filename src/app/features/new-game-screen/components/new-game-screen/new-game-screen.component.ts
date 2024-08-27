@@ -42,6 +42,7 @@ export class NewGameScreenComponent {
       selectedFaction: humansFaction,
       controlType: PlayerTypeEnum.Player,
       pickedColor: PLAYER_COLORS.BLUE,
+      selectedHero: humansFaction.getAllHeroes().find(hero => hero.id === `#hero-helvetica`)
     },
     // {
     //   id: '2',

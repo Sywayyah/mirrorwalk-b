@@ -5,8 +5,8 @@ import { getDamageParts, messageWrapper, simpleConvergentBuffAnimation } from '.
 import { SpellActivationType, SpellBaseType } from '../types';
 import { createSpell } from '../utils';
 
-const minDamage = 82;
-const maxDamage = 124;
+const minDamage = 30;
+const maxDamage = 50;
 
 const dmgIncrementPerLevel = 31;
 
@@ -23,7 +23,7 @@ export const MeteorSpell: SpellBaseType = createSpell({
 
     return {
       descriptions: [
-        spellDescrElem(`Meteor deals ${minDamage + damageBounsPerLevel}-${maxDamage + damageBounsPerLevel} fire damage to random enemy group, next 2 unit groups after current group in fight queue (enemies or allies) will be stunned and will lose their turns.`),
+        spellDescrElem(`Meteor deals ${minDamage + damageBounsPerLevel}-${maxDamage + damageBounsPerLevel} fire damage to random enemy group, next 2 unit groups after current group in fight queue (enemies or allies) will be stunned and will lose their turns. If stunned creature tier is higher than 3, instead of stun, it will take 70% of ability's damage.`),
       ],
     }
   },
@@ -31,10 +31,10 @@ export const MeteorSpell: SpellBaseType = createSpell({
     spellConfig: {
       getManaCost: (spell) => {
         const manaCosts: Record<number, number> = {
-          1: 6,
-          2: 7,
-          3: 7,
-          4: 8,
+          1: 5,
+          2: 5,
+          3: 6,
+          4: 6,
         };
 
         return manaCosts[spell.currentLevel];
@@ -45,6 +45,8 @@ export const MeteorSpell: SpellBaseType = createSpell({
           PlayerCastsInstantSpell(event) {
             // todo: should stun happen after or before meteor damage?
             // todo: should all turns be gone or only 1? scaling?
+            // todo: if enemy is of high enough level - he isn't going to lose a turn
+            // but is going to suffer 70% of Meteor's damage
             const randomEnemyGroup = actions.getRandomEnemyPlayerGroup();
             const damageBounsPerLevel = dmgIncrementPerLevel * spellInstance.currentLevel;
 
@@ -55,9 +57,11 @@ export const MeteorSpell: SpellBaseType = createSpell({
               { duration: 1000 },
             );
 
+            const meteorDamage = CommonUtils.randIntInRange(minDamage + damageBounsPerLevel, maxDamage + damageBounsPerLevel);
+
             actions.dealDamageTo(
               randomEnemyGroup,
-              CommonUtils.randIntInRange(minDamage + damageBounsPerLevel, maxDamage + damageBounsPerLevel),
+              meteorDamage,
               DamageType.Fire,
               ({ unitLoss, initialUnitCount, finalDamage }) => {
                 actions.historyLog(`${ownerHero.name} deals ${finalDamage} damage to ${initialUnitCount} ${randomEnemyGroup.type.name} with ${thisSpell.name}, ${unitLoss} units perish`);
@@ -74,8 +78,22 @@ export const MeteorSpell: SpellBaseType = createSpell({
             console.log(unitsInQueue, unitsToStun);
 
             unitsToStun.forEach(unit => {
-              actions.removeTurnsFromUnitGroup(unit);
-              vfx.createDroppingMessageForUnitGroup(unit.id, { html: messageWrapper(`Stunned!`) });
+              if (unit.type.level < 4) {
+                actions.removeTurnsFromUnitGroup(unit);
+                vfx.createDroppingMessageForUnitGroup(unit.id, { html: messageWrapper(`Stunned!`) });
+              } else {
+                actions.dealDamageTo(unit, meteorDamage * 0.7, DamageType.Fire, ({ unitLoss, initialUnitCount, finalDamage }) => {
+
+                  actions.historyLog(`${ownerHero.name} deals ${finalDamage} damage to ${initialUnitCount} ${randomEnemyGroup.type.name} with ${thisSpell.name}, ${unitLoss} units perish`);
+
+                  vfx.createFloatingMessageForUnitGroup(
+                    randomEnemyGroup,
+                    getDamageParts(finalDamage, unitLoss),
+                    { duration: 1000 },
+                  );
+
+                });
+              }
             });
           },
         });
