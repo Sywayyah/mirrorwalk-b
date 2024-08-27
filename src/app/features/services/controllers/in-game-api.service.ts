@@ -194,7 +194,7 @@ export class InGameApiController extends StoreClient() {
 
   private createActionsApiRef(): CombatActionsRef {
     return {
-      isEnemyUnitGroup: (unitGroup) => unitGroup.ownerPlayer === this.currentPlayer.currentPlayer,
+      isEnemyUnitGroup: (unitGroup) => unitGroup.ownerPlayer !== this.currentPlayer.currentPlayer,
       getUnitsFromFightQueue: () => this.battleState.getFightQueue(),
       removeTurnsFromUnitGroup: (target, turns = target.turnsLeft) => {
         target.turnsLeft -= turns;

@@ -88,7 +88,7 @@ export const MeteorSpell: SpellBaseType = createSpell({
                 if (actions.isEnemyUnitGroup(unit)) {
                   actions.dealDamageTo(unit, meteorDamage * 0.65, DamageType.Fire, ({ unitLoss, initialUnitCount, finalDamage }) => {
 
-                    actions.historyLog(`${ownerHero.name} deals ${finalDamage} damage to ${initialUnitCount} ${randomEnemyGroup.type.name} with ${thisSpell.name}, ${unitLoss} units perish`);
+                    actions.historyLog(`${ownerHero.name} deals ${finalDamage} damage to ${initialUnitCount} ${unit.type.name} with ${thisSpell.name}, ${unitLoss} units perish`);
 
                     vfx.createFloatingMessageForUnitGroup(
                       randomEnemyGroup,
