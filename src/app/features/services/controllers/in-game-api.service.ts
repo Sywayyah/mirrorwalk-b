@@ -25,6 +25,7 @@ import { MwStructuresService } from '../mw-structures.service';
 import { MwUnitGroupsService } from '../mw-unit-groups.service';
 import { State } from '../state.service';
 import { UiEventFeedService } from '../ui-event-feed.service';
+import { MwCurrentPlayerStateService } from '../mw-current-player-state.service';
 
 @Injectable()
 export class InGameApiController extends StoreClient() {
@@ -42,6 +43,7 @@ export class InGameApiController extends StoreClient() {
     private gameObjectsManager: GameObjectsManager,
     private eventFeed: UiEventFeedService,
     private structures: MwStructuresService,
+    private currentPlayer: MwCurrentPlayerStateService,
   ) {
     super();
   }
@@ -192,6 +194,7 @@ export class InGameApiController extends StoreClient() {
 
   private createActionsApiRef(): CombatActionsRef {
     return {
+      isEnemyUnitGroup: (unitGroup) => unitGroup.ownerPlayer === this.currentPlayer.currentPlayer,
       getUnitsFromFightQueue: () => this.battleState.getFightQueue(),
       removeTurnsFromUnitGroup: (target, turns = target.turnsLeft) => {
         target.turnsLeft -= turns;

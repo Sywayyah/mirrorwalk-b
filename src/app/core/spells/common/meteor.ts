@@ -5,10 +5,10 @@ import { getDamageParts, messageWrapper, simpleConvergentBuffAnimation } from '.
 import { SpellActivationType, SpellBaseType } from '../types';
 import { createSpell } from '../utils';
 
-const minDamage = 30;
+const minDamage = 20;
 const maxDamage = 50;
 
-const dmgIncrementPerLevel = 31;
+const dmgIncrementPerLevel = 25;
 
 /* todo: maybe change the bonus gained with level */
 export const MeteorSpell: SpellBaseType = createSpell({
@@ -23,7 +23,7 @@ export const MeteorSpell: SpellBaseType = createSpell({
 
     return {
       descriptions: [
-        spellDescrElem(`Meteor deals ${minDamage + damageBounsPerLevel}-${maxDamage + damageBounsPerLevel} fire damage to random enemy group, next 2 unit groups after current group in fight queue (enemies or allies) will be stunned and will lose their turns. If stunned creature tier is higher than 3, instead of stun, it will take 70% of ability's damage.`),
+        spellDescrElem(`Meteor deals ${minDamage + damageBounsPerLevel}-${maxDamage + damageBounsPerLevel} fire damage to random enemy group, next 2 unit groups after current group in fight queue (enemies or allies) will be stunned and will lose their turns. If stunned enemy's creature is tier 4 or higher, instead of stun, it will take 65% of ability's damage.`),
       ],
     }
   },
@@ -78,21 +78,26 @@ export const MeteorSpell: SpellBaseType = createSpell({
             console.log(unitsInQueue, unitsToStun);
 
             unitsToStun.forEach(unit => {
+              // with leveling, it might have a different effect on creatures of higher level
               if (unit.type.level < 4) {
                 actions.removeTurnsFromUnitGroup(unit);
                 vfx.createDroppingMessageForUnitGroup(unit.id, { html: messageWrapper(`Stunned!`) });
+
+                actions.historyLog(`${unit.count} ${unit.type.name} stunned by the Meteor.`);
               } else {
-                actions.dealDamageTo(unit, meteorDamage * 0.7, DamageType.Fire, ({ unitLoss, initialUnitCount, finalDamage }) => {
+                if (actions.isEnemyUnitGroup(unit)) {
+                  actions.dealDamageTo(unit, meteorDamage * 0.65, DamageType.Fire, ({ unitLoss, initialUnitCount, finalDamage }) => {
 
-                  actions.historyLog(`${ownerHero.name} deals ${finalDamage} damage to ${initialUnitCount} ${randomEnemyGroup.type.name} with ${thisSpell.name}, ${unitLoss} units perish`);
+                    actions.historyLog(`${ownerHero.name} deals ${finalDamage} damage to ${initialUnitCount} ${randomEnemyGroup.type.name} with ${thisSpell.name}, ${unitLoss} units perish`);
 
-                  vfx.createFloatingMessageForUnitGroup(
-                    randomEnemyGroup,
-                    getDamageParts(finalDamage, unitLoss),
-                    { duration: 1000 },
-                  );
+                    vfx.createFloatingMessageForUnitGroup(
+                      randomEnemyGroup,
+                      getDamageParts(finalDamage, unitLoss),
+                      { duration: 1000 },
+                    );
 
-                });
+                  });
+                }
               }
             });
           },
