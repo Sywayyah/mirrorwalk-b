@@ -437,6 +437,8 @@ export class UnitGroup extends GameObject<UnitCreationParams, UnitGroupState> {
     const unitCount = this._count;
     const stats = currentUnitStats.groupStats;
 
+    const newTotalMinDamage = unitCount * baseStats.damageInfo.minDamage;
+    const newTotalMaxDamage = unitCount * baseStats.damageInfo.maxDamage;
     this.pushState({
       ...currentUnitStats,
       groupState: {
@@ -446,9 +448,9 @@ export class UnitGroup extends GameObject<UnitCreationParams, UnitGroupState> {
       groupStats: {
         ...stats,
         totalHealth: baseStats.health * (unitCount - 1) + (this.tailUnitHp ?? 0),
-        totalMinDamage: unitCount * baseStats.damageInfo.minDamage,
-        totalMaxDamage: unitCount * baseStats.damageInfo.maxDamage,
-        avgTotalDamage: (stats.totalMinDamage + stats.totalMaxDamage) / 2,
+        totalMinDamage: newTotalMinDamage,
+        totalMaxDamage: newTotalMaxDamage,
+        avgTotalDamage: (newTotalMinDamage + newTotalMaxDamage) / 2,
       },
     });
   }
