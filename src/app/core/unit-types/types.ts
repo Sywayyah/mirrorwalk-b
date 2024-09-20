@@ -111,6 +111,7 @@ interface UnitCreationParams {
   count: number;
   unitBase: UnitBaseType;
   ownerHero?: Hero;
+  isSplitted?: boolean;
 }
 
 export enum UnitModGroups {
@@ -271,7 +272,7 @@ export class UnitGroup extends GameObject<UnitCreationParams, UnitGroupState> {
 
   private readonly destroyed$ = new Subject<void>();
 
-  create({ count, unitBase, ownerHero }: UnitCreationParams): void {
+  create({ count, unitBase, ownerHero, isSplitted }: UnitCreationParams): void {
     if (count <= 0 || !count) {
       console.warn(
         `Cannot create unit group with ${count} units. Setting count to 1.`,
@@ -307,7 +308,9 @@ export class UnitGroup extends GameObject<UnitCreationParams, UnitGroupState> {
 
     this.setUnitsCount(count);
     // max mana isn't set initially in stats
-    this.addMana(this.type.baseStats.mana || 0);
+    if (!isSplitted) {
+      this.addMana(this.type.baseStats.mana || 0);
+    }
 
     // Init unit mod groups
     this.modGroup.attachNamedParentGroup(
@@ -381,7 +384,7 @@ export class UnitGroup extends GameObject<UnitCreationParams, UnitGroupState> {
     this.recalcHealthBasedStats();
   }
 
-  addMana(mana: number): void {
+  setMana(mana: number): void {
     const prevState = this.getState();
 
     this.pushState({
@@ -389,11 +392,17 @@ export class UnitGroup extends GameObject<UnitCreationParams, UnitGroupState> {
       groupState: {
         ...prevState.groupState,
         currentMana: CommonUtils.limitedNumber(
-          prevState.groupState.currentMana + mana,
+          mana,
           this.getState().groupStats.maxMana || this.type.baseStats.mana || 0
         ),
       },
     });
+  }
+
+  addMana(mana: number): void {
+    const prevState = this.getState();
+
+    this.setMana(prevState.groupState.currentMana + mana);
   }
 
   getMana(): number {

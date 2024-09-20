@@ -28,7 +28,7 @@ export class SplitUnitsPopupComponent extends BasicPopup<{ unitGroup: UnitGroup 
 
     const currentHero = this.players.getCurrentPlayer().hero;
 
-    const newUnitGroup = this.gameObjects.createNewGameObject(UnitGroup, { count: this.toSplit, unitBase: unitGroup.type, ownerHero: currentHero });
+    const newUnitGroup = this.gameObjects.createNewGameObject(UnitGroup, { count: this.toSplit, unitBase: unitGroup.type, ownerHero: currentHero, isSplitted: true });
 
     currentHero.addUnitGroup(newUnitGroup);
 
