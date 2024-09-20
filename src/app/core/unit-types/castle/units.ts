@@ -380,7 +380,7 @@ humansFaction.defineUnitType({
     heroDescrElem(`<br>Deal 20% more damage against magical creatures.`),
   ]),
 
-  baseStats: createStats([[18, 26], 8, 10, 46, 16]),
+  baseStats: createStats([[18, 26], 8, 10, 46, 16, 4]),
 
   defaultSpells: [
     FirebirdHealSpell,
@@ -430,7 +430,7 @@ humansFaction.defineUnitType({
     heroDescrElem(`<br>Deal 30% more damage against magical creatures.`),
   ]),
 
-  baseStats: createStats([[23, 29], 12, 14, 57, 17]),
+  baseStats: createStats([[23, 29], 12, 14, 57, 17, 8]),
 
   defaultModifiers: {
     resistFire: 17,

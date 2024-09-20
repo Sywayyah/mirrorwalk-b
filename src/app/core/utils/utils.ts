@@ -45,6 +45,10 @@ export const CommonUtils = {
     return val < 0 ? 0 : val;
   },
 
+  limitedNumber(num: number, max: number, min = 0): number {
+    return num > max ? max : num < min ? min : num;
+  },
+
   getRandomItems<T>(items: T[], count: number): T[] {
     const itemsLeft = [...items];
     const result = [];

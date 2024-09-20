@@ -123,6 +123,10 @@ export class MwCurrentPlayerStateService extends StoreClient() {
   }
 
   public onCurrentSpellCast(): void {
+    if (this.currentCasterUnit) {
+      // todo: define better
+      this.currentCasterUnit.addMana(-this.currentSpell.currentManaCost);
+    }
     this.currentPlayer.hero.addMana(-this.currentSpell.currentManaCost)
   }
 

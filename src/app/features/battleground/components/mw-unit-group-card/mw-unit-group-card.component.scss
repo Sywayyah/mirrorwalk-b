@@ -16,6 +16,14 @@
   animation: summonedAnimation 0.6s ease-in-out;
 }
 
+.secondary-stats {
+  position: absolute;
+}
+
+.card-right .secondary-stats {
+  right: 0;
+}
+
 .card-top {
   display: flex;
   position: relative;

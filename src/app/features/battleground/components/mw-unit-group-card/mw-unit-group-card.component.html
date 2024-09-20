@@ -41,6 +41,14 @@
             <span [mwNumberModifier]="_unitStats.groupStats.speedBonus"></span>
           </div>
 
+          <div class="secondary-stats">
+
+            <div *ngIf="_unitStats.groupStats.maxMana">
+              <mw-ra-icon icon="crystal-ball" />
+              {{_unitStats.groupState.currentMana}}/{{_unitStats.groupStats.maxMana}}
+            </div>
+          </div>
+
           <!-- this info will have to be updated -->
           <div *ngIf="!isBoss || unitGroup.type.isHero">
             <mw-ra-icon icon="health" />
