@@ -306,6 +306,7 @@ export class UnitGroup extends GameObject<UnitCreationParams, UnitGroupState> {
     };
 
     this.setUnitsCount(count);
+    // max mana isn't set initially in stats
     this.addMana(this.type.baseStats.mana || 0);
 
     // Init unit mod groups
@@ -389,7 +390,7 @@ export class UnitGroup extends GameObject<UnitCreationParams, UnitGroupState> {
         ...prevState.groupState,
         currentMana: CommonUtils.limitedNumber(
           prevState.groupState.currentMana + mana,
-          this.getState().groupStats.maxMana,
+          this.getState().groupStats.maxMana || this.type.baseStats.mana || 0
         ),
       },
     });
