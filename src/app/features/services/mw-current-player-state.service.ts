@@ -1,9 +1,18 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { PlayerCastsInstantSpell, PlayersInitialized } from 'src/app/core/events';
+import {
+  PlayerCastsInstantSpell,
+  PlayersInitialized,
+} from 'src/app/core/events';
 import { Player, PlayerState } from 'src/app/core/players';
-import { Spell, SpellActivationType, SpellBaseType, createSpell } from 'src/app/core/spells';
+import {
+  Spell,
+  SpellActivationType,
+  SpellBaseType,
+  createSpell,
+} from 'src/app/core/spells';
 import { UnitGroup } from 'src/app/core/unit-types';
+import { CommonUtils } from 'src/app/core/utils';
 import { Notify, StoreClient } from 'src/app/store';
 import { MwPlayersService } from './';
 import { GameObjectsManager } from './game-objects-manager.service';
@@ -16,33 +25,33 @@ export const NULL_SPELL: SpellBaseType = createSpell({
   getDescription(data) {
     return {
       descriptions: [],
-    }
+    };
   },
   config: {
     spellConfig: {
       getManaCost(spellInst) {
         return 0;
       },
-      init: () => { },
-    }
-  }
+      init: () => {},
+    },
+  },
 });
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class MwCurrentPlayerStateService extends StoreClient() {
-
   // think later about this, maybe avoid using null object
-  private readonly NULL_SPELL_INSTANCE = this.gameObjectsManager.createNewGameObject(
-    Spell,
-    {
-      initialLevel: 0,
-      spellBaseType: NULL_SPELL,
-      state: {},
-    },
-    'null-spell',
-  );
+  private readonly NULL_SPELL_INSTANCE =
+    this.gameObjectsManager.createNewGameObject(
+      Spell,
+      {
+        initialLevel: 0,
+        spellBaseType: NULL_SPELL,
+        state: {},
+      },
+      'null-spell'
+    );
 
   public currentPlayer!: Player;
 
@@ -52,13 +61,14 @@ export class MwCurrentPlayerStateService extends StoreClient() {
 
   public playerCurrentState: PlayerState = PlayerState.Normal;
 
-  public playerStateChanged$: BehaviorSubject<PlayerState> = new BehaviorSubject<PlayerState>(PlayerState.Normal);
+  public playerStateChanged$: BehaviorSubject<PlayerState> =
+    new BehaviorSubject<PlayerState>(PlayerState.Normal);
 
   public spellsAreOnCooldown: boolean = false;
 
   constructor(
     private readonly players: MwPlayersService,
-    private readonly gameObjectsManager: GameObjectsManager,
+    private readonly gameObjectsManager: GameObjectsManager
   ) {
     super();
   }
@@ -91,10 +101,12 @@ export class MwCurrentPlayerStateService extends StoreClient() {
       case 'instant':
         this.onCurrentSpellCast();
 
-        this.events.dispatch(PlayerCastsInstantSpell({
-          player: this.currentPlayer,
-          spell: spell,
-        }));
+        this.events.dispatch(
+          PlayerCastsInstantSpell({
+            player: this.currentPlayer,
+            spell: spell,
+          })
+        );
 
         this.setSpellsOnCooldown();
         break;
@@ -123,11 +135,29 @@ export class MwCurrentPlayerStateService extends StoreClient() {
   }
 
   public onCurrentSpellCast(): void {
+    const spellManacost = this.currentSpell.currentManaCost;
+
     if (this.currentCasterUnit) {
-      // todo: define better
-      this.currentCasterUnit.addMana(-this.currentSpell.currentManaCost);
+      const casterUnitMana = this.currentCasterUnit.getMana();
+      const manaToBeRemoved = CommonUtils.limitedNumber(
+        spellManacost,
+        casterUnitMana
+      );
+
+      const unpaidManacost = spellManacost - manaToBeRemoved;
+
+      if (manaToBeRemoved) {
+        this.currentCasterUnit.addMana(-manaToBeRemoved);
+      }
+
+      if (unpaidManacost) {
+        this.currentPlayer.hero.addMana(-unpaidManacost);
+      }
+
+      return;
     }
-    this.currentPlayer.hero.addMana(-this.currentSpell.currentManaCost)
+
+    this.currentPlayer.hero.addMana(-spellManacost);
   }
 
   public setPlayerState(state: PlayerState): void {
