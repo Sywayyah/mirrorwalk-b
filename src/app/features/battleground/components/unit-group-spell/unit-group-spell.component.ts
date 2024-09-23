@@ -34,12 +34,14 @@ export class UnitGroupSpellComponent {
 
   public onSpellClick(mouseEvent: MouseEvent): void {
     mouseEvent.stopPropagation();
-    /* disable when player has no mana */
+    /* Mana of unit and hero are getting combined */
+    const combinedMana = (this.hero()?.getState().currentMana || 0) + (this.currentUnit()?.getMana() || 0);
 
     if (this.onCooldown()
       || this.disabled()
       || !this.owner().fightInfo.isAlive
-      || this.isPassive()) {
+      || this.isPassive()
+      || combinedMana < this.spell().currentManaCost) {
       return;
     }
 

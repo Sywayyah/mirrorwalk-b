@@ -63,6 +63,7 @@
           <mw-unit-group-spell *ngFor="let spell of spells"
                                [hintPos]="spellsHintsPosition"
                                [spell]="spell"
+                               [hero]="playerInfo.hero"
                                [owner]="unitGroup"
                                [onCooldown]="unitGroup.fightInfo.spellsOnCooldown"
                                [currentUnit]="attackingUnitGroup" />
