@@ -19,8 +19,9 @@ export const SummonFireSpiritsSpell: SpellBaseType = createSpell({
   getDescription({ spellInstance }) {
     return {
       descriptions: [
+        spellDescrElem(`Can be casted only once per battle <hr/>`),
         spellDescrElem(`Summon ${unitCount + unitGrowthPerLevel * spellInstance.currentLevel} Fire Spirits that fight on your side.`),
-        spellDescrElem(`<br>Spirits have active ability Fire Shield and disappear when the fight is over.`),
+        spellDescrElem(`<hr/>Spirits have active ability Fire Shield and disappear when the fight is over.`),
       ],
     }
   },
@@ -31,6 +32,8 @@ export const SummonFireSpiritsSpell: SpellBaseType = createSpell({
         events.on({
           PlayerCastsInstantSpell() {
             const summonedUnitGroup = actions.summonUnitsForPlayer(ownerPlayer, '#unit-neut-fire-spirit-0', unitCount + unitGrowthPerLevel * spellInstance.currentLevel);
+
+            spellInstance.setCooldown(Infinity);
 
             const fireShieldSpell = actions.createSpellInstance(FireShieldSpell, { initialLevel: 1 });
 

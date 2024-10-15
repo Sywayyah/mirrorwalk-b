@@ -377,11 +377,11 @@ humansFaction.defineUnitType({
   getDescription: simpleDescriptions([
     heroDescrElem(`Tier 5 Castle magical creatures of fire. Can be upgraded to Firebirds.`),
     heroDescrElem(`<br>Majestic and powerful creatures of fire that can heal and resurrect allied units. Resistant against fire (10%).`),
-    heroDescrElem(`<br>Has base manapool of 4.`),
+    heroDescrElem(`<br>Has base manapool of 5.`),
     heroDescrElem(`<br>Deal 20% more damage against magical creatures.`),
   ]),
 
-  baseStats: createStats([[18, 26], 8, 10, 46, 16, 4]),
+  baseStats: createStats([[18, 26], 8, 10, 46, 16, 5]),
 
   defaultSpells: [
     FirebirdHealSpell,
