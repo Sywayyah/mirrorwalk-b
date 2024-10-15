@@ -2,8 +2,7 @@ import { ActionCard, ActionCardStack } from '../action-cards';
 import { GameObject } from '../game-objects';
 import { GarrisonsMap } from '../garrisons/types';
 import { Hero } from '../heroes';
-import { Resources, ResourcesModel } from '../resources';
-import { UnitBaseType } from '../unit-types';
+import { ResourcesModel } from '../resources';
 
 export enum PlayerTypeEnum {
   Player = 'Player',
@@ -58,15 +57,17 @@ export class Player extends GameObject<PlayerCreationModel> {
   }
 
   addActionCards(actionCard: ActionCard, count: number): void {
-    const cardStack = this.actionCards.find((stack) => stack.card === actionCard);
+    const cardStack = this.actionCards.find(
+      (stack) => stack.card === actionCard
+    );
 
     if (cardStack) {
       cardStack.count += count;
     } else {
       this.actionCards.push({
-        card: actionCard, count
+        card: actionCard,
+        count,
       });
     }
   }
-
 }

@@ -4,7 +4,7 @@ import { takeUntil } from 'rxjs/operators';
 import { GroupSpellsChanged, HoverTypeEnum, PlayerHoversGroupCard } from 'src/app/core/events';
 import { Player } from 'src/app/core/players';
 import { Spell } from 'src/app/core/spells';
-import { UnitGroup, UnitStatsInfo } from 'src/app/core/unit-types';
+import { UnitGroup, UnitGroupState } from 'src/app/core/unit-types';
 import { BattleStateService, MwPlayersService, MwUnitGroupsService, MwUnitGroupStateService } from 'src/app/features/services';
 import { HintAttachment } from 'src/app/features/shared/components';
 import { PROVIDE_UI_UNIT_GROUP, UIUnitProvider } from 'src/app/features/shared/directives';
@@ -42,7 +42,7 @@ export class MwUnitGroupCardComponent extends StoreClient() implements UIUnitPro
   public canCurrentPlayerAttack: boolean = false;
   public isGroupMelee: boolean = false;
 
-  public unitStats$!: Observable<UnitStatsInfo>;
+  public unitStats$!: Observable<UnitGroupState>;
 
   public initialCount: number = 0;
 

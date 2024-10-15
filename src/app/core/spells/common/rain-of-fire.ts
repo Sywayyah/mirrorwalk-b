@@ -12,6 +12,9 @@ const getDamageByLevel = getLevelScalingValueFn(baseDamage, bonusDmgPerLevel);
 
 const baseManaCost = 3;
 
+// make something special about first level:
+//  Either make it reduce damage
+//  or make it so that it starts with additional target, but reduce overall damage
 const fireMasteryBonusesByLevels = [
   { targets: 1, damage: [0.30] },
   { targets: 1, damage: [0.60] },

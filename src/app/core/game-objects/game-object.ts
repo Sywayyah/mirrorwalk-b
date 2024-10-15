@@ -1,4 +1,4 @@
-import { Type } from '@angular/core';
+import { Signal, Type } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { EventData, EventType } from 'src/app/store';
 import { SpellsApi } from '../api/game-api';
@@ -58,6 +58,10 @@ export class GameObject<CreationParams extends object = object, StateT extends o
   listenState(): Observable<StateT> {
     console.info(`Game object doens't have state listener:`, this);
     return of(null as unknown as StateT);
+  }
+
+  getStateSignal(): Signal<StateT> {
+    throw new Error(`Game object doesn't have signal state ${this.id}`);
   }
 
   // method which is going to be called when object is created in order to initialize it.

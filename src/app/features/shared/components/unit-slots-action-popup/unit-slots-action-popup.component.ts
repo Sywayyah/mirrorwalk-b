@@ -8,7 +8,11 @@ import { BasicPopup } from '../popup-container';
   selector: 'mw-unit-slots-action-popup',
   templateUrl: './unit-slots-action-popup.component.html',
 })
-export class UnitSlotsActionPopupComponent extends BasicPopup<{ sourceSlot: UnitGroupSlot, targetSlot: UnitGroupSlot, postAction: () => void }>{
+export class UnitSlotsActionPopupComponent extends BasicPopup<{
+  sourceSlot: UnitGroupSlot;
+  targetSlot: UnitGroupSlot;
+  postAction: () => void;
+}> {
   private readonly players = inject(MwPlayersService);
   private readonly gameObjects = inject(GameObjectsManager);
 
@@ -22,10 +26,21 @@ export class UnitSlotsActionPopupComponent extends BasicPopup<{ sourceSlot: Unit
   merge(): void {
     const currentHero = this.players.getCurrentPlayer().hero;
 
-    this.data.targetSlot.unitGroup!.addUnitsCount(this.data.sourceSlot.unitGroup!.count);
-    this.gameObjects.destroyObject(this.data.sourceSlot.unitGroup!);
+    const targetUnitGroup = this.data.targetSlot.unitGroup!;
+    const sourceUnitGroup = this.data.sourceSlot.unitGroup!;
+
+    // when unit groups are merged - take max mana and assign to target group
+    const maxMana = Math.max(
+      targetUnitGroup.getMana(),
+      sourceUnitGroup.getMana()
+    );
+
+    targetUnitGroup.addUnitsCount(this.data.sourceSlot.unitGroup!.count);
+
+    this.gameObjects.destroyObject(sourceUnitGroup);
     this.data.sourceSlot.unitGroup = null;
-    currentHero.removeUnitGroup(this.data.sourceSlot.unitGroup!);
+    currentHero.removeUnitGroup(sourceUnitGroup);
+    targetUnitGroup.setMana(maxMana);
 
     this.data.postAction();
     this.close();

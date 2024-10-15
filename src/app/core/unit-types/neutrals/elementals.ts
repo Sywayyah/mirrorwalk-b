@@ -11,7 +11,7 @@ neutralsFaction.defineUnitType({
   baseRequirements: {},
   level: 3,
 
-  baseStats: createStats([[9, 13], 3, 3, 17, 18]),
+  baseStats: createStats([[9, 13], 3, 3, 17, 18, 1]),
 
   defaultModifiers: {
     resistFire: 20,
@@ -22,6 +22,7 @@ neutralsFaction.defineUnitType({
   getDescription: simpleDescriptions([
     heroDescrElem('Tier 3 Neutral magical creature of fire.'),
     heroDescrElem('<br>Tenacious and strong. Have increased resists against Fire (+20%) and Ice (+15%).'),
+    heroDescrElem('<br>Has base manapool of 1.'),
   ]),
 
   neutralReward: {

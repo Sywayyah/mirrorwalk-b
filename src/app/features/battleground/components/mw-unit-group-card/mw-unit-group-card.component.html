@@ -31,20 +31,28 @@
             <ng-template #rangedIcon>
               <mw-ra-icon icon="crossbow" />
             </ng-template>
-            {{ _unitStats.avgTotalDamage }}
+            {{ _unitStats.groupStats.avgTotalDamage }}
           </div>
 
-          <div [class.defence]="_unitStats.defends">
+          <div [class.defence]="_unitStats.groupStats.defends">
             <mw-ra-icon icon="feather-wing" />
-            {{ _unitStats.baseSpeed }}
+            {{ _unitStats.groupStats.baseSpeed }}
 
-            <span [mwNumberModifier]="_unitStats.speedBonus"></span>
+            <span [mwNumberModifier]="_unitStats.groupStats.speedBonus"></span>
+          </div>
+
+          <div class="secondary-stats">
+
+            <div *ngIf="_unitStats.groupStats.maxMana">
+              <mw-ra-icon icon="crystal-ball" />
+              {{_unitStats.groupState.currentMana}}/{{_unitStats.groupStats.maxMana}}
+            </div>
           </div>
 
           <!-- this info will have to be updated -->
-          <div *ngIf="!isBoss">
+          <div *ngIf="!isBoss || unitGroup.type.isHero">
             <mw-ra-icon icon="health" />
-            {{ _unitStats.totalHealth }}
+            {{ _unitStats.groupStats.totalHealth }}
           </div>
         </div>
       </div>
@@ -55,6 +63,7 @@
           <mw-unit-group-spell *ngFor="let spell of spells"
                                [hintPos]="spellsHintsPosition"
                                [spell]="spell"
+                               [hero]="playerInfo.hero"
                                [owner]="unitGroup"
                                [onCooldown]="unitGroup.fightInfo.spellsOnCooldown"
                                [currentUnit]="attackingUnitGroup" />
@@ -72,14 +81,15 @@
     <div class="portrait-container">
 
       <mw-unit-group-portrait [unitGroup]="unitGroup"
-                              [toRight]="side === 'left'" />
+                              [toRight]="side === 'left'"
+                              [isHero]="unitGroup.type.isHero" />
 
       <!-- #4f52bd -->
       <!-- "linear-gradient(180deg, rgba(255,77,93,1) 0%, rgba(129,25,25,1) 100%)" -->
       <!-- rgb(201, 45, 45) -->
       <!-- rgb(80 89 165) -->
       <mw-value-bar class="health-bar"
-                    *ngIf="isBoss"
+                    *ngIf="isBoss || unitGroup.type.isHero"
                     barStyle="normal"
                     [side]="side"
                     color="rgb(201, 45, 45)"

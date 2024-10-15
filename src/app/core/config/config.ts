@@ -6,4 +6,6 @@ export const CONFIG = {
   logObjectsOnRightClick: true,
 
   showLocationsIds: false,
+
+  enableHeroUnits: true,
 } as const;

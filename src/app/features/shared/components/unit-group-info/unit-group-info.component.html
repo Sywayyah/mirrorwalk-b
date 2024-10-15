@@ -1,5 +1,8 @@
 <ng-container *ngIf="unitStats$ | async as _unitStats">
-  <mw-unit-group-portrait class="unit-portrait" size="big" [unitGroup]="unitGroup" />
+  <mw-unit-group-portrait class="unit-portrait"
+                          size="big"
+                          [unitGroup]="unitGroup"
+                          [isHero]="unitGroup.type.isHero" />
 
   <div class="main-group">
     <div class="info-header">
@@ -46,7 +49,7 @@
     <div class="description">
       <hr>
       <mw-description *ngIf="description.descriptions.length; else noDescription"
-        [descriptions]="description.descriptions" />
+                      [descriptions]="description.descriptions" />
 
       <ng-template #noDescription>
         No Description.
@@ -63,11 +66,12 @@
       <div class="col">
         <div class="stat">
           <mw-ra-icon icon="sword" />
-          {{_unitStats.totalMinDamage}}-{{_unitStats.totalMaxDamage}} (avg. {{_unitStats.avgTotalDamage}})
+          {{_unitStats.groupStats.totalMinDamage}}-{{_unitStats.groupStats.totalMaxDamage}}
+          (avg. {{_unitStats.groupStats.avgTotalDamage}})
         </div>
 
         <div class="stat">
-          <mw-ra-icon icon="health" /> {{_unitStats.totalHealth}}
+          <mw-ra-icon icon="health" /> {{_unitStats.groupStats.totalHealth}}
         </div>
 
         <hr>
@@ -77,8 +81,8 @@
             <div>Attack:</div>
 
             <div>
-              {{_unitStats.baseAttack}}
-              <span [mwNumberModifier]="_unitStats.bonusAttack"></span>
+              {{_unitStats.groupStats.baseAttack}}
+              <span [mwNumberModifier]="_unitStats.groupStats.bonusAttack"></span>
             </div>
           </div>
 
@@ -86,8 +90,8 @@
             <div>Defence:</div>
 
             <div>
-              {{_unitStats.baseDefence}}
-              <span [mwNumberModifier]="_unitStats.bonusDefence"></span>
+              {{_unitStats.groupStats.baseDefence}}
+              <span [mwNumberModifier]="_unitStats.groupStats.bonusDefence"></span>
             </div>
           </div>
 
@@ -95,14 +99,15 @@
             <div>Speed</div>
 
             <div>
-              {{_unitStats.baseSpeed}}
-              <span [mwNumberModifier]="_unitStats.speedBonus"></span>
+              {{_unitStats.groupStats.baseSpeed}}
+              <span [mwNumberModifier]="_unitStats.groupStats.speedBonus"></span>
             </div>
           </div>
         </div>
 
 
-        <div class="abilities" *ngIf="spells.length">
+        <div class="abilities"
+             *ngIf="spells.length">
           <hr>
 
           <div class="title">
@@ -110,12 +115,16 @@
           </div>
 
           <div class="abilities-list">
-            <mw-unit-group-spell-icon *ngFor="let spell of spells" [hero]="unitGroup.ownerPlayer.hero" [spell]="spell"
-              [hintPos]="'above'" [owner]="unitGroup" />
+            <mw-unit-group-spell-icon *ngFor="let spell of spells"
+                                      [hero]="unitGroup.ownerPlayer.hero"
+                                      [spell]="spell"
+                                      [hintPos]="'above'"
+                                      [owner]="unitGroup" />
           </div>
         </div>
 
-        <div class="abilities" *ngIf="effects.length">
+        <div class="abilities"
+             *ngIf="effects.length">
           <hr>
 
           <div class="title">
@@ -123,8 +132,11 @@
           </div>
 
           <div class="abilities-list">
-            <mw-unit-group-spell-icon *ngFor="let spell of effects" [hero]="unitGroup.ownerPlayer.hero" [spell]="spell"
-              [hintPos]="'above'" [owner]="unitGroup" />
+            <mw-unit-group-spell-icon *ngFor="let spell of effects"
+                                      [hero]="unitGroup.ownerPlayer.hero"
+                                      [spell]="spell"
+                                      [hintPos]="'above'"
+                                      [owner]="unitGroup" />
           </div>
         </div>
       </div>

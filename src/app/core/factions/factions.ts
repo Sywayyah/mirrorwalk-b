@@ -1,5 +1,6 @@
 
 import { AssetsImages } from '../assets';
+import { CONFIG } from '../config';
 import { FactionId, registerEntity } from '../entities';
 import type { HeroBase } from '../heroes';
 import type { UnitBaseType } from '../unit-types';
@@ -80,6 +81,40 @@ export const Factions = {
         };
 
         registerEntity(newHero);
+
+
+        if (CONFIG.enableHeroUnits) {
+          registerEntity({
+            // todo: think through
+            id: `#unit-!hero-${id}`,
+            faction: this,
+            baseRequirements: {},
+            baseStats: {
+              attackRating: stats.baseAttack,
+              damageInfo: {
+                minDamage: 20,
+                maxDamage: 30,
+              },
+              defence: stats.baseDefence,
+              health: 300,
+              speed: 15,
+            },
+            level: 1,
+            isHero: true,
+            name: name,
+            neutralReward: {
+              experience: 10,
+              gold: 1
+            },
+            defaultModifiers: {},
+            defaultSpells: [],
+            defaultTurnsPerRound: 1,
+            getDescription: () => ({ descriptions: [] }),
+            upgraded: false,
+            mainPortraitUrl: image ?? AssetsImages.HeroMage,
+          } as UnitBaseType);
+        }
+
 
         this.heroes.push(newHero);
 

@@ -16,6 +16,10 @@ export class UnitGroupSpellIconComponent {
   hero = input<Hero>();
   disabled = input(false);
 
+  combinedMana = computed(() => (this.owner().getStateSignal()().groupState.currentMana) + (this.hero()?.getStateSignal()().currentMana || 0));
+
+  hasEnoughMana = computed(() => this.isPassive() ? true : this.combinedMana() >= this.spell().currentManaCost);
+
   onCooldown = input<boolean>();
   hintPos = input<HintAttachment>('above');
 

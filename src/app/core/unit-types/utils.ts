@@ -12,12 +12,13 @@ export interface GenerationModel {
   units: UnitModel[];
 }
 
-export const createStats = ([[minDmg, maxDmg], attack, defence, health, speed]: [
+export const createStats = ([[minDmg, maxDmg], attack, defence, health, speed, mana]: [
   damage: [minDmg: number, maxDmg: number],
   attack: number,
   defence: number,
   health: number,
   speed: number,
+  mana?: number,
 ]): UnitTypeBaseStatsModel => ({
   damageInfo: {
     minDamage: minDmg,
@@ -26,7 +27,8 @@ export const createStats = ([[minDmg, maxDmg], attack, defence, health, speed]: 
   attackRating: attack,
   defence: defence,
   health,
-  speed
+  speed,
+  mana: mana || 0,
 });
 
 

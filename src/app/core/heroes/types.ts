@@ -14,6 +14,7 @@ import { GenerationModel, UnitGroup } from '../unit-types';
 import { CommonUtils } from '../utils';
 import { isNotNullish } from '../utils/common';
 import { complete } from '../utils/observables';
+import { signal, Signal } from '@angular/core';
 
 export interface HeroBaseStats {
   stats: {
@@ -105,7 +106,7 @@ export function freeSlotsCount(slots: UnitGroupSlot[]): number {
   return slots.filter(slot => !slot.unitGroup).length;
 }
 
-export class Hero extends GameObject<HeroCreationParams> {
+export class Hero extends GameObject<HeroCreationParams, HeroStatsInfo> {
   public static readonly categoryId: string = 'hero';
   public name!: string | null;
   public experience: number = 0;
@@ -157,6 +158,8 @@ export class Hero extends GameObject<HeroCreationParams> {
     maxMana: 0,
   });
 
+  private readonly signalState = signal(this.heroStats$.getValue());
+
   private readonly destroyed$ = new Subject<void>();
 
   readonly mainUnitSlots: UnitGroupSlot[] = [
@@ -192,6 +195,12 @@ export class Hero extends GameObject<HeroCreationParams> {
     if (heroBase.initialState.defaultModifiers) {
       this.modGroup.addModsRef(ModsRef.fromMods(heroBase.initialState.defaultModifiers));
     }
+
+    this.updateSignalState();
+  }
+
+  getState(): HeroStatsInfo {
+    return this.getStats();
   }
 
   addReserveSlots(slotsCount: number) {
@@ -322,6 +331,10 @@ export class Hero extends GameObject<HeroCreationParams> {
     return this.heroStats$.getValue();
   }
 
+  getStateSignal(): Signal<HeroStatsInfo> {
+    return this.signalState;
+  }
+
   listenHeroStats(): Observable<HeroStatsInfo> {
     return this.heroStats$.pipe(takeUntil(this.destroyed$));
   }
@@ -444,6 +457,7 @@ export class Hero extends GameObject<HeroCreationParams> {
       ...currentState,
       currentMana: this.stats.currentMana,
     });
+    this.updateSignalState();
   }
 
   private updateUnitGroup(unitGroup: UnitGroup): void {
@@ -500,6 +514,11 @@ export class Hero extends GameObject<HeroCreationParams> {
       };
 
       this.heroStats$.next(heroStats);
+      this.updateSignalState();
     });
+  }
+
+  private updateSignalState(): void {
+    this.signalState.set(this.heroStats$.getValue());
   }
 }

@@ -1,6 +1,6 @@
 <mw-hover-hint [hintBody]="buffHint"
                [hintPos]="hintPos()">
-  <div [ngClass]="{ 'disabled': onCooldown() || disabled() }">
+  <div [ngClass]="{ 'disabled': onCooldown() || disabled() || !hasEnoughMana() }">
     <mw-ra-icon class="spell-icon"
                 [icon]="icon().icon"
                 [ngStyle]="{ 'color': icon().iconClr , 'background': icon().bgClr }" />

@@ -13,7 +13,7 @@
                    [spell]="spell"
                    [player]="currentPlayer"
                    [hero]="currentPlayer.hero"
-                   [disabled]="currentPlayer.hero.stats.currentMana < spell.currentManaCost || curPlayerState.spellsAreOnCooldown"
+                   [disabled]="currentPlayer.hero.stats.currentMana < spell.currentManaCost || curPlayerState.spellsAreOnCooldown || !!spell.cooldown"
                    [isActive]="curPlayerState.currentSpell === spell"
                    (clicked)="onAbilityClick(spell)" />
 </div>

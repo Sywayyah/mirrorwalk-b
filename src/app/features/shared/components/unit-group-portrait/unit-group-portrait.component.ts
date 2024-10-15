@@ -12,6 +12,10 @@ export class UnitGroupPortraitComponent {
   unitGroup!: UnitGroup;
 
   @Input()
+  @HostBinding('class.is-hero')
+  isHero?: boolean;
+
+  @Input()
   @HostBinding('class.to-right')
   toRight: boolean = true;
 

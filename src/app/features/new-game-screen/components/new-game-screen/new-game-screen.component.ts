@@ -1,9 +1,14 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { PLAYER_COLORS } from 'src/app/core/assets';
-import { GameCreated, GameOpenMainScreen, ViewsEnum } from 'src/app/core/events';
+import {
+  GameCreated,
+  GameOpenMainScreen,
+  ViewsEnum,
+} from 'src/app/core/events';
 import { Faction, Factions, humansFaction } from 'src/app/core/factions';
 import { neutralsFaction } from 'src/app/core/factions/neutrals/faction';
 import { HeroBase } from 'src/app/core/heroes';
+import { PlayerTypeEnum } from 'src/app/core/players';
 import { Town, TownBase } from 'src/app/core/towns';
 import { CommonUtils } from 'src/app/core/utils';
 import { GameObjectsManager } from 'src/app/features/services/game-objects-manager.service';
@@ -11,28 +16,62 @@ import { State } from 'src/app/features/services/state.service';
 import { escapeToView } from 'src/app/features/services/utils/view.util';
 import { EventsService } from 'src/app/store';
 
-// const nonPlayableFactions: Faction<any>[] = [];
 const nonPlayableFactions: Faction[] = [neutralsFaction];
+
+interface PlayerRow {
+  id: string;
+  name: string;
+  isMainPlayer?: true;
+  controlType: PlayerTypeEnum;
+  selectedFaction?: Faction;
+  selectedHero?: HeroBase;
+  pickedColor: PLAYER_COLORS;
+}
 
 @Component({
   selector: 'mw-new-game-screen',
   templateUrl: './new-game-screen.component.html',
-  styleUrls: ['./new-game-screen.component.scss']
+  styleUrls: ['./new-game-screen.component.scss'],
 })
 export class NewGameScreenComponent {
-  public playableFactions: Faction[] = Factions
-    .getAllFactions()
-    .filter((faction) => !nonPlayableFactions.includes(faction));
 
-  public heroes?: HeroBase[] | null = null;
+  readonly players = signal<PlayerRow[]>([
+    {
+      id: '1',
+      name: 'Player 1',
+      isMainPlayer: true,
+      selectedFaction: humansFaction,
+      controlType: PlayerTypeEnum.Player,
+      pickedColor: PLAYER_COLORS.BLUE,
+      selectedHero: humansFaction.getAllHeroes().find(hero => hero.id === `#hero-helvetica`)
+    },
+    // {
+    //   id: '2',
+    //   name: 'Player 2',
+    //   selectedFaction: humansFaction,
+    //   controlType: PlayerTypeEnum.AI,
+    //   pickedColor: PLAYER_COLORS.RED,
+    // },
+    // {
+    //   id: '3',
+    //   name: 'Player 3',
+    //   controlType: PlayerTypeEnum.AI,
+    //   selectedFaction: humansFaction,
+    //   pickedColor: PLAYER_COLORS.GREEN,
+    // },
+  ]);
 
-  public selectedFaction?: Faction;
+  public readonly playableFactions: Faction[] =
+    Factions.getAllFactions().filter(
+      (faction) => !nonPlayableFactions.includes(faction)
+    );
 
-  public selectedHero: HeroBase | null = null;
+  public hoveredHero?: HeroBase | null;
+  public hoveredPlayer?: PlayerRow | null;
 
-  public pickedColor: string = PLAYER_COLORS.BLUE;
+  controlTypes = PlayerTypeEnum;
 
-  public colors: string[] = [
+  public readonly colors: PLAYER_COLORS[] = [
     PLAYER_COLORS.BLUE,
     PLAYER_COLORS.RED,
     PLAYER_COLORS.GREEN,
@@ -41,20 +80,25 @@ export class NewGameScreenComponent {
   constructor(
     private events: EventsService,
     private state: State,
-    private gameObjectsManager: GameObjectsManager,
+    private gameObjectsManager: GameObjectsManager
   ) {
-    this.selectFaction(humansFaction);
     escapeToView(ViewsEnum.MainScreen);
   }
 
   public startGame(): void {
-    const faction = this.selectedFaction || CommonUtils.randItem(this.playableFactions);
+    // todo: Multiple players, rework later
+    const firstPlayer = this.players()[0];
+
+    const faction =
+      firstPlayer.selectedFaction ||
+      CommonUtils.randItem(this.playableFactions);
     const townBase = faction.getTownBase() as TownBase<any>;
 
     this.state.createdGame = {
       faction,
-      selectedColor: this.pickedColor,
-      selectedHero: this.selectedHero || CommonUtils.randItem(faction.heroes),
+      selectedColor: firstPlayer.pickedColor,
+      selectedHero:
+        firstPlayer.selectedHero || CommonUtils.randItem(faction.heroes),
       town: this.gameObjectsManager.createNewGameObject(Town, {
         townBase,
       }),
@@ -65,27 +109,66 @@ export class NewGameScreenComponent {
     this.events.dispatch(GameCreated());
   }
 
+  onPlayerRowHovered(row: PlayerRow): void {
+    this.hoveredPlayer = row;
+  }
+
+  onPlayerRowUnhovered(row: PlayerRow) {
+    this.hoveredPlayer = undefined;
+  }
+
+  onRandomHeroClick(row: PlayerRow): void {
+    row.selectedHero = undefined;
+    this.hoveredHero = undefined;
+  }
+
+  onHoverRandomHero(row: PlayerRow): void {
+    this.hoveredHero = null
+  }
+
+  onUnhoverRandomHero(row: PlayerRow): void {
+    this.hoveredHero = undefined
+  }
+
+  onSelectFactionHero(row: PlayerRow, hero: HeroBase): void {
+    row.selectedHero = hero;
+    this.hoveredHero = undefined;
+  }
+
+  onHoverFactionHero(row: PlayerRow, hero: HeroBase): void {
+    this.hoveredHero = hero;
+  }
+
+  onUnhoverFactionHero(row: PlayerRow, hero: HeroBase): void {
+    this.hoveredHero = undefined;
+  }
+
+  getHero(data: unknown): HeroBase {
+    return data as HeroBase;
+  }
+
   public returnToMainScreen(): void {
     this.events.dispatch(GameOpenMainScreen());
   }
 
-  public selectFaction(faction?: Faction): void {
-    this.selectedFaction = faction;
-    console.log(faction);
+  selectFactionForPlayer(player: PlayerRow, faction?: Faction) {
+    player.selectedFaction = faction;
+
     if (faction) {
-      this.heroes = faction.getAllHeroes();
-      this.selectedHero = this.heroes[0];
+      player.selectedHero = faction.getAllHeroes()[0];
     } else {
-      this.heroes = null;
-      this.selectedHero = null;
+      player.selectedHero = undefined;
     }
   }
 
-  public selectHero(hero: HeroBase | null): void {
-    this.selectedHero = hero;
-  }
+  toggleControlType(player: PlayerRow): void {
+    if (player.isMainPlayer) {
+      return;
+    }
 
-  public pickColor(color: string): void {
-    this.pickedColor = color;
+    player.controlType =
+      player.controlType === PlayerTypeEnum.AI
+        ? PlayerTypeEnum.Player
+        : PlayerTypeEnum.AI;
   }
 }

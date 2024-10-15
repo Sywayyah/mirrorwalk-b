@@ -5,6 +5,7 @@ import { ActionCardItemStackComponent } from './components/action-card-stack-ite
 import { ResourcesCostComponent } from './components/resources-cost/resources-cost.component';
 import { DisableContextMenuDirective, MwActionHintDirective, MwCustomCursorDirective, MwUnitEventsCursorDirective, MwUnitGroupCombatActionDirective, NumberModifierDirective } from './directives';
 import { MwEntityPipe, MwInfPipe, MwSafeHtmlPipe } from './pipes';
+import { GradientImgComponent } from './components/gradient-img/gradient-img.component';
 
 const pipes = [
   MwEntityPipe,
@@ -55,6 +56,8 @@ const components = [
   VfxLayerComponent,
   CustomCursorComponent,
   VfxContainerComponent,
+
+  GradientImgComponent,
 
   EventFeedComponent,
   EventFeedMessageComponent,

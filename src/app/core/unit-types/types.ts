@@ -1,3 +1,4 @@
+import { Signal, signal } from '@angular/core';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Entity, EntityId, UnitTypeId } from '../entities';
@@ -43,6 +44,8 @@ export interface UnitTypeBaseStatsModel {
   attackRating: number;
 
   damageInfo: UnitDamageModel;
+
+  mana?: number;
 }
 
 export interface UnitDescriptionParams {
@@ -67,9 +70,10 @@ export interface UnitBaseType extends Entity {
 
   level: number;
 
+  isHero?: boolean;
   baseStats: UnitTypeBaseStatsModel;
 
-  getDescription?: (params: UnitDescriptionParams) => UnitDescriptions,
+  getDescription?: (params: UnitDescriptionParams) => UnitDescriptions;
 
   /* what does this unit type requires */
   baseRequirements: RequirementModel;
@@ -94,17 +98,20 @@ export interface UnitBaseType extends Entity {
   upgraded?: boolean;
 
   upgradeDetails?: {
-    target: EntityId,
-    upgradeCost: Partial<ResourcesModel>,
+    target: EntityId;
+    upgradeCost: Partial<ResourcesModel>;
   };
 
-  getUnitTypeSpecialtyModifiers?(specialties: Specialties): Modifiers | null | undefined;
+  getUnitTypeSpecialtyModifiers?(
+    specialties: Specialties
+  ): Modifiers | null | undefined;
 }
 
 interface UnitCreationParams {
   count: number;
   unitBase: UnitBaseType;
   ownerHero?: Hero;
+  isSplitted?: boolean;
 }
 
 export enum UnitModGroups {
@@ -150,13 +157,31 @@ export interface UnitStatsInfo {
   avgTotalDamage: number;
 
   position: number;
+
+  maxMana: number;
 }
 
-export class UnitGroup extends GameObject<UnitCreationParams> {
+export interface UnitGroupStackState {
+  count: number;
+  tailHp: number;
+  isAlive: boolean;
+  position: number;
+  turnsLeft: number;
+  currentMana: number;
+}
+
+export interface UnitGroupState {
+  groupState: UnitGroupStackState;
+  groupStats: UnitStatsInfo;
+  // spells
+}
+
+export class UnitGroup extends GameObject<UnitCreationParams, UnitGroupState> {
   public static readonly categoryId: string = 'unit-group';
 
   // todo: many properties can become getters
 
+  // introduce state for it
   private _count!: number;
   /* the last unit hp tail. */
   // todo: recheck how it works, maybe shouldn't be undefined anymore
@@ -183,6 +208,7 @@ export class UnitGroup extends GameObject<UnitCreationParams> {
   }
 
   /* how much turns left during round, not sure if it's best to have it there */
+
   public turnsLeft!: number;
 
   public fightInfo!: {
@@ -201,39 +227,57 @@ export class UnitGroup extends GameObject<UnitCreationParams> {
   public readonly modGroup: ModsRefsGroup = ModsRefsGroup.empty();
 
   // final stats used by the game
-  private readonly unitStats$ = new BehaviorSubject<UnitStatsInfo>({
-    baseAttack: 0,
-    bonusAttack: 0,
-    finalAttack: 0,
+  private readonly unitStats$ = new BehaviorSubject<UnitGroupState>({
+    groupState: {
+      // todo: wire to real values
+      count: 0,
+      isAlive: true,
+      tailHp: 0,
+      position: 0,
+      turnsLeft: 0,
+      currentMana: 0,
+    },
+    groupStats: {
+      baseAttack: 0,
+      bonusAttack: 0,
+      finalAttack: 0,
 
-    baseDefence: 0,
-    bonusDefence: 0,
-    finalDefence: 0,
+      baseDefence: 0,
+      bonusDefence: 0,
+      finalDefence: 0,
 
-    defends: false,
+      defends: false,
 
-    baseSpeed: 0,
-    speedBonus: 0,
-    finalSpeed: 0,
+      baseSpeed: 0,
+      speedBonus: 0,
+      finalSpeed: 0,
 
-    fireResist: 0,
-    coldResist: 0,
-    lightningResist: 0,
-    poisonResist: 0,
+      fireResist: 0,
+      coldResist: 0,
+      lightningResist: 0,
+      poisonResist: 0,
 
-    totalHealth: 0,
-    totalMinDamage: 0,
-    totalMaxDamage: 0,
-    avgTotalDamage: 0,
+      totalHealth: 0,
+      totalMinDamage: 0,
+      totalMaxDamage: 0,
+      avgTotalDamage: 0,
 
-    position: 0,
+      position: 0,
+
+      maxMana: 0,
+    },
   });
+
+  readonly unitState = signal(this.unitStats$.getValue());
 
   private readonly destroyed$ = new Subject<void>();
 
-  create({ count, unitBase, ownerHero }: UnitCreationParams): void {
+  create({ count, unitBase, ownerHero, isSplitted }: UnitCreationParams): void {
     if (count <= 0 || !count) {
-      console.warn(`Cannot create unit group with ${count} units. Setting count to 1.`, this);
+      console.warn(
+        `Cannot create unit group with ${count} units. Setting count to 1.`,
+        this
+      );
 
       count = 1;
     }
@@ -263,30 +307,47 @@ export class UnitGroup extends GameObject<UnitCreationParams> {
     };
 
     this.setUnitsCount(count);
+    // max mana isn't set initially in stats
+    if (!isSplitted) {
+      this.addMana(this.type.baseStats.mana || 0);
+    }
 
     // Init unit mod groups
-    this.modGroup.attachNamedParentGroup(UnitModGroups.CombatMods, ModsRefsGroup.empty());
-    this.modGroup.attachNamedParentGroup(UnitModGroups.SpecialtyAndConditionalMods, ModsRefsGroup.empty());
-    this.modGroup.attachNamedParentGroup(UnitModGroups.SpellMods, ModsRefsGroup.empty());
+    this.modGroup.attachNamedParentGroup(
+      UnitModGroups.CombatMods,
+      ModsRefsGroup.empty()
+    );
+    this.modGroup.attachNamedParentGroup(
+      UnitModGroups.SpecialtyAndConditionalMods,
+      ModsRefsGroup.empty()
+    );
+    this.modGroup.attachNamedParentGroup(
+      UnitModGroups.SpellMods,
+      ModsRefsGroup.empty()
+    );
 
     // Init spells when all mod groups are ready
     this._spells = [];
 
     if (this.type.defaultSpells) {
       this.type.defaultSpells
-        .map(spell => this.getApi().spells.createSpellInstance(spell))
-        .forEach(spell => this.addSpell(spell));
+        .map((spell) => this.getApi().spells.createSpellInstance(spell))
+        .forEach((spell) => this.addSpell(spell));
     }
 
     this.setupStatsUpdating();
   }
 
-  setPosition(pos: number): void {
-    const stats = this.getStats();
+  getStateSignal(): Signal<UnitGroupState> {
+    return this.unitState;
+  }
 
-    if (stats.position !== pos) {
-      stats.position = pos;
-      this.unitStats$.next(stats);
+  setPosition(pos: number): void {
+    const newLocal = this.getState();
+    const { groupState: state } = newLocal;
+
+    if (state.position !== pos) {
+      this.pushState({ ...newLocal, groupState: { ...state, position: pos } });
     }
   }
 
@@ -294,12 +355,17 @@ export class UnitGroup extends GameObject<UnitCreationParams> {
     this._ownerHero = ownerHero;
     this._ownerPlayer = ownerHero.ownerPlayer;
     this.modGroup.detachNamedParentGroup(UnitModGroups.HeroMods);
-    this.modGroup.attachNamedParentGroup(UnitModGroups.HeroMods, this._ownerHero.modGroup);
+    this.modGroup.attachNamedParentGroup(
+      UnitModGroups.HeroMods,
+      this._ownerHero.modGroup
+    );
   }
 
   onDestroy(): void {
     complete(this.destroyed$);
-    this.spells.forEach(spell => this.getApi().gameObjects.destroyObject(spell));
+    this.spells.forEach((spell) =>
+      this.getApi().gameObjects.destroyObject(spell)
+    );
   }
 
   // can be more methods
@@ -318,6 +384,35 @@ export class UnitGroup extends GameObject<UnitCreationParams> {
     this.recalcHealthBasedStats();
   }
 
+  setMana(mana: number): void {
+    const prevState = this.getState();
+
+    this.pushState({
+      ...prevState,
+      groupState: {
+        ...prevState.groupState,
+        currentMana: CommonUtils.limitedNumber(
+          mana,
+          this.getState().groupStats.maxMana || this.type.baseStats.mana || 0
+        ),
+      },
+    });
+  }
+
+  addMana(mana: number): void {
+    const prevState = this.getState();
+
+    this.setMana(prevState.groupState.currentMana + mana);
+  }
+
+  getMana(): number {
+    return this.getState().groupState.currentMana;
+  }
+
+  hasEnoughMana(manacost: number): boolean {
+    return this.getMana() > manacost;
+  }
+
   addTailUnitHp(addedTailHp: number): void {
     this.setTailUnitHp((this._tailUnitHp ?? 0) + addedTailHp);
   }
@@ -327,14 +422,17 @@ export class UnitGroup extends GameObject<UnitCreationParams> {
     this.recalcHealthBasedStats();
   }
 
-  listenStats(): Observable<UnitStatsInfo> {
+  listenStats(): Observable<UnitGroupState> {
     return this.unitStats$.pipe(takeUntil(this.destroyed$));
   }
 
   addSpell(spell: Spell): void {
     this._spells.push(spell);
     spell.setOwnerObjectId(this.id);
-    spell.baseType.config.spellConfig.onAcquired?.({ spellInstance: spell, ownerUnit: this });
+    spell.baseType.config.spellConfig.onAcquired?.({
+      spellInstance: spell,
+      ownerUnit: this,
+    });
     this.getApi().events.dispatch(GroupSpellsChanged({ unitGroup: this }));
     // todo: initialize listeners
   }
@@ -359,13 +457,14 @@ export class UnitGroup extends GameObject<UnitCreationParams> {
     }
   }
 
-
-  getStats(): UnitStatsInfo {
+  getState(): UnitGroupState {
     return this.unitStats$.getValue();
   }
 
   attachSpecialtyMods(specialtyMods: Modifiers): void {
-    this.getSpecialtyAndConditionalModsGroup().addModsRef(ModsRef.fromMods(specialtyMods));
+    this.getSpecialtyAndConditionalModsGroup().addModsRef(
+      ModsRef.fromMods(specialtyMods)
+    );
   }
 
   clearSpecialtyAndConditionalMods(): void {
@@ -383,94 +482,132 @@ export class UnitGroup extends GameObject<UnitCreationParams> {
   }
 
   addCombatMods(modifiers: Modifiers): void {
-    this.modGroup.getNamedGroup(UnitModGroups.CombatMods)!.addModsRef(ModsRef.fromMods(modifiers));
+    this.modGroup
+      .getNamedGroup(UnitModGroups.CombatMods)!
+      .addModsRef(ModsRef.fromMods(modifiers));
   }
 
   removeCombatMods(modifiers: Modifiers): void {
-    this.modGroup.getNamedGroup(UnitModGroups.CombatMods)!.removeRefByModInstance(modifiers);
+    this.modGroup
+      .getNamedGroup(UnitModGroups.CombatMods)!
+      .removeRefByModInstance(modifiers);
   }
 
   addSpellMods(mods: Modifiers): void {
-    this.modGroup.getNamedGroup(UnitModGroups.SpellMods)!.addModsRef(ModsRef.fromMods(mods));
+    this.modGroup
+      .getNamedGroup(UnitModGroups.SpellMods)!
+      .addModsRef(ModsRef.fromMods(mods));
   }
 
   removeSpellMods(mods: Modifiers): void {
-    this.modGroup.getNamedGroup(UnitModGroups.SpellMods)!.removeRefByModInstance(mods);
+    this.modGroup
+      .getNamedGroup(UnitModGroups.SpellMods)!
+      .removeRefByModInstance(mods);
   }
 
   private recalcHealthBasedStats(): void {
     const currentUnitStats = this.unitStats$.getValue();
     const baseStats = this.type.baseStats;
     const unitCount = this._count;
+    const stats = currentUnitStats.groupStats;
 
-    currentUnitStats.totalHealth = baseStats.health * (unitCount - 1) + (this.tailUnitHp ?? 0);
-    currentUnitStats.totalMinDamage = unitCount * baseStats.damageInfo.minDamage;
-    currentUnitStats.totalMaxDamage = unitCount * baseStats.damageInfo.maxDamage;
-    currentUnitStats.avgTotalDamage = (currentUnitStats.totalMinDamage + currentUnitStats.totalMaxDamage) / 2;
-
-    this.unitStats$.next(currentUnitStats);
+    const newTotalMinDamage = unitCount * baseStats.damageInfo.minDamage;
+    const newTotalMaxDamage = unitCount * baseStats.damageInfo.maxDamage;
+    this.pushState({
+      ...currentUnitStats,
+      groupState: {
+        ...currentUnitStats.groupState,
+        count: unitCount,
+      },
+      groupStats: {
+        ...stats,
+        totalHealth:
+          baseStats.health * (unitCount - 1) + (this.tailUnitHp ?? 0),
+        totalMinDamage: newTotalMinDamage,
+        totalMaxDamage: newTotalMaxDamage,
+        avgTotalDamage: (newTotalMinDamage + newTotalMaxDamage) / 2,
+      },
+    });
   }
 
   private getSpecialtyAndConditionalModsGroup(): ModsRefsGroup {
-    return this.modGroup.getNamedGroup(UnitModGroups.SpecialtyAndConditionalMods)!;
+    return this.modGroup.getNamedGroup(
+      UnitModGroups.SpecialtyAndConditionalMods
+    )!;
   }
 
   private setupStatsUpdating(): void {
-    this.modGroup.onValueChanges().pipe(takeUntil(this.destroyed$)).subscribe((mods) => {
-      const baseStats = this.type.baseStats;
-      // review later
-      const heroBaseStats = this.ownerPlayer?.hero.base.initialState.stats;
+    this.modGroup
+      .onValueChanges()
+      .pipe(takeUntil(this.destroyed$))
+      .subscribe((mods) => {
+        const baseStats = this.type.baseStats;
+        // review later
+        const heroBaseStats = this.ownerPlayer?.hero.base.initialState.stats;
 
-      const baseAttack = baseStats.attackRating;
-      const bonusAttack = (mods.heroBonusAttack || 0) + (heroBaseStats?.baseAttack || 0);
+        const baseAttack = baseStats.attackRating;
+        const bonusAttack =
+          (mods.heroBonusAttack || 0) + (heroBaseStats?.baseAttack || 0);
 
-      const baseDefence = baseStats.defence;
-      const bonusDefence = (mods.heroBonusDefence || 0) + (heroBaseStats?.baseDefence || 0);
+        const baseDefence = baseStats.defence;
+        const bonusDefence =
+          (mods.heroBonusDefence || 0) + (heroBaseStats?.baseDefence || 0);
 
-      let baseSpeed = baseStats.speed;
-      let speedBonus = mods.unitGroupSpeedBonus || 0;
+        let baseSpeed = baseStats.speed;
+        let speedBonus = mods.unitGroupSpeedBonus || 0;
 
-      if (speedBonus < 0 && mods.cannotBeSlowed) {
-        speedBonus = 0;
-      }
+        if (speedBonus < 0 && mods.cannotBeSlowed) {
+          speedBonus = 0;
+        }
 
-      if (mods.fixedSpeed) {
-        speedBonus = 0;
-        baseSpeed = mods.fixedSpeed || 5;
-      }
+        if (mods.fixedSpeed) {
+          speedBonus = 0;
+          baseSpeed = mods.fixedSpeed || 5;
+        }
 
-      const allResist = mods.resistAll || 0;
+        const allResist = mods.resistAll || 0;
 
-      const previousStats = this.unitStats$.getValue();
+        const previousStats = this.unitStats$.getValue();
 
-      const stats: UnitStatsInfo = {
-        baseAttack,
-        bonusAttack,
-        finalAttack: baseAttack + bonusAttack,
+        const unitStats = previousStats.groupStats;
+        const stats: UnitStatsInfo = {
+          baseAttack,
+          bonusAttack,
+          finalAttack: baseAttack + bonusAttack,
 
-        defends: mods.defending,
+          defends: mods.defending,
 
-        baseDefence,
-        bonusDefence,
-        finalDefence: baseDefence + bonusDefence,
+          baseDefence,
+          bonusDefence,
+          finalDefence: baseDefence + bonusDefence,
 
-        baseSpeed,
-        speedBonus,
-        finalSpeed: baseSpeed + speedBonus,
+          baseSpeed,
+          speedBonus,
+          finalSpeed: baseSpeed + speedBonus,
 
-        fireResist: (mods.resistFire || 0) + allResist,
-        coldResist: (mods.resistCold || 0) + allResist,
-        lightningResist: (mods.resistLightning || 0) + allResist,
-        poisonResist: (mods.resistPoison || 0) + allResist,
+          fireResist: (mods.resistFire || 0) + allResist,
+          coldResist: (mods.resistCold || 0) + allResist,
+          lightningResist: (mods.resistLightning || 0) + allResist,
+          poisonResist: (mods.resistPoison || 0) + allResist,
 
-        totalHealth: previousStats.totalHealth,
-        totalMinDamage: previousStats.totalMinDamage,
-        totalMaxDamage: previousStats.totalMaxDamage,
-        avgTotalDamage: previousStats.avgTotalDamage,
-        position: previousStats.position,
-      };
+          totalHealth: unitStats.totalHealth,
+          totalMinDamage: unitStats.totalMinDamage,
+          totalMaxDamage: unitStats.totalMaxDamage,
+          avgTotalDamage: unitStats.avgTotalDamage,
+          position: unitStats.position,
 
-      this.unitStats$.next(stats);
-    });
+          maxMana: baseStats.mana || 0,
+        };
+
+        this.pushState({
+          ...previousStats,
+          groupStats: stats,
+        });
+      });
+  }
+
+  private pushState(state: UnitGroupState): void {
+    this.unitStats$.next(state);
+    this.unitState.set(this.unitStats$.getValue());
   }
 }

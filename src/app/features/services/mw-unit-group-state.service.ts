@@ -104,12 +104,12 @@ export class MwUnitGroupStateService {
 
     const attackedBaseStats = attackedUnitType.baseStats;
 
-    const attackerStats = attackingGroup.getStats();
-    const attackedStats = attackedGroup.getStats();
+    const attackerStats = attackingGroup.getState();
+    const attackedStats = attackedGroup.getState();
 
 
-    const totalAttack = attackerStats.finalAttack;
-    const totalTargetDefence = attackedStats.finalDefence;
+    const totalAttack = attackerStats.groupStats.finalAttack;
+    const totalTargetDefence = attackedStats.groupStats.finalDefence;
 
     const attackSupperiority = totalAttack - totalTargetDefence;
 

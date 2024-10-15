@@ -5,8 +5,8 @@
 <mw-icon-btn [mwActionHint]="'Action Cards<hr>' + state.currentGame.actionPoints + ' action points left'"
   class="action-points" (click)="openActionCards()">
   <div class="action-info">
-    <mw-ra-icon icon="feather-wing" />
-    <span>{{state.currentGame.actionPoints}}</span>
+    <mw-ra-icon icon="spades-card" />
+    <span>{{currentPlayer.actionCards.length}}</span>
   </div>
 </mw-icon-btn>
 

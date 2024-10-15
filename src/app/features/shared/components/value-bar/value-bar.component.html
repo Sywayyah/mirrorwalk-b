@@ -14,9 +14,9 @@
 
   <ng-container *ngSwitchCase="'static'">
     <div class="main-bar"
-         [style.background]="color"
+         [style.background]="color()"
          style="width: 100%"
-         [style.height.px]="barHeight">
+         [style.height.px]="barHeight()">
     </div>
   </ng-container>
 </ng-container>

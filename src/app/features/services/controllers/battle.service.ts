@@ -103,12 +103,12 @@ export class BattleController extends StoreClient() {
 
     const currentPlayer = this.playersService.getCurrentPlayer();
 
-    const currentPlayerUnitGroups = this.battleState.getAliveUnitsOfPlayer(currentPlayer);
+    const currentPlayerAliveUnits = this.battleState.getAliveUnitsOfPlayer(currentPlayer);
 
     // if current player doesn't have unit groups left
-    if (!currentPlayerUnitGroups.length) {
+    if (!currentPlayerAliveUnits.length) {
       // todo: handle it differently, don't need to call this method
-      this.playersService.getCurrentPlayer().hero.setUnitGroups(currentPlayerUnitGroups);
+      this.playersService.getCurrentPlayer().hero.setUnitGroups(currentPlayerAliveUnits);
 
       this.events.dispatch(FightEnds({
         struct: currentStructure,
@@ -119,21 +119,27 @@ export class BattleController extends StoreClient() {
     }
 
     const enemyPlayer = this.battleState.getEnemyOfPlayer(currentPlayer);
+    const aliveUnitsOfEnemyPlayer = this.battleState.getAliveUnitsOfPlayer(enemyPlayer);
 
     // if enemy units doesn't have unit groups left
     // todo: handle the case then only summons left
-    if (!this.battleState.getAliveUnitsOfPlayer(enemyPlayer).length) {
+    if (!aliveUnitsOfEnemyPlayer.length) {
       const deadUnitsOfCurrentPlayer = this.battleState.getDeadUnitsOfPlayer(currentPlayer);
       const summonedUnitsOfCurrentPlayer = this.battleState.getSummonsOfPlayer(currentPlayer);
 
       const deadUnitsOfEnemyPlayer = this.battleState.getDeadUnitsOfPlayer(enemyPlayer);
 
+
       [...deadUnitsOfCurrentPlayer, ...deadUnitsOfEnemyPlayer, ...summonedUnitsOfCurrentPlayer].forEach((unitGroup) => {
         this.gameObjectsManager.destroyObject(unitGroup);
       });
 
-      const finalCurrentUnitsOfPlayer = currentPlayerUnitGroups.filter(unit => !unit.modGroup.getModValue('isSummon'));
+      const finalCurrentUnitsOfPlayer = currentPlayerAliveUnits.filter(unit => !unit.modGroup.getModValue('isSummon'));
       const currentHero = this.playersService.getCurrentPlayer().hero;
+
+      // reset hero cooldowns if any
+      currentHero.spells.forEach(spell => spell.clearCooldown());
+
 
       // remove dead units from slots
       currentHero.unitGroups.filter(unitGroup => !unitGroup.fightInfo.isAlive).forEach((unitGroup) => {

@@ -21,32 +21,53 @@
   padding: 20px;
   display: flex;
   flex-direction: column;
+  gap: 2px;
 }
-
 
 .players-row {
   display: flex;
-  padding: 4px 0;
+  padding: 7px 15px 3px;
   align-items: center;
   font-size: 13px;
 
-  >.name {
-    flex: 0.1 0 140px;
+  &.player:hover {
+    background-color: rgba(39, 39, 39, 0.144);
   }
 
-  >.faction {
+  > .name {
+    flex: 0.1 0 80px;
+
+    flex: 0 0 100px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    cursor: pointer;
+    user-select: none;
+
+    > mw-ra-icon {
+      font-size: 28px;
+      margin-right: 2px;
+    }
+  }
+
+  &.player > .name {
+    padding-bottom: 6px;
+  }
+  > .faction {
     flex: 0.1 0 140px;
     display: flex;
     justify-content: center;
   }
 
-  >.hero {
+  > .hero {
     flex: 0.1 0 140px;
     display: flex;
     justify-content: center;
   }
 
-  >.color {
+  > .color {
     display: flex;
     justify-content: center;
     flex: 0.1 0 140px;
@@ -72,7 +93,7 @@
 }
 
 .hero-option {
-  margin: 2px;
+  padding: 2px;
   cursor: pointer;
 }
 
@@ -135,5 +156,12 @@
       border-top: 1px solid gainsboro;
     }
   }
+}
 
+mw-action-hint {
+  position: fixed;
+  bottom: 50px;
+
+  left: 0;
+  right: 0;
 }

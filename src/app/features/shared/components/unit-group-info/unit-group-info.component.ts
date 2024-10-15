@@ -2,7 +2,7 @@ import { Component, Input, OnChanges } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Spell } from 'src/app/core/spells';
 import { DescriptionElement } from 'src/app/core/ui';
-import { UnitGroup, UnitStatsInfo, UnitTypeBaseStatsModel } from 'src/app/core/unit-types';
+import { UnitGroup, UnitGroupState, UnitTypeBaseStatsModel } from 'src/app/core/unit-types';
 import { TypedChanges } from 'src/app/core/utils';
 
 // this component can remain as it is
@@ -19,7 +19,7 @@ export class UnitGroupInfoComponent implements OnChanges {
   @Input()
   public unitGroup!: UnitGroup;
 
-  public unitStats$!: Observable<UnitStatsInfo>;
+  public unitStats$!: Observable<UnitGroupState>;
 
   public baseStats!: UnitTypeBaseStatsModel;
 

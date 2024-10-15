@@ -69,6 +69,8 @@ export interface CombatActionsRef extends SpellsApi {
 
   getRandomEnemyPlayerGroup: () => UnitGroup;
 
+  isEnemyUnitGroup: (unitGroup: UnitGroup) => boolean;
+
   getEnemyOfPlayer: (player: Player) => Player;
 
   historyLog: (plainMsg: string) => void;
