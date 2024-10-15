@@ -34,6 +34,7 @@ interface PlayerRow {
   styleUrls: ['./new-game-screen.component.scss'],
 })
 export class NewGameScreenComponent {
+
   readonly players = signal<PlayerRow[]>([
     {
       id: '1',
@@ -44,13 +45,13 @@ export class NewGameScreenComponent {
       pickedColor: PLAYER_COLORS.BLUE,
       selectedHero: humansFaction.getAllHeroes().find(hero => hero.id === `#hero-helvetica`)
     },
-    {
-      id: '2',
-      name: 'Player 2',
-      selectedFaction: humansFaction,
-      controlType: PlayerTypeEnum.AI,
-      pickedColor: PLAYER_COLORS.RED,
-    },
+    // {
+    //   id: '2',
+    //   name: 'Player 2',
+    //   selectedFaction: humansFaction,
+    //   controlType: PlayerTypeEnum.AI,
+    //   pickedColor: PLAYER_COLORS.RED,
+    // },
     // {
     //   id: '3',
     //   name: 'Player 3',
@@ -112,6 +113,10 @@ export class NewGameScreenComponent {
     this.hoveredPlayer = row;
   }
 
+  onPlayerRowUnhovered(row: PlayerRow) {
+    this.hoveredPlayer = undefined;
+  }
+
   onRandomHeroClick(row: PlayerRow): void {
     row.selectedHero = undefined;
     this.hoveredHero = undefined;
@@ -135,7 +140,11 @@ export class NewGameScreenComponent {
   }
 
   onUnhoverFactionHero(row: PlayerRow, hero: HeroBase): void {
-    this.hoveredHero = undefined
+    this.hoveredHero = undefined;
+  }
+
+  getHero(data: unknown): HeroBase {
+    return data as HeroBase;
   }
 
   public returnToMainScreen(): void {

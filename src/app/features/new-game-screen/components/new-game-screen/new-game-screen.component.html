@@ -11,7 +11,11 @@
     </div>
 
     @for (player of players(); track $index) {
-      <div class="player players-row" (mouseenter)="onPlayerRowHovered(player)">
+      <div
+        class="player players-row"
+        (mouseenter)="onPlayerRowHovered(player)"
+        (mouseleave)="onPlayerRowUnhovered(player)"
+      >
         <div
           class="name"
           [mwActionHint]="
@@ -160,97 +164,106 @@
   </div>
 
   <div class="right-panel">
-    <div class="hero-description">
-      <div class="name">Hero</div>
+    <ng-template #heroInfo let-data="data">
+      <div class="hero-description">
+        @let playerHero = getHero(data);
 
-      <div *ngIf="hoveredHero; else randomHeroDescr">
+        <div>Hero</div>
+
         <div>
-          {{ hoveredHero.name }}
-        </div>
+          <div>
+            {{ playerHero.name }}
+          </div>
 
-        <mw-ra-icon class="hero-icon" icon="aura" />
+          <mw-ra-icon class="hero-icon" icon="aura" />
 
-        <div class="hero-stats">
-          <div class="column">
-            <div>
-              <mw-ra-icon icon="sword" />
+          <div class="hero-stats">
+            <div class="column">
+              <div>
+                <mw-ra-icon icon="sword" />
 
-              {{ hoveredHero.initialState.stats.baseAttack }}
+                {{ playerHero.initialState.stats.baseAttack }}
+              </div>
+
+              <div>
+                <mw-ra-icon icon="shield" />
+
+                {{ playerHero.initialState.stats.baseDefence }}
+              </div>
+
+              <div>
+                <mw-ra-icon icon="crystal-ball" />
+
+                {{ playerHero.initialState.stats.mana }}
+              </div>
             </div>
 
-            <div>
-              <mw-ra-icon icon="shield" />
-
-              {{ hoveredHero.initialState.stats.baseDefence }}
-            </div>
-
-            <div>
-              <mw-ra-icon icon="crystal-ball" />
-
-              {{ hoveredHero.initialState.stats.mana }}
+            <div class="column">
+              <div style="margin-top: 16px">
+                <div>Gold: {{ playerHero.initialState.resources.gold }}</div>
+                <div>Wood: {{ playerHero.initialState.resources.wood }}</div>
+              </div>
             </div>
           </div>
 
-          <div class="column">
-            <div style="margin-top: 16px">
-              <div>Gold: {{ hoveredHero.initialState.resources.gold }}</div>
-              <div>Wood: {{ hoveredHero.initialState.resources.wood }}</div>
-            </div>
+          <div class="description">
+            <mw-description [descriptions]="[playerHero.generalDescription]" />
           </div>
-        </div>
-
-        <div class="description">
-          <mw-description [descriptions]="[hoveredHero.generalDescription]" />
         </div>
       </div>
-    </div>
-
-    <ng-template #randomHeroDescr>
-      @if (hoveredHero === undefined) {
-        <div>
-          <div>Random Hero</div>
-          <mw-ra-icon class="hero-icon" icon="perspective-dice-four" />
-
-          <div class="description">
-            @if (
-              hoveredPlayer &&
-              hoveredPlayer.selectedFaction &&
-              !hoveredPlayer.selectedHero
-            ) {
-              <span>
-                {{ hoveredPlayer.name }} plays as random hero of
-                {{ hoveredPlayer.selectedFaction.title }} faction.
-              </span>
-            }
-            @if (hoveredPlayer && !hoveredPlayer.selectedFaction) {
-              <span>Play as random hero of any faction.</span>
-            }
-          </div>
-        </div>
-      }
-      @if (hoveredHero === null) {
-        <div>
-          <div>Random Hero</div>
-          <mw-ra-icon class="hero-icon" icon="perspective-dice-four" />
-
-          <div class="description">
-            @if (
-              hoveredPlayer &&
-              hoveredPlayer.selectedFaction &&
-              !hoveredPlayer.selectedHero
-            ) {
-              <span>
-                {{ hoveredPlayer.name }} plays as random hero of
-                {{ hoveredPlayer.selectedFaction.title }} faction.
-              </span>
-            }
-            @if (hoveredPlayer && !hoveredPlayer.selectedFaction) {
-              <span>Play as random hero of any faction.</span>
-            }
-          </div>
-        </div>
-      }
     </ng-template>
+
+    <ng-template #randomHero let-data="data">
+      <div class="hero-description">
+        <div>
+          <div>Random Hero</div>
+          <mw-ra-icon class="hero-icon" icon="perspective-dice-four" />
+
+          <div class="description">
+            @if (
+              hoveredPlayer &&
+              hoveredPlayer.selectedFaction &&
+              !hoveredPlayer.selectedHero
+            ) {
+              <span>
+                {{ hoveredPlayer.name }} plays as random hero of
+                {{ hoveredPlayer.selectedFaction.title }} faction.
+              </span>
+            }
+            @if (!hoveredPlayer) {
+              <span>Play as random hero of this faction.</span>
+            }
+            @if (hoveredPlayer && !hoveredPlayer.selectedFaction) {
+              <span>Play as random hero of any faction.</span>
+            }
+          </div>
+        </div>
+      </div>
+    </ng-template>
+
+    @if (hoveredPlayer && hoveredHero === undefined) {
+      {{ hoveredPlayer.name }} plays
+      {{ hoveredPlayer.selectedFaction?.title || "Random Faction" }} as
+
+      @if (hoveredPlayer.selectedHero) {
+        <ng-container
+          *ngTemplateOutlet="
+            heroInfo;
+            context: { data: hoveredPlayer.selectedHero }
+          "
+        />
+      } @else {
+        <ng-container *ngTemplateOutlet="randomHero" />
+      }
+    }
+    @if (hoveredHero) {
+      <ng-container
+        *ngTemplateOutlet="heroInfo; context: { data: hoveredHero }"
+      />
+    }
+    @if (hoveredHero === null) {
+      <ng-container *ngTemplateOutlet="randomHero" />
+    }
   </div>
 </div>
 
