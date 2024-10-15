@@ -18,7 +18,7 @@ import { EventsService } from 'src/app/store';
 
 const nonPlayableFactions: Faction[] = [neutralsFaction];
 
-interface PlayerItem {
+interface PlayerRow {
   id: string;
   name: string;
   isMainPlayer?: true;
@@ -34,7 +34,7 @@ interface PlayerItem {
   styleUrls: ['./new-game-screen.component.scss'],
 })
 export class NewGameScreenComponent {
-  readonly players = signal<PlayerItem[]>([
+  readonly players = signal<PlayerRow[]>([
     {
       id: '1',
       name: 'Player 1',
@@ -44,13 +44,13 @@ export class NewGameScreenComponent {
       pickedColor: PLAYER_COLORS.BLUE,
       selectedHero: humansFaction.getAllHeroes().find(hero => hero.id === `#hero-helvetica`)
     },
-    // {
-    //   id: '2',
-    //   name: 'Player 2',
-    //   selectedFaction: humansFaction,
-    //   controlType: PlayerTypeEnum.AI,
-    //   pickedColor: PLAYER_COLORS.RED,
-    // },
+    {
+      id: '2',
+      name: 'Player 2',
+      selectedFaction: humansFaction,
+      controlType: PlayerTypeEnum.AI,
+      pickedColor: PLAYER_COLORS.RED,
+    },
     // {
     //   id: '3',
     //   name: 'Player 3',
@@ -66,7 +66,7 @@ export class NewGameScreenComponent {
     );
 
   public hoveredHero?: HeroBase | null;
-  public hoveredPlayer?: PlayerItem | null;
+  public hoveredPlayer?: PlayerRow | null;
 
   controlTypes = PlayerTypeEnum;
 
@@ -108,11 +108,41 @@ export class NewGameScreenComponent {
     this.events.dispatch(GameCreated());
   }
 
+  onPlayerRowHovered(row: PlayerRow): void {
+    this.hoveredPlayer = row;
+  }
+
+  onRandomHeroClick(row: PlayerRow): void {
+    row.selectedHero = undefined;
+    this.hoveredHero = undefined;
+  }
+
+  onHoverRandomHero(row: PlayerRow): void {
+    this.hoveredHero = null
+  }
+
+  onUnhoverRandomHero(row: PlayerRow): void {
+    this.hoveredHero = undefined
+  }
+
+  onSelectFactionHero(row: PlayerRow, hero: HeroBase): void {
+    row.selectedHero = hero;
+    this.hoveredHero = undefined;
+  }
+
+  onHoverFactionHero(row: PlayerRow, hero: HeroBase): void {
+    this.hoveredHero = hero;
+  }
+
+  onUnhoverFactionHero(row: PlayerRow, hero: HeroBase): void {
+    this.hoveredHero = undefined
+  }
+
   public returnToMainScreen(): void {
     this.events.dispatch(GameOpenMainScreen());
   }
 
-  selectFactionForPlayer(player: PlayerItem, faction?: Faction) {
+  selectFactionForPlayer(player: PlayerRow, faction?: Faction) {
     player.selectedFaction = faction;
 
     if (faction) {
@@ -122,7 +152,7 @@ export class NewGameScreenComponent {
     }
   }
 
-  toggleControlType(player: PlayerItem): void {
+  toggleControlType(player: PlayerRow): void {
     if (player.isMainPlayer) {
       return;
     }

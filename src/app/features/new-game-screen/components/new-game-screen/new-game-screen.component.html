@@ -11,146 +11,151 @@
     </div>
 
     @for (player of players(); track $index) {
-    <div class="player players-row" (mouseenter)="hoveredPlayer = player">
-      <div
-        class="name"
-        [mwActionHint]="
-          !player.isMainPlayer ? 'Click to change player control type' : ''
-        "
-        (click)="toggleControlType(player)"
-      >
-        @if (player.isMainPlayer) {
-        <mw-ra-icon icon="player-king" />
-        } @else {
-        <mw-ra-icon
-          [icon]="
-            player.controlType === controlTypes.AI ? 'guarded-tower' : 'player'
+      <div class="player players-row" (mouseenter)="onPlayerRowHovered(player)">
+        <div
+          class="name"
+          [mwActionHint]="
+            !player.isMainPlayer ? 'Click to change player control type.' : ''
           "
-        />
-        }
-
-        {{ player.name }}
-      </div>
-
-
-      <div class="faction">
-        <mw-menu [menuBody]="factionsMenu" [pos]="'below'">
-          <div *ngIf="player.selectedFaction; else randomFaction">
+          (click)="toggleControlType(player)"
+        >
+          @if (player.isMainPlayer) {
+            <mw-ra-icon icon="player-king" />
+          } @else {
             <mw-ra-icon
+              [icon]="
+                player.controlType === controlTypes.AI
+                  ? 'guarded-tower'
+                  : 'player'
+              "
+            />
+          }
+
+          {{ player.name }}
+        </div>
+
+        <div class="faction">
+          <mw-menu [menuBody]="factionsMenu" pos="below">
+            <div *ngIf="player.selectedFaction; else randomFaction">
+              <mw-ra-icon
+                class="item-icon"
+                [icon]="player.selectedFaction.icon"
+              />
+
+              <span class="icon-subtext">
+                {{ player.selectedFaction.title }}
+              </span>
+            </div>
+
+            <ng-template #randomFaction>
+              <div>
+                <mw-ra-icon class="item-icon" icon="perspective-dice-four" />
+
+                <span class="icon-subtext">Random</span>
+              </div>
+            </ng-template>
+          </mw-menu>
+
+          <ng-template #factionsMenu>
+            <mw-ra-icon
+              (click)="selectFactionForPlayer(player)"
               class="item-icon"
-              [icon]="player.selectedFaction.icon"
+              icon="perspective-dice-four"
             />
 
-            <span class="icon-subtext">{{ player.selectedFaction.title }}</span>
-          </div>
-
-          <ng-template #randomFaction>
-            <div>
-              <mw-ra-icon class="item-icon" icon="perspective-dice-four" />
-
-              <span class="icon-subtext">Random</span>
-            </div>
+            <mw-ra-icon
+              *ngFor="let faction of playableFactions"
+              (click)="selectFactionForPlayer(player, faction)"
+              class="item-icon"
+              [icon]="faction.icon"
+            />
           </ng-template>
-        </mw-menu>
+        </div>
 
-        <ng-template #factionsMenu>
-          <mw-ra-icon
-            (click)="selectFactionForPlayer(player)"
-            class="item-icon"
-            icon="perspective-dice-four"
-          />
-
-          <mw-ra-icon
-            *ngFor="let faction of playableFactions"
-            (click)="selectFactionForPlayer(player, faction)"
-            class="item-icon"
-            [icon]="faction.icon"
-          />
-        </ng-template>
-      </div>
-
-      <div class="hero">
-        <mw-menu [menuBody]="heroesMenu" [pos]="'below'">
-          <div *ngIf="player.selectedHero; else randomFaction">
-            <!-- todo: introduce component for character icon -->
-            <div
-              [style.background-image]="
-                'url(\'assets/' + player.selectedHero.image + '\')'
-              "
-              class="item-icon hero-icon"
-            ></div>
-
-            <span class="icon-subtext">{{ player.selectedHero.name }}</span>
-          </div>
-
-          <ng-template #randomHero>
-            <div>
-              <mw-ra-icon class="item-icon" icon="perspective-dice-four" />
-
-              <span class="icon-subtext">Random</span>
-            </div>
-          </ng-template>
-        </mw-menu>
-
-        <ng-template #heroesMenu>
-          <div
-            style="
-              display: flex;
-              max-width: 228px;
-              padding: 4px;
-              justify-content: center;
-              flex-wrap: wrap;
-            "
-          >
-            <!-- Random Hero -->
-            <div
-              class="hero-option"
-              (click)="player.selectedHero = undefined; hoveredHero = undefined"
-              (mouseenter)="hoveredHero = null"
-              (mouseleave)="hoveredHero = undefined"
-            >
-              <mw-ra-icon class="item-icon" icon="perspective-dice-four" />
-
-              <span class="icon-subtext">Random</span>
-            </div>
-
-            <!-- Faction Heroes -->
-            <div
-              *ngFor="let hero of player.selectedFaction?.getAllHeroes()"
-              class="hero-option"
-              (mouseenter)="hoveredHero = hero"
-              (mouseleave)="hoveredHero = undefined"
-              (click)="player.selectedHero = hero; hoveredHero = undefined"
-            >
+        <div class="hero">
+          <mw-menu [menuBody]="heroesMenu" [pos]="'below'">
+            <div *ngIf="player.selectedHero; else randomFaction">
+              <!-- todo: introduce component for character icon -->
               <div
-                [style.background-image]="'url(\'assets/' + hero.image + '\')'"
+                [style.background-image]="
+                  'url(\'assets/' + player.selectedHero.image + '\')'
+                "
                 class="item-icon hero-icon"
               ></div>
-              <span class="icon-subtext">{{ hero.name }}</span>
+
+              <span class="icon-subtext">{{ player.selectedHero.name }}</span>
             </div>
-          </div>
-        </ng-template>
-      </div>
 
-      <div class="color">
-        <mw-menu [menuBody]="colorsMenu" pos="below">
-          <div
-            style="position: relative; top: -6px"
-            class="color-item"
-            [style.background]="player.pickedColor"
-          ></div>
-        </mw-menu>
+            <ng-template #randomHero>
+              <div>
+                <mw-ra-icon class="item-icon" icon="perspective-dice-four" />
 
-        <ng-template #colorsMenu>
-          <div
-            *ngFor="let color of colors"
-            class="color-item"
-            [style.background]="color"
-            (click)="player.pickedColor = color"
-          ></div>
-        </ng-template>
+                <span class="icon-subtext">Random</span>
+              </div>
+            </ng-template>
+          </mw-menu>
+
+          <ng-template #heroesMenu>
+            <div
+              style="
+                display: flex;
+                max-width: 228px;
+                padding: 4px;
+                justify-content: center;
+                flex-wrap: wrap;
+              "
+            >
+              <!-- Random Hero -->
+              <div
+                class="hero-option"
+                (click)="onRandomHeroClick(player)"
+                (mouseenter)="onHoverRandomHero(player)"
+                (mouseleave)="onUnhoverRandomHero(player)"
+              >
+                <mw-ra-icon class="item-icon" icon="perspective-dice-four" />
+
+                <span class="icon-subtext">Random</span>
+              </div>
+
+              <!-- Faction Heroes -->
+              <div
+                *ngFor="let hero of player.selectedFaction?.getAllHeroes()"
+                class="hero-option"
+                (mouseenter)="onHoverFactionHero(player, hero)"
+                (mouseleave)="onUnhoverFactionHero(player, hero)"
+                (click)="onSelectFactionHero(player, hero)"
+              >
+                <div
+                  [style.background-image]="
+                    'url(\'assets/' + hero.image + '\')'
+                  "
+                  class="item-icon hero-icon"
+                ></div>
+                <span class="icon-subtext">{{ hero.name }}</span>
+              </div>
+            </div>
+          </ng-template>
+        </div>
+
+        <div class="color">
+          <mw-menu [menuBody]="colorsMenu" pos="below">
+            <div
+              style="position: relative; top: -6px"
+              class="color-item"
+              [style.background]="player.pickedColor"
+            ></div>
+          </mw-menu>
+
+          <ng-template #colorsMenu>
+            <div
+              *ngFor="let color of colors"
+              class="color-item"
+              [style.background]="color"
+              (click)="player.pickedColor = color"
+            ></div>
+          </ng-template>
+        </div>
       </div>
-    </div>
     }
   </div>
 
@@ -202,43 +207,51 @@
 
     <ng-template #randomHeroDescr>
       @if (hoveredHero === undefined) {
-      <div>
-        <div>Random Hero</div>
-        <mw-ra-icon class="hero-icon" icon="perspective-dice-four" />
+        <div>
+          <div>Random Hero</div>
+          <mw-ra-icon class="hero-icon" icon="perspective-dice-four" />
 
-        <div class="description">
-          @if (hoveredPlayer && hoveredPlayer.selectedFaction &&
-          !hoveredPlayer.selectedHero) {
-          <span>
-            {{ hoveredPlayer.name }} plays as random hero of
-            {{ hoveredPlayer.selectedFaction.title }} faction.
-          </span>
-          } @if (hoveredPlayer && !hoveredPlayer.selectedFaction) {
-          <span>Play as random hero of any faction.</span>
-          }
+          <div class="description">
+            @if (
+              hoveredPlayer &&
+              hoveredPlayer.selectedFaction &&
+              !hoveredPlayer.selectedHero
+            ) {
+              <span>
+                {{ hoveredPlayer.name }} plays as random hero of
+                {{ hoveredPlayer.selectedFaction.title }} faction.
+              </span>
+            }
+            @if (hoveredPlayer && !hoveredPlayer.selectedFaction) {
+              <span>Play as random hero of any faction.</span>
+            }
+          </div>
         </div>
-      </div>
-      } @if (hoveredHero === null) {
-      <div>
-        <div>Random Hero</div>
-        <mw-ra-icon class="hero-icon" icon="perspective-dice-four" />
+      }
+      @if (hoveredHero === null) {
+        <div>
+          <div>Random Hero</div>
+          <mw-ra-icon class="hero-icon" icon="perspective-dice-four" />
 
-        <div class="description">
-          @if (hoveredPlayer && hoveredPlayer.selectedFaction &&
-          !hoveredPlayer.selectedHero) {
-          <span>
-            {{ hoveredPlayer.name }} plays as random hero of
-            {{ hoveredPlayer.selectedFaction.title }} faction.
-          </span>
-          } @if (hoveredPlayer && !hoveredPlayer.selectedFaction) {
-          <span>Play as random hero of any faction.</span>
-          }
+          <div class="description">
+            @if (
+              hoveredPlayer &&
+              hoveredPlayer.selectedFaction &&
+              !hoveredPlayer.selectedHero
+            ) {
+              <span>
+                {{ hoveredPlayer.name }} plays as random hero of
+                {{ hoveredPlayer.selectedFaction.title }} faction.
+              </span>
+            }
+            @if (hoveredPlayer && !hoveredPlayer.selectedFaction) {
+              <span>Play as random hero of any faction.</span>
+            }
+          </div>
         </div>
-      </div>
       }
     </ng-template>
   </div>
-
 </div>
 
 <div class="bottom-container">
