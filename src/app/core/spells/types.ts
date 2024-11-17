@@ -102,6 +102,8 @@ export interface OnSpellAcquiredConfig<T> {
 }
 
 export interface SpellConfig<SpellStateType> {
+  // true by default
+  isOncePerBattle?: boolean;
   init: (combatRefs: SpellCombatRefsModel<SpellStateType>) => void;
   // if unspecified - always 0
   getManaCost?: (spellInst: Spell<SpellStateType>) => number;
