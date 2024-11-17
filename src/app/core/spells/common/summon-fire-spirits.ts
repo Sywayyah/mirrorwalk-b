@@ -19,7 +19,6 @@ export const SummonFireSpiritsSpell: SpellBaseType = createSpell({
   getDescription({ spellInstance }) {
     return {
       descriptions: [
-        spellDescrElem(`Can be casted only once per battle <hr/>`),
         spellDescrElem(`Summon ${unitCount + unitGrowthPerLevel * spellInstance.currentLevel} Fire Spirits that fight on your side.`),
         spellDescrElem(`<hr/>Spirits have active ability Fire Shield and disappear when the fight is over.`),
       ],

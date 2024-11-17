@@ -70,7 +70,7 @@ export const HealSpell: SpellBaseType = createSpell({
 
         return manaCosts[spellInst.currentLevel];
       },
-
+      isOncePerBattle: false,
       init: ({ events, actions, ownerPlayer, ownerUnit, vfx }) => {
         events.on({
           PlayerTargetsSpell(event) {

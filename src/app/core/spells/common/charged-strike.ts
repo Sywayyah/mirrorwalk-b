@@ -20,6 +20,7 @@ export const ChargedStrikeSpell = createSpell({
 
   config: {
     spellConfig: {
+      isOncePerBattle: false,
       init({ actions, events, vfx }) {
 
         events.on({

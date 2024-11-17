@@ -65,7 +65,7 @@
                                [spell]="spell"
                                [hero]="playerInfo.hero"
                                [owner]="unitGroup"
-                               [onCooldown]="unitGroup.fightInfo.spellsOnCooldown"
+                               [onCooldown]="unitGroup.fightInfo.spellsOnCooldown || !!spell.cooldown"
                                [currentUnit]="attackingUnitGroup" />
         </div>
 

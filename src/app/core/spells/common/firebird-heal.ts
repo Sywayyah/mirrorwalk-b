@@ -78,6 +78,7 @@ export const FirebirdHealSpell: SpellBaseType = createSpell({
   },
   config: {
     spellConfig: {
+      isOncePerBattle: false,
       targetCastConfig: {
         canActivate: canActivateOnAllyFn,
       },

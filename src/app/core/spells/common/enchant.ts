@@ -56,6 +56,7 @@ export const EnchantSpell: SpellBaseType = createSpell({
   },
   config: {
     spellConfig: {
+      isOncePerBattle: false,
       targetCastConfig: {
         canActivate: canActivateOnEnemyFn,
       },

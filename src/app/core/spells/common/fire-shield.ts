@@ -63,6 +63,7 @@ export const FireShieldBuff: SpellBaseType = createSpell({
   },
   config: {
     spellConfig: {
+      isOncePerBattle: false,
       init: ({ events, actions, vfx }) => {
         // change it to non-conditional modifiers maybe
         const mods = actions.createModifiers({

@@ -23,7 +23,7 @@ export const MeteorSpell: SpellBaseType = createSpell({
 
     return {
       descriptions: [
-        spellDescrElem(`Can be casted only once per battle.<br/><hr/>Meteor deals ${minDamage + damageBounsPerLevel}-${maxDamage + damageBounsPerLevel} fire damage to random enemy group, next 2 unit groups after current group in fight queue (enemies or allies) will be stunned and will lose their turns. If stunned enemy's creature is tier 4 or higher, instead of stun, it will take 65% of ability's damage.`),
+        spellDescrElem(`Meteor deals ${minDamage + damageBounsPerLevel}-${maxDamage + damageBounsPerLevel} fire damage to random enemy group, next 2 unit groups after current group in fight queue (enemies or allies) will be stunned and will lose their turns. If stunned enemy's creature is tier 4 or higher, instead of stun, it will take 65% of ability's damage.`),
       ],
     }
   },
@@ -39,7 +39,6 @@ export const MeteorSpell: SpellBaseType = createSpell({
 
         return manaCosts[spell.currentLevel];
       },
-
       init({ events, actions, thisSpell, ownerHero, vfx, spellInstance }) {
         events.on({
           PlayerCastsInstantSpell(event) {

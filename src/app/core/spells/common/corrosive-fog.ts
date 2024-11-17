@@ -95,6 +95,7 @@ export const CorrosiveFogDebuff: SpellBaseType<undefined | { debuffRoundsLeft: n
   },
   config: {
     spellConfig: {
+      isOncePerBattle: false,
       init({ events, actions, thisSpell, spellInstance, vfx }) {
         events.on({
           SpellPlacedOnUnitGroup({ target }) {
