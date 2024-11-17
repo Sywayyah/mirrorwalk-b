@@ -8,7 +8,7 @@ import { createSpell } from '../utils';
 const minDamage = 20;
 const maxDamage = 50;
 
-const dmgIncrementPerLevel = 25;
+const dmgIncrementPerLevel = 30;
 
 /* todo: maybe change the bonus gained with level */
 export const MeteorSpell: SpellBaseType = createSpell({
@@ -23,7 +23,7 @@ export const MeteorSpell: SpellBaseType = createSpell({
 
     return {
       descriptions: [
-        spellDescrElem(`Meteor deals ${minDamage + damageBounsPerLevel}-${maxDamage + damageBounsPerLevel} fire damage to random enemy group, next 2 unit groups after current group in fight queue (enemies or allies) will be stunned and will lose their turns. If stunned enemy's creature is tier 4 or higher, instead of stun, it will take 65% of ability's damage.`),
+        spellDescrElem(`Can be casted only once per battle.<br/><hr/>Meteor deals ${minDamage + damageBounsPerLevel}-${maxDamage + damageBounsPerLevel} fire damage to random enemy group, next 2 unit groups after current group in fight queue (enemies or allies) will be stunned and will lose their turns. If stunned enemy's creature is tier 4 or higher, instead of stun, it will take 65% of ability's damage.`),
       ],
     }
   },
@@ -50,6 +50,7 @@ export const MeteorSpell: SpellBaseType = createSpell({
             const randomEnemyGroup = actions.getRandomEnemyPlayerGroup();
             const damageBounsPerLevel = dmgIncrementPerLevel * spellInstance.currentLevel;
 
+            spellInstance.setCooldown(Infinity);
 
             vfx.createEffectForUnitGroup(
               randomEnemyGroup,

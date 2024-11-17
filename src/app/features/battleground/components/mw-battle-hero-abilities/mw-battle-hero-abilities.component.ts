@@ -18,7 +18,7 @@ export class MwBattleHeroAbilitiesComponent {
   ) { }
 
   public onAbilityClick(spell: Spell) {
-    if (spell.currentManaCost > this.currentPlayer.hero.stats.currentMana || this.curPlayerState.spellsAreOnCooldown) {
+    if (spell.currentManaCost > this.currentPlayer.hero.stats.currentMana || this.curPlayerState.spellsAreOnCooldown || spell.cooldown) {
       return;
     }
 

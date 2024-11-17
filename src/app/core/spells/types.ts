@@ -133,7 +133,9 @@ export class Spell<T = DefaultSpellStateType> extends GameObject<SpellCreationPa
   public state?: T;
   public currentLevel: number = 1;
   public currentManaCost!: number;
-  // cooldown: number;
+  // how many rounds it will take for spell to become castable again
+  // cooldowns are cleared when battle is over
+  cooldown?: number;
 
   public baseType!: SpellBaseType<T>;
 
@@ -152,6 +154,14 @@ export class Spell<T = DefaultSpellStateType> extends GameObject<SpellCreationPa
 
   private updateCurrentManaCost() {
     this.currentManaCost = this.baseType.config.spellConfig.getManaCost?.(this) || 0;
+  }
+
+  setCooldown(val: number): void {
+    this.cooldown = val;
+  }
+
+  clearCooldown(): void {
+    this.cooldown = undefined;
   }
 
   setOwnerObjectId(ownerUnitId: string): void {
