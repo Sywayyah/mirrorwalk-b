@@ -1,7 +1,13 @@
-import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  input,
+} from '@angular/core';
 import { Hero } from 'src/app/core/heroes';
 import { Player } from 'src/app/core/players';
 import { Spell } from 'src/app/core/spells';
+import { DescHtmlElement, DescriptionElementType } from 'src/app/core/ui';
 import { UnitGroup } from 'src/app/core/unit-types';
 
 @Component({
@@ -11,20 +17,33 @@ import { UnitGroup } from 'src/app/core/unit-types';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SpellDescriptionComponent {
-  public spell = input.required<Spell>();
+  readonly spell = input.required<Spell>();
 
   /* todo: this is possibly bad, maybe hero can be attached to spell itself. */
-  public hero = input<Hero>();
+  readonly hero = input<Hero>();
 
-  public player = input.required<Player>();
+  readonly player = input.required<Player>();
 
-  public ownerUnit = input<UnitGroup>();
+  readonly ownerUnit = input<UnitGroup>();
 
-  public descriptions = computed(() => this.spell().baseType.getDescription({
-    thisSpell: this.spell().baseType,
-    spellInstance: this.spell(),
-    ownerHero: this.hero() as Hero,
-    ownerPlayer: this.player(),
-    ownerUnit: this.ownerUnit(),
-  }).descriptions);
+  readonly descriptions = computed(() => {
+    const spell = this.spell();
+
+    const descriptions = spell.baseType.getDescription({
+      thisSpell: spell.baseType,
+      spellInstance: spell,
+      ownerHero: this.hero() as Hero,
+      ownerPlayer: this.player(),
+      ownerUnit: this.ownerUnit(),
+    }).descriptions;
+
+    if (spell.baseType.config.spellConfig.isOncePerBattle) {
+      descriptions.unshift({
+        type: DescriptionElementType.FreeHtml,
+        htmlContent: 'Can be casted only once per battle.<br/><hr/>',
+      } as DescHtmlElement);
+    }
+
+    return descriptions;
+  });
 }

@@ -15,8 +15,6 @@ export class MwSpellButtonComponent {
   player = input.required<Player>();
   hero = input.required<Hero>();
 
-  onCooldown = input(false);
-
   disabled = input(false);
 
   isActive = input(false);
