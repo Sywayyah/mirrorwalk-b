@@ -1,6 +1,12 @@
 import { EffectAnimation } from '../../api/vfx-api';
 import { spellDescrElem } from '../../ui';
-import { createAnimation, getIconElement, getPlainAppearanceFrames, getPlainBlurFrames, getReversePulseKeyframes } from '../../vfx';
+import {
+  createAnimation,
+  getIconElement,
+  getPlainAppearanceFrames,
+  getPlainBlurFrames,
+  getReversePulseKeyframes,
+} from '../../vfx';
 import { SpellActivationType, SpellBaseType } from '../types';
 import { buffColors, canActivateOnAllyFn, createSpell } from '../utils';
 
@@ -27,8 +33,8 @@ const HasteAnimation: EffectAnimation = createAnimation([
       ...commonStyles,
       filter: 'blur(6px)',
       opacity: '1',
-      mixBlendMode: 'hard-light'
-    }
+      mixBlendMode: 'hard-light',
+    },
   ],
   [
     getIconElement(icon, 'fire-pulse'),
@@ -37,13 +43,12 @@ const HasteAnimation: EffectAnimation = createAnimation([
       ...commonStyles,
       opacity: '0.2',
       transform: 'translate(-50%, -50%) scale(1)',
-      mixBlendMode: 'hard-light'
+      mixBlendMode: 'hard-light',
     },
-  ]
+  ],
 ]);
 
 const speedBonus = 5;
-
 
 export const HasteBuff: SpellBaseType = createSpell({
   id: '#spell-haste-buff',
@@ -58,23 +63,25 @@ export const HasteBuff: SpellBaseType = createSpell({
       descriptions: [
         spellDescrElem(`Unit group is speeded up by ${speedBonus}.`),
       ],
-    }
+    };
   },
   config: {
     spellConfig: {
-      init: ({ events, actions, vfx }) => {
+      init: ({ events, actions, vfx, spellInstance }) => {
         const mods = actions.createModifiers({
-          unitGroupSpeedBonus: speedBonus,
+          unitGroupSpeedBonus: speedBonus + spellInstance.currentLevel - 1,
         });
 
         events.on({
           SpellPlacedOnUnitGroup(event) {
-            vfx.createEffectForUnitGroup(event.target, HasteAnimation, { duration: 800 });
+            vfx.createEffectForUnitGroup(event.target, HasteAnimation, {
+              duration: 800,
+            });
             actions.addModifiersToUnitGroup(event.target, mods);
           },
-        })
-      }
-    }
+        });
+      },
+    },
   },
 });
 
@@ -86,13 +93,17 @@ export const HasteSpell: SpellBaseType = createSpell({
   icon: {
     icon: icon,
   },
-  getDescription() {
+  getDescription({ spellInstance }) {
     return {
       descriptions: [
-        spellDescrElem(`Target unit group is speeding up by ${speedBonus}.`),
-        spellDescrElem(`When upgraded, increases the speed bonus and starts to grant a chance to gain additional turn to units.`),
+        spellDescrElem(
+          `Target unit group is speeding up by ${speedBonus + spellInstance.currentLevel - 1}.`,
+        ),
+        spellDescrElem(
+          `When upgraded, increases the speed bonus and starts to grant a chance to gain additional turn to units.`,
+        ),
       ],
-    }
+    };
   },
   config: {
     spellConfig: {
@@ -110,11 +121,14 @@ export const HasteSpell: SpellBaseType = createSpell({
         return manaCosts[spellInst.currentLevel];
       },
       isOncePerBattle: false,
-      init: ({ events, actions, ownerPlayer }) => {
+      init: ({ events, actions, ownerPlayer, spellInstance }) => {
         events.on({
           PlayerTargetsSpell(event) {
-            const enchantDebuff = actions.createSpellInstance(HasteBuff);
-            actions.addSpellToUnitGroup(event.target, enchantDebuff, ownerPlayer);
+            const hasteBuff = actions.createSpellInstance(HasteBuff, {
+              initialLevel: spellInstance.currentLevel,
+            });
+
+            actions.addSpellToUnitGroup(event.target, hasteBuff, ownerPlayer);
           },
         });
       },
