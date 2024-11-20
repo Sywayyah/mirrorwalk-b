@@ -109,7 +109,7 @@ export const HasteSpell: SpellBaseType = createSpell({
 
         return manaCosts[spellInst.currentLevel];
       },
-
+      isOncePerBattle: false,
       init: ({ events, actions, ownerPlayer }) => {
         events.on({
           PlayerTargetsSpell(event) {

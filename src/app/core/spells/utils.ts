@@ -5,23 +5,44 @@ import { Hero } from '../heroes';
 import { registerEntity } from '../entities';
 import { UnitGroup } from '../unit-types';
 import { getDamageParts } from '../vfx';
-import { CanActivateSpellParams, SpellBaseType } from './types';
+import {
+  CanActivateSpellParams,
+  SpellActivationType,
+  SpellBaseType,
+} from './types';
 
 export const createSpell = <T>(spell: SpellBaseType<T>): SpellBaseType<T> => {
   registerEntity(spell);
 
+  // not applicable to passive abilities
+  if (
+    [SpellActivationType.Instant, SpellActivationType.Target].includes(
+      spell.activationType,
+    )
+  ) {
+    spell.config.spellConfig.isOncePerBattle ??= true;
+  }
+
   return spell;
 };
 
-export const canActivateOnEnemyFn = ({ isEnemy, unitGroup }: CanActivateSpellParams): boolean => {
+export const canActivateOnEnemyFn = ({
+  isEnemy,
+  unitGroup,
+}: CanActivateSpellParams): boolean => {
   return isEnemy && unitGroup.fightInfo.isAlive;
 };
 
-export const canActivateOnAliveFn = ({ unitGroup }: CanActivateSpellParams): boolean => {
+export const canActivateOnAliveFn = ({
+  unitGroup,
+}: CanActivateSpellParams): boolean => {
   return unitGroup.fightInfo.isAlive;
 };
 
-export const canActivateOnAllyFn = ({ isEnemy, unitGroup }: CanActivateSpellParams): boolean => {
+export const canActivateOnAllyFn = ({
+  isEnemy,
+  unitGroup,
+}: CanActivateSpellParams): boolean => {
   return !isEnemy;
 };
 
@@ -41,9 +62,18 @@ export const logDamage = ({
   ownerHero,
   targetUnit,
   thisSpell,
-  vfx
-}: { actionInfo: PostDamageInfo, ownerHero: Hero, targetUnit: UnitGroup, thisSpell: SpellBaseType, actions: CombatActionsRef, vfx: VfxApi }) => {
-  actions.historyLog(`${ownerHero.name} deals ${actionInfo.finalDamage} damage to ${targetUnit.type.name} with ${thisSpell.name}`)
+  vfx,
+}: {
+  actionInfo: PostDamageInfo;
+  ownerHero: Hero;
+  targetUnit: UnitGroup;
+  thisSpell: SpellBaseType;
+  actions: CombatActionsRef;
+  vfx: VfxApi;
+}) => {
+  actions.historyLog(
+    `${ownerHero.name} deals ${actionInfo.finalDamage} damage to ${targetUnit.type.name} with ${thisSpell.name}`,
+  );
 
   vfx.createFloatingMessageForUnitGroup(
     targetUnit,
@@ -52,5 +82,6 @@ export const logDamage = ({
   );
 };
 
-export const getLevelScalingValueFn = (baseValue: number, addedValuePerLevel: number) =>
-  (level: number) => baseValue + ((level - 1) * addedValuePerLevel);
+export const getLevelScalingValueFn =
+  (baseValue: number, addedValuePerLevel: number) => (level: number) =>
+    baseValue + (level - 1) * addedValuePerLevel;

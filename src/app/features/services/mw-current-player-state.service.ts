@@ -135,7 +135,12 @@ export class MwCurrentPlayerStateService extends StoreClient() {
   }
 
   public onCurrentSpellCast(): void {
-    const spellManacost = this.currentSpell.currentManaCost;
+    const currentSpell = this.currentSpell;
+    const spellManacost = currentSpell.currentManaCost;
+
+    if (currentSpell.baseType.config.spellConfig.isOncePerBattle) {
+      currentSpell.setCooldown(Infinity);
+    }
 
     if (this.currentCasterUnit) {
       const casterUnitMana = this.currentCasterUnit.getMana();
