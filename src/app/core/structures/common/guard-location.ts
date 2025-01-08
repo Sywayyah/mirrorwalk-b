@@ -13,7 +13,7 @@ export const FireRingStructure: StructureGeneratorModel = createStructure({
       maxUnitGroups: 3,
       minUnitGroups: 3,
       units: [
-        ['#unit-neut-fire-spirit-0', 7, 9, 3],
+        ['#unit-neut-fire-spirit-0', 6, 7, 3],
       ],
     };
   },
