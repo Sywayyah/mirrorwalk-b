@@ -84,7 +84,7 @@ export class MwGameboardComponent extends StoreClient() implements OnInit, After
 
   public ngAfterViewInit(): void {
     /* todo: might work poorly if there will be summoned units */
-    this.cards.forEach(card => this.cardsMapping.register(card.unitGroup, card));
+    this.cards.forEach(card => this.cardsMapping.register(card.unitGroup(), card));
 
     /* init interactions only after view initialized and cards are available */
     this.initInteractions();
@@ -145,7 +145,7 @@ export class MwGameboardComponent extends StoreClient() implements OnInit, After
 
     this.cd.detectChanges();
 
-    this.cardsMapping.register(event.unitGroup, this.cards.find(cardComponent => cardComponent.unitGroup === event.unitGroup)!);
+    this.cardsMapping.register(event.unitGroup, this.cards.find(cardComponent => cardComponent.unitGroup() === event.unitGroup)!);
   }
 
   private updatePlayersUnitGroupsToShow(): void {
