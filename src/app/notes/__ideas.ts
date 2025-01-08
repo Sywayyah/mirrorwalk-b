@@ -1,4 +1,55 @@
 /*
+  Specialties can be more robust
+
+  At the start, a player can pick one of suggested specialties:
+    Mysticism, Rage Mastery, Economics, Necromancy, Tactics, some others
+
+  When picking one, there will be an individual screen with some bonuses
+
+  A specialty can be improved, starting with basic level, moving to advanced and expert.
+
+  Player might also have some action card each week - by sacrificing 10 mana,
+  he might be able to improve his specialties. Cost will grow every week by 4.
+*/
+
+/*
+  Units can grant player additional powers.
+
+  If player decided to play Fire build, he can also use Firebirds, Phoenixes, Fire Elementals
+
+  their presence, with Specialty, can mutually increase the power of player and units
+*/
+
+/*
+  Alongside cards that can affect player using his manacost - there can be different
+  cards, for instance, for warrior class - at the cost of 5 mana, player's units
+  gain +3 to Armor or +3 to Attack for the rest of the week - something of that kind.
+*/
+
+/*
+  Game can become more interesting if factions are much more complicated than what they are now
+
+  There can be many units of the same tier
+  Many units can be developed in single building
+  Many units of similar type can be produced in single faction
+  Castle could produce both Firebirds and Phoenixes
+  Phoenix would be a creature of higher tier with lots of abilities
+  Higher tier creatures could possess properties like Giantism - makes 1-4 tier units do less
+
+  Castle could allow for different schools of magic
+  Learning an ability can cost max mana
+  Stone Rain, Stone Wall
+
+
+  Castle could allow for magical creatures of Stone and Ice
+  Stone and Ice mages
+  Titans and Ice Wyverns - high tier creatures produced there
+
+
+
+
+*/
+/*
   Atlanta Temple
 */
 
