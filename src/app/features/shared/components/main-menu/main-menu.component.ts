@@ -6,9 +6,10 @@ import { State } from 'src/app/features/services/state.service';
 import { onEscape } from 'src/app/features/services/utils/keys.util';
 
 @Component({
-  selector: 'mw-main-menu-popup',
-  templateUrl: './main-menu.component.html',
-  styleUrl: './main-menu.component.scss'
+    selector: 'mw-main-menu-popup',
+    templateUrl: './main-menu.component.html',
+    styleUrl: './main-menu.component.scss',
+    standalone: false
 })
 export class MainMenuPopupComponent extends BasicPopup implements OnDestroy {
   private readonly events = inject(EventsService);

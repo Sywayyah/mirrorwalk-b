@@ -7,9 +7,10 @@ export interface AnimationRef {
 }
 
 @Component({
-  selector: 'mw-vfx-element',
-  templateUrl: './vfx-element.component.html',
-  styleUrls: ['./vfx-element.component.scss']
+    selector: 'mw-vfx-element',
+    templateUrl: './vfx-element.component.html',
+    styleUrls: ['./vfx-element.component.scss'],
+    standalone: false
 })
 export class VfxElementComponent implements OnInit {
 

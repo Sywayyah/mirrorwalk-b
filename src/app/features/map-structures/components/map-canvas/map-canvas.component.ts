@@ -13,9 +13,10 @@ export interface MapDragEvent {
 }
 
 @Component({
-  selector: 'mw-map-canvas',
-  templateUrl: './map-canvas.component.html',
-  styleUrls: ['./map-canvas.component.scss']
+    selector: 'mw-map-canvas',
+    templateUrl: './map-canvas.component.html',
+    styleUrls: ['./map-canvas.component.scss'],
+    standalone: false
 })
 export class MapCanvasComponent extends StoreClient() implements OnInit {
   private readonly hostElem = injectHostElem();

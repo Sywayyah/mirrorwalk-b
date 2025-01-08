@@ -3,9 +3,10 @@ import { DisplayPlayerRewardAction, RewardModel } from 'src/app/core/events';
 import { BasicPopup } from '../popup-container';
 
 @Component({
-  selector: 'mw-reward-popup',
-  templateUrl: './reward-popup.component.html',
-  styleUrls: ['./reward-popup.component.scss']
+    selector: 'mw-reward-popup',
+    templateUrl: './reward-popup.component.html',
+    styleUrls: ['./reward-popup.component.scss'],
+    standalone: false
 })
 export class RewardPopupComponent extends BasicPopup<DisplayPlayerRewardAction> {
 

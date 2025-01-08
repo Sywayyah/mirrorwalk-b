@@ -7,9 +7,10 @@ import { BasicPopup } from 'src/app/features/shared/components';
 import { EventsService } from 'src/app/store';
 
 @Component({
-  selector: 'mw-post-fight-reward-popup',
-  templateUrl: './post-fight-reward-popup.component.html',
-  styleUrls: ['./post-fight-reward-popup.component.scss']
+    selector: 'mw-post-fight-reward-popup',
+    templateUrl: './post-fight-reward-popup.component.html',
+    styleUrls: ['./post-fight-reward-popup.component.scss'],
+    standalone: false
 })
 export class PostFightRewardPopupComponent extends BasicPopup<FightEndsPopup> implements OnInit {
 

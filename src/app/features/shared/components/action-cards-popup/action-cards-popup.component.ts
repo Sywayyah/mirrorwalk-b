@@ -7,9 +7,10 @@ import { EventsService } from 'src/app/store';
 import { BasicPopup } from '../popup-container';
 
 @Component({
-  selector: 'mw-action-cards-popup',
-  templateUrl: './action-cards-popup.component.html',
-  styleUrls: ['./action-cards-popup.component.scss']
+    selector: 'mw-action-cards-popup',
+    templateUrl: './action-cards-popup.component.html',
+    styleUrls: ['./action-cards-popup.component.scss'],
+    standalone: false
 })
 export class ActionCardsPopupComponent extends BasicPopup<{}> {
   private readonly state = inject(State);

@@ -3,9 +3,10 @@ import { HintsService } from 'src/app/features/services/hints.service';
 import { ElementHint, HintAttachment } from '../hints-container/hints-container.component';
 
 @Component({
-  selector: 'mw-hover-hint',
-  templateUrl: './hover-hint.component.html',
-  styleUrls: ['./hover-hint.component.scss']
+    selector: 'mw-hover-hint',
+    templateUrl: './hover-hint.component.html',
+    styleUrls: ['./hover-hint.component.scss'],
+    standalone: false
 })
 export class HoverHintComponent implements OnDestroy {
 

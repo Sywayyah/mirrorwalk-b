@@ -4,9 +4,10 @@ import { HistoryLogTypesEnum } from 'src/app/core/ui';
 import { MwBattleLogService } from 'src/app/features/services';
 
 @Component({
-  selector: 'mw-history-log',
-  templateUrl: './mw-history-log.component.html',
-  styleUrls: ['./mw-history-log.component.scss']
+    selector: 'mw-history-log',
+    templateUrl: './mw-history-log.component.html',
+    styleUrls: ['./mw-history-log.component.scss'],
+    standalone: false
 })
 export class MwHistoryLogComponent {
   @ViewChild('historyLog', { static: true }) public historyLogElem!: ElementRef;

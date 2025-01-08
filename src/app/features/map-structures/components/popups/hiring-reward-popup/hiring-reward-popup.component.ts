@@ -15,9 +15,10 @@ interface HireModel {
 }
 
 @Component({
-  selector: 'mw-hiring-reward-popup',
-  templateUrl: './hiring-reward-popup.component.html',
-  styleUrls: ['./hiring-reward-popup.component.scss']
+    selector: 'mw-hiring-reward-popup',
+    templateUrl: './hiring-reward-popup.component.html',
+    styleUrls: ['./hiring-reward-popup.component.scss'],
+    standalone: false
 })
 export class HiringRewardPopupComponent extends BasicPopup<StructPopupData> implements OnInit {
 

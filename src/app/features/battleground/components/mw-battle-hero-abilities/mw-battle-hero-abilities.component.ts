@@ -4,9 +4,10 @@ import { Spell } from 'src/app/core/spells';
 import { MwCurrentPlayerStateService, MwPlayersService } from 'src/app/features/services';
 
 @Component({
-  selector: 'mw-battle-hero-abilities',
-  templateUrl: './mw-battle-hero-abilities.component.html',
-  styleUrls: ['./mw-battle-hero-abilities.component.scss']
+    selector: 'mw-battle-hero-abilities',
+    templateUrl: './mw-battle-hero-abilities.component.html',
+    styleUrls: ['./mw-battle-hero-abilities.component.scss'],
+    standalone: false
 })
 export class MwBattleHeroAbilitiesComponent {
 

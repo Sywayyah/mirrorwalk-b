@@ -8,9 +8,10 @@ import { BasicPopup } from 'src/app/features/shared/components';
 import { EventsService } from 'src/app/store';
 
 @Component({
-  selector: 'mw-build-popup',
-  templateUrl: './build-popup.component.html',
-  styleUrls: ['./build-popup.component.scss']
+    selector: 'mw-build-popup',
+    templateUrl: './build-popup.component.html',
+    styleUrls: ['./build-popup.component.scss'],
+    standalone: false
 })
 export class BuildPopupComponent extends BasicPopup<{ building: Building, targetLevel: number }> {
 

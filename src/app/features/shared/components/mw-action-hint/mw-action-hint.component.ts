@@ -8,9 +8,10 @@ import { ActionHintService } from 'src/app/features/services/mw-action-hint.serv
 import { EventsService } from 'src/app/store';
 
 @Component({
-  selector: 'mw-action-hint',
-  templateUrl: './mw-action-hint.component.html',
-  styleUrls: ['./mw-action-hint.component.scss']
+    selector: 'mw-action-hint',
+    templateUrl: './mw-action-hint.component.html',
+    styleUrls: ['./mw-action-hint.component.scss'],
+    standalone: false
 })
 export class MwActionHintComponent {
   public hintActionTypes: typeof ActionHintTypeEnum = ActionHintTypeEnum;

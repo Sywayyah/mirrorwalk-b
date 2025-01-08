@@ -13,9 +13,10 @@ import { StoreClient, WireMethod } from 'src/app/store';
 import { MwUnitGroupCardComponent } from '../mw-unit-group-card/mw-unit-group-card.component';
 
 @Component({
-  selector: 'mw-gameboard',
-  templateUrl: './mw-gameboard.component.html',
-  styleUrls: ['./mw-gameboard.component.scss'],
+    selector: 'mw-gameboard',
+    templateUrl: './mw-gameboard.component.html',
+    styleUrls: ['./mw-gameboard.component.scss'],
+    standalone: false
 })
 export class MwGameboardComponent extends StoreClient() implements OnInit, AfterViewInit {
   public mainPlayerUnitGroups!: UnitGroup[];

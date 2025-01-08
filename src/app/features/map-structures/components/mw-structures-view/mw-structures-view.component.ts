@@ -15,9 +15,10 @@ import { onEscape } from 'src/app/features/services/utils/keys.util';
 /*  also think on positioning of svg in html */
 
 @Component({
-  selector: 'mw-structures-view',
-  templateUrl: './mw-structures-view.component.html',
-  styleUrls: ['./mw-structures-view.component.scss'],
+    selector: 'mw-structures-view',
+    templateUrl: './mw-structures-view.component.html',
+    styleUrls: ['./mw-structures-view.component.scss'],
+    standalone: false
 })
 export class MwStructuresViewComponent extends StoreClient() implements AfterViewInit {
 

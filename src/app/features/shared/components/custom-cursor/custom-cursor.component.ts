@@ -3,9 +3,10 @@ import { VfxElementComponent } from '../vfx-element/vfx-element.component';
 import { CursorService } from './cursor.service';
 
 @Component({
-  selector: 'mw-custom-cursor',
-  templateUrl: './custom-cursor.component.html',
-  styleUrls: ['./custom-cursor.component.scss']
+    selector: 'mw-custom-cursor',
+    templateUrl: './custom-cursor.component.html',
+    styleUrls: ['./custom-cursor.component.scss'],
+    standalone: false
 })
 export class CustomCursorComponent {
 

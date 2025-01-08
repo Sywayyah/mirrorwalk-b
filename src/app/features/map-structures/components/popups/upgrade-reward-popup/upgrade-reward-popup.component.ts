@@ -19,9 +19,10 @@ interface UpgradeModel {
 }
 
 @Component({
-  selector: 'mw-upgrade-reward-popup',
-  templateUrl: './upgrade-reward-popup.component.html',
-  styleUrls: ['./upgrade-reward-popup.component.scss']
+    selector: 'mw-upgrade-reward-popup',
+    templateUrl: './upgrade-reward-popup.component.html',
+    styleUrls: ['./upgrade-reward-popup.component.scss'],
+    standalone: false
 })
 export class UpgradeRewardPopupComponent extends BasicPopup<StructPopupData> implements OnInit {
 

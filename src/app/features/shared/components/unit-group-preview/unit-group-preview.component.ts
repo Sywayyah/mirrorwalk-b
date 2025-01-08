@@ -3,8 +3,8 @@ import { UnitBaseType } from "src/app/core/unit-types";
 
 
 @Component({
-  selector: 'mw-unit-group-preview',
-  template: `
+    selector: 'mw-unit-group-preview',
+    template: `
     <div style="display: flex; flex-direction: column;">
       <img src="../assets/{{unitType().mainPortraitUrl}}">
 
@@ -13,7 +13,8 @@ import { UnitBaseType } from "src/app/core/unit-types";
       </div>
     </div>
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class UnitGroupPreviewComponent {
   unitType = input.required<UnitBaseType>();

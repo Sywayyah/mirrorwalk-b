@@ -7,10 +7,11 @@ import { MwCurrentPlayerStateService } from 'src/app/features/services';
 import { HintAttachment } from 'src/app/features/shared/components';
 
 @Component({
-  selector: 'mw-unit-group-spell',
-  templateUrl: './unit-group-spell.component.html',
-  styleUrls: ['./unit-group-spell.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'mw-unit-group-spell',
+    templateUrl: './unit-group-spell.component.html',
+    styleUrls: ['./unit-group-spell.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class UnitGroupSpellComponent {
   private readonly curPlayerState = inject(MwCurrentPlayerStateService);

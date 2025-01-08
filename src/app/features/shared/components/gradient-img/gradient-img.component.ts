@@ -1,15 +1,15 @@
 import { Component, computed, input } from '@angular/core';
 
 @Component({
-  selector: 'mw-gradient-img',
-  template: `
+    selector: 'mw-gradient-img',
+    template: `
     <img [src]="imgSrc()">
 
     <div class="gradient"
         [style.background]="bgGradient()">
     </div>
   `,
-  styles: `
+    styles: `
     :host {
       display: block;
       position: relative;
@@ -31,6 +31,7 @@ import { Component, computed, input } from '@angular/core';
       bottom: 0;
    }
   `,
+    standalone: false
 })
 export class GradientImgComponent {
   readonly imgSrc = input.required<string>();

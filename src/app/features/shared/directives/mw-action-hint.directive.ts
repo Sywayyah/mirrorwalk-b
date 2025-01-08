@@ -4,7 +4,8 @@ import { ActionHintService } from '../../services/mw-action-hint.service';
 
 // Maybe some animation can be provided.
 @Directive({
-  selector: '[mwActionHint]',
+    selector: '[mwActionHint]',
+    standalone: false
 })
 export class MwActionHintDirective implements OnDestroy {
 

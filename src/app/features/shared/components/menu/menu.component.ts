@@ -3,9 +3,10 @@ import { HintsService } from 'src/app/features/services/hints.service';
 import { ElementHint, HintAttachment } from '../hints-container/hints-container.component';
 
 @Component({
-  selector: 'mw-menu',
-  templateUrl: './menu.component.html',
-  styleUrls: ['./menu.component.scss']
+    selector: 'mw-menu',
+    templateUrl: './menu.component.html',
+    styleUrls: ['./menu.component.scss'],
+    standalone: false
 })
 export class MenuComponent {
   @Input()

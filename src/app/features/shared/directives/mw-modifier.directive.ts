@@ -1,7 +1,8 @@
 import { Directive, ElementRef, Input, OnChanges, OnDestroy, Renderer2 } from '@angular/core';
 
 @Directive({
-  selector: '[mwNumberModifier]'
+    selector: '[mwNumberModifier]',
+    standalone: false
 })
 export class NumberModifierDirective implements OnDestroy, OnChanges {
 

@@ -9,9 +9,10 @@ import { BasicPopup } from 'src/app/features/shared/components';
 import { EventsService } from 'src/app/store';
 
 @Component({
-  selector: 'mw-preview-popup',
-  templateUrl: './preview-popup.component.html',
-  styleUrls: ['./preview-popup.component.scss']
+    selector: 'mw-preview-popup',
+    templateUrl: './preview-popup.component.html',
+    styleUrls: ['./preview-popup.component.scss'],
+    standalone: false
 })
 export class PreviewPopupComponent extends BasicPopup<StructPopupData> {
   struct = this.data.struct;

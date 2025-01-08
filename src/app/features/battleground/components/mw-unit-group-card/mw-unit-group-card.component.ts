@@ -11,12 +11,13 @@ import { PROVIDE_UI_UNIT_GROUP, UIUnitProvider } from 'src/app/features/shared/d
 import { StoreClient } from 'src/app/store';
 
 @Component({
-  selector: 'mw-unit-group-card',
-  templateUrl: './mw-unit-group-card.component.html',
-  styleUrls: ['./mw-unit-group-card.component.scss'],
-  providers: [
-    { provide: PROVIDE_UI_UNIT_GROUP, useExisting: forwardRef(() => MwUnitGroupCardComponent) }
-  ],
+    selector: 'mw-unit-group-card',
+    templateUrl: './mw-unit-group-card.component.html',
+    styleUrls: ['./mw-unit-group-card.component.scss'],
+    providers: [
+        { provide: PROVIDE_UI_UNIT_GROUP, useExisting: forwardRef(() => MwUnitGroupCardComponent) }
+    ],
+    standalone: false
 })
 export class MwUnitGroupCardComponent extends StoreClient() implements UIUnitProvider, OnInit, OnDestroy {
 

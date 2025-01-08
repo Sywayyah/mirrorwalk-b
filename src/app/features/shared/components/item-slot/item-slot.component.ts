@@ -8,9 +8,10 @@ import { StoreClient, WireMethod } from 'src/app/store';
 import { HintAttachment } from '../hints-container/hints-container.component';
 
 @Component({
-  selector: 'mw-item-slot',
-  templateUrl: './item-slot.component.html',
-  styleUrls: ['./item-slot.component.scss']
+    selector: 'mw-item-slot',
+    templateUrl: './item-slot.component.html',
+    styleUrls: ['./item-slot.component.scss'],
+    standalone: false
 })
 export class ItemSlotComponent extends StoreClient() implements OnChanges {
 

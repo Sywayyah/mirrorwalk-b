@@ -11,9 +11,10 @@ import { TypedChanges } from 'src/app/core/utils';
 //  todo: provide RMB action hint for units
 /* todo: create component for hero icon */
 @Component({
-  selector: 'mw-unit-group-info',
-  templateUrl: './unit-group-info.component.html',
-  styleUrls: ['./unit-group-info.component.scss']
+    selector: 'mw-unit-group-info',
+    templateUrl: './unit-group-info.component.html',
+    styleUrls: ['./unit-group-info.component.scss'],
+    standalone: false
 })
 export class UnitGroupInfoComponent implements OnChanges {
   @Input()
