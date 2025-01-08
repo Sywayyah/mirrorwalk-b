@@ -17,9 +17,7 @@ export class MwSpellButtonComponent {
   hero = input.required<Hero>();
 
   disabled = input(false);
-
   isActive = input(false);
-
   hintPos = input<HintAttachment>('above');
 
   clicked = output<Spell>();
