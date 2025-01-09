@@ -1,4 +1,14 @@
 /*
+  Another idea:
+    Cities rework: instead of providing all buildings - there can be slots
+      with slots, player can spend resources and building points - this way,
+*/
+/*
+  Units can give up their turns and give something instead, to hero or to
+  all groups
+*/
+
+/*
   Atlanta Temple
 */
 
