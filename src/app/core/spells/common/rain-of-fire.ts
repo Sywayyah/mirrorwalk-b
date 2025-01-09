@@ -33,8 +33,9 @@ export const RainOfFireSpell: SpellBaseType = createSpell({
     const fireMastery = ownerHero.specialtiesModGroup.getModValue('specialtyFireMastery') || 0;
 
     const descriptions = [
-      spellDescrElem(`Deals ${baseDamage} +${bonusDmgPerLevel} damage per level (${getDamageByLevel(spellInstance.currentLevel)}) to the target.`),
-      spellDescrElem(`<br>Improves with Fire Mastery: gains additional targets.`),
+      spellDescrElem(`Deals ${baseDamage} base damage, +${bonusDmgPerLevel} per level to the target.`),
+      spellDescrElem(`<br>Damage: ${getDamageByLevel(spellInstance.currentLevel)}`),
+      spellDescrElem(`<br>Improves with Fire Mastery: gains random additional targets.`),
     ];
 
     if (fireMastery) {

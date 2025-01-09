@@ -183,6 +183,20 @@ export class BattleStateService {
     return this.getAliveUnitsOfPlayer(player).length !== 0;
   }
 
+  public addTurnsToUnitGroup(unitGroup: UnitGroup, turns: number): void {
+    const previousTurnsLeft = unitGroup.turnsLeft;
+
+    unitGroup.turnsLeft += turns;
+
+    if (this.currentUnitGroup === unitGroup) {
+      this.currentGroupTurnsLeft += turns;
+    }
+
+    if (previousTurnsLeft <= 0 && unitGroup.turnsLeft > 0) {
+      this.resortFigthQueueWithNewUnits();
+    }
+  }
+
   public summonUnitForPlayer(ownerPlayer: Player, unitType: UnitTypeId, unitNumber: number): UnitGroup {
     const summonedUnitGroup = this.units.createUnitGroup(unitType, { count: unitNumber }, ownerPlayer.hero) as UnitGroup;
 

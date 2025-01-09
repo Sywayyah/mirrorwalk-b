@@ -128,6 +128,10 @@ export const HasteSpell: SpellBaseType = createSpell({
               initialLevel: spellInstance.currentLevel,
             });
 
+            // type instead of id
+            if (event.target.type.id === '#unit-neut-wind-spirit-0') {
+              actions.addTurnsToUnitGroup(event.target, 1);
+            }
             actions.addSpellToUnitGroup(event.target, hasteBuff, ownerPlayer);
           },
         });

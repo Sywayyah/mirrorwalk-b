@@ -53,7 +53,7 @@ export interface StructureGeneratorModel extends Entity {
   icon?: string;
   control: StuctureControl;
 
-  description?: (params: { thisStruct: MapStructure }) => StructureDescriptions;
+  description?: (params: { thisStruct: MapStructure, visitingPlayer?: Player }) => StructureDescriptions;
 
   actionPoints?: number;
   disableWeeklyGuardRise?: boolean;

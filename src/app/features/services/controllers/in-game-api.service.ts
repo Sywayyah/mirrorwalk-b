@@ -205,6 +205,9 @@ export class InGameApiController extends StoreClient() {
 
         this.battleState.removeUnitsWithoutTurnsFromFightQueue();
       },
+      addTurnsToUnitGroup: (target, turns) => {
+        this.battleState.addTurnsToUnitGroup(target, turns);
+      },
       unitGroupAttack: (attacker, attacked) => this.events.dispatch(GroupAttacked({ attackingGroup: attacker, attackedGroup: attacked })),
       getCurrentUnitGroup: () => this.battleState.currentUnitGroup,
       summonUnitsForPlayer: (ownerPlayer: Player, unitTypeId: UnitTypeId, unitNumber: number) => {

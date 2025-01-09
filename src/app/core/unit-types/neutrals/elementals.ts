@@ -51,6 +51,7 @@ neutralsFaction.defineUnitType({
 
   getDescription: simpleDescriptions([
     heroDescrElem('Tier 4 Neutral magical creature of wind.'),
+    heroDescrElem('<br>Haste spell always grants an additional turn.'),
     heroDescrElem('<br>Has base manapool of 4.'),
   ]),
 
