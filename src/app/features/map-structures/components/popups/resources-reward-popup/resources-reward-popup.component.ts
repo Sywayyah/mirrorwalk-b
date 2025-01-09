@@ -5,9 +5,10 @@ import { MwPlayersService } from 'src/app/features/services';
 import { BasicPopup } from 'src/app/features/shared/components';
 
 @Component({
-  selector: 'mw-resources-reward-popup',
-  templateUrl: './resources-reward-popup.component.html',
-  styleUrls: ['./resources-reward-popup.component.scss']
+    selector: 'mw-resources-reward-popup',
+    templateUrl: './resources-reward-popup.component.html',
+    styleUrls: ['./resources-reward-popup.component.scss'],
+    standalone: false
 })
 export class ResourcesRewardPopupComponent extends BasicPopup<StructRewardPopup> implements OnInit {
 

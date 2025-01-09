@@ -11,9 +11,10 @@ import { escapeToView } from 'src/app/features/services/utils/view.util';
 import { MwPlayersService } from 'src/app/features/services';
 
 @Component({
-  selector: 'mw-town-view',
-  templateUrl: './town-view.component.html',
-  styleUrls: ['./town-view.component.scss'],
+    selector: 'mw-town-view',
+    templateUrl: './town-view.component.html',
+    styleUrls: ['./town-view.component.scss'],
+    standalone: false
 })
 export class TownViewComponent {
   private readonly players = inject(MwPlayersService);

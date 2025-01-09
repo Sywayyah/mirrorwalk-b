@@ -5,9 +5,10 @@ import { MwPlayersService } from 'src/app/features/services';
 import { State } from 'src/app/features/services/state.service';
 
 @Component({
-  selector: 'mw-player-resources',
-  templateUrl: './mw-player-resources.component.html',
-  styleUrls: ['./mw-player-resources.component.scss']
+    selector: 'mw-player-resources',
+    templateUrl: './mw-player-resources.component.html',
+    styleUrls: ['./mw-player-resources.component.scss'],
+    standalone: false
 })
 export class MwPlayerResourcesComponent {
   public readonly resourceNames = resourceNames;

@@ -4,9 +4,10 @@ import { State } from 'src/app/features/services/state.service';
 import { BasicPopup } from 'src/app/features/shared/components';
 
 @Component({
-  selector: 'mw-settings-popup',
-  templateUrl: './settings-popup.component.html',
-  styleUrls: ['./settings-popup.component.scss']
+    selector: 'mw-settings-popup',
+    templateUrl: './settings-popup.component.html',
+    styleUrls: ['./settings-popup.component.scss'],
+    standalone: false
 })
 export class SettingsPopupComponent extends BasicPopup<{}> {
   // @ViewChild('scriptPath')

@@ -11,9 +11,10 @@ import { BasicPopup } from 'src/app/features/shared/components';
 import { EventsService } from 'src/app/store';
 
 @Component({
-  selector: 'mw-hero-popup',
-  templateUrl: './hero-popup.component.html',
-  styleUrls: ['./hero-popup.component.scss']
+    selector: 'mw-hero-popup',
+    templateUrl: './hero-popup.component.html',
+    styleUrls: ['./hero-popup.component.scss'],
+    standalone: false
 })
 export class HeroPopupComponent extends BasicPopup<{}> {
   public readonly currentPlayer = this.playersService.getCurrentPlayer();

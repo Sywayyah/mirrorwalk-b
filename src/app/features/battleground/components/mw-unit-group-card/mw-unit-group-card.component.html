@@ -1,28 +1,30 @@
-<mw-vfx-container [containerId]="unitGroup.id">
+@let group = unitGroup();
+
+<mw-vfx-container [containerId]="group.id">
 
   <div *ngIf="unitStats$ | async as _unitStats"
        class="card-top"
-       [class.active]="mwBattleStateService.currentPlayer === playerInfo && attackingUnitGroup === unitGroup"
-       [ngClass]="side === 'left' ? 'card-left' : 'card-right'"
-       [class.inactive]="!unitGroup.turnsLeft && unitGroup.fightInfo.isAlive"
-       [class.defeated]="!unitGroup.fightInfo.isAlive"
+       [class.active]="mwBattleStateService.currentPlayer === playerInfo() && attackingUnitGroup === group"
+       [ngClass]="side() === 'left' ? 'card-left' : 'card-right'"
+       [class.inactive]="!group.turnsLeft && group.fightInfo.isAlive"
+       [class.defeated]="!group.fightInfo.isAlive"
        (mouseenter)="onCardHover(true)"
        (mouseleave)="onCardHover(false)">
 
     <div class="card-wrapper">
-      <div [style.background]="playerInfo.color"
-           [class.current-group]="mwBattleStateService.currentPlayer === playerInfo && attackingUnitGroup === unitGroup"
+      <div [style.background]="playerInfo().color"
+           [class.current-group]="mwBattleStateService.currentPlayer === playerInfo() && attackingUnitGroup === group"
            [class.hovered-enemy]="isCardHovered && isEnemyCard && canCurrentPlayerAttack"
            class="card">
         <div style="padding-bottom: 3px; font-weight: 500; white-space: nowrap;">
-          {{ unitGroup.type.name }}
-          ({{ unitGroup.count }})
+          {{ group.type.name }}
+          ({{ group.count }})
         </div>
 
         <div style="font-size: 12px;">
           <div>
             <mw-ra-icon icon="spinning-sword" />
-            ({{unitGroup.turnsLeft}}/{{unitGroup.type.defaultTurnsPerRound}})
+            ({{group.turnsLeft}}/{{group.type.defaultTurnsPerRound}})
           </div>
 
           <div>
@@ -50,7 +52,7 @@
           </div>
 
           <!-- this info will have to be updated -->
-          <div *ngIf="!isBoss || unitGroup.type.isHero">
+          <div *ngIf="!isBoss || group.type.isHero">
             <mw-ra-icon icon="health" />
             {{ _unitStats.groupStats.totalHealth }}
           </div>
@@ -58,14 +60,14 @@
       </div>
 
       <div class="abilities"
-           [ngClass]="side">
+           [ngClass]="side()">
         <div class="column-data">
           <mw-unit-group-spell *ngFor="let spell of spells"
                                [hintPos]="spellsHintsPosition"
                                [spell]="spell"
-                               [hero]="playerInfo.hero"
-                               [owner]="unitGroup"
-                               [onCooldown]="unitGroup.fightInfo.spellsOnCooldown || !!spell.cooldown"
+                               [hero]="playerInfo().hero"
+                               [owner]="group"
+                               [onCooldown]="group.fightInfo.spellsOnCooldown || !!spell.cooldown"
                                [currentUnit]="attackingUnitGroup" />
         </div>
 
@@ -73,29 +75,29 @@
           <mw-unit-group-buff [hintPos]="spellsHintsPosition"
                               *ngFor="let ability of effects"
                               [buff]="ability"
-                              [ownerUnit]="unitGroup" />
+                              [ownerUnit]="group" />
         </div>
       </div>
     </div>
 
     <div class="portrait-container">
 
-      <mw-unit-group-portrait [unitGroup]="unitGroup"
-                              [toRight]="side === 'left'"
-                              [isHero]="unitGroup.type.isHero" />
+      <mw-unit-group-portrait [unitGroup]="group"
+                              [toRight]="side() === 'left'"
+                              [isHero]="group.type.isHero" />
 
       <!-- #4f52bd -->
       <!-- "linear-gradient(180deg, rgba(255,77,93,1) 0%, rgba(129,25,25,1) 100%)" -->
       <!-- rgb(201, 45, 45) -->
       <!-- rgb(80 89 165) -->
       <mw-value-bar class="health-bar"
-                    *ngIf="isBoss || unitGroup.type.isHero"
+                    *ngIf="isBoss || group.type.isHero"
                     barStyle="normal"
-                    [side]="side"
+                    [side]="side()"
                     color="rgb(201, 45, 45)"
                     [showMax]="true"
-                    [currentValue]="unitGroup.tailUnitHp!"
-                    [maxValue]="unitGroup.type.baseStats.health"
+                    [currentValue]="group.tailUnitHp!"
+                    [maxValue]="group.type.baseStats.health"
                     [barHeight]="14">
       </mw-value-bar>
     </div>

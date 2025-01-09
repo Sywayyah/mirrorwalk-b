@@ -3,9 +3,10 @@ import { DisplayReward, GameCommandEvents, GameOpenMainScreen, GameOpenMapStruct
 import { Notify, StoreClient, WireMethod } from 'src/app/store';
 
 @Component({
-  selector: 'mw-view-control',
-  templateUrl: './mw-view-control.component.html',
-  styleUrls: ['./mw-view-control.component.scss'],
+    selector: 'mw-view-control',
+    templateUrl: './mw-view-control.component.html',
+    styleUrls: ['./mw-view-control.component.scss'],
+    standalone: false
 })
 export class MwViewControlComponent extends StoreClient() {
   public currentView: ViewsEnum = ViewsEnum.MainScreen;

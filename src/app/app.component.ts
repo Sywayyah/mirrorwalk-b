@@ -29,10 +29,11 @@ const GlobalServices = [
 ];
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss'],
-  providers: GlobalServices,
+    selector: 'app-root',
+    templateUrl: './app.component.html',
+    styleUrls: ['./app.component.scss'],
+    providers: GlobalServices,
+    standalone: false
 })
 export class AppComponent implements OnInit, AfterViewInit {
   @ViewChild('hintsContainer', { static: true }) public hintsContainer!: HintsContainerComponent;

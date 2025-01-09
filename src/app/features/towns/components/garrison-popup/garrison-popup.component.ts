@@ -7,9 +7,10 @@ import { BasicPopup } from 'src/app/features/shared/components';
 import { EventsService } from 'src/app/store';
 
 @Component({
-  selector: 'mw-garrison-popup',
-  templateUrl: './garrison-popup.component.html',
-  styleUrl: './garrison-popup.component.scss'
+    selector: 'mw-garrison-popup',
+    templateUrl: './garrison-popup.component.html',
+    styleUrl: './garrison-popup.component.scss',
+    standalone: false
 })
 export class GarrisonPopupComponent extends BasicPopup<{}> {
   private readonly players = inject(MwPlayersService);

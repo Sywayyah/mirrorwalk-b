@@ -5,10 +5,11 @@ import { UnitGroup } from 'src/app/core/unit-types';
 import { HintAttachment } from 'src/app/features/shared/components';
 
 @Component({
-  selector: 'mw-unit-group-spell-icon',
-  templateUrl: './unit-group-spell-icon.component.html',
-  styleUrls: ['./unit-group-spell-icon.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'mw-unit-group-spell-icon',
+    templateUrl: './unit-group-spell-icon.component.html',
+    styleUrls: ['./unit-group-spell-icon.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class UnitGroupSpellIconComponent {
   owner = input.required<UnitGroup>();

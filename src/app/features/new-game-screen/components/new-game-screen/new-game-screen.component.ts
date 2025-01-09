@@ -29,9 +29,10 @@ interface PlayerRow {
 }
 
 @Component({
-  selector: 'mw-new-game-screen',
-  templateUrl: './new-game-screen.component.html',
-  styleUrls: ['./new-game-screen.component.scss'],
+    selector: 'mw-new-game-screen',
+    templateUrl: './new-game-screen.component.html',
+    styleUrls: ['./new-game-screen.component.scss'],
+    standalone: false
 })
 export class NewGameScreenComponent {
 

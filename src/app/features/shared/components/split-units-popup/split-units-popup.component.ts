@@ -5,8 +5,9 @@ import { GameObjectsManager } from 'src/app/features/services/game-objects-manag
 import { BasicPopup } from '../popup-container';
 
 @Component({
-  selector: 'mw-split-units-popup',
-  templateUrl: './split-units-popup.component.html',
+    selector: 'mw-split-units-popup',
+    templateUrl: './split-units-popup.component.html',
+    standalone: false
 })
 export class SplitUnitsPopupComponent extends BasicPopup<{ unitGroup: UnitGroup }> {
   private readonly players = inject(MwPlayersService);

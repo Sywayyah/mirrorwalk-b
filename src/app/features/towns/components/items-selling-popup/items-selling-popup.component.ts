@@ -9,9 +9,10 @@ import { BasicPopup } from 'src/app/features/shared/components';
 import { EventsService } from 'src/app/store';
 
 @Component({
-  selector: 'mw-items-selling-popup',
-  templateUrl: './items-selling-popup.component.html',
-  styleUrl: './items-selling-popup.component.scss',
+    selector: 'mw-items-selling-popup',
+    templateUrl: './items-selling-popup.component.html',
+    styleUrl: './items-selling-popup.component.scss',
+    standalone: false
 })
 export class ItemsSellingPopupComponent extends BasicPopup<{ building: Building }> {
   readonly players = inject(MwPlayersService);

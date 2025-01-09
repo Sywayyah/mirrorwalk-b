@@ -8,9 +8,10 @@ import { BasicPopup } from 'src/app/features/shared/components';
 import { EventsService } from 'src/app/store';
 
 @Component({
-  selector: 'mw-scripted-reward-popup',
-  templateUrl: './scripted-reward-popup.component.html',
-  styleUrls: ['./scripted-reward-popup.component.scss']
+    selector: 'mw-scripted-reward-popup',
+    templateUrl: './scripted-reward-popup.component.html',
+    styleUrls: ['./scripted-reward-popup.component.scss'],
+    standalone: false
 })
 export class ScriptedRewardPopupComponent extends BasicPopup<StructPopupData> implements OnInit {
 

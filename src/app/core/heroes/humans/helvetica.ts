@@ -35,6 +35,7 @@ export const HelveticaHero: HeroBase = humansFaction.createHero({
       ['#unit-h00', 20, 32, 1],
       ['#unit-h10', 12, 18, 1],
       ['#unit-h20', 6, 11, 1],
+      ['#unit-neut-wind-spirit-0', 4, 6, 1],
     ],
   }],
   items: [

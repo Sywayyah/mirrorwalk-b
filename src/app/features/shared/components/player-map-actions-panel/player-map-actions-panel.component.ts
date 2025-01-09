@@ -7,9 +7,10 @@ import { State } from 'src/app/features/services/state.service';
 import { EventsService } from 'src/app/store';
 
 @Component({
-  selector: 'mw-player-map-actions-panel',
-  templateUrl: './player-map-actions-panel.component.html',
-  styleUrls: ['./player-map-actions-panel.component.scss']
+    selector: 'mw-player-map-actions-panel',
+    templateUrl: './player-map-actions-panel.component.html',
+    styleUrls: ['./player-map-actions-panel.component.scss'],
+    standalone: false
 })
 export class PlayerMapActionsPanelComponent {
   readonly state = inject(State);

@@ -3,9 +3,10 @@ import { OpenNewGameScreen, OpenSettings } from 'src/app/core/events';
 import { EventsService } from 'src/app/store';
 
 @Component({
-  selector: 'mw-main-screen',
-  templateUrl: './main-screen.component.html',
-  styleUrls: ['./main-screen.component.scss']
+    selector: 'mw-main-screen',
+    templateUrl: './main-screen.component.html',
+    styleUrls: ['./main-screen.component.scss'],
+    standalone: false
 })
 export class MainScreenComponent {
   constructor(

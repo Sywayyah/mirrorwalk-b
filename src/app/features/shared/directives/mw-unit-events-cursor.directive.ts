@@ -14,7 +14,8 @@ export const PROVIDE_UI_UNIT_GROUP: InjectionToken<UIUnitProvider> = new Injecti
 
 
 @Directive({
-  selector: '[mwUnitEventsCursor]'
+    selector: '[mwUnitEventsCursor]',
+    standalone: false
 })
 export class MwUnitEventsCursorDirective extends MwCustomCursorDirective implements OnInit {
   private readonly curPlayerState = inject(MwCurrentPlayerStateService);

@@ -30,9 +30,10 @@ interface UnitGroupHireModel {
 type HireMode = 'hire' | 'upgrade';
 
 @Component({
-  selector: 'mw-hiring-popup',
-  templateUrl: './hiring-popup.component.html',
-  styleUrls: ['./hiring-popup.component.scss']
+    selector: 'mw-hiring-popup',
+    templateUrl: './hiring-popup.component.html',
+    styleUrls: ['./hiring-popup.component.scss'],
+    standalone: false
 })
 export class HiringPopupComponent extends BasicPopup<HiringPopupData> implements OnInit {
 

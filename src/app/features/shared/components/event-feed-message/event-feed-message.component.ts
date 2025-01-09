@@ -3,9 +3,10 @@ import { DescriptionElementType, EventFeedMessage } from 'src/app/core/ui';
 
 const defaultMsgDelay = 2000;
 @Component({
-  selector: 'mw-event-feed-message',
-  templateUrl: './event-feed-message.component.html',
-  styleUrls: ['./event-feed-message.component.scss'],
+    selector: 'mw-event-feed-message',
+    templateUrl: './event-feed-message.component.html',
+    styleUrls: ['./event-feed-message.component.scss'],
+    standalone: false
 })
 export class EventFeedMessageComponent implements OnInit {
   @Input()

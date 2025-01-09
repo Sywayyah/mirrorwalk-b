@@ -5,9 +5,10 @@ import { BasicPopup } from 'src/app/features/shared/components';
 import { EventsService } from 'src/app/store';
 
 @Component({
-  selector: 'mw-pre-fight-popup',
-  templateUrl: './pre-fight-popup.component.html',
-  styleUrls: ['./pre-fight-popup.component.scss']
+    selector: 'mw-pre-fight-popup',
+    templateUrl: './pre-fight-popup.component.html',
+    styleUrls: ['./pre-fight-popup.component.scss'],
+    standalone: false
 })
 export class PreFightPopupComponent extends BasicPopup<StructPopupData> implements OnInit {
 

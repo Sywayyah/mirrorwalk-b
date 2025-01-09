@@ -5,11 +5,12 @@ const transformStringsToDescriptions = (val: (DescriptionElement | string)[]) =>
   .map(v => (typeof v === 'string') ? { htmlContent: v } : v);
 
 @Component({
-  selector: 'mw-description',
-  templateUrl: './description.component.html',
-  styleUrls: ['./description.component.scss'],
-  encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'mw-description',
+    templateUrl: './description.component.html',
+    styleUrls: ['./description.component.scss'],
+    encapsulation: ViewEncapsulation.None,
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class DescriptionComponent {
   public descriptions = input.required({ transform: transformStringsToDescriptions });

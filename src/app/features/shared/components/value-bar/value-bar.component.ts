@@ -8,10 +8,11 @@ import { injectHostElem, injectRenderer } from 'src/app/core/utils';
   For now, it still can be useful for debugging in some cases.
 */
 @Component({
-  selector: 'mw-value-bar',
-  templateUrl: './value-bar.component.html',
-  styleUrls: ['./value-bar.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'mw-value-bar',
+    templateUrl: './value-bar.component.html',
+    styleUrls: ['./value-bar.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class ValueBarComponent {
   private readonly hostElem = injectHostElem();

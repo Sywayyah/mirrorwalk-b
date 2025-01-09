@@ -14,9 +14,10 @@ import { VfxService } from './vfx.service';
       below effect.
  */
 @Component({
-  selector: 'mw-vfx-layer',
-  templateUrl: './vfx-layer.component.html',
-  styleUrls: ['./vfx-layer.component.scss']
+    selector: 'mw-vfx-layer',
+    templateUrl: './vfx-layer.component.html',
+    styleUrls: ['./vfx-layer.component.scss'],
+    standalone: false
 })
 export class VfxLayerComponent implements OnInit {
 

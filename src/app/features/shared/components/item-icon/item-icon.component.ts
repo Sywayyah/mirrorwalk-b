@@ -3,9 +3,10 @@ import { Item, ItemBaseModel } from 'src/app/core/items';
 import { HintAttachment } from 'src/app/features/shared/components';
 
 @Component({
-  selector: 'mw-item-icon',
-  templateUrl: './item-icon.component.html',
-  styleUrls: ['./item-icon.component.scss'],
+    selector: 'mw-item-icon',
+    templateUrl: './item-icon.component.html',
+    styleUrls: ['./item-icon.component.scss'],
+    standalone: false
 })
 export class ItemIconComponent {
   // todo: getters?

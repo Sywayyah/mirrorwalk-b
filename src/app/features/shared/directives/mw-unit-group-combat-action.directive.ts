@@ -7,7 +7,8 @@ import { PROVIDE_UI_UNIT_GROUP, UIUnitProvider } from './mw-unit-events-cursor.d
 
 
 @Directive({
-  selector: '[mwUnitGroupCombatAction]'
+    selector: '[mwUnitGroupCombatAction]',
+    standalone: false
 })
 export class MwUnitGroupCombatActionDirective implements OnInit {
 
