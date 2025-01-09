@@ -14,7 +14,7 @@ export const BanditCamp: StructureGeneratorModel = createStructure({
   control: StuctureControl.Neutral,
 
   generateGuard: () => {
-    const guard = {
+    const banditGuards = {
       maxUnitGroups: 2,
       minUnitGroups: 1,
       units: [
@@ -23,7 +23,22 @@ export const BanditCamp: StructureGeneratorModel = createStructure({
       ],
     } as GenerationModel;
 
-    return guard;
+    const windElementals: GenerationModel = {
+      maxUnitGroups: 2,
+      minUnitGroups: 2,
+      units: [['#unit-neut-wind-spirit-0', 5, 8, 2]],
+    };
+
+    const fireBirds: GenerationModel = {
+      maxUnitGroups: 1,
+      minUnitGroups: 1,
+      units: [
+        ['#unit-h40', 2, 2, 1],
+      ],
+    };
+
+    // ;
+    return CommonUtils.randItem([windElementals, banditGuards, fireBirds]);
   },
 
   generateReward: () => {

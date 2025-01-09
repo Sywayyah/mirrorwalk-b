@@ -222,7 +222,7 @@ const itemMarket = createBuildingType({
       localEvents.on({
         Built() {
           thisBuilding.addCustomData<SellingBuildingData>({
-            items: ['#item-iron-pike', '#item-irton-plate', '#item-kite-shield', '#item-storm-pike', '#item-battlemage-sword'],
+            items: ['#item-iron-pike', '#item-magic-cape', '#item-irton-plate', '#item-kite-shield', '#item-storm-pike', '#item-battlemage-sword'],
             selling: true,
           });
         },

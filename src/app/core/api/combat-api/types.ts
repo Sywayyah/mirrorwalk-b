@@ -41,6 +41,8 @@ export interface CombatActionsRef extends SpellsApi {
   /** If turns aren't specified, removes all turns left */
   removeTurnsFromUnitGroup(target: UnitGroup, turns?: number): void;
 
+  addTurnsToUnitGroup(target: UnitGroup, turns: number): void;
+
   summonUnitsForPlayer(ownerPlayer: Player, unitTypeId: UnitTypeId, unitCount: number): UnitGroup;
 
   dealDamageTo: (
