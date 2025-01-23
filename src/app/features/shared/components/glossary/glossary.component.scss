@@ -1,0 +1,35 @@
+:host {
+  height: 400px;
+  display: block;
+  padding-bottom: 10px;
+}
+
+.header {
+  padding-bottom: 10px;
+}
+
+.content {
+  display: flex;
+}
+
+.tabs {
+  display: flex;
+  flex-direction: column;
+  min-width: 200px;
+}
+
+.tab {
+  cursor: pointer;
+  padding: 5px;
+  text-align: left;
+
+  &:hover {
+    background-color: rgba(41, 41, 41, 0.139);
+  }
+}
+
+.tab-content {
+  max-height: 450px;
+  overflow-y: auto;
+  font-size: 13px;
+}

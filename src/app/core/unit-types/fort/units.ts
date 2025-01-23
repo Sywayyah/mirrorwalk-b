@@ -1,5 +1,6 @@
 import { AssetsImages } from '../../assets';
 import { fortFaction } from '../../factions';
+import { UniversalPinSpell } from '../../spells/common/universal/pin';
 import { heroDescrElem } from '../../ui';
 import { simpleDescriptions } from '../utils';
 import { PoisonArrowsSpell } from './spells/poison-arrows';
@@ -28,14 +29,20 @@ fortFaction.defineUnitType({
 
   getDescription: simpleDescriptions([
     heroDescrElem(`Tier 1 Fort unit. Can be upgraded into Clan.`),
-    heroDescrElem(`<br>The main attacking mass of the Fort, the goblins with long sharp spears. They are cheap and fragile, but swift, allowing to get an earlier turn and can be dangerous due to the chance of dealing critical damage.`),
+    heroDescrElem(
+      `<br>The main attacking mass of the Fort, the goblins with long sharp spears. They are cheap and fragile, but swift, allowing to get an earlier turn and can be dangerous due to the chance of dealing critical damage.`,
+    ),
   ]),
 
   defaultModifiers: {
     counterattacks: true,
     criticalDamageChance: 0.35,
     criticalDamageMul: 1,
+    isPinner: true,
+    pinningIncomingDamagePercent: 1.5,
   },
+
+  defaultSpells: [UniversalPinSpell],
 
   baseRequirements: {
     gold: 35,
@@ -70,14 +77,20 @@ fortFaction.defineUnitType({
 
   getDescription: simpleDescriptions([
     heroDescrElem(`Tier 1 Fort unit, upgraded version of Raiders.`),
-    heroDescrElem(`<br>The main attacking mass of the Fort, the goblins with long sharp spears. They are cheap and fragile, but swift, allowing to get an earlier turn and can be dangerous due to the chance of dealing critical damage.`),
+    heroDescrElem(
+      `<br>The main attacking mass of the Fort, the goblins with long sharp spears. They are cheap and fragile, but swift, allowing to get an earlier turn and can be dangerous due to the chance of dealing critical damage.`,
+    ),
   ]),
 
   defaultModifiers: {
     counterattacks: true,
     criticalDamageChance: 0.35,
     criticalDamageMul: 1,
+    isPinner: true,
+    pinningIncomingDamagePercent: 1.5,
   },
+
+  defaultSpells: [UniversalPinSpell],
 
   baseRequirements: {
     gold: 55,
@@ -87,7 +100,6 @@ fortFaction.defineUnitType({
   upgraded: true,
   neutralReward: defaultRewards,
 });
-
 
 fortFaction.defineUnitType({
   id: '#unit-f10',
@@ -107,8 +119,12 @@ fortFaction.defineUnitType({
   },
 
   getDescription: simpleDescriptions([
-    heroDescrElem(`Tier 2 ranged unit of the Fort. Can be upgraded into Goblin Shooters.`),
-    heroDescrElem(`<br>Basic archers that deal very low damage due to poor technologies, but mitigate that weakness by adding poison to their arrows. Attacks twice per turn.`),
+    heroDescrElem(
+      `Tier 2 ranged unit of the Fort. Can be upgraded into Goblin Shooters.`,
+    ),
+    heroDescrElem(
+      `<br>Basic archers that deal very low damage due to poor technologies, but mitigate that weakness by adding poison to their arrows. Attacks twice per turn.`,
+    ),
   ]),
 
   defaultTurnsPerRound: 2,
@@ -116,9 +132,7 @@ fortFaction.defineUnitType({
   defaultModifiers: {
     isRanged: true,
   },
-  defaultSpells: [
-    PoisonArrowsSpell,
-  ],
+  defaultSpells: [PoisonArrowsSpell],
 
   baseRequirements: {
     gold: 60,
@@ -154,11 +168,16 @@ fortFaction.defineUnitType({
   },
 
   getDescription: simpleDescriptions([
-    heroDescrElem(`Tier 2 ranged unit of the Fort. Upgraded version of Goblin Archers.`),
-    heroDescrElem(`<br>Basic archers that deal very low damage due to poor technologies, but mitigate that weakness by adding poison to their arrows.`),
-    heroDescrElem(`<br>As an improved version of Goblin Archers they are equipped with primitive but fast-reloading crossbows, allowing them to attack 3 times per round.`),
+    heroDescrElem(
+      `Tier 2 ranged unit of the Fort. Upgraded version of Goblin Archers.`,
+    ),
+    heroDescrElem(
+      `<br>Basic archers that deal very low damage due to poor technologies, but mitigate that weakness by adding poison to their arrows.`,
+    ),
+    heroDescrElem(
+      `<br>As an improved version of Goblin Archers they are equipped with primitive but fast-reloading crossbows, allowing them to attack 3 times per round.`,
+    ),
   ]),
-
 
   defaultModifiers: {
     isRanged: true,
@@ -166,9 +185,7 @@ fortFaction.defineUnitType({
 
   defaultTurnsPerRound: 3,
 
-  defaultSpells: [
-    PoisonArrowsSpell,
-  ],
+  defaultSpells: [PoisonArrowsSpell],
 
   baseRequirements: {
     gold: 60,

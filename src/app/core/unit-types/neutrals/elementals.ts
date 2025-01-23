@@ -33,6 +33,8 @@ neutralsFaction.defineUnitType({
   defaultSpells: [],
 });
 
+// increases level of wind abilities?
+// has a chance to gain a random wind ability at the beginning of each round
 neutralsFaction.defineUnitType({
   id: '#unit-neut-wind-spirit-0',
   name: 'Wind Elementals',

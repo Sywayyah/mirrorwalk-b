@@ -9,7 +9,7 @@ import { HeroBase } from '../types';
 import { heroesDefaultResources } from '../utils';
 
 /*
-  Possible common spell: Valor. On being casted, increases stats of all units
+  Possible common spell: Valor. On being cast, increases stats of all units
   (or x random units initially).
 
   Pikeman might make Valor stronger.

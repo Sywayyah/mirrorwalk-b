@@ -85,7 +85,7 @@ export class InGameApiController extends StoreClient() {
             animation: effect,
           } as VfxElemEffect, options);
         },
-        createFloatingMessageForUnitGroup: (target, data, options) => {
+        createFloatingMessageForUnitGroup: (target, data, options = {}) => {
           this.vfxService.createFloatingMessageForUnitGroup(target, data, options);
         },
         createDroppingMessageForUnitGroup: (id, data, options) => {
@@ -209,6 +209,9 @@ export class InGameApiController extends StoreClient() {
         this.battleState.addTurnsToUnitGroup(target, turns);
       },
       unitGroupAttack: (attacker, attacked) => this.events.dispatch(GroupAttacked({ attackingGroup: attacker, attackedGroup: attacked })),
+      pinAttempt: (pinning, pinned) => {
+        // pinning.
+      },
       getCurrentUnitGroup: () => this.battleState.currentUnitGroup,
       summonUnitsForPlayer: (ownerPlayer: Player, unitTypeId: UnitTypeId, unitNumber: number) => {
         const summonedUnitGroup = this.battleState.summonUnitForPlayer(ownerPlayer, unitTypeId, unitNumber);

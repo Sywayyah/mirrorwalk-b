@@ -82,7 +82,7 @@ export interface CustomAnimationData {
 /*  replace data: object with normal type */
 export interface VfxApi {
   createEffectForUnitGroup(target: UnitGroup, animation: EffectAnimation, options?: EffectOptions): void;
-  createFloatingMessageForUnitGroup(target: UnitGroup, data: CustomizableAnimationData, options: EffectOptions): void;
+  createFloatingMessageForUnitGroup(target: UnitGroup, data: CustomizableAnimationData, options?: EffectOptions): void;
   createDroppingMessageForUnitGroup(
     id: string,
     data: CustomizableAnimationData,

@@ -45,7 +45,7 @@ export class MwUnitGroupCombatActionDirective implements OnInit {
     if (event.button === 2) {
       event.preventDefault();
 
-      if (this.curPlayerState.isSpellBeingCasted()) {
+      if (this.curPlayerState.isSpellBeingCast()) {
         this.curPlayerState.cancelCurrentSpell();
 
         this.dispatchUnitGroupHovered(this.isEnemyCard ? HoverTypeEnum.EnemyCard : HoverTypeEnum.AllyCard);
