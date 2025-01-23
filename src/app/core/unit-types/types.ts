@@ -14,6 +14,7 @@ import { Spell, SpellBaseType } from '../spells';
 import { DescriptionElement } from '../ui';
 import { CommonUtils } from '../utils';
 import { complete } from '../utils/observables';
+import { CombatState, CombatStateEnum } from './unit-combat-state';
 
 type RequirementModel = Partial<ResourcesModel>;
 
@@ -86,6 +87,7 @@ export interface UnitBaseType extends Entity {
 
   defaultModifiers?: Modifiers;
 
+  // change to ids
   defaultSpells?: SpellBaseType<any>[];
   // spells?: EntityId[];
 
@@ -103,7 +105,7 @@ export interface UnitBaseType extends Entity {
   };
 
   getUnitTypeSpecialtyModifiers?(
-    specialties: Specialties
+    specialties: Specialties,
   ): Modifiers | null | undefined;
 }
 
@@ -174,6 +176,7 @@ export interface UnitGroupState {
   groupState: UnitGroupStackState;
   groupStats: UnitStatsInfo;
   // spells
+  combatState: CombatState;
 }
 
 export class UnitGroup extends GameObject<UnitCreationParams, UnitGroupState> {
@@ -228,6 +231,9 @@ export class UnitGroup extends GameObject<UnitCreationParams, UnitGroupState> {
 
   // final stats used by the game
   private readonly unitStats$ = new BehaviorSubject<UnitGroupState>({
+    combatState: {
+      type: CombatStateEnum.Normal,
+    },
     groupState: {
       // todo: wire to real values
       count: 0,
@@ -276,7 +282,7 @@ export class UnitGroup extends GameObject<UnitCreationParams, UnitGroupState> {
     if (count <= 0 || !count) {
       console.warn(
         `Cannot create unit group with ${count} units. Setting count to 1.`,
-        this
+        this,
       );
 
       count = 1;
@@ -315,15 +321,15 @@ export class UnitGroup extends GameObject<UnitCreationParams, UnitGroupState> {
     // Init unit mod groups
     this.modGroup.attachNamedParentGroup(
       UnitModGroups.CombatMods,
-      ModsRefsGroup.empty()
+      ModsRefsGroup.empty(),
     );
     this.modGroup.attachNamedParentGroup(
       UnitModGroups.SpecialtyAndConditionalMods,
-      ModsRefsGroup.empty()
+      ModsRefsGroup.empty(),
     );
     this.modGroup.attachNamedParentGroup(
       UnitModGroups.SpellMods,
-      ModsRefsGroup.empty()
+      ModsRefsGroup.empty(),
     );
 
     // Init spells when all mod groups are ready
@@ -357,14 +363,14 @@ export class UnitGroup extends GameObject<UnitCreationParams, UnitGroupState> {
     this.modGroup.detachNamedParentGroup(UnitModGroups.HeroMods);
     this.modGroup.attachNamedParentGroup(
       UnitModGroups.HeroMods,
-      this._ownerHero.modGroup
+      this._ownerHero.modGroup,
     );
   }
 
   onDestroy(): void {
     complete(this.destroyed$);
     this.spells.forEach((spell) =>
-      this.getApi().gameObjects.destroyObject(spell)
+      this.getApi().gameObjects.destroyObject(spell),
     );
   }
 
@@ -393,7 +399,7 @@ export class UnitGroup extends GameObject<UnitCreationParams, UnitGroupState> {
         ...prevState.groupState,
         currentMana: CommonUtils.limitedNumber(
           mana,
-          this.getState().groupStats.maxMana || this.type.baseStats.mana || 0
+          this.getState().groupStats.maxMana || this.type.baseStats.mana || 0,
         ),
       },
     });
@@ -463,7 +469,7 @@ export class UnitGroup extends GameObject<UnitCreationParams, UnitGroupState> {
 
   attachSpecialtyMods(specialtyMods: Modifiers): void {
     this.getSpecialtyAndConditionalModsGroup().addModsRef(
-      ModsRef.fromMods(specialtyMods)
+      ModsRef.fromMods(specialtyMods),
     );
   }
 
@@ -532,7 +538,7 @@ export class UnitGroup extends GameObject<UnitCreationParams, UnitGroupState> {
 
   private getSpecialtyAndConditionalModsGroup(): ModsRefsGroup {
     return this.modGroup.getNamedGroup(
-      UnitModGroups.SpecialtyAndConditionalMods
+      UnitModGroups.SpecialtyAndConditionalMods,
     )!;
   }
 

@@ -11,11 +11,11 @@ import { DescHtmlElement, DescriptionElementType } from 'src/app/core/ui';
 import { UnitGroup } from 'src/app/core/unit-types';
 
 @Component({
-    selector: 'mw-spell-description',
-    templateUrl: './spell-description.component.html',
-    styleUrls: ['./spell-description.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+  selector: 'mw-spell-description',
+  templateUrl: './spell-description.component.html',
+  styleUrls: ['./spell-description.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class SpellDescriptionComponent {
   readonly spell = input.required<Spell>();

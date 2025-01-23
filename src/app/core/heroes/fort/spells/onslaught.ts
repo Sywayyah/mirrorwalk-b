@@ -43,7 +43,7 @@ export const OnslaugtSpell = createSpell({
   activationType: SpellActivationType.Target,
   getDescription: () => ({
     descriptions: [
-      spellDescrElem(`Can only be casted on Raiders. Increases their stats and grants lifesteal.`),
+      spellDescrElem(`Can only be cast on Raiders. Increases their stats and grants lifesteal.`),
     ]
   }),
   config: {

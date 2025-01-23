@@ -14,7 +14,7 @@ export const LifeObeliskSpell = createSpell({
       spellDescrElem(`Stuns selected target and summons an Obelisk with 100 health. Obelisk possesses aura that increases the armor by 4.`),
       spellDescrElem(`Obelisk cannot attack, but can be attacked and destroyed.`),
       spellDescrElem(`Some of Blight's abilities interact with obelisk.`),
-      spellDescrElem(`Cannot be casted while there is another obelisk.`),
+      spellDescrElem(`Cannot be cast while there is another obelisk.`),
     ]
   }),
   config: {

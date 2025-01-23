@@ -104,6 +104,8 @@ export interface OnSpellAcquiredConfig<T> {
 export interface SpellConfig<SpellStateType> {
   // not applicable to passive spells, true by default - might be expanded later
   isOncePerBattle?: boolean;
+  // false by default, spell level won't be visible in UI
+  hideLevel?: boolean;
   init: (combatRefs: SpellCombatRefsModel<SpellStateType>) => void;
   // if unspecified - always 0
   getManaCost?: (spellInst: Spell<SpellStateType>) => number;

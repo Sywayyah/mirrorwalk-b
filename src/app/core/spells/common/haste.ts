@@ -121,7 +121,7 @@ export const HasteSpell: SpellBaseType = createSpell({
         return manaCosts[spellInst.currentLevel];
       },
       isOncePerBattle: false,
-      init: ({ events, actions, ownerPlayer, spellInstance }) => {
+      init: ({ events, actions, ownerPlayer, spellInstance, vfx }) => {
         events.on({
           PlayerTargetsSpell(event) {
             const hasteBuff = actions.createSpellInstance(HasteBuff, {
@@ -131,7 +131,12 @@ export const HasteSpell: SpellBaseType = createSpell({
             // type instead of id
             if (event.target.type.id === '#unit-neut-wind-spirit-0') {
               actions.addTurnsToUnitGroup(event.target, 1);
+
+              vfx.createFloatingMessageForUnitGroup(event.target, {
+                html: '+1 Turn',
+              });
             }
+
             actions.addSpellToUnitGroup(event.target, hasteBuff, ownerPlayer);
           },
         });

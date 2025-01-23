@@ -120,7 +120,7 @@ export class MwCurrentPlayerStateService extends StoreClient() {
     }
   }
 
-  public isSpellBeingCasted(): boolean {
+  public isSpellBeingCast(): boolean {
     return this.currentSpell !== this.NULL_SPELL_INSTANCE;
   }
 

@@ -1,5 +1,5 @@
 import { Injectable, Type } from '@angular/core';
-import { DisplayPlayerRewardAction, DisplayPlayerRewardPopup, DisplayPopup, DisplayReward, FightEnds, FightEndsEvent, GameEventsTypes, NeutralStructParams, OpenGarrisonPopup, OpenMainMenu, OpenSettings, OpenSplitUnitGroupPopup, OpenUnitSlotsActionPopup, PlayerOpensActionCards, PlayerOpensHeroInfo, ShowGameOverPopup, StructSelected, StructSelectedEvent } from 'src/app/core/events';
+import { DisplayPlayerRewardAction, DisplayPlayerRewardPopup, DisplayPopup, DisplayReward, FightEnds, FightEndsEvent, GameEventsTypes, NeutralStructParams, OpenGarrisonPopup, OpenGlossary, OpenMainMenu, OpenSettings, OpenSplitUnitGroupPopup, OpenUnitSlotsActionPopup, PlayerOpensActionCards, PlayerOpensHeroInfo, ShowGameOverPopup, StructSelected, StructSelectedEvent } from 'src/app/core/events';
 import { NeutralRewardTypesEnum, StructureType } from 'src/app/core/structures';
 import { FightEndsPopup, LossModel, StructPopupData } from 'src/app/core/ui';
 import { Notify, StoreClient, WireMethod } from 'src/app/store';
@@ -11,6 +11,7 @@ import { ActionCardsPopupComponent } from '../../shared/components/action-cards-
 import { GarrisonPopupComponent } from '../../towns/components';
 import { BattleStateService } from '../mw-battle-state.service';
 import { MwPlayersService } from '../mw-players.service';
+import { GlossaryComponent } from '../../shared/components/glossary/glossary.component';
 
 
 @Injectable()
@@ -44,6 +45,16 @@ export class PopupsController extends StoreClient() {
       component: SettingsPopupComponent,
       data: {},
       escape: true,
+    });
+  }
+
+  @Notify(OpenGlossary)
+  openGlossary(): void {
+    this.popupService.createBasicPopup({
+      component: GlossaryComponent,
+      data: {},
+      escape: true,
+      isCloseable: true,
     });
   }
 
