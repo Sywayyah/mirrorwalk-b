@@ -21,7 +21,7 @@ export const SwordOfTheBattleMageItem: ItemBaseModel = createItem({
   },
   cost: {
     gold: 1000,
-    redCrystals: 1,
+    gems: 6,
   },
   sellingCost: {
     gold: 600,

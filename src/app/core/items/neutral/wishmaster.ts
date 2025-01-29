@@ -12,6 +12,11 @@ export const WishmasterItem: ItemBaseModel = createItem({
     heroBonusDefence: 4,
     resistAll: 13,
   },
+  cost: {
+    gems: 20,
+    gold: 2000,
+    redCrystals: 2,
+  },
   icon: 'feather-wing',
   description({ thisItem, thisItemBase }) {
     return {
