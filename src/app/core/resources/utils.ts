@@ -1,4 +1,4 @@
-import { Resources, ResourceType } from './types';
+import { Resources, ResourcesModel, ResourceType } from './types';
 
 export const resourceNames: Record<ResourceType, string> = {
   [ResourceType.Gems]: 'Gems',
@@ -21,14 +21,24 @@ export function formattedResources(resources: Resources): FormattedResource[] {
   })) as FormattedResource[];
 }
 
-
 export function getResourcesAsText(resources: Resources): string[] {
-  return Object
-    .entries(resources)
-    .map(([resType, amount]) => `+${amount} ${resourceNames[resType as ResourceType]}`);
+  return Object.entries(resources).map(
+    ([resType, amount]) =>
+      `+${amount} ${resourceNames[resType as ResourceType]}`,
+  );
 }
 
 export function getResourcesAsJoinedText(resources: Resources): string {
-  return getResourcesAsText(resources).join('\n')
+  return getResourcesAsText(resources).join('\n');
 }
 
+export function addResources(
+  resources: ResourcesModel,
+  resourcesToAdd: Resources,
+): ResourcesModel {
+  Object.entries(resourcesToAdd).forEach(
+    ([res, count]) => (resources[res as ResourceType] += count),
+  );
+
+  return resources;
+}
