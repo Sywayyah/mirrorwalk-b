@@ -18,6 +18,8 @@ export const PlayerLeavesTown = gameEvent();
 
 export const PlayerOpensHeroInfo = gameEvent();
 
+export const OpenActiviesAndSpecialtiesDialog = gameEvent();
+
 // can be command
 export const OpenSplitUnitGroupPopup = gameEvent<{ unitGroup: UnitGroup }>();
 

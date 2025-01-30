@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ActionCardTypes } from 'src/app/core/action-cards';
 import { PLAYER_COLORS } from 'src/app/core/assets';
-import { ActivateActionCard, AddActionCardsToPlayer, BeforeBattleInit, DefaultGameModes, FightStarts, FightStartsEvent, GameCommandEvents, GameCreated, GameEventsTypes, GameOpenMainScreen, GameOpenMapStructuresScreen, GamePreparedEvent, GameStarted, NeutralStructParams, NewDayStarted, NewWeekStarted, PlayerLeavesTown, PlayerStartsFight, PlayersInitialized, PushEventFeedMessage, PushPlainEventFeedMessage, RemoveActionPoints, ScheduleAction, StructFightConfirmed, StructSelected, StructSelectedEvent, Triggers } from 'src/app/core/events';
+import { ActivateActionCard, AddActionCardsToPlayer, BeforeBattleInit, DefaultGameModes, FightStarts, FightStartsEvent, GameCommandEvents, GameCreated, GameEventsTypes, GameOpenMainScreen, GameOpenMapStructuresScreen, GamePreparedEvent, GameStarted, NeutralStructParams, NewDayStarted, NewWeekStarted, OpenActiviesAndSpecialtiesDialog, PlayerLeavesTown, PlayersInitialized, PlayerStartsFight, PushEventFeedMessage, PushPlainEventFeedMessage, RemoveActionPoints, ScheduleAction, StructFightConfirmed, StructSelected, StructSelectedEvent, Triggers } from 'src/app/core/events';
 import { heroesDefaultResources } from 'src/app/core/heroes';
 import { PlayerTypeEnum } from 'src/app/core/players';
 import { StructEvents } from 'src/app/core/structures/events';
@@ -48,6 +48,9 @@ export class GameController extends StoreClient() {
       maps: [event.map],
     };
     this.structuresService.initStructures(event);
+
+    // must occur every week
+    this.events.dispatch(OpenActiviesAndSpecialtiesDialog());
   }
 
   @Notify(GameCreated)

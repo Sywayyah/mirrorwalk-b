@@ -1,13 +1,15 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 
 interface WeeklyActivity {
   name: string;
+  icon?: string;
   type: WeeklyActivityType;
   description: string;
 }
 
 interface ActivityCategory {
-
+  name: string;
+  activityBases: WeeklyActivity[];
 }
 
 enum WeeklyActivityType {
@@ -44,5 +46,30 @@ const acitivies: WeeklyActivity[] = [
   styleUrl: './week-activities-popup.component.scss'
 })
 export class WeekActivitiesPopupComponent {
+  readonly categories = signal<ActivityCategory[]>([
+    {
+      name: 'Basic', activityBases: [
+        acitivies[2],
+        acitivies[3],
+        acitivies[4],
+      ],
+    },
+    {
+      name: 'Medium', activityBases: [
+        acitivies[1],
+        acitivies[6],
+        acitivies[7],
 
+      ],
+    },
+    {
+      name: 'Advanced', activityBases: [
+        acitivies[8],
+        acitivies[9],
+        acitivies[0],
+      ],
+    },
+  ]);
+
+  readonly ActivityType = WeeklyActivityType;
 }

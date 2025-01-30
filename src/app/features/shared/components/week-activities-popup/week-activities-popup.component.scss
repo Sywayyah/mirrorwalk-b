@@ -1,0 +1,30 @@
+:host {
+  display: block;
+  background: white;
+  padding: 10px;
+}
+
+.dialog-header {
+  text-align: center;
+}
+
+.categories {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.activities {
+  display: flex;
+  gap: 8px;
+
+  >.activity {
+    width: 175px;
+    font-size: 12px;
+    cursor: pointer;
+
+    >.type {
+      color: gray;
+    }
+  }
+}
