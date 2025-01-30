@@ -1,3 +1,4 @@
+import { Signal, WritableSignal } from '@angular/core';
 import { GameApi } from '../triggers';
 
 export interface WeeklyActivity {
@@ -11,6 +12,7 @@ export interface WeeklyActivity {
 export interface ActivityCategory {
   name: string;
   activityBases: WeeklyActivity[];
+  choice: WritableSignal<WeeklyActivity>;
 }
 
 export enum WeeklyActivityType {

@@ -9,7 +9,11 @@
 
       <div class="activities">
         @for (activity of category.activityBases; track $index) {
-          <div class="activity">
+          <div
+            class="activity"
+            [class.active]="activity === category.choice()"
+            (click)="category.choice.set(activity)"
+          >
             {{ activity.name }}
             <hr />
             <div class="type">
@@ -36,4 +40,8 @@
       </div>
     </div>
   }
+</div>
+
+<div class="footer">
+  <button mw-main-button (click)="confirm()">Confirm</button>
 </div>

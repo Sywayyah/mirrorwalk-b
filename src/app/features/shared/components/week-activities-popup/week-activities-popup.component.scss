@@ -18,13 +18,26 @@
   display: flex;
   gap: 8px;
 
-  >.activity {
+  > .activity {
     width: 175px;
     font-size: 12px;
     cursor: pointer;
+    // text-align: center;
 
-    >.type {
+    &.active {
+      background-color: rgba(146, 150, 207, 0.233);
+    }
+
+    > .type {
       color: gray;
     }
+
+    // > .description {
+    // }
   }
+}
+
+.footer {
+  display: flex;
+  justify-content: center;
 }
