@@ -6,6 +6,7 @@ import {
   getPlainAppearanceFrames,
   getPlainBlurFrames,
   getReversePulseKeyframes,
+  messageWrapper,
 } from '../../vfx';
 import { SpellActivationType, SpellBaseType } from '../types';
 import { buffColors, canActivateOnAllyFn, createSpell } from '../utils';
@@ -132,9 +133,14 @@ export const HasteSpell: SpellBaseType = createSpell({
             if (event.target.type.id === '#unit-neut-wind-spirit-0') {
               actions.addTurnsToUnitGroup(event.target, 1);
 
-              vfx.createFloatingMessageForUnitGroup(event.target, {
-                html: '+1 Turn',
-              });
+              console.log('we reach here?');
+              vfx.createDroppingMessageForUnitGroup(
+                event.target.id,
+                {
+                  html: messageWrapper('+1 Turn'),
+                },
+                { duration: 1200 },
+              );
             }
 
             actions.addSpellToUnitGroup(event.target, hasteBuff, ownerPlayer);
