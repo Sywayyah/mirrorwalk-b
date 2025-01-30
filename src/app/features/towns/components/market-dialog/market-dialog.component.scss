@@ -1,0 +1,12 @@
+.trading {
+  display: flex;
+
+  .resources {
+    flex: 1;
+  }
+}
+
+.buttons {
+  display: flex;
+  justify-content: center;
+}

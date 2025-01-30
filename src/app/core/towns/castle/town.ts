@@ -62,6 +62,9 @@ const market = createBuildingType({
   id: '#build-castle-market',
 
   name: 'Market',
+  activity: {
+    type: ActivityTypes.ResourceTrading,
+  },
 });
 
 const highTower = createBuildingType({

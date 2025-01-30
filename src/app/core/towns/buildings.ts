@@ -9,6 +9,7 @@ export enum ActivityTypes {
   Hiring,
   Garrison,
   ItemsSelling,
+  ResourceTrading,
 }
 
 interface BuildingAcitivty<T extends ActivityTypes = ActivityTypes> {

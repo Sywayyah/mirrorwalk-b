@@ -10,6 +10,7 @@ import { BuildPopupComponent } from '../build-popup/build-popup.component';
 import { HiringPopupComponent } from '../hiring-popup/hiring-popup.component';
 import { ItemsSellingPopupComponent } from '../items-selling-popup/items-selling-popup.component';
 import { ConnectionPositionPair } from '@angular/cdk/overlay';
+import { MarketDialogComponent } from '../market-dialog/market-dialog.component';
 
 @Component({
   selector: 'mw-town-view',
@@ -90,6 +91,9 @@ export class TownViewComponent {
         if (this.players.getCurrentPlayer().garrisons) {
           this.events.dispatch(OpenGarrisonPopup());
         }
+        break;
+      case ActivityTypes.ResourceTrading:
+        this.popupService.createBasicPopup({ component: MarketDialogComponent, data: {} });
         break;
     }
   }
