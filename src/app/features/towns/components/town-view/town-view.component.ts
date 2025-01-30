@@ -1,5 +1,9 @@
 import { Component, inject } from '@angular/core';
-import { OpenGarrisonPopup, PlayerLeavesTown, ViewsEnum } from 'src/app/core/events';
+import {
+  OpenGarrisonPopup,
+  PlayerLeavesTown,
+  ViewsEnum,
+} from 'src/app/core/events';
 import { ActivityTypes, Building, HiringActivity } from 'src/app/core/towns';
 import { MwPlayersService } from 'src/app/features/services';
 import { State } from 'src/app/features/services/state.service';
@@ -21,7 +25,12 @@ import { MarketDialogComponent } from '../market-dialog/market-dialog.component'
 export class TownViewComponent {
   private readonly players = inject(MwPlayersService);
 
-  public menuPosition = [new ConnectionPositionPair({ originX: 'center', originY: 'top' }, { overlayX: 'center', overlayY: 'bottom' })];
+  public menuPosition = [
+    new ConnectionPositionPair(
+      { originX: 'center', originY: 'top' },
+      { overlayX: 'center', overlayY: 'bottom' },
+    ),
+  ];
   public buildingsByTiers: Record<number, Building[]> = {};
   public town = this.state.createdGame.town;
   public builtColor: string = this.state.createdGame.selectedColor;
@@ -29,20 +38,23 @@ export class TownViewComponent {
   constructor(
     private state: State,
     private events: EventsService,
-    private popupService: PopupService
+    private popupService: PopupService,
   ) {
     escapeToView(ViewsEnum.Structures);
 
     this.buildingsByTiers = Object.entries(
-      this.town.base.availableBuildings
-    ).reduce((map, [id, building]) => {
-      if (!map[building.tier]) {
-        map[building.tier] = [this.town.buildings[id]];
-      } else {
-        map[building.tier].push(this.town.buildings[id]);
-      }
-      return map;
-    }, {} as Record<number, Building[]>);
+      this.town.base.availableBuildings,
+    ).reduce(
+      (map, [id, building]) => {
+        if (!map[building.tier]) {
+          map[building.tier] = [this.town.buildings[id]];
+        } else {
+          map[building.tier].push(this.town.buildings[id]);
+        }
+        return map;
+      },
+      {} as Record<number, Building[]>,
+    );
   }
 
   public leaveTown(): void {
@@ -93,7 +105,10 @@ export class TownViewComponent {
         }
         break;
       case ActivityTypes.ResourceTrading:
-        this.popupService.createBasicPopup({ component: MarketDialogComponent, data: {} });
+        this.popupService.createBasicPopup({
+          component: MarketDialogComponent,
+          data: { town: this.town },
+        });
         break;
     }
   }

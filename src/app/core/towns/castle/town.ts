@@ -295,7 +295,7 @@ export const castleTownBase: TownBase<CastleTownBuildings> = {
     market: {
       baseName: 'Market',
       description: 'Allows to trade resources',
-      levels: [{ building: market, cost: { gold: 1500, wood: 2 } }],
+      levels: [{ building: market, cost: { gold: 650, wood: 2 } }],
       icon: 'gavel',
       tier: 2,
     },
