@@ -133,7 +133,6 @@ export const HasteSpell: SpellBaseType = createSpell({
             if (event.target.type.id === '#unit-neut-wind-spirit-0') {
               actions.addTurnsToUnitGroup(event.target, 1);
 
-              console.log('we reach here?');
               vfx.createDroppingMessageForUnitGroup(
                 event.target.id,
                 {
