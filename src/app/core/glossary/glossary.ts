@@ -22,6 +22,7 @@ export const glossaryContent: GlossaryTab[] = [
     descriptions: [
       'While in the game, at the beginning of each week you are welcomed by Specialties dialog.',
       'In this dialog you can select list of bonuses & rewards granted for this week, which may affect your hero, town, units, game progression, etc.',
+      'Bonus value and variety can change with time, level, progression, etc.',
     ],
   },
   {
@@ -31,7 +32,7 @@ export const glossaryContent: GlossaryTab[] = [
     descriptions: [
       'Market is a buildable town structure where you can exchange resources.',
       'By default, market allows you to trade basic resources: gold and wood. Market has limited amount of each resource type, preventing limitless resource conversion.',
-      'By fighting enemies on the map you are freeing trading routes, enabling more advanced resources, like gems and crystals, to appear in a wider variety on your market.',
+      'By fighting enemies on the map you are freeing passages and trading routes, enabling more resources to reach your market. In this way, aside from getting more of basic resources, advanced resources, like gems and crystals, can also appear in a wider variety on your market.',
       'Fighting rare and more dangerous enemies will more likely yield rare resources.',
       'Every new week your market will lose some amount of resources gained from previous week. You can upgrade market to reduce the loss and increase base resources count.',
       'Some buildings in your town can synergize with Market, yielding some rare resources weekly.',

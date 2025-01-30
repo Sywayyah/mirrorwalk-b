@@ -4,7 +4,11 @@
   <div class="content" popupContent>
     <div class="tabs">
       @for (tab of glossaryTabs; track $index) {
-        <div class="tab" (click)="activeTab.set(tab)">
+        <div
+          class="tab"
+          [class.active]="tab === activeTab()"
+          (click)="activeTab.set(tab)"
+        >
           @if (tab.icon) {
             <mw-ra-icon [icon]="tab.icon" />
           }
