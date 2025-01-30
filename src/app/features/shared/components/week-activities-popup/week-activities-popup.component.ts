@@ -1,10 +1,12 @@
 import { Component, signal } from '@angular/core';
+import { GameApi } from 'src/app/core/triggers';
 
 interface WeeklyActivity {
   name: string;
   icon?: string;
   type: WeeklyActivityType;
   description: string;
+  init?: (config: GameApi) => {};
 }
 
 interface ActivityCategory {
@@ -19,10 +21,10 @@ enum WeeklyActivityType {
 }
 
 const acitivies: WeeklyActivity[] = [
-  { name: 'Town-Planning', type: WeeklyActivityType.WeekEnd, description: 'Your town center will be upgraded by the end of the week. You have to draw a card from Negative Events stack.' },
+  { name: 'Architecture', type: WeeklyActivityType.WeekEnd, description: 'Your town center will be upgraded by the end of the week. You have to draw a card from Negative Events stack.' },
   { name: 'Gem Cutting', type: WeeklyActivityType.WeekEnd, description: '+8 Gems.' },
   { name: 'War Training', type: WeeklyActivityType.FullWeek, description: 'Tier 1 units gain +1 to max damage.' },
-  { name: 'Prosperity', type: WeeklyActivityType.FullWeek, description: 'Income from structures by 10%.' },
+  { name: 'Prosperity', type: WeeklyActivityType.FullWeek, description: 'Income from structures increased by 10%.' },
   { name: 'Scholar', type: WeeklyActivityType.FullWeek, description: 'Experience gain is increased by 10%' },
   { name: 'Magic Hood', type: WeeklyActivityType.FullWeek, description: 'Resistance against magic is increased by 5%' },
   { name: 'Mysticism', type: WeeklyActivityType.WeekEnd, description: '+100 Hero Healtlh, +5 to Hero Mana/Max Mana (scaling)' },
