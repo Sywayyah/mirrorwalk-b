@@ -41,6 +41,13 @@ export class MarketDialogComponent extends BasicPopup<{ town: Town<any> }> {
     ),
   );
 
+  readonly goldSpent = computed(() =>
+    this.marketResources().reduce(
+      (total, next) => resourcesCostInGold[next.name] * next.count() + total,
+      0,
+    ),
+  );
+
   constructor() {
     super();
     this.playerResources.set(
