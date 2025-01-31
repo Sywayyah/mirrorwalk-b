@@ -58,7 +58,7 @@ export class Player extends GameObject<PlayerCreationModel> {
 
   addActionCards(actionCard: ActionCard, count: number): void {
     const cardStack = this.actionCards.find(
-      (stack) => stack.card === actionCard
+      (stack) => stack.card === actionCard,
     );
 
     if (cardStack) {

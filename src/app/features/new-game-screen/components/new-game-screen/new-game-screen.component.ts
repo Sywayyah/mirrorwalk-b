@@ -29,13 +29,12 @@ interface PlayerRow {
 }
 
 @Component({
-    selector: 'mw-new-game-screen',
-    templateUrl: './new-game-screen.component.html',
-    styleUrls: ['./new-game-screen.component.scss'],
-    standalone: false
+  selector: 'mw-new-game-screen',
+  templateUrl: './new-game-screen.component.html',
+  styleUrls: ['./new-game-screen.component.scss'],
+  standalone: false,
 })
 export class NewGameScreenComponent {
-
   readonly players = signal<PlayerRow[]>([
     {
       id: '1',
@@ -44,7 +43,9 @@ export class NewGameScreenComponent {
       selectedFaction: humansFaction,
       controlType: PlayerTypeEnum.Player,
       pickedColor: PLAYER_COLORS.BLUE,
-      selectedHero: humansFaction.getAllHeroes().find(hero => hero.id === `#hero-helvetica`)
+      selectedHero: humansFaction
+        .getAllHeroes()
+        .find((hero) => hero.id === `#hero-helvetica`),
     },
     // {
     //   id: '2',
@@ -64,7 +65,7 @@ export class NewGameScreenComponent {
 
   public readonly playableFactions: Faction[] =
     Factions.getAllFactions().filter(
-      (faction) => !nonPlayableFactions.includes(faction)
+      (faction) => !nonPlayableFactions.includes(faction),
     );
 
   public hoveredHero?: HeroBase | null;
@@ -81,7 +82,7 @@ export class NewGameScreenComponent {
   constructor(
     private events: EventsService,
     private state: State,
-    private gameObjectsManager: GameObjectsManager
+    private gameObjectsManager: GameObjectsManager,
   ) {
     escapeToView(ViewsEnum.MainScreen);
   }
@@ -105,6 +106,8 @@ export class NewGameScreenComponent {
       }),
     };
 
+    this.state.townsByPlayers.set(firstPlayer.id, this.state.createdGame.town);
+
     console.log(this.state.createdGame);
 
     this.events.dispatch(GameCreated());
@@ -124,11 +127,11 @@ export class NewGameScreenComponent {
   }
 
   onHoverRandomHero(row: PlayerRow): void {
-    this.hoveredHero = null
+    this.hoveredHero = null;
   }
 
   onUnhoverRandomHero(row: PlayerRow): void {
-    this.hoveredHero = undefined
+    this.hoveredHero = undefined;
   }
 
   onSelectFactionHero(row: PlayerRow, hero: HeroBase): void {

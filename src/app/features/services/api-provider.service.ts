@@ -1,5 +1,9 @@
 import { Injectable } from '@angular/core';
-import { GlobalEventsApi, PlayersApi, SpellsApi } from 'src/app/core/api/game-api';
+import {
+  GlobalEventsApi,
+  PlayersApi,
+  SpellsApi,
+} from 'src/app/core/api/game-api';
 import { GameApi } from 'src/app/core/triggers';
 import { EventsService } from 'src/app/store';
 import { MwHeroesService } from './mw-heroes.service';
@@ -23,19 +27,25 @@ export class ApiProvider {
     private readonly events: EventsService,
     private readonly state: State,
     private readonly structures: MwStructuresService,
-  ) {
-  }
+  ) {}
 
   public getPlayerApi(): PlayersApi {
     return {
-      removeUnitTypeFromPlayer: (player, unitType, count) => this.players.removeUnitTypeCountFromPlayer(player, unitType, count),
-      playerHasResources: (player, res) => this.players.playerHasResources(player, res),
-      removeResourcesFromPlayer: (player, res) => this.players.removeResourcesFromPlayer(player, res),
+      removeUnitTypeFromPlayer: (player, unitType, count) =>
+        this.players.removeUnitTypeCountFromPlayer(player, unitType, count),
+      playerHasResources: (player, res) =>
+        this.players.playerHasResources(player, res),
+      removeResourcesFromPlayer: (player, res) =>
+        this.players.removeResourcesFromPlayer(player, res),
       addExperienceToPlayer: (player, xpAmount) => {
         this.players.addExperienceToPlayer(player.id, xpAmount);
       },
       addUnitGroupToPlayer: (player, unitType, count) => {
-        const unitGroup = this.unitGroups.createUnitGroup(unitType, { count }, player.hero);
+        const unitGroup = this.unitGroups.createUnitGroup(
+          unitType,
+          { count },
+          player.hero,
+        );
         this.players.addUnitGroupToTypeStack(player, unitGroup);
       },
       addManaToPlayer: (player, mana) => {
@@ -44,13 +54,18 @@ export class ApiProvider {
       addMaxManaToPlayer: (player, mana) => {
         player.hero.addStatsMods({ heroMaxMana: mana });
       },
-      giveResourceToPlayer: (player, type, amount) => this.playersService.addResourceToPlayer(player, type, amount),
+      giveResourceToPlayer: (player, type, amount) =>
+        this.playersService.addResourceToPlayer(player, type, amount),
       addSpellToPlayerHero: (player, spell) => {
         this.heroes.addSpellToHero(player.hero, spell);
       },
       getCurrentPlayer: () => this.playersService.getCurrentPlayer(),
-      getCurrentPlayerUnitGroups: () => this.playersService.getUnitGroupsOfPlayer(this.playersService.getCurrentPlayer().id),
-      giveResourcesToPlayer: (player, resources) => this.playersService.addResourcesToPlayer(player, resources),
+      getCurrentPlayerUnitGroups: () =>
+        this.playersService.getUnitGroupsOfPlayer(
+          this.playersService.getCurrentPlayer().id,
+        ),
+      giveResourcesToPlayer: (player, resources) =>
+        this.playersService.addResourcesToPlayer(player, resources),
     };
   }
 
@@ -67,17 +82,18 @@ export class ApiProvider {
       events: {
         dispatch: (eventData) => {
           this.events.dispatch(eventData);
-        }
+        },
       },
       players: this.getPlayerApi(),
       actions: {
         getMapStructures: () => this.structures.viewStructures,
         getActionPointsLeft: () => this.state.currentGame.actionPoints,
         scheduleAction: (action, days) => {
-          this.events.dispatch(ScheduleAction({ action, dayOffset: days }))
+          this.events.dispatch(ScheduleAction({ action, dayOffset: days }));
         },
+        getTownOfPlayer: (player) => this.state.townsByPlayers.get(player.id),
       },
-    }
+    };
   }
 
   public getGlobalEventsApi(): GlobalEventsApi {

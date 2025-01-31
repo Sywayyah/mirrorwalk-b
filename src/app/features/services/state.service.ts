@@ -6,12 +6,14 @@ import { LevelMap } from 'src/app/core/maps';
 import { ModsRefsGroup } from 'src/app/core/modifiers';
 import { Player } from 'src/app/core/players';
 import { Spell } from 'src/app/core/spells';
-import { MapStructure, defaultActionPointsPerDay } from 'src/app/core/structures';
+import {
+  MapStructure,
+  defaultActionPointsPerDay,
+} from 'src/app/core/structures';
 import { Building, Town } from 'src/app/core/towns';
 import { RefEventTriggersRegistry } from 'src/app/core/triggers';
 import { UnitsOrientation } from 'src/app/core/ui';
 import { UnitGroup } from 'src/app/core/unit-types';
-
 
 /*
   I think I want to have state parts as separated features, maybe don't want to have all
@@ -19,9 +21,7 @@ import { UnitGroup } from 'src/app/core/unit-types';
 
   or really only those that must be shared everywhere, like players, settings, etc.
 */
-interface Feature {
-
-}
+interface Feature {}
 
 interface GameState {
   day: number;
@@ -41,6 +41,8 @@ export class State {
     town: Town<any>;
   };
 
+  public townsByPlayers = new Map<string, Town<any>>();
+
   public currentGame: GameState = {
     day: 1,
     globalDay: 1,
@@ -51,13 +53,13 @@ export class State {
 
   // todo: review map-related settings later
   public settings: {
-    orientation: UnitsOrientation,
-    mapDebug: boolean,
+    orientation: UnitsOrientation;
+    mapDebug: boolean;
   } = {
-      // Wire it to localStorage I suppose
-      orientation: UnitsOrientation.Vertical,
-      mapDebug: true,
-    };
+    // Wire it to localStorage I suppose
+    orientation: UnitsOrientation.Vertical,
+    mapDebug: true,
+  };
 
   public mainMenu: { isOpen?: boolean } = {};
 
@@ -72,7 +74,7 @@ export class State {
     currentMap: LevelMap;
   };
 
-  public mapCamera: { x: number; y: number; cameraInitialized: boolean; } = {
+  public mapCamera: { x: number; y: number; cameraInitialized: boolean } = {
     cameraInitialized: false,
     x: 0,
     y: 0,
@@ -85,17 +87,17 @@ export class State {
   };
 
   public eventHandlers: {
-    spells: RefEventTriggersRegistry<Spell>,
-    items: RefEventTriggersRegistry<Item>,
+    spells: RefEventTriggersRegistry<Spell>;
+    items: RefEventTriggersRegistry<Item>;
     /* prepare events for structures and buildings */
-    buildings: RefEventTriggersRegistry<Building>,
-    structures: RefEventTriggersRegistry<MapStructure>,
+    buildings: RefEventTriggersRegistry<Building>;
+    structures: RefEventTriggersRegistry<MapStructure>;
   } = {
-      spells: new RefEventTriggersRegistry<Spell>(),
-      items: new RefEventTriggersRegistry<Item>(),
-      buildings: new RefEventTriggersRegistry<Building>(),
-      structures: new RefEventTriggersRegistry<MapStructure>(),
-    };
+    spells: new RefEventTriggersRegistry<Spell>(),
+    items: new RefEventTriggersRegistry<Item>(),
+    buildings: new RefEventTriggersRegistry<Building>(),
+    structures: new RefEventTriggersRegistry<MapStructure>(),
+  };
 
   public unitsAppliedModifiers: Map<UnitGroup, ModsRefsGroup> = new Map();
 }

@@ -1,6 +1,44 @@
+<div class="header">Exchange Gain gold: {{ goldEarned() }}</div>
+
 <div class="trading">
-  <div class="resources">Your Resources</div>
-  <div class="resources">Market</div>
+  <div class="trader">
+    Selling:
+    <div class="resources">
+      @for (resEntry of playerResources(); track $index) {
+        <div class="resource">
+          {{ resEntry.name }}:
+
+          <input
+            type="range"
+            step="1"
+            min="0"
+            [max]="resEntry.max"
+            [(ngModel)]="resEntry.count"
+          />
+          {{ resEntry.count() }}
+        </div>
+      }
+    </div>
+  </div>
+  <div class="trader">
+    Buying:
+    <div class="resources">
+      @for (resEntry of marketResources(); track $index) {
+        <div class="resource">
+          {{ resEntry.name }}:
+
+          <input
+            type="range"
+            step="1"
+            min="0"
+            [max]="resEntry.max"
+            [(ngModel)]="resEntry.count"
+          />
+          {{ resEntry.count() }}
+        </div>
+      }
+    </div>
+  </div>
 </div>
 
 <div class="buttons">

@@ -10,7 +10,7 @@ import { HiringRewardPopupComponent, ItemRewardPopupComponent, PostFightRewardPo
 import { GameOverPopupComponent, MainMenuPopupComponent, PopupData, PopupService, RewardPopupComponent, SplitUnitsPopupComponent, UnitSlotsActionPopupComponent } from '../../shared/components';
 import { ActionCardsPopupComponent } from '../../shared/components/action-cards-popup/action-cards-popup.component';
 import { GlossaryComponent } from '../../shared/components/glossary/glossary.component';
-import { WeekActivitiesPopupComponent } from '../../shared/components/week-activities-popup/week-activities-popup.component';
+import { WeekActivitiesDialogComponent } from '../../shared/components/week-activities-popup/week-activities-popup.component';
 import { GarrisonPopupComponent } from '../../towns/components';
 import { BattleStateService } from '../mw-battle-state.service';
 import { MwPlayersService } from '../mw-players.service';
@@ -36,7 +36,7 @@ export class PopupsController extends StoreClient() {
   @Notify(OpenActiviesAndSpecialtiesDialog)
   public openDialog(): void {
     // refactor cdk dialogs
-    this.dialog.open(WeekActivitiesPopupComponent, {});
+    this.dialog.open(WeekActivitiesDialogComponent, {});
   }
 
   @Notify(PlayerOpensHeroInfo)
