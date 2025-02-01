@@ -16,13 +16,14 @@
 
         <div>Cost:</div>
         <div class="cost">
-          <div
-            class="resource"
-            *ngFor="let resource of unitType.currentCost | keyvalue"
-          >
-            <div>{{ resource.key }}</div>
-            <div>{{ resource.value }}</div>
-          </div>
+          @for (resource of unitType.currentCost | keyvalue; track $index) {
+            <mw-res-label
+              class="resource"
+              [resType]="resource.key"
+              [amount]="resource.value!"
+              display="vertical"
+            />
+          }
         </div>
       </div>
     </div>
