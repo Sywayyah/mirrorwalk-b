@@ -1,11 +1,12 @@
 .resource-info-row {
-    display: flex;
-    justify-content: space-between;
-    margin: 2px;
+  display: flex;
+  justify-content: space-between;
+  margin: 2px;
+  align-items: center;
 }
 
 :host {
-    font-size: 12px;
+  font-size: 12px;
 }
 
 .sub-info {

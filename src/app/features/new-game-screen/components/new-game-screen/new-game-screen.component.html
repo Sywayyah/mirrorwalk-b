@@ -200,8 +200,16 @@
 
             <div class="column">
               <div style="margin-top: 16px">
-                <div>Gold: {{ playerHero.initialState.resources.gold }}</div>
-                <div>Wood: {{ playerHero.initialState.resources.wood }}</div>
+                <mw-res-label
+                  [iconSize]="24"
+                  [resType]="ResourceType.Gold"
+                  [amount]="playerHero.initialState.resources.gold"
+                />
+                <mw-res-label
+                  [iconSize]="24"
+                  [resType]="ResourceType.Wood"
+                  [amount]="playerHero.initialState.resources.wood"
+                />
               </div>
             </div>
           </div>

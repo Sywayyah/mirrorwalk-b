@@ -9,6 +9,7 @@ import { Faction, Factions, humansFaction } from 'src/app/core/factions';
 import { neutralsFaction } from 'src/app/core/factions/neutrals/faction';
 import { HeroBase } from 'src/app/core/heroes';
 import { PlayerTypeEnum } from 'src/app/core/players';
+import { ResourceType } from 'src/app/core/resources';
 import { Town, TownBase } from 'src/app/core/towns';
 import { CommonUtils } from 'src/app/core/utils';
 import { GameObjectsManager } from 'src/app/features/services/game-objects-manager.service';
@@ -71,7 +72,8 @@ export class NewGameScreenComponent {
   public hoveredHero?: HeroBase | null;
   public hoveredPlayer?: PlayerRow | null;
 
-  controlTypes = PlayerTypeEnum;
+  readonly controlTypes = PlayerTypeEnum;
+  readonly ResourceType = ResourceType;
 
   public readonly colors: PLAYER_COLORS[] = [
     PLAYER_COLORS.BLUE,

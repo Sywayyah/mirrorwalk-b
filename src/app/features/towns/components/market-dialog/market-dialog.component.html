@@ -13,7 +13,12 @@
       <div class="resources">
         @for (resEntry of trader.trader.resourceEntries(); track $index) {
           <div class="resource">
-            <div>{{ resEntry.resType }} ({{ resEntry.max }}):</div>
+            <div>
+              <mw-res-label
+                [resType]="resEntry.resType"
+                [amount]="resEntry.max"
+              />
+            </div>
 
             <div *ngIf="!resEntry.isGold">
               <input
