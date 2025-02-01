@@ -1,51 +1,40 @@
-<div class="header">Exchange Gain gold
-  <div>Earned: {{ goldEarned() }}</div>
-  <div>Spent: {{ goldSpent() }}</div>
+<div class="header">
+  Exchange Gain gold
+  <div>Earned: {{ playerTrader.costInGold() }}</div>
+  <div>Spent: {{ marketTrader.costInGold() }}</div>
+
+  {{ dealCost() }}
 </div>
 
 <div class="trading">
-  <div class="trader">
-    Selling:
-    <div class="resources">
-      @for (resEntry of playerResources(); track $index) {
-        <div class="resource">
-          {{ resEntry.name }}:
+  @for (trader of traders; track $index) {
+    <div class="trader">
+      {{ trader.title }}
+      <div class="resources">
+        @for (resEntry of trader.trader.resourceEntries(); track $index) {
+          <div class="resource">
+            <div>{{ resEntry.resType }} ({{ resEntry.max }}):</div>
 
-          <input
-            type="range"
-            step="1"
-            min="0"
-            [max]="resEntry.max"
-            [(ngModel)]="resEntry.count"
-          />
-          {{ resEntry.count() }}
-        </div>
-      }
+            <div *ngIf="!resEntry.isGold">
+              <input
+                type="range"
+                step="1"
+                min="0"
+                [max]="resEntry.max"
+                [(ngModel)]="resEntry.count"
+              />
+              {{ resEntry.count() }}
+            </div>
+          </div>
+        }
+      </div>
     </div>
-  </div>
-
-  <div class="trader">
-    Buying:
-    <div class="resources">
-      @for (resEntry of marketResources(); track $index) {
-        <div class="resource">
-          {{ resEntry.name }}:
-
-          <input
-            type="range"
-            step="1"
-            min="0"
-            [max]="resEntry.max"
-            [(ngModel)]="resEntry.count"
-          />
-          {{ resEntry.count() }}
-        </div>
-      }
-    </div>
-  </div>
+  }
 </div>
 
 <div class="buttons">
-  <button mw-main-button>Trade</button>
+  <button mw-main-button [disabled]="!canTrade()" (click)="trade()">
+    Trade
+  </button>
   <button mw-main-button (click)="close()">Leave</button>
 </div>
