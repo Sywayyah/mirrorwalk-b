@@ -1,29 +1,33 @@
 <mw-popup-base-content>
-  <div popupHeader>
-    Select Reward:
-  </div>
+  <div popupHeader>Select Reward:</div>
 
   <div popupContent>
     <div class="reources-rewards">
-      <div class="resource-column" *ngFor="let resourceGroup of resourceGroups"
-        (click)="setCurrentReward(data, resourceGroup)" [class.selected]="data.selectedRewardGroup === resourceGroup">
-
+      <div
+        class="resource-column"
+        *ngFor="let resourceGroup of resourceGroups"
+        (click)="setCurrentReward(data, resourceGroup)"
+        [class.selected]="data.selectedRewardGroup === resourceGroup"
+      >
         <div class="resource-card" *ngFor="let resource of resourceGroup">
-          <div>
-            {{resource.type}}
-          </div>
-          <div>
-            {{resource.count}}
-          </div>
+          <mw-res-label
+            [resType]="resource.type"
+            [amount]="resource.count"
+            display="vertical"
+          />
         </div>
       </div>
     </div>
   </div>
 
   <div popupButtons>
-    <button mw-main-button style="margin: auto; display: block;" [disabled]="!data.selectedRewardGroup" (click)="confirmResources(data)">
+    <button
+      mw-main-button
+      style="margin: auto; display: block"
+      [disabled]="!data.selectedRewardGroup"
+      (click)="confirmResources(data)"
+    >
       Confirm
     </button>
   </div>
 </mw-popup-base-content>
-

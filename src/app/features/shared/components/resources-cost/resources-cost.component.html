@@ -1,3 +1,7 @@
 @for (resource of cost | keyvalue; track $index) {
-  <span>{{resource.key}}: {{resource.value}}</span>
+  <mw-res-label
+    [resType]="resource.key"
+    [amount]="resource.value!"
+    display="vertical"
+  />
 }

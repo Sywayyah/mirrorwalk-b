@@ -1,21 +1,26 @@
 <mw-popup-base-content>
   <div popupHeader>
-    Build: {{data.building.currentBuilding.name}}, level {{data.targetLevel}}
+    Build: {{ data.building.currentBuilding.name }}, level
+    {{ data.targetLevel }}
 
-    <mw-ra-icon style="display: block; font-size: 40px; margin: 8px 0;" [icon]="data.building.base.icon"></mw-ra-icon>
+    <mw-ra-icon
+      style="display: block; font-size: 40px; margin: 8px 0"
+      [icon]="data.building.base.icon"
+    ></mw-ra-icon>
   </div>
 
   <div popupContent>
-    <div style="padding-bottom: 8px;">
-      {{buildingLevel.building.description}}
+    <div style="padding-bottom: 8px">
+      {{ buildingLevel.building.description }}
     </div>
 
     <div>
-      <div *ngFor="let resource of cost">
-        {{resource.count}} {{resource.resName}}
+      <div class="resource" *ngFor="let resource of cost">
+        <mw-res-label [resType]="resource.type" [amount]="resource.count" />
 
         <span *ngIf="missingCostMap[resource.type]">
-          (<span style="color: red;">-{{missingCostMap[resource.type]}}</span>)
+          (<span style="color: red">-{{ missingCostMap[resource.type] }}</span
+          >)
         </span>
       </div>
     </div>
@@ -30,7 +35,9 @@
   </div>
 
   <div popupButtons>
-    <button mw-main-button (click)="build()" [disabled]="!canBuild">Build</button>
+    <button mw-main-button (click)="build()" [disabled]="!canBuild">
+      Build
+    </button>
 
     <button mw-main-button (click)="close()">Close</button>
   </div>

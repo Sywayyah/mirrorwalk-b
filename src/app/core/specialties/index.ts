@@ -33,9 +33,11 @@ export const acitivies: WeeklyActivity[] = [
     type: WeeklyActivityType.WeekEnd,
     description: '+8 Gems.',
     init({ actions, events, players }) {
+      actions.scheduleAction(() => {
+        players.giveResourcesToPlayer(players.getCurrentPlayer(), { gems: 8 });
+      }, 7);
       // const town = actions.getTownOfPlayer(players.getCurrentPlayer())!;
       // town.addMarketResources({ gems: 8 });
-      players.giveResourcesToPlayer(players.getCurrentPlayer(), { gems: 8 });
     },
   },
   {

@@ -1,0 +1,12 @@
+:host {
+  display: inline-flex;
+  align-items: center;
+
+  &.vertical {
+    flex-direction: column;
+  }
+
+  > mw-img-icon {
+    margin-right: 2px;
+  }
+}

@@ -47,6 +47,8 @@ import {
 } from './components';
 import { ActionCardItemStackComponent } from './components/action-card-stack-item/action-card-item.component';
 import { GradientImgComponent } from './components/gradient-img/gradient-img.component';
+import { ImgIconComponent } from './components/img-icon/img-icon.component';
+import { ResLabelComponent } from './components/res-label/res-label.component';
 import { ResourcesCostComponent } from './components/resources-cost/resources-cost.component';
 import { WeekActivitiesDialogComponent } from './components/week-activities-popup/week-activities-popup.component';
 import {
@@ -106,6 +108,8 @@ const components = [
   VfxContainerComponent,
 
   GradientImgComponent,
+  ImgIconComponent,
+  ResLabelComponent,
 
   EventFeedComponent,
   EventFeedMessageComponent,
