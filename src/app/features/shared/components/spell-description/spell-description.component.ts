@@ -41,7 +41,7 @@ export class SpellDescriptionComponent {
     if (spell.baseType.config.spellConfig.isOncePerBattle) {
       descriptions.unshift({
         type: DescriptionElementType.FreeHtml,
-        htmlContent: 'Can be casted only once per battle.<br/><hr/>',
+        htmlContent: 'Can be cast only once per battle.<br/><hr/>',
       } as DescHtmlElement);
     }
 

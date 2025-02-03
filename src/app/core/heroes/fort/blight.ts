@@ -3,7 +3,7 @@ import { fortFaction } from '../../factions';
 import { heroDescrElem } from '../../ui';
 import { HeroBase } from '../types';
 import { heroesDefaultResources } from '../utils';
-import { LifeTransferSpell } from './spells/life-transfer';
+import { LifeDrainSpell } from './spells/life-drain';
 import { LifeObeliskSpell } from './spells/obelisk';
 
 // Abilities: Life totem. Targeted. Deals small damage to the target and summons a Life totem unit. It gives armor to your units via aura
@@ -21,7 +21,7 @@ export const BlightHero: HeroBase = fortFaction.createHero({
   image: AssetsImages.HeroKnight,
   abilities: [
     LifeObeliskSpell,
-    LifeTransferSpell,
+    LifeDrainSpell,
   ],
   army: [{
     maxUnitGroups: 2,

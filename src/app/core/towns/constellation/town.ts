@@ -39,6 +39,9 @@ const townCenter = createBuildingType({
 const market = createBuildingType({
   id: '#build-stellar-market',
 
+  activity: {
+    type: ActivityTypes.ResourceTrading
+  },
   name: 'Market',
 });
 
@@ -89,7 +92,7 @@ const moonArch = createBuildingType({
   id: '#build-stellar-moon-arch-1',
 
   name: 'Moon Arch',
-  activity: createHiringActivity('#unit-c00', 8, 'saggitar'),
+  activity: createHiringActivity('#unit-c20', 8, 'saggitar'),
 });
 
 const hallsOfFate = createBuildingType({ id: '#build-stellar-fate-halls', name: 'Halls of Fate' });
@@ -110,7 +113,7 @@ export const castleTownBase: TownBase<ConstellationTownBuildings> = {
       baseName: 'Market',
       description: 'Allows to trade resources',
       levels: [
-        { building: market, cost: { gold: 1350 } }
+        { building: market, cost: { gold: 700 } }
       ],
       icon: 'gavel',
       tier: 1,

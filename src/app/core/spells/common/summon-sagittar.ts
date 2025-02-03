@@ -3,7 +3,8 @@ import { simpleConvergentBuffAnimation } from '../../vfx';
 import { SpellActivationType, SpellBaseType } from '../types';
 import { createSpell } from '../utils';
 
-const unitCount = 4;
+const unitCount = 6;
+const unitsPerLevel = 4;
 
 export const SummonSagittarSpell: SpellBaseType = createSpell({
   id: '#spell-summon-sagittar',
@@ -16,7 +17,7 @@ export const SummonSagittarSpell: SpellBaseType = createSpell({
   getDescription(data) {
     return {
       descriptions: [
-        spellDescrElem(`Summons ${unitCount} Sagittars that fight on your side.`),
+        spellDescrElem(`Summons ${unitCount + data.ownerHero.level * unitsPerLevel} Sagittars that fight on your side.`),
       ],
     }
   },
@@ -26,7 +27,7 @@ export const SummonSagittarSpell: SpellBaseType = createSpell({
       init({ actions, ownerHero, ownerPlayer, events, vfx, thisSpell }) {
         events.on({
           PlayerCastsInstantSpell() {
-            const summonedUnitGroup = actions.summonUnitsForPlayer(ownerPlayer, '#unit-c00', unitCount);
+            const summonedUnitGroup = actions.summonUnitsForPlayer(ownerPlayer, '#unit-c20', unitCount + ownerHero.level * unitsPerLevel);
 
             vfx.createEffectForUnitGroup(summonedUnitGroup, simpleConvergentBuffAnimation('arrow-cluster', 'rgb(190, 190, 231)'), { duration: 1000 });
           },

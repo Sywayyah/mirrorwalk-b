@@ -38,6 +38,9 @@ const townCenter: BuidlingBase = createBuildingType({
 const market: BuidlingBase = createBuildingType({
   id: '#build-fort-market',
   name: 'Market',
+  activity: {
+    type: ActivityTypes.ResourceTrading
+  },
 });
 
 const tavern: BuidlingBase = createBuildingType({
@@ -125,7 +128,7 @@ export const factionTownBase: TownBase<CastleTownBuildings> = {
       baseName: 'Market',
       description: 'Allows to trade resources',
       levels: [
-        { building: market, cost: { gold: 1500, wood: 2 } }
+        { building: market, cost: { gold: 800 } }
       ],
       icon: 'gavel',
       tier: 1,
