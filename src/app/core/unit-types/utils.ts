@@ -1,10 +1,19 @@
 import { UnitTypeId, resolveEntity } from '../entities';
-import { DescriptionElement } from '../ui';
+import { DescriptionElement, DescriptionElementType } from '../ui';
 import { CommonUtils } from '../utils';
-import { UnitBaseType, UnitDescriptions, UnitTypeBaseStatsModel } from './types';
+import {
+  UnitBaseType,
+  UnitDescriptions,
+  UnitTypeBaseStatsModel,
+} from './types';
 
 /* unit type, minCount, maxCount, maxGroupsOfThisType */
-type UnitModel = [unitType: UnitTypeId, min: number, max: number, maxOfThisType: number | void];
+type UnitModel = [
+  unitType: UnitTypeId,
+  min: number,
+  max: number,
+  maxOfThisType: number | void,
+];
 
 export interface GenerationModel {
   minUnitGroups: number;
@@ -12,7 +21,14 @@ export interface GenerationModel {
   units: UnitModel[];
 }
 
-export const createStats = ([[minDmg, maxDmg], attack, defence, health, speed, mana]: [
+export const createStats = ([
+  [minDmg, maxDmg],
+  attack,
+  defence,
+  health,
+  speed,
+  mana,
+]: [
   damage: [minDmg: number, maxDmg: number],
   attack: number,
   defence: number,
@@ -30,8 +46,6 @@ export const createStats = ([[minDmg, maxDmg], attack, defence, health, speed, m
   speed,
   mana: mana || 0,
 });
-
-
 
 interface GenerationDescription {
   unitType: UnitTypeId;
@@ -52,7 +66,10 @@ export function resolveUnitType(unitTypeId: UnitTypeId): UnitBaseType {
 
 export const UnitsUtils = {
   createRandomArmy(options: GenerationModel): UnitGenerationModel[] {
-    const groupsToGenerateCount = CommonUtils.randIntInRange(options.minUnitGroups, options.maxUnitGroups);
+    const groupsToGenerateCount = CommonUtils.randIntInRange(
+      options.minUnitGroups,
+      options.maxUnitGroups,
+    );
     const generatedGroups = [];
     const unitsToGenerate = [...options.units];
 
@@ -89,9 +106,9 @@ export const UnitsUtils = {
       unit.createdTimes++;
 
       if (unit.createdTimes >= unit.maxGroupsOfThisType) {
-        console.log('this unit was generated max times')
+        console.log('this unit was generated max times');
         unitsMap.delete(randUnitDescr);
-        CommonUtils.removeItem(unitsToGenerate, randUnitDescr)
+        CommonUtils.removeItem(unitsToGenerate, randUnitDescr);
       }
     }
 
@@ -99,11 +116,16 @@ export const UnitsUtils = {
 
     return generatedGroups;
   },
-}
+};
 
-
-export const simpleDescriptions = (descriptions: DescriptionElement[]): () => UnitDescriptions => {
+export const simpleDescriptions = (
+  descriptions: (DescriptionElement | string)[],
+): (() => UnitDescriptions) => {
   return () => ({
-    descriptions,
+    descriptions: descriptions.map((descr) =>
+      typeof descr === 'string'
+        ? { type: DescriptionElementType.FreeHtml, htmlContent: descr }
+        : descr,
+    ),
   });
 };
