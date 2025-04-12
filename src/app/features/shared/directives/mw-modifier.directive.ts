@@ -1,42 +1,44 @@
-import { Directive, ElementRef, Input, OnChanges, OnDestroy, Renderer2 } from '@angular/core';
+import { Directive, inject, input, Input, OnChanges, OnDestroy, Renderer2 } from '@angular/core';
+import { injectHostElem } from 'src/app/core/utils';
 
 @Directive({
-    selector: '[mwNumberModifier]',
-    standalone: false
+  selector: '[mwNumberModifier]',
+  standalone: false
 })
 export class NumberModifierDirective implements OnDestroy, OnChanges {
+  private hostElem = injectHostElem();
+  private renderer = inject(Renderer2);
 
-  @Input('mwNumberModifier')
-  public value!: number;
+  readonly value = input.required<number>({ alias: 'mwNumberModifier' });
 
   @Input()
   public hideEmpty: boolean = true;
 
   constructor(
-    private hostElem: ElementRef,
-    private renderer: Renderer2,
   ) {
-    this.renderer.addClass(this.hostElem.nativeElement, 'mod-text');
+    this.renderer.addClass(this.hostElem, 'mod-text');
   }
 
   public ngOnDestroy(): void {
-    this.renderer.removeClass(this.hostElem.nativeElement, 'mod-text');
+    this.renderer.removeClass(this.hostElem, 'mod-text');
   }
 
   public ngOnChanges(): void {
-    const elem = this.hostElem.nativeElement as HTMLElement;
-    if (this.hideEmpty && !this.value) {
+    const elem = this.hostElem as HTMLElement;
+    const value = this.value();
+
+    if (this.hideEmpty && !value) {
       elem.innerHTML = '';
       return;
     }
 
-    if (typeof this.value !== 'number') {
+    if (typeof value !== 'number') {
       elem.innerHTML = '';
       return;
     }
 
-    elem.innerHTML = String((this.value > 0 ? '+' : '') + this.value);
+    elem.innerHTML = String((value > 0 ? '+' : '') + value);
 
-    this.renderer.setStyle(elem, 'color', this.value < 0 ? 'red' : 'lime');
+    this.renderer.setStyle(elem, 'color', value < 0 ? 'red' : 'lime');
   }
 }

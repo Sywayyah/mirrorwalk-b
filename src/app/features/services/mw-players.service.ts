@@ -1,16 +1,15 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { UnitTypeId } from 'src/app/core/entities';
 import { PlayerLevelsUp, PlayerReceivesItem, PlayerUnequipsItem } from 'src/app/core/events';
 import { HERO_LEVELS_BREAKPOINTS, HeroBase } from 'src/app/core/heroes';
 import { Item } from 'src/app/core/items';
 import { Player, PlayerCreationModel, PlayerTypeEnum } from 'src/app/core/players';
-import { ResourceType, Resources, ResourcesModel } from 'src/app/core/resources';
+import { Resources, ResourcesModel, ResourceType } from 'src/app/core/resources';
 import { UnitGroup } from 'src/app/core/unit-types';
 import { StoreClient } from 'src/app/store';
 import { MwHeroesService, MwUnitGroupsService } from './';
 import { GameObjectsManager } from './game-objects-manager.service';
 import { State } from './state.service';
-import { CommonUtils } from 'src/app/core/utils';
 
 export enum PLAYER_IDS {
   Main = 'main',
@@ -28,6 +27,9 @@ const defaultResources: ResourcesModel = {
   providedIn: 'root'
 })
 export class MwPlayersService extends StoreClient() {
+  private readonly heroesService = inject(MwHeroesService);
+  private readonly state = inject(State);
+  private readonly gameObjectsManager = inject(GameObjectsManager);
 
   // theoretically, if objects are being stored in manager, I might access them
   // from manager.
@@ -36,15 +38,6 @@ export class MwPlayersService extends StoreClient() {
   };
 
   private currentPlayerId: string = this.gameObjectsManager.getObjectId(Player, PLAYER_IDS.Main);
-
-  constructor(
-    private readonly heroesService: MwHeroesService,
-    private readonly unitGroups: MwUnitGroupsService,
-    private readonly state: State,
-    private readonly gameObjectsManager: GameObjectsManager,
-  ) {
-    super();
-  }
 
   public createPlayer(id: string, playerInfo: PlayerCreationModel): Player {
     return this.gameObjectsManager.createNewGameObject(Player, playerInfo, id);

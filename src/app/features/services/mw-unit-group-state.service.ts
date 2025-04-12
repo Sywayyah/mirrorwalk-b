@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Modifiers } from 'src/app/core/modifiers';
 import { UnitGroup } from 'src/app/core/unit-types';
 import { CommonUtils } from 'src/app/core/utils';
-import { MwUnitGroupsService } from './mw-unit-groups.service';
 
 export interface DamageInfo {
   attacker: UnitGroup;
@@ -46,11 +44,6 @@ export interface FinalDamageInfo {
   providedIn: 'root'
 })
 export class MwUnitGroupStateService {
-
-  constructor(
-    private units: MwUnitGroupsService,
-  ) { }
-
   public getTailUnitHealth(unitGroup: UnitGroup): number {
     const { tailUnitHp } = unitGroup;
 

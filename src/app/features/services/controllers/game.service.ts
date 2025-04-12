@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { ActionCardTypes } from 'src/app/core/action-cards';
 import { PLAYER_COLORS } from 'src/app/core/assets';
 import { ActivateActionCard, AddActionCardsToPlayer, BeforeBattleInit, DefaultGameModes, FightStarts, FightStartsEvent, GameCommandEvents, GameCreated, GameEventsTypes, GameOpenMainScreen, GameOpenMapStructuresScreen, GamePreparedEvent, GameStarted, NeutralStructParams, NewDayStarted, NewWeekStarted, OpenActiviesAndSpecialtiesDialog, PlayerLeavesTown, PlayersInitialized, PlayerStartsFight, PushEventFeedMessage, PushPlainEventFeedMessage, RemoveActionPoints, ScheduleAction, StructFightConfirmed, StructSelected, StructSelectedEvent, Triggers } from 'src/app/core/events';
@@ -21,20 +21,16 @@ import { UiEventFeedService } from '../ui-event-feed.service';
 
 @Injectable()
 export class GameController extends StoreClient() {
-  private scheduledActions: { day: number, action: () => void }[] = [];
+  private battleState = inject(BattleStateService);
+  private structuresService = inject(MwStructuresService);
+  private players = inject(MwPlayersService);
+  private heroesService = inject(MwHeroesService);
+  private state = inject(State);
+  private eventFeedUiService = inject(UiEventFeedService);
+  private gameApiProvider = inject(ApiProvider);
+  private eventFeed = inject(UiEventFeedService);
 
-  constructor(
-    private battleState: BattleStateService,
-    private structuresService: MwStructuresService,
-    private players: MwPlayersService,
-    private heroesService: MwHeroesService,
-    private state: State,
-    private eventFeedUiService: UiEventFeedService,
-    private gameApiProvider: ApiProvider,
-    private eventFeed: UiEventFeedService,
-  ) {
-    super();
-  }
+  private scheduledActions: { day: number, action: () => void }[] = [];
 
   @Notify(GameStarted)
   public openMainScreenOnGameStart(): void {

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { GamePreparedEvent, InitStructure } from 'src/app/core/events';
 import { Player } from 'src/app/core/players';
 import { MapStructure, StructureDescription } from 'src/app/core/structures';
@@ -10,6 +10,11 @@ import { GameObjectsManager } from './game-objects-manager.service';
   providedIn: 'root'
 })
 export class MwStructuresService {
+  private playersService = inject(MwPlayersService);
+  private unitGroups = inject(MwUnitGroupsService);
+  private gameObjectsManager = inject(GameObjectsManager);
+  private events = inject(EventsService);
+
   public neutralPlayer!: Player;
 
   public initialStructs: StructureDescription[] = [];
@@ -23,13 +28,6 @@ export class MwStructuresService {
   public currentStruct!: MapStructure;
 
   private startingLocationId!: string;
-
-  constructor(
-    private playersService: MwPlayersService,
-    private unitGroups: MwUnitGroupsService,
-    private gameObjectsManager: GameObjectsManager,
-    private events: EventsService,
-  ) { }
 
   public initStructures(event: GamePreparedEvent): void {
     this.neutralPlayer = this.playersService.getNeutralPlayer();

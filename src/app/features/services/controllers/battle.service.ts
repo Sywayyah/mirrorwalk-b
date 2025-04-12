@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { BattleCommandEvents, BeforeBattleInit, CleanUpHandlersOnFightEnd, FightEnds, FightNextRoundStarts, FightStarts, GroupDies, GroupSpeedChanged, PlayerTurnStartEvent, RoundGroupSpendsTurn, RoundGroupSpendsTurnEvent, RoundGroupTurnEnds, RoundPlayerCountinuesAttacking, RoundPlayerTurnStarts, UnitHealed, UnitHealedEvent } from 'src/app/core/events';
 import { DefendAction, RegisterUnitLoss } from 'src/app/core/events/battle/commands';
 import { ModsRef } from 'src/app/core/modifiers';
@@ -16,18 +16,14 @@ import { State } from '../state.service';
 
 @Injectable()
 export class BattleController extends StoreClient() {
-  constructor(
-    private battleState: BattleStateService,
-    private curPlayerState: MwCurrentPlayerStateService,
-    private strucuresService: MwStructuresService,
-    private playersService: MwPlayersService,
-    private vfx: VfxService,
-    private state: State,
-    private historyLog: MwBattleLogService,
-    private readonly gameObjectsManager: GameObjectsManager,
-  ) {
-    super();
-  }
+  private battleState = inject(BattleStateService);
+  private curPlayerState = inject(MwCurrentPlayerStateService);
+  private strucuresService = inject(MwStructuresService);
+  private playersService = inject(MwPlayersService);
+  private vfx = inject(VfxService);
+  private state = inject(State);
+  private historyLog = inject(MwBattleLogService);
+  private gameObjectsManager = inject(GameObjectsManager);
 
   @Notify(BeforeBattleInit)
   public beforeBattleInit(): void {

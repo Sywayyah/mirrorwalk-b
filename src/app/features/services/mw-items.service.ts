@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Colors } from 'src/app/core/assets';
 import { InitItem } from 'src/app/core/events';
 import { ItemBaseModel, Item } from 'src/app/core/items';
@@ -14,13 +14,9 @@ import { GameObjectsManager } from './game-objects-manager.service';
   providedIn: 'root'
 })
 export class MwItemsService {
-
-
-  constructor(
-    private events: EventsService,
-    private state: State,
-    private gameObjectsManager: GameObjectsManager,
-  ) { }
+  private events = inject(EventsService);
+  private state = inject(State);
+  private gameObjectsManager = inject(GameObjectsManager);
 
   public createItem<T extends object>(itemBase: ItemBaseModel<T>): Item<T> {
     const itemIcon = itemBase.icon;

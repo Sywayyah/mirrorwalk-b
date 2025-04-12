@@ -1,5 +1,6 @@
 import { AssetsImages } from '../../assets';
 import { neutralsFaction } from '../../factions/neutrals/faction';
+import { GnollCrushSpell } from '../../spells/common/neutral/gnoll-crush';
 import { heroDescrElem } from '../../ui';
 import { createStats, simpleDescriptions } from '../utils';
 
@@ -44,6 +45,9 @@ neutralsFaction.defineUnitType({
     ),
   ]),
 
+  defaultSpells: [
+    GnollCrushSpell,
+  ],
   defaultModifiers: {
     resistFire: 10,
     isForest: true,

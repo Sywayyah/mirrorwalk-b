@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Hero, HeroBase } from 'src/app/core/heroes';
 import { EMPTY_RESOURCES, createHeroModelBase } from 'src/app/core/heroes/utils';
 import { Spell } from 'src/app/core/spells';
@@ -26,10 +26,8 @@ const neutralHeroBase = createHeroModelBase({
   providedIn: 'root'
 })
 export class MwHeroesService {
-  constructor(
-    private gameObjectsManager: GameObjectsManager,
-    private unitGroups: MwUnitGroupsService,
-  ) { }
+  private gameObjectsManager = inject(GameObjectsManager);
+  private unitGroups = inject(MwUnitGroupsService);
 
   public addManaToHero(hero: Hero, mana: number): void {
     hero.addMana(mana);

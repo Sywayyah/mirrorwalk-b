@@ -1,17 +1,20 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { BehaviorSubject, Subject } from 'rxjs';
-import { FightNextRoundStarts, GroupAttacked, RoundPlayerCountinuesAttacking, RoundPlayerTurnStarts } from 'src/app/core/events';
-import { Player } from 'src/app/core/players';
+import { UnitTypeId } from 'src/app/core/entities';
+import { FightNextRoundStarts, GroupAttacked, PlayerTargetsSpell, RoundPlayerCountinuesAttacking, RoundPlayerTurnStarts } from 'src/app/core/events';
+import { Player, PlayerTypeEnum } from 'src/app/core/players';
+import { AISpellTag } from 'src/app/core/spells';
 import { UnitBaseType, UnitGroup } from 'src/app/core/unit-types';
 import { EventsService } from 'src/app/store';
 import { MwUnitGroupsService } from './mw-unit-groups.service';
-import { UnitTypeId } from 'src/app/core/entities';
 
 
 @Injectable({
   providedIn: 'root',
 })
 export class BattleStateService {
+  private readonly units = inject(MwUnitGroupsService);
+  private readonly events = inject(EventsService);
 
   public currentPlayer!: Player;
   public currentUnitGroup!: UnitGroup;
@@ -30,11 +33,6 @@ export class BattleStateService {
   private players!: Player[];
 
   public readonly currentUnitGroup$ = new BehaviorSubject<UnitGroup | null>(null);
-
-  constructor(
-    private readonly units: MwUnitGroupsService,
-    private events: EventsService,
-  ) { }
 
   public resetCurrentPlayer(): void {
     this.currentPlayer = null as unknown as Player;
@@ -136,6 +134,25 @@ export class BattleStateService {
       const enemyUnitGroups = this.getAliveUnitsOfPlayer(this.getEnemyOfPlayer(this.currentPlayer) as Player);
       const randomGroupIndex = Math.round(Math.random() * (enemyUnitGroups.length - 1));
       const targetGroup = enemyUnitGroups[randomGroupIndex];
+
+      // enhance this logic
+      const attackingGroup = this.currentUnitGroup;
+      if (attackingGroup.ownerPlayer.type === PlayerTypeEnum.AI) {
+        const attackSpell = attackingGroup.spells.find(spell => spell.baseType.config.aiTags?.includes(AISpellTag.RegularAttackSpell));
+
+        if (targetGroup && attackSpell && !attackSpell.cooldown) {
+          this.events.dispatch(PlayerTargetsSpell({
+            player: attackingGroup.ownerPlayer,
+            spell: attackSpell,
+            target: targetGroup,
+          }));
+
+          if (attackingGroup.turnsLeft) {
+            this.processAiPlayer();
+          }
+          return;
+        }
+      }
 
       this.events.dispatch(GroupAttacked({
         attackedGroup: targetGroup,

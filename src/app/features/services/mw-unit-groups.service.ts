@@ -1,13 +1,12 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { HealingInfo } from 'src/app/core/api/combat-api';
 import { UnitTypeId } from 'src/app/core/entities';
 import { AddCombatModifiersToUnit, RemoveCombatModifiersFromUnit } from 'src/app/core/events/battle/commands';
 import { Hero } from 'src/app/core/heroes';
 import { Modifiers } from 'src/app/core/modifiers';
-import { GenerationModel, UnitGroup, UnitsUtils, resolveUnitType } from 'src/app/core/unit-types';
+import { GenerationModel, resolveUnitType, UnitGroup, UnitsUtils } from 'src/app/core/unit-types';
 import { EventsService } from 'src/app/store';
 import { GameObjectsManager } from './game-objects-manager.service';
-import { MwSpellsService } from './mw-spells.service';
 
 
 export type KeysMatching<T extends object, V> = {
@@ -23,14 +22,8 @@ export interface UIModsModel {
   providedIn: 'root'
 })
 export class MwUnitGroupsService {
-
-  constructor(
-    private spells: MwSpellsService,
-    private gameObjectsManager: GameObjectsManager,
-    private events: EventsService,
-  ) { }
-  /* todo: unify it */
-  /*  todo: figure out diff between UnitGroupModel and Inst */
+  private gameObjectsManager = inject(GameObjectsManager);
+  private events = inject(EventsService);
 
   public createUnitGroup(
     unitTypeId: UnitTypeId,

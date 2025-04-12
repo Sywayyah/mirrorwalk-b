@@ -14,10 +14,10 @@ import { VfxService } from './vfx.service';
       below effect.
  */
 @Component({
-    selector: 'mw-vfx-layer',
-    templateUrl: './vfx-layer.component.html',
-    styleUrls: ['./vfx-layer.component.scss'],
-    standalone: false
+  selector: 'mw-vfx-layer',
+  templateUrl: './vfx-layer.component.html',
+  styleUrls: ['./vfx-layer.component.scss'],
+  standalone: false
 })
 export class VfxLayerComponent implements OnInit {
 
@@ -64,7 +64,7 @@ export class VfxLayerComponent implements OnInit {
     options: EffectOptions
   ): void {
     const cardComponent = this.unitsCardsMapping.get(unitGroup);
-    const cardElement = cardComponent.hostElem.nativeElement as HTMLElement;
+    const cardElement = cardComponent.hostElem;
 
     const { left, top } = cardElement.getBoundingClientRect();
 
@@ -88,7 +88,7 @@ export class VfxLayerComponent implements OnInit {
     options: EffectOptions = {},
   ): void {
     const cardComponent = this.unitsCardsMapping.get(unitGroup);
-    const cardElement = cardComponent.hostElem.nativeElement as HTMLElement;
+    const cardElement = cardComponent.hostElem;
 
     const { left, top } = cardElement.getBoundingClientRect();
 

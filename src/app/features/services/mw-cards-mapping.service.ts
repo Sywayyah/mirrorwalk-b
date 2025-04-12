@@ -6,10 +6,7 @@ import { MwUnitGroupCardComponent } from '../battleground/components';
   providedIn: 'root'
 })
 export class MwCardsMappingService {
-
   private mapping: Map<UnitGroup, MwUnitGroupCardComponent> = new Map();
-
-  constructor() { }
 
   public register(unitGroup: UnitGroup, cardRef: MwUnitGroupCardComponent): void {
     this.mapping.set(unitGroup, cardRef);

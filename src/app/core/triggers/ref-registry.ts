@@ -34,15 +34,17 @@ export class RefEventTriggersRegistry<T> {
   public triggerRefEventHandlers(ref: T, event: EventData): void {
     const refTriggersMap = this.triggerMapsByRefsMap.get(ref);
 
-    if (refTriggersMap) {
-      refTriggersMap.forEach((triggers, eventType) => {
-        triggers.forEach(trigger => {
-          if (eventType === event.__eventType.__type) {
-            trigger(event);
-          }
-        });
-      })
+    if (!refTriggersMap) {
+      return;
     }
+
+    refTriggersMap.forEach((triggers, eventType) => {
+      triggers.forEach(trigger => {
+        if (eventType === event.__eventType.__type) {
+          trigger(event);
+        }
+      });
+    });
   }
 
   public removeAllHandlersForRef(ref: T): void {

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { FightNextRoundStarts, FightStarts, PlayerEquipsItem, PlayerEquipsItemAction, PlayerLosesItem, PlayerReceivesItem, PlayerUnequipsItem, PlayerUnequipsItemAction } from 'src/app/core/events';
 import { Notify, StoreClient, WireMethod } from 'src/app/store';
 import { MwCurrentPlayerStateService } from '../mw-current-player-state.service';
@@ -7,14 +7,9 @@ import { State } from '../state.service';
 
 @Injectable()
 export class PlayerController extends StoreClient() {
-
-  constructor(
-    private curPlayerState: MwCurrentPlayerStateService,
-    private itemsService: MwItemsService,
-    private state: State,
-  ) {
-    super();
-  }
+  private curPlayerState = inject(MwCurrentPlayerStateService);
+  private itemsService = inject(MwItemsService);
+  private state = inject(State);
 
   @Notify(FightNextRoundStarts)
   @Notify(FightStarts)

@@ -19,14 +19,9 @@ import { MwPlayersService } from '../mw-players.service';
 @Injectable()
 export class PopupsController extends StoreClient() {
   private readonly dialog = inject(Dialog);
-
-  constructor(
-    private readonly popupService: PopupService,
-    private readonly battleState: BattleStateService,
-    private readonly playersService: MwPlayersService,
-  ) {
-    super();
-  }
+  private readonly popupService = inject(PopupService);
+  private readonly battleState = inject(BattleStateService);
+  private readonly playersService = inject(MwPlayersService);
 
   @WireMethod(DisplayPopup)
   public displayPopup(event: PopupData): void {

@@ -1,10 +1,10 @@
 import { CombatActionsRef } from '../api/combat-api';
 import { VfxApi } from '../api/vfx-api';
 import { Icon } from '../assets';
+import { Entity, SpellId } from '../entities';
 import { GameObject } from '../game-objects';
 import { Hero } from '../heroes';
 import { Player } from '../players';
-import { Entity, SpellId } from '../entities';
 import { DescriptionElement } from '../ui/descriptions';
 import { UnitGroup } from '../unit-types';
 import { SpellEventHandlers } from './spell-events';
@@ -68,7 +68,12 @@ export interface SpellBaseType<SpellStateType = DefaultSpellStateType> extends E
   config: SpellTypeConfig<SpellStateType>;
 }
 
+export enum AISpellTag {
+  RegularAttackSpell,
+}
+
 export interface SpellTypeConfig<SpellStateType> {
+  aiTags?: AISpellTag[];
   spellConfig: SpellConfig<SpellStateType>;
   flags?: Partial<{
     isAura: boolean,

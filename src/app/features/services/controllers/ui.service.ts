@@ -1,29 +1,24 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { CONFIG } from 'src/app/core/config';
 import { DisplayUnitGroupInfo, FightEnds, GroupAttacked, HoverTypeEnum, PlayerCastsInstantSpell, PlayerClicksAllyGroup, PlayerClicksAllyGroupEvent, PlayerClicksEnemyGroup, PlayerClicksEnemyGroupEvent, PlayerHoversCardEvent, PlayerHoversGroupCard, PlayerRightClicksUnitGroup, PlayerTargetsInstantSpellEvent, PlayerTargetsSpell, PlayerTargetsSpellEvent, PlayerTurnStartEvent, RoundPlayerTurnStarts, UIEventsTypes } from 'src/app/core/events';
-import { PlayerState } from 'src/app/core/players';
+import { PlayerState, PlayerTypeEnum } from 'src/app/core/players';
 import { SpellEvents } from 'src/app/core/spells';
 import { ActionHintTypeEnum, SpellTargetActionHint } from 'src/app/core/ui';
 import { UnitGroup } from 'src/app/core/unit-types';
 import { Notify, StoreClient, WireMethod } from 'src/app/store';
+import { PopupService, UnitGroupInfoPopupComponent } from '../../shared/components';
 import { ActionHintService } from '../mw-action-hint.service';
 import { MwCardsMappingService } from '../mw-cards-mapping.service';
 import { CombatInteractorService } from '../mw-combat-interactor.service';
 import { MwCurrentPlayerStateService } from '../mw-current-player-state.service';
-import { PopupService, UnitGroupInfoPopupComponent } from '../../shared/components';
 
 @Injectable()
 export class UiController extends StoreClient() {
-
-  constructor(
-    private combatInteractor: CombatInteractorService,
-    private actionHint: ActionHintService,
-    private curPlayerState: MwCurrentPlayerStateService,
-    private cardsMapping: MwCardsMappingService,
-    private popupService: PopupService,
-  ) {
-    super();
-  }
+  private readonly combatInteractor = inject(CombatInteractorService);
+  private readonly actionHint = inject(ActionHintService);
+  private readonly curPlayerState = inject(MwCurrentPlayerStateService);
+  private readonly cardsMapping = inject(MwCardsMappingService);
+  private readonly popupService = inject(PopupService);
 
   @WireMethod(PlayerClicksEnemyGroup)
   public handleEnemyCardClick(event: PlayerClicksEnemyGroupEvent): void {
@@ -137,12 +132,18 @@ export class UiController extends StoreClient() {
 
   @WireMethod(PlayerTargetsSpell)
   public playerTargetsSpell(event: PlayerTargetsSpellEvent): void {
+    const casterPlayer = event.player;
+
     this.combatInteractor.triggerEventForSpellHandler(
       event.spell,
       SpellEvents.PlayerTargetsSpell({
         target: event.target,
       }),
     );
+
+    if (casterPlayer.type === PlayerTypeEnum.AI) {
+      return;
+    }
 
     this.curPlayerState.setPlayerState(PlayerState.Normal);
     this.curPlayerState.resetCurrentSpell();

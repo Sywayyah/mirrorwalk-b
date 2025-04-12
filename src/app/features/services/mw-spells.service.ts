@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { SpellCreationOptions } from 'src/app/core/api/combat-api';
 import { Colors } from 'src/app/core/assets';
 import { Modifiers } from 'src/app/core/modifiers';
@@ -11,9 +11,7 @@ import { GameObjectsManager } from './game-objects-manager.service';
   providedIn: 'root'
 })
 export class MwSpellsService {
-  constructor(
-    private gameObjectManager: GameObjectsManager,
-  ) { }
+  private gameObjectManager = inject(GameObjectsManager);
 
   public createSpellInstance<T>(
     spell: SpellBaseType<T>,

@@ -1,12 +1,12 @@
 import {
   Component,
-  ElementRef,
   forwardRef,
+  inject,
   input,
   OnDestroy,
   OnInit,
   output,
-  Renderer2,
+  Renderer2
 } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -18,11 +18,11 @@ import {
 import { Player } from 'src/app/core/players';
 import { Spell } from 'src/app/core/spells';
 import { UnitGroup, UnitGroupState } from 'src/app/core/unit-types';
+import { injectHostElem } from 'src/app/core/utils';
 import {
   BattleStateService,
   MwPlayersService,
-  MwUnitGroupsService,
-  MwUnitGroupStateService,
+  MwUnitGroupStateService
 } from 'src/app/features/services';
 import { HintAttachment } from 'src/app/features/shared/components';
 import {
@@ -43,8 +43,13 @@ import { StoreClient } from 'src/app/store';
   ],
   standalone: false,
 })
-export class MwUnitGroupCardComponent extends StoreClient() implements UIUnitProvider, OnInit, OnDestroy
-{
+export class MwUnitGroupCardComponent extends StoreClient() implements UIUnitProvider, OnInit, OnDestroy {
+  public readonly hostElem = injectHostElem();
+  public readonly mwBattleStateService = inject(BattleStateService);
+  private readonly playersService = inject(MwPlayersService);
+  private readonly unitsService = inject(MwUnitGroupStateService);
+  private readonly renderer = inject(Renderer2);
+
   public readonly unitGroup = input.required<UnitGroup>();
   public readonly playerInfo = input.required<Player>();
   public readonly side = input<'left' | 'right'>('left');
@@ -74,17 +79,6 @@ export class MwUnitGroupCardComponent extends StoreClient() implements UIUnitPro
 
   private destroy$: Subject<void> = new Subject();
 
-  constructor(
-    public hostElem: ElementRef,
-    public mwBattleStateService: BattleStateService,
-    private playersService: MwPlayersService,
-    private readonly unitsService: MwUnitGroupStateService,
-    private readonly units: MwUnitGroupsService,
-    private readonly renderer: Renderer2,
-  ) {
-    super();
-  }
-
   public ngOnInit(): void {
     this.spellsHintsPosition = 'above';
 
@@ -104,7 +98,7 @@ export class MwUnitGroupCardComponent extends StoreClient() implements UIUnitPro
     const isSummoned = unitGroup.modGroup.getModValue('isSummon');
 
     if (isSummoned) {
-      this.renderer.addClass(this.hostElem.nativeElement, 'summoned');
+      this.renderer.addClass(this.hostElem, 'summoned');
     }
 
     this.updateSpellsAndEffects();

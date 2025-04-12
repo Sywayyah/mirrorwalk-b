@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { DamageType, PostDamageInfo } from 'src/app/core/api/combat-api/types';
 import { CombatAttackInteraction, CombatInteractionEnum, CombatInteractionStateEvent, GroupCounterAttacked, GroupDamagedByGroup, GroupDies, GroupSpellsChanged, GroupTakesDamage, InitSpell, PlayerHoversCardEvent, UnitHealed } from 'src/app/core/events';
 import { RegisterUnitLoss } from 'src/app/core/events/battle/commands';
@@ -28,18 +28,14 @@ interface ExtendedFinalDamageInfo extends FinalDamageInfo {
   providedIn: 'root'
 })
 export class CombatInteractorService extends StoreClient() {
-  constructor(
-    private readonly battleState: BattleStateService,
-    private readonly actionHint: ActionHintService,
-    private readonly players: MwPlayersService,
-    private readonly unitState: MwUnitGroupStateService,
-    private readonly units: MwUnitGroupsService,
-    private readonly history: MwBattleLogService,
-    private readonly state: State,
-    private readonly vfx: VfxService,
-  ) {
-    super();
-  }
+  private readonly battleState = inject(BattleStateService);
+  private readonly actionHint = inject(ActionHintService);
+  private readonly players = inject(MwPlayersService);
+  private readonly unitState = inject(MwUnitGroupStateService);
+  private readonly units = inject(MwUnitGroupsService);
+  private readonly history = inject(MwBattleLogService);
+  private readonly state = inject(State);
+  private readonly vfx = inject(VfxService);
 
   public onBattleBegins(): void {
     this.initPlayersSpells();

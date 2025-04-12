@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { CombatActionsRef, SpellCreationOptions } from 'src/app/core/api/combat-api';
 import { EffectType, VfxElemEffect } from 'src/app/core/api/vfx-api';
 import { UnitTypeId } from 'src/app/core/entities';
@@ -18,6 +18,7 @@ import { GameObjectsManager } from '../game-objects-manager.service';
 import { MwBattleLogService } from '../mw-battle-log.service';
 import { BattleStateService } from '../mw-battle-state.service';
 import { CombatInteractorService } from '../mw-combat-interactor.service';
+import { MwCurrentPlayerStateService } from '../mw-current-player-state.service';
 import { MwItemsService } from '../mw-items.service';
 import { MwPlayersService } from '../mw-players.service';
 import { MwSpellsService } from '../mw-spells.service';
@@ -25,28 +26,24 @@ import { MwStructuresService } from '../mw-structures.service';
 import { MwUnitGroupsService } from '../mw-unit-groups.service';
 import { State } from '../state.service';
 import { UiEventFeedService } from '../ui-event-feed.service';
-import { MwCurrentPlayerStateService } from '../mw-current-player-state.service';
 
 @Injectable()
 export class InGameApiController extends StoreClient() {
-  constructor(
-    private combatInteractor: CombatInteractorService,
-    private vfxService: VfxService,
-    private battleState: BattleStateService,
-    private spellsService: MwSpellsService,
-    private units: MwUnitGroupsService,
-    private battleLog: MwBattleLogService,
-    private players: MwPlayersService,
-    private itemsService: MwItemsService,
-    private apiProvider: ApiProvider,
-    private state: State,
-    private gameObjectsManager: GameObjectsManager,
-    private eventFeed: UiEventFeedService,
-    private structures: MwStructuresService,
-    private currentPlayer: MwCurrentPlayerStateService,
-  ) {
-    super();
-  }
+  private combatInteractor = inject(CombatInteractorService);
+  private vfxService = inject(VfxService);
+  private battleState = inject(BattleStateService);
+  private spellsService = inject(MwSpellsService);
+  private units = inject(MwUnitGroupsService);
+  private battleLog = inject(MwBattleLogService);
+  private players = inject(MwPlayersService);
+  private itemsService = inject(MwItemsService);
+  private apiProvider = inject(ApiProvider);
+  private state = inject(State);
+  private gameObjectsManager = inject(GameObjectsManager);
+  private eventFeed = inject(UiEventFeedService);
+  private structures = inject(MwStructuresService);
+  private currentPlayer = inject(MwCurrentPlayerStateService);
+
 
   @Notify(PlayersInitialized)
   public initPlayerItems(): void {

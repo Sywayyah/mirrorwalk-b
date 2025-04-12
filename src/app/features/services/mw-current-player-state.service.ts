@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import {
   PlayerCastsInstantSpell,
@@ -6,10 +6,10 @@ import {
 } from 'src/app/core/events';
 import { Player, PlayerState } from 'src/app/core/players';
 import {
+  createSpell,
   Spell,
   SpellActivationType,
   SpellBaseType,
-  createSpell,
 } from 'src/app/core/spells';
 import { UnitGroup } from 'src/app/core/unit-types';
 import { CommonUtils } from 'src/app/core/utils';
@@ -32,7 +32,7 @@ export const NULL_SPELL: SpellBaseType = createSpell({
       getManaCost(spellInst) {
         return 0;
       },
-      init: () => {},
+      init: () => { },
     },
   },
 });
@@ -41,6 +41,9 @@ export const NULL_SPELL: SpellBaseType = createSpell({
   providedIn: 'root',
 })
 export class MwCurrentPlayerStateService extends StoreClient() {
+  private readonly players = inject(MwPlayersService);
+  private readonly gameObjectsManager = inject(GameObjectsManager);
+
   // think later about this, maybe avoid using null object
   private readonly NULL_SPELL_INSTANCE =
     this.gameObjectsManager.createNewGameObject(
@@ -65,13 +68,6 @@ export class MwCurrentPlayerStateService extends StoreClient() {
     new BehaviorSubject<PlayerState>(PlayerState.Normal);
 
   public spellsAreOnCooldown: boolean = false;
-
-  constructor(
-    private readonly players: MwPlayersService,
-    private readonly gameObjectsManager: GameObjectsManager
-  ) {
-    super();
-  }
 
   @Notify(PlayersInitialized)
   public playersInit(): void {

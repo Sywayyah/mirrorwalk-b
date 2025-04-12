@@ -1,31 +1,24 @@
-import { Directive, HostListener, Inject, Input, OnInit } from '@angular/core';
+import { Directive, HostListener, inject, OnInit } from '@angular/core';
 import { HoverTypeEnum, PlayerClicksAllyGroup, PlayerClicksEnemyGroup, PlayerHoversGroupCard, PlayerRightClicksUnitGroup } from 'src/app/core/events';
 import { UnitGroup } from 'src/app/core/unit-types';
 import { EventsService } from 'src/app/store';
 import { BattleStateService, MwCurrentPlayerStateService, MwPlayersService } from '../../services';
-import { PROVIDE_UI_UNIT_GROUP, UIUnitProvider } from './mw-unit-events-cursor.directive';
+import { PROVIDE_UI_UNIT_GROUP } from './mw-unit-events-cursor.directive';
 
 
 @Directive({
-    selector: '[mwUnitGroupCombatAction]',
-    standalone: false
+  selector: '[mwUnitGroupCombatAction]',
+  standalone: false
 })
 export class MwUnitGroupCombatActionDirective implements OnInit {
+  private readonly curPlayerState = inject(MwCurrentPlayerStateService);
+  private readonly players = inject(MwPlayersService);
+  private readonly mwBattleStateService = inject(BattleStateService);
+  private events = inject(EventsService);
+  private unitGroupProvider = inject(PROVIDE_UI_UNIT_GROUP);
 
-  @Input() public actionTargetUnitGroup!: UnitGroup;
-
+  private actionTargetUnitGroup!: UnitGroup;
   private isEnemyCard: boolean = false;
-
-  constructor(
-    private readonly curPlayerState: MwCurrentPlayerStateService,
-    private readonly players: MwPlayersService,
-    private readonly mwBattleStateService: BattleStateService,
-    private events: EventsService,
-
-    @Inject(PROVIDE_UI_UNIT_GROUP)
-    private unitGroupProvider: UIUnitProvider,
-  ) {
-  }
 
   public ngOnInit(): void {
     this.actionTargetUnitGroup = this.unitGroupProvider.getUnitGroup();
