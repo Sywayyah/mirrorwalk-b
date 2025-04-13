@@ -1,13 +1,13 @@
 import { inject, Injectable } from '@angular/core';
 import { UnitTypeId } from 'src/app/core/entities';
-import { PlayerLevelsUp, PlayerReceivesItem, PlayerUnequipsItem } from 'src/app/core/events';
-import { HERO_LEVELS_BREAKPOINTS, HeroBase } from 'src/app/core/heroes';
+import { PlayerReceivesItem, PlayerUnequipsItem } from 'src/app/core/events';
+import { HeroBase } from 'src/app/core/heroes';
 import { Item } from 'src/app/core/items';
 import { Player, PlayerCreationModel, PlayerTypeEnum } from 'src/app/core/players';
 import { Resources, ResourcesModel, ResourceType } from 'src/app/core/resources';
 import { UnitGroup } from 'src/app/core/unit-types';
 import { StoreClient } from 'src/app/store';
-import { MwHeroesService, MwUnitGroupsService } from './';
+import { MwHeroesService } from './';
 import { GameObjectsManager } from './game-objects-manager.service';
 import { State } from './state.service';
 
@@ -104,22 +104,10 @@ export class MwPlayersService extends StoreClient() {
     return player.hero.unitGroups.reduce((totalCount, nextUnitGroupType) => totalCount + (nextUnitGroupType.type.id === unitType ? nextUnitGroupType.count : 0), 0);
   }
 
-  public addExperienceToPlayer(playerId: string, experience: number): void {
+  public addExperienceToPlayersHero(playerId: string, experience: number): void {
     const player = this.getPlayerById(playerId);
     const playerHero = player.hero;
-    playerHero.experience += experience;
-
-    const currentXpToNextLevel = HERO_LEVELS_BREAKPOINTS[playerHero.level + 1];
-
-    // handle overstacked level
-    if (currentXpToNextLevel <= playerHero.experience) {
-      playerHero.level++;
-      playerHero.freeSkillpoints++;
-      playerHero.experience = playerHero.experience - currentXpToNextLevel;
-
-      // theoretically, overstacked skillpoints can be sent here
-      this.events.dispatch(PlayerLevelsUp({ newLevel: playerHero.level, hero: playerHero }));
-    }
+    playerHero.addExperience(experience);
   }
 
   public getPlayerById(playerId: string): Player {

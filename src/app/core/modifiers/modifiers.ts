@@ -9,6 +9,9 @@ export interface ConditionalModifierParamsModel {
 
 /* to add: critical strike chance & multiplier, retaliation damage percent */
 export interface ModifiersModel extends Specialties {
+  /** Econonmy/Macro attributes */
+  experienceGainBonus: number; // 0-1 format
+
   // base damage percent modifier
   baseDamagePercentModifier: number;
 

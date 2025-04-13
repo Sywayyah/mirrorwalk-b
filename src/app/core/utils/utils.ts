@@ -55,6 +55,10 @@ export const CommonUtils = {
     return percent > maxPercent ? maxPercent : percent;
   },
 
+  increaseByPercent(val: number, percent: number): number {
+    return val + (val * percent);
+  },
+
   nonNegative(val: number): number {
     return val < 0 ? 0 : val;
   },

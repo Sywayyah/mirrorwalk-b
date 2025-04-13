@@ -1,4 +1,5 @@
-import { Signal, WritableSignal } from '@angular/core';
+import { WritableSignal } from '@angular/core';
+import { Modifiers, ModsRef } from '../modifiers';
 import { GameApi } from '../triggers';
 
 export interface WeeklyActivity {
@@ -33,7 +34,7 @@ export const acitivies: WeeklyActivity[] = [
     type: WeeklyActivityType.WeekEnd,
     description: '+8 Gems.',
     init({ actions, events, players }) {
-      actions.scheduleAction(() => {
+      actions.scheduleActionInGameDays(() => {
         players.giveResourcesToPlayer(players.getCurrentPlayer(), { gems: 8 });
       }, 7);
       // const town = actions.getTownOfPlayer(players.getCurrentPlayer())!;
@@ -44,6 +45,25 @@ export const acitivies: WeeklyActivity[] = [
     name: 'War Training',
     type: WeeklyActivityType.FullWeek,
     description: 'Tier 1 units gain +1 to max damage.',
+    init({ actions, players }) {
+      const weeklyBonus: Modifiers = {
+        heroBonusAttack: 5,
+      };
+
+      const mods: Modifiers = {
+        __unitConditionalMods(unitGroup) {
+          return unitGroup.type.level === 1 ? weeklyBonus : null;
+        },
+      };
+
+      players.getCurrentPlayer().hero.weeklyActivitiesModGroup.addModsRef(ModsRef.fromMods(mods));
+
+      actions.scheduleActionInGameDays(() => {
+        // todo: figure out if it is required to remove returned mod (probably not, since changing mod will recalc conditional mod too)
+        players.getCurrentPlayer().hero.weeklyActivitiesModGroup.removeRefByModInstance(mods);
+        // players.getCurrentPlayer().hero.weeklyActivitiesModGroup.removeRefByModInstance(weeklyBonus);
+      }, 1);
+    }
   },
   {
     name: 'Prosperity',
@@ -54,6 +74,15 @@ export const acitivies: WeeklyActivity[] = [
     name: 'Scholar',
     type: WeeklyActivityType.FullWeek,
     description: 'Experience gain is increased by 10%',
+    init({ actions, players }) {
+      const currentHero = players.getCurrentPlayer().hero;
+      const modsRef = ModsRef.fromMods({ experienceGainBonus: 0.1 });
+      currentHero.weeklyActivitiesModGroup.addModsRef(modsRef);
+
+      actions.scheduleActionInGameDays(() => {
+        currentHero.weeklyActivitiesModGroup.removeModsRef(modsRef);
+      }, 7);
+    }
   },
   {
     name: 'Magic Hood',

@@ -51,6 +51,7 @@ import { ImgIconComponent } from './components/img-icon/img-icon.component';
 import { ResLabelComponent } from './components/res-label/res-label.component';
 import { ResourcesCostComponent } from './components/resources-cost/resources-cost.component';
 import { WeekActivitiesDialogComponent } from './components/week-activities-popup/week-activities-popup.component';
+import { WeekActivityCardComponent } from './components/week-activity-card/week-activity-card.component';
 import {
   DisableContextMenuDirective,
   MwActionHintDirective,
@@ -135,6 +136,7 @@ const components = [
   UnitSlotsActionPopupComponent,
   MainMenuPopupComponent,
   WeekActivitiesDialogComponent,
+  WeekActivityCardComponent,
 ];
 
 @NgModule({
@@ -142,4 +144,4 @@ const components = [
   exports: components,
   imports: [CommonModule],
 })
-export class SharedModule {}
+export class SharedModule { }

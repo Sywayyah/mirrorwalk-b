@@ -1,0 +1,21 @@
+@let activityItem = activity();
+
+{{ activityItem.name }}
+<hr />
+<div class="type">
+  (@switch (activity().type) {
+  @case (ActivityType.FullWeek) {
+  Active during the week
+  }
+  @case (ActivityType.WeekEnd) {
+  End of the week
+  }
+  @case (ActivityType.WeekStart) {
+  Start of the week
+  }
+  })
+</div>
+
+<div class="description">
+  {{ activityItem.description }}
+</div>

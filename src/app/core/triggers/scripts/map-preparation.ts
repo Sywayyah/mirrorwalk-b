@@ -1,5 +1,5 @@
 import { MeditateActionCard, SetupCampActionCard, SkipDayActionCard } from '../../action-cards/player-actions';
-import { AddActionCardsToPlayer, DefaultGameModes, DisplayPlayerRewardPopup, NewWeekStarted, PlayerLevelsUp, PlayersInitialized, PushPlainEventFeedMessage, Triggers } from '../../events';
+import { AddActionCardsToPlayer, DefaultGameModes, DisplayPlayerRewardPopup, NewWeekStarted, HeroLevelsUp, PlayersInitialized, PushPlainEventFeedMessage, Triggers } from '../../events';
 import { Faction } from '../../factions';
 import { constellationFaction } from '../../factions/constellation/faction';
 import { LevelMap } from '../../maps';
@@ -68,7 +68,7 @@ TriggersRegistry.register(NewWeekStarted, {
   },
 });
 
-TriggersRegistry.register(PlayerLevelsUp, {
+TriggersRegistry.register(HeroLevelsUp, {
   fn: (event, { events, players }) => {
 
     // subcategories for rewards?

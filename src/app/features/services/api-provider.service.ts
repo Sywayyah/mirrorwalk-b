@@ -36,7 +36,7 @@ export class ApiProvider {
       removeResourcesFromPlayer: (player, res) =>
         this.players.removeResourcesFromPlayer(player, res),
       addExperienceToPlayer: (player, xpAmount) => {
-        this.players.addExperienceToPlayer(player.id, xpAmount);
+        this.players.addExperienceToPlayersHero(player.id, xpAmount);
       },
       addUnitGroupToPlayer: (player, unitType, count) => {
         const unitGroup = this.unitGroups.createUnitGroup(
@@ -86,7 +86,7 @@ export class ApiProvider {
       actions: {
         getMapStructures: () => this.structures.viewStructures,
         getActionPointsLeft: () => this.state.currentGame.actionPoints,
-        scheduleAction: (action, days) => {
+        scheduleActionInGameDays: (action, days) => {
           this.events.dispatch(ScheduleAction({ action, dayOffset: days }));
         },
         getTownOfPlayer: (player) => this.state.townsByPlayers.get(player.id),

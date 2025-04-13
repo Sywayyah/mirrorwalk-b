@@ -129,6 +129,9 @@ export enum UnitModGroups {
   /** Mods gained from specialties and conditional mods */
   SpecialtyAndConditionalMods = 'scMods',
 
+  /** Weekly activities */
+  WeeklyMods = 'waMods',
+
   /** Mods coming from spells */
   SpellMods = 'sMods',
 }

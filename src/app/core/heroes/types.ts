@@ -2,7 +2,7 @@ import { signal, Signal } from '@angular/core';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Entity, HeroId, resolveEntity, SpellId } from '../entities';
-import { UnitGroupAddedToHero, UnitGroupRemovedFromHero } from '../events';
+import { HeroLevelsUp, UnitGroupAddedToHero, UnitGroupRemovedFromHero } from '../events';
 import { GameObject } from '../game-objects';
 import { Item, ItemBaseModel } from '../items';
 import { InventoryItems } from '../items/inventory';
@@ -11,10 +11,11 @@ import { Player } from '../players';
 import { ResourcesModel } from '../resources';
 import { Spell, SpellBaseType } from '../spells';
 import { DescriptionElement } from '../ui';
-import { GenerationModel, UnitGroup } from '../unit-types';
+import { GenerationModel, UnitGroup, UnitModGroups } from '../unit-types';
 import { CommonUtils } from '../utils';
 import { isNotNullish } from '../utils/common';
 import { complete } from '../utils/observables';
+import { HERO_LEVELS_BREAKPOINTS } from './levels';
 
 export interface HeroBaseStats {
   stats: {
@@ -121,6 +122,7 @@ export class Hero extends GameObject<HeroCreationParams, HeroStatsInfo> {
   public readonly unitAurasModGroup = ModsRefsGroup.empty();
 
   public readonly specialtiesModGroup = ModsRefsGroup.empty();
+  public readonly weeklyActivitiesModGroup = ModsRefsGroup.empty();
 
   /** All items that hero possesses (not all might be equiped) */
   public itemsBackpack: Item[] = [];
@@ -196,7 +198,36 @@ export class Hero extends GameObject<HeroCreationParams, HeroStatsInfo> {
       this.modGroup.addModsRef(ModsRef.fromMods(heroBase.initialState.defaultModifiers));
     }
 
+    this.modGroup.attachNamedParentGroup(UnitModGroups.WeeklyMods, this.weeklyActivitiesModGroup);
+
     this.updateSignalState();
+  }
+
+  public addExperience(experience: number, withBonus = false): void {
+    if (experience <= 0) {
+      return;
+    }
+
+    let exp = experience;
+
+    if (withBonus) {
+      exp = CommonUtils.increaseByPercent(experience, this.weeklyActivitiesModGroup.getCalcNumModValueOrZero('experienceGainBonus'));
+    }
+
+    this.experience += exp;
+
+    const currentXpToNextLevel = HERO_LEVELS_BREAKPOINTS[this.level + 1];
+
+    // handle overstacked level
+    if (currentXpToNextLevel <= this.experience) {
+      this.level++;
+      this.freeSkillpoints++;
+      this.experience = this.experience - currentXpToNextLevel;
+
+
+      // theoretically, overstacked skillpoints can be sent here
+      this.getApi().events.dispatch(HeroLevelsUp({ newLevel: this.level, hero: this }));
+    }
   }
 
   getState(): HeroStatsInfo {

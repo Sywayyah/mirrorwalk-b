@@ -1,4 +1,4 @@
-import { Directive, inject, input, Input, OnChanges, OnDestroy, Renderer2 } from '@angular/core';
+import { Directive, inject, input, OnChanges, OnDestroy, Renderer2 } from '@angular/core';
 import { injectHostElem } from 'src/app/core/utils';
 
 @Directive({
@@ -10,9 +10,9 @@ export class NumberModifierDirective implements OnDestroy, OnChanges {
   private renderer = inject(Renderer2);
 
   readonly value = input.required<number>({ alias: 'mwNumberModifier' });
+  readonly format = input<'shortPercent' | 'normal'>('normal', { alias: 'mwNumberModifierFormat' });
 
-  @Input()
-  public hideEmpty: boolean = true;
+  public hideEmpty = input(true);
 
   constructor(
   ) {
@@ -27,7 +27,7 @@ export class NumberModifierDirective implements OnDestroy, OnChanges {
     const elem = this.hostElem as HTMLElement;
     const value = this.value();
 
-    if (this.hideEmpty && !value) {
+    if (this.hideEmpty() && !value) {
       elem.innerHTML = '';
       return;
     }
@@ -37,7 +37,15 @@ export class NumberModifierDirective implements OnDestroy, OnChanges {
       return;
     }
 
-    elem.innerHTML = String((value > 0 ? '+' : '') + value);
+    let strValue = String(value);
+
+    if (this.format() === 'shortPercent') {
+      strValue = (value * 100).toFixed(0) + '%';
+    }
+
+    strValue = (value > 0 ? '+' : '') + strValue;
+
+    elem.innerHTML = String(strValue);
 
     this.renderer.setStyle(elem, 'color', value < 0 ? 'red' : 'lime');
   }

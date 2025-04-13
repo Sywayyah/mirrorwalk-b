@@ -59,7 +59,7 @@ export const PlayerEquipsItem = gameEvent<PlayerEquipsItemAction>();
 
 export const PlayerUnequipsItem = gameEvent<PlayerUnequipsItemAction>();
 
-export const PlayerLevelsUp = gameEvent<PlayerLevelsUpEvent>();
+export const HeroLevelsUp = gameEvent<PlayerLevelsUpEvent>();
 
 export const UnitGroupAddedToHero = gameEvent<{ hero: Hero, unitGroup: UnitGroup }>();
 

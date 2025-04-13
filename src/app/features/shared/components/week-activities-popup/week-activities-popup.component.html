@@ -4,44 +4,22 @@
 
 <div class="categories">
   @for (category of categories(); track $index) {
-    <div class="category">
-      <div>{{ category.name }}</div>
+  <div class="category">
+    <div>{{ category.name }}</div>
 
-      <div class="activities">
-        @for (activity of category.activityBases; track $index) {
-          <div
-            class="activity"
-            [class.active]="activity === category.choice()"
-            (click)="category.choice.set(activity)"
-          >
-            {{ activity.name }}
-            <hr />
-            <div class="type">
-              (
-              @switch (activity.type) {
-                @case (ActivityType.FullWeek) {
-                  Active during the week
-                }
-                @case (ActivityType.WeekEnd) {
-                  End of the week
-                }
-                @case (ActivityType.WeekStart) {
-                  Start of the week
-                }
-              }
-              )
-            </div>
+    <div class="activities">
+      @for (activity of category.activityBases; track $index) {
+      <mw-week-activity-card [activity]="activity"
+                             [class.active]="activity === category.choice()"
+                             (click)="category.choice.set(activity)" />
 
-            <div class="description">
-              {{ activity.description }}
-            </div>
-          </div>
-        }
-      </div>
+      }
     </div>
+  </div>
   }
 </div>
 
 <div class="footer">
-  <button mw-main-button (click)="confirm()">Confirm</button>
+  <button mw-main-button
+          (click)="confirm()">Confirm</button>
 </div>
