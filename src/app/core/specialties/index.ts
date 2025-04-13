@@ -147,6 +147,7 @@ export const acitivies: WeeklyActivity[] = [
     description: 'Every day you restore +1 Mana, but gain -3 to Defence',
     init(api) {
       modifiersActivityBonus({ api, mods: { heroBonusDefence: -3 } });
+      // maybe need to turn into an ability
       api.events.onEvent(NewDayStarted).subscribe(() => {
         api.players.getCurrentPlayer().hero.addMana(1);
       });
