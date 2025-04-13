@@ -213,7 +213,9 @@ export class InGameApiController extends StoreClient() {
 
         // if pinner is pinned - ignore or give escape chance
         if (pinningState.combatState.type === CombatStateEnum.Pinned) {
-          return;
+          return {
+            pinFailed: true,
+          };
         }
 
         // stop pin if neither is alive anymore
