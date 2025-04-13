@@ -1,4 +1,4 @@
-import { inject, Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { DamageType, PostDamageInfo } from 'src/app/core/api/combat-api/types';
 import { CombatAttackInteraction, CombatInteractionEnum, CombatInteractionStateEvent, GroupCounterAttacked, GroupDamagedByGroup, GroupDies, GroupSpellsChanged, GroupTakesDamage, InitSpell, PlayerHoversCardEvent, UnitHealed } from 'src/app/core/events';
 import { RegisterUnitLoss } from 'src/app/core/events/battle/commands';
@@ -7,7 +7,7 @@ import { defaultResistCap, resistsMapping } from 'src/app/core/modifiers/resists
 import { Player } from 'src/app/core/players';
 import { Spell, SpellActivationType, SpellEventNames, SpellEventTypeByName, SpellEvents } from 'src/app/core/spells';
 import { ActionHintTypeEnum, AttackActionHintInfo } from 'src/app/core/ui';
-import { UnitGroup, UnitStatsInfo } from 'src/app/core/unit-types';
+import { CombatStateEnum, UnitGroup, UnitStatsInfo } from 'src/app/core/unit-types';
 import { CommonUtils } from 'src/app/core/utils';
 import { nonNullish } from 'src/app/core/utils/common';
 import { getHtmlRaIcon, getRetaliationMessage, messageWrapper } from 'src/app/core/vfx';
@@ -61,6 +61,8 @@ export class CombatInteractorService extends StoreClient() {
 
         if (options.attackerUnit) {
           console.log('attacker?', options.attackerUnit);
+
+          const attackerCombatState = options.attackerUnit.getState().combatState;
 
           const conditionalAttackData = { attacked: target, attacker: options.attackerUnit };
 
@@ -118,7 +120,13 @@ export class CombatInteractorService extends StoreClient() {
 
           console.log(`damage reduced by ${damagePercentMod}%`);
 
+
+          if (attackerCombatState.type === CombatStateEnum.Pinned && target !== attackerCombatState.pinnedBy) {
+            finalDamage = CommonUtils.increaseByPercent(finalDamage, -0.25);
+          }
+
           finalDamage = CommonUtils.nonNegative(Math.round(finalDamage + finalDamage * damagePercentMod) - blockedDamage);
+
 
           // retaliation percent
           const retaliationPercent = attackerFinalMods.getModValue('retaliationDamagePercent');

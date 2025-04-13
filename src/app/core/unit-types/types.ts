@@ -470,6 +470,14 @@ export class UnitGroup extends GameObject<UnitCreationParams, UnitGroupState> {
     return this.unitStats$.getValue();
   }
 
+  setCombatState(combatState: CombatState): void {
+    const state = this.getState();
+    this.pushState({
+      ...state,
+      combatState,
+    })
+  }
+
   attachSpecialtyMods(specialtyMods: Modifiers): void {
     this.getSpecialtyAndConditionalModsGroup().addModsRef(
       ModsRef.fromMods(specialtyMods),

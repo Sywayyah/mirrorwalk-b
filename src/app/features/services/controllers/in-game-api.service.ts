@@ -10,7 +10,7 @@ import { Spell, SpellBaseType, SpellEventHandlers, SpellEventNames, SpellEventsG
 import { MapStructure } from 'src/app/core/structures';
 import { StructEventUtilTypes, SturctEventsGroup } from 'src/app/core/structures/events';
 import { BuildingEventNames, BuildingEventsHandlers, BuildingsEventsGroup } from 'src/app/core/towns/events';
-import { UnitGroup } from 'src/app/core/unit-types';
+import { CombatStateEnum, UnitGroup } from 'src/app/core/unit-types';
 import { Notify, StoreClient, WireMethod } from 'src/app/store';
 import { VfxService } from '../../shared/components';
 import { ApiProvider } from '../api-provider.service';
@@ -207,7 +207,19 @@ export class InGameApiController extends StoreClient() {
       },
       unitGroupAttack: (attacker, attacked) => this.events.dispatch(GroupAttacked({ attackingGroup: attacker, attackedGroup: attacked })),
       pinAttempt: (pinning, pinned) => {
-        // pinning.
+        if (!pinning.getState().groupState.isAlive || !pinned.getState().groupState.isAlive) {
+          return;
+        }
+
+        pinning.setCombatState({
+          type: CombatStateEnum.Pinning,
+          pinning: pinned,
+        });
+
+        pinned.setCombatState({
+          type: CombatStateEnum.Pinned,
+          pinnedBy: pinning,
+        });
       },
       getCurrentUnitGroup: () => this.battleState.currentUnitGroup,
       summonUnitsForPlayer: (ownerPlayer: Player, unitTypeId: UnitTypeId, unitNumber: number) => {

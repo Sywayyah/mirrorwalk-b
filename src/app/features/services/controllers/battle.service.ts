@@ -100,6 +100,7 @@ export class BattleController extends StoreClient() {
     const currentPlayer = this.playersService.getCurrentPlayer();
 
     const currentPlayerAliveUnits = this.battleState.getAliveUnitsOfPlayer(currentPlayer);
+    // todo: cleanup battle state on dead/fight ends
 
     // if current player doesn't have unit groups left
     if (!currentPlayerAliveUnits.length) {

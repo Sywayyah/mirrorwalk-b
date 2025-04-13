@@ -6,7 +6,8 @@ import {
   OnDestroy,
   OnInit,
   output,
-  Renderer2
+  Renderer2,
+  Signal
 } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -66,6 +67,7 @@ export class MwUnitGroupCardComponent extends StoreClient() implements UIUnitPro
   public isGroupMelee: boolean = false;
 
   public unitStats$!: Observable<UnitGroupState>;
+  public unitState!: Signal<UnitGroupState>;
 
   public initialCount: number = 0;
 
@@ -80,6 +82,7 @@ export class MwUnitGroupCardComponent extends StoreClient() implements UIUnitPro
   private destroy$: Subject<void> = new Subject();
 
   public ngOnInit(): void {
+    this.unitState = this.unitGroup().getStateSignal();
     this.spellsHintsPosition = 'above';
 
     this.isGroupMelee = !this.unitsService.isUnitGroupRanged(this.unitGroup());
