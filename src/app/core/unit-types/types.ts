@@ -478,6 +478,10 @@ export class UnitGroup extends GameObject<UnitCreationParams, UnitGroupState> {
     })
   }
 
+  clearCombatState(): void {
+    this.setCombatState({ type: CombatStateEnum.Normal })
+  }
+
   attachSpecialtyMods(specialtyMods: Modifiers): void {
     this.getSpecialtyAndConditionalModsGroup().addModsRef(
       ModsRef.fromMods(specialtyMods),

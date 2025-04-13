@@ -11,6 +11,7 @@ import { MapStructure } from 'src/app/core/structures';
 import { StructEventUtilTypes, SturctEventsGroup } from 'src/app/core/structures/events';
 import { BuildingEventNames, BuildingEventsHandlers, BuildingsEventsGroup } from 'src/app/core/towns/events';
 import { CombatStateEnum, UnitGroup } from 'src/app/core/unit-types';
+import { CommonUtils } from 'src/app/core/utils';
 import { Notify, StoreClient, WireMethod } from 'src/app/store';
 import { VfxService } from '../../shared/components';
 import { ApiProvider } from '../api-provider.service';
@@ -206,9 +207,31 @@ export class InGameApiController extends StoreClient() {
         this.battleState.addTurnsToUnitGroup(target, turns);
       },
       unitGroupAttack: (attacker, attacked) => this.events.dispatch(GroupAttacked({ attackingGroup: attacker, attackedGroup: attacked })),
-      pinAttempt: (pinning, pinned) => {
-        if (!pinning.getState().groupState.isAlive || !pinned.getState().groupState.isAlive) {
+      pinAttempt: (pinning, pinned): void | object => {
+        const pinningState = pinning.getState();
+        const pinnedState = pinned.getState();
+
+        // if pinner is pinned - ignore or give escape chance
+        if (pinningState.combatState.type === CombatStateEnum.Pinned) {
           return;
+        }
+
+        // stop pin if neither is alive anymore
+        if (!pinningState.groupState.isAlive || !pinnedState.groupState.isAlive) {
+          return;
+        }
+
+        if (pinned.modGroup.getModValue('isCavalry') && CommonUtils.chanceRoll(0.2)) {
+          return {
+            pinFailed: true,
+            unitEscapedPin: true,
+          };
+        }
+
+        // if pinned someone else - release previous from pin
+        const previousPinned = pinningState.combatState.type === CombatStateEnum.Pinning && pinningState.combatState.pinning;
+        if (previousPinned !== pinned) {
+          pinned.clearCombatMods();
         }
 
         pinning.setCombatState({
