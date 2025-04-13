@@ -1,45 +1,89 @@
 <div class="header">
-  Exchange Gain gold
-  <div>Earned: {{ playerTrader.costInGold() }}</div>
-  <div>Spent: {{ marketTrader.costInGold() }}</div>
+  <div class="title">
+    Market
+  </div>
 
-  {{ dealCost() }}
+  <div class="res">
+    @for (trader of traders; track $index) {
+    <div>
+
+      {{ trader.title }}
+      <div>
+
+        <mw-res-label [resType]="'gold'"
+                      [amount]="trader.trader.goldEntry.max" />
+      </div>
+
+
+    </div>
+    }
+  </div>
+
+  <div class="earnings">
+    <div>Will Earn: {{ playerTrader.costInGold() }}</div>
+    <div>Will Spend: {{ marketTrader.costInGold() }}</div>
+  </div>
 </div>
 
 <div class="trading">
   @for (trader of traders; track $index) {
-    <div class="trader">
-      {{ trader.title }}
-      <div class="resources">
-        @for (resEntry of trader.trader.resourceEntries(); track $index) {
-          <div class="resource">
-            <div>
-              <mw-res-label
-                [resType]="resEntry.resType"
-                [amount]="resEntry.max"
-              />
-            </div>
+  <div class="trader">
+    <div class="resources">
+      @for (resEntry of trader.trader.resourceEntries(); track $index) {
+      @if (!resEntry.isGold) {
+      <div class="resource">
+        <div>
+          <mw-res-label [resType]="resEntry.resType"
+                        [amount]="resEntry.max" />
+        </div>
 
-            <div *ngIf="!resEntry.isGold">
-              <input
-                type="range"
-                step="1"
-                min="0"
-                [max]="resEntry.max"
-                [(ngModel)]="resEntry.count"
-              />
-              {{ resEntry.count() }}
-            </div>
-          </div>
-        }
+        <div *ngIf="!resEntry.isGold">
+          <input type="range"
+                 step="1"
+                 min="0"
+                 [max]="resEntry.max"
+                 [(ngModel)]="resEntry.count" />
+          {{ resEntry.count() }}
+        </div>
       </div>
+      }
+      }
     </div>
+  </div>
   }
 </div>
 
+<div class="deal-info">
+
+
+  @if (dealResources().length) {
+  <div class="title">
+    You will get:
+  </div>
+
+  <mw-res-label resType="gold"
+                [amount]="dealCost()" />
+
+  <div>
+    @for (item of dealResources(); track $index) {
+    <mw-res-label [resType]="item.resType"
+                  [amount]="item.count" />
+    }
+  </div>
+  }
+
+  @if (!canTrade() && dealCost()) {
+  <div>You don't have enough gold!</div>
+  }
+
+</div>
+
 <div class="buttons">
-  <button mw-main-button [disabled]="!canTrade()" (click)="trade()">
+  <button mw-main-button
+          [disabled]="!canTrade()"
+          (click)="trade()">
     Trade
   </button>
-  <button mw-main-button (click)="close()">Leave</button>
+  <button mw-main-button
+          (click)="close()">Leave</button>
 </div>
