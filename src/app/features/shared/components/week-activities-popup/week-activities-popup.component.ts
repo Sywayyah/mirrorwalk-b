@@ -31,7 +31,7 @@ export class WeekActivitiesDialogComponent extends BaseDialog {
     },
     {
       name: 'Advanced',
-      activityBases: [acitivies[8], acitivies[9], acitivies[0]],
+      activityBases: [acitivies[8], acitivies[9], acitivies[0], acitivies[13]],
       choice: signal(acitivies[8]),
     },
   ]);

@@ -452,7 +452,7 @@ humansFaction.defineUnitType({
       `Tier 5 Castle magical creatures of fire, an upgraded version of Mystic Birds.`,
     ),
     heroDescrElem(
-      `<br>Majestic and powerful of fire that can heal and resurrect allied units, has better stats than Mystical Birds and +17% fire resistance.`,
+      `<br>Majestic and powerful creatures of fire that can heal and resurrect allied units, has better stats than Mystical Birds and +17% fire resistance.`,
     ),
     heroDescrElem(`<br>Has base manapool of 8.`),
 

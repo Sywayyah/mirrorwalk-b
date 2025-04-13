@@ -77,11 +77,7 @@ export class ApiProvider {
 
   public getGameApi(): GameApi {
     return {
-      events: {
-        dispatch: (eventData) => {
-          this.events.dispatch(eventData);
-        },
-      },
+      events: this.getGlobalEventsApi(),
       players: this.getPlayerApi(),
       actions: {
         getMapStructures: () => this.structures.viewStructures,
@@ -97,6 +93,7 @@ export class ApiProvider {
   public getGlobalEventsApi(): GlobalEventsApi {
     return {
       dispatch: (event) => this.events.dispatch(event),
+      onEvent: (eventType) => this.events.onEvent(eventType),
     };
   }
 }

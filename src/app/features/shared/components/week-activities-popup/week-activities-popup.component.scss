@@ -11,19 +11,26 @@
 .categories {
   display: flex;
   flex-direction: column;
-  gap: 8px;
-}
+  gap: 14px;
 
-.activities {
-  display: flex;
-  gap: 8px;
-
-  >mw-week-activity-card {
-    width: 175px;
-    cursor: pointer;
-    // text-align: center;
-
+  .category-title {
+    text-align: center;
+    padding-bottom: 3px;
   }
+
+  .activities {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+
+    >mw-week-activity-card {
+      width: 175px;
+      cursor: pointer;
+      // text-align: center;
+
+    }
+  }
+
 }
 
 .footer {

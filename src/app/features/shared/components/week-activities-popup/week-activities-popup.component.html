@@ -5,7 +5,7 @@
 <div class="categories">
   @for (category of categories(); track $index) {
   <div class="category">
-    <div>{{ category.name }}</div>
+    <div class="category-title">{{ category.name }}</div>
 
     <div class="activities">
       @for (activity of category.activityBases; track $index) {
