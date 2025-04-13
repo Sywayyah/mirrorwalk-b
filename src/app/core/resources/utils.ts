@@ -1,3 +1,4 @@
+import { hasProp } from '../utils/common';
 import { Resources, ResourcesModel, ResourceType } from './types';
 
 export const resourceNames: Record<ResourceType, string> = {
@@ -19,6 +20,19 @@ export function formattedResources(resources: Resources): FormattedResource[] {
     type: res as ResourceType,
     count: count,
   })) as FormattedResource[];
+}
+
+export function getFactoredResources(resources: Resources, factor: number): Resources {
+  const newResources = { ...resources } as Resources;
+
+  // handle differently for different resources
+  for (const resType in newResources) {
+    if (hasProp(newResources, resType)) {
+      newResources[resType] = (newResources[resType] as number) + Math.ceil((newResources[resType] as number) * factor);
+    }
+  }
+
+  return newResources;
 }
 
 export function getResourcesAsText(resources: Resources): string[] {

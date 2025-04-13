@@ -19,6 +19,7 @@ export interface ActivityCategory {
 export enum WeeklyActivityType {
   WeekStart,
   FullWeek,
+  Permanent,
   WeekEnd,
 }
 
@@ -86,12 +87,12 @@ export const acitivies: WeeklyActivity[] = [
   },
   {
     name: 'Magic Hood',
-    type: WeeklyActivityType.FullWeek,
+    type: WeeklyActivityType.Permanent,
     description: 'Resistance against magic is increased by 5%',
   },
   {
     name: 'Mysticism',
-    type: WeeklyActivityType.WeekEnd,
+    type: WeeklyActivityType.Permanent,
     description: '+100 Hero Healtlh, +5 to Hero Mana/Max Mana (scaling)',
   },
   {
@@ -101,13 +102,21 @@ export const acitivies: WeeklyActivity[] = [
   },
   {
     name: 'Standard Bearer',
-    type: WeeklyActivityType.WeekEnd,
+    type: WeeklyActivityType.Permanent,
     description: '+1 Attack, +1 Defence, +100 Hero Health, +10 Hero Damage',
   },
   {
     name: 'Masonry',
     type: WeeklyActivityType.FullWeek,
     description: 'Gold and wood requirements for building are reduced by 10%',
+    init({ actions, players }) {
+      const currentPlayer = players.getCurrentPlayer();
+      const modsRef = currentPlayer.hero.weeklyActivitiesModGroup.addModsRef(ModsRef.fromMods({ townBuildingCostFactor: -0.1 }));
+
+      actions.scheduleActionInGameDays(() => {
+        currentPlayer.hero.weeklyActivitiesModGroup.removeModsRef(modsRef);
+      }, 7);
+    },
   },
   {
     name: 'Nest of Fire',
@@ -129,12 +138,12 @@ export const acitivies: WeeklyActivity[] = [
   },
   {
     name: 'Crystal Illness',
-    type: WeeklyActivityType.FullWeek,
+    type: WeeklyActivityType.Permanent,
     description: 'Every day you restore +2 Mana, but gain -10% to Defence',
   },
   {
     name: 'Fire Mastery',
-    type: WeeklyActivityType.WeekEnd,
+    type: WeeklyActivityType.Permanent,
     description: '+1 Fire Mastery',
   },
 ];

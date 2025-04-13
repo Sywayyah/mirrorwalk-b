@@ -79,11 +79,12 @@ export class ModsRefsGroup {
     return refsWithBoolMod.some(modsRef => modsRef.getModValue(modName));
   }
 
-  addModsRef(modsRef: ModsRef): void {
+  addModsRef(modsRef: ModsRef): ModsRef {
     this.modsRefs.push(modsRef);
     this.processModsRef(modsRef);
     this.childGroups.forEach((parentGroup) => parentGroup.addModsRef(modsRef));
     this.emitModValueChange();
+    return modsRef;
   }
 
   /* Consider using removeRefByModInstance over removeModsRef with conditional modifiers, since for now they don't return ModsRef. */
