@@ -89,5 +89,5 @@ export interface CombatActionsRef extends SpellsApi {
 
   unitGroupAttack: (attacker: UnitGroup, attacked: UnitGroup) => void;
   // actions for pinning
-  pinAttempt: (pinning: UnitGroup, pinned: UnitGroup) => void;
+  pinAttempt: (pinning: UnitGroup, pinned: UnitGroup) => void | {};
 }
