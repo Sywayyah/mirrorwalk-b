@@ -28,6 +28,20 @@ export const CommonUtils = {
     arr.splice(itemIndex, 1);
   },
 
+  removeItemCopy<T>(arr: T[], item: T): T[] {
+    let newArr = [...arr];
+    const itemIndex = newArr.indexOf(item);
+
+    if (itemIndex === -1) {
+      return newArr;
+    }
+    newArr.splice(itemIndex, 1);
+
+    return newArr;
+  },
+
+
+
   randBoolean(): boolean {
     return Math.random() > 0.5;
   },

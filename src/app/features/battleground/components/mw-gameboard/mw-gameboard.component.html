@@ -2,25 +2,27 @@
      [ngClass]="settings.orientation === orientation.Horizontal ? 'horizontal' : 'vertical'">
   <div class="columns">
     <div class="column">
+      @for (unitGroup of mainPlayerUnitGroups; track unitGroup.id) {
       <mw-unit-group-card class="card"
-                          *ngFor="let unitGroup of mainPlayerUnitGroups"
                           mwUnitGroupCombatAction
                           mwUnitEventsCursor
                           side="left"
                           [playerInfo]="mainPlayerInfo"
                           [unitGroup]="unitGroup"
-                          (grupDies)="onGroupDies(unitGroup)" />
+                          (groupDies)="onGroupDies(unitGroup)" />
+      }
     </div>
 
     <div class="column">
+      @for (unitGroup of neutralPlayerGroups; track unitGroup.id) {
       <mw-unit-group-card class="card"
-                          *ngFor="let unitGroup of neutralPlayerGroups"
                           mwUnitGroupCombatAction
                           mwUnitEventsCursor
                           side="right"
                           [playerInfo]="enemyPlayerInfo"
                           [unitGroup]="unitGroup"
                           (groupDies)="onGroupDies(unitGroup)" />
+      }
     </div>
   </div>
 </div>

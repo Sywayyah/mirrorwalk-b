@@ -1,8 +1,9 @@
-import { ChangeDetectorRef, Component, OnInit, Renderer2, TemplateRef, ViewChild, ViewContainerRef } from '@angular/core';
+import { Component, inject, OnInit, TemplateRef, ViewChild, ViewContainerRef } from '@angular/core';
 import { combineLatest, fromEvent } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { CustomAnimationData, Effect, EffectInstRef, EffectOptions, EffectPosition, EffectType, VfxElemEffect } from 'src/app/core/api/vfx-api';
 import { UnitGroup } from 'src/app/core/unit-types';
+import { injectCdr, injectRenderer } from 'src/app/core/utils';
 import { FloatingMessageAnimation } from 'src/app/core/vfx';
 import { MwCardsMappingService } from 'src/app/features/services';
 import { VfxElementComponent } from '../vfx-element/vfx-element.component';
@@ -20,6 +21,10 @@ import { VfxService } from './vfx.service';
   standalone: false
 })
 export class VfxLayerComponent implements OnInit {
+  private vfxService = inject(VfxService);
+  private renderer = injectRenderer();
+  private unitsCardsMapping = inject(MwCardsMappingService);
+  public cdr = injectCdr();
 
   public activeEffects: Map<number, EffectInstRef> = new Map();
   public EffectTypes: typeof EffectType = EffectType;
@@ -31,14 +36,6 @@ export class VfxLayerComponent implements OnInit {
   public vfxElementRef!: TemplateRef<VfxElementComponent>;
 
   public effectsWithOverlay: number = 0;
-
-
-  constructor(
-    private vfxService: VfxService,
-    private renderer: Renderer2,
-    private unitsCardsMapping: MwCardsMappingService,
-    public cdr: ChangeDetectorRef,
-  ) { }
 
   public ngOnInit(): void {
     this.vfxService.registerLayerComponent(this);

@@ -1,5 +1,11 @@
+export * from './astral-banishment';
 export * from './blindness';
+export * from './charged-strike';
+export * from './corrosive-fog';
+export * from './dream-aura';
 export * from './enchant';
+export * from './fire-breath';
+export * from './fire-shield';
 export * from './firebird-heal';
 export * from './fright';
 export * from './frost-arrow';
@@ -8,6 +14,9 @@ export * from './heal';
 export * from './kneeling-light';
 export * from './meteor';
 export * from './poison-cloud';
+export * from './protection';
 export * from './rain-of-fire';
+export * from './summon-fire-spirits';
+export * from './summon-sagittar';
 export * from './wind-bless';
-export * from './fire-breath';
+

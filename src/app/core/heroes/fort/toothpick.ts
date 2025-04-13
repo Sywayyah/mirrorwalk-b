@@ -3,7 +3,6 @@ import { fortFaction } from '../../factions';
 import { heroDescrElem } from '../../ui';
 import { HeroBase } from '../types';
 import { heroesDefaultResources } from '../utils';
-import { OnslaugtSpell } from './spells/onslaught';
 
 // ability: Onset. Gives +40% lifesteal, 3 attack and 2 speed to Raiders. Later on also starts to grant additional turn.
 export const ToothpickHero: HeroBase = fortFaction.createHero({
@@ -14,7 +13,7 @@ export const ToothpickHero: HeroBase = fortFaction.createHero({
 
   image: AssetsImages.HeroKnight,
   abilities: [
-    OnslaugtSpell,
+    '#spell-onslaught'
   ],
   army: [{
     maxUnitGroups: 2,

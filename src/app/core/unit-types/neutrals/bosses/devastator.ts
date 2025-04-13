@@ -1,5 +1,3 @@
-import { DevastatorScaleArmorDamageBlock } from 'src/app/core/spells/common/damage-block/devastator-damage-block';
-import { FireBreath } from 'src/app/core/spells/common/fire-breath';
 import { heroDescrElem } from 'src/app/core/ui';
 import { AssetsImages } from '../../../assets';
 import { neutralsFaction } from '../../../factions/neutrals/faction';
@@ -27,7 +25,7 @@ neutralsFaction.defineUnitType({
     speed: 14,
   },
 
-  defaultSpells: [FireBreath, DevastatorScaleArmorDamageBlock],
+  defaultSpells: ['#spell-fire-breath', '#spell-devastator-block'],
 
   defaultModifiers: {
     isBoss: true,

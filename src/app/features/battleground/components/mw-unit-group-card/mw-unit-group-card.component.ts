@@ -44,18 +44,18 @@ import { StoreClient } from 'src/app/store';
   standalone: false,
 })
 export class MwUnitGroupCardComponent extends StoreClient() implements UIUnitProvider, OnInit, OnDestroy {
-  public readonly hostElem = injectHostElem();
-  public readonly mwBattleStateService = inject(BattleStateService);
+  readonly hostElem = injectHostElem();
+  readonly mwBattleStateService = inject(BattleStateService);
   private readonly playersService = inject(MwPlayersService);
   private readonly unitsService = inject(MwUnitGroupStateService);
   private readonly renderer = inject(Renderer2);
 
-  public readonly unitGroup = input.required<UnitGroup>();
-  public readonly playerInfo = input.required<Player>();
-  public readonly side = input<'left' | 'right'>('left');
+  readonly unitGroup = input.required<UnitGroup>();
+  readonly playerInfo = input.required<Player>();
+  readonly side = input<'left' | 'right'>('left');
 
-  public cardReady = output<MwUnitGroupCardComponent>();
-  public groupDies = output<void>();
+  readonly cardReady = output<MwUnitGroupCardComponent>();
+  readonly groupDies = output<void>();
 
   public isCardHovered: boolean = false;
   public isEnemyCard!: boolean;

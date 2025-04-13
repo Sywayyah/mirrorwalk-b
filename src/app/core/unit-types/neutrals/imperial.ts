@@ -1,5 +1,4 @@
 import { neutralsFaction } from '../../factions/neutrals/faction';
-import { TowerShieldsDamageBlock } from '../../spells/common/damage-block/knights-damage-block';
 import { spellDescrElem } from '../../ui';
 
 
@@ -29,7 +28,7 @@ neutralsFaction.defineUnitType({
   },
 
   defaultSpells: [
-    TowerShieldsDamageBlock,
+    '#spell-tower-shields-block'
   ],
 
   getDescription: () => {

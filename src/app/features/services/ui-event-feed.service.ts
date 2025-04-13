@@ -1,16 +1,16 @@
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { DescriptionElementType, EventFeedMessage } from 'src/app/core/ui';
 import { CommonUtils } from 'src/app/core/utils';
 
 @Injectable({ providedIn: 'root' })
 export class UiEventFeedService {
-  public readonly visibleMessages: EventFeedMessage[] = [];
+  readonly visibleMessages = signal<EventFeedMessage[]>([]);
 
-  private readonly allMessages: EventFeedMessage[] = [];
+  readonly updatableRefs: { updateView(): void }[] = [];
 
   pushEventFeedMessage(message: EventFeedMessage): void {
-    this.allMessages.push(message);
-    this.visibleMessages.push(message);
+    this.visibleMessages().push(message);
+    this.updatableRefs.forEach(ref => ref.updateView());
   }
 
   pushPlainMessage(messageText: string): void {
@@ -20,6 +20,8 @@ export class UiEventFeedService {
     };
 
     this.pushEventFeedMessage(message);
+    this.updatableRefs.forEach(ref => ref.updateView());
+
   }
 
   pushSystemError(error: any): void {
@@ -29,10 +31,9 @@ export class UiEventFeedService {
     };
 
     this.pushEventFeedMessage(message);
-
   }
 
   removeMessage(eventMessage: EventFeedMessage): void {
-    CommonUtils.removeItem(this.visibleMessages, eventMessage);
+    this.visibleMessages.update(messages => CommonUtils.removeItemCopy(messages, eventMessage));
   }
 }

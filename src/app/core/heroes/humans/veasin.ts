@@ -1,8 +1,6 @@
 import { AssetsImages } from '../../assets';
 import { humansFaction } from '../../factions';
 import { ItemWindCrest } from '../../items/neutral';
-import { PoisonCloudSpell } from '../../spells/common';
-import { CorrosiveFogSpell } from '../../spells/common/corrosive-fog';
 import { heroDescrElem } from '../../ui';
 import { HeroBase } from '../types';
 
@@ -42,8 +40,8 @@ export const VeasinHero: HeroBase = humansFaction.createHero({
   generalDescription: heroDescrElem(`Veasin makes use of her poison abilities, weakening enemies and dealing damage over time.`),
   image: AssetsImages.HeroMage,
   abilities: [
-    PoisonCloudSpell,
-    CorrosiveFogSpell,
+    '#spell-poison-cloud',
+    '#spell-corrosive-fog',
   ],
   army: [{
     maxUnitGroups: 2,

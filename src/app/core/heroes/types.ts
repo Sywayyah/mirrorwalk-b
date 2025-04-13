@@ -1,11 +1,12 @@
+import { signal, Signal } from '@angular/core';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { Entity, HeroId } from '../entities';
+import { Entity, HeroId, resolveEntity, SpellId } from '../entities';
 import { UnitGroupAddedToHero, UnitGroupRemovedFromHero } from '../events';
 import { GameObject } from '../game-objects';
 import { Item, ItemBaseModel } from '../items';
 import { InventoryItems } from '../items/inventory';
-import { Modifiers, ModsRef, ModsRefsGroup, Specialties, filterSpecialties } from '../modifiers';
+import { filterSpecialties, Modifiers, ModsRef, ModsRefsGroup, Specialties } from '../modifiers';
 import { Player } from '../players';
 import { ResourcesModel } from '../resources';
 import { Spell, SpellBaseType } from '../spells';
@@ -14,7 +15,6 @@ import { GenerationModel, UnitGroup } from '../unit-types';
 import { CommonUtils } from '../utils';
 import { isNotNullish } from '../utils/common';
 import { complete } from '../utils/observables';
-import { signal, Signal } from '@angular/core';
 
 export interface HeroBaseStats {
   stats: {
@@ -22,7 +22,7 @@ export interface HeroBaseStats {
     baseAttack: number;
     baseDefence: number;
   };
-  abilities: SpellBaseType[];
+  abilities: SpellId[];
   generalDescription: DescriptionElement;
   image?: string;
   resources: ResourcesModel;
@@ -43,7 +43,7 @@ export interface HeroBase extends Entity {
       baseAttack: number;
       baseDefence: number;
     },
-    abilities: SpellBaseType[],
+    abilities: SpellId[],
     resources: ResourcesModel,
     items: ItemBaseModel[],
     army: GenerationModel[],
@@ -316,7 +316,7 @@ export class Hero extends GameObject<HeroCreationParams, HeroStatsInfo> {
     const heroBase = this.base;
     const heroInitState = heroBase.initialState;
 
-    this.spells = heroInitState.abilities.map(spell => this.getApi().spells.createSpellInstance(spell));
+    this.spells = heroInitState.abilities.map(spell => this.getApi().spells.createSpellInstance(resolveEntity(spell) as SpellBaseType));
 
     this.initParentModGroups();
     this.setupStatsUpdating(heroBase);

@@ -1,21 +1,29 @@
 <ng-container *ngIf="viewTypes.MainScreen !== currentView && viewTypes.NewGame !== currentView">
   <mw-player-resources class="resources-panel" />
-  <mw-event-feed />
   <div class="menu-panel">
-    <mw-round-icon-btn (click)="openMainMenu()" mwActionHint="Main Menu"
+    <mw-round-icon-btn (click)="openMainMenu()"
+                       mwActionHint="Main Menu"
                        icon="repair" />
   </div>
 </ng-container>
 
 
-<ng-container [ngSwitch]="currentView">
-  <mw-main-screen *ngSwitchCase="viewTypes.MainScreen" />
+@switch (currentView) {
+@case (viewTypes.MainScreen) {
+<mw-main-screen />
+}
+@case (viewTypes.NewGame) {
+<mw-new-game-screen />
+}
+@case (viewTypes.Battleground) {
+<mw-gameboard />
+}
+@case (viewTypes.Structures) {
+<mw-structures-view />
+}
+@case (viewTypes.Town) {
+<mw-town-view />
+}
+}
 
-  <mw-new-game-screen *ngSwitchCase="viewTypes.NewGame" />
-
-  <mw-gameboard *ngSwitchCase="viewTypes.Battleground" />
-
-  <mw-structures-view *ngSwitchCase="viewTypes.Structures" />
-
-  <mw-town-view *ngSwitchCase="viewTypes.Town" />
-</ng-container>
+<mw-event-feed />

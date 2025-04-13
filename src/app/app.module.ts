@@ -1,24 +1,12 @@
-import { ErrorHandler, NgModule, inject } from '@angular/core';
+import { ErrorHandler, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppComponent } from './app.component';
 import { BattlegroundModule } from './features/battleground/battleground.module';
-import { UiEventFeedService } from './features/services/ui-event-feed.service';
 import { SharedModule } from './features/shared/shared.module';
 import { ViewsModule } from './features/views/views.module';
+import { MwErrorHandler } from './error-handler';
 
-class Handler extends ErrorHandler {
-  private readonly feed = inject(UiEventFeedService);
 
-  handleError(error: any): void {
-    console.error(error);
-
-    if (error.message.startsWith('NG')) {
-      return;
-    }
-
-    this.feed.pushSystemError(error);
-  }
-}
 
 @NgModule({
   declarations: [
@@ -33,7 +21,7 @@ class Handler extends ErrorHandler {
   providers: [
     {
       provide: ErrorHandler,
-      useClass: Handler,
+      useClass: MwErrorHandler,
     }
   ],
   bootstrap: [AppComponent]

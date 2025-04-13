@@ -1,6 +1,4 @@
-import { EffectAnimation } from '../../api/vfx-api';
 import { spellDescrElem, strPercent } from '../../ui';
-import { createAnimation, getIconElement, getPlainBlurFrames, getReversePulseKeyframes } from '../../vfx';
 import { createCrackedShieldAnimation } from '../../vfx/spells/cracked-shield';
 import { SpellActivationType, SpellBaseType } from '../types';
 import { canActivateOnEnemyFn, createSpell, debuffColors } from '../utils';
@@ -12,15 +10,7 @@ const defenceReduction = 5;
 
 const roundsDuration = 2;
 
-const icon = 'cracked-shield';
-
-const commonStyles = {
-  fontSize: '64px',
-  color: 'rgb(220 145 129)',
-};
-
 const CorrosiveFogAnimation = createCrackedShieldAnimation();
-
 
 export const CorrosiveFogDebuff: SpellBaseType<undefined | { debuffRoundsLeft: number }> = createSpell({
   id: '#spell-corrosive-fog-debuff',
@@ -78,7 +68,7 @@ export const CorrosiveFogDebuff: SpellBaseType<undefined | { debuffRoundsLeft: n
   }
 });
 
-export const CorrosiveFogSpell: SpellBaseType = ({
+export const CorrosiveFogSpell: SpellBaseType = createSpell({
   id: '#spell-corrosive-fog',
   name: 'Corrosive Fog',
   activationType: SpellActivationType.Target,

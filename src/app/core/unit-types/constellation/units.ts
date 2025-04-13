@@ -1,9 +1,6 @@
 import { AssetsImages } from '../../assets';
 import { constellationFaction } from '../../factions/constellation/faction';
-import { DreamAura } from '../../spells/common/dream-aura';
-import { UniversalPinSpell } from '../../spells/common/universal/pin';
 import { spellDescrElem } from '../../ui';
-import { EssenceLeak } from './spells/essence-leak';
 
 // Units of constellation might be more durable and slightly higher
 // quality then average units
@@ -29,7 +26,7 @@ constellationFaction.defineUnitType({
     };
   },
 
-  defaultSpells: [EssenceLeak],
+  defaultSpells: ['#spell-essence-leak'],
 
   baseStats: {
     damageInfo: {
@@ -60,7 +57,7 @@ constellationFaction.defineUnitType({
     gold: 75,
   },
 
-  defaultSpells: [UniversalPinSpell],
+  defaultSpells: [`#spell-universal-pin`],
   defaultModifiers: {
     isPinner: true,
   },
@@ -215,7 +212,7 @@ constellationFaction.defineUnitType({
     retaliationDamagePercent: 0.5,
   },
 
-  defaultSpells: [DreamAura],
+  defaultSpells: ['#spell-dream-aura'],
 
   neutralReward: {
     experience: 180,

@@ -1,8 +1,6 @@
 import { AssetsImages } from '../../assets';
 import { constellationFaction } from '../../factions/constellation/faction';
 import { WishmasterItem } from '../../items/neutral';
-import { KneelingLight, RainOfFireSpell } from '../../spells/common';
-import { SummonSagittarSpell } from '../../spells/common/summon-sagittar';
 import { heroDescrElem } from '../../ui';
 
 // possible constellation skill:
@@ -12,9 +10,9 @@ constellationFaction.createHero({
   name: 'Blackbird',
   image: AssetsImages.HeroBlackbird,
   abilities: [
-    RainOfFireSpell,
-    SummonSagittarSpell,
-    KneelingLight,
+    '#spell-rain-of-fire',
+    '#spell-summon-sagittar',
+    '#spell-kneeling-light',
   ],
   army: [
     {

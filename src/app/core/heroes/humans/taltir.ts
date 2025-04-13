@@ -2,8 +2,6 @@ import { AssetsImages } from '../../assets';
 import { humansFaction } from '../../factions';
 import { IrtonPlateItem } from '../../items/neutral/irton-plate';
 import { LightBootsItem } from '../../items/neutral/light-boots';
-import { MeteorSpell } from '../../spells/common';
-import { SummonFireSpiritsSpell } from '../../spells/common/summon-fire-spirits';
 import { heroDescrElem } from '../../ui';
 import { HeroBase } from '../types';
 import { heroesDefaultResources } from '../utils';
@@ -29,8 +27,8 @@ export const TaltirHero: HeroBase = humansFaction.createHero({
 
   image: AssetsImages.HeroTaltir,
   abilities: [
-    SummonFireSpiritsSpell,
-    MeteorSpell,
+    '#spell-summon-fire-spirits',
+    '#spell-meteor'
   ],
   army: [{
     maxUnitGroups: 2,

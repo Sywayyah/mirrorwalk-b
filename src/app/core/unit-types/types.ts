@@ -1,7 +1,7 @@
 import { Signal, signal } from '@angular/core';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { Entity, EntityId, UnitTypeId } from '../entities';
+import { Entity, EntityId, resolveEntity, SpellId, UnitTypeId } from '../entities';
 import { GroupSpellsChanged } from '../events';
 import type { Faction } from '../factions/types';
 import { GameObject } from '../game-objects';
@@ -88,7 +88,7 @@ export interface UnitBaseType extends Entity {
   defaultModifiers?: Modifiers;
 
   // change to ids
-  defaultSpells?: SpellBaseType<any>[];
+  defaultSpells?: SpellId[];
   // spells?: EntityId[];
 
   /* minimal amount of units that can stack can be hired, sold or split by */
@@ -337,7 +337,7 @@ export class UnitGroup extends GameObject<UnitCreationParams, UnitGroupState> {
 
     if (this.type.defaultSpells) {
       this.type.defaultSpells
-        .map((spell) => this.getApi().spells.createSpellInstance(spell))
+        .map((spell) => this.getApi().spells.createSpellInstance(resolveEntity(spell) as SpellBaseType))
         .forEach((spell) => this.addSpell(spell));
     }
 

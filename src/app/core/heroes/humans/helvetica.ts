@@ -1,7 +1,6 @@
 import { AssetsImages } from '../../assets';
 import { humansFaction } from '../../factions';
 import { ItemWindCrest } from '../../items/neutral';
-import { HasteSpell, RainOfFireSpell } from '../../spells/common';
 import { heroDescrElem } from '../../ui';
 import { HeroBase } from '../types';
 
@@ -21,12 +20,8 @@ export const HelveticaHero: HeroBase = humansFaction.createHero({
   generalDescription: heroDescrElem(`Helvetica is the mage who supports her own army with offensive fire spells as well as increasing their speed.`),
   image: AssetsImages.HeroHelvetica,
   abilities: [
-    // ENCHANT_SPELL,
-    RainOfFireSpell,
-    // KneelingLight,
-    HasteSpell,
-    // HealSpell,
-    // PoisonCloudSpell,
+    '#spell-rain-of-fire',
+    '#spell-haste',
   ],
   army: [{
     maxUnitGroups: 2,

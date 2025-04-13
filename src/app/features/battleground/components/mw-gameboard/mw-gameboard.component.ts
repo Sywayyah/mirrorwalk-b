@@ -1,10 +1,11 @@
-import { AfterViewInit, ChangeDetectorRef, Component, OnInit, QueryList, ViewChildren } from '@angular/core';
+import { AfterViewInit, Component, OnInit, QueryList, ViewChildren, inject } from '@angular/core';
 import { map, takeUntil } from 'rxjs/operators';
 import { GroupDamagedByGroup, GroupDamagedByGroupEvent, PlayerStartsFight, UnitSummoned, UnitSummonedEvent } from 'src/app/core/events';
 import { DefendAction } from 'src/app/core/events/battle/commands';
 import { Player } from 'src/app/core/players';
 import { UnitsOrientation } from 'src/app/core/ui';
 import { UnitGroup } from 'src/app/core/unit-types';
+import { injectCdr } from 'src/app/core/utils';
 import { LifestealAnimtaion, getDamageParts, getLifeStealParts } from 'src/app/core/vfx';
 import { BattleStateService, CombatInteractorService, MwCardsMappingService, MwNeutralPlayerService, MwPlayerStateService, MwPlayersService } from 'src/app/features/services';
 import { State } from 'src/app/features/services/state.service';
@@ -13,12 +14,22 @@ import { StoreClient, WireMethod } from 'src/app/store';
 import { MwUnitGroupCardComponent } from '../mw-unit-group-card/mw-unit-group-card.component';
 
 @Component({
-    selector: 'mw-gameboard',
-    templateUrl: './mw-gameboard.component.html',
-    styleUrls: ['./mw-gameboard.component.scss'],
-    standalone: false
+  selector: 'mw-gameboard',
+  templateUrl: './mw-gameboard.component.html',
+  styleUrls: ['./mw-gameboard.component.scss'],
+  standalone: false
 })
 export class MwGameboardComponent extends StoreClient() implements OnInit, AfterViewInit {
+  public readonly mwPlayerState = inject(MwPlayerStateService);
+  public readonly players = inject(MwPlayersService);
+  public readonly mwBattleState = inject(BattleStateService);
+  private readonly mwNeutralPlayer = inject(MwNeutralPlayerService);
+  private readonly cardsMapping = inject(MwCardsMappingService);
+  private readonly combatInteractor = inject(CombatInteractorService);
+  private readonly vfx = inject(VfxService);
+  private readonly cd = injectCdr();
+  private readonly state = inject(State);
+
   public mainPlayerUnitGroups!: UnitGroup[];
   public neutralPlayerGroups!: UnitGroup[];
 
@@ -54,19 +65,6 @@ export class MwGameboardComponent extends StoreClient() implements OnInit, After
     })
   );
 
-  constructor(
-    public readonly mwPlayerState: MwPlayerStateService,
-    public readonly players: MwPlayersService,
-    public readonly mwBattleState: BattleStateService,
-    private readonly mwNeutralPlayer: MwNeutralPlayerService,
-    private readonly cardsMapping: MwCardsMappingService,
-    private readonly combatInteractor: CombatInteractorService,
-    private readonly vfx: VfxService,
-    private readonly cd: ChangeDetectorRef,
-    private readonly state: State,
-  ) {
-    super();
-  }
 
   public ngOnInit(): void {
     /* todo: potentially, a good place for ordering dependencies and logic order */

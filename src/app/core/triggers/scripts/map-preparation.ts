@@ -79,7 +79,7 @@ TriggersRegistry.register(PlayerLevelsUp, {
       rewards: [
         // for now, bring native abilities of hero to next level
         ...event.hero.spells
-          .filter(spell => event.hero.base.initialState.abilities.includes(spell.baseType))
+          .filter(spell => event.hero.base.initialState.abilities.includes(spell.baseType.id))
           .map((spell) => {
             return {
               display: {

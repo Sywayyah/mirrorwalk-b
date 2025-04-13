@@ -1,7 +1,4 @@
 import { constellationFaction } from '../../factions/constellation/faction';
-import { WishmasterItem } from '../../items/neutral';
-import { KneelingLight, RainOfFireSpell } from '../../spells/common';
-import { SummonSagittarSpell } from '../../spells/common/summon-sagittar';
 import { heroDescrElem } from '../../ui';
 
 // new possible constellation hero
@@ -10,9 +7,9 @@ constellationFaction.createHero({
 
   name: 'Luminuous',
   abilities: [
-    RainOfFireSpell,
-    SummonSagittarSpell,
-    KneelingLight,
+    '#spell-rain-of-fire',
+    '#spell-summon-sagittar',
+    '#spell-kneeling-light'
   ],
   army: [
     {

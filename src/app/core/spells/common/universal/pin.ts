@@ -3,7 +3,7 @@ import { SpellActivationType } from '../../types';
 import { createSpell } from '../../utils';
 
 export const UniversalPinSpell = createSpell({
-  id: `#spell-unversal-pin`,
+  id: `#spell-universal-pin`,
   name: 'Pin',
   icon: {
     icon: 'crossed-swords',
