@@ -65,4 +65,7 @@
   <div>
     Press RMB to cancel
   </div>
+  @if (hint.addedContent) {
+  <div [innerHTML]="hint.addedContent | safeHtml"></div>
+  }
 </ng-template>

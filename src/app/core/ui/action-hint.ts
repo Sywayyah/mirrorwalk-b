@@ -30,5 +30,6 @@ export interface AttackActionHintInfo extends ActionHintModel<ActionHintTypeEnum
 export interface SpellTargetActionHint extends ActionHintModel<ActionHintTypeEnum.OnTargetSpell> {
   spell: Spell;
   target: UnitGroup;
+  addedContent?: string;
 }
 

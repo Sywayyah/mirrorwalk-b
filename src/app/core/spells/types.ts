@@ -114,6 +114,14 @@ export interface SpellConfig<SpellStateType> {
   init: (combatRefs: SpellCombatRefsModel<SpellStateType>) => void;
   // if unspecified - always 0
   getManaCost?: (spellInst: Spell<SpellStateType>) => number;
+
+  getTargetActionHint?: (options: {
+    spellInstance: Spell<SpellStateType>,
+    ownerPlayer?: Player,
+    target: UnitGroup,
+    ownerHero?: Hero,
+    ownerUnit?: UnitGroup,
+  }) => string;
   /** Called on ability when it's being acquired or it levels up */
   onAcquired?: (onAquiredConfig: OnSpellAcquiredConfig<SpellStateType>) => void;
   targetCastConfig?: {

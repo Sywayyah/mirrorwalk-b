@@ -65,6 +65,8 @@ export class UiController extends StoreClient() {
 
   @WireMethod(PlayerHoversGroupCard)
   public handlePlayerHover(event: PlayerHoversCardEvent): void {
+    const targetGroup = event.hoveredCard as UnitGroup;
+
     switch (event.hoverType) {
       case HoverTypeEnum.EnemyCard:
         if (this.curPlayerState.playerCurrentState === PlayerState.Normal) {
@@ -75,7 +77,14 @@ export class UiController extends StoreClient() {
           const spellTargetHint: SpellTargetActionHint = {
             type: ActionHintTypeEnum.OnTargetSpell,
             spell: this.curPlayerState.currentSpell,
-            target: event.hoveredCard as UnitGroup,
+            target: targetGroup,
+            addedContent: this.curPlayerState.currentSpell.baseType.config.spellConfig.getTargetActionHint?.({
+              target: targetGroup,
+              ownerHero: event.currentCard?.ownerHero,
+              ownerPlayer: event.currentCard?.ownerPlayer,
+              spellInstance: this.curPlayerState.currentSpell,
+              ownerUnit: this.curPlayerState.currentCasterUnit,
+            }),
           };
           this.actionHint.hintMessage$.next(spellTargetHint);
         }
@@ -86,7 +95,14 @@ export class UiController extends StoreClient() {
           const spellTargetHint: SpellTargetActionHint = {
             type: ActionHintTypeEnum.OnTargetSpell,
             spell: this.curPlayerState.currentSpell,
-            target: event.hoveredCard as UnitGroup,
+            target: targetGroup,
+            addedContent: this.curPlayerState.currentSpell.baseType.config.spellConfig.getTargetActionHint?.({
+              target: targetGroup,
+              ownerHero: event.currentCard?.ownerHero,
+              ownerPlayer: event.currentCard?.ownerPlayer,
+              spellInstance: this.curPlayerState.currentSpell,
+              ownerUnit: this.curPlayerState.currentCasterUnit,
+            }),
           };
 
           this.actionHint.hintMessage$.next(spellTargetHint);

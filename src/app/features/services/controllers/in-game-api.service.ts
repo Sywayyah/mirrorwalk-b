@@ -207,7 +207,7 @@ export class InGameApiController extends StoreClient() {
         this.battleState.addTurnsToUnitGroup(target, turns);
       },
       unitGroupAttack: (attacker, attacked) => this.events.dispatch(GroupAttacked({ attackingGroup: attacker, attackedGroup: attacked })),
-      pinAttempt: (pinning, pinned): void | object => {
+      pinAttempt: (pinning, pinned) => {
         const pinningState = pinning.getState();
         const pinnedState = pinned.getState();
 
@@ -220,10 +220,15 @@ export class InGameApiController extends StoreClient() {
 
         // stop pin if neither is alive anymore
         if (!pinningState.groupState.isAlive || !pinnedState.groupState.isAlive) {
-          return;
+          return { pinFailed: false, pinCanceled: true };
         }
 
-        if (pinned.modGroup.getModValue('isCavalry') && CommonUtils.chanceRoll(0.2)) {
+        const isBasicEscape = (pinned.modGroup.getModValue('isCavalry') || pinned.modGroup.getModValue('isBigCreature'))
+          && CommonUtils.chanceRoll(0.3);
+        const isBossEscape = pinned.modGroup.getModValue('isBoss') && CommonUtils.chanceRoll(0.15);
+        const isGiantEscape = pinned.modGroup.getModValue('isGiant');
+
+        if (isBasicEscape || isBossEscape || isGiantEscape) {
           return {
             pinFailed: true,
             unitEscapedPin: true,
@@ -245,6 +250,10 @@ export class InGameApiController extends StoreClient() {
           type: CombatStateEnum.Pinned,
           pinnedBy: pinning,
         });
+
+        return {
+          pinFailed: false,
+        }
       },
       getCurrentUnitGroup: () => this.battleState.currentUnitGroup,
       summonUnitsForPlayer: (ownerPlayer: Player, unitTypeId: UnitTypeId, unitNumber: number) => {
