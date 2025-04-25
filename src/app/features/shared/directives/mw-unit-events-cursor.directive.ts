@@ -10,12 +10,13 @@ export interface UIUnitProvider {
   getUnitGroup(): UnitGroup;
 }
 
-export const PROVIDE_UI_UNIT_GROUP: InjectionToken<UIUnitProvider> = new InjectionToken('UI element unit group provider');
-
+export const PROVIDE_UI_UNIT_GROUP: InjectionToken<UIUnitProvider> = new InjectionToken(
+  'UI element unit group provider',
+);
 
 @Directive({
-    selector: '[mwUnitEventsCursor]',
-    standalone: false
+  selector: '[mwUnitEventsCursor]',
+  standalone: false,
 })
 export class MwUnitEventsCursorDirective extends MwCustomCursorDirective implements OnInit {
   private readonly curPlayerState = inject(MwCurrentPlayerStateService);
@@ -28,11 +29,9 @@ export class MwUnitEventsCursorDirective extends MwCustomCursorDirective impleme
   public ngOnInit(): void {
     this.unitGroup = this.unitGroupProvider.getUnitGroup();
 
-    this.curPlayerState.playerStateChanged$
-      .pipe(takeUntil(this.destroyed$))
-      .subscribe(() => {
-        this.recalcCursorIcon();
-      });
+    this.curPlayerState.playerStateChanged$.pipe(takeUntil(this.destroyed$)).subscribe(() => {
+      this.recalcCursorIcon();
+    });
   }
 
   protected getCursorToShow(): AnimatedCursor | null {
@@ -45,11 +44,18 @@ export class MwUnitEventsCursorDirective extends MwCustomCursorDirective impleme
       return null;
     }
 
-    if (playerState === PlayerState.Normal && (!isEnemyUnitGroup || isEnemyUnitGroup && !this.unitGroup.fightInfo.isAlive)) {
+    if (
+      playerState === PlayerState.Normal &&
+      (!isEnemyUnitGroup || (isEnemyUnitGroup && !this.unitGroup.fightInfo.isAlive))
+    ) {
       return this.createStaticCursor('interdiction');
     }
 
-    const canCastSpellOnTarget = this.spells.canSpellBeCastOnUnit(this.curPlayerState.currentSpell, this.unitGroup, isEnemyUnitGroup);
+    const canCastSpellOnTarget = this.spells.canSpellBeCastOnUnit(
+      this.curPlayerState.currentSpell,
+      this.unitGroup,
+      isEnemyUnitGroup,
+    );
 
     if (playerState === PlayerState.SpellTargeting && !canCastSpellOnTarget) {
       return this.createStaticCursor('interdiction');
@@ -61,17 +67,15 @@ export class MwUnitEventsCursorDirective extends MwCustomCursorDirective impleme
       [PlayerState.WaitsForTurn]: 'hourglass',
     };
 
-
     if (this.curPlayerState.playerCurrentState === PlayerState.SpellTargeting) {
       return {
         animation: SpellCastCursorAnimation,
         options: {
           duration: 2000,
           iterations: Infinity,
-        }
+        },
       };
     }
-
 
     return this.createStaticCursor(mapping[this.curPlayerState.playerCurrentState]);
   }
@@ -82,10 +86,8 @@ export class MwUnitEventsCursorDirective extends MwCustomCursorDirective impleme
         animation: CenteredStaticCursorAnimation,
         data: {
           custom: {
-            parts: [
-              { color: 'white', icon: cursorIcon, text: '', type: 'plainPart' },
-            ],
-          }
+            parts: [{ color: 'white', icon: cursorIcon, text: '', type: 'plainPart' }],
+          },
         },
       };
     }
@@ -93,11 +95,9 @@ export class MwUnitEventsCursorDirective extends MwCustomCursorDirective impleme
       animation: StaticCursorAnimation,
       data: {
         custom: {
-          parts: [
-            { color: 'white', icon: cursorIcon, text: '', type: 'plainPart' },
-          ],
-        }
+          parts: [{ color: 'white', icon: cursorIcon, text: '', type: 'plainPart' }],
+        },
       },
-    }
+    };
   }
 }
