@@ -225,7 +225,7 @@ export class InGameApiController extends StoreClient() {
 
         const isBasicEscape = (pinned.modGroup.getModValue('isCavalry') || pinned.modGroup.getModValue('isBigCreature'))
           && CommonUtils.chanceRoll(0.3);
-        const isBossEscape = pinned.modGroup.getModValue('isBoss') && CommonUtils.chanceRoll(0.15);
+        const isBossEscape = pinned.modGroup.getModValue('isBoss') && CommonUtils.chanceRoll(0.85);
         const isGiantEscape = pinned.modGroup.getModValue('isGiant');
 
         if (isBasicEscape || isBossEscape || isGiantEscape) {

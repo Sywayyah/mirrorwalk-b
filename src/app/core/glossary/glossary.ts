@@ -66,7 +66,7 @@ export const glossaryContent: GlossaryTab[] = [
       `Special Interactions:`,
       `- Attacking or pinning another target will release previous target from pin. Attacking other group will make you lose Pinning state.`,
       `- Ranged units have lesser damage penalty when pinned.`,
-      `- Cavalry units have natural 30% chance to escape pinning.`,
+      `- Cavalry and Big Creature units have natural 30% chance to escape pinning. Boss units have 85% chance to escape pin.`,
       `- Tier 1-4 units cannot pin units of 6+ tier (as well as Giant and Colossal creatures).`,
       `- Pinned units have a chance of getting increased damage from ranged units.`,
     ],
