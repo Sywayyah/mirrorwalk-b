@@ -13,14 +13,12 @@ export class ModsRef {
 
   private readonly valuesUpdater: ModValueUpdater;
 
-  private constructor(
-    modifiers: Modifiers
-  ) {
+  private constructor(modifiers: Modifiers) {
     this.mods = modifiers;
     this.valuesUpdater = ModValueUpdater.fromObjectRef(this.mods);
   }
 
-  static fromMods(mods?: Modifiers): ModsRef {
+  static fromMods(this: void, mods?: Modifiers): ModsRef {
     return new ModsRef(mods || {});
   }
 
@@ -43,7 +41,6 @@ export class ModsRef {
   clearMod(modName: ModName): void {
     this.valuesUpdater.clearValue(modName);
   }
-
 
   getMods(): Modifiers {
     return this.mods;

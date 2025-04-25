@@ -3,10 +3,10 @@ import { UnitGroup } from 'src/app/core/unit-types';
 import { MwUnitGroupCardComponent } from '../battleground/components';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class MwCardsMappingService {
-  private mapping: Map<UnitGroup, MwUnitGroupCardComponent> = new Map();
+  private readonly mapping: Map<UnitGroup, MwUnitGroupCardComponent> = new Map();
 
   public register(unitGroup: UnitGroup, cardRef: MwUnitGroupCardComponent): void {
     this.mapping.set(unitGroup, cardRef);

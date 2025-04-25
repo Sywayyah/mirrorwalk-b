@@ -11,12 +11,12 @@ import { GameObjectsManager } from './game-objects-manager.service';
 /*  And not only when game is over, but also when fight is over/item gets unregistered, something like that */
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class MwItemsService {
-  private events = inject(EventsService);
-  private state = inject(State);
-  private gameObjectsManager = inject(GameObjectsManager);
+  private readonly events = inject(EventsService);
+  private readonly state = inject(State);
+  private readonly gameObjectsManager = inject(GameObjectsManager);
 
   public createItem<T extends object>(itemBase: ItemBaseModel<T>): Item<T> {
     const itemIcon = itemBase.icon;
@@ -36,10 +36,12 @@ export class MwItemsService {
   }
 
   public registerItemsEventHandlers(item: Item, ownerPlayer: Player): void {
-    this.events.dispatch(InitItem({
-      item,
-      ownerPlayer,
-    }));
+    this.events.dispatch(
+      InitItem({
+        item,
+        ownerPlayer,
+      }),
+    );
   }
 
   // Later may limit events only to item events
@@ -47,10 +49,7 @@ export class MwItemsService {
     this.state.eventHandlers.items.triggerAllHandlersByEvent(event);
   }
 
-  public triggerEventForItemHandlers(
-    item: Item,
-    event: EventData,
-  ): void {
+  public triggerEventForItemHandlers(item: Item, event: EventData): void {
     this.state.eventHandlers.items.triggerRefEventHandlers(item, event);
   }
 }

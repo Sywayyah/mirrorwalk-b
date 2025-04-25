@@ -23,11 +23,11 @@ const neutralHeroBase = createHeroModelBase({
 });
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class MwHeroesService {
-  private gameObjectsManager = inject(GameObjectsManager);
-  private unitGroups = inject(MwUnitGroupsService);
+  private readonly gameObjectsManager = inject(GameObjectsManager);
+  private readonly unitGroups = inject(MwUnitGroupsService);
 
   public addManaToHero(hero: Hero, mana: number): void {
     hero.addMana(mana);
@@ -42,9 +42,11 @@ export class MwHeroesService {
       heroBase,
       unitGroups: heroBase.initialState.army.length
         ? [
-          ...this.unitGroups.createUnitGroupFromGenModel(heroBase.initialState.army[0]),
-          ...CONFIG.enableHeroUnits ? [this.unitGroups.createUnitGroup(`#unit-!hero-${heroBase.id}`, { count: 1 })] : [],
-        ]
+            ...this.unitGroups.createUnitGroupFromGenModel(heroBase.initialState.army[0]),
+            ...(CONFIG.enableHeroUnits
+              ? [this.unitGroups.createUnitGroup(`#unit-!hero-${heroBase.id}`, { count: 1 })]
+              : []),
+          ]
         : [],
     });
   }

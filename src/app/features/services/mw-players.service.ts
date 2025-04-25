@@ -21,10 +21,10 @@ const defaultResources: ResourcesModel = {
   gold: 0,
   redCrystals: 0,
   wood: 0,
-}
+};
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class MwPlayersService extends StoreClient() {
   private readonly heroesService = inject(MwHeroesService);
@@ -35,9 +35,9 @@ export class MwPlayersService extends StoreClient() {
   // from manager.
   private get playersMap(): Map<string, Player> {
     return this.state.gameState.playersMap;
-  };
+  }
 
-  private currentPlayerId: string = this.gameObjectsManager.getObjectId(Player, PLAYER_IDS.Main);
+  private readonly currentPlayerId: string = this.gameObjectsManager.getObjectId(Player, PLAYER_IDS.Main);
 
   public createPlayer(id: string, playerInfo: PlayerCreationModel): Player {
     return this.gameObjectsManager.createNewGameObject(Player, playerInfo, id);
@@ -47,38 +47,25 @@ export class MwPlayersService extends StoreClient() {
     return this.playersMap.get(this.currentPlayerId)!;
   }
 
-  public addResourceToPlayer(
-    player: Player,
-    resource: ResourceType,
-    amount: number,
-  ): void {
+  public addResourceToPlayer(player: Player, resource: ResourceType, amount: number): void {
     player.resources[resource] += amount;
   }
 
   public addResourcesToPlayer(player: Player, resources: Resources): void {
-    Object.entries(resources).forEach(([res, count]) => player.resources[res as ResourceType] += count);
+    Object.entries(resources).forEach(([res, count]) => (player.resources[res as ResourceType] += count));
   }
 
-  public removeResourcesFromPlayer(
-    player: Player,
-    resources: Resources,
-  ): void {
-    Object.entries(resources).forEach(([res, count]) => player.resources[res as ResourceType] -= count);
+  public removeResourcesFromPlayer(player: Player, resources: Resources): void {
+    Object.entries(resources).forEach(([res, count]) => (player.resources[res as ResourceType] -= count));
   }
 
-  public playerHasResources(
-    player: Player,
-    resources: Resources,
-  ): boolean {
+  public playerHasResources(player: Player, resources: Resources): boolean {
     const playerResources = player.resources;
 
     return Object.entries(resources).every(([res, count]) => playerResources[res as ResourceType] >= count);
   }
 
-  public getMissingResources(
-    player: Player,
-    resources: Resources,
-  ): Resources {
+  public getMissingResources(player: Player, resources: Resources): Resources {
     const playerResources = player.resources;
 
     return Object.entries(resources).reduce((resMap, [res, count]) => {
@@ -101,7 +88,11 @@ export class MwPlayersService extends StoreClient() {
   }
 
   public getPlayerUnitsCountOfType(player: Player, unitType: UnitTypeId): number {
-    return player.hero.unitGroups.reduce((totalCount, nextUnitGroupType) => totalCount + (nextUnitGroupType.type.id === unitType ? nextUnitGroupType.count : 0), 0);
+    return player.hero.unitGroups.reduce(
+      (totalCount, nextUnitGroupType) =>
+        totalCount + (nextUnitGroupType.type.id === unitType ? nextUnitGroupType.count : 0),
+      0,
+    );
   }
 
   public addExperienceToPlayersHero(playerId: string, experience: number): void {
@@ -131,7 +122,7 @@ export class MwPlayersService extends StoreClient() {
 
   public addUnitGroupToTypeStack(player: Player, unitGroup: UnitGroup): void {
     // todo: move these things into classes.
-    const sameTypeStack = player.hero.unitGroups.find(group => group.type === unitGroup.type);
+    const sameTypeStack = player.hero.unitGroups.find((group) => group.type === unitGroup.type);
     if (sameTypeStack) {
       sameTypeStack.addUnitsCount(unitGroup.count);
     } else {
@@ -148,7 +139,7 @@ export class MwPlayersService extends StoreClient() {
       player.hero.removeUnitGroup(unitGroup);
 
       this.gameObjectsManager.destroyObject(unitGroup);
-      const stackWithRemovedUnit = unitGroup.ownerHero.getAllSlots().find(slot => slot.unitGroup === unitGroup);
+      const stackWithRemovedUnit = unitGroup.ownerHero.getAllSlots().find((slot) => slot.unitGroup === unitGroup);
 
       if (stackWithRemovedUnit) {
         stackWithRemovedUnit.unitGroup = null;
@@ -157,7 +148,7 @@ export class MwPlayersService extends StoreClient() {
   }
 
   removeUnitTypeCountFromPlayer(player: Player, unitType: UnitTypeId, count: number): number {
-    const stacksOfType = player.hero.getAllUnitsFromSlots().filter(unitGroup => unitGroup.type.id === unitType);
+    const stacksOfType = player.hero.getAllUnitsFromSlots().filter((unitGroup) => unitGroup.type.id === unitType);
 
     const totalCount = stacksOfType.reduce((acc, nextUnit) => nextUnit.count + acc, 0);
 
@@ -193,11 +184,7 @@ export class MwPlayersService extends StoreClient() {
     this.events.dispatch(PlayerUnequipsItem({ player, item }));
   }
 
-  public createPlayerWithHero(
-    color: string,
-    hero: HeroBase,
-    type: PlayerTypeEnum,
-  ): PlayerCreationModel {
+  public createPlayerWithHero(color: string, hero: HeroBase, type: PlayerTypeEnum): PlayerCreationModel {
     return {
       color,
       hero: this.heroesService.createHero(hero),

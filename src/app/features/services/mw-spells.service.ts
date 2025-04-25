@@ -11,7 +11,7 @@ import { GameObjectsManager } from './game-objects-manager.service';
   providedIn: 'root'
 })
 export class MwSpellsService {
-  private gameObjectManager = inject(GameObjectsManager);
+  private readonly gameObjectManager = inject(GameObjectsManager);
 
   public createSpellInstance<T>(
     spell: SpellBaseType<T>,

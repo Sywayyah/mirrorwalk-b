@@ -41,7 +41,7 @@ export interface FinalDamageInfo {
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class MwUnitGroupStateService {
   public getTailUnitHealth(unitGroup: UnitGroup): number {
@@ -71,8 +71,8 @@ export class MwUnitGroupStateService {
     /* influence of attack/defence difference on damage */
     const damageMultiplier = attackSuperiority * (attackSuperiority >= 0 ? 0.05 : 0.035);
 
-    const multipliedMinDamage = minDamage + (minDamage * damageMultiplier);
-    const multipliedMaxDamage = maxDamage + (maxDamage * damageMultiplier);
+    const multipliedMinDamage = minDamage + minDamage * damageMultiplier;
+    const multipliedMaxDamage = maxDamage + maxDamage * damageMultiplier;
 
     return {
       attacker: unitGroup,
@@ -89,17 +89,13 @@ export class MwUnitGroupStateService {
     };
   }
 
-  public getDetailedAttackInfo(
-    attackingGroup: UnitGroup,
-    attackedGroup: UnitGroup,
-  ): DetailedDamageInfo {
+  public getDetailedAttackInfo(attackingGroup: UnitGroup, attackedGroup: UnitGroup): DetailedDamageInfo {
     const attackedUnitType = attackedGroup.type;
 
     const attackedBaseStats = attackedUnitType.baseStats;
 
     const attackerStats = attackingGroup.getState();
     const attackedStats = attackedGroup.getState();
-
 
     const totalAttack = attackerStats.groupStats.finalAttack;
     const totalTargetDefence = attackedStats.groupStats.finalDefence;
@@ -108,8 +104,16 @@ export class MwUnitGroupStateService {
 
     const damageInfo = this.getUnitGroupDamage(attackingGroup, attackSupperiority);
 
-    const minUnitCountLoss = this.calcUnitCountLoss(damageInfo.multipliedMinDamage, attackedBaseStats.health, attackedGroup.count);
-    const maxUnitCountLoss = this.calcUnitCountLoss(damageInfo.multipliedMaxDamage, attackedBaseStats.health, attackedGroup.count);
+    const minUnitCountLoss = this.calcUnitCountLoss(
+      damageInfo.multipliedMinDamage,
+      attackedBaseStats.health,
+      attackedGroup.count,
+    );
+    const maxUnitCountLoss = this.calcUnitCountLoss(
+      damageInfo.multipliedMaxDamage,
+      attackedBaseStats.health,
+      attackedGroup.count,
+    );
 
     const canAttackedCounterAttack = this.canGroupCounterattack(attackedGroup);
 
@@ -130,7 +134,10 @@ export class MwUnitGroupStateService {
   }
 
   public getFinalDamageInfoFromDamageDetailedInfo(damageInfo: DetailedDamageInfo): FinalDamageInfo {
-    const rolledMultipliedDamage = CommonUtils.randIntInRange(damageInfo.multipliedMinDamage, damageInfo.multipliedMaxDamage);
+    const rolledMultipliedDamage = CommonUtils.randIntInRange(
+      damageInfo.multipliedMinDamage,
+      damageInfo.multipliedMaxDamage,
+    );
 
     return this.getFinalDamageInfo(damageInfo.attacked, rolledMultipliedDamage);
   }
@@ -162,12 +169,7 @@ export class MwUnitGroupStateService {
 
     const targetNewTailHp = targetGroupHealthAfterDamage % targetBaseStats.health;
 
-    const finalTargetTailHp = isDamageFatal
-      ? 0
-      :
-      targetNewTailHp === 0
-        ? targetBaseStats.health
-        : targetNewTailHp;
+    const finalTargetTailHp = isDamageFatal ? 0 : targetNewTailHp === 0 ? targetBaseStats.health : targetNewTailHp;
 
     const newUnitsCount = Math.ceil(targetGroupHealthAfterDamage / targetBaseStats.health);
 

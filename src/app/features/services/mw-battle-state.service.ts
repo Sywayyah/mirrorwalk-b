@@ -1,13 +1,18 @@
 import { inject, Injectable } from '@angular/core';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { UnitTypeId } from 'src/app/core/entities';
-import { FightNextRoundStarts, GroupAttacked, PlayerTargetsSpell, RoundPlayerCountinuesAttacking, RoundPlayerTurnStarts } from 'src/app/core/events';
+import {
+  FightNextRoundStarts,
+  GroupAttacked,
+  PlayerTargetsSpell,
+  RoundPlayerCountinuesAttacking,
+  RoundPlayerTurnStarts,
+} from 'src/app/core/events';
 import { Player, PlayerTypeEnum } from 'src/app/core/players';
 import { AISpellTag } from 'src/app/core/spells';
 import { UnitBaseType, UnitGroup } from 'src/app/core/unit-types';
 import { EventsService } from 'src/app/store';
 import { MwUnitGroupsService } from './mw-unit-groups.service';
-
 
 @Injectable({
   providedIn: 'root',
@@ -26,9 +31,9 @@ export class BattleStateService {
   public round: number = 1;
   public playerLosses: Record<string, Map<UnitBaseType, number>> = {};
 
-  private playersRivalryMap: Map<Player, Player> = new Map();
+  private readonly playersRivalryMap: Map<Player, Player> = new Map();
 
-  private initialUnitGroups!: UnitGroup[];
+  // private initialUnitGroups!: UnitGroup[];
   private fightQueue!: UnitGroup[];
   private players!: Player[];
 
@@ -38,11 +43,8 @@ export class BattleStateService {
     this.currentPlayer = null as unknown as Player;
   }
 
-  public initBattleState(
-    unitGroups: UnitGroup[],
-    players: Player[],
-  ): void {
-    this.initialUnitGroups = unitGroups;
+  public initBattleState(unitGroups: UnitGroup[], players: Player[]): void {
+    // this.initialUnitGroups = unitGroups;
 
     this.players = players;
 
@@ -68,7 +70,7 @@ export class BattleStateService {
 
     if (!this.fightQueue.length) {
       /* Review this event order later */
-      this.getAllUnits().forEach(unitGroup => {
+      this.getAllUnits().forEach((unitGroup) => {
         if (unitGroup.modGroup.getModValue('defending')) {
           unitGroup.removeDefendingMod();
         }
@@ -77,11 +79,12 @@ export class BattleStateService {
       this.resetFightQueue();
       this.resetGroupsTurnsLeft();
 
-
       this.round++;
-      this.events.dispatch(FightNextRoundStarts({
-        round: this.round,
-      }));
+      this.events.dispatch(
+        FightNextRoundStarts({
+          round: this.round,
+        }),
+      );
       return;
     }
 
@@ -98,10 +101,12 @@ export class BattleStateService {
     }
 
     if (this.currentPlayer !== previousPlayer) {
-      this.events.dispatch(RoundPlayerTurnStarts({
-        currentPlayer: this.currentPlayer,
-        previousPlayer: previousPlayer,
-      }));
+      this.events.dispatch(
+        RoundPlayerTurnStarts({
+          currentPlayer: this.currentPlayer,
+          previousPlayer: previousPlayer,
+        }),
+      );
     } else {
       this.events.dispatch(RoundPlayerCountinuesAttacking());
     }
@@ -114,7 +119,7 @@ export class BattleStateService {
   public handleDefeatedUnitGroup(unitGroup: UnitGroup): void {
     const enemyPlayer = unitGroup.ownerPlayer;
     const enemyPlayerGroups = this.heroesUnitGroupsMap.get(enemyPlayer) as UnitGroup[];
-    const indexOfUnitGroup = enemyPlayerGroups?.indexOf(unitGroup);
+    // const indexOfUnitGroup = enemyPlayerGroups?.indexOf(unitGroup);
     unitGroup.fightInfo.isAlive = false;
 
     this.heroesUnitGroupsMap.set(enemyPlayer, enemyPlayerGroups);
@@ -131,21 +136,25 @@ export class BattleStateService {
 
   public processAiPlayer(): void {
     setTimeout(() => {
-      const enemyUnitGroups = this.getAliveUnitsOfPlayer(this.getEnemyOfPlayer(this.currentPlayer) as Player);
+      const enemyUnitGroups = this.getAliveUnitsOfPlayer(this.getEnemyOfPlayer(this.currentPlayer));
       const randomGroupIndex = Math.round(Math.random() * (enemyUnitGroups.length - 1));
       const targetGroup = enemyUnitGroups[randomGroupIndex];
 
       // enhance this logic
       const attackingGroup = this.currentUnitGroup;
       if (attackingGroup.ownerPlayer.type === PlayerTypeEnum.AI) {
-        const attackSpell = attackingGroup.spells.find(spell => spell.baseType.config.aiTags?.includes(AISpellTag.RegularAttackSpell));
+        const attackSpell = attackingGroup.spells.find((spell) =>
+          spell.baseType.config.aiTags?.includes(AISpellTag.RegularAttackSpell),
+        );
 
         if (targetGroup && attackSpell && !attackSpell.cooldown) {
-          this.events.dispatch(PlayerTargetsSpell({
-            player: attackingGroup.ownerPlayer,
-            spell: attackSpell,
-            target: targetGroup,
-          }));
+          this.events.dispatch(
+            PlayerTargetsSpell({
+              player: attackingGroup.ownerPlayer,
+              spell: attackSpell,
+              target: targetGroup,
+            }),
+          );
 
           if (attackingGroup.turnsLeft) {
             this.processAiPlayer();
@@ -154,10 +163,12 @@ export class BattleStateService {
         }
       }
 
-      this.events.dispatch(GroupAttacked({
-        attackedGroup: targetGroup,
-        attackingGroup: this.currentUnitGroup,
-      }));
+      this.events.dispatch(
+        GroupAttacked({
+          attackedGroup: targetGroup,
+          attackingGroup: this.currentUnitGroup,
+        }),
+      );
     }, 1000);
   }
 
@@ -175,24 +186,20 @@ export class BattleStateService {
   }
 
   public removeUnitsWithoutTurnsFromFightQueue(): void {
-    this.fightQueue = this.fightQueue.filter(unit => unit.turnsLeft);
+    this.fightQueue = this.fightQueue.filter((unit) => unit.turnsLeft);
   }
 
   public getAliveUnitsOfPlayer(player: Player): UnitGroup[] {
-    return (this.heroesUnitGroupsMap.get(player) as UnitGroup[]).filter(
-      unitGroup => unitGroup.fightInfo.isAlive,
-    );
+    return (this.heroesUnitGroupsMap.get(player) as UnitGroup[]).filter((unitGroup) => unitGroup.fightInfo.isAlive);
   }
 
   public getDeadUnitsOfPlayer(player: Player): UnitGroup[] {
-    return (this.heroesUnitGroupsMap.get(player) as UnitGroup[]).filter(
-      unitGroup => !unitGroup.fightInfo.isAlive,
-    );
+    return (this.heroesUnitGroupsMap.get(player) as UnitGroup[]).filter((unitGroup) => !unitGroup.fightInfo.isAlive);
   }
 
   public getSummonsOfPlayer(player: Player): UnitGroup[] {
-    return (this.heroesUnitGroupsMap.get(player) as UnitGroup[]).filter(
-      unitGroup => unitGroup.modGroup.getModValue('isSummon'),
+    return (this.heroesUnitGroupsMap.get(player) as UnitGroup[]).filter((unitGroup) =>
+      unitGroup.modGroup.getModValue('isSummon'),
     );
   }
 
@@ -215,12 +222,12 @@ export class BattleStateService {
   }
 
   public summonUnitForPlayer(ownerPlayer: Player, unitType: UnitTypeId, unitNumber: number): UnitGroup {
-    const summonedUnitGroup = this.units.createUnitGroup(unitType, { count: unitNumber }, ownerPlayer.hero) as UnitGroup;
+    const summonedUnitGroup = this.units.createUnitGroup(unitType, { count: unitNumber }, ownerPlayer.hero);
 
     const playerUnitGroups = this.heroesUnitGroupsMap.get(ownerPlayer)!;
 
     const initialGroupsCount = playerUnitGroups.length;
-    playerUnitGroups.push(summonedUnitGroup as UnitGroup);
+    playerUnitGroups.push(summonedUnitGroup);
     summonedUnitGroup.setPosition(initialGroupsCount);
 
     this.units.addModifierToUnitGroup(summonedUnitGroup, { isSummon: true });
@@ -250,14 +257,14 @@ export class BattleStateService {
   }
 
   private initPlayerLossesMap() {
-    this.players.forEach(player => {
+    this.players.forEach((player) => {
       this.playerLosses[player.id] = new Map();
     });
   }
 
   private resetGroupsTurnsLeft(): void {
     // add method on game object level
-    this.fightQueue.forEach((unitGroup: UnitGroup) => unitGroup.turnsLeft = unitGroup.type.defaultTurnsPerRound || 1);
+    this.fightQueue.forEach((unitGroup: UnitGroup) => (unitGroup.turnsLeft = unitGroup.type.defaultTurnsPerRound || 1));
   }
 
   private getUnitsSortedBySpeed(units: UnitGroup[]): UnitGroup[] {
@@ -274,15 +281,12 @@ export class BattleStateService {
   }
 
   private getAllUnits(): UnitGroup[] {
-    return [
-      ...this.getAliveUnitsOfPlayer(this.players[0]),
-      ...this.getAliveUnitsOfPlayer(this.players[1]),
-    ];
+    return [...this.getAliveUnitsOfPlayer(this.players[0]), ...this.getAliveUnitsOfPlayer(this.players[1])];
   }
 
   private initPlayerUnitGroupsMap(unitGroups: UnitGroup[]): void {
     this.heroesUnitGroupsMap.clear();
-    unitGroups.forEach(unitGroup => {
+    unitGroups.forEach((unitGroup) => {
       const unitGroupPlayer = unitGroup.ownerPlayer;
       const playerGroups = this.heroesUnitGroupsMap.get(unitGroupPlayer);
 
@@ -302,33 +306,40 @@ export class BattleStateService {
 
   private updateGroupsTailHpAndCombatInfo(): void {
     this.players.forEach((player) => {
-      player.hero.unitGroups.forEach(unitGroup => {
+      player.hero.unitGroups.forEach((unitGroup) => {
         if (!unitGroup.tailUnitHp) {
           unitGroup.setTailUnitHp(unitGroup.type.baseStats.health);
         }
         unitGroup.fightInfo.initialCount = unitGroup.count;
-      })
+      });
     });
   }
 
   private refreshUnitGroups(): void {
     this.players.forEach((player) => {
-      player.hero.unitGroups.forEach(unitGroup => {
+      player.hero.unitGroups.forEach((unitGroup) => {
         unitGroup.turnsLeft = unitGroup.type.defaultTurnsPerRound || 1;
-      })
+      });
     });
   }
 
   // Resorts units so that current unit remains on top, the rest are all alive units with turns left sorted by their speed.
   private resortFigthQueueWithNewUnits(): void {
-    this.fightQueue = [this.fightQueue[0], ...this.getUnitsSortedBySpeed(this.getAllAliveUnitsWithTurnsExcept(this.fightQueue[0]))];
+    this.fightQueue = [
+      this.fightQueue[0],
+      ...this.getUnitsSortedBySpeed(this.getAllAliveUnitsWithTurnsExcept(this.fightQueue[0])),
+    ];
   }
 
-  private getAllAliveUnitsWithTurnsExcept(unit: UnitGroup): UnitGroup[] {
-    return this.getAllAliveUnitsExcept(this.fightQueue[0]).filter(unitGroup => unitGroup.turnsLeft);
+  private getAllAliveUnitsWithTurnsExcept(unit?: UnitGroup): UnitGroup[] {
+    const unitToRemove = unit || this.fightQueue[0];
+
+    return this.getAllAliveUnitsExcept(unitToRemove).filter((unitGroup) => unitGroup.turnsLeft);
   }
 
   private getAllAliveUnitsExcept(unit: UnitGroup): UnitGroup[] {
-    return [...this.heroesUnitGroupsMap.values()].flat().filter(unitGroup => unitGroup.fightInfo.isAlive && unitGroup !== unit);
+    return [...this.heroesUnitGroupsMap.values()]
+      .flat()
+      .filter((unitGroup) => unitGroup.fightInfo.isAlive && unitGroup !== unit);
   }
 }

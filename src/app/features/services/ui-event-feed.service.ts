@@ -10,7 +10,7 @@ export class UiEventFeedService {
 
   pushEventFeedMessage(message: EventFeedMessage): void {
     this.visibleMessages().push(message);
-    this.updatableRefs.forEach(ref => ref.updateView());
+    this.updatableRefs.forEach((ref) => ref.updateView());
   }
 
   pushPlainMessage(messageText: string): void {
@@ -20,13 +20,17 @@ export class UiEventFeedService {
     };
 
     this.pushEventFeedMessage(message);
-    this.updatableRefs.forEach(ref => ref.updateView());
-
+    this.updatableRefs.forEach((ref) => ref.updateView());
   }
 
-  pushSystemError(error: any): void {
+  pushSystemError(error: Error): void {
     const message: EventFeedMessage = {
-      message: [{ htmlContent: `<div style="background: red; font-size: 15px; font-weight: 500">${error}</div>`, type: DescriptionElementType.FreeHtml }],
+      message: [
+        {
+          htmlContent: `<div style="background: red; font-size: 15px; font-weight: 500">${error.message}</div>`,
+          type: DescriptionElementType.FreeHtml,
+        },
+      ],
       delay: 5000,
     };
 
@@ -34,6 +38,6 @@ export class UiEventFeedService {
   }
 
   removeMessage(eventMessage: EventFeedMessage): void {
-    this.visibleMessages.update(messages => CommonUtils.removeItemCopy(messages, eventMessage));
+    this.visibleMessages.update((messages) => CommonUtils.removeItemCopy(messages, eventMessage));
   }
 }

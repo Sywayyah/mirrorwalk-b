@@ -6,10 +6,7 @@ import { LevelMap } from 'src/app/core/maps';
 import { ModsRefsGroup } from 'src/app/core/modifiers';
 import { Player } from 'src/app/core/players';
 import { Spell } from 'src/app/core/spells';
-import {
-  MapStructure,
-  defaultActionPointsPerDay,
-} from 'src/app/core/structures';
+import { MapStructure, defaultActionPointsPerDay } from 'src/app/core/structures';
 import { Building, Town } from 'src/app/core/towns';
 import { RefEventTriggersRegistry } from 'src/app/core/triggers';
 import { UnitsOrientation } from 'src/app/core/ui';
@@ -38,10 +35,10 @@ export class State {
     selectedHero: HeroBase;
     selectedColor: string;
     faction: Faction;
-    town: Town<any>;
+    town: Town<string>;
   };
 
-  public townsByPlayers = new Map<string, Town<any>>();
+  public townsByPlayers = new Map<string, Town<string>>();
 
   public currentGame: GameState = {
     day: 1,

@@ -7,7 +7,7 @@ import { MwPlayersService, PLAYER_IDS } from './mw-players.service';
   providedIn: 'root',
 })
 export class MwPlayerStateService {
-  private playersService = inject(MwPlayersService);
+  private readonly playersService = inject(MwPlayersService);
 
   public getPlayerInfo(): Player {
     return this.playersService.getCurrentPlayer();
