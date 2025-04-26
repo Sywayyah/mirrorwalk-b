@@ -1,4 +1,4 @@
-import { Signal, signal } from '@angular/core';
+import { computed, Signal, signal } from '@angular/core';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Entity, EntityId, resolveEntity, SpellId, UnitTypeId } from '../entities';
@@ -285,6 +285,7 @@ export class UnitGroup extends GameObject<UnitCreationParams, UnitGroupState> {
     },
   });
 
+  readonly lostDuringBattle = computed(() => this.unitState().groupState.initialCount - this.count);
   readonly unitState = signal(this.state$.getValue());
 
   private readonly destroyed$ = new Subject<void>();
