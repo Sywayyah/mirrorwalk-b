@@ -16,7 +16,7 @@ import { GroupSpellsChanged, HoverTypeEnum, PlayerHoversGroupCard } from 'src/ap
 import { Player } from 'src/app/core/players';
 import { Spell } from 'src/app/core/spells';
 import { UnitGroup, UnitGroupState } from 'src/app/core/unit-types';
-import { injectHostElem } from 'src/app/core/utils';
+import { injectCdr, injectHostElem } from 'src/app/core/utils';
 import { BattleStateService, MwPlayersService, MwUnitGroupStateService } from 'src/app/features/services';
 import { HintAttachment } from 'src/app/features/shared/components';
 import { PROVIDE_UI_UNIT_GROUP, UIUnitProvider } from 'src/app/features/shared/directives';
@@ -42,6 +42,7 @@ export class MwUnitGroupCardComponent extends StoreClient() implements UIUnitPro
   private readonly playersService = inject(MwPlayersService);
   private readonly unitsService = inject(MwUnitGroupStateService);
   private readonly renderer = inject(Renderer2);
+  private readonly cdr = injectCdr();
 
   readonly unitGroup = input.required<UnitGroup>();
   readonly playerInfo = input.required<Player>();
@@ -101,6 +102,8 @@ export class MwUnitGroupCardComponent extends StoreClient() implements UIUnitPro
       const currentUnitGroup = this.mwBattleStateService.currentUnitGroup;
       this.attackingUnitGroup = currentUnitGroup;
       this.canCurrentPlayerAttack = this.mwBattleStateService.currentPlayer === this.playersService.getCurrentPlayer();
+      // optimize
+      this.cdr.markForCheck();
     });
 
     this.events
