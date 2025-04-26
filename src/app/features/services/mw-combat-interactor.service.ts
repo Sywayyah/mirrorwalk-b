@@ -316,7 +316,8 @@ export class CombatInteractorService extends StoreClient() {
 
     if (!isCounterattack) {
       this.battleState.currentGroupTurnsLeft--;
-      attacker.turnsLeft = this.battleState.currentGroupTurnsLeft;
+      // attacker.turnsLeft = this.battleState.currentGroupTurnsLeft;
+      attacker.updateUnitGroupState({ turnsLeft: this.battleState.currentGroupTurnsLeft });
 
       this.events.dispatch(
         GroupDamagedByGroup({
@@ -442,13 +443,13 @@ export class CombatInteractorService extends StoreClient() {
   }
 
   public resetAllUnitGroupsCooldowns(): void {
-    this.forEachUnitGroup((unitGroup) => (unitGroup.fightInfo.spellsOnCooldown = false));
+    this.forEachUnitGroup((unitGroup) => unitGroup.updateUnitGroupState({ spellsOnCooldown: false }));
   }
 
   public getRandomEnemyUnitGroup(): UnitGroup {
     const enemyPlayer = this.players.getEnemyPlayer();
     const enemyUnitGroups = this.battleState.heroesUnitGroupsMap.get(enemyPlayer) as UnitGroup[];
-    return CommonUtils.randItem(enemyUnitGroups.filter((group) => group.fightInfo.isAlive));
+    return CommonUtils.randItem(enemyUnitGroups.filter((group) => group.isAlive));
   }
 
   public addSpellToUnitGroup(target: UnitGroup, spell: Spell, ownerPlayer: Player): void {

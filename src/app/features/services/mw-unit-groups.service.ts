@@ -77,7 +77,7 @@ export class MwUnitGroupsService {
 
     const healValueTail = healValue - fullHealValueWithoutTail;
 
-    const initialUnitsCount = unit.fightInfo.initialCount;
+    const initialUnitsCount = unit.getState().groupState.initialCount;
 
     const currentUnitsCount = unit.count;
 
@@ -98,7 +98,7 @@ export class MwUnitGroupsService {
       };
     }
 
-    unit.fightInfo.isAlive = true;
+    unit.updateUnitGroupState({ isAlive: true });
 
     // if heal is greater than overall loss, heal out to max
     if (healValue > totalHpLoss) {

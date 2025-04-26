@@ -40,7 +40,7 @@ export class UnitGroupSpellComponent {
 
     if (this.onCooldown()
       || this.disabled()
-      || !this.owner().fightInfo.isAlive
+      || !this.owner().isAlive
       || this.isPassive()
       || combinedMana < this.spell().currentManaCost) {
       return;

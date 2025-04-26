@@ -120,7 +120,7 @@ export class BattleStateService {
     const enemyPlayer = unitGroup.ownerPlayer;
     const enemyPlayerGroups = this.heroesUnitGroupsMap.get(enemyPlayer) as UnitGroup[];
     // const indexOfUnitGroup = enemyPlayerGroups?.indexOf(unitGroup);
-    unitGroup.fightInfo.isAlive = false;
+    unitGroup.updateUnitGroupState({ isAlive: false });
 
     this.heroesUnitGroupsMap.set(enemyPlayer, enemyPlayerGroups);
 
@@ -190,11 +190,11 @@ export class BattleStateService {
   }
 
   public getAliveUnitsOfPlayer(player: Player): UnitGroup[] {
-    return (this.heroesUnitGroupsMap.get(player) as UnitGroup[]).filter((unitGroup) => unitGroup.fightInfo.isAlive);
+    return (this.heroesUnitGroupsMap.get(player) as UnitGroup[]).filter((unitGroup) => unitGroup.isAlive);
   }
 
   public getDeadUnitsOfPlayer(player: Player): UnitGroup[] {
-    return (this.heroesUnitGroupsMap.get(player) as UnitGroup[]).filter((unitGroup) => !unitGroup.fightInfo.isAlive);
+    return (this.heroesUnitGroupsMap.get(player) as UnitGroup[]).filter((unitGroup) => !unitGroup.isAlive);
   }
 
   public getSummonsOfPlayer(player: Player): UnitGroup[] {
@@ -210,7 +210,8 @@ export class BattleStateService {
   public addTurnsToUnitGroup(unitGroup: UnitGroup, turns: number): void {
     const previousTurnsLeft = unitGroup.turnsLeft;
 
-    unitGroup.turnsLeft += turns;
+    // unitGroup.turnsLeft += turns;
+    unitGroup.updateUnitGroupState({ turnsLeft: unitGroup.turnsLeft + turns });
 
     if (this.currentUnitGroup === unitGroup) {
       this.currentGroupTurnsLeft += turns;
@@ -264,7 +265,9 @@ export class BattleStateService {
 
   private resetGroupsTurnsLeft(): void {
     // add method on game object level
-    this.fightQueue.forEach((unitGroup: UnitGroup) => (unitGroup.turnsLeft = unitGroup.type.defaultTurnsPerRound || 1));
+    this.fightQueue.forEach((unitGroup: UnitGroup) =>
+      unitGroup.updateUnitGroupState({ turnsLeft: unitGroup.turnsLeft + (unitGroup.type.defaultTurnsPerRound || 1) }),
+    );
   }
 
   private getUnitsSortedBySpeed(units: UnitGroup[]): UnitGroup[] {
@@ -310,7 +313,8 @@ export class BattleStateService {
         if (!unitGroup.tailUnitHp) {
           unitGroup.setTailUnitHp(unitGroup.type.baseStats.health);
         }
-        unitGroup.fightInfo.initialCount = unitGroup.count;
+        // unitGroup.fightInfo.initialCount = unitGroup.count;
+        unitGroup.updateUnitGroupState({ initialCount: unitGroup.count });
       });
     });
   }
@@ -318,7 +322,10 @@ export class BattleStateService {
   private refreshUnitGroups(): void {
     this.players.forEach((player) => {
       player.hero.unitGroups.forEach((unitGroup) => {
-        unitGroup.turnsLeft = unitGroup.type.defaultTurnsPerRound || 1;
+        // unitGroup.turnsLeft = unitGroup.type.defaultTurnsPerRound || 1;
+        unitGroup.updateUnitGroupState({
+          turnsLeft: unitGroup.type.defaultTurnsPerRound || 1,
+        });
       });
     });
   }
@@ -338,8 +345,6 @@ export class BattleStateService {
   }
 
   private getAllAliveUnitsExcept(unit: UnitGroup): UnitGroup[] {
-    return [...this.heroesUnitGroupsMap.values()]
-      .flat()
-      .filter((unitGroup) => unitGroup.fightInfo.isAlive && unitGroup !== unit);
+    return [...this.heroesUnitGroupsMap.values()].flat().filter((unitGroup) => unitGroup.isAlive && unitGroup !== unit);
   }
 }

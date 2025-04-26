@@ -46,7 +46,7 @@ export class MwUnitEventsCursorDirective extends MwCustomCursorDirective impleme
 
     if (
       playerState === PlayerState.Normal &&
-      (!isEnemyUnitGroup || (isEnemyUnitGroup && !this.unitGroup.fightInfo.isAlive))
+      (!isEnemyUnitGroup || (isEnemyUnitGroup && !this.unitGroup.isAlive))
     ) {
       return this.createStaticCursor('interdiction');
     }

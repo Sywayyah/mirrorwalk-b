@@ -30,13 +30,13 @@ export const canActivateOnEnemyFn = ({
   isEnemy,
   unitGroup,
 }: CanActivateSpellParams): boolean => {
-  return isEnemy && unitGroup.fightInfo.isAlive;
+  return isEnemy && unitGroup.isAlive;
 };
 
 export const canActivateOnAliveFn = ({
   unitGroup,
 }: CanActivateSpellParams): boolean => {
-  return unitGroup.fightInfo.isAlive;
+  return unitGroup.isAlive;
 };
 
 export const canActivateOnAllyFn = ({

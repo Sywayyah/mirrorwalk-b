@@ -6,8 +6,8 @@
        class="card-top"
        [class.active]="mwBattleStateService.currentPlayer === playerInfo() && attackingUnitGroup === group"
        [ngClass]="side() === 'left' ? 'card-left' : 'card-right'"
-       [class.inactive]="!group.turnsLeft && group.fightInfo.isAlive"
-       [class.defeated]="!group.fightInfo.isAlive"
+       [class.inactive]="!group.turnsLeft && _unitStats.groupState.isAlive"
+       [class.defeated]="! _unitStats.groupState.isAlive"
        (mouseenter)="onCardHover(true)"
        (mouseleave)="onCardHover(false)">
 
@@ -67,7 +67,7 @@
                                [spell]="spell"
                                [hero]="playerInfo().hero"
                                [owner]="group"
-                               [onCooldown]="group.fightInfo.spellsOnCooldown || !!spell.cooldown"
+                               [onCooldown]="_unitStats.groupState.spellsOnCooldown || !!spell.cooldown"
                                [currentUnit]="attackingUnitGroup" />
         </div>
 

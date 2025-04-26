@@ -16,14 +16,14 @@ import { State } from '../state.service';
 
 @Injectable()
 export class BattleController extends StoreClient() {
-  private battleState = inject(BattleStateService);
-  private curPlayerState = inject(MwCurrentPlayerStateService);
-  private strucuresService = inject(MwStructuresService);
-  private playersService = inject(MwPlayersService);
-  private vfx = inject(VfxService);
-  private state = inject(State);
-  private historyLog = inject(MwBattleLogService);
-  private gameObjectsManager = inject(GameObjectsManager);
+  private readonly battleState = inject(BattleStateService);
+  private readonly curPlayerState = inject(MwCurrentPlayerStateService);
+  private readonly strucuresService = inject(MwStructuresService);
+  private readonly playersService = inject(MwPlayersService);
+  private readonly vfx = inject(VfxService);
+  private readonly state = inject(State);
+  private readonly historyLog = inject(MwBattleLogService);
+  private readonly gameObjectsManager = inject(GameObjectsManager);
 
   @Notify(BeforeBattleInit)
   public beforeBattleInit(): void {
@@ -139,7 +139,7 @@ export class BattleController extends StoreClient() {
 
 
       // remove dead units from slots
-      currentHero.unitGroups.filter(unitGroup => !unitGroup.fightInfo.isAlive).forEach((unitGroup) => {
+      currentHero.unitGroups.filter(unitGroup => !unitGroup.isAlive).forEach((unitGroup) => {
         const dyingUnitSlot = currentHero.getAllSlots().find(slot => slot.unitGroup === unitGroup);
 
         if (dyingUnitSlot) {

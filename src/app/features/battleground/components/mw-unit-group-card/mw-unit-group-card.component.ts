@@ -1,35 +1,14 @@
-import {
-  Component,
-  forwardRef,
-  inject,
-  input,
-  OnDestroy,
-  OnInit,
-  output,
-  Renderer2,
-  Signal
-} from '@angular/core';
+import { Component, forwardRef, inject, input, OnDestroy, OnInit, output, Renderer2, Signal } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import {
-  GroupSpellsChanged,
-  HoverTypeEnum,
-  PlayerHoversGroupCard,
-} from 'src/app/core/events';
+import { GroupSpellsChanged, HoverTypeEnum, PlayerHoversGroupCard } from 'src/app/core/events';
 import { Player } from 'src/app/core/players';
 import { Spell } from 'src/app/core/spells';
 import { UnitGroup, UnitGroupState } from 'src/app/core/unit-types';
 import { injectHostElem } from 'src/app/core/utils';
-import {
-  BattleStateService,
-  MwPlayersService,
-  MwUnitGroupStateService
-} from 'src/app/features/services';
+import { BattleStateService, MwPlayersService, MwUnitGroupStateService } from 'src/app/features/services';
 import { HintAttachment } from 'src/app/features/shared/components';
-import {
-  PROVIDE_UI_UNIT_GROUP,
-  UIUnitProvider,
-} from 'src/app/features/shared/directives';
+import { PROVIDE_UI_UNIT_GROUP, UIUnitProvider } from 'src/app/features/shared/directives';
 import { StoreClient } from 'src/app/store';
 
 @Component({
@@ -79,15 +58,14 @@ export class MwUnitGroupCardComponent extends StoreClient() implements UIUnitPro
 
   public isBoss?: boolean = false;
 
-  private destroy$: Subject<void> = new Subject();
+  private readonly destroy$: Subject<void> = new Subject();
 
   public ngOnInit(): void {
     this.unitState = this.unitGroup().getStateSignal();
     this.spellsHintsPosition = 'above';
 
     this.isGroupMelee = !this.unitsService.isUnitGroupRanged(this.unitGroup());
-    this.isEnemyCard =
-      this.playersService.getCurrentPlayer() !== this.playerInfo();
+    this.isEnemyCard = this.playersService.getCurrentPlayer() !== this.playerInfo();
     this.initialCount = this.unitGroup().count;
     const unitGroup = this.unitGroup();
     this.isBoss = unitGroup.type.defaultModifiers?.isBoss;
@@ -107,12 +85,9 @@ export class MwUnitGroupCardComponent extends StoreClient() implements UIUnitPro
     this.updateSpellsAndEffects();
 
     this.events.eventStream$.pipe(takeUntil(this.destroyed$)).subscribe(() => {
-      // console.log('')
       const currentUnitGroup = this.mwBattleStateService.currentUnitGroup;
       this.attackingUnitGroup = currentUnitGroup;
-      this.canCurrentPlayerAttack =
-        this.mwBattleStateService.currentPlayer ===
-        this.playersService.getCurrentPlayer();
+      this.canCurrentPlayerAttack = this.mwBattleStateService.currentPlayer === this.playersService.getCurrentPlayer();
     });
 
     this.events
@@ -141,7 +116,7 @@ export class MwUnitGroupCardComponent extends StoreClient() implements UIUnitPro
 
     if (isHovered) {
       const unitGroup = this.unitGroup();
-      if (!unitGroup.fightInfo.isAlive) {
+      if (!unitGroup.isAlive) {
         this.events.dispatch(
           PlayerHoversGroupCard({
             hoverType: HoverTypeEnum.Unhover,
@@ -152,9 +127,7 @@ export class MwUnitGroupCardComponent extends StoreClient() implements UIUnitPro
 
       this.events.dispatch(
         PlayerHoversGroupCard({
-          hoverType: this.isEnemyCard
-            ? HoverTypeEnum.EnemyCard
-            : HoverTypeEnum.AllyCard,
+          hoverType: this.isEnemyCard ? HoverTypeEnum.EnemyCard : HoverTypeEnum.AllyCard,
           currentCard: this.mwBattleStateService.currentUnitGroup,
           hoveredCard: unitGroup,
         }),

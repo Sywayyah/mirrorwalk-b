@@ -15,6 +15,7 @@ export enum CombatStateEnum {
 
 export type CombatStateVariant<
   T extends CombatStateEnum,
+  // eslint-disable-next-line @typescript-eslint/ban-types
   V extends object = {},
 > = { type: T } & V;
 

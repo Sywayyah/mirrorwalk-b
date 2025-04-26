@@ -2,7 +2,25 @@ import { inject, Injectable } from '@angular/core';
 import { CombatActionsRef, SpellCreationOptions } from 'src/app/core/api/combat-api';
 import { EffectType, VfxElemEffect } from 'src/app/core/api/vfx-api';
 import { UnitTypeId } from 'src/app/core/entities';
-import { GroupAttacked, GroupModifiersChanged, GroupSpeedChanged, InitBuilding, InitBuildingAction, InitGameObjectApi, InitGameObjectApiParams, InitItem, InitItemAction, InitMapStructureAction, InitSpell, InitSpellAction, InitStructure, PlayerReceivesItem, PlayersInitialized, UnitHealed, UnitSummoned } from 'src/app/core/events';
+import {
+  GroupAttacked,
+  GroupModifiersChanged,
+  GroupSpeedChanged,
+  InitBuilding,
+  InitBuildingAction,
+  InitGameObjectApi,
+  InitGameObjectApiParams,
+  InitItem,
+  InitItemAction,
+  InitMapStructureAction,
+  InitSpell,
+  InitSpellAction,
+  InitStructure,
+  PlayerReceivesItem,
+  PlayersInitialized,
+  UnitHealed,
+  UnitSummoned,
+} from 'src/app/core/events';
 import { GameObjectApi } from 'src/app/core/game-objects';
 import { ItemEventNames, ItemsEventsGroup, ItemsEventsHandlers } from 'src/app/core/items';
 import { Player } from 'src/app/core/players';
@@ -30,27 +48,26 @@ import { UiEventFeedService } from '../ui-event-feed.service';
 
 @Injectable()
 export class InGameApiController extends StoreClient() {
-  private combatInteractor = inject(CombatInteractorService);
-  private vfxService = inject(VfxService);
-  private battleState = inject(BattleStateService);
-  private spellsService = inject(MwSpellsService);
-  private units = inject(MwUnitGroupsService);
-  private battleLog = inject(MwBattleLogService);
-  private players = inject(MwPlayersService);
-  private itemsService = inject(MwItemsService);
-  private apiProvider = inject(ApiProvider);
-  private state = inject(State);
-  private gameObjectsManager = inject(GameObjectsManager);
-  private eventFeed = inject(UiEventFeedService);
-  private structures = inject(MwStructuresService);
-  private currentPlayer = inject(MwCurrentPlayerStateService);
-
+  private readonly combatInteractor = inject(CombatInteractorService);
+  private readonly vfxService = inject(VfxService);
+  private readonly battleState = inject(BattleStateService);
+  private readonly spellsService = inject(MwSpellsService);
+  private readonly units = inject(MwUnitGroupsService);
+  private readonly battleLog = inject(MwBattleLogService);
+  private readonly players = inject(MwPlayersService);
+  private readonly itemsService = inject(MwItemsService);
+  private readonly apiProvider = inject(ApiProvider);
+  private readonly state = inject(State);
+  private readonly gameObjectsManager = inject(GameObjectsManager);
+  private readonly eventFeed = inject(UiEventFeedService);
+  private readonly structures = inject(MwStructuresService);
+  private readonly currentPlayer = inject(MwCurrentPlayerStateService);
 
   @Notify(PlayersInitialized)
   public initPlayerItems(): void {
     const player = this.players.getCurrentPlayer();
 
-    player.hero.base.initialState.items.forEach(item => {
+    player.hero.base.initialState.items.forEach((item) => {
       this.events.dispatch(PlayerReceivesItem({ player, item: this.itemsService.createItem(item) }));
     });
   }
@@ -72,16 +89,21 @@ export class InGameApiController extends StoreClient() {
             const event = SpellEventsGroup.getEventByName(eventName as SpellEventNames);
 
             // any for now
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-explicit-any
             this.state.eventHandlers.spells.registerHandlerByRef(spell, event as any, handler as any);
           });
         },
       },
       vfx: {
         createEffectForUnitGroup: (target, effect, options) => {
-          this.vfxService.createVfxForUnitGroup(target, {
-            type: EffectType.VfxElement,
-            animation: effect,
-          } as VfxElemEffect, options);
+          this.vfxService.createVfxForUnitGroup(
+            target,
+            {
+              type: EffectType.VfxElement,
+              animation: effect,
+            } as VfxElemEffect,
+            options,
+          );
         },
         createFloatingMessageForUnitGroup: (target, data, options = {}) => {
           this.vfxService.createFloatingMessageForUnitGroup(target, data, options);
@@ -95,7 +117,7 @@ export class InGameApiController extends StoreClient() {
       spellInstance: spell,
       ownerHero: player.hero,
       ownerUnit: ownerUnit,
-    })
+    });
   }
 
   @WireMethod(InitItem)
@@ -108,9 +130,10 @@ export class InGameApiController extends StoreClient() {
             const event = ItemsEventsGroup.getEventByName(eventName as ItemEventNames);
 
             // any as well
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-explicit-any
             this.state.eventHandlers.items.registerHandlerByRef(item, event as any, handler);
           });
-        }
+        },
       },
       ownerHero: ownerPlayer.hero,
       ownerPlayer: ownerPlayer,
@@ -129,9 +152,10 @@ export class InGameApiController extends StoreClient() {
             const event = BuildingsEventsGroup.getEventByName(eventName as BuildingEventNames);
 
             // any as well
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-explicit-any
             this.state.eventHandlers.buildings.registerHandlerByRef(building, event as any, handler);
           });
-        }
+        },
       },
       globalEvents: this.apiProvider.getGlobalEventsApi(),
       thisBuilding: building,
@@ -157,9 +181,10 @@ export class InGameApiController extends StoreClient() {
           Object.entries(eventHandlers).forEach(([eventName, handler]) => {
             const event = SturctEventsGroup.getEventByName(eventName as StructEventUtilTypes['EventNames']);
 
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-explicit-any
             this.state.eventHandlers.structures.registerHandlerByRef(structure, event as any, handler);
           });
-        }
+        },
       },
       eventFeed: {
         postEventFeedMessage: (message) => this.eventFeed.pushEventFeedMessage(message),
@@ -184,7 +209,9 @@ export class InGameApiController extends StoreClient() {
       },
       gameObjects: this.gameObjectsManager,
       eventFeed: {
-        postEventFeedMessage: (message) => { this.eventFeed.pushEventFeedMessage(message) },
+        postEventFeedMessage: (message) => {
+          this.eventFeed.pushEventFeedMessage(message);
+        },
         pushPlainMessage: (messageText) => this.eventFeed.pushPlainMessage(messageText),
       },
     };
@@ -195,10 +222,11 @@ export class InGameApiController extends StoreClient() {
       isEnemyUnitGroup: (unitGroup) => unitGroup.ownerPlayer !== this.currentPlayer.currentPlayer,
       getUnitsFromFightQueue: () => this.battleState.getFightQueue(),
       removeTurnsFromUnitGroup: (target, turns = target.turnsLeft) => {
-        target.turnsLeft -= turns;
+        // target.turnsLeft -= turns;
 
         if (target.turnsLeft < 0) {
-          target.turnsLeft = 0;
+          target.updateUnitGroupState({ turnsLeft: 0 });
+          // target.turnsLeft = 0;
         }
 
         this.battleState.removeUnitsWithoutTurnsFromFightQueue();
@@ -206,7 +234,8 @@ export class InGameApiController extends StoreClient() {
       addTurnsToUnitGroup: (target, turns) => {
         this.battleState.addTurnsToUnitGroup(target, turns);
       },
-      unitGroupAttack: (attacker, attacked) => this.events.dispatch(GroupAttacked({ attackingGroup: attacker, attackedGroup: attacked })),
+      unitGroupAttack: (attacker, attacked) =>
+        this.events.dispatch(GroupAttacked({ attackingGroup: attacker, attackedGroup: attacked })),
       pinAttempt: (pinning, pinned) => {
         const pinningState = pinning.getState();
         const pinnedState = pinned.getState();
@@ -223,8 +252,9 @@ export class InGameApiController extends StoreClient() {
           return { pinFailed: false, pinCanceled: true };
         }
 
-        const isBasicEscape = (pinned.modGroup.getModValue('isCavalry') || pinned.modGroup.getModValue('isBigCreature'))
-          && CommonUtils.chanceRoll(0.3);
+        const isBasicEscape =
+          (pinned.modGroup.getModValue('isCavalry') || pinned.modGroup.getModValue('isBigCreature')) &&
+          CommonUtils.chanceRoll(0.3);
         const isBossEscape = pinned.modGroup.getModValue('isBoss') && CommonUtils.chanceRoll(0.85);
         const isGiantEscape = pinned.modGroup.getModValue('isGiant');
 
@@ -236,7 +266,8 @@ export class InGameApiController extends StoreClient() {
         }
 
         // if pinned someone else - release previous from pin
-        const previousPinned = pinningState.combatState.type === CombatStateEnum.Pinning && pinningState.combatState.pinning;
+        const previousPinned =
+          pinningState.combatState.type === CombatStateEnum.Pinning && pinningState.combatState.pinning;
         if (previousPinned !== pinned) {
           pinned.clearCombatMods();
         }
@@ -253,7 +284,7 @@ export class InGameApiController extends StoreClient() {
 
         return {
           pinFailed: false,
-        }
+        };
       },
       getCurrentUnitGroup: () => this.battleState.currentUnitGroup,
       summonUnitsForPlayer: (ownerPlayer: Player, unitTypeId: UnitTypeId, unitNumber: number) => {
@@ -271,14 +302,18 @@ export class InGameApiController extends StoreClient() {
         this.units.addModifierToUnitGroup(target, modifiers);
 
         if (modifiers.unitGroupSpeedBonus) {
-          this.events.dispatch(GroupSpeedChanged({
-            unitGroup: target
-          }));
+          this.events.dispatch(
+            GroupSpeedChanged({
+              unitGroup: target,
+            }),
+          );
         }
 
-        this.events.dispatch(GroupModifiersChanged({
-          unitGroup: target,
-        }));
+        this.events.dispatch(
+          GroupModifiersChanged({
+            unitGroup: target,
+          }),
+        );
       },
       createModifiers: (modifiers) => {
         return this.spellsService.createModifiers(modifiers);
@@ -286,9 +321,11 @@ export class InGameApiController extends StoreClient() {
       removeModifiresFromUnitGroup: (target, modifiers) => {
         this.units.removeModifiers(target, modifiers);
 
-        this.events.dispatch(GroupModifiersChanged({
-          unitGroup: target,
-        }));
+        this.events.dispatch(
+          GroupModifiersChanged({
+            unitGroup: target,
+          }),
+        );
       },
       /* dark magic of types, just so it can work */
       addSpellToUnitGroup: <T>(target: UnitGroup, spell: Spell<T>, ownerPlayer: Player) => {
@@ -316,13 +353,15 @@ export class InGameApiController extends StoreClient() {
         /* think on resorting queue */
         const healInfo = this.units.healUnit(unit, healValue);
 
-        this.events.dispatch(UnitHealed({
-          target: unit,
-          healedUnitsCount: healInfo.revivedUnitsCount,
-        }));
+        this.events.dispatch(
+          UnitHealed({
+            target: unit,
+            healedUnitsCount: healInfo.revivedUnitsCount,
+          }),
+        );
 
         return healInfo;
-      }
+      },
     };
   }
 }
