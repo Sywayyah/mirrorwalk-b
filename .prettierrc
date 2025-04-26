@@ -1,6 +1,7 @@
 {
   "printWidth": 120,
   "bracketSameLine": false,
+  "bracketSpacing": true,
   "overrides": [
     {
       "files": "*.html",
