@@ -1,4 +1,15 @@
-import { Component, forwardRef, inject, input, OnDestroy, OnInit, output, Renderer2, Signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  forwardRef,
+  inject,
+  input,
+  OnDestroy,
+  OnInit,
+  output,
+  Renderer2,
+  Signal,
+} from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { GroupSpellsChanged, HoverTypeEnum, PlayerHoversGroupCard } from 'src/app/core/events';
@@ -22,6 +33,8 @@ import { StoreClient } from 'src/app/store';
     },
   ],
   standalone: false,
+  // improve optimization
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MwUnitGroupCardComponent extends StoreClient() implements UIUnitProvider, OnInit, OnDestroy {
   readonly hostElem = injectHostElem();
