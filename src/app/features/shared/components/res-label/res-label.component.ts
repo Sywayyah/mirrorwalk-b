@@ -10,7 +10,7 @@ import { resourceDetailsMapping, ResourceType } from 'src/app/core/resources';
 })
 export class ResLabelComponent {
   readonly resType = input.required<ResourceType | string>();
-  readonly amount = input<number>(0);
+  readonly amount = input<number | undefined>(0);
   readonly iconSize = input<ImgIconSize>(32);
 
   @Input()

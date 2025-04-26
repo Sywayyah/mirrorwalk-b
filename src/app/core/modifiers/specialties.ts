@@ -29,6 +29,7 @@ export function filterSpecialties(mods: Modifiers): Modifiers {
 
   for (const modName of getKeys(mods)) {
     if (modName.startsWith(specialtyKey)) {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-explicit-any
       specialtyMods[modName] = mods[modName] as any;
     }
   }

@@ -1,3 +1,4 @@
+import { ImgIconSize } from '../../assets';
 import { ResourceType } from '../../resources';
 
 export enum DescriptionElementType {
@@ -15,7 +16,10 @@ export type DescriptionElementVariant<
 // check in the future how well it works
 export type DescriptionElement =
   | DescriptionElementVariant<DescriptionElementType.FreeHtml, { htmlContent: string }>
-  | DescriptionElementVariant<DescriptionElementType.Resource, { resType: ResourceType; count: number }>
+  | DescriptionElementVariant<
+      DescriptionElementType.Resource,
+      { resType: ResourceType; count?: number; iconSize?: ImgIconSize }
+    >
   | DescriptionElementVariant<
       DescriptionElementType.Resources,
       { resources: { resType: ResourceType; count: number }[] }
