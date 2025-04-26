@@ -1,8 +1,32 @@
-<ng-container *ngFor="let description of descriptions()">
-  <ng-container *ngTemplateOutlet="freeHtml; context: { $implicit: description }" />
-</ng-container>
-
-<ng-template #freeHtml
-             let-data>
-  <div [innerHTML]="data.htmlContent | safeHtml"></div>
-</ng-template>
+@for (description of descriptions(); track $index) {
+  <!-- <ng-container *ngTemplateOutlet="freeHtml; context: { $implicit: description }" /> -->
+  @switch (description.type) {
+    @case (DescriptionType.FreeHtml) {
+      <div [innerHTML]="description.htmlContent | safeHtml"></div>
+    }
+    @case (DescriptionType.Resource) {
+      <div>
+        <mw-res-label
+          [amount]="description.count"
+          [resType]="description.resType"
+          [iconSize]="82"
+          display="vertical"
+        />
+      </div>
+    }
+    @case (DescriptionType.Resources) {
+      <div class="resources">
+        @for (res of description.resources; track $index) {
+          <div>
+            <mw-res-label
+              [amount]="res.count"
+              [resType]="res.resType"
+              [iconSize]="82"
+              display="vertical"
+            />
+          </div>
+        }
+      </div>
+    }
+  }
+}

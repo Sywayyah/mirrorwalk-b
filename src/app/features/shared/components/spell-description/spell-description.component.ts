@@ -1,13 +1,8 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  computed,
-  input,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 import { Hero } from 'src/app/core/heroes';
 import { Player } from 'src/app/core/players';
 import { Spell } from 'src/app/core/spells';
-import { DescHtmlElement, DescriptionElementType } from 'src/app/core/ui';
+import { DescriptionElementType } from 'src/app/core/ui';
 import { UnitGroup } from 'src/app/core/unit-types';
 
 @Component({
@@ -42,7 +37,7 @@ export class SpellDescriptionComponent {
       descriptions.unshift({
         type: DescriptionElementType.FreeHtml,
         htmlContent: 'Can be cast only once per battle.<br/><hr/>',
-      } as DescHtmlElement);
+      });
     }
 
     return descriptions;

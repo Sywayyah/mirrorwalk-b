@@ -1,7 +1,7 @@
 import { createEventType } from 'src/app/store';
 import { ActionCardStack } from '../../action-cards';
 import { Player } from '../../players';
-import { DescHtmlElement } from '../../ui';
+import { DescriptionElement } from '../../ui';
 import {
   DisplayPlayerRewardAction,
   InitBuildingAction,
@@ -63,7 +63,7 @@ export const InitBuilding = commands<InitBuildingAction>();
 export const InitStructure = commands<InitMapStructureAction>();
 
 export const PushEventFeedMessage = commands<{
-  message: DescHtmlElement[];
+  message: DescriptionElement[];
   delay?: number;
 }>();
 

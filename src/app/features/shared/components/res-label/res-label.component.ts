@@ -1,6 +1,6 @@
 import { Component, computed, HostBinding, Input, input } from '@angular/core';
 import { ImgIconSize } from 'src/app/core/assets';
-import { resourceDetails, ResourceType } from 'src/app/core/resources';
+import { resourceDetailsMapping, ResourceType } from 'src/app/core/resources';
 
 @Component({
   selector: 'mw-res-label',
@@ -17,5 +17,5 @@ export class ResLabelComponent {
   @HostBinding('class')
   display: 'horizontal' | 'vertical' = 'horizontal';
 
-  readonly resDetails = computed(() => resourceDetails[this.resType() as ResourceType]);
+  readonly resDetails = computed(() => resourceDetailsMapping[this.resType() as ResourceType]);
 }

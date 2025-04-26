@@ -1,13 +1,12 @@
-import type { Item, ItemBaseModel } from '../../items';
+import type { ItemBaseModel } from '../../items';
 import { ModifiersModel, formatMod } from '../../modifiers';
-import { DescHtmlElement, DescriptionElementType } from './types';
+import { DescriptionElement, DescriptionElementType } from './types';
 
 function getItemModHtmlElem(text: string): string {
   return `<div class="item-mod">${text}</div>`;
 }
 
-
-export function itemStatsDescr(itemBase: ItemBaseModel): DescHtmlElement {
+export function itemStatsDescr(itemBase: ItemBaseModel): DescriptionElement {
   const itemStaticMods = itemBase.staticMods;
 
   const mods = Object.entries(itemStaticMods)
@@ -22,5 +21,5 @@ export function itemStatsDescr(itemBase: ItemBaseModel): DescHtmlElement {
         ${mods}
       </div>
     `,
-  }
+  };
 }

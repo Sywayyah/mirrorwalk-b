@@ -20,7 +20,7 @@ export interface ResourcesModel {
 
 export type Resources = Partial<ResourcesModel>;
 
-export const resourceDetails: Record<
+export const resourceDetailsMapping: Record<
   ResourceType,
   { name: string; imgIcon: ImgIconName }
 > = {

@@ -1,4 +1,5 @@
-import { formattedResources, getResourcesAsJoinedText, Resources } from '../../resources';
+import { formattedResources, Resources } from '../../resources';
+import { DescriptionElementType } from '../../ui';
 import { StructureType, StuctureControl } from '../types';
 import { createStructure } from '../utils';
 
@@ -14,10 +15,20 @@ export const ResourcesPileStructure = createStructure({
     const resources = thisStruct.structParams as Resources;
     const formattedRes = formattedResources(resources);
 
+    const isPlural = formattedRes.length > 1;
+    const singleRes = formattedRes[0].resName;
+
     return {
-      name: formattedRes.length > 1 ? 'Pile of Resources' : `Pile of ${formattedRes[0].resName}`,
+      name: isPlural ? 'Pile of Resources' : `Pile of ${singleRes}`,
       descriptions: [
-        `You found a pile of resources \n\n` + getResourcesAsJoinedText(resources),
+        {
+          type: DescriptionElementType.FreeHtml,
+          htmlContent: `You found a pile of ${isPlural ? 'resourecs' : singleRes}`,
+        },
+        {
+          type: DescriptionElementType.Resources,
+          resources: formattedRes.map((res) => ({ resType: res.type, count: res.count })),
+        },
       ],
     };
   },
@@ -29,14 +40,9 @@ export const ResourcesPileStructure = createStructure({
       localEvents.on({
         StructVisited({ visitingPlayer }) {
           thisStruct.visited = true;
-          players.giveResourcesToPlayer(
-            visitingPlayer,
-            thisStruct.structParams as Resources,
-          );
+          players.giveResourcesToPlayer(visitingPlayer, thisStruct.structParams as Resources);
         },
       });
-
-    }
+    },
   },
 });
-

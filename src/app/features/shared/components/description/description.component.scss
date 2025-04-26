@@ -1,5 +1,5 @@
 mw-description {
-  >.spell-descr {
+  > .spell-descr {
     font-size: 13px;
   }
 
@@ -9,7 +9,7 @@ mw-description {
     line-height: 18px;
     color: #434040;
 
-    >.stat>.value {
+    > .stat > .value {
       font-weight: 600;
     }
   }
@@ -18,8 +18,13 @@ mw-description {
     padding: 5px;
     padding-top: 0;
 
-    >.item-mod {
+    > .item-mod {
       font-size: 12px;
     }
   }
+}
+
+.resources {
+  display: flex;
+  justify-content: center;
 }
