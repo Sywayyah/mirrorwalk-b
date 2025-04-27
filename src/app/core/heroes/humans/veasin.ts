@@ -1,6 +1,5 @@
 import { AssetsImages } from '../../assets';
 import { humansFaction } from '../../factions';
-import { ItemWindCrest } from '../../items/neutral';
 import { heroDescrElem } from '../../ui';
 import { HeroBase } from '../types';
 
@@ -37,23 +36,25 @@ export const VeasinHero: HeroBase = humansFaction.createHero({
   id: '#hero-veasin',
 
   name: 'Veasin',
-  generalDescription: heroDescrElem(`Veasin makes use of her poison abilities, weakening enemies and dealing damage over time.`),
+  generalDescription: heroDescrElem(
+    `Veasin makes use of her poison abilities, weakening enemies and dealing damage over time.`,
+  ),
   image: AssetsImages.HeroMage,
-  abilities: [
-    '#spell-poison-cloud',
-    '#spell-corrosive-fog',
+  abilities: ['#spell-poison-cloud', '#spell-corrosive-fog'],
+  army: [
+    {
+      maxUnitGroups: 2,
+      minUnitGroups: 2,
+      units: [
+        ['#unit-h01', 10, 18, 2],
+        ['#unit-h20', 6, 11, 1],
+        ['#unit-h30', 3, 5, 1],
+      ],
+    },
   ],
-  army: [{
-    maxUnitGroups: 2,
-    minUnitGroups: 2,
-    units: [
-      ['#unit-h01', 10, 18, 2],
-      ['#unit-h20', 6, 11, 1],
-      ['#unit-h30', 3, 5, 1],
-    ],
-  }],
   items: [
-    ItemWindCrest,
+    // ItemWindCrest,
+    '#item-wind-crest',
   ],
   resources: {
     gold: 1100,

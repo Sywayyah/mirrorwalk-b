@@ -24,6 +24,7 @@
           "warn", // Or "error" if you want to enforce it
           { "args": "none", "vars": "local", "varsIgnorePattern": "^_" }
         ],
+        "@typescript-eslint/no-explicit-any": "warn",
         "@typescript-eslint/prefer-readonly": "warn", // Or "error" to enforce
         "@angular-eslint/directive-selector": [
           "error",

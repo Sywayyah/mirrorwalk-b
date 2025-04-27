@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { CombatActionsRef, SpellCreationOptions } from 'src/app/core/api/combat-api';
 import { EffectType, VfxElemEffect } from 'src/app/core/api/vfx-api';
-import { UnitTypeId } from 'src/app/core/entities';
+import { resolveEntity, UnitTypeId } from 'src/app/core/entities';
 import {
   GroupAttacked,
   GroupModifiersChanged,
@@ -68,7 +68,7 @@ export class InGameApiController extends StoreClient() {
     const player = this.players.getCurrentPlayer();
 
     player.hero.base.initialState.items.forEach((item) => {
-      this.events.dispatch(PlayerReceivesItem({ player, item: this.itemsService.createItem(item) }));
+      this.events.dispatch(PlayerReceivesItem({ player, item: this.itemsService.createItem(resolveEntity(item)) }));
     });
   }
 
