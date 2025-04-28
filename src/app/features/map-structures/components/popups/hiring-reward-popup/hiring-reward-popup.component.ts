@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { ResourceType, Resources, ResourcesModel } from 'src/app/core/resources';
+import { Component, inject, OnInit } from '@angular/core';
+import { Resources, ResourcesModel, ResourceType } from 'src/app/core/resources';
 import { HiringReward, HiringRewardModel } from 'src/app/core/structures';
 import { StructPopupData } from 'src/app/core/ui';
 import { resolveUnitType } from 'src/app/core/unit-types';
@@ -21,19 +21,15 @@ interface HireModel {
   standalone: false,
 })
 export class HiringRewardPopupComponent extends BasicPopup<StructPopupData> implements OnInit {
+  private readonly playersService = inject(MwPlayersService);
+  private readonly unitGroups = inject(MwUnitGroupsService);
+
   public hiredGroups!: HireModel[];
 
   public canConfirm: boolean = true;
 
-  playerHasFreeSlots: boolean = true;
-
-  constructor(
-    private readonly playersService: MwPlayersService,
-    private readonly unitGroups: MwUnitGroupsService,
-  ) {
-    super();
-    this.playerHasFreeSlots = this.playersService.getCurrentPlayer().hero.hasFreeUnitSlots();
-  }
+  // todo: improve this logic, if unit groups are present - hiring should be allowed
+  readonly playerHasFreeSlots = this.playersService.getCurrentPlayer().hero.hasFreeUnitSlots();
 
   ngOnInit(): void {
     this.hiredGroups = (this.data.struct.reward as HiringReward).units.map((unit) => {

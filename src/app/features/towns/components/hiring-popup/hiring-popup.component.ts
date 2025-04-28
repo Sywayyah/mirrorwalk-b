@@ -62,6 +62,9 @@ export class HiringPopupComponent extends BasicPopup<HiringPopupData> implements
 
   public canBeUpgraded: boolean;
 
+  // improve the logic, hire might be possible if hiring a present unit-type
+  readonly playerHasFreeSlots = this.playersService.getCurrentPlayer().hero.hasFreeUnitSlots();
+
   constructor() {
     super();
     this.unitType = resolveUnitType(this.data.hiringActivity.hiring.unitTypeId);
