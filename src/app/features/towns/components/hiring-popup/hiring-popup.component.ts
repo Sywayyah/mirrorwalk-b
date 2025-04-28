@@ -1,6 +1,6 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { UnitTypeId } from 'src/app/core/entities';
-import { ResourceType, Resources, ResourcesModel } from 'src/app/core/resources';
+import { ResourceType, Resources, ResourcesModel, getCountOfResourcesInMaxResources } from 'src/app/core/resources';
 import { BuidlingBase, Building, HiringActivity, HiringDetails, Town } from 'src/app/core/towns';
 import { UnitBaseType, resolveUnitType } from 'src/app/core/unit-types';
 import { MwPlayersService, MwUnitGroupsService } from 'src/app/features/services';
@@ -117,6 +117,16 @@ export class HiringPopupComponent extends BasicPopup<HiringPopupData> implements
     });
   }
 
+  setMaxHire(hirableUnit: UnitGroupHireModel): void {
+    const maxCountAllowed = getCountOfResourcesInMaxResources(
+      this.playersService.getCurrentPlayer().resources,
+      hirableUnit.baseCost,
+      hirableUnit.hire.maxCount,
+    );
+
+    this.updateCountForGroup(hirableUnit, maxCountAllowed);
+  }
+
   public setMode(mode: HireMode): void {
     if (this.currentMode === mode) {
       return;
@@ -204,8 +214,12 @@ export class HiringPopupComponent extends BasicPopup<HiringPopupData> implements
     }
   }
 
-  public updateCountForGroup(unit: UnitGroupHireModel, event: Event): void {
-    unit.count = Number((event.target as HTMLInputElement).value);
+  public updateCountForGroupFromEvent(unit: UnitGroupHireModel, event: Event): void {
+    this.updateCountForGroup(unit, Number((event.target as HTMLInputElement).value));
+  }
+
+  public updateCountForGroup(unit: UnitGroupHireModel, count: number): void {
+    unit.count = count;
 
     this.canConfirm = true;
 

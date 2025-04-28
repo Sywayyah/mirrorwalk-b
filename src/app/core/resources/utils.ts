@@ -1,4 +1,4 @@
-import { hasProp } from '../utils/common';
+import { getEntries, hasProp, isNotNullish } from '../utils/common';
 import { Resources, ResourcesModel, ResourceType } from './types';
 
 export const resourceNames: Record<ResourceType, string> = {
@@ -36,23 +36,28 @@ export function getFactoredResources(resources: Resources, factor: number): Reso
 }
 
 export function getResourcesAsText(resources: Resources): string[] {
-  return Object.entries(resources).map(
-    ([resType, amount]) =>
-      `+${amount} ${resourceNames[resType as ResourceType]}`,
-  );
+  return Object.entries(resources).map(([resType, amount]) => `+${amount} ${resourceNames[resType as ResourceType]}`);
 }
 
 export function getResourcesAsJoinedText(resources: Resources): string {
   return getResourcesAsText(resources).join('\n');
 }
 
-export function addResources(
-  resources: ResourcesModel,
-  resourcesToAdd: Resources,
-): ResourcesModel {
-  Object.entries(resourcesToAdd).forEach(
-    ([res, count]) => (resources[res as ResourceType] += count),
-  );
+export function addResources(resources: ResourcesModel, resourcesToAdd: Resources): ResourcesModel {
+  Object.entries(resourcesToAdd).forEach(([res, count]) => (resources[res as ResourceType] += count));
 
   return resources;
 }
+
+export const getCountOfResourcesInMaxResources = (
+  maxResources: Resources,
+  resources: Resources,
+  maxAvailable = Infinity,
+): number => {
+  return getEntries(resources)
+    .filter(([, count]) => isNotNullish(count) && count !== 0)
+    .reduce((maxCount, [resType, count]) => {
+      const countInMax = Math.floor((maxResources[resType] ?? 0) / (count ?? 0));
+      return countInMax < maxCount ? countInMax : maxCount;
+    }, maxAvailable);
+};

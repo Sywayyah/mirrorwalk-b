@@ -40,8 +40,8 @@
             type="range"
             [min]="0"
             [max]="unitType.hire.maxCount"
-            (input)="updateCountForGroup(unitType, $event)"
-            [value]="0"
+            (input)="updateCountForGroupFromEvent(unitType, $event)"
+            [value]="unitType.count"
           />
 
           <div>Cost:</div>
@@ -59,6 +59,13 @@
               />
             </div>
           </div>
+
+          <button
+            mw-main-button
+            (click)="setMaxHire(unitType)"
+          >
+            Max
+          </button>
         </div>
       }
     </div>
