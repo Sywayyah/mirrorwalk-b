@@ -1,17 +1,5 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  computed,
-  inject,
-  signal,
-  WritableSignal,
-} from '@angular/core';
-import {
-  Resources,
-  resourcesCostInGold,
-  ResourcesModel,
-  ResourceType,
-} from 'src/app/core/resources';
+import { ChangeDetectionStrategy, Component, computed, inject, signal, WritableSignal } from '@angular/core';
+import { Resources, resourcesCostInGold, ResourcesModel, ResourceType } from 'src/app/core/resources';
 import { Town } from 'src/app/core/towns';
 import { getEntries } from 'src/app/core/utils/common';
 import { MwPlayersService } from 'src/app/features/services';
@@ -31,8 +19,7 @@ class ResourceTrader {
 
   readonly costInGold = computed(() =>
     this.resourceEntries().reduce(
-      (total, resEntry) =>
-        resourcesCostInGold[resEntry.resType] * resEntry.count() + total,
+      (total, resEntry) => resourcesCostInGold[resEntry.resType] * resEntry.count() + total,
       0,
     ),
   );
@@ -50,9 +37,7 @@ class ResourceTrader {
       })),
     );
 
-    this.goldEntry = this.resourceEntries().find(
-      (entry) => entry.resType === ResourceType.Gold,
-    )!;
+    this.goldEntry = this.resourceEntries().find((entry) => entry.resType === ResourceType.Gold)!;
 
     this.goldEntry.isGold = true;
   }
@@ -115,16 +100,12 @@ class ResourceTrader {
   }
 
   private getResourceEntry(resType: ResourceType) {
-    return this.resourceEntries().find(
-      (entry) => entry.resType === resType
-    );
+    return this.resourceEntries().find((entry) => entry.resType === resType);
   }
 
   getCountsAsResourcesDiff(selling = false): Resources {
     return this.resourceEntries().reduce((resources, entry) => {
-      resources[entry.resType] = entry.isGold
-        ? this.costInGold()
-        : entry.count();
+      resources[entry.resType] = entry.isGold ? this.costInGold() : entry.count();
 
       if (selling) {
         if (entry.isGold) {
@@ -143,9 +124,7 @@ class ResourceTrader {
   // revise and simplify
   getCountsAsResources(skipGold = false): Resources {
     return this.resourceEntries().reduce((resources, entry) => {
-      resources[entry.resType] = entry.isGold
-        ? skipGold ? 0 : this.costInGold()
-        : entry.count();
+      resources[entry.resType] = entry.isGold ? (skipGold ? 0 : this.costInGold()) : entry.count();
 
       return resources;
     }, {} as Resources);
@@ -165,50 +144,46 @@ export class MarketDialogComponent extends BasicPopup<{ town: Town<any> }> {
   readonly currentPlayer = this.playersService.getCurrentPlayer();
 
   readonly playerTrader = new ResourceTrader(this.currentPlayer.resources);
-  readonly marketTrader = new ResourceTrader(
-    this.data.town.marketState().resources,
-  );
+  readonly marketTrader = new ResourceTrader(this.data.town.marketState().resources);
 
   readonly traders = [
     { title: 'Your Gold', trader: this.playerTrader },
     { title: 'Market Gold', trader: this.marketTrader },
   ];
 
-  readonly dealCost = computed(
-    () => this.playerTrader.costInGold() - this.marketTrader.costInGold(),
-  );
+  readonly dealCost = computed(() => this.playerTrader.costInGold() - this.marketTrader.costInGold());
 
-  readonly canTrade = computed(() => {
+  readonly canTradeDetails = computed(() => {
     const dealCost = this.dealCost();
 
-    if (
-      dealCost === 0 &&
-      (this.marketTrader.costInGold() === 0 ||
-        this.playerTrader.costInGold() === 0)
-    ) {
-      return false;
+    if (dealCost === 0 && (this.marketTrader.costInGold() === 0 || this.playerTrader.costInGold() === 0)) {
+      return {
+        canTrade: false,
+      };
     }
 
     if (dealCost < 0) {
-      return (
-        this.playerTrader.goldEntry.max + this.marketTrader.goldEntry.count() >=
-        Math.abs(dealCost)
-      );
+      return {
+        canTrade: this.playerTrader.goldEntry.max + this.marketTrader.goldEntry.count() >= Math.abs(dealCost),
+        cantTrade: 'player',
+      };
     }
 
-    return (
-      this.marketTrader.goldEntry.max + this.playerTrader.goldEntry.count() >=
-      Math.abs(dealCost)
-    );
+    return {
+      canTrade: this.marketTrader.goldEntry.max + this.playerTrader.goldEntry.count() >= Math.abs(dealCost),
+      cantTrade: 'market',
+    };
   });
 
   readonly dealResources = computed(() => {
     const playerCounts = this.playerTrader.getCountsAsResources(true);
     const marketCounts = this.marketTrader.getCountsAsResources(true);
 
-    return getEntries(marketCounts).map(([resType, count]) => {
-      return { resType, count: count! - playerCounts[resType]! };
-    }).filter(res => res.count && res.resType !== ResourceType.Gold);
+    return getEntries(marketCounts)
+      .map(([resType, count]) => {
+        return { resType, count: count! - playerCounts[resType]! };
+      })
+      .filter((res) => res.count && res.resType !== ResourceType.Gold);
   });
 
   trade(): void {
