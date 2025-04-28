@@ -68,7 +68,7 @@ export class Town<T extends string> extends GameObject<TownCreationParams<T>> {
       });
 
     this.setMarketResources({
-      gold: 500,
+      gold: 750,
       wood: 5,
     });
   }
