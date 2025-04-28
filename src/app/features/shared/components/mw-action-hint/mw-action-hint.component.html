@@ -1,71 +1,66 @@
-<div *ngIf="(hint$ | async) as actionHint"
-     style="text-align: center;">
-  <ng-container [ngSwitch]="actionHint.type">
-    <ng-container *ngSwitchCase="hintActionTypes.OnHoverEnemyCard">
-      <ng-container *ngTemplateOutlet="simple; context: { hint: actionHint }" />
-    </ng-container>
+@let actionHint = hint$ | async;
 
-    <ng-container *ngSwitchCase="hintActionTypes.OnTargetSpell">
-      <ng-container *ngTemplateOutlet="onTargetSpell; context: { hint: actionHint }" />
-    </ng-container>
+@if (actionHint) {
+  <div style="text-align: center">
+    @switch (actionHint.type) {
+      @case (hintActionTypes.OnHoverEnemyCard) {
+        <ng-container *ngTemplateOutlet="simple; context: { hint: actionHint }" />
+      }
+      @case (hintActionTypes.OnTargetSpell) {
+        <ng-container *ngTemplateOutlet="onTargetSpell; context: { hint: actionHint }" />
+      }
+      @case (hintActionTypes.CustomHtml) {
+        <ng-container *ngTemplateOutlet="customHtml; context: { hint: actionHint }" />
+      }
+    }
+  </div>
+}
 
-    <ng-container *ngSwitchCase="hintActionTypes.CustomHtml">
-      <ng-container *ngTemplateOutlet="customHtml; context: { hint: actionHint }" />
-    </ng-container>
-  </ng-container>
-</div>
-
-<ng-template #customHtml
-             let-hint="hint">
+<ng-template
+  #customHtml
+  let-hint="hint"
+>
   <div [innerHTML]="hint.html | safeHtml"></div>
 </ng-template>
 
-<ng-template #simple
-             let-hint="hint">
+<ng-template
+  #simple
+  let-hint="hint"
+>
   <span>Attack</span>
   <span [style.color]="hint.attackedGroup.ownerPlayer.color">
-    {{hint.attackedGroup.type.name}}
+    {{ hint.attackedGroup.type.name }}
   </span>
+  <span> dealing </span>
   <span>
-    dealing
+    {{ hint.minDamage }}<ng-container *ngIf="!hint.noDamageSpread">-{{ hint.maxDamage }}</ng-container>
   </span>
+  <span> damage, killing </span>
   <span>
-    {{hint.minDamage}}<ng-container *ngIf="!hint.noDamageSpread">-{{hint.maxDamage}}</ng-container>
+    {{ hint.minCountLoss }}<ng-container *ngIf="!hint.noLossSpread">-{{ hint.maxCountLoss }}</ng-container>
   </span>
-  <span>
-    damage, killing
-  </span>
-  <span>
-    {{hint.minCountLoss}}<ng-container *ngIf="!hint.noLossSpread">-{{hint.maxCountLoss}}</ng-container>
-  </span>
-  <span>
-    units
-  </span>
+  <span> units </span>
   <!-- <span *ngIf="hint.attackSuperiority">
     (superiority: {{hint.attackSuperiority}})
   </span> -->
 </ng-template>
 
-<ng-template #onTargetSpell
-             let-hint="hint">
+<ng-template
+  #onTargetSpell
+  let-hint="hint"
+>
   <div>
+    <span> Cast </span>
     <span>
-      Cast
+      {{ hint.spell.name }}
     </span>
+    <span> on </span>
     <span>
-      {{hint.spell.name}}
-    </span>
-    <span>
-      on
-    </span>
-    <span>
-      {{hint.target.type.name}}
+      {{ hint.target.type.name }}
     </span>
   </div>
-  <div>
-    Press RMB to cancel
-  </div>
+  <div>Press RMB to cancel</div>
   @if (hint.addedContent) {
-  <div [innerHTML]="hint.addedContent | safeHtml"></div>
+    <div [innerHTML]="hint.addedContent | safeHtml"></div>
   }
 </ng-template>
