@@ -78,7 +78,7 @@ $portrait-offset: 79%;
   }
 }
 
-.health-bar {
+.health-bar, .mana-bar {
   position: relative;
   border-radius: 2px;
   // border: 1px solid whitesmoke;
@@ -91,11 +91,19 @@ $portrait-offset: 79%;
   border: 1px solid gold;
 }
 
-.card-left .health-bar {
+.mana-bar {
+  top: -41px;
+}
+
+.bar-icon {
+  margin: 0 4px;
+}
+
+.card-left :is(.health-bar, .mana-bar) {
   left: 24px;
 }
 
-.card-right .health-bar {
+.card-right :is(.health-bar, .mana-bar) {
   right: -23px;
 }
 
