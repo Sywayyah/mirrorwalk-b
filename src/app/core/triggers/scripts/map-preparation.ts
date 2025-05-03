@@ -1,5 +1,14 @@
 import { MeditateActionCard, SetupCampActionCard, SkipDayActionCard } from '../../action-cards/player-actions';
-import { AddActionCardsToPlayer, DefaultGameModes, DisplayPlayerRewardPopup, NewWeekStarted, HeroLevelsUp, PlayersInitialized, PushPlainEventFeedMessage, Triggers } from '../../events';
+import {
+  AddActionCardsToPlayer,
+  DefaultGameModes,
+  DisplayPlayerRewardPopup,
+  HeroLevelsUp,
+  NewWeekStarted,
+  PlayersInitialized,
+  PushPlainEventFeedMessage,
+  Triggers,
+} from '../../events';
 import { Faction } from '../../factions';
 import { constellationFaction } from '../../factions/constellation/faction';
 import { LevelMap } from '../../maps';
@@ -8,12 +17,12 @@ import { TriggersRegistry } from '../registry';
 
 TriggersRegistry.register(Triggers.PrepareGameEvent, {
   // supply some more api here
-  fn: (event: { gameMode: DefaultGameModes, selectedFaction?: Faction }, { events }) => {
+  fn: (event: { gameMode: DefaultGameModes; selectedFaction?: Faction }, { events }) => {
     if (event.gameMode !== DefaultGameModes.Normal) {
       return;
     }
 
-    let startingLocId = START_LOC_ID;
+    const startingLocId = START_LOC_ID;
 
     // change starting loc id depending on selected faction
     if (event.selectedFaction === constellationFaction) {
@@ -44,24 +53,25 @@ TriggersRegistry.register(PlayersInitialized, {
 
     const currentPlayer = api.players.getCurrentPlayer();
 
-    api.events.dispatch(AddActionCardsToPlayer({
-      player: currentPlayer,
-      actionCardStacks: initialActionCards,
-    }));
+    api.events.dispatch(
+      AddActionCardsToPlayer({
+        player: currentPlayer,
+        actionCardStacks: initialActionCards,
+      }),
+    );
   },
 });
 
 TriggersRegistry.register(NewWeekStarted, {
   fn: (_, api) => {
-    const guardedStructures = api.actions.getMapStructures()
-      .filter(struct =>
-        !struct.visited
-        && struct.guard?.length
-        && !struct.generator?.disableWeeklyGuardRise
-      );
+    const guardedStructures = api.actions
+      .getMapStructures()
+      .filter((struct) => !struct.visited && struct.guard?.length && !struct.generator?.disableWeeklyGuardRise);
 
     guardedStructures.forEach((guardedStruct) => {
-      guardedStruct.guard?.forEach((guardUnitGroup) => guardUnitGroup.addUnitsCount(Math.round(guardUnitGroup.count * 0.40)));
+      guardedStruct.guard?.forEach((guardUnitGroup) =>
+        guardUnitGroup.addUnitsCount(Math.round(guardUnitGroup.count * 0.4)),
+      );
     });
 
     api.events.dispatch(PushPlainEventFeedMessage({ message: `Guards in locations raised by 40%` }));
@@ -70,45 +80,45 @@ TriggersRegistry.register(NewWeekStarted, {
 
 TriggersRegistry.register(HeroLevelsUp, {
   fn: (event, { events, players }) => {
-
     // subcategories for rewards?
     // popups are overstacking
-    events.dispatch(DisplayPlayerRewardPopup({
-      title: `You reached level ${event.newLevel}`,
-      subTitle: 'Choose your reward',
-      rewards: [
-        // for now, bring native abilities of hero to next level
-        ...event.hero.spells
-          .filter(spell => event.hero.base.initialState.abilities.includes(spell.baseType.id))
-          .map((spell) => {
-            return {
-              display: {
-                icon: spell.baseType.icon.icon,
-                title: `Level ${spell.currentLevel + 1} ${spell.name}`
-              },
-              onSumbit: () => {
-                if (spell) {
-                  spell.levelUp();
-                }
-              },
-            };
-          }),
+    events.dispatch(
+      DisplayPlayerRewardPopup({
+        title: `You reached level ${event.newLevel}`,
+        subTitle: 'Choose your reward',
+        rewards: [
+          // for now, bring native abilities of hero to next level
+          ...event.hero.spells
+            .filter((spell) => event.hero.base.initialState.abilities.includes(spell.baseType.id))
+            .map((spell) => {
+              return {
+                display: {
+                  icon: spell.baseType.icon.icon,
+                  title: `Level ${spell.currentLevel + 1} ${spell.name}`,
+                },
+                onSumbit: () => {
+                  if (spell) {
+                    spell.levelUp();
+                  }
+                },
+              };
+            }),
 
-        {
-          display: {
-            icon: 'crystal-ball',
-            title: '+4 to Max/Current Mana'
+          {
+            display: {
+              icon: 'crystal-ball',
+              title: '+4 to Max/Current Mana',
+            },
+            onSumbit: () => {
+              const currentPlayer = players.getCurrentPlayer();
+
+              const manaBonus = 4;
+              players.addMaxManaToPlayer(currentPlayer, manaBonus);
+              players.addManaToPlayer(currentPlayer, manaBonus);
+            },
           },
-          onSumbit: () => {
-            const currentPlayer = players.getCurrentPlayer();
-
-            const manaBonus = 4;
-            players.addMaxManaToPlayer(currentPlayer, manaBonus);
-            players.addManaToPlayer(currentPlayer, manaBonus);
-          },
-        }
-      ],
-    }));
-
+        ],
+      }),
+    );
   },
 });
