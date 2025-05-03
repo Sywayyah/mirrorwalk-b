@@ -27,10 +27,20 @@ interface GameState {
   actionPoints: number;
 }
 
+type GameSettings = {
+  goldGain?: number;
+  experienceGain?: number;
+  heroUnits?: boolean;
+  neutralDamageFactor?: number;
+  neutralHealthFactor?: number;
+};
+
 @Injectable({
   providedIn: 'root',
 })
 export class State {
+  gameSettings: GameSettings = {};
+
   public createdGame!: {
     selectedHero: HeroBase;
     selectedColor: string;

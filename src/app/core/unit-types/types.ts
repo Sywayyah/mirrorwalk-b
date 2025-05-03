@@ -1,5 +1,5 @@
-import { computed, Signal, signal } from '@angular/core';
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { computed, Signal } from '@angular/core';
+import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Entity, EntityId, resolveEntity, SpellId, UnitTypeId } from '../entities';
 import { GroupSpellsChanged } from '../events';
@@ -11,6 +11,7 @@ import { Modifiers } from '../modifiers/modifiers';
 import type { Player } from '../players';
 import { ResourcesModel } from '../resources';
 import { Spell, SpellBaseType } from '../spells';
+import { ReactiveState } from '../state';
 import { DescriptionElement } from '../ui';
 import { CommonUtils } from '../utils';
 import { complete } from '../utils/observables';
@@ -238,8 +239,7 @@ export class UnitGroup extends GameObject<UnitCreationParams, UnitGroupState> {
   // mods are going to be attached there
   public readonly modGroup: ModsRefsGroup = ModsRefsGroup.empty();
 
-  // final state used by the game
-  private readonly state$ = new BehaviorSubject<UnitGroupState>({
+  private readonly state = new ReactiveState<UnitGroupState>({
     combatState: {
       type: CombatStateEnum.Normal,
     },
@@ -285,8 +285,7 @@ export class UnitGroup extends GameObject<UnitCreationParams, UnitGroupState> {
     },
   });
 
-  readonly lostDuringBattle = computed(() => this.unitState().groupState.initialCount - this.count);
-  readonly unitState = signal(this.state$.getValue());
+  readonly lostDuringBattle = computed(() => this.state.signal().groupState.initialCount - this.count);
 
   private readonly destroyed$ = new Subject<void>();
 
@@ -345,11 +344,11 @@ export class UnitGroup extends GameObject<UnitCreationParams, UnitGroupState> {
   }
 
   getState(): UnitGroupState {
-    return this.state$.getValue();
+    return this.state.get();
   }
 
   getStateSignal(): Signal<UnitGroupState> {
-    return this.unitState;
+    return this.state.signal;
   }
 
   setPosition(pos: number): void {
@@ -423,7 +422,7 @@ export class UnitGroup extends GameObject<UnitCreationParams, UnitGroupState> {
   }
 
   listenStats(): Observable<UnitGroupState> {
-    return this.state$.pipe(takeUntil(this.destroyed$));
+    return this.state.getStream().pipe(takeUntil(this.destroyed$));
   }
 
   addSpell(spell: Spell): void {
@@ -494,7 +493,7 @@ export class UnitGroup extends GameObject<UnitCreationParams, UnitGroupState> {
   }
 
   private recalcHealthBasedStats(): void {
-    const currentUnitStats = this.state$.getValue();
+    const currentUnitStats = this.state.get();
     const baseStats = this.type.baseStats;
     const unitCount = this.count;
     const stats = currentUnitStats.groupStats;
@@ -550,7 +549,7 @@ export class UnitGroup extends GameObject<UnitCreationParams, UnitGroupState> {
 
         const allResist = mods.resistAll || 0;
 
-        const previousStats = this.state$.getValue();
+        const previousStats = this.state.get();
 
         const unitStats = previousStats.groupStats;
         const stats: UnitStatsInfo = {
@@ -598,17 +597,11 @@ export class UnitGroup extends GameObject<UnitCreationParams, UnitGroupState> {
   }
 
   private pushState(state: UnitGroupState): void {
-    this.state$.next(state);
-    this.unitState.set(this.state$.getValue());
+    this.state.set(state);
   }
 
   private updateState(state: Partial<UnitGroupState>): UnitGroupState {
-    const prevState = this.state$.getValue();
-    const newState = { ...prevState, ...state };
-
-    this.pushState(newState);
-
-    return newState;
+    return this.state.patch(state);
   }
 
   updateUnitGroupState(groupState: Partial<UnitGroupStackState>): UnitGroupState {
