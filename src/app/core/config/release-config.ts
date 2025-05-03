@@ -1,6 +1,6 @@
 import { ConfigModel } from './types';
 
-// config for local development
+// config for release
 export const CONFIG: ConfigModel = {
   logEvents: false,
   logGameObjects: true,
