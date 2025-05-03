@@ -1,5 +1,5 @@
-import { signal, Signal } from '@angular/core';
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { Signal } from '@angular/core';
+import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Entity, HeroId, ItemId, resolveEntity, SpellId } from '../entities';
 import { HeroLevelsUp, UnitGroupAddedToHero, UnitGroupRemovedFromHero } from '../events';
@@ -10,6 +10,7 @@ import { filterSpecialties, Modifiers, ModsRef, ModsRefsGroup, Specialties } fro
 import { Player } from '../players';
 import { ResourcesModel } from '../resources';
 import { Spell } from '../spells';
+import { ReactiveState } from '../state';
 import { DescriptionElement } from '../ui';
 import { GenerationModel, UnitGroup, UnitModGroups } from '../unit-types';
 import { CommonUtils } from '../utils';
@@ -142,7 +143,7 @@ export class Hero extends GameObject<HeroCreationParams, HeroStatsInfo> {
 
   private _unitGroups: UnitGroup[] = [];
 
-  private readonly heroStats$ = new BehaviorSubject<HeroStatsInfo>({
+  private readonly state = new ReactiveState<HeroStatsInfo>({
     baseAttack: 0,
     bonusAttack: 0,
     finalAttack: 0,
@@ -159,8 +160,6 @@ export class Hero extends GameObject<HeroCreationParams, HeroStatsInfo> {
     currentMana: 0,
     maxMana: 0,
   });
-
-  private readonly signalState = signal(this.heroStats$.getValue());
 
   private readonly destroyed$ = new Subject<void>();
 
@@ -199,8 +198,6 @@ export class Hero extends GameObject<HeroCreationParams, HeroStatsInfo> {
     }
 
     this.modGroup.attachNamedParentGroup(UnitModGroups.WeeklyMods, this.weeklyActivitiesModGroup);
-
-    this.updateSignalState();
   }
 
   public addExperience(experience: number, withBonus = false): void {
@@ -363,15 +360,15 @@ export class Hero extends GameObject<HeroCreationParams, HeroStatsInfo> {
   }
 
   getStats(): HeroStatsInfo {
-    return this.heroStats$.getValue();
+    return this.state.get();
   }
 
   getStateSignal(): Signal<HeroStatsInfo> {
-    return this.signalState;
+    return this.state.signal;
   }
 
   listenHeroStats(): Observable<HeroStatsInfo> {
-    return this.heroStats$.pipe(takeUntil(this.destroyed$));
+    return this.state.getStream().pipe(takeUntil(this.destroyed$));
   }
 
   /** Add item to backback */
@@ -482,13 +479,7 @@ export class Hero extends GameObject<HeroCreationParams, HeroStatsInfo> {
       this.stats.currentMana = maxMana;
     }
 
-    const currentState = this.heroStats$.getValue();
-
-    this.heroStats$.next({
-      ...currentState,
-      currentMana: this.stats.currentMana,
-    });
-    this.updateSignalState();
+    this.state.patch({ currentMana: this.stats.currentMana });
   }
 
   private updateUnitGroup(unitGroup: UnitGroup): void {
@@ -547,12 +538,7 @@ export class Hero extends GameObject<HeroCreationParams, HeroStatsInfo> {
           maxMana: maxMana,
         };
 
-        this.heroStats$.next(heroStats);
-        this.updateSignalState();
+        this.state.set(heroStats);
       });
-  }
-
-  private updateSignalState(): void {
-    this.signalState.set(this.heroStats$.getValue());
   }
 }
