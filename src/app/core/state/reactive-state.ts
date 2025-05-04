@@ -23,6 +23,10 @@ interface IReactiveState<T> {
   observe(): Observable<T>;
 }
 
+/**
+ * Economy-based implementation that doesn't require state object to be immutable, instead
+ * keeping immutable a state-wrapper object.
+ */
 export class ReactiveRefState<T extends object> implements IReactiveState<T> {
   private currentState: { ref: T };
   protected readonly state$: BehaviorSubject<{ ref: T }>;
@@ -86,6 +90,10 @@ export class ReactiveRefState<T extends object> implements IReactiveState<T> {
   }
 }
 
+/**
+ * Implementation that relies on state object being immutable, creating new object on each
+ * change.
+ */
 export class ReactiveState<T extends object> implements IReactiveState<T> {
   protected readonly state$: BehaviorSubject<T>;
   protected readonly _signal: WritableSignal<T>;

@@ -39,21 +39,14 @@ export class BattleStateService {
 
   private readonly playersRivalryMap: Map<Player, Player> = new Map();
 
-  // private initialUnitGroups!: UnitGroup[];
   private fightQueue!: UnitGroup[];
   private players!: Player[];
-
-  constructor() {
-    this.state.debug('Battle state:');
-  }
 
   public resetCurrentPlayer(): void {
     this.state.patch({ currentPlayer: null });
   }
 
   public initBattleState(unitGroups: UnitGroup[], players: Player[]): void {
-    // this.initialUnitGroups = unitGroups;
-
     this.players = players;
 
     this.playersRivalryMap.set(players[0], players[1]);
@@ -224,7 +217,7 @@ export class BattleStateService {
     unitGroup.updateUnitGroupState({ turnsLeft: unitGroup.turnsLeft + turns });
 
     if (this.state.get().currentUnitGroup === unitGroup) {
-      this.state.updateWithCopy((state) => state.currentGroupTurnsLeft += turns);
+      this.state.updateWithCopy((state) => (state.currentGroupTurnsLeft += turns));
     }
 
     if (previousTurnsLeft <= 0 && unitGroup.turnsLeft > 0) {
