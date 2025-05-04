@@ -219,7 +219,7 @@ $inactive-offset: 32px;
     }
 
     &.card-right {
-      right: $active-offset;
+      left: -$active-offset;
     }
   }
 
@@ -229,7 +229,7 @@ $inactive-offset: 32px;
     }
 
     &.card-right {
-      right: -$inactive-offset;
+      left: $inactive-offset;
     }
   }
 
