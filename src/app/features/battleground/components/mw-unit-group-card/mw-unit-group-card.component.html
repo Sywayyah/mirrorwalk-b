@@ -73,7 +73,7 @@
       >
         <div class="column-data">
           <mw-unit-group-spell
-            *ngFor="let spell of spells"
+            *ngFor="let spell of spells()"
             [hintPos]="spellsHintsPosition"
             [spell]="spell"
             [hero]="playerInfo().hero"
@@ -86,7 +86,7 @@
         <div class="column-data">
           <mw-unit-group-buff
             [hintPos]="spellsHintsPosition"
-            *ngFor="let ability of effects"
+            *ngFor="let ability of effects()"
             [buff]="ability"
             [ownerUnit]="group"
           />

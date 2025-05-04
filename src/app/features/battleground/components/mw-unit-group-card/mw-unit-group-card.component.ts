@@ -11,11 +11,9 @@ import {
   Renderer2,
   Signal,
 } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
-import { GroupSpellsChanged, HoverTypeEnum, PlayerHoversGroupCard } from 'src/app/core/events';
+import { Observable } from 'rxjs';
+import { HoverTypeEnum, PlayerHoversGroupCard } from 'src/app/core/events';
 import { Player } from 'src/app/core/players';
-import { Spell } from 'src/app/core/spells';
 import { UnitGroup, UnitGroupState } from 'src/app/core/unit-types';
 import { injectHostElem } from 'src/app/core/utils';
 import { BattleStateService, MwPlayersService, MwUnitGroupStateService } from 'src/app/features/services';
@@ -35,6 +33,8 @@ import { StoreClient } from 'src/app/store';
   ],
   standalone: false,
   // improve optimization
+  // one possible optimization - create sub-components for sub-parts of this card
+  // another - try to check why cd is propogated to every card on hover
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MwUnitGroupCardComponent extends StoreClient() implements UIUnitProvider, OnInit, OnDestroy {
@@ -59,8 +59,20 @@ export class MwUnitGroupCardComponent extends StoreClient() implements UIUnitPro
     this.mwBattleStateService.state.mapGet((state) => state.currentPlayer !== this.playerInfo()),
   );
 
+  readonly effects = computed(() =>
+    this.unitGroup()
+      .getStateSignal()()
+      .groupState.spells.filter((spell) => spell.isEffect()),
+  );
+
+  readonly spells = computed(() =>
+    this.unitGroup()
+      .getStateSignal()()
+      .groupState.spells.filter((spell) => !spell.isEffect()),
+  );
+
   readonly cardReady = output<MwUnitGroupCardComponent>();
-  readonly groupDies = output<void>();
+  readonly cardDestroyed = output<void>();
 
   public isCardHovered: boolean = false;
   public isEnemyCard!: boolean;
@@ -74,15 +86,9 @@ export class MwUnitGroupCardComponent extends StoreClient() implements UIUnitPro
 
   public initialCount: number = 0;
 
-  // todo: revisit, can become part of stats or something
-  public spells: Spell[] = [];
-  public effects: Spell[] = [];
-
   public spellsHintsPosition!: HintAttachment;
 
   public isBoss?: boolean = false;
-
-  private readonly destroy$: Subject<void> = new Subject();
 
   public ngOnInit(): void {
     this.unitState = this.unitGroup().getStateSignal();
@@ -105,28 +111,15 @@ export class MwUnitGroupCardComponent extends StoreClient() implements UIUnitPro
     if (isSummoned) {
       this.renderer.addClass(this.hostElem, 'summoned');
     }
-
-    this.updateSpellsAndEffects();
-
-    this.events
-      .onEvent(GroupSpellsChanged)
-      .pipe(takeUntil(this.destroyed$))
-      .subscribe((event) => {
-        if (event.unitGroup === this.unitGroup()) {
-          this.updateSpellsAndEffects();
-        }
-      });
   }
 
-  public onDestroyed(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
+  ngOnDestroy(): void {
     this.events.dispatch(
       PlayerHoversGroupCard({
         hoverType: HoverTypeEnum.Unhover,
       }),
     );
-    this.groupDies.emit();
+    this.cardDestroyed.emit();
   }
 
   public onCardHover(isHovered: boolean): void {
@@ -161,12 +154,5 @@ export class MwUnitGroupCardComponent extends StoreClient() implements UIUnitPro
 
   public getUnitGroup(): UnitGroup {
     return this.unitGroup();
-  }
-
-  public updateSpellsAndEffects(): void {
-    const spells = this.unitGroup().spells;
-    this.effects = spells.filter((spell) => spell.isEffect());
-
-    this.spells = spells.filter((spell) => !spell.isEffect());
   }
 }
