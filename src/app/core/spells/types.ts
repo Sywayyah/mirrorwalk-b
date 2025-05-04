@@ -5,6 +5,7 @@ import { Entity, SpellId } from '../entities';
 import { GameObject } from '../game-objects';
 import { Hero } from '../heroes';
 import { Player } from '../players';
+import { EventHandlers } from '../triggers/entity-triggers';
 import { DescriptionVariants } from '../ui/descriptions';
 import { UnitGroup } from '../unit-types';
 import { SpellEventHandlers } from './spell-events';
@@ -151,6 +152,9 @@ export class Spell<T = DefaultSpellStateType> extends GameObject<SpellCreationPa
 
   public sourceInfo!: SourceInfo;
 
+  // may create separate handlers for events outside of combat
+  readonly combatEventHandlers = new EventHandlers();
+
   create({ spellBaseType, initialLevel, state }: SpellCreationParams<T>): void {
     this.baseType = spellBaseType;
 
@@ -160,6 +164,18 @@ export class Spell<T = DefaultSpellStateType> extends GameObject<SpellCreationPa
     this.sourceInfo = {};
 
     this.updateCurrentManaCost();
+  }
+
+  onDestroy(): void {
+    this.removeCombatHandlers();
+  }
+
+  initCombatHandlers(spellApi: SpellCombatRefsModel<T>): void {
+    this.baseType.config.spellConfig.init(spellApi);
+  }
+
+  removeCombatHandlers(): void {
+    this.combatEventHandlers.removeAllHandlers();
   }
 
   private updateCurrentManaCost() {

@@ -228,8 +228,10 @@ export class BattleController extends StoreClient() {
 
   @Notify(CleanUpHandlersOnFightEnd)
   public cleanUpHandlers(): void {
-    this.state.eventHandlers.spells.removeAllHandlers();
-    // need to think about items, they are being initialized outsize of combat
+    this.state.initializedSpells.get().spells.forEach((spell) => spell.removeCombatHandlers());
+    this.state.initializedSpells.revert();
+
+    // need to think about items, they are being initialized outside of combat
     // this.state.eventHandlers.items.removeAllHandlers();
   }
 

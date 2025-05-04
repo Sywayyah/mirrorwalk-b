@@ -93,14 +93,15 @@ export class State {
     enemyPlayer: Player;
   };
 
+  // holds all spells initialized with combat handlers during the fight
+  readonly initializedSpells = new FeatureState({ spells: [] as Spell[] });
+
   public eventHandlers: {
-    spells: RefEventTriggersRegistry<Spell>;
     items: RefEventTriggersRegistry<Item>;
     /* prepare events for structures and buildings */
     buildings: RefEventTriggersRegistry<Building>;
     structures: RefEventTriggersRegistry<MapStructure>;
   } = {
-    spells: new RefEventTriggersRegistry<Spell>(),
     items: new RefEventTriggersRegistry<Item>(),
     buildings: new RefEventTriggersRegistry<Building>(),
     structures: new RefEventTriggersRegistry<MapStructure>(),

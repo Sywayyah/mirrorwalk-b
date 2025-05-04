@@ -428,11 +428,13 @@ export class CombatInteractorService extends StoreClient() {
   }
 
   public triggerEventForAllSpellsHandler(event: EventData): void {
-    this.state.eventHandlers.spells.triggerAllHandlersByEvent(event);
+    this.state.initializedSpells.get().spells.forEach((spell) => {
+      spell.combatEventHandlers.triggerEvent(event);
+    });
   }
 
   public triggerEventForSpellHandler<T extends SpellEventNames>(spell: Spell, event: SpellEventTypeByName<T>): void {
-    this.state.eventHandlers.spells.triggerRefEventHandlers(spell, event);
+    spell.combatEventHandlers.triggerEvent(event);
   }
 
   public initAllUnitGroupSpells(): void {
@@ -470,7 +472,7 @@ export class CombatInteractorService extends StoreClient() {
   public removeSpellFromUnitGroup(target: UnitGroup, spell: Spell): void {
     target.removeSpell(spell);
 
-    this.state.eventHandlers.spells.removeAllHandlersForRef(spell);
+    spell.combatEventHandlers.removeAllHandlers();
 
     this.events.dispatch(
       GroupSpellsChanged({
