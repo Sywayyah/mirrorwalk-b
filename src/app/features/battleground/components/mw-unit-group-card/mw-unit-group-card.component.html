@@ -5,7 +5,7 @@
 <mw-vfx-container [containerId]="group.id">
   <div
     class="card-top"
-    [class.active]="mwBattleStateService.currentPlayer === playerInfo() && attackingUnitGroup === group"
+    [class.active]="isCurrentUnitGroupActive()"
     [ngClass]="side() === 'left' ? 'card-left' : 'card-right'"
     [class.inactive]="!group.turnsLeft && unitState.groupState.isAlive"
     [class.defeated]="!unitState.groupState.isAlive"
@@ -15,7 +15,7 @@
     <div class="card-wrapper">
       <div
         [style.background]="playerInfo().color"
-        [class.current-group]="mwBattleStateService.currentPlayer === playerInfo() && attackingUnitGroup === group"
+        [class.current-group]="isCurrentUnitGroupActive()"
         [class.hovered-enemy]="isCardHovered && isEnemyCard && canCurrentPlayerAttack"
         class="card"
       >
@@ -117,7 +117,10 @@
           [maxValue]="group.type.baseStats.health"
           [barHeight]="14"
         >
-          <mw-ra-icon class="bar-icon" icon="health" />
+          <mw-ra-icon
+            class="bar-icon"
+            icon="health"
+          />
         </mw-value-bar>
       }
 
@@ -132,7 +135,10 @@
           [side]="side()"
           [maxValue]="unitState.groupStats.maxMana"
         >
-          <mw-ra-icon class="bar-icon" icon="crystal-ball" />
+          <mw-ra-icon
+            class="bar-icon"
+            icon="crystal-ball"
+          />
         </mw-value-bar>
       }
 
@@ -150,7 +156,10 @@
           [side]="side()"
           [maxValue]="heroState.maxMana"
         >
-          <mw-ra-icon class="bar-icon" icon="crystal-ball" />
+          <mw-ra-icon
+            class="bar-icon"
+            icon="crystal-ball"
+          />
         </mw-value-bar>
       }
     </div>

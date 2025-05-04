@@ -1,5 +1,22 @@
 import { inject, Injectable } from '@angular/core';
-import { BattleCommandEvents, BeforeBattleInit, CleanUpHandlersOnFightEnd, FightEnds, FightNextRoundStarts, FightStarts, GroupDies, GroupSpeedChanged, PlayerTurnStartEvent, RoundGroupSpendsTurn, RoundGroupSpendsTurnEvent, RoundGroupTurnEnds, RoundPlayerCountinuesAttacking, RoundPlayerTurnStarts, UnitHealed, UnitHealedEvent } from 'src/app/core/events';
+import {
+  BattleCommandEvents,
+  BeforeBattleInit,
+  CleanUpHandlersOnFightEnd,
+  FightEnds,
+  FightNextRoundStarts,
+  FightStarts,
+  GroupDies,
+  GroupSpeedChanged,
+  PlayerTurnStartEvent,
+  RoundGroupSpendsTurn,
+  RoundGroupSpendsTurnEvent,
+  RoundGroupTurnEnds,
+  RoundPlayerCountinuesAttacking,
+  RoundPlayerTurnStarts,
+  UnitHealed,
+  UnitHealedEvent,
+} from 'src/app/core/events';
 import { DefendAction, RegisterUnitLoss } from 'src/app/core/events/battle/commands';
 import { ModsRef } from 'src/app/core/modifiers';
 import { PlayerState, PlayerTypeEnum } from 'src/app/core/players';
@@ -40,15 +57,21 @@ export class BattleController extends StoreClient() {
 
   @Notify(DefendAction)
   public defendAction(): void {
-    const currentUnitGroup = this.battleState.currentUnitGroup;
+    const currentUnitGroup = this.battleState.state.get().currentUnitGroup!;
     currentUnitGroup.addCombatMods({ fixedSpeed: 5, heroBonusDefence: 5, defending: true });
 
     this.battleState.resortFightQueue(true);
-    this.vfx.createDroppingMessageForContainer(currentUnitGroup.id, {
-      html: messageWrapper(`Defending!`, { width: 80 }),
-    }, { duration: 1000 });
+    this.vfx.createDroppingMessageForContainer(
+      currentUnitGroup.id,
+      {
+        html: messageWrapper(`Defending!`, { width: 80 }),
+      },
+      { duration: 1000 },
+    );
 
-    this.historyLog.logSimpleMessage(`${currentUnitGroup.count} ${currentUnitGroup.type.name} choose to defend. Their speed is fixed to 5, and armor is increased by 5.`);
+    this.historyLog.logSimpleMessage(
+      `${currentUnitGroup.count} ${currentUnitGroup.type.name} choose to defend. Their speed is fixed to 5, and armor is increased by 5.`,
+    );
     this.battleState.initNextTurnByQueue();
   }
 
@@ -68,7 +91,6 @@ export class BattleController extends StoreClient() {
     }
   }
 
-
   @Notify(RoundGroupTurnEnds)
   public updateQueueOnGroupTurnEnd(): void {
     this.battleState.initNextTurnByQueue(true);
@@ -80,16 +102,11 @@ export class BattleController extends StoreClient() {
       return;
     }
 
-    this.battleState.registerPlayerUnitLoss(
-      event.target,
-      -event.healedUnitsCount,
-    );
+    this.battleState.registerPlayerUnitLoss(event.target, -event.healedUnitsCount);
   }
 
   @WireMethod(RegisterUnitLoss)
-  public registerUnitLossOnAnyOtherDamageSources(
-    { loss, unit }: BattleCommandEvents['RegisterUnitLoss']
-  ): void {
+  public registerUnitLossOnAnyOtherDamageSources({ loss, unit }: BattleCommandEvents['RegisterUnitLoss']): void {
     this.battleState.registerPlayerUnitLoss(unit, loss);
   }
 
@@ -107,10 +124,12 @@ export class BattleController extends StoreClient() {
       // todo: handle it differently, don't need to call this method
       this.playersService.getCurrentPlayer().hero.setUnitGroups(currentPlayerAliveUnits);
 
-      this.events.dispatch(FightEnds({
-        struct: currentStructure,
-        win: false,
-      }));
+      this.events.dispatch(
+        FightEnds({
+          struct: currentStructure,
+          win: false,
+        }),
+      );
 
       return;
     }
@@ -126,35 +145,39 @@ export class BattleController extends StoreClient() {
 
       const deadUnitsOfEnemyPlayer = this.battleState.getDeadUnitsOfPlayer(enemyPlayer);
 
-
       [...deadUnitsOfCurrentPlayer, ...deadUnitsOfEnemyPlayer, ...summonedUnitsOfCurrentPlayer].forEach((unitGroup) => {
         this.gameObjectsManager.destroyObject(unitGroup);
       });
 
-      const finalCurrentUnitsOfPlayer = currentPlayerAliveUnits.filter(unit => !unit.modGroup.getModValue('isSummon'));
+      const finalCurrentUnitsOfPlayer = currentPlayerAliveUnits.filter(
+        (unit) => !unit.modGroup.getModValue('isSummon'),
+      );
       const currentHero = this.playersService.getCurrentPlayer().hero;
 
       // reset hero cooldowns if any
-      currentHero.spells.forEach(spell => spell.clearCooldown());
-
+      currentHero.spells.forEach((spell) => spell.clearCooldown());
 
       // remove dead units from slots
-      currentHero.unitGroups.filter(unitGroup => !unitGroup.isAlive).forEach((unitGroup) => {
-        const dyingUnitSlot = currentHero.getAllSlots().find(slot => slot.unitGroup === unitGroup);
+      currentHero.unitGroups
+        .filter((unitGroup) => !unitGroup.isAlive)
+        .forEach((unitGroup) => {
+          const dyingUnitSlot = currentHero.getAllSlots().find((slot) => slot.unitGroup === unitGroup);
 
-        if (dyingUnitSlot) {
-          dyingUnitSlot.unitGroup = null;
-        }
-      });
+          if (dyingUnitSlot) {
+            dyingUnitSlot.unitGroup = null;
+          }
+        });
 
       currentHero.setUnitGroups(finalCurrentUnitsOfPlayer, false);
 
       currentStructure.isInactive = true;
 
-      this.events.dispatch(FightEnds({
-        struct: currentStructure,
-        win: true,
-      }));
+      this.events.dispatch(
+        FightEnds({
+          struct: currentStructure,
+          win: true,
+        }),
+      );
 
       return;
     }
@@ -162,7 +185,7 @@ export class BattleController extends StoreClient() {
 
   @Notify(RoundPlayerCountinuesAttacking)
   public processAiPlayer(): void {
-    if (this.battleState.currentPlayer.type === PlayerTypeEnum.AI && this.enemyHasAnyLivingUnits()) {
+    if (this.battleState.state.get().currentPlayer!.type === PlayerTypeEnum.AI && this.enemyHasAnyLivingUnits()) {
       this.battleState.processAiPlayer();
     }
   }
@@ -173,14 +196,21 @@ export class BattleController extends StoreClient() {
     groupPlayer,
     groupStillAlive,
   }: RoundGroupSpendsTurnEvent): void {
-    if (groupPlayer.type === PlayerTypeEnum.AI && groupHasMoreTurns && groupStillAlive && this.enemyHasAnyLivingUnits()) {
+    if (
+      groupPlayer.type === PlayerTypeEnum.AI &&
+      groupHasMoreTurns &&
+      groupStillAlive &&
+      this.enemyHasAnyLivingUnits()
+    ) {
       this.battleState.processAiPlayer();
     }
 
     if (!groupHasMoreTurns || !groupStillAlive) {
-      this.events.dispatch(RoundGroupTurnEnds({
-        playerEndsTurn: groupPlayer,
-      }));
+      this.events.dispatch(
+        RoundGroupTurnEnds({
+          playerEndsTurn: groupPlayer,
+        }),
+      );
     }
   }
 
@@ -204,18 +234,23 @@ export class BattleController extends StoreClient() {
   }
 
   private enemyHasAnyLivingUnits(): boolean {
-    return this.battleState.playerHasAnyAliveUnits(this.battleState.getEnemyOfPlayer(this.battleState.currentPlayer));
+    return this.battleState.playerHasAnyAliveUnits(
+      this.battleState.getEnemyOfPlayer(this.battleState.state.get().currentPlayer!),
+    );
   }
 
   private applyStaticModsFromEquippedItems(): void {
-    this.playersService.getCurrentPlayer().hero.inventory.getEquippedItems().forEach((item) => {
-      console.log(item);
-      const itemStaticEnemyMods = item.baseType.staticEnemyMods;
+    this.playersService
+      .getCurrentPlayer()
+      .hero.inventory.getEquippedItems()
+      .forEach((item) => {
+        console.log(item);
+        const itemStaticEnemyMods = item.baseType.staticEnemyMods;
 
-      if (itemStaticEnemyMods) {
-        this.playersService.getEnemyPlayer().hero.addCommonCombatMods(ModsRef.fromMods(itemStaticEnemyMods));
-      }
-    });
+        if (itemStaticEnemyMods) {
+          this.playersService.getEnemyPlayer().hero.addCommonCombatMods(ModsRef.fromMods(itemStaticEnemyMods));
+        }
+      });
   }
 
   private cleanupStaticModsFromEquippedItems(): void {

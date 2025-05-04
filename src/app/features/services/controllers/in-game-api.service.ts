@@ -286,7 +286,7 @@ export class InGameApiController extends StoreClient() {
           pinFailed: false,
         };
       },
-      getCurrentUnitGroup: () => this.battleState.currentUnitGroup,
+      getCurrentUnitGroup: () => this.battleState.state.get().currentUnitGroup!,
       summonUnitsForPlayer: (ownerPlayer: Player, unitTypeId: UnitTypeId, unitNumber: number) => {
         const summonedUnitGroup = this.battleState.summonUnitForPlayer(ownerPlayer, unitTypeId, unitNumber);
         this.events.dispatch(UnitSummoned({ unitGroup: summonedUnitGroup }));

@@ -1,5 +1,4 @@
 import { inject, Injectable } from '@angular/core';
-import { BehaviorSubject, Subject } from 'rxjs';
 import { UnitTypeId } from 'src/app/core/entities';
 import {
   FightNextRoundStarts,
@@ -10,6 +9,7 @@ import {
 } from 'src/app/core/events';
 import { Player, PlayerTypeEnum } from 'src/app/core/players';
 import { AISpellTag } from 'src/app/core/spells';
+import { ReactiveState } from 'src/app/core/state';
 import { UnitBaseType, UnitGroup } from 'src/app/core/unit-types';
 import { EventsService } from 'src/app/store';
 import { MwUnitGroupsService } from './mw-unit-groups.service';
@@ -21,14 +21,20 @@ export class BattleStateService {
   private readonly units = inject(MwUnitGroupsService);
   private readonly events = inject(EventsService);
 
-  public currentPlayer!: Player;
-  public currentUnitGroup!: UnitGroup;
-  public battleEvent$: Subject<void> = new BehaviorSubject<void>(undefined);
+  readonly state = new ReactiveState<{
+    currentPlayer: Player | null;
+    currentUnitGroup: UnitGroup | null;
+    round: number;
+    currentGroupTurnsLeft: number;
+  }>({
+    currentPlayer: null,
+    currentUnitGroup: null,
+    round: 1,
+    currentGroupTurnsLeft: 0,
+  });
 
   public heroesUnitGroupsMap: Map<Player, UnitGroup[]> = new Map();
 
-  public currentGroupTurnsLeft: number = 0;
-  public round: number = 1;
   public playerLosses: Record<string, Map<UnitBaseType, number>> = {};
 
   private readonly playersRivalryMap: Map<Player, Player> = new Map();
@@ -37,10 +43,12 @@ export class BattleStateService {
   private fightQueue!: UnitGroup[];
   private players!: Player[];
 
-  public readonly currentUnitGroup$ = new BehaviorSubject<UnitGroup | null>(null);
+  constructor() {
+    this.state.debug('Battle state:');
+  }
 
   public resetCurrentPlayer(): void {
-    this.currentPlayer = null as unknown as Player;
+    this.state.patch({ currentPlayer: null });
   }
 
   public initBattleState(unitGroups: UnitGroup[], players: Player[]): void {
@@ -64,7 +72,7 @@ export class BattleStateService {
 
   public initNextTurnByQueue(removeCurrentGroupFromQueue: boolean = false): void {
     /* Simultaneous, the unit who dies on counterattack removes because of dying and initNextTurn removes one more unit */
-    if (removeCurrentGroupFromQueue && this.currentUnitGroup.count) {
+    if (removeCurrentGroupFromQueue && this.state.get().currentUnitGroup!.count) {
       this.fightQueue.shift();
     }
 
@@ -79,31 +87,34 @@ export class BattleStateService {
       this.resetFightQueue();
       this.resetGroupsTurnsLeft();
 
-      this.round++;
+      this.state.updateWithCopy((state) => state.round++);
+
       this.events.dispatch(
         FightNextRoundStarts({
-          round: this.round,
+          round: this.state.get().round,
         }),
       );
       return;
     }
 
     const firstUnitGroup = this.fightQueue[0];
-    const previousPlayer = this.currentPlayer;
-    this.currentPlayer = firstUnitGroup.ownerPlayer;
-    this.currentUnitGroup = firstUnitGroup;
-    this.currentUnitGroup$.next(firstUnitGroup);
+    const previousPlayer = this.state.get().currentPlayer!;
+    this.state.patch({
+      currentPlayer: firstUnitGroup.ownerPlayer,
+      currentUnitGroup: firstUnitGroup,
+    });
 
-    if (!this.currentUnitGroup.modGroup.getModValue('defending')) {
-      this.currentGroupTurnsLeft = this.currentUnitGroup.turnsLeft || 1;
+    const currentUnitGroup = this.state.get().currentUnitGroup!;
+    if (!currentUnitGroup.modGroup.getModValue('defending')) {
+      this.state.patch({ currentGroupTurnsLeft: currentUnitGroup.turnsLeft || 1 });
     } else {
-      this.currentGroupTurnsLeft = this.currentUnitGroup.turnsLeft;
+      this.state.patch({ currentGroupTurnsLeft: currentUnitGroup.turnsLeft });
     }
 
-    if (this.currentPlayer !== previousPlayer) {
+    if (this.state.get().currentPlayer !== previousPlayer) {
       this.events.dispatch(
         RoundPlayerTurnStarts({
-          currentPlayer: this.currentPlayer,
+          currentPlayer: this.state.get().currentPlayer!,
           previousPlayer: previousPlayer,
         }),
       );
@@ -136,12 +147,12 @@ export class BattleStateService {
 
   public processAiPlayer(): void {
     setTimeout(() => {
-      const enemyUnitGroups = this.getAliveUnitsOfPlayer(this.getEnemyOfPlayer(this.currentPlayer));
+      const enemyUnitGroups = this.getAliveUnitsOfPlayer(this.getEnemyOfPlayer(this.state.get().currentPlayer!));
       const randomGroupIndex = Math.round(Math.random() * (enemyUnitGroups.length - 1));
       const targetGroup = enemyUnitGroups[randomGroupIndex];
 
       // enhance this logic
-      const attackingGroup = this.currentUnitGroup;
+      const attackingGroup = this.state.get().currentUnitGroup!;
       if (attackingGroup.ownerPlayer.type === PlayerTypeEnum.AI) {
         const attackSpell = attackingGroup.spells.find((spell) =>
           spell.baseType.config.aiTags?.includes(AISpellTag.RegularAttackSpell),
@@ -166,7 +177,7 @@ export class BattleStateService {
       this.events.dispatch(
         GroupAttacked({
           attackedGroup: targetGroup,
-          attackingGroup: this.currentUnitGroup,
+          attackingGroup: this.state.get().currentUnitGroup!,
         }),
       );
     }, 1000);
@@ -210,11 +221,10 @@ export class BattleStateService {
   public addTurnsToUnitGroup(unitGroup: UnitGroup, turns: number): void {
     const previousTurnsLeft = unitGroup.turnsLeft;
 
-    // unitGroup.turnsLeft += turns;
     unitGroup.updateUnitGroupState({ turnsLeft: unitGroup.turnsLeft + turns });
 
-    if (this.currentUnitGroup === unitGroup) {
-      this.currentGroupTurnsLeft += turns;
+    if (this.state.get().currentUnitGroup === unitGroup) {
+      this.state.updateWithCopy((state) => state.currentGroupTurnsLeft += turns);
     }
 
     if (previousTurnsLeft <= 0 && unitGroup.turnsLeft > 0) {

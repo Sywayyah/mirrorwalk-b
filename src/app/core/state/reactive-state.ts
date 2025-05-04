@@ -1,15 +1,26 @@
 import { computed, signal, Signal, WritableSignal } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { distinctUntilChanged, map } from 'rxjs/operators';
 
+/**
+ * An interface that represents a state value combining rxjs BehaviorSubject and Angular signal.
+ * */
 interface IReactiveState<T> {
   readonly signal: Signal<T>;
   set(state: T): void;
   patch(state: T): void;
+  /**
+   * If signal is part of implementation - get() should be read from it, to enable UI reactivity
+   * when reading from reactive state.
+   */
   get(): T;
   updateWith(fn: (prevState: T) => T | void): T;
+  /** will create new version of state with copy and new partial fields provided from this fn  */
+  patchWith(fn: (prevState: T) => Partial<T> | void): T;
+  /** automatically creates a shallow copy of previous state for you, it can be mutated */
+  updateWithCopy(fn: (prevState: T) => Partial<T> | void): T;
 
-  getStream(): Observable<T>;
+  observe(): Observable<T>;
 }
 
 export class ReactiveRefState<T extends object> implements IReactiveState<T> {
@@ -40,7 +51,7 @@ export class ReactiveRefState<T extends object> implements IReactiveState<T> {
     this.updateState(state);
   }
 
-  getStream(): Observable<T> {
+  observe(): Observable<T> {
     return this.state$.pipe(map((state) => state.ref));
   }
 
@@ -52,12 +63,26 @@ export class ReactiveRefState<T extends object> implements IReactiveState<T> {
     return this.updateState(newState);
   }
 
+  patchWith(fn: (prevState: T) => void | Partial<T>): T {
+    const prevState = this.state$.getValue().ref;
+    const newState = fn(prevState) ?? prevState;
+    return this.updateState({ ...prevState, ...newState });
+  }
+
+  updateWithCopy(fn: (prevState: T) => void | Partial<T>): T {
+    const copiedPrevState = { ...this.state$.getValue().ref };
+    // mutates copied state
+    fn(copiedPrevState);
+    return this.updateState(copiedPrevState);
+  }
+
   patch(state: Partial<T>): void {
     this.updateState({ ...this.state$.getValue().ref, ...state });
   }
 
+  // get state from signal to make UI react to changes
   get(): T {
-    return this.state$.getValue().ref;
+    return this._signal().ref;
   }
 }
 
@@ -74,8 +99,17 @@ export class ReactiveState<T extends object> implements IReactiveState<T> {
     this._signal = signal(defaultState);
   }
 
+  debug(message: string): void {
+    this.observe()
+      .pipe(distinctUntilChanged())
+      .subscribe((state) => {
+        console.log(message, state);
+      });
+  }
+
+  // get state from signal to make UI react to changes
   get(): T {
-    return this.state$.getValue();
+    return this.signal();
   }
 
   patch(state: Partial<T>): T {
@@ -90,8 +124,9 @@ export class ReactiveState<T extends object> implements IReactiveState<T> {
     this.set(this.defaultState);
   }
 
-  getState(): T {
-    return this.state$.getValue();
+  // provides a state from signal and returns transformed result
+  mapGet<R>(fn: (val: T) => R): R {
+    return fn(this.get());
   }
 
   updateWith(fn: (val: T) => T | void): T {
@@ -103,12 +138,33 @@ export class ReactiveState<T extends object> implements IReactiveState<T> {
     return newState;
   }
 
-  getStream(): Observable<T> {
+  patchWith(fn: (prevState: T) => void | Partial<T>): T {
+    const prevState = this.state$.getValue();
+    const newState = fn(prevState) ?? prevState;
+    return this.updateState({ ...prevState, ...newState });
+  }
+
+  updateWithCopy(fn: (prevState: T) => void): T {
+    const copiedPrevState = { ...this.state$.getValue() };
+    // mutates copied state
+    fn(copiedPrevState);
+    return this.updateState(copiedPrevState);
+  }
+
+  observe(): Observable<T> {
     return this.state$;
   }
 
-  getStateSignal(): Signal<T> {
-    return this._signal;
+  pick<R>(fn: (state: T) => R): R {
+    return fn(this.get());
+  }
+
+  select<R>(fn: (state: T) => R): Observable<R> {
+    return this.observe().pipe(map(fn));
+  }
+
+  selectDistinct<R>(fn: (state: T) => R): Observable<R> {
+    return this.select(fn).pipe(distinctUntilChanged());
   }
 
   private updateState(state: T): T {
@@ -137,3 +193,7 @@ export class FeatureState<T extends object> extends ReactiveState<T> {
 // reactiveState.updateWith((val) => {
 //   val.count = 5;
 // });
+
+// may I need some kind of states aggregator?
+// like, whenever anything changes in any states, do something ?
+// I'm not so sure to be honest...

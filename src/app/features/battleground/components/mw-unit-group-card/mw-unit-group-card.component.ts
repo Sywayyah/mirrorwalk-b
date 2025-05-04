@@ -1,6 +1,7 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  computed,
   forwardRef,
   inject,
   input,
@@ -47,6 +48,12 @@ export class MwUnitGroupCardComponent extends StoreClient() implements UIUnitPro
   readonly unitGroup = input.required<UnitGroup>();
   readonly playerInfo = input.required<Player>();
   readonly side = input<'left' | 'right'>('left');
+
+  readonly isCurrentUnitGroupActive = computed(() =>
+    this.mwBattleStateService.state.mapGet(
+      (state) => state.currentPlayer === this.playerInfo() && state.currentUnitGroup === this.unitGroup(),
+    ),
+  );
 
   readonly cardReady = output<MwUnitGroupCardComponent>();
   readonly groupDies = output<void>();
@@ -99,9 +106,10 @@ export class MwUnitGroupCardComponent extends StoreClient() implements UIUnitPro
     this.updateSpellsAndEffects();
 
     this.events.eventStream$.pipe(takeUntil(this.destroyed$)).subscribe(() => {
-      const currentUnitGroup = this.mwBattleStateService.currentUnitGroup;
-      this.attackingUnitGroup = currentUnitGroup;
-      this.canCurrentPlayerAttack = this.mwBattleStateService.currentPlayer === this.playersService.getCurrentPlayer();
+      const battleState = this.mwBattleStateService.state.get();
+      // const currentUnitGroup = battleState.currentUnitGroup!;
+      // this.attackingUnitGroup = currentUnitGroup;
+      this.canCurrentPlayerAttack = battleState.currentPlayer === this.playersService.getCurrentPlayer();
       // optimize
       this.cdr.markForCheck();
     });
@@ -144,7 +152,7 @@ export class MwUnitGroupCardComponent extends StoreClient() implements UIUnitPro
       this.events.dispatch(
         PlayerHoversGroupCard({
           hoverType: this.isEnemyCard ? HoverTypeEnum.EnemyCard : HoverTypeEnum.AllyCard,
-          currentCard: this.mwBattleStateService.currentUnitGroup,
+          currentCard: this.mwBattleStateService.state.get().currentUnitGroup!,
           hoveredCard: unitGroup,
         }),
       );

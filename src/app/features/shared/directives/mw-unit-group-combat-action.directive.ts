@@ -65,11 +65,12 @@ export class MwUnitGroupCombatActionDirective implements OnInit {
         return;
       }
 
+      const battleState = this.mwBattleStateService.state.get();
       this.events.dispatch(
         PlayerClicksEnemyGroup({
           attackedGroup: this.actionTargetUnitGroup,
-          attackingGroup: this.mwBattleStateService.currentUnitGroup,
-          attackingPlayer: this.mwBattleStateService.currentPlayer,
+          attackingGroup: battleState.currentUnitGroup!,
+          attackingPlayer: battleState.currentPlayer!,
         }),
       );
       this.dispatchUnitGroupHovered(HoverTypeEnum.EnemyCard);
@@ -102,7 +103,7 @@ export class MwUnitGroupCombatActionDirective implements OnInit {
     this.events.dispatch(
       PlayerHoversGroupCard({
         hoverType: hoverType,
-        currentCard: this.mwBattleStateService.currentUnitGroup,
+        currentCard: this.mwBattleStateService.state.get().currentUnitGroup!,
         hoveredCard: this.actionTargetUnitGroup,
       }),
     );

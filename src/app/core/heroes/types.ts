@@ -368,7 +368,7 @@ export class Hero extends GameObject<HeroCreationParams, HeroStatsInfo> {
   }
 
   listenHeroStats(): Observable<HeroStatsInfo> {
-    return this.state.getStream().pipe(takeUntil(this.destroyed$));
+    return this.state.observe().pipe(takeUntil(this.destroyed$));
   }
 
   /** Add item to backback */

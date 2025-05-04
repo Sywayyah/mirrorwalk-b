@@ -315,9 +315,8 @@ export class CombatInteractorService extends StoreClient() {
     }
 
     if (!isCounterattack) {
-      this.battleState.currentGroupTurnsLeft--;
-      // attacker.turnsLeft = this.battleState.currentGroupTurnsLeft;
-      attacker.updateUnitGroupState({ turnsLeft: this.battleState.currentGroupTurnsLeft });
+      this.battleState.state.updateWithCopy((state) => state.currentGroupTurnsLeft--);
+      attacker.updateUnitGroupState({ turnsLeft: this.battleState.state.get().currentGroupTurnsLeft });
 
       this.events.dispatch(
         GroupDamagedByGroup({
@@ -384,7 +383,7 @@ export class CombatInteractorService extends StoreClient() {
   }
 
   public getTargetAttackActionInfo(target: UnitGroup): AttackActionHintInfo {
-    const currentUnitGroup = this.battleState.currentUnitGroup;
+    const currentUnitGroup = this.battleState.state.get().currentUnitGroup!;
     const attackDetails = this.unitState.getDetailedAttackInfo(currentUnitGroup, target);
 
     const attackActionInfo: AttackActionHintInfo = {

@@ -422,7 +422,7 @@ export class UnitGroup extends GameObject<UnitCreationParams, UnitGroupState> {
   }
 
   listenStats(): Observable<UnitGroupState> {
-    return this.state.getStream().pipe(takeUntil(this.destroyed$));
+    return this.state.observe().pipe(takeUntil(this.destroyed$));
   }
 
   addSpell(spell: Spell): void {
