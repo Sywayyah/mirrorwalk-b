@@ -22,7 +22,7 @@ import {
 } from 'src/app/core/events';
 import { PlayerState, PlayerTypeEnum } from 'src/app/core/players';
 import { SpellEvents } from 'src/app/core/spells';
-import { ActionHintTypeEnum, SpellTargetActionHint } from 'src/app/core/ui';
+import { ActionHintTypeEnum, ActionHintVariants } from 'src/app/core/ui';
 import { UnitGroup } from 'src/app/core/unit-types';
 import { Notify, StoreClient, WireMethod } from 'src/app/store';
 import { PopupService, UnitGroupInfoPopupComponent } from '../../shared/components';
@@ -96,7 +96,7 @@ export class UiController extends StoreClient() {
           this.combatInteractor.setDamageHintMessageOnCardHover(event);
         }
         if (this.curPlayerState.playerCurrentState === PlayerState.SpellTargeting) {
-          const spellTargetHint: SpellTargetActionHint = {
+          const spellTargetHint: ActionHintVariants['byKey'][ActionHintTypeEnum.OnTargetSpell] = {
             type: ActionHintTypeEnum.OnTargetSpell,
             spell: this.curPlayerState.currentSpell,
             target: targetGroup,
@@ -114,7 +114,7 @@ export class UiController extends StoreClient() {
       case HoverTypeEnum.AllyCard:
         /* similar logic */
         if (this.curPlayerState.playerCurrentState === PlayerState.SpellTargeting) {
-          const spellTargetHint: SpellTargetActionHint = {
+          const spellTargetHint: ActionHintVariants['byKey'][ActionHintTypeEnum.OnTargetSpell] = {
             type: ActionHintTypeEnum.OnTargetSpell,
             spell: this.curPlayerState.currentSpell,
             target: targetGroup,

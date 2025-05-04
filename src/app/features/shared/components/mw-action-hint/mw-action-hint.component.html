@@ -19,6 +19,7 @@
 <ng-template
   #customHtml
   let-hint="hint"
+  [mwTypedTemplate]="customHtmlHintType"
 >
   <div [innerHTML]="hint.html | safeHtml"></div>
 </ng-template>
@@ -26,6 +27,7 @@
 <ng-template
   #simple
   let-hint="hint"
+  [mwTypedTemplate]="enemyCardHoverHintType"
 >
   <span>Attack</span>
   <span [style.color]="hint.attackedGroup.ownerPlayer.color">
@@ -48,6 +50,7 @@
 <ng-template
   #onTargetSpell
   let-hint="hint"
+  [mwTypedTemplate]="spellHintType"
 >
   <div>
     <span> Cast </span>

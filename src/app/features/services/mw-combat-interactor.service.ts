@@ -18,7 +18,7 @@ import { ModsRef, ModsRefsGroup } from 'src/app/core/modifiers';
 import { defaultResistCap, resistsMapping } from 'src/app/core/modifiers/resists';
 import { Player } from 'src/app/core/players';
 import { Spell, SpellActivationType, SpellEventNames, SpellEventTypeByName, SpellEvents } from 'src/app/core/spells';
-import { ActionHintTypeEnum, AttackActionHintInfo } from 'src/app/core/ui';
+import { ActionHintTypeEnum, ActionHintVariants } from 'src/app/core/ui';
 import { CombatStateEnum, UnitGroup } from 'src/app/core/unit-types';
 import { CommonUtils } from 'src/app/core/utils';
 import { nonNullish } from 'src/app/core/utils/common';
@@ -377,16 +377,18 @@ export class CombatInteractorService extends StoreClient() {
   }
 
   public setDamageHintMessageOnCardHover(event: PlayerHoversCardEvent): void {
-    const actionHint: AttackActionHintInfo = this.getTargetAttackActionInfo(event.hoveredCard as UnitGroup);
+    const actionHint = this.getTargetAttackActionInfo(event.hoveredCard as UnitGroup);
 
     this.actionHint.hintMessage$.next(actionHint);
   }
 
-  public getTargetAttackActionInfo(target: UnitGroup): AttackActionHintInfo {
+  public getTargetAttackActionInfo(
+    target: UnitGroup,
+  ): ActionHintVariants['byKey'][ActionHintTypeEnum.OnHoverEnemyCard] {
     const currentUnitGroup = this.battleState.state.get().currentUnitGroup!;
     const attackDetails = this.unitState.getDetailedAttackInfo(currentUnitGroup, target);
 
-    const attackActionInfo: AttackActionHintInfo = {
+    const attackActionInfo: ActionHintVariants['byKey'][ActionHintTypeEnum.OnHoverEnemyCard] = {
       type: ActionHintTypeEnum.OnHoverEnemyCard,
       attackedGroup: attackDetails.attacked,
       minDamage: attackDetails.multipliedMinDamage,

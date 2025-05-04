@@ -1,11 +1,11 @@
 import { Directive, HostListener, inject, input, OnDestroy } from '@angular/core';
-import { ActionHintTypeEnum, CustomHtmlActionHint } from 'src/app/core/ui';
+import { ActionHintTypeEnum } from 'src/app/core/ui';
 import { ActionHintService } from '../../services/mw-action-hint.service';
 
 // Maybe some animation can be provided.
 @Directive({
   selector: '[mwActionHint]',
-  standalone: false
+  standalone: false,
 })
 export class MwActionHintDirective implements OnDestroy {
   private readonly actionHint = inject(ActionHintService);
@@ -21,7 +21,7 @@ export class MwActionHintDirective implements OnDestroy {
     this.actionHint.hintMessage$.next({
       type: ActionHintTypeEnum.CustomHtml,
       html: this.mwActionHint(),
-    } as CustomHtmlActionHint);
+    });
   }
 
   @HostListener('mouseleave')

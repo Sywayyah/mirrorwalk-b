@@ -59,6 +59,7 @@ import {
   MwUnitEventsCursorDirective,
   MwUnitGroupCombatActionDirective,
   NumberModifierDirective,
+  TypedTemplateDirective,
 } from './directives';
 import { MwEntityPipe, MwInfPipe, MwSafeHtmlPipe } from './pipes';
 
@@ -71,6 +72,7 @@ const directives = [
   MwUnitEventsCursorDirective,
   MwActionHintDirective,
   DisableContextMenuDirective,
+  TypedTemplateDirective,
 ];
 
 const components = [
@@ -144,4 +146,4 @@ const components = [
   exports: components,
   imports: [CommonModule],
 })
-export class SharedModule { }
+export class SharedModule {}

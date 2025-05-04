@@ -2,9 +2,11 @@ import { Component, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { BehaviorSubject, combineLatest } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
-import { ActionHintModel, ActionHintTypeEnum } from 'src/app/core/ui';
+import { ActionHintTypeEnum, ActionHintVariants } from 'src/app/core/ui';
 import { injectHostElem } from 'src/app/core/utils';
 import { ActionHintService } from 'src/app/features/services/mw-action-hint.service';
+
+type HintTemplateType<T extends ActionHintVariants['variants']> = { hint: T };
 
 @Component({
   selector: 'mw-action-hint',
@@ -18,7 +20,11 @@ export class MwActionHintComponent {
 
   readonly hintActionTypes: typeof ActionHintTypeEnum = ActionHintTypeEnum;
 
-  readonly hint$: BehaviorSubject<ActionHintModel | null> = new BehaviorSubject<ActionHintModel | null>(null);
+  readonly hint$ = new BehaviorSubject<ActionHintVariants['variants'] | null>(null);
+
+  readonly spellHintType!: HintTemplateType<ActionHintVariants['byKey'][ActionHintTypeEnum.OnTargetSpell]>;
+  readonly customHtmlHintType!: HintTemplateType<ActionHintVariants['byKey'][ActionHintTypeEnum.CustomHtml]>;
+  readonly enemyCardHoverHintType!: HintTemplateType<ActionHintVariants['byKey'][ActionHintTypeEnum.OnHoverEnemyCard]>;
 
   constructor() {
     // need to revisit this logic. it was designed mostly for battleground.
