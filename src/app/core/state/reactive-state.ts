@@ -26,6 +26,9 @@ interface IReactiveState<T> {
 /**
  * Economy-based implementation that doesn't require state object to be immutable, instead
  * keeping immutable a state-wrapper object.
+ *
+ * It can be useful when you want an increased trust for state, or want to avoid recreation
+ * of big objects or data-structures, like Arrays, Maps or Sets.
  */
 export class ReactiveRefState<T extends object> implements IReactiveState<T> {
   private currentState: { ref: T };
