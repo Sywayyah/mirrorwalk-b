@@ -15,7 +15,7 @@ import { ReactiveState } from '../state';
 import { DescriptionVariants } from '../ui';
 import { CommonUtils } from '../utils';
 import { complete } from '../utils/observables';
-import { CombatState, CombatStateEnum } from './unit-combat-state';
+import { CombatStateEnum, CombatStateVariants } from './unit-combat-state';
 
 type RequirementModel = Partial<ResourcesModel>;
 
@@ -189,7 +189,7 @@ export interface UnitGroupState {
   groupState: UnitGroupStackState;
   // spells are in group stats for now, might introduce a separate state
   groupStats: UnitStatsInfo;
-  combatState: CombatState;
+  combatState: CombatStateVariants['variants'];
 }
 
 export class UnitGroup extends GameObject<UnitCreationParams, UnitGroupState> {
@@ -588,7 +588,7 @@ export class UnitGroup extends GameObject<UnitCreationParams, UnitGroupState> {
       });
   }
 
-  setCombatState(combatState: CombatState): void {
+  setCombatState(combatState: CombatStateVariants['variants']): void {
     this.updateState({ combatState });
   }
 
