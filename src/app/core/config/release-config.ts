@@ -11,4 +11,5 @@ export const CONFIG: ConfigModel = {
   enableHeroUnits: true,
 
   gameSettings: true,
+  allowNeutralAIControl: false,
 } as const;

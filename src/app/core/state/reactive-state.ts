@@ -185,6 +185,7 @@ export class ReactiveState<T extends object> implements IReactiveState<T> {
   }
 }
 
+// maybe allow to pass reactive state implementation instead...
 export class FeatureState<T extends object> extends ReactiveState<T> {
   revert(): void {
     this.set(this.defaultState);

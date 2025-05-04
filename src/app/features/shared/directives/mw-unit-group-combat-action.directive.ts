@@ -23,11 +23,13 @@ export class MwUnitGroupCombatActionDirective implements OnInit {
   private readonly unitGroupProvider = inject(PROVIDE_UI_UNIT_GROUP);
 
   private actionTargetUnitGroup!: UnitGroup;
-  private isEnemyCard: boolean = false;
+
+  private get isEnemyCard(): boolean {
+    return this.mwBattleStateService.canUnitGroupBeAttacked(this.actionTargetUnitGroup);
+  }
 
   public ngOnInit(): void {
     this.actionTargetUnitGroup = this.unitGroupProvider.getUnitGroup();
-    this.isEnemyCard = this.players.isEnemyUnitGroup(this.actionTargetUnitGroup);
   }
 
   /* maybe create some other directive, which turns off default context menu */

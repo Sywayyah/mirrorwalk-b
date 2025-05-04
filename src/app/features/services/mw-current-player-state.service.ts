@@ -33,6 +33,7 @@ export const NULL_SPELL: SpellBaseType = createSpell({
   providedIn: 'root',
 })
 export class MwCurrentPlayerStateService extends StoreClient() {
+  // adapt for right side control
   private readonly players = inject(MwPlayersService);
   private readonly gameObjectsManager = inject(GameObjectsManager);
 

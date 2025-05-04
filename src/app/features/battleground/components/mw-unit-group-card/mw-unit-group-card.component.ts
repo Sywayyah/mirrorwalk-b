@@ -75,7 +75,10 @@ export class MwUnitGroupCardComponent extends StoreClient() implements UIUnitPro
   readonly cardDestroyed = output<void>();
 
   public isCardHovered: boolean = false;
-  public isEnemyCard!: boolean;
+
+  get isEnemyCard(): boolean {
+    return this.mwBattleStateService.canUnitGroupBeAttacked(this.unitGroup());
+  }
 
   public attackingUnitGroup!: UnitGroup;
 
@@ -95,7 +98,6 @@ export class MwUnitGroupCardComponent extends StoreClient() implements UIUnitPro
     this.spellsHintsPosition = 'above';
 
     this.isGroupMelee = !this.unitsService.isUnitGroupRanged(this.unitGroup());
-    this.isEnemyCard = this.playersService.getCurrentPlayer() !== this.playerInfo();
     this.initialCount = this.unitGroup().count;
     const unitGroup = this.unitGroup();
     this.isBoss = unitGroup.type.defaultModifiers?.isBoss;

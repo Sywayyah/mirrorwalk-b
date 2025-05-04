@@ -1,6 +1,25 @@
 import { inject, Injectable } from '@angular/core';
 import { CONFIG } from 'src/app/core/config';
-import { DisplayUnitGroupInfo, FightEnds, GroupAttacked, HoverTypeEnum, PlayerCastsInstantSpell, PlayerClicksAllyGroup, PlayerClicksAllyGroupEvent, PlayerClicksEnemyGroup, PlayerClicksEnemyGroupEvent, PlayerHoversCardEvent, PlayerHoversGroupCard, PlayerRightClicksUnitGroup, PlayerTargetsInstantSpellEvent, PlayerTargetsSpell, PlayerTargetsSpellEvent, PlayerTurnStartEvent, RoundPlayerTurnStarts, UIEventsTypes } from 'src/app/core/events';
+import {
+  DisplayUnitGroupInfo,
+  FightEnds,
+  GroupAttacked,
+  HoverTypeEnum,
+  PlayerCastsInstantSpell,
+  PlayerClicksAllyGroup,
+  PlayerClicksAllyGroupEvent,
+  PlayerClicksEnemyGroup,
+  PlayerClicksEnemyGroupEvent,
+  PlayerHoversCardEvent,
+  PlayerHoversGroupCard,
+  PlayerRightClicksUnitGroup,
+  PlayerTargetsInstantSpellEvent,
+  PlayerTargetsSpell,
+  PlayerTargetsSpellEvent,
+  PlayerTurnStartEvent,
+  RoundPlayerTurnStarts,
+  UIEventsTypes,
+} from 'src/app/core/events';
 import { PlayerState, PlayerTypeEnum } from 'src/app/core/players';
 import { SpellEvents } from 'src/app/core/spells';
 import { ActionHintTypeEnum, SpellTargetActionHint } from 'src/app/core/ui';
@@ -8,7 +27,6 @@ import { UnitGroup } from 'src/app/core/unit-types';
 import { Notify, StoreClient, WireMethod } from 'src/app/store';
 import { PopupService, UnitGroupInfoPopupComponent } from '../../shared/components';
 import { ActionHintService } from '../mw-action-hint.service';
-import { MwCardsMappingService } from '../mw-cards-mapping.service';
 import { CombatInteractorService } from '../mw-combat-interactor.service';
 import { MwCurrentPlayerStateService } from '../mw-current-player-state.service';
 
@@ -17,17 +35,18 @@ export class UiController extends StoreClient() {
   private readonly combatInteractor = inject(CombatInteractorService);
   private readonly actionHint = inject(ActionHintService);
   private readonly curPlayerState = inject(MwCurrentPlayerStateService);
-  private readonly cardsMapping = inject(MwCardsMappingService);
   private readonly popupService = inject(PopupService);
 
   @WireMethod(PlayerClicksEnemyGroup)
   public handleEnemyCardClick(event: PlayerClicksEnemyGroupEvent): void {
     const playerCurrentState = this.curPlayerState.playerCurrentState;
     if (playerCurrentState === PlayerState.Normal) {
-      this.events.dispatch(GroupAttacked({
-        attackedGroup: event.attackedGroup,
-        attackingGroup: event.attackingGroup,
-      }));
+      this.events.dispatch(
+        GroupAttacked({
+          attackedGroup: event.attackedGroup,
+          attackingGroup: event.attackingGroup,
+        }),
+      );
 
       return;
     }
@@ -35,16 +54,17 @@ export class UiController extends StoreClient() {
     if (playerCurrentState === PlayerState.SpellTargeting) {
       this.curPlayerState.onCurrentSpellCast();
 
-      this.events.dispatch(PlayerTargetsSpell({
-        player: event.attackingPlayer,
-        spell: this.curPlayerState.currentSpell,
-        target: event.attackedGroup,
-      }));
+      this.events.dispatch(
+        PlayerTargetsSpell({
+          player: event.attackingPlayer,
+          spell: this.curPlayerState.currentSpell,
+          target: event.attackedGroup,
+        }),
+      );
 
       this.curPlayerState.setSpellsOnCooldown();
     }
   }
-
 
   @WireMethod(PlayerClicksAllyGroup)
   public handleAllyGroupClick(event: PlayerClicksAllyGroupEvent): void {
@@ -53,11 +73,13 @@ export class UiController extends StoreClient() {
 
       const unitGroup = event.unitGroup;
 
-      this.events.dispatch(PlayerTargetsSpell({
-        player: unitGroup.ownerPlayer,
-        spell: this.curPlayerState.currentSpell,
-        target: unitGroup,
-      }));
+      this.events.dispatch(
+        PlayerTargetsSpell({
+          player: unitGroup.ownerPlayer,
+          spell: this.curPlayerState.currentSpell,
+          target: unitGroup,
+        }),
+      );
 
       this.curPlayerState.setSpellsOnCooldown();
     }
@@ -175,5 +197,4 @@ export class UiController extends StoreClient() {
       }),
     );
   }
-
 }

@@ -138,6 +138,10 @@ export class BattleStateService {
     return this.playersRivalryMap.get(player)!;
   }
 
+  public canUnitGroupBeAttacked(unitGroup: UnitGroup): boolean {
+    return this.state.get().currentPlayer !== unitGroup.ownerPlayer;
+  }
+
   public processAiPlayer(): void {
     setTimeout(() => {
       const enemyUnitGroups = this.getAliveUnitsOfPlayer(this.getEnemyOfPlayer(this.state.get().currentPlayer!));

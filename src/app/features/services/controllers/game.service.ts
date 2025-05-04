@@ -1,7 +1,37 @@
 import { inject, Injectable } from '@angular/core';
 import { ActionCardTypes } from 'src/app/core/action-cards';
 import { PLAYER_COLORS } from 'src/app/core/assets';
-import { ActivateActionCard, AddActionCardsToPlayer, BeforeBattleInit, DefaultGameModes, FightStarts, FightStartsEvent, GameCommandEvents, GameCreated, GameEventsTypes, GameOpenMainScreen, GameOpenMapStructuresScreen, GamePreparedEvent, GameStarted, NeutralStructParams, NewDayStarted, NewWeekStarted, OpenActiviesAndSpecialtiesDialog, PlayerLeavesTown, PlayersInitialized, PlayerStartsFight, PushEventFeedMessage, PushPlainEventFeedMessage, RemoveActionPoints, ScheduleAction, StructFightConfirmed, StructSelected, StructSelectedEvent, Triggers } from 'src/app/core/events';
+import { CONFIG } from 'src/app/core/config';
+import {
+  ActivateActionCard,
+  AddActionCardsToPlayer,
+  BeforeBattleInit,
+  DefaultGameModes,
+  FightStarts,
+  FightStartsEvent,
+  GameCommandEvents,
+  GameCreated,
+  GameEventsTypes,
+  GameOpenMainScreen,
+  GameOpenMapStructuresScreen,
+  GamePreparedEvent,
+  GameStarted,
+  NeutralStructParams,
+  NewDayStarted,
+  NewWeekStarted,
+  OpenActiviesAndSpecialtiesDialog,
+  PlayerLeavesTown,
+  PlayersInitialized,
+  PlayerStartsFight,
+  PushEventFeedMessage,
+  PushPlainEventFeedMessage,
+  RemoveActionPoints,
+  ScheduleAction,
+  StructFightConfirmed,
+  StructSelected,
+  StructSelectedEvent,
+  Triggers,
+} from 'src/app/core/events';
 import { heroesDefaultResources } from 'src/app/core/heroes';
 import { PlayerTypeEnum } from 'src/app/core/players';
 import { StructEvents } from 'src/app/core/structures/events';
@@ -21,16 +51,16 @@ import { UiEventFeedService } from '../ui-event-feed.service';
 
 @Injectable()
 export class GameController extends StoreClient() {
-  private battleState = inject(BattleStateService);
-  private structuresService = inject(MwStructuresService);
-  private players = inject(MwPlayersService);
-  private heroesService = inject(MwHeroesService);
-  private state = inject(State);
-  private eventFeedUiService = inject(UiEventFeedService);
-  private gameApiProvider = inject(ApiProvider);
-  private eventFeed = inject(UiEventFeedService);
+  private readonly battleState = inject(BattleStateService);
+  private readonly structuresService = inject(MwStructuresService);
+  private readonly players = inject(MwPlayersService);
+  private readonly heroesService = inject(MwHeroesService);
+  private readonly state = inject(State);
+  private readonly eventFeedUiService = inject(UiEventFeedService);
+  private readonly gameApiProvider = inject(ApiProvider);
+  private readonly eventFeed = inject(UiEventFeedService);
 
-  private scheduledActions: { day: number, action: () => void }[] = [];
+  private scheduledActions: { day: number; action: () => void }[] = [];
 
   @Notify(GameStarted)
   public openMainScreenOnGameStart(): void {
@@ -60,10 +90,9 @@ export class GameController extends StoreClient() {
       ),
     );
 
-
     const neutralPlayer = this.players.createPlayer(PLAYER_IDS.Neutral, {
       color: PLAYER_COLORS.GRAY,
-      type: PlayerTypeEnum.AI,
+      type: CONFIG.allowNeutralAIControl ? PlayerTypeEnum.Player : PlayerTypeEnum.AI,
       hero: this.heroesService.createNeutralHero(),
       resources: {
         ...heroesDefaultResources,
@@ -73,8 +102,8 @@ export class GameController extends StoreClient() {
     mainPlayer.hero.assignOwnerPlayer(mainPlayer);
     neutralPlayer.hero.assignOwnerPlayer(neutralPlayer);
 
-    mainPlayer.hero.unitGroups.forEach(unitGroup => unitGroup.assignOwnerHero(mainPlayer.hero));
-    neutralPlayer.hero.unitGroups.forEach(unitGroup => unitGroup.assignOwnerHero(neutralPlayer.hero));
+    mainPlayer.hero.unitGroups.forEach((unitGroup) => unitGroup.assignOwnerHero(mainPlayer.hero));
+    neutralPlayer.hero.unitGroups.forEach((unitGroup) => unitGroup.assignOwnerHero(neutralPlayer.hero));
 
     this.state.gameState = {
       players: [mainPlayer, neutralPlayer],
@@ -86,7 +115,9 @@ export class GameController extends StoreClient() {
     };
 
     this.events.dispatch(PlayersInitialized({}));
-    this.events.dispatch(Triggers.PrepareGameEvent({ gameMode: DefaultGameModes.Normal, selectedFaction: this.state.createdGame.faction }));
+    this.events.dispatch(
+      Triggers.PrepareGameEvent({ gameMode: DefaultGameModes.Normal, selectedFaction: this.state.createdGame.faction }),
+    );
     this.events.dispatch(GameOpenMapStructuresScreen());
   }
 
@@ -96,9 +127,9 @@ export class GameController extends StoreClient() {
     this.state.eventHandlers.structures.triggerAllHandlersByEvent(StructEvents.NewDayBegins());
 
     const currentGlobalDay = this.state.currentGame.globalDay;
-    const currentDayActions = this.scheduledActions.filter(action => action.day === currentGlobalDay);
-    currentDayActions.forEach(action => action.action());
-    this.scheduledActions = this.scheduledActions.filter(action => action.day !== currentGlobalDay);
+    const currentDayActions = this.scheduledActions.filter((action) => action.day === currentGlobalDay);
+    currentDayActions.forEach((action) => action.action());
+    this.scheduledActions = this.scheduledActions.filter((action) => action.day !== currentGlobalDay);
   }
 
   @WireMethod(PushEventFeedMessage)
@@ -116,11 +147,11 @@ export class GameController extends StoreClient() {
 
   @WireMethod(AddActionCardsToPlayer)
   public addActionCardsToPlayer(event: GameCommandEvents['AddActionCardsToPlayer']): void {
-    this.eventFeedUiService
-      .pushPlainMessage(`Received action cards:<hr> ${event.actionCardStacks
+    this.eventFeedUiService.pushPlainMessage(
+      `Received action cards:<hr> ${event.actionCardStacks
         .map(({ card, count }) => `x${infNum(count)} ${actionCardEvent(card)}`)
-        .join('<br>')}`
-      );
+        .join('<br>')}`,
+    );
 
     event.actionCardStacks.forEach(({ card, count }) => {
       event.player.addActionCards(card, count);
@@ -158,7 +189,7 @@ export class GameController extends StoreClient() {
 
   @WireMethod(ScheduleAction)
   public scheduleAction(event: GameEventsTypes['ScheduleAction']): void {
-    this.scheduledActions.push({ action: event.action, day: this.state.currentGame.globalDay + event.dayOffset })
+    this.scheduledActions.push({ action: event.action, day: this.state.currentGame.globalDay + event.dayOffset });
   }
 
   @Notify(PlayerLeavesTown)
@@ -183,7 +214,6 @@ export class GameController extends StoreClient() {
 
     this.events.dispatch(FightStarts({}));
   }
-
 
   @WireMethod(StructSelected)
   public onStructSelected(event: StructSelectedEvent): void {

@@ -3,19 +3,18 @@ import { injectHostElem } from 'src/app/core/utils';
 
 @Directive({
   selector: '[mwNumberModifier]',
-  standalone: false
+  standalone: false,
 })
 export class NumberModifierDirective implements OnDestroy, OnChanges {
-  private hostElem = injectHostElem();
-  private renderer = inject(Renderer2);
+  private readonly hostElem = injectHostElem();
+  private readonly renderer = inject(Renderer2);
 
   readonly value = input.required<number>({ alias: 'mwNumberModifier' });
   readonly format = input<'shortPercent' | 'normal'>('normal', { alias: 'mwNumberModifierFormat' });
 
   public hideEmpty = input(true);
 
-  constructor(
-  ) {
+  constructor() {
     this.renderer.addClass(this.hostElem, 'mod-text');
   }
 
@@ -24,7 +23,7 @@ export class NumberModifierDirective implements OnDestroy, OnChanges {
   }
 
   public ngOnChanges(): void {
-    const elem = this.hostElem as HTMLElement;
+    const elem = this.hostElem;
     const value = this.value();
 
     if (this.hideEmpty() && !value) {

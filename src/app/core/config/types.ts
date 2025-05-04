@@ -8,4 +8,6 @@ export interface ConfigModel {
   enableHeroUnits: boolean;
 
   gameSettings: boolean;
+  // allows to control neutral AI
+  allowNeutralAIControl: boolean;
 }

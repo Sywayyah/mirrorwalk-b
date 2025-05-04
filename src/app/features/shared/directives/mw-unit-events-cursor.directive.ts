@@ -3,7 +3,7 @@ import { takeUntil } from 'rxjs/operators';
 import { PlayerState } from 'src/app/core/players';
 import { UnitGroup } from 'src/app/core/unit-types';
 import { CenteredStaticCursorAnimation, SpellCastCursorAnimation, StaticCursorAnimation } from 'src/app/core/vfx';
-import { MwCurrentPlayerStateService, MwPlayersService, MwSpellsService } from '../../services';
+import { BattleStateService, MwCurrentPlayerStateService, MwSpellsService } from '../../services';
 import { AnimatedCursor, MwCustomCursorDirective } from './mw-custom-cursor.directive';
 
 export interface UIUnitProvider {
@@ -21,7 +21,7 @@ export const PROVIDE_UI_UNIT_GROUP: InjectionToken<UIUnitProvider> = new Injecti
 export class MwUnitEventsCursorDirective extends MwCustomCursorDirective implements OnInit {
   private readonly curPlayerState = inject(MwCurrentPlayerStateService);
   private readonly spells = inject(MwSpellsService);
-  private readonly players = inject(MwPlayersService);
+  private readonly battleState = inject(BattleStateService);
   private readonly unitGroupProvider = inject(PROVIDE_UI_UNIT_GROUP);
 
   private unitGroup!: UnitGroup;
@@ -37,17 +37,14 @@ export class MwUnitEventsCursorDirective extends MwCustomCursorDirective impleme
   protected getCursorToShow(): AnimatedCursor | null {
     // todo: maybe some way to use normal cursor
 
-    const isEnemyUnitGroup = this.players.isEnemyUnitGroup(this.unitGroup);
+    const isEnemyUnitGroup = this.battleState.canUnitGroupBeAttacked(this.unitGroup);
     const playerState = this.curPlayerState.playerCurrentState;
 
     if (this.curPlayerState.playerCurrentState !== PlayerState.SpellTargeting && !isEnemyUnitGroup) {
       return null;
     }
 
-    if (
-      playerState === PlayerState.Normal &&
-      (!isEnemyUnitGroup || (isEnemyUnitGroup && !this.unitGroup.isAlive))
-    ) {
+    if (playerState === PlayerState.Normal && (!isEnemyUnitGroup || (isEnemyUnitGroup && !this.unitGroup.isAlive))) {
       return this.createStaticCursor('interdiction');
     }
 

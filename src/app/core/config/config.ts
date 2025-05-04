@@ -8,7 +8,9 @@ export const CONFIG: ConfigModel = {
 
   showLocationsIds: false,
 
+  // can become a game-setting
   enableHeroUnits: true,
 
   gameSettings: true,
+  allowNeutralAIControl: false,
 } as const;
