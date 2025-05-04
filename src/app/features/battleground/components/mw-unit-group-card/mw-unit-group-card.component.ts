@@ -17,7 +17,7 @@ import { GroupSpellsChanged, HoverTypeEnum, PlayerHoversGroupCard } from 'src/ap
 import { Player } from 'src/app/core/players';
 import { Spell } from 'src/app/core/spells';
 import { UnitGroup, UnitGroupState } from 'src/app/core/unit-types';
-import { injectCdr, injectHostElem } from 'src/app/core/utils';
+import { injectHostElem } from 'src/app/core/utils';
 import { BattleStateService, MwPlayersService, MwUnitGroupStateService } from 'src/app/features/services';
 import { HintAttachment } from 'src/app/features/shared/components';
 import { PROVIDE_UI_UNIT_GROUP, UIUnitProvider } from 'src/app/features/shared/directives';
@@ -43,7 +43,6 @@ export class MwUnitGroupCardComponent extends StoreClient() implements UIUnitPro
   private readonly playersService = inject(MwPlayersService);
   private readonly unitsService = inject(MwUnitGroupStateService);
   private readonly renderer = inject(Renderer2);
-  private readonly cdr = injectCdr();
 
   readonly unitGroup = input.required<UnitGroup>();
   readonly playerInfo = input.required<Player>();
@@ -55,6 +54,11 @@ export class MwUnitGroupCardComponent extends StoreClient() implements UIUnitPro
     ),
   );
 
+  // whether current player hovers an enemy
+  readonly canCurrentPlayerAttack = computed(() =>
+    this.mwBattleStateService.state.mapGet((state) => state.currentPlayer !== this.playerInfo()),
+  );
+
   readonly cardReady = output<MwUnitGroupCardComponent>();
   readonly groupDies = output<void>();
 
@@ -63,7 +67,6 @@ export class MwUnitGroupCardComponent extends StoreClient() implements UIUnitPro
 
   public attackingUnitGroup!: UnitGroup;
 
-  public canCurrentPlayerAttack: boolean = false;
   public isGroupMelee: boolean = false;
 
   public unitStats$!: Observable<UnitGroupState>;
@@ -104,15 +107,6 @@ export class MwUnitGroupCardComponent extends StoreClient() implements UIUnitPro
     }
 
     this.updateSpellsAndEffects();
-
-    this.events.eventStream$.pipe(takeUntil(this.destroyed$)).subscribe(() => {
-      const battleState = this.mwBattleStateService.state.get();
-      // const currentUnitGroup = battleState.currentUnitGroup!;
-      // this.attackingUnitGroup = currentUnitGroup;
-      this.canCurrentPlayerAttack = battleState.currentPlayer === this.playersService.getCurrentPlayer();
-      // optimize
-      this.cdr.markForCheck();
-    });
 
     this.events
       .onEvent(GroupSpellsChanged)

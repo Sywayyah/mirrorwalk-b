@@ -1,7 +1,6 @@
 <!-- todo: maybe migrate to signal some day -->
 @let group = unitGroup();
 @let unitState = (unitStats$ | async)!;
-
 <mw-vfx-container [containerId]="group.id">
   <div
     class="card-top"
@@ -16,7 +15,7 @@
       <div
         [style.background]="playerInfo().color"
         [class.current-group]="isCurrentUnitGroupActive()"
-        [class.hovered-enemy]="isCardHovered && isEnemyCard && canCurrentPlayerAttack"
+        [class.hovered-enemy]="isCardHovered && isEnemyCard && canCurrentPlayerAttack()"
         class="card"
       >
         <div style="padding-bottom: 3px; font-weight: 500; white-space: nowrap">
