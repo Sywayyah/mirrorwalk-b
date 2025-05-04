@@ -1,16 +1,15 @@
 import { CombatActionsRef } from '../api/combat-api';
 import { Icon } from '../assets';
+import { Entity, ItemId } from '../entities';
 import { GameObject } from '../game-objects';
 import { Hero } from '../heroes';
 import { Modifiers } from '../modifiers';
 import { Player } from '../players';
-import { Entity, ItemId } from '../entities';
 import { Resources } from '../resources';
 import { SpellBaseType } from '../spells';
-import { DescriptionElement } from '../ui';
+import { DescriptionVariants } from '../ui';
 import { UnitGroup } from '../unit-types';
 import { ItemsEventsHandlers } from './item-events';
-
 
 export interface ItemRequirementModel<T extends object> {
   type: string;
@@ -33,7 +32,7 @@ export interface ItemDescriptionData<T extends object> {
 }
 
 export interface ItemDescription {
-  descriptions: DescriptionElement[];
+  descriptions: DescriptionVariants['variants'][];
 }
 
 export interface ItemsEventsRef {
@@ -45,7 +44,9 @@ export type SpellWithConfig = {
   level: number;
 };
 
-export type ItemAbilityDescriptionGetter<StateType extends object> = (itemData: ItemDescriptionData<StateType>) => ItemDescription;
+export type ItemAbilityDescriptionGetter<StateType extends object> = (
+  itemData: ItemDescriptionData<StateType>,
+) => ItemDescription;
 
 export type ItemConfig<StateType extends object> = {
   init: (combatRefs: {
@@ -74,7 +75,7 @@ export interface ItemBaseModel<StateType extends object = object> extends Entity
   // requirements: ItemRequirementModel[],
 
   description: ItemAbilityDescriptionGetter<StateType>;
-  config: ItemConfig<StateType>,
+  config: ItemConfig<StateType>;
   bonusAbilities?: SpellWithConfig[];
 }
 

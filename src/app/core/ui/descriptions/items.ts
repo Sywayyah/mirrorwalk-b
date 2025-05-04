@@ -1,12 +1,12 @@
 import type { ItemBaseModel } from '../../items';
 import { ModifiersModel, formatMod } from '../../modifiers';
-import { DescriptionElement, DescriptionElementType } from './types';
+import { DescriptionElementType, DescriptionVariants } from './types';
 
 function getItemModHtmlElem(text: string): string {
   return `<div class="item-mod">${text}</div>`;
 }
 
-export function itemStatsDescr(itemBase: ItemBaseModel): DescriptionElement {
+export function itemStatsDescr(itemBase: ItemBaseModel): DescriptionVariants['variants'] {
   const itemStaticMods = itemBase.staticMods;
 
   const mods = Object.entries(itemStaticMods)

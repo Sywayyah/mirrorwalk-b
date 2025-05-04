@@ -1,27 +1,27 @@
 import { ImgIconsPaths } from '../../assets';
 import { resourceDetailsMapping, ResourceType } from '../../resources';
 import type { SpellDescription } from '../../spells';
-import { DescriptionElement, DescriptionElementType } from './types';
+import { DescriptionElementType, DescriptionVariants } from './types';
 
 export function strPercent(num: number): string {
   return `${Math.floor(num * 100)}%`;
 }
 
-export function heroDescrElem(text: string): DescriptionElement {
+export function heroDescrElem(text: string): DescriptionVariants['variants'] {
   return {
     type: DescriptionElementType.FreeHtml,
     htmlContent: text,
   };
 }
 
-export function spellDescrElem(text: string): DescriptionElement {
+export function spellDescrElem(text: string): DescriptionVariants['variants'] {
   return {
     type: DescriptionElementType.FreeHtml,
     htmlContent: `<div class="spell-descr">${text}</div>`,
   };
 }
 
-export function spellStatsElem(stats: string[]): DescriptionElement {
+export function spellStatsElem(stats: string[]): DescriptionVariants['variants'] {
   return {
     type: DescriptionElementType.FreeHtml,
     htmlContent: `

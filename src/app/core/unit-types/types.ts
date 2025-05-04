@@ -12,7 +12,7 @@ import type { Player } from '../players';
 import { ResourcesModel } from '../resources';
 import { Spell, SpellBaseType } from '../spells';
 import { ReactiveState } from '../state';
-import { DescriptionElement } from '../ui';
+import { DescriptionVariants } from '../ui';
 import { CommonUtils } from '../utils';
 import { complete } from '../utils/observables';
 import { CombatState, CombatStateEnum } from './unit-combat-state';
@@ -56,7 +56,7 @@ export interface UnitDescriptionParams {
 }
 
 export interface UnitDescriptions {
-  descriptions: DescriptionElement[];
+  descriptions: DescriptionVariants['variants'][];
 }
 
 export interface UnitBaseType extends Entity {

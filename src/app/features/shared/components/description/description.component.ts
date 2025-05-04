@@ -1,7 +1,9 @@
 import { ChangeDetectionStrategy, Component, ViewEncapsulation, input } from '@angular/core';
-import { DescriptionElement, DescriptionElementType } from 'src/app/core/ui/descriptions';
+import { DescriptionElementType, DescriptionVariants } from 'src/app/core/ui/descriptions';
 
-const transformStringsToDescriptions = (val: (DescriptionElement | string)[]): DescriptionElement[] =>
+const transformStringsToDescriptions = (
+  val: (DescriptionVariants['variants'] | string)[],
+): DescriptionVariants['variants'][] =>
   val.map((v) => (typeof v === 'string' ? { type: DescriptionElementType.FreeHtml, htmlContent: v } : v));
 
 @Component({

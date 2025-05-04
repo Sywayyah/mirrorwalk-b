@@ -1,16 +1,16 @@
 import { WritableSignal } from '@angular/core';
 import { NewDayStarted } from '../events';
 import { Modifiers, ModsRef } from '../modifiers';
-import { GameApi } from '../triggers';
-import { modifiersActivityBonus } from './utils';
-import { DescriptionElement, DescriptionElementType } from '../ui';
 import { ResourceType } from '../resources';
+import { GameApi } from '../triggers';
+import { DescriptionElementType, DescriptionVariants } from '../ui';
+import { modifiersActivityBonus } from './utils';
 
 export interface WeeklyActivity {
   name: string;
   icon?: string;
   type: WeeklyActivityType;
-  descriptions: (string | DescriptionElement)[];
+  descriptions: (string | DescriptionVariants['variants'])[];
   init?: (config: GameApi) => void;
 }
 

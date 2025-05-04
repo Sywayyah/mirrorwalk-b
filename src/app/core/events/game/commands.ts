@@ -1,7 +1,7 @@
 import { createEventType } from 'src/app/store';
 import { ActionCardStack } from '../../action-cards';
 import { Player } from '../../players';
-import { DescriptionElement } from '../../ui';
+import { DescriptionVariants } from '../../ui';
 import {
   DisplayPlayerRewardAction,
   InitBuildingAction,
@@ -17,14 +17,10 @@ const commands = createEventType;
 
 // It feels rather like a semantic event, doesn't feel exactly like command
 //  or regular event
-export const CleanUpHandlersOnFightEnd = commands(
-  'Clear spells and items registries on fight end',
-);
+export const CleanUpHandlersOnFightEnd = commands('Clear spells and items registries on fight end');
 
 // Maybe create Map events.
-export const MapPanCameraCenterTo = commands<PanMapCameraCenterAction>(
-  'Pan camera on the map',
-);
+export const MapPanCameraCenterTo = commands<PanMapCameraCenterAction>('Pan camera on the map');
 
 /*
   New possible philosophy:
@@ -46,9 +42,7 @@ export const OpenMainMenu = commands('Open Main menu');
 
 export const NavigateToView = commands<{ view: ViewsEnum }>('Navigate To View');
 
-export const GameOpenMapStructuresScreen = commands(
-  'Open map structures screen',
-);
+export const GameOpenMapStructuresScreen = commands('Open map structures screen');
 
 export const DisplayPlayerRewardPopup = commands<DisplayPlayerRewardAction>();
 
@@ -63,7 +57,7 @@ export const InitBuilding = commands<InitBuildingAction>();
 export const InitStructure = commands<InitMapStructureAction>();
 
 export const PushEventFeedMessage = commands<{
-  message: DescriptionElement[];
+  message: DescriptionVariants['variants'][];
   delay?: number;
 }>();
 

@@ -3,20 +3,20 @@
 <mw-unit-group-portrait
   class="unit-portrait"
   size="big"
-  [unitGroup]="unitGroup"
-  [isHero]="unitGroup.type.isHero"
+  [unitGroup]="unitGroup()"
+  [isHero]="unitGroup().type.isHero"
 />
 
 <div class="main-group">
   <div class="info-header">
     <div class="title">
       <div class="group">
-        {{ unitGroup.count }}
+        {{ unitGroup().count }}
 
-        {{ unitGroup.type.name }}
+        {{ unitGroup().type.name }}
       </div>
 
-      <div class="tier">Tier {{ unitGroup.type.level }}</div>
+      <div class="tier">Tier {{ unitGroup().type.level }}</div>
     </div>
 
     <!-- Total stats can be a separate section on the right -->
@@ -35,7 +35,7 @@
         <div class="stat">
           <mw-ra-icon icon="spinning-sword" />
           Turns per round:
-          {{ unitGroup.type.defaultTurnsPerRound }}
+          {{ unitGroup().type.defaultTurnsPerRound }}
         </div>
       </div>
     </div>
@@ -110,10 +110,10 @@
         <div class="abilities-list">
           <mw-unit-group-spell-icon
             *ngFor="let spell of spells"
-            [hero]="unitGroup.ownerPlayer.hero"
+            [hero]="unitGroup().ownerPlayer.hero"
             [spell]="spell"
             [hintPos]="'above'"
-            [owner]="unitGroup"
+            [owner]="unitGroup()"
           />
         </div>
       </div>
@@ -129,10 +129,10 @@
         <div class="abilities-list">
           <mw-unit-group-spell-icon
             *ngFor="let spell of effects"
-            [hero]="unitGroup.ownerPlayer.hero"
+            [hero]="unitGroup().ownerPlayer.hero"
             [spell]="spell"
             [hintPos]="'above'"
-            [owner]="unitGroup"
+            [owner]="unitGroup()"
           />
         </div>
       </div>

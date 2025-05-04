@@ -11,7 +11,7 @@ import { Player } from '../players';
 import { ResourcesModel } from '../resources';
 import { Spell } from '../spells';
 import { ReactiveState } from '../state';
-import { DescriptionElement } from '../ui';
+import { DescriptionVariants } from '../ui';
 import { GenerationModel, UnitGroup, UnitModGroups } from '../unit-types';
 import { CommonUtils } from '../utils';
 import { isNotNullish } from '../utils/common';
@@ -25,7 +25,7 @@ export interface HeroBaseStats {
     baseDefence: number;
   };
   abilities: SpellId[];
-  generalDescription: DescriptionElement;
+  generalDescription: DescriptionVariants['variants'];
   image?: string;
   resources: ResourcesModel;
   items: ItemId[];
@@ -38,7 +38,7 @@ export interface HeroBase extends Entity {
   id: HeroId;
 
   name: string;
-  generalDescription: DescriptionElement;
+  generalDescription: DescriptionVariants['variants'];
   initialState: {
     stats: {
       mana: number;

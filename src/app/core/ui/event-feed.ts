@@ -1,7 +1,7 @@
-import { DescriptionElement, DescriptionElementType } from './descriptions';
+import { DescriptionElementType, DescriptionVariants } from './descriptions';
 
 export interface EventFeedMessage {
-  message: DescriptionElement[];
+  message: DescriptionVariants['variants'][];
   delay?: number;
 }
 

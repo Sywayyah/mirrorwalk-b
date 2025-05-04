@@ -5,7 +5,7 @@ import { Entity, SpellId } from '../entities';
 import { GameObject } from '../game-objects';
 import { Hero } from '../heroes';
 import { Player } from '../players';
-import { DescriptionElement } from '../ui/descriptions';
+import { DescriptionVariants } from '../ui/descriptions';
 import { UnitGroup } from '../unit-types';
 import { SpellEventHandlers } from './spell-events';
 
@@ -20,21 +20,14 @@ export enum SpellActivationType {
   Buff = 'buff',
 }
 
-export const EffectSpellTypes = [
-  SpellActivationType.Buff,
-  SpellActivationType.Debuff,
-];
+export const EffectSpellTypes = [SpellActivationType.Buff, SpellActivationType.Debuff];
 
-export const PassiveSpellTypes = [
-  SpellActivationType.Buff,
-  SpellActivationType.Debuff,
-  SpellActivationType.Passive,
-];
+export const PassiveSpellTypes = [SpellActivationType.Buff, SpellActivationType.Debuff, SpellActivationType.Passive];
 
 export const NonEffectSpellTypes = [
   SpellActivationType.Instant,
   SpellActivationType.Passive,
-  SpellActivationType.Target
+  SpellActivationType.Target,
 ];
 
 export function isEffectSpell(spell: Spell): boolean {
@@ -52,7 +45,7 @@ export interface SpellDescriptionData<SpellStateType = DefaultSpellStateType> {
 }
 
 export interface SpellDescription {
-  descriptions: DescriptionElement[]
+  descriptions: DescriptionVariants['variants'][];
 }
 
 export interface SpellBaseType<SpellStateType = DefaultSpellStateType> extends Entity {
@@ -63,7 +56,9 @@ export interface SpellBaseType<SpellStateType = DefaultSpellStateType> extends E
 
   activationType: SpellActivationType;
 
-  getDescription(data: SpellDescriptionData<SpellStateType>): { descriptions: (string | DescriptionElement)[] };
+  getDescription(data: SpellDescriptionData<SpellStateType>): {
+    descriptions: (string | DescriptionVariants['variants'])[];
+  };
 
   config: SpellTypeConfig<SpellStateType>;
 }
@@ -76,8 +71,8 @@ export interface SpellTypeConfig<SpellStateType> {
   aiTags?: AISpellTag[];
   spellConfig: SpellConfig<SpellStateType>;
   flags?: Partial<{
-    isAura: boolean,
-  }>,
+    isAura: boolean;
+  }>;
 }
 
 export interface SpellCombatEventsRef {
@@ -96,8 +91,8 @@ export interface SpellCombatRefsModel<SpellStateType> {
 }
 
 export interface CanActivateSpellParams {
-  unitGroup: UnitGroup,
-  isEnemy: boolean,
+  unitGroup: UnitGroup;
+  isEnemy: boolean;
 }
 
 export interface OnSpellAcquiredConfig<T> {
@@ -116,16 +111,16 @@ export interface SpellConfig<SpellStateType> {
   getManaCost?: (spellInst: Spell<SpellStateType>) => number;
 
   getTargetActionHint?: (options: {
-    spellInstance: Spell<SpellStateType>,
-    ownerPlayer?: Player,
-    target: UnitGroup,
-    ownerHero?: Hero,
-    ownerUnit?: UnitGroup,
+    spellInstance: Spell<SpellStateType>;
+    ownerPlayer?: Player;
+    target: UnitGroup;
+    ownerHero?: Hero;
+    ownerUnit?: UnitGroup;
   }) => string;
   /** Called on ability when it's being acquired or it levels up */
   onAcquired?: (onAquiredConfig: OnSpellAcquiredConfig<SpellStateType>) => void;
   targetCastConfig?: {
-    canActivate?: (info: CanActivateSpellParams) => boolean,
+    canActivate?: (info: CanActivateSpellParams) => boolean;
   };
 }
 
@@ -194,7 +189,10 @@ export class Spell<T = DefaultSpellStateType> extends GameObject<SpellCreationPa
     // If spell has ownerUnitId in source info - run onAcquired
     const ownerUnitObjectId = this.sourceInfo.ownerUnitObjectId;
     if (ownerUnitObjectId) {
-      this.baseType.config.spellConfig.onAcquired?.({ spellInstance: this, ownerUnit: this.getApi().gameObjects.getObjectByFullId<UnitGroup>(ownerUnitObjectId) });
+      this.baseType.config.spellConfig.onAcquired?.({
+        spellInstance: this,
+        ownerUnit: this.getApi().gameObjects.getObjectByFullId<UnitGroup>(ownerUnitObjectId),
+      });
     }
   }
 
@@ -206,4 +204,3 @@ export class Spell<T = DefaultSpellStateType> extends GameObject<SpellCreationPa
     return PassiveSpellTypes.includes(this.baseType.activationType);
   }
 }
-
