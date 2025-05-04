@@ -6,6 +6,7 @@ import { LevelMap } from 'src/app/core/maps';
 import { ModsRefsGroup } from 'src/app/core/modifiers';
 import { Player } from 'src/app/core/players';
 import { Spell } from 'src/app/core/spells';
+import { FeatureState } from 'src/app/core/state';
 import { MapStructure, defaultActionPointsPerDay } from 'src/app/core/structures';
 import { Building, Town } from 'src/app/core/towns';
 import { RefEventTriggersRegistry } from 'src/app/core/triggers';
@@ -18,7 +19,6 @@ import { UnitGroup } from 'src/app/core/unit-types';
 
   or really only those that must be shared everywhere, like players, settings, etc.
 */
-interface Feature {}
 
 interface GameState {
   day: number;
@@ -39,7 +39,7 @@ type GameSettings = {
   providedIn: 'root',
 })
 export class State {
-  gameSettings: GameSettings = {};
+  readonly gameSettings = new FeatureState<GameSettings>({});
 
   public createdGame!: {
     selectedHero: HeroBase;
