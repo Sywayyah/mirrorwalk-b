@@ -80,7 +80,9 @@ export class MwUnitGroupCardComponent extends StoreClient() implements UIUnitPro
     return this.mwBattleStateService.canUnitGroupBeAttackedByCurrentPlayerAICheck(this.unitGroup());
   }
 
-  public attackingUnitGroup!: UnitGroup;
+  public readonly attackingUnitGroup = computed(() =>
+    this.mwBattleStateService.state.pick((state) => state.currentUnitGroup!),
+  );
 
   public isGroupMelee: boolean = false;
 

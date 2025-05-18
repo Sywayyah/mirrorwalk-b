@@ -16,20 +16,20 @@ import { HintAttachment } from 'src/app/features/shared/components';
 export class UnitGroupSpellComponent {
   private readonly curPlayerState = inject(MwCurrentPlayerStateService);
 
-  spell = input.required<Spell>();
-  owner = input.required<UnitGroup>();
-  hero = input<Hero>();
-  currentUnit = input<UnitGroup>();
+  readonly spell = input.required<Spell>();
+  readonly owner = input.required<UnitGroup>();
+  readonly hero = input<Hero>();
+  readonly currentUnit = input<UnitGroup>();
 
-  onCooldown = input<boolean>();
-  hintPos = input<HintAttachment>('above');
+  readonly onCooldown = input<boolean>();
+  readonly hintPos = input<HintAttachment>('above');
 
-  baseType = computed(() => this.spell().baseType);
-  icon = computed(() => this.baseType().icon);
+  readonly baseType = computed(() => this.spell().baseType);
+  readonly icon = computed(() => this.baseType().icon);
 
-  isPassive = computed(() => this.baseType().activationType === SpellActivationType.Passive);
+  readonly isPassive = computed(() => this.baseType().activationType === SpellActivationType.Passive);
 
-  disabled = computed(() => this.currentUnit() !== this.owner() && !this.isPassive());
+  readonly disabled = computed(() => this.currentUnit() !== this.owner() && !this.isPassive());
 
   public onSpellClick(mouseEvent: MouseEvent): void {
     mouseEvent.stopPropagation();

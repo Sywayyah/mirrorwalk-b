@@ -60,10 +60,10 @@
           </div>
 
           <!-- this info will have to be updated -->
-          <div *ngIf="!isBoss || group.type.isHero">
+          @if (!isBoss || group.type.isHero) {
             <mw-ra-icon icon="health" />
             {{ unitState.groupStats.totalHealth }}
-          </div>
+          }
         </div>
       </div>
 
@@ -72,24 +72,26 @@
         [ngClass]="side()"
       >
         <div class="column-data">
-          <mw-unit-group-spell
-            *ngFor="let spell of spells()"
-            [hintPos]="spellsHintsPosition"
-            [spell]="spell"
-            [hero]="playerInfo().hero"
-            [owner]="group"
-            [onCooldown]="unitState.groupState.spellsOnCooldown || !!spell.cooldown"
-            [currentUnit]="attackingUnitGroup"
-          />
+          @for (spell of spells(); track $index) {
+            <mw-unit-group-spell
+              [hintPos]="spellsHintsPosition"
+              [spell]="spell"
+              [hero]="playerInfo().hero"
+              [owner]="group"
+              [onCooldown]="unitState.groupState.spellsOnCooldown || !!spell.cooldown"
+              [currentUnit]="attackingUnitGroup()"
+            />
+          }
         </div>
 
         <div class="column-data">
-          <mw-unit-group-buff
-            [hintPos]="spellsHintsPosition"
-            *ngFor="let ability of effects()"
-            [buff]="ability"
-            [ownerUnit]="group"
-          />
+          @for (effect of effects(); track $index) {
+            <mw-unit-group-buff
+              [hintPos]="spellsHintsPosition"
+              [buff]="effect"
+              [ownerUnit]="group"
+            />
+          }
         </div>
       </div>
     </div>
