@@ -1,4 +1,5 @@
 import { inject, Injectable } from '@angular/core';
+import { CONFIG } from 'src/app/core/config';
 import { UnitTypeId } from 'src/app/core/entities';
 import {
   FightNextRoundStarts,
@@ -138,8 +139,41 @@ export class BattleStateService {
     return this.playersRivalryMap.get(player)!;
   }
 
-  public canUnitGroupBeAttacked(unitGroup: UnitGroup): boolean {
-    return this.state.get().currentPlayer !== unitGroup.ownerPlayer;
+  public canUnitGroupBeAttackedByCurrentPlayerAICheck(unitGroup: UnitGroup): boolean {
+    const targetingData = this.getTargetingData(unitGroup);
+
+    if (!targetingData.stateInitialized) {
+      return false;
+    }
+
+    if (targetingData.isCurrentPlayerAI && !targetingData.isOpponentAI && !CONFIG.allowNeutralAIControl) {
+      return false;
+    }
+
+    return !targetingData.doesUnitBelongToActivePlayer;
+  }
+
+  public getTargetingData(unitGroup: UnitGroup):
+    | {
+        stateInitialized: true;
+        isCurrentPlayerAI: boolean;
+        isOpponentAI: boolean;
+        doesUnitBelongToActivePlayer: boolean;
+      }
+    | { stateInitialized: false } {
+    const currentPlayer = this.state.get().currentPlayer;
+
+    if (!currentPlayer) {
+      return {
+        stateInitialized: false,
+      };
+    }
+    return {
+      stateInitialized: true,
+      isCurrentPlayerAI: currentPlayer.type === PlayerTypeEnum.AI,
+      isOpponentAI: this.getEnemyOfPlayer(currentPlayer).type === PlayerTypeEnum.AI,
+      doesUnitBelongToActivePlayer: unitGroup.ownerPlayer === currentPlayer,
+    };
   }
 
   public processAiPlayer(): void {
@@ -177,7 +211,7 @@ export class BattleStateService {
           attackingGroup: this.state.get().currentUnitGroup!,
         }),
       );
-    }, 1000);
+    }, 3_000);
   }
 
   public getUnitGroupTotalDamage(unitGroup: UnitGroup): number {

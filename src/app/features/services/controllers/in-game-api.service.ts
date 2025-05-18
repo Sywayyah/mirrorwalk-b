@@ -81,7 +81,8 @@ export class InGameApiController extends StoreClient() {
       return;
     }
 
-    baseType.config.spellConfig.init({
+    this.state.initializedSpells.updateWithCopy((state) => state.spells.push(spell));
+    spell.initCombatHandlers({
       actions: this.createActionsApiRef(),
       events: {
         on: (handlers: SpellEventHandlers) => {
@@ -89,8 +90,8 @@ export class InGameApiController extends StoreClient() {
             const event = SpellEventsGroup.getEventByName(eventName as SpellEventNames);
 
             // any for now
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-explicit-any
-            this.state.eventHandlers.spells.registerHandlerByRef(spell, event as any, handler as any);
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+            spell.combatEventHandlers.addEventHandler(event as any, handler as any);
           });
         },
       },
@@ -219,7 +220,7 @@ export class InGameApiController extends StoreClient() {
 
   private createActionsApiRef(): CombatActionsRef {
     return {
-      isEnemyUnitGroup: (unitGroup) => unitGroup.ownerPlayer !== this.currentPlayer.currentPlayer,
+      isEnemyUnitGroup: (unitGroup) => unitGroup.ownerPlayer !== this.currentPlayer.state.get().currentPlayer,
       getUnitsFromFightQueue: () => this.battleState.getFightQueue(),
       removeTurnsFromUnitGroup: (target, turns = target.turnsLeft) => {
         // target.turnsLeft -= turns;

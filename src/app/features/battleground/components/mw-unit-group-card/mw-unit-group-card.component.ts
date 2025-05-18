@@ -77,7 +77,7 @@ export class MwUnitGroupCardComponent extends StoreClient() implements UIUnitPro
   public isCardHovered: boolean = false;
 
   get isEnemyCard(): boolean {
-    return this.mwBattleStateService.canUnitGroupBeAttacked(this.unitGroup());
+    return this.mwBattleStateService.canUnitGroupBeAttackedByCurrentPlayerAICheck(this.unitGroup());
   }
 
   public attackingUnitGroup!: UnitGroup;

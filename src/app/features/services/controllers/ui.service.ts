@@ -39,7 +39,7 @@ export class UiController extends StoreClient() {
 
   @WireMethod(PlayerClicksEnemyGroup)
   public handleEnemyCardClick(event: PlayerClicksEnemyGroupEvent): void {
-    const playerCurrentState = this.curPlayerState.playerCurrentState;
+    const playerCurrentState = this.curPlayerState.state.get().playerCurrentState;
     if (playerCurrentState === PlayerState.Normal) {
       this.events.dispatch(
         GroupAttacked({
@@ -57,7 +57,7 @@ export class UiController extends StoreClient() {
       this.events.dispatch(
         PlayerTargetsSpell({
           player: event.attackingPlayer,
-          spell: this.curPlayerState.currentSpell,
+          spell: this.curPlayerState.state.get().currentSpell,
           target: event.attackedGroup,
         }),
       );
@@ -68,7 +68,7 @@ export class UiController extends StoreClient() {
 
   @WireMethod(PlayerClicksAllyGroup)
   public handleAllyGroupClick(event: PlayerClicksAllyGroupEvent): void {
-    if (this.curPlayerState.playerCurrentState === PlayerState.SpellTargeting) {
+    if (this.curPlayerState.state.get().playerCurrentState === PlayerState.SpellTargeting) {
       this.curPlayerState.onCurrentSpellCast();
 
       const unitGroup = event.unitGroup;
@@ -76,7 +76,7 @@ export class UiController extends StoreClient() {
       this.events.dispatch(
         PlayerTargetsSpell({
           player: unitGroup.ownerPlayer,
-          spell: this.curPlayerState.currentSpell,
+          spell: this.curPlayerState.state.get().currentSpell,
           target: unitGroup,
         }),
       );
@@ -88,24 +88,26 @@ export class UiController extends StoreClient() {
   @WireMethod(PlayerHoversGroupCard)
   public handlePlayerHover(event: PlayerHoversCardEvent): void {
     const targetGroup = event.hoveredCard as UnitGroup;
+    const playerCurrentState = this.curPlayerState.state.get().playerCurrentState;
+    const currentSpell = this.curPlayerState.state.get().currentSpell;
 
     switch (event.hoverType) {
       case HoverTypeEnum.EnemyCard:
-        if (this.curPlayerState.playerCurrentState === PlayerState.Normal) {
+        if (playerCurrentState === PlayerState.Normal) {
           /* fix it */
           this.combatInteractor.setDamageHintMessageOnCardHover(event);
         }
-        if (this.curPlayerState.playerCurrentState === PlayerState.SpellTargeting) {
+        if (playerCurrentState === PlayerState.SpellTargeting) {
           const spellTargetHint: ActionHintVariants['byKey'][ActionHintTypeEnum.OnTargetSpell] = {
             type: ActionHintTypeEnum.OnTargetSpell,
-            spell: this.curPlayerState.currentSpell,
+            spell: currentSpell,
             target: targetGroup,
-            addedContent: this.curPlayerState.currentSpell.baseType.config.spellConfig.getTargetActionHint?.({
+            addedContent: currentSpell.baseType.config.spellConfig.getTargetActionHint?.({
               target: targetGroup,
               ownerHero: event.currentCard?.ownerHero,
               ownerPlayer: event.currentCard?.ownerPlayer,
-              spellInstance: this.curPlayerState.currentSpell,
-              ownerUnit: this.curPlayerState.currentCasterUnit,
+              spellInstance: currentSpell,
+              ownerUnit: this.curPlayerState.state.get().currentCasterUnit,
             }),
           };
           this.actionHint.hintMessage$.next(spellTargetHint);
@@ -113,17 +115,17 @@ export class UiController extends StoreClient() {
         break;
       case HoverTypeEnum.AllyCard:
         /* similar logic */
-        if (this.curPlayerState.playerCurrentState === PlayerState.SpellTargeting) {
+        if (playerCurrentState === PlayerState.SpellTargeting) {
           const spellTargetHint: ActionHintVariants['byKey'][ActionHintTypeEnum.OnTargetSpell] = {
             type: ActionHintTypeEnum.OnTargetSpell,
-            spell: this.curPlayerState.currentSpell,
+            spell: currentSpell,
             target: targetGroup,
-            addedContent: this.curPlayerState.currentSpell.baseType.config.spellConfig.getTargetActionHint?.({
+            addedContent: currentSpell.baseType.config.spellConfig.getTargetActionHint?.({
               target: targetGroup,
               ownerHero: event.currentCard?.ownerHero,
               ownerPlayer: event.currentCard?.ownerPlayer,
-              spellInstance: this.curPlayerState.currentSpell,
-              ownerUnit: this.curPlayerState.currentCasterUnit,
+              spellInstance: currentSpell,
+              ownerUnit: this.curPlayerState.state.get().currentCasterUnit,
             }),
           };
 
@@ -156,7 +158,7 @@ export class UiController extends StoreClient() {
 
   @WireMethod(RoundPlayerTurnStarts)
   public disableActionHintOnEnemyTurn(event: PlayerTurnStartEvent): void {
-    if (event.currentPlayer !== this.curPlayerState.currentPlayer) {
+    if (event.currentPlayer !== this.curPlayerState.state.get().currentPlayer) {
       this.actionHint.disableActionHint$.next(true);
     } else {
       this.actionHint.disableActionHint$.next(false);

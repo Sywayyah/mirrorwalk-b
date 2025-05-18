@@ -25,7 +25,7 @@ export class MwUnitGroupCombatActionDirective implements OnInit {
   private actionTargetUnitGroup!: UnitGroup;
 
   private get isEnemyCard(): boolean {
-    return this.mwBattleStateService.canUnitGroupBeAttacked(this.actionTargetUnitGroup);
+    return this.mwBattleStateService.canUnitGroupBeAttackedByCurrentPlayerAICheck(this.actionTargetUnitGroup);
   }
 
   public ngOnInit(): void {
@@ -87,7 +87,7 @@ export class MwUnitGroupCombatActionDirective implements OnInit {
   }
 
   private canActivateCurrentSpell(): boolean {
-    const spellConfig = this.curPlayerState.currentSpell.baseType.config.spellConfig;
+    const spellConfig = this.curPlayerState.state.get().currentSpell.baseType.config.spellConfig;
 
     const canActivateFn = spellConfig.targetCastConfig?.canActivate;
 

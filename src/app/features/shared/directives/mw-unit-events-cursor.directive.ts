@@ -1,5 +1,6 @@
 import { Directive, InjectionToken, OnInit, inject } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
+import { CONFIG } from 'src/app/core/config';
 import { PlayerState } from 'src/app/core/players';
 import { UnitGroup } from 'src/app/core/unit-types';
 import { CenteredStaticCursorAnimation, SpellCastCursorAnimation, StaticCursorAnimation } from 'src/app/core/vfx';
@@ -29,18 +30,28 @@ export class MwUnitEventsCursorDirective extends MwCustomCursorDirective impleme
   public ngOnInit(): void {
     this.unitGroup = this.unitGroupProvider.getUnitGroup();
 
-    this.curPlayerState.playerStateChanged$.pipe(takeUntil(this.destroyed$)).subscribe(() => {
-      this.recalcCursorIcon();
-    });
+    this.curPlayerState.state
+      .select((state) => state.playerCurrentState)
+      .pipe(takeUntil(this.destroyed$))
+      .subscribe(() => this.recalcCursorIcon());
   }
 
+  // todo: maybe some way to use normal cursor
   protected getCursorToShow(): AnimatedCursor | null {
-    // todo: maybe some way to use normal cursor
+    const targetingData = this.battleState.getTargetingData(this.unitGroup);
 
-    const isEnemyUnitGroup = this.battleState.canUnitGroupBeAttacked(this.unitGroup);
-    const playerState = this.curPlayerState.playerCurrentState;
+    if (!targetingData.stateInitialized) {
+      return null;
+    }
 
-    if (this.curPlayerState.playerCurrentState !== PlayerState.SpellTargeting && !isEnemyUnitGroup) {
+    // keep thinking of current player as enemy if it is uncontrollable AI and opponent isn't AI
+    const isEnemyUnitGroup = !targetingData.isCurrentPlayerAI
+      ? !targetingData.doesUnitBelongToActivePlayer
+      : !targetingData.isOpponentAI && targetingData.doesUnitBelongToActivePlayer && !CONFIG.allowNeutralAIControl;
+
+    const playerState = this.curPlayerState.state.get().playerCurrentState;
+
+    if (playerState !== PlayerState.SpellTargeting && !isEnemyUnitGroup) {
       return null;
     }
 
@@ -49,7 +60,7 @@ export class MwUnitEventsCursorDirective extends MwCustomCursorDirective impleme
     }
 
     const canCastSpellOnTarget = this.spells.canSpellBeCastOnUnit(
-      this.curPlayerState.currentSpell,
+      this.curPlayerState.state.get().currentSpell,
       this.unitGroup,
       isEnemyUnitGroup,
     );
@@ -64,7 +75,7 @@ export class MwUnitEventsCursorDirective extends MwCustomCursorDirective impleme
       [PlayerState.WaitsForTurn]: 'hourglass',
     };
 
-    if (this.curPlayerState.playerCurrentState === PlayerState.SpellTargeting) {
+    if (playerState === PlayerState.SpellTargeting) {
       return {
         animation: SpellCastCursorAnimation,
         options: {
@@ -73,8 +84,7 @@ export class MwUnitEventsCursorDirective extends MwCustomCursorDirective impleme
         },
       };
     }
-
-    return this.createStaticCursor(mapping[this.curPlayerState.playerCurrentState]);
+    return this.createStaticCursor(mapping[playerState]);
   }
 
   private createStaticCursor(cursorIcon: string): AnimatedCursor {
