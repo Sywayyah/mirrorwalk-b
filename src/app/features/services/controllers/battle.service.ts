@@ -149,9 +149,7 @@ export class BattleController extends StoreClient() {
 
       if (restoreLosses) {
         currentPlayer.hero.unitGroups.forEach((unit) => {
-          const unitState = unit.getState();
-          unit.patchUnitGroupState({ count: unitState.groupState.initialCount, isAlive: true });
-        });
+          unit.restoreBattleLosses();});
       }
       const deadUnitsOfEnemyPlayer = this.battleState.getDeadUnitsOfPlayer(enemyPlayer);
 

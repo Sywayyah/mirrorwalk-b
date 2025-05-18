@@ -595,4 +595,13 @@ export class UnitGroup extends GameObject<UnitCreationParams, UnitGroupState> {
   patchUnitGroupState(groupState: Partial<UnitGroupStackState>): UnitGroupState {
     return this.patchState({ groupState: { ...this.getState().groupState, ...groupState } });
   }
+
+  restoreBattleLosses(): void {
+    const unitState = this.getState();
+    this.patchUnitGroupState({
+      count: unitState.groupState.initialCount,
+      isAlive: true,
+      tailHp: this.type.baseStats.health,
+    });
+  }
 }
