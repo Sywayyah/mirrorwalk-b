@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Faction } from 'src/app/core/factions';
+import { GameSettings, LossMode } from 'src/app/core/game-settings';
 import { HeroBase } from 'src/app/core/heroes';
 import { Item } from 'src/app/core/items';
 import { LevelMap } from 'src/app/core/maps';
@@ -26,25 +27,6 @@ interface GameState {
   week: number;
   actionPoints: number;
 }
-
-enum LossMode {
-  // any losses during the fight are restored
-  None,
-  // losses during the fight are permanent
-  Permanent,
-}
-
-type GameSettings = {
-  goldGain?: number;
-  experienceGain?: number;
-  heroUnits?: boolean;
-  neutralDamageFactor?: number;
-  neutralHealthFactor?: number;
-
-  lossToNeutrals?: LossMode;
-  lossToPlayers?: LossMode;
-  lossToNeutralPlayers?: LossMode;
-};
 
 @Injectable({
   providedIn: 'root',
