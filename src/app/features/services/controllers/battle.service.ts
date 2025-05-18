@@ -30,6 +30,7 @@ import { MwCurrentPlayerStateService } from '../mw-current-player-state.service'
 import { MwPlayersService } from '../mw-players.service';
 import { MwStructuresService } from '../mw-structures.service';
 import { State } from '../state.service';
+import { LossMode } from 'src/app/core/game-settings';
 
 @Injectable()
 export class BattleController extends StoreClient() {
@@ -143,9 +144,22 @@ export class BattleController extends StoreClient() {
       const deadUnitsOfCurrentPlayer = this.battleState.getDeadUnitsOfPlayer(currentPlayer);
       const summonedUnitsOfCurrentPlayer = this.battleState.getSummonsOfPlayer(currentPlayer);
 
+      // todo: recheck later, logic for restoring losses
+      const restoreLosses = this.state.gameSettings.get().lossToNeutrals === LossMode.None;
+
+      if (restoreLosses) {
+        currentPlayer.hero.unitGroups.forEach((unit) => {
+          const unitState = unit.getState();
+          unit.patchUnitGroupState({ count: unitState.groupState.initialCount, isAlive: true });
+        });
+      }
       const deadUnitsOfEnemyPlayer = this.battleState.getDeadUnitsOfPlayer(enemyPlayer);
 
-      [...deadUnitsOfCurrentPlayer, ...deadUnitsOfEnemyPlayer, ...summonedUnitsOfCurrentPlayer].forEach((unitGroup) => {
+      [
+        ...(restoreLosses ? [] : deadUnitsOfCurrentPlayer),
+        ...deadUnitsOfEnemyPlayer,
+        ...summonedUnitsOfCurrentPlayer,
+      ].forEach((unitGroup) => {
         this.gameObjectsManager.destroyObject(unitGroup);
       });
 
