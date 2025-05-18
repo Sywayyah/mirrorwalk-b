@@ -223,12 +223,13 @@ export class InGameApiController extends StoreClient() {
       isEnemyUnitGroup: (unitGroup) => unitGroup.ownerPlayer !== this.currentPlayer.state.get().currentPlayer,
       getUnitsFromFightQueue: () => this.battleState.getFightQueue(),
       removeTurnsFromUnitGroup: (target, turns = target.turnsLeft) => {
-        // target.turnsLeft -= turns;
+        let turnsLeft = target.turnsLeft - turns;
 
-        if (target.turnsLeft < 0) {
-          target.updateUnitGroupState({ turnsLeft: 0 });
-          // target.turnsLeft = 0;
+        if (turnsLeft < 0) {
+          turnsLeft = 0;
         }
+
+        target.patchUnitGroupState({ turnsLeft });
 
         this.battleState.removeUnitsWithoutTurnsFromFightQueue();
       },

@@ -98,7 +98,7 @@ export class MwUnitGroupsService {
       };
     }
 
-    unit.updateUnitGroupState({ isAlive: true });
+    unit.patchUnitGroupState({ isAlive: true });
 
     // if heal is greater than overall loss, heal out to max
     if (healValue > totalHpLoss) {

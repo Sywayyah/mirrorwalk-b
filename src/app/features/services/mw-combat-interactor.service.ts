@@ -316,7 +316,7 @@ export class CombatInteractorService extends StoreClient() {
 
     if (!isCounterattack) {
       this.battleState.state.updateWithCopy((state) => state.currentGroupTurnsLeft--);
-      attacker.updateUnitGroupState({ turnsLeft: this.battleState.state.get().currentGroupTurnsLeft });
+      attacker.patchUnitGroupState({ turnsLeft: this.battleState.state.get().currentGroupTurnsLeft });
 
       this.events.dispatch(
         GroupDamagedByGroup({
@@ -446,7 +446,7 @@ export class CombatInteractorService extends StoreClient() {
   }
 
   public resetAllUnitGroupsCooldowns(): void {
-    this.forEachUnitGroup((unitGroup) => unitGroup.updateUnitGroupState({ spellsOnCooldown: false }));
+    this.forEachUnitGroup((unitGroup) => unitGroup.patchUnitGroupState({ spellsOnCooldown: false }));
   }
 
   public getRandomEnemyUnitGroup(): UnitGroup {

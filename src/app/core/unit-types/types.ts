@@ -304,7 +304,7 @@ export class UnitGroup extends GameObject<UnitCreationParams, UnitGroupState> {
       this.assignOwnerPlayer(ownerHero.ownerPlayer);
     }
 
-    this.updateUnitGroupState({ tailHp: unitBase.baseStats.health, turnsLeft: unitBase.defaultTurnsPerRound || 1 });
+    this.patchUnitGroupState({ tailHp: unitBase.baseStats.health, turnsLeft: unitBase.defaultTurnsPerRound || 1 });
 
     if (this.type.defaultModifiers) {
       // think about it as well.
@@ -312,7 +312,7 @@ export class UnitGroup extends GameObject<UnitCreationParams, UnitGroupState> {
       this.modGroup.addModsRef(ModsRef.fromMods(this.type.defaultModifiers));
     }
 
-    this.updateUnitGroupState({ initialCount: count, spellsOnCooldown: false });
+    this.patchUnitGroupState({ initialCount: count, spellsOnCooldown: false });
 
     this.setUnitsCount(count);
     // max mana isn't set initially in stats
@@ -326,7 +326,7 @@ export class UnitGroup extends GameObject<UnitCreationParams, UnitGroupState> {
     this.modGroup.attachNamedParentGroup(UnitModGroups.SpellMods, ModsRefsGroup.empty());
 
     // Init spells when all mod groups are ready
-    this.updateUnitGroupState({ spells: [] });
+    this.patchUnitGroupState({ spells: [] });
 
     if (this.type.defaultSpells) {
       this.type.defaultSpells
@@ -352,11 +352,8 @@ export class UnitGroup extends GameObject<UnitCreationParams, UnitGroupState> {
   }
 
   setPosition(pos: number): void {
-    const newLocal = this.getState();
-    const { groupState: state } = newLocal;
-
-    if (state.position !== pos) {
-      this.pushState({ ...newLocal, groupState: { ...state, position: pos } });
+    if (this.state.pick((state) => state.groupState.position) !== pos) {
+      this.patchUnitGroupState({ position: pos });
     }
   }
 
@@ -379,22 +376,13 @@ export class UnitGroup extends GameObject<UnitCreationParams, UnitGroupState> {
   }
 
   setUnitsCount(newCount: number): void {
-    this.updateUnitGroupState({ count: newCount >= 0 ? newCount : 0 });
+    this.patchUnitGroupState({ count: newCount >= 0 ? newCount : 0 });
     this.recalcHealthBasedStats();
   }
 
   setMana(mana: number): void {
-    const prevState = this.getState();
-
-    this.pushState({
-      ...prevState,
-      groupState: {
-        ...prevState.groupState,
-        currentMana: CommonUtils.limitedNumber(
-          mana,
-          this.getState().groupStats.maxMana || this.type.baseStats.mana || 0,
-        ),
-      },
+    this.patchUnitGroupState({
+      currentMana: CommonUtils.limitedNumber(mana, this.getState().groupStats.maxMana || this.type.baseStats.mana || 0),
     });
   }
 
@@ -417,7 +405,7 @@ export class UnitGroup extends GameObject<UnitCreationParams, UnitGroupState> {
   }
 
   setTailUnitHp(newTailUnitHp: number): void {
-    this.updateUnitGroupState({ tailHp: newTailUnitHp });
+    this.patchUnitGroupState({ tailHp: newTailUnitHp });
     this.recalcHealthBasedStats();
   }
 
@@ -428,7 +416,7 @@ export class UnitGroup extends GameObject<UnitCreationParams, UnitGroupState> {
   addSpell(spell: Spell): void {
     // todo: check, not mutating array for now
     this.spells.push(spell);
-    this.updateUnitGroupState({ spells: this.spells });
+    this.patchUnitGroupState({ spells: this.spells });
     spell.setOwnerObjectId(this.id);
     spell.baseType.config.spellConfig.onAcquired?.({
       spellInstance: spell,
@@ -441,7 +429,7 @@ export class UnitGroup extends GameObject<UnitCreationParams, UnitGroupState> {
   removeSpell(spell: Spell): void {
     // check, not mutating for now
     CommonUtils.removeItem(this.spells, spell);
-    this.updateUnitGroupState({ spells: this.spells });
+    this.patchUnitGroupState({ spells: this.spells });
   }
 
   removeDefendingMod() {
@@ -589,7 +577,7 @@ export class UnitGroup extends GameObject<UnitCreationParams, UnitGroupState> {
   }
 
   setCombatState(combatState: CombatStateVariants['variants']): void {
-    this.updateState({ combatState });
+    this.patchState({ combatState });
   }
 
   clearCombatState(): void {
@@ -600,12 +588,11 @@ export class UnitGroup extends GameObject<UnitCreationParams, UnitGroupState> {
     this.state.set(state);
   }
 
-  private updateState(state: Partial<UnitGroupState>): UnitGroupState {
+  private patchState(state: Partial<UnitGroupState>): UnitGroupState {
     return this.state.patch(state);
   }
 
-  updateUnitGroupState(groupState: Partial<UnitGroupStackState>): UnitGroupState {
-    const newState = { ...this.getState().groupState, ...groupState };
-    return this.updateState({ groupState: newState });
+  patchUnitGroupState(groupState: Partial<UnitGroupStackState>): UnitGroupState {
+    return this.patchState({ groupState: { ...this.getState().groupState, ...groupState } });
   }
 }

@@ -69,7 +69,7 @@ export class MwCurrentPlayerStateService extends StoreClient() {
   public setSpellsOnCooldown(): void {
     const currentCasterUnit = this.state.get().currentCasterUnit;
     if (currentCasterUnit) {
-      currentCasterUnit.updateUnitGroupState({ spellsOnCooldown: true });
+      currentCasterUnit.patchUnitGroupState({ spellsOnCooldown: true });
 
       this.state.patch({ currentCasterUnit: undefined });
     } else {

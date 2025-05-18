@@ -125,7 +125,7 @@ export class BattleStateService {
     const enemyPlayer = unitGroup.ownerPlayer;
     const enemyPlayerGroups = this.heroesUnitGroupsMap.get(enemyPlayer) as UnitGroup[];
     // const indexOfUnitGroup = enemyPlayerGroups?.indexOf(unitGroup);
-    unitGroup.updateUnitGroupState({ isAlive: false });
+    unitGroup.patchUnitGroupState({ isAlive: false });
 
     this.heroesUnitGroupsMap.set(enemyPlayer, enemyPlayerGroups);
 
@@ -252,7 +252,7 @@ export class BattleStateService {
   public addTurnsToUnitGroup(unitGroup: UnitGroup, turns: number): void {
     const previousTurnsLeft = unitGroup.turnsLeft;
 
-    unitGroup.updateUnitGroupState({ turnsLeft: unitGroup.turnsLeft + turns });
+    unitGroup.patchUnitGroupState({ turnsLeft: unitGroup.turnsLeft + turns });
 
     if (this.state.get().currentUnitGroup === unitGroup) {
       this.state.updateWithCopy((state) => (state.currentGroupTurnsLeft += turns));
@@ -307,7 +307,7 @@ export class BattleStateService {
   private resetGroupsTurnsLeft(): void {
     // add method on game object level
     this.fightQueue.forEach((unitGroup: UnitGroup) =>
-      unitGroup.updateUnitGroupState({ turnsLeft: unitGroup.turnsLeft + (unitGroup.type.defaultTurnsPerRound || 1) }),
+      unitGroup.patchUnitGroupState({ turnsLeft: unitGroup.turnsLeft + (unitGroup.type.defaultTurnsPerRound || 1) }),
     );
   }
 
@@ -355,7 +355,7 @@ export class BattleStateService {
           unitGroup.setTailUnitHp(unitGroup.type.baseStats.health);
         }
         // unitGroup.fightInfo.initialCount = unitGroup.count;
-        unitGroup.updateUnitGroupState({ initialCount: unitGroup.count });
+        unitGroup.patchUnitGroupState({ initialCount: unitGroup.count });
       });
     });
   }
@@ -364,7 +364,7 @@ export class BattleStateService {
     this.players.forEach((player) => {
       player.hero.unitGroups.forEach((unitGroup) => {
         // unitGroup.turnsLeft = unitGroup.type.defaultTurnsPerRound || 1;
-        unitGroup.updateUnitGroupState({
+        unitGroup.patchUnitGroupState({
           turnsLeft: unitGroup.type.defaultTurnsPerRound || 1,
         });
       });
