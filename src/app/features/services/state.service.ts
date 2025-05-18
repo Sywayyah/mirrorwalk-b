@@ -27,19 +27,34 @@ interface GameState {
   actionPoints: number;
 }
 
+enum LossMode {
+  // any losses during the fight are restored
+  None,
+  // losses during the fight are permanent
+  Permanent,
+}
+
 type GameSettings = {
   goldGain?: number;
   experienceGain?: number;
   heroUnits?: boolean;
   neutralDamageFactor?: number;
   neutralHealthFactor?: number;
+
+  lossToNeutrals?: LossMode;
+  lossToPlayers?: LossMode;
+  lossToNeutralPlayers?: LossMode;
 };
 
 @Injectable({
   providedIn: 'root',
 })
 export class State {
-  readonly gameSettings = new FeatureState<GameSettings>({});
+  readonly gameSettings = new FeatureState<GameSettings>({
+    lossToNeutralPlayers: LossMode.Permanent,
+    lossToPlayers: LossMode.Permanent,
+    lossToNeutrals: LossMode.None,
+  });
 
   public createdGame!: {
     selectedHero: HeroBase;
