@@ -11,10 +11,34 @@
   Mirrorwalk
 
   <div>
-    <button mw-main-button (click)="openNewGameScreen()">New Game</button>
+    <button
+      mw-main-button
+      (click)="openNewGameScreen()"
+    >
+      New Game
+    </button>
 
-    <button mw-main-button (click)="openGlossary()">Glossary</button>
+    @if (isSandboxEnabled) {
+      <button
+        mw-main-button
+        (click)="openSandboxMode()"
+      >
+        Sandbox Mode
+      </button>
+    }
 
-    <button mw-main-button (click)="openSettings()">Settings</button>
+    <button
+      mw-main-button
+      (click)="openGlossary()"
+    >
+      Glossary
+    </button>
+
+    <button
+      mw-main-button
+      (click)="openSettings()"
+    >
+      Settings
+    </button>
   </div>
 </div>

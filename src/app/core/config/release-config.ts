@@ -7,6 +7,7 @@ export const CONFIG: ConfigModel = {
   logObjectsOnRightClick: true,
 
   showLocationsIds: false,
+  sandboxMode: false,
 
   enableHeroUnits: true,
 

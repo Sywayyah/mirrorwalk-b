@@ -1,5 +1,19 @@
 import { Component } from '@angular/core';
-import { DisplayReward, GameCommandEvents, GameOpenMainScreen, GameOpenMapStructuresScreen, NavigateToView, NeutralStructParams, OpenMainMenu, OpenNewGameScreen, PlayerEntersTown, StructCompleted, StructFightConfirmed, ViewsEnum } from 'src/app/core/events';
+import {
+  DisplayReward,
+  GameCommandEvents,
+  GameOpenMainScreen,
+  GameOpenMapStructuresScreen,
+  NavigateToView,
+  NeutralStructParams,
+  OpenMainMenu,
+  OpenNewGameScreen,
+  OpenSandboxMode,
+  PlayerEntersTown,
+  StructCompleted,
+  StructFightConfirmed,
+  ViewsEnum,
+} from 'src/app/core/events';
 import { injectCdr } from 'src/app/core/utils';
 import { Notify, StoreClient, WireMethod } from 'src/app/store';
 
@@ -7,13 +21,14 @@ import { Notify, StoreClient, WireMethod } from 'src/app/store';
   selector: 'mw-view-control',
   templateUrl: './mw-view-control.component.html',
   styleUrls: ['./mw-view-control.component.scss'],
-  standalone: false
+  standalone: false,
 })
 export class MwViewControlComponent extends StoreClient() {
   private readonly cdr = injectCdr();
 
-  public currentView: ViewsEnum = ViewsEnum.MainScreen;
-  public viewTypes: typeof ViewsEnum = ViewsEnum;
+  readonly resourceViews = [ViewsEnum.Battleground, ViewsEnum.Structures, ViewsEnum.Town];
+  currentView: ViewsEnum = ViewsEnum.MainScreen;
+  readonly viewTypes: typeof ViewsEnum = ViewsEnum;
 
   openMainMenu(): void {
     this.events.dispatch(OpenMainMenu());
@@ -45,15 +60,23 @@ export class MwViewControlComponent extends StoreClient() {
     this.cdr.detectChanges();
   }
 
+  @Notify(OpenSandboxMode)
+  public openSandboxMode(): void {
+    this.events.dispatch(NavigateToView({ view: ViewsEnum.SandboxMode }));
+    this.cdr.detectChanges();
+  }
+
   @WireMethod(StructCompleted)
   public structIsCompleted(event: NeutralStructParams): void {
     event.struct.isInactive = true;
 
     this.events.dispatch(NavigateToView({ view: ViewsEnum.Structures }));
 
-    this.events.dispatch(DisplayReward({
-      struct: event.struct
-    }));
+    this.events.dispatch(
+      DisplayReward({
+        struct: event.struct,
+      }),
+    );
   }
 
   @Notify(PlayerEntersTown)

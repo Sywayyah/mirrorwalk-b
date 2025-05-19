@@ -6,8 +6,10 @@ export interface ConfigModel {
   showLocationsIds: boolean;
 
   enableHeroUnits: boolean;
+  sandboxMode: boolean;
 
   gameSettings: boolean;
+
   // allows to control neutral AI
   allowNeutralAIControl: boolean;
 }
