@@ -211,7 +211,7 @@ export class BattleStateService {
           attackingGroup: this.state.get().currentUnitGroup!,
         }),
       );
-    }, 3_000);
+    }, 1_150);
   }
 
   public getUnitGroupTotalDamage(unitGroup: UnitGroup): number {
