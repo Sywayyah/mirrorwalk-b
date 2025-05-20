@@ -1,5 +1,8 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
+import { EntitiesRegisty } from 'src/app/core/entities';
 import { GameOpenMainScreen } from 'src/app/core/events';
+import { ItemBaseModel } from 'src/app/core/items';
+import { UnitBaseType } from 'src/app/core/unit-types';
 import { EventsService } from 'src/app/store';
 
 @Component({
@@ -11,6 +14,13 @@ import { EventsService } from 'src/app/store';
 })
 export class ScenarioEditorScreenComponent {
   private readonly events = inject(EventsService);
+
+  readonly entitiesRegistries = EntitiesRegisty;
+
+  readonly unitTypes = this.entitiesRegistries.getRegisteredEntitiesMap().get('#unit') as UnitBaseType[];
+  readonly itemTypes = this.entitiesRegistries.getRegisteredEntitiesMap().get('#item') as ItemBaseModel[];
+
+  readonly selectedUnitType = signal(null as string | null);
 
   goToMainScreen() {
     this.events.dispatch(GameOpenMainScreen());

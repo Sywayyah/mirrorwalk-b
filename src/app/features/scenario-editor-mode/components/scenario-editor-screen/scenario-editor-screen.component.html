@@ -1,5 +1,30 @@
-<div>
-  Scenario Editor, here you will be able to create/edit scenarios
+<div>Scenario Editor, here you will be able to create/edit scenarios</div>
+
+<!-- panels, dockers? -->
+<div class="panel">
+  <div class="header">Units Inspector</div>
+
+  <mw-base-select [(selectedItem)]="selectedUnitType">
+    @for (unitType of unitTypes; track $index) {
+      <option value="{{ unitType.id }}">{{ unitType.faction.title }} - {{ unitType.name }}</option>
+    }
+  </mw-base-select>
+  {{ selectedUnitType() }}
 </div>
 
-<button mw-main-button (click)="goToMainScreen()">Back to main screen</button>
+<div class="panel">
+  <div class="header">Items inspector</div>
+
+  <mw-base-select>
+    @for (itemType of itemTypes; track $index) {
+      <option [value]="itemType.id">Item - {{ itemType.name }}</option>
+    }
+  </mw-base-select>
+</div>
+
+<button
+  mw-main-button
+  (click)="goToMainScreen()"
+>
+  Back to main screen
+</button>

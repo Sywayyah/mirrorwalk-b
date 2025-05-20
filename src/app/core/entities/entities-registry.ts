@@ -4,7 +4,7 @@ import { Entity, EntityId } from './types';
 export class Registry<T extends object = object> {
   private readonly entitiesMap = new Map<string, Entity & T>();
 
-  constructor(private readonly id: string) { }
+  constructor(private readonly id: string) {}
 
   registerEntity(entityId: string, entity: T): Entity & T {
     const id = `#${entityId}` as EntityId;
@@ -20,6 +20,7 @@ export class Registry<T extends object = object> {
   }
 }
 
+// turn from static into plain instance of a class
 export class EntitiesRegisty {
   private static readonly allEntitiesMap = new Map<EntityId, Entity>();
   private static readonly entitiesByPrefixMap = new Map<string, Entity[]>();
@@ -34,6 +35,10 @@ export class EntitiesRegisty {
   //   return newRegistry;
   // }
 
+  static getRegisteredEntitiesMap(): Map<string, Entity[]> {
+    return this.entitiesByPrefixMap;
+  }
+
   static resolve<T extends object>(entityId: string): T {
     const entity = this.allEntitiesMap.get(entityId as EntityId);
 
@@ -45,7 +50,7 @@ export class EntitiesRegisty {
   }
 
   static resolveMany<T extends object>(ids: EntityId[]): T[] {
-    return ids.map(id => this.resolve(id));
+    return ids.map((id) => this.resolve(id));
   }
 
   static register(entity: Entity): void {
