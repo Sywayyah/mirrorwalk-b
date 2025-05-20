@@ -1,7 +1,7 @@
 import { PlayersApi, SpellsApi } from '../api/game-api';
 import { Entity, StructId, UnitTypeId } from '../entities';
 import { EventFeedApi } from '../game-objects';
-import { ItemBaseModel } from '../items';
+import { ItemBaseType } from '../items';
 import { Player } from '../players';
 import { ResourceType } from '../resources';
 import { LocalEvents } from '../triggers';
@@ -113,7 +113,7 @@ export interface HiringReward extends NeutralRewardModel<NeutralRewardTypesEnum.
 
 /* Item Reward */
 export interface ItemReward extends NeutralRewardModel<NeutralRewardTypesEnum.Item> {
-  itemGroups: ItemBaseModel[][];
+  itemGroups: ItemBaseType[][];
 }
 
 /* Unit ungrade reward */

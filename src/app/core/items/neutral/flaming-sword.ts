@@ -1,8 +1,7 @@
-import { itemStatsDescr } from '../../ui';
-import { ItemBaseModel, ItemSlotType } from '../types';
+import { ItemBaseType, ItemSlotType } from '../types';
 import { createItem } from '../utils';
 
-export const FlamingSword: ItemBaseModel = createItem({
+export const FlamingSword: ItemBaseType = createItem({
   id: '#item-flaming-sword',
 
   name: 'Flaming Sword',

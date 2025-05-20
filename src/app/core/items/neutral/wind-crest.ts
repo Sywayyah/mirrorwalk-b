@@ -1,9 +1,9 @@
-import { ItemBaseModel, ItemSlotType } from '..';
+import { ItemBaseType, ItemSlotType } from '..';
 import { WindBlessBuff } from '../../spells/common';
 import { itemStatsDescr, spellDescrElem } from '../../ui';
 import { createItem } from '../utils';
 
-export const ItemWindCrest: ItemBaseModel = createItem({
+export const ItemWindCrest: ItemBaseType = createItem({
   id: '#item-wind-crest',
 
   name: 'Wind Crest',

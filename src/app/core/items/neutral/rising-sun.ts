@@ -1,5 +1,5 @@
 import { itemStatsDescr, spellDescrElem } from '../../ui';
-import { ItemBaseModel, ItemSlotType } from '../types';
+import { ItemBaseType, ItemSlotType } from '../types';
 import { createItem } from '../utils';
 
 const healValue = 50;
@@ -7,7 +7,7 @@ const healValue = 50;
 // Ideas for healing items:
 //  1. Heal random amount of units.
 //  2. Heal with ranged value (e.g. 25-40)
-export const RisingSunPendant: ItemBaseModel = createItem({
+export const RisingSunPendant: ItemBaseType = createItem({
   id: '#item-rising-sun',
 
   name: 'Rising Sun',

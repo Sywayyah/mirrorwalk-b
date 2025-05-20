@@ -1,7 +1,7 @@
 import { Component, computed, inject, signal } from '@angular/core';
 import { resolveEntities } from 'src/app/core/entities';
 import { PlayerLosesItem, PlayerReceivesItem } from 'src/app/core/events';
-import { Item, ItemBaseModel } from 'src/app/core/items';
+import { Item, ItemBaseType } from 'src/app/core/items';
 import { Building, SellingBuildingData } from 'src/app/core/towns';
 import { CommonUtils } from 'src/app/core/utils';
 import { MwItemsService, MwPlayersService } from 'src/app/features/services';
@@ -24,10 +24,10 @@ export class ItemsSellingPopupComponent extends BasicPopup<{ building: Building 
 
   private readonly sellingData = this.data.building.getCustomData<SellingBuildingData>();
 
-  readonly items = resolveEntities<ItemBaseModel>(this.sellingData?.items ?? []);
+  readonly items = resolveEntities<ItemBaseType>(this.sellingData?.items ?? []);
   readonly allowsSelling = this.sellingData?.selling;
 
-  readonly itemToBuy = signal<ItemBaseModel | null>(null);
+  readonly itemToBuy = signal<ItemBaseType | null>(null);
   readonly itemToSell = signal<Item | null>(null);
 
   readonly canBuy = computed(() => {

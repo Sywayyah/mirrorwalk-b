@@ -1,9 +1,9 @@
-import { ItemBaseModel, ItemSlotType } from '..';
+import { ItemBaseType, ItemSlotType } from '..';
 import { FrostArrowSpell } from '../../spells/common';
 import { itemStatsDescr, spellDescrElem } from '../../ui';
 import { createItem } from '../utils';
 
-export const ItemIceBow: ItemBaseModel<{}> = createItem({
+export const ItemIceBow: ItemBaseType<{}> = createItem({
   id: '#item-ice-bow',
 
   name: 'Ice Bow',

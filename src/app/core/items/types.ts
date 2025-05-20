@@ -14,7 +14,7 @@ import { ItemsEventsHandlers } from './item-events';
 export interface ItemRequirementModel<T extends object> {
   type: string;
   value?: number | string | boolean;
-  isRequirementMet?: (item: ItemBaseModel<T>, unitGroup: UnitGroup) => boolean;
+  isRequirementMet?: (item: ItemBaseType<T>, unitGroup: UnitGroup) => boolean;
 }
 
 export enum ItemSlotType {
@@ -28,7 +28,7 @@ export enum ItemSlotType {
 
 export interface ItemDescriptionData<T extends object> {
   thisItem?: Item<T>;
-  thisItemBase: ItemBaseModel<T>;
+  thisItemBase: ItemBaseType<T>;
 }
 
 export interface ItemDescription {
@@ -58,7 +58,7 @@ export type ItemConfig<StateType extends object> = {
   }) => void;
 };
 
-export interface ItemBaseModel<StateType extends object = object> extends Entity {
+export interface ItemBaseType<StateType extends object = object> extends Entity {
   id: ItemId;
   defaultState?: StateType;
 
@@ -80,14 +80,14 @@ export interface ItemBaseModel<StateType extends object = object> extends Entity
 }
 
 export interface ItemCreationParams<T extends object = object> {
-  itemBase: ItemBaseModel<T>;
+  itemBase: ItemBaseType<T>;
   state?: T;
 }
 
 export class Item<T extends object = object> extends GameObject<ItemCreationParams<T>> {
   public static readonly categoryId: string = 'item';
 
-  public baseType!: ItemBaseModel<T>;
+  public baseType!: ItemBaseType<T>;
   public state?: T;
 
   create(params: ItemCreationParams<T>): void {
