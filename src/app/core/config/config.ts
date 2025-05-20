@@ -8,6 +8,7 @@ export const CONFIG: ConfigModel = {
 
   showLocationsIds: false,
   sandboxMode: true,
+  scenarioEditorMode: true,
 
   // can become a game-setting
   enableHeroUnits: true,

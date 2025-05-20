@@ -9,6 +9,7 @@ import {
   OpenMainMenu,
   OpenNewGameScreen,
   OpenSandboxMode,
+  OpenScenarioMode,
   PlayerEntersTown,
   StructCompleted,
   StructFightConfirmed,
@@ -63,6 +64,12 @@ export class MwViewControlComponent extends StoreClient() {
   @Notify(OpenSandboxMode)
   public openSandboxMode(): void {
     this.events.dispatch(NavigateToView({ view: ViewsEnum.SandboxMode }));
+    this.cdr.detectChanges();
+  }
+
+  @Notify(OpenScenarioMode)
+  public openScenarioMode(): void {
+    this.events.dispatch(NavigateToView({ view: ViewsEnum.ScenarioMode }));
     this.cdr.detectChanges();
   }
 

@@ -5,6 +5,7 @@ import { MainScreenModule } from '../main-screen/main-screen.module';
 import { MapStructuresModule } from '../map-structures/map-structures.module';
 import { NewGameScreenModule } from '../new-game-screen/new-game-screen.module';
 import { SandboxModeModule } from '../sandbox-mode/sandbox-mode.module';
+import { ScenarioEditorModeModule } from '../scenario-editor-mode/scenario-editor-mode.module';
 import { SharedModule } from '../shared/shared.module';
 import { TownsModule } from '../towns/towns.module';
 import { MwViewControlComponent } from './components';
@@ -23,6 +24,7 @@ const components = [MwViewControlComponent];
     MapStructuresModule,
     TownsModule,
     SandboxModeModule,
+    ScenarioEditorModeModule,
   ],
 })
 export class ViewsModule {}

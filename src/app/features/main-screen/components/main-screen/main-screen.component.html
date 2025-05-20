@@ -27,6 +27,15 @@
       </button>
     }
 
+    @if (isScenarioEditorEnabled) {
+      <button
+        mw-main-button
+        (click)="openScenarioMode()"
+      >
+        Scenario Editor
+      </button>
+    }
+
     <button
       mw-main-button
       (click)="openGlossary()"

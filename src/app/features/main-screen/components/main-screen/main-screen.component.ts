@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { CONFIG } from 'src/app/core/config';
-import { OpenGlossary, OpenNewGameScreen, OpenSandboxMode, OpenSettings } from 'src/app/core/events';
+import { OpenGlossary, OpenNewGameScreen, OpenSandboxMode, OpenScenarioMode, OpenSettings } from 'src/app/core/events';
 import { EventsService } from 'src/app/store';
 
 @Component({
@@ -13,6 +13,7 @@ export class MainScreenComponent {
   private readonly events = inject(EventsService);
 
   readonly isSandboxEnabled = CONFIG.sandboxMode;
+  readonly isScenarioEditorEnabled = CONFIG.scenarioEditorMode;
 
   public openNewGameScreen(): void {
     this.events.dispatch(OpenNewGameScreen());
@@ -20,6 +21,10 @@ export class MainScreenComponent {
 
   public openSandboxMode(): void {
     this.events.dispatch(OpenSandboxMode());
+  }
+
+  public openScenarioMode(): void {
+    this.events.dispatch(OpenScenarioMode());
   }
 
   public openGlossary(): void {

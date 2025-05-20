@@ -36,6 +36,8 @@ export const OpenNewGameScreen = commands('Open New Game Screen');
 
 export const OpenSandboxMode = commands('Open Sandbox Mode');
 
+export const OpenScenarioMode = commands('Open Scenario Mode');
+
 export const OpenSettings = commands('Open Game settings');
 
 export const OpenGlossary = commands('Open Glossary');

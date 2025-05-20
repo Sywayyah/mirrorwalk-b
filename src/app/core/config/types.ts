@@ -7,6 +7,7 @@ export interface ConfigModel {
 
   enableHeroUnits: boolean;
   sandboxMode: boolean;
+  scenarioEditorMode: boolean;
 
   gameSettings: boolean;
 
