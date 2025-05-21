@@ -1,7 +1,7 @@
 import { Signal } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { Entity, HeroId, ItemId, resolveEntity, SpellId } from '../entities';
+import { Entity, HeroId, ItemId, resolveEntity, SpellId, UnitTypeId } from '../entities';
 import { HeroLevelsUp, UnitGroupAddedToHero, UnitGroupRemovedFromHero } from '../events';
 import { GameObject } from '../game-objects';
 import { Item } from '../items';
@@ -12,7 +12,7 @@ import { ResourcesModel } from '../resources';
 import { Spell } from '../spells';
 import { ReactiveState } from '../state';
 import { DescriptionVariants } from '../ui';
-import { GenerationModel, UnitGroup, UnitModGroups } from '../unit-types';
+import { ArmyGenerationModel, UnitGroup, UnitModGroups } from '../unit-types';
 import { CommonUtils } from '../utils';
 import { isNotNullish } from '../utils/common';
 import { complete } from '../utils/observables';
@@ -29,7 +29,7 @@ export interface HeroBaseStats {
   image?: string;
   resources: ResourcesModel;
   items: ItemId[];
-  army: GenerationModel[];
+  army: ArmyGenerationModel[];
   defaultModifiers?: Modifiers;
 }
 
@@ -48,7 +48,7 @@ export interface HeroBase extends Entity {
     abilities: SpellId[];
     resources: ResourcesModel;
     items: ItemId[];
-    army: GenerationModel[];
+    army: ArmyGenerationModel[];
     defaultModifiers?: Modifiers;
   };
   image: string;
