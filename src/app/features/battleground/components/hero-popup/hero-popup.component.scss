@@ -57,12 +57,31 @@
 
 
 .stats-panel {
+  display: flex;
   position: absolute;
-  right: -160px;
+  left: calc(100% + 15px);
   box-sizing: border-box;
   top: 0;
   background: white;
   font-size: 13px;
   padding: 6px 8px;
-  width: 150px;
+  width: 300px;
+
+  gap: 6px;
+
+  > div {
+    flex: 1;
+  }
+
+  .specialties {
+    display: flex;
+    flex-direction: column;
+
+    gap: 8px;
+
+    mw-week-activity-card {
+      padding: 3px;
+    }
+
+  }
 }

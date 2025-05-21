@@ -1,36 +1,42 @@
-<div *ngIf="heroStats$ | async as _heroStats">
+@let heroStats = (heroStats$ | async)!;
+
+<div>
   <div class="resource-info-row">
-    <div>{{resourceNames.gold}}:</div>
-    <div>{{currentPlayer.resources.gold}}</div>
+    <mw-img-icon icon="gold" />
+    <div>{{ resourceNames.gold }}:</div>
+    <div>{{ currentPlayer.resources.gold }}</div>
   </div>
 
   <div class="resource-info-row">
-    <div>{{resourceNames.wood}}:</div>
-    <div>{{currentPlayer.resources.wood}}</div>
+    <mw-img-icon icon="wood" />
+    <div>{{ resourceNames.wood }}:</div>
+    <div>{{ currentPlayer.resources.wood }}</div>
   </div>
 
   <div class="resource-info-row">
-    <div>{{resourceNames.redCrystals}}:</div>
-    <div>{{currentPlayer.resources.redCrystals}}</div>
+    <mw-img-icon icon="gems" />
+    <div>{{ resourceNames.gems }}:</div>
+    <div>{{ currentPlayer.resources.gems }}</div>
   </div>
 
   <div class="resource-info-row">
-    <div>{{resourceNames.gems}}:</div>
-    <div>{{currentPlayer.resources.gems}}</div>
+    <mw-img-icon icon="crystals" />
+    <div>{{ resourceNames.redCrystals }}:</div>
+    <div>{{ currentPlayer.resources.redCrystals }}</div>
   </div>
 
   <div class="resource-info-row">
     <div>Mana:</div>
-    <div>{{_heroStats.currentMana}}/{{_heroStats.maxMana}}</div>
+    <div>{{ heroStats.currentMana }}/{{ heroStats.maxMana }}</div>
   </div>
 
   <div class="resource-info-row">
     <div>Attack:</div>
     <div>
-      {{_heroStats.baseAttack}}
-      <span *ngIf="_heroStats.bonusAttack">
+      {{ heroStats.baseAttack }}
+      <span *ngIf="heroStats.bonusAttack">
         <!-- pipe for pos/neg values, or directive with ::before -->
-        (+{{_heroStats.bonusAttack}})
+        (+{{ heroStats.bonusAttack }})
       </span>
     </div>
   </div>
@@ -38,22 +44,18 @@
   <div class="resource-info-row">
     <div>Defence:</div>
     <div>
-      {{_heroStats.baseDefence}}
-      <span *ngIf="_heroStats.bonusDefence">
-        (+{{_heroStats.bonusDefence}})
-      </span>
+      {{ heroStats.baseDefence }}
+      <span *ngIf="heroStats.bonusDefence"> (+{{ heroStats.bonusDefence }}) </span>
     </div>
   </div>
 
   <div class="sub-info">
     <div>
-      <div>
-        Week: {{state.currentGame.week}}, Day: {{state.currentGame.day}}
-      </div>
+      <div>Week: {{ state.currentGame.week }}, Day: {{ state.currentGame.day }}</div>
 
       <div>
         Action Points:
-        {{state.currentGame.actionPoints}}
+        {{ state.currentGame.actionPoints }}
         <mw-ra-icon icon="feather-wing"></mw-ra-icon>
       </div>
     </div>

@@ -8,48 +8,71 @@
   <div popupContent>
     <div class="item-list">
       @for (item of items; track $index) {
-      <div class="item" [class.active]="itemToBuy() === item" (click)="itemToBuy.set(item)">
-        <mw-item-icon [itemBase]="item" />
+        <div
+          class="item"
+          [class.active]="itemToBuy() === item"
+          (click)="itemToBuy.set(item)"
+        >
+          <mw-item-icon [itemBase]="item" />
 
-        {{item.name}}
+          {{ item.name }}
 
-        <mw-resources-cost style="display: flex; flex-direction: column;" [cost]="item.cost" />
-      </div>
+          <mw-resources-cost
+            style="display: flex; flex-direction: column"
+            [cost]="item.cost"
+          />
+        </div>
       }
     </div>
 
-    <button mw-main-button [disabled]="!canBuy()" (click)="buyItem()">
+    <button
+      mw-main-button
+      [disabled]="!canBuy()"
+      (click)="buyItem()"
+    >
       Buy
     </button>
 
     @if (allowsSelling) {
-    <div>Sell:</div>
+      <div>Sell:</div>
 
-    <div class="item-list">
+      <div class="item-list">
+        @for (item of hero.itemsBackpack; track $index) {
+          <div
+            class="item"
+            [class.active]="itemToSell() === item"
+            (click)="itemToSell.set(item)"
+          >
+            <!-- Indicate equipped items -->
+            <mw-item-icon [itemBase]="item.baseType" />
 
-      @for (item of hero.itemsBackpack; track $index) {
-      <div class="item" [class.active]="itemToSell() === item" (click)="itemToSell.set(item)">
-        <!-- Indicate equipped items -->
-        <mw-item-icon [itemBase]="item.baseType" />
+            {{ item.baseType.name }}
 
-        {{item.baseType.name}}
-
-        <mw-resources-cost style="display: flex; flex-direction: column;" [cost]="item.baseType.sellingCost" />
+            <mw-resources-cost
+              style="display: flex; flex-direction: column"
+              [cost]="item.baseType.sellingCost"
+            />
+          </div>
+        }
       </div>
-      }
-
-    </div>
     }
   </div>
 
   <div popupButtons>
     @if (allowsSelling) {
-    <button mw-main-button [disabled]="!canSell()" (click)="sellItem()">
-      Sell
-    </button>
+      <button
+        mw-main-button
+        [disabled]="!canSell()"
+        (click)="sellItem()"
+      >
+        Sell
+      </button>
     }
 
-    <button mw-main-button (click)="popup.close()">
+    <button
+      mw-main-button
+      (click)="popup.close()"
+    >
       Close
     </button>
   </div>

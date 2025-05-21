@@ -9,9 +9,10 @@ import { State } from 'src/app/features/services/state.service';
 import { EventsService } from 'src/app/store';
 
 @Component({
-  selector: 'mw-player-info-panel',
-  templateUrl: './mw-player-info-panel.component.html',
-  styleUrls: ['./mw-player-info-panel.component.scss'],
+    selector: 'mw-player-info-panel',
+    templateUrl: './mw-player-info-panel.component.html',
+    styleUrls: ['./mw-player-info-panel.component.scss'],
+    standalone: false
 })
 export class MwPlayerInfoPanelComponent {
   public readonly player: Player = this.players.getCurrentPlayer();

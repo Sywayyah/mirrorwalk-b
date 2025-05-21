@@ -1,14 +1,13 @@
 import { AfterViewInit, Component, ElementRef, Renderer2, ViewChild } from '@angular/core';
 import { CONFIG } from 'src/app/core/config';
 import { MapPanCameraCenterTo, OpenMainMenu, StructSelected } from 'src/app/core/events';
-import { Player } from 'src/app/core/players';
 import { MapStructure } from 'src/app/core/structures';
 import { MwPlayersService, MwStructuresService } from 'src/app/features/services';
 import { GameObjectsManager } from 'src/app/features/services/game-objects-manager.service';
 import { State } from 'src/app/features/services/state.service';
+import { onEscape } from 'src/app/features/services/utils/keys.util';
 import { StoreClient } from 'src/app/store';
 import { MapDragEvent } from '../map-canvas/map-canvas.component';
-import { onEscape } from 'src/app/features/services/utils/keys.util';
 
 /* Rewamp this a bit later, along with service and the rest */
 /*  Check more cases, stuff like that */
@@ -18,13 +17,13 @@ import { onEscape } from 'src/app/features/services/utils/keys.util';
   selector: 'mw-structures-view',
   templateUrl: './mw-structures-view.component.html',
   styleUrls: ['./mw-structures-view.component.scss'],
+  standalone: false,
 })
 export class MwStructuresViewComponent extends StoreClient() implements AfterViewInit {
-
   @ViewChild('locationsContainer')
   public locationsRef!: ElementRef;
 
-  public player: Player;
+  public readonly player = this.playersService.getCurrentPlayer();
 
   public isLocIdVisible = CONFIG.showLocationsIds;
 
@@ -33,11 +32,9 @@ export class MwStructuresViewComponent extends StoreClient() implements AfterVie
     public state: State,
     public readonly structsService: MwStructuresService,
     private readonly renderer: Renderer2,
-    private gameObjectsManager: GameObjectsManager,
+    private readonly gameObjectsManager: GameObjectsManager,
   ) {
     super();
-
-    this.player = this.playersService.getCurrentPlayer();
 
     onEscape(() => {
       if (!this.state.mainMenu.isOpen) {
@@ -85,8 +82,10 @@ export class MwStructuresViewComponent extends StoreClient() implements AfterVie
       this.playersService.getEnemyPlayer().hero.setUnitGroups(struct.guard);
     }
 
-    this.events.dispatch(StructSelected({
-      struct: struct,
-    }));
+    this.events.dispatch(
+      StructSelected({
+        struct: struct,
+      }),
+    );
   }
 }

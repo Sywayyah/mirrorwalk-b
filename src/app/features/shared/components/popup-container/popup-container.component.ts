@@ -3,9 +3,10 @@ import { PopupService } from './popup.service';
 import { getLast } from 'src/app/core/utils';
 
 @Component({
-  selector: 'mw-popup-container',
-  templateUrl: './popup-container.component.html',
-  styleUrls: ['./popup-container.component.scss']
+    selector: 'mw-popup-container',
+    templateUrl: './popup-container.component.html',
+    styleUrls: ['./popup-container.component.scss'],
+    standalone: false
 })
 export class PopupContainerComponent {
   constructor(

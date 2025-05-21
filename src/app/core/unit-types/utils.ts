@@ -1,12 +1,12 @@
 import { UnitTypeId, resolveEntity } from '../entities';
-import { DescriptionElement } from '../ui';
+import { DescriptionElementType, DescriptionVariants } from '../ui';
 import { CommonUtils } from '../utils';
 import { UnitBaseType, UnitDescriptions, UnitTypeBaseStatsModel } from './types';
 
 /* unit type, minCount, maxCount, maxGroupsOfThisType */
 type UnitModel = [unitType: UnitTypeId, min: number, max: number, maxOfThisType: number | void];
 
-export interface GenerationModel {
+export interface ArmyGenerationModel {
   minUnitGroups: number;
   maxUnitGroups: number;
   units: UnitModel[];
@@ -31,8 +31,6 @@ export const createStats = ([[minDmg, maxDmg], attack, defence, health, speed, m
   mana: mana || 0,
 });
 
-
-
 interface GenerationDescription {
   unitType: UnitTypeId;
   min: number;
@@ -51,7 +49,7 @@ export function resolveUnitType(unitTypeId: UnitTypeId): UnitBaseType {
 }
 
 export const UnitsUtils = {
-  createRandomArmy(options: GenerationModel): UnitGenerationModel[] {
+  createRandomArmy(options: ArmyGenerationModel): UnitGenerationModel[] {
     const groupsToGenerateCount = CommonUtils.randIntInRange(options.minUnitGroups, options.maxUnitGroups);
     const generatedGroups = [];
     const unitsToGenerate = [...options.units];
@@ -89,9 +87,9 @@ export const UnitsUtils = {
       unit.createdTimes++;
 
       if (unit.createdTimes >= unit.maxGroupsOfThisType) {
-        console.log('this unit was generated max times')
+        console.log('this unit was generated max times');
         unitsMap.delete(randUnitDescr);
-        CommonUtils.removeItem(unitsToGenerate, randUnitDescr)
+        CommonUtils.removeItem(unitsToGenerate, randUnitDescr);
       }
     }
 
@@ -99,11 +97,14 @@ export const UnitsUtils = {
 
     return generatedGroups;
   },
-}
+};
 
-
-export const simpleDescriptions = (descriptions: DescriptionElement[]): () => UnitDescriptions => {
+export const simpleDescriptions = (
+  descriptions: (DescriptionVariants['variants'] | string)[],
+): (() => UnitDescriptions) => {
   return () => ({
-    descriptions,
+    descriptions: descriptions.map((descr) =>
+      typeof descr === 'string' ? { type: DescriptionElementType.FreeHtml, htmlContent: descr } : descr,
+    ),
   });
 };

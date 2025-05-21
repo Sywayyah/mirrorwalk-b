@@ -1,32 +1,29 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
-import { Item, ItemBaseModel } from 'src/app/core/items';
-import { DescriptionElement } from 'src/app/core/ui/descriptions';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  input,
+} from '@angular/core';
+import { Item, ItemBaseType } from 'src/app/core/items';
 
 @Component({
   selector: 'mw-item-description',
   templateUrl: './item-description.component.html',
   styleUrls: ['./item-description.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
-export class ItemDescriptionComponent implements OnInit {
+export class ItemDescriptionComponent {
+  public readonly item = input<Item>();
 
-  @Input()
-  public item?: Item;
+  public readonly itemBase = input.required<ItemBaseType>();
 
-  @Input({ required: true })
-  public itemBase!: ItemBaseModel;
+  public readonly descriptions = computed(() => {
+    const baseType = this.item()?.baseType || this.itemBase();
 
-  public descriptions!: DescriptionElement[];
-
-  constructor() { }
-
-  ngOnInit(): void {
-    const baseType = this.item?.baseType || this.itemBase;
-
-    this.descriptions = baseType.description({
-      thisItem: this.item,
+    return baseType.description({
+      thisItem: this.item(),
       thisItemBase: baseType,
     }).descriptions;
-  }
-
+  });
 }

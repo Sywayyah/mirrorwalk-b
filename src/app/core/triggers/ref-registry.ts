@@ -1,5 +1,6 @@
 import { EventData, EventType } from 'src/app/store';
 
+// maybe instead should store it on entities level and be able to dispatch it to specific game object
 // this is going to replace { Spell/Item: { Event: Handler } } and some other possible things in the future.
 export class RefEventTriggersRegistry<T> {
   // theoretically, handlers can be in a Set instead of array, but not sure yet.
@@ -23,26 +24,30 @@ export class RefEventTriggersRegistry<T> {
 
   public triggerAllHandlersByEvent(event: EventData): void {
     this.triggerMapsByRefsMap.forEach((refTriggersMap) => {
-      refTriggersMap.forEach((triggers, eventType) => triggers.forEach(trigger => {
-        if (eventType === event.__eventType.__type) {
-          trigger(event);
-        }
-      }));
+      refTriggersMap.forEach((triggers, eventType) =>
+        triggers.forEach((trigger) => {
+          if (eventType === event.__eventType.__type) {
+            trigger(event);
+          }
+        }),
+      );
     });
   }
 
   public triggerRefEventHandlers(ref: T, event: EventData): void {
     const refTriggersMap = this.triggerMapsByRefsMap.get(ref);
 
-    if (refTriggersMap) {
-      refTriggersMap.forEach((triggers, eventType) => {
-        triggers.forEach(trigger => {
-          if (eventType === event.__eventType.__type) {
-            trigger(event);
-          }
-        });
-      })
+    if (!refTriggersMap) {
+      return;
     }
+
+    refTriggersMap.forEach((triggers, eventType) => {
+      triggers.forEach((trigger) => {
+        if (eventType === event.__eventType.__type) {
+          trigger(event);
+        }
+      });
+    });
   }
 
   public removeAllHandlersForRef(ref: T): void {

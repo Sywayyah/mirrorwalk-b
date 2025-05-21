@@ -2,7 +2,8 @@ import { Directive, EventEmitter, HostListener, Output } from '@angular/core';
 
 /* todo: In theory, some custom menu can be shown */
 @Directive({
-  selector: '[mwNoContextMenu], [mwUnitGroupCombatAction]',
+    selector: '[mwNoContextMenu], [mwUnitGroupCombatAction]',
+    standalone: false
 })
 export class DisableContextMenuDirective {
   @Output()

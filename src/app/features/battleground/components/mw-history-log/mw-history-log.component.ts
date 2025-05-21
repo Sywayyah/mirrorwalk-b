@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, viewChild } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { HistoryLogTypesEnum } from 'src/app/core/ui';
 import { MwBattleLogService } from 'src/app/features/services';
@@ -6,23 +6,25 @@ import { MwBattleLogService } from 'src/app/features/services';
 @Component({
   selector: 'mw-history-log',
   templateUrl: './mw-history-log.component.html',
-  styleUrls: ['./mw-history-log.component.scss']
+  styleUrls: ['./mw-history-log.component.scss'],
+  standalone: false,
 })
 export class MwHistoryLogComponent {
-  @ViewChild('historyLog', { static: true }) public historyLogElem!: ElementRef;
+  readonly historyLogElem = viewChild.required<ElementRef>('historyLog');
 
   public types: typeof HistoryLogTypesEnum = HistoryLogTypesEnum;
 
-  constructor(
-    public readonly battleLogService: MwBattleLogService,
-  ) {
-    this.battleLogService.historyEvent$.pipe(
-      takeUntilDestroyed(),
-    ).subscribe(() => {
-      const historyElem = this.historyLogElem.nativeElement;
-      setTimeout(() => {
-        historyElem.scrollTo({ top: historyElem.scrollHeight, behavior: 'smooth' });
-      }, 0);
-    });
+  constructor(public readonly battleLogService: MwBattleLogService) {
+    this.battleLogService.historyEvent$
+      .pipe(takeUntilDestroyed())
+      .subscribe(() => {
+        const historyElem = this.historyLogElem().nativeElement;
+        setTimeout(() => {
+          historyElem.scrollTo({
+            top: historyElem.scrollHeight,
+            behavior: 'smooth',
+          });
+        }, 0);
+      });
   }
 }

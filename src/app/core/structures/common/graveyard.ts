@@ -1,5 +1,11 @@
-import { GenerationModel } from '../../unit-types';
-import { HiringReward, NeutralRewardTypesEnum, StructureGeneratorModel, StuctureControl, UnitUpgradeReward } from '../types';
+import { ArmyGenerationModel } from '../../unit-types';
+import {
+  HiringReward,
+  NeutralRewardTypesEnum,
+  StructureGeneratorModel,
+  StuctureControl,
+  UnitUpgradeReward,
+} from '../types';
 import { createStructure } from '../utils';
 
 export const GraveyardStructure: StructureGeneratorModel = createStructure({
@@ -12,10 +18,8 @@ export const GraveyardStructure: StructureGeneratorModel = createStructure({
     const guard = {
       maxUnitGroups: 2,
       minUnitGroups: 3,
-      units: [
-        ['#unit-neut-ghost-0', 14, 18, 3],
-      ],
-    } as GenerationModel;
+      units: [['#unit-neut-ghost-0', 14, 18, 3]],
+    } as ArmyGenerationModel;
 
     return guard;
   },
@@ -23,9 +27,7 @@ export const GraveyardStructure: StructureGeneratorModel = createStructure({
   generateReward: () => {
     const hiringReward: HiringReward = {
       type: NeutralRewardTypesEnum.UnitsHire,
-      units: [
-        { unitTypeId: '#unit-neut-ghost-0', maxCount: 24 },
-      ],
+      units: [{ unitTypeId: '#unit-neut-ghost-0', maxCount: 24 }],
     };
 
     return hiringReward;
@@ -38,9 +40,7 @@ export const BeaconOfTheUndead: StructureGeneratorModel = createStructure({
   name: 'Beacon of the Undead',
   control: StuctureControl.Neutral,
   description: () => ({
-    descriptions: [
-      'Allows to upgrade your ghost units below level 4.',
-    ]
+    descriptions: ['Allows to upgrade your ghost units below level 4.'],
   }),
 
   /* todo: also, think about this. Maybe if we can have callbacks like this,
@@ -50,13 +50,11 @@ export const BeaconOfTheUndead: StructureGeneratorModel = createStructure({
     return {
       type: NeutralRewardTypesEnum.UnitsUpgrade,
       getUnits: (playersApi) => {
-        return playersApi
-          .getCurrentPlayerUnitGroups()
-          .filter(unitGroup => {
-            const unitType = unitGroup.type;
+        return playersApi.getCurrentPlayerUnitGroups().filter((unitGroup) => {
+          const unitType = unitGroup.type;
 
-            return !unitType.upgraded && unitType.level <= 4 && unitType.defaultModifiers?.isGhost;
-          });
+          return !unitType.upgraded && unitType.level <= 4 && unitType.defaultModifiers?.isGhost;
+        });
       },
     } as UnitUpgradeReward;
   },

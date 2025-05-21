@@ -2,9 +2,10 @@ import { Component } from '@angular/core';
 import { BasicPopup } from '../popup-container';
 
 @Component({
-  selector: 'mw-game-over-popup',
-  templateUrl: './game-over-popup.component.html',
-  styleUrls: ['./game-over-popup.component.scss']
+    selector: 'mw-game-over-popup',
+    templateUrl: './game-over-popup.component.html',
+    styleUrls: ['./game-over-popup.component.scss'],
+    standalone: false
 })
 export class GameOverPopupComponent extends BasicPopup {
 

@@ -5,10 +5,11 @@ import { Spell, SpellActivationType } from 'src/app/core/spells';
 import { HintAttachment } from 'src/app/features/shared/components';
 
 @Component({
-  selector: 'mw-spell-button',
-  templateUrl: './mw-spell-button.component.html',
-  styleUrls: ['./mw-spell-button.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'mw-spell-button',
+    templateUrl: './mw-spell-button.component.html',
+    styleUrls: ['./mw-spell-button.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class MwSpellButtonComponent {
   spell = input.required<Spell>();
@@ -16,9 +17,7 @@ export class MwSpellButtonComponent {
   hero = input.required<Hero>();
 
   disabled = input(false);
-
   isActive = input(false);
-
   hintPos = input<HintAttachment>('above');
 
   clicked = output<Spell>();

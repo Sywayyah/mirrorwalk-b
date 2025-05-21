@@ -1,8 +1,6 @@
 import { AssetsImages } from '../../assets';
 import { constellationFaction } from '../../factions/constellation/faction';
-import { DreamAura } from '../../spells/common/dream-aura';
 import { spellDescrElem } from '../../ui';
-import { EssenceLeak } from './spells/essence-leak';
 
 // Units of constellation might be more durable and slightly higher
 // quality then average units
@@ -21,12 +19,14 @@ constellationFaction.defineUnitType({
     return {
       descriptions: [
         spellDescrElem('Tier 1 units of the Constellation.'),
-        spellDescrElem('<br>One of the strongest tier 1 unit types due to high-value abilities. Sprites can curse specific enemy to heal allied attackers.'),
+        spellDescrElem(
+          '<br>One of the strongest tier 1 unit types due to high-value abilities. Sprites can curse specific enemy to heal allied attackers.',
+        ),
       ],
     };
   },
 
-  defaultSpells: [EssenceLeak],
+  defaultSpells: ['#spell-essence-leak'],
 
   baseStats: {
     damageInfo: {
@@ -55,6 +55,11 @@ constellationFaction.defineUnitType({
 
   baseRequirements: {
     gold: 75,
+  },
+
+  defaultSpells: [`#spell-universal-pin`],
+  defaultModifiers: {
+    isPinner: true,
   },
 
   baseStats: {
@@ -104,7 +109,7 @@ constellationFaction.defineUnitType({
     experience: 18,
     gold: 14,
   },
-})
+});
 
 // potential level 5
 constellationFaction.defineUnitType({
@@ -133,7 +138,7 @@ constellationFaction.defineUnitType({
     experience: 18,
     gold: 14,
   },
-})
+});
 
 constellationFaction.defineUnitType({
   id: '#unit-c60',
@@ -204,12 +209,10 @@ constellationFaction.defineUnitType({
 
   defaultModifiers: {
     counterattacks: true,
-    retaliationDamagePercent: 0.5
+    retaliationDamagePercent: 0.5,
   },
 
-  defaultSpells: [
-    DreamAura,
-  ],
+  defaultSpells: ['#spell-dream-aura'],
 
   neutralReward: {
     experience: 180,

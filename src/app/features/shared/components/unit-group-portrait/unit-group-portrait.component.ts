@@ -2,10 +2,11 @@ import { ChangeDetectionStrategy, Component, HostBinding, Input, input } from '@
 import { UnitGroup } from 'src/app/core/unit-types';
 
 @Component({
-  selector: 'mw-unit-group-portrait',
-  templateUrl: './unit-group-portrait.component.html',
-  styleUrls: ['./unit-group-portrait.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'mw-unit-group-portrait',
+    templateUrl: './unit-group-portrait.component.html',
+    styleUrls: ['./unit-group-portrait.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class UnitGroupPortraitComponent {
   @Input()

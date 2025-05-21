@@ -28,6 +28,20 @@ export const CommonUtils = {
     arr.splice(itemIndex, 1);
   },
 
+  removeItemCopy<T>(arr: T[], item: T): T[] {
+    let newArr = [...arr];
+    const itemIndex = newArr.indexOf(item);
+
+    if (itemIndex === -1) {
+      return newArr;
+    }
+    newArr.splice(itemIndex, 1);
+
+    return newArr;
+  },
+
+
+
   randBoolean(): boolean {
     return Math.random() > 0.5;
   },
@@ -39,6 +53,10 @@ export const CommonUtils = {
   /** Keep percent below max percent */
   maxPercent(percent: number, maxPercent = 1): number {
     return percent > maxPercent ? maxPercent : percent;
+  },
+
+  increaseByPercent(val: number, percent: number): number {
+    return val + (val * percent);
   },
 
   nonNegative(val: number): number {

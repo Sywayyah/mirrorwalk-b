@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { TriggersRegistry } from 'src/app/core/triggers';
 import { StoreClient } from 'src/app/store';
 import { ApiProvider } from './api-provider.service';
@@ -7,10 +7,9 @@ import { ApiProvider } from './api-provider.service';
   providedIn: 'root'
 })
 export class MwTriggersService extends StoreClient() {
+  private readonly apiProvider = inject(ApiProvider);
 
-  constructor(
-    private readonly apiProvider: ApiProvider,
-  ) {
+  constructor() {
     super();
     this.initTriggersFromTriggersRegistry();
   }

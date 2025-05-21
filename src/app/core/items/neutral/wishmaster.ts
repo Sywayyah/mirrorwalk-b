@@ -1,8 +1,8 @@
 import { itemStatsDescr, spellDescrElem } from '../../ui';
-import { ItemBaseModel, ItemSlotType } from '../types';
+import { ItemBaseType, ItemSlotType } from '../types';
 import { createItem } from '../utils';
 
-export const WishmasterItem: ItemBaseModel = createItem({
+export const WishmasterItem: ItemBaseType = createItem({
   id: '#item-wishmaster',
 
   name: 'Wishmaster',
@@ -11,6 +11,11 @@ export const WishmasterItem: ItemBaseModel = createItem({
     heroBonusAttack: 5,
     heroBonusDefence: 4,
     resistAll: 13,
+  },
+  cost: {
+    gems: 20,
+    gold: 2000,
+    redCrystals: 2,
   },
   icon: 'feather-wing',
   description({ thisItem, thisItemBase }) {

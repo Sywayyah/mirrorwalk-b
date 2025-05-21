@@ -3,7 +3,6 @@ import { fortFaction } from '../../factions';
 import { heroDescrElem } from '../../ui';
 import { HeroBase } from '../types';
 import { heroesDefaultResources } from '../utils';
-import { Firestorm } from './spells/firestorm';
 
 export const FirebrandHero: HeroBase = fortFaction.createHero({
   id: '#hero-firebrand',
@@ -14,7 +13,7 @@ export const FirebrandHero: HeroBase = fortFaction.createHero({
 
   image: AssetsImages.HeroKnight,
   abilities: [
-    Firestorm,
+    '#spell-firestorm'
   ],
   army: [{
     maxUnitGroups: 2,

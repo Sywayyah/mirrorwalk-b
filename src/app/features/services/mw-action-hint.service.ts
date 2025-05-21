@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { ActionHintModel } from 'src/app/core/ui';
+import { ActionHintVariants } from 'src/app/core/ui';
 
 // Maybe remove this service one day and
 // transfer this logic to events
@@ -8,7 +8,7 @@ import { ActionHintModel } from 'src/app/core/ui';
   providedIn: 'root',
 })
 export class ActionHintService {
-  public readonly hintMessage$: BehaviorSubject<ActionHintModel | null> = new BehaviorSubject<ActionHintModel | null>(null);
+  readonly hintMessage$ = new BehaviorSubject<ActionHintVariants['variants'] | null>(null);
 
-  public readonly disableActionHint$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  readonly disableActionHint$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 }

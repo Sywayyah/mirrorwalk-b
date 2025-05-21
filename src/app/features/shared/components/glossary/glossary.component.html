@@ -1,0 +1,36 @@
+<mw-popup-base-content>
+  <div
+    class="header"
+    popupHeader
+  >
+    Glossary
+  </div>
+
+  <div
+    class="content"
+    popupContent
+  >
+    <div class="tabs">
+      @for (tab of glossaryTabs; track $index) {
+        <div
+          class="tab"
+          [class.active]="tab === activeTab()"
+          (click)="activeTab.set(tab)"
+        >
+          @if (tab.icon) {
+            <mw-ra-icon [icon]="tab.icon" />
+          }
+          {{ tab.tabName }}
+        </div>
+      }
+    </div>
+
+    <div class="tab-content">
+      @for (description of activeTab().descriptions; track $index) {
+        <p class="description">{{ description }}</p>
+      }
+    </div>
+  </div>
+
+  <!-- <div popupButtons></div> -->
+</mw-popup-base-content>

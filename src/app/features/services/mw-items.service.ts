@@ -1,7 +1,7 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Colors } from 'src/app/core/assets';
 import { InitItem } from 'src/app/core/events';
-import { ItemBaseModel, Item } from 'src/app/core/items';
+import { ItemBaseType, Item } from 'src/app/core/items';
 import { Player } from 'src/app/core/players';
 import { EventData, EventsService } from 'src/app/store';
 import { State } from './state.service';
@@ -11,18 +11,14 @@ import { GameObjectsManager } from './game-objects-manager.service';
 /*  And not only when game is over, but also when fight is over/item gets unregistered, something like that */
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class MwItemsService {
+  private readonly events = inject(EventsService);
+  private readonly state = inject(State);
+  private readonly gameObjectsManager = inject(GameObjectsManager);
 
-
-  constructor(
-    private events: EventsService,
-    private state: State,
-    private gameObjectsManager: GameObjectsManager,
-  ) { }
-
-  public createItem<T extends object>(itemBase: ItemBaseModel<T>): Item<T> {
+  public createItem<T extends object>(itemBase: ItemBaseType<T>): Item<T> {
     const itemIcon = itemBase.icon;
 
     if (!itemIcon.bgClr) {
@@ -40,10 +36,12 @@ export class MwItemsService {
   }
 
   public registerItemsEventHandlers(item: Item, ownerPlayer: Player): void {
-    this.events.dispatch(InitItem({
-      item,
-      ownerPlayer,
-    }));
+    this.events.dispatch(
+      InitItem({
+        item,
+        ownerPlayer,
+      }),
+    );
   }
 
   // Later may limit events only to item events
@@ -51,10 +49,7 @@ export class MwItemsService {
     this.state.eventHandlers.items.triggerAllHandlersByEvent(event);
   }
 
-  public triggerEventForItemHandlers(
-    item: Item,
-    event: EventData,
-  ): void {
+  public triggerEventForItemHandlers(item: Item, event: EventData): void {
     this.state.eventHandlers.items.triggerRefEventHandlers(item, event);
   }
 }

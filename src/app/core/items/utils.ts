@@ -2,7 +2,7 @@ import { Modifiers } from '../modifiers';
 import { ItemId, registerEntity } from '../entities';
 import { Resources } from '../resources';
 import { itemStatsDescr, spellDescrElem } from '../ui';
-import { ItemAbilityDescriptionGetter, ItemBaseModel, ItemConfig, ItemSlotType, SpellWithConfig } from './types';
+import { ItemAbilityDescriptionGetter, ItemBaseType, ItemConfig, ItemSlotType, SpellWithConfig } from './types';
 
 export function createItem<StateType extends object = object>({ id, name, icon, slot, stats, enemyStats, abilityDescription, cost, sellingCost, spells, description, config }: {
   id: ItemId,
@@ -18,8 +18,8 @@ export function createItem<StateType extends object = object>({ id, name, icon, 
   spells?: SpellWithConfig[],
   sellingCost?: Resources,
   config?: ItemConfig<StateType>,
-}): ItemBaseModel<StateType> {
-  const itemBaseEntity: ItemBaseModel<StateType> = {
+}): ItemBaseType<StateType> {
+  const itemBaseEntity: ItemBaseType<StateType> = {
     id,
     name,
     icon: {

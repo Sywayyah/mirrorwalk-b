@@ -1,9 +1,10 @@
 import { Component, Input } from '@angular/core';
 
 @Component({
-  selector: 'mw-item-icon-base',
-  templateUrl: './item-icon-base.component.html',
-  styleUrls: ['./item-icon-base.component.scss']
+    selector: 'mw-item-icon-base',
+    templateUrl: './item-icon-base.component.html',
+    styleUrls: ['./item-icon-base.component.scss'],
+    standalone: false
 })
 export class ItemIconBaseComponent {
   @Input()

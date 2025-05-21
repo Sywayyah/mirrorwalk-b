@@ -1,17 +1,19 @@
 import { Injectable } from '@angular/core';
+import { CONFIG } from 'src/app/core/config';
 import { Faction } from 'src/app/core/factions';
+import { GameSettings, LossMode } from 'src/app/core/game-settings';
 import { HeroBase } from 'src/app/core/heroes';
 import { Item } from 'src/app/core/items';
 import { LevelMap } from 'src/app/core/maps';
 import { ModsRefsGroup } from 'src/app/core/modifiers';
 import { Player } from 'src/app/core/players';
 import { Spell } from 'src/app/core/spells';
+import { FeatureState } from 'src/app/core/state';
 import { MapStructure, defaultActionPointsPerDay } from 'src/app/core/structures';
 import { Building, Town } from 'src/app/core/towns';
 import { RefEventTriggersRegistry } from 'src/app/core/triggers';
 import { UnitsOrientation } from 'src/app/core/ui';
 import { UnitGroup } from 'src/app/core/unit-types';
-
 
 /*
   I think I want to have state parts as separated features, maybe don't want to have all
@@ -19,9 +21,6 @@ import { UnitGroup } from 'src/app/core/unit-types';
 
   or really only those that must be shared everywhere, like players, settings, etc.
 */
-interface Feature {
-
-}
 
 interface GameState {
   day: number;
@@ -34,12 +33,21 @@ interface GameState {
   providedIn: 'root',
 })
 export class State {
+  readonly gameSettings = new FeatureState<GameSettings>({
+    lossToNeutralPlayers: LossMode.Permanent,
+    lossToPlayers: LossMode.Permanent,
+    lossToNeutrals: LossMode.Permanent,
+    allowNeutralControl: CONFIG.allowNeutralAIControlByDefault,
+  });
+
   public createdGame!: {
     selectedHero: HeroBase;
     selectedColor: string;
     faction: Faction;
-    town: Town<any>;
+    town: Town<string>;
   };
+
+  public townsByPlayers = new Map<string, Town<string>>();
 
   public currentGame: GameState = {
     day: 1,
@@ -51,13 +59,13 @@ export class State {
 
   // todo: review map-related settings later
   public settings: {
-    orientation: UnitsOrientation,
-    mapDebug: boolean,
+    orientation: UnitsOrientation;
+    mapDebug: boolean;
   } = {
-      // Wire it to localStorage I suppose
-      orientation: UnitsOrientation.Vertical,
-      mapDebug: true,
-    };
+    // Wire it to localStorage I suppose
+    orientation: UnitsOrientation.Vertical,
+    mapDebug: true,
+  };
 
   public mainMenu: { isOpen?: boolean } = {};
 
@@ -72,7 +80,7 @@ export class State {
     currentMap: LevelMap;
   };
 
-  public mapCamera: { x: number; y: number; cameraInitialized: boolean; } = {
+  public mapCamera: { x: number; y: number; cameraInitialized: boolean } = {
     cameraInitialized: false,
     x: 0,
     y: 0,
@@ -84,18 +92,19 @@ export class State {
     enemyPlayer: Player;
   };
 
+  // holds all spells initialized with combat handlers during the fight
+  readonly initializedSpells = new FeatureState({ spells: [] as Spell[] });
+
   public eventHandlers: {
-    spells: RefEventTriggersRegistry<Spell>,
-    items: RefEventTriggersRegistry<Item>,
+    items: RefEventTriggersRegistry<Item>;
     /* prepare events for structures and buildings */
-    buildings: RefEventTriggersRegistry<Building>,
-    structures: RefEventTriggersRegistry<MapStructure>,
+    buildings: RefEventTriggersRegistry<Building>;
+    structures: RefEventTriggersRegistry<MapStructure>;
   } = {
-      spells: new RefEventTriggersRegistry<Spell>(),
-      items: new RefEventTriggersRegistry<Item>(),
-      buildings: new RefEventTriggersRegistry<Building>(),
-      structures: new RefEventTriggersRegistry<MapStructure>(),
-    };
+    items: new RefEventTriggersRegistry<Item>(),
+    buildings: new RefEventTriggersRegistry<Building>(),
+    structures: new RefEventTriggersRegistry<MapStructure>(),
+  };
 
   public unitsAppliedModifiers: Map<UnitGroup, ModsRefsGroup> = new Map();
 }

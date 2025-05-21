@@ -13,9 +13,10 @@ interface Animation {
 }
 
 @Component({
-  selector: 'mw-vfx-container',
-  templateUrl: './vfx-container.component.html',
-  styleUrls: ['./vfx-container.component.scss']
+    selector: 'mw-vfx-container',
+    templateUrl: './vfx-container.component.html',
+    styleUrls: ['./vfx-container.component.scss'],
+    standalone: false
 })
 export class VfxContainerComponent implements OnInit, OnDestroy {
   private readonly vfxService = inject(VfxService);

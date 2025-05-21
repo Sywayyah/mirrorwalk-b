@@ -1,8 +1,16 @@
+import { CdkMenuModule } from '@angular/cdk/menu';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { SharedModule } from '../shared/shared.module';
-import { BuildPopupComponent, GarrisonPopupComponent, HiringPopupComponent, TownViewComponent } from './components';
+import {
+  BuildPopupComponent,
+  GarrisonPopupComponent,
+  HiringPopupComponent,
+  TownViewComponent,
+} from './components';
 import { ItemsSellingPopupComponent } from './components/items-selling-popup/items-selling-popup.component';
+import { MarketDialogComponent } from './components/market-dialog/market-dialog.component';
+import { FormsModule } from '@angular/forms';
 
 const components = [
   GarrisonPopupComponent,
@@ -10,11 +18,12 @@ const components = [
   BuildPopupComponent,
   HiringPopupComponent,
   ItemsSellingPopupComponent,
-]
+  MarketDialogComponent,
+];
 
 @NgModule({
   declarations: components,
   exports: components,
-  imports: [CommonModule, SharedModule],
+  imports: [CommonModule, SharedModule, CdkMenuModule, FormsModule],
 })
-export class TownsModule { }
+export class TownsModule {}

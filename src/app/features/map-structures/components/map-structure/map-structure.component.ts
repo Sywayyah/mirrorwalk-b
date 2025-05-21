@@ -2,9 +2,10 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { MapStructure } from 'src/app/core/structures';
 
 @Component({
-  selector: 'mw-map-structure',
-  templateUrl: './map-structure.component.html',
-  styleUrls: ['./map-structure.component.scss'],
+    selector: 'mw-map-structure',
+    templateUrl: './map-structure.component.html',
+    styleUrls: ['./map-structure.component.scss'],
+    standalone: false
 })
 export class MapStructureComponent {
   @Input()

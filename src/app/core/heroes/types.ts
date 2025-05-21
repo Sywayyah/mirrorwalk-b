@@ -1,20 +1,22 @@
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { Signal } from '@angular/core';
+import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { Entity, HeroId } from '../entities';
-import { UnitGroupAddedToHero, UnitGroupRemovedFromHero } from '../events';
+import { Entity, HeroId, ItemId, resolveEntity, SpellId } from '../entities';
+import { HeroLevelsUp, UnitGroupAddedToHero, UnitGroupRemovedFromHero } from '../events';
 import { GameObject } from '../game-objects';
-import { Item, ItemBaseModel } from '../items';
+import { Item } from '../items';
 import { InventoryItems } from '../items/inventory';
-import { Modifiers, ModsRef, ModsRefsGroup, Specialties, filterSpecialties } from '../modifiers';
+import { filterSpecialties, Modifiers, ModsRef, ModsRefsGroup, Specialties } from '../modifiers';
 import { Player } from '../players';
 import { ResourcesModel } from '../resources';
-import { Spell, SpellBaseType } from '../spells';
-import { DescriptionElement } from '../ui';
-import { GenerationModel, UnitGroup } from '../unit-types';
+import { Spell } from '../spells';
+import { ReactiveState } from '../state';
+import { DescriptionVariants } from '../ui';
+import { GenerationModel, UnitGroup, UnitModGroups } from '../unit-types';
 import { CommonUtils } from '../utils';
 import { isNotNullish } from '../utils/common';
 import { complete } from '../utils/observables';
-import { signal, Signal } from '@angular/core';
+import { HERO_LEVELS_BREAKPOINTS } from './levels';
 
 export interface HeroBaseStats {
   stats: {
@@ -22,11 +24,11 @@ export interface HeroBaseStats {
     baseAttack: number;
     baseDefence: number;
   };
-  abilities: SpellBaseType[];
-  generalDescription: DescriptionElement;
+  abilities: SpellId[];
+  generalDescription: DescriptionVariants['variants'];
   image?: string;
   resources: ResourcesModel;
-  items: ItemBaseModel[];
+  items: ItemId[];
   army: GenerationModel[];
   defaultModifiers?: Modifiers;
 }
@@ -36,17 +38,17 @@ export interface HeroBase extends Entity {
   id: HeroId;
 
   name: string;
-  generalDescription: DescriptionElement;
+  generalDescription: DescriptionVariants['variants'];
   initialState: {
     stats: {
       mana: number;
       baseAttack: number;
       baseDefence: number;
-    },
-    abilities: SpellBaseType[],
-    resources: ResourcesModel,
-    items: ItemBaseModel[],
-    army: GenerationModel[],
+    };
+    abilities: SpellId[];
+    resources: ResourcesModel;
+    items: ItemId[];
+    army: GenerationModel[];
     defaultModifiers?: Modifiers;
   };
   image: string;
@@ -103,7 +105,7 @@ export function swapUnitsInSlots(source: UnitGroupSlot, target: UnitGroupSlot): 
 }
 
 export function freeSlotsCount(slots: UnitGroupSlot[]): number {
-  return slots.filter(slot => !slot.unitGroup).length;
+  return slots.filter((slot) => !slot.unitGroup).length;
 }
 
 export class Hero extends GameObject<HeroCreationParams, HeroStatsInfo> {
@@ -121,6 +123,7 @@ export class Hero extends GameObject<HeroCreationParams, HeroStatsInfo> {
   public readonly unitAurasModGroup = ModsRefsGroup.empty();
 
   public readonly specialtiesModGroup = ModsRefsGroup.empty();
+  public readonly weeklyActivitiesModGroup = ModsRefsGroup.empty();
 
   /** All items that hero possesses (not all might be equiped) */
   public itemsBackpack: Item[] = [];
@@ -140,7 +143,7 @@ export class Hero extends GameObject<HeroCreationParams, HeroStatsInfo> {
 
   private _unitGroups: UnitGroup[] = [];
 
-  private readonly heroStats$ = new BehaviorSubject<HeroStatsInfo>({
+  private readonly state = new ReactiveState<HeroStatsInfo>({
     baseAttack: 0,
     bonusAttack: 0,
     finalAttack: 0,
@@ -157,8 +160,6 @@ export class Hero extends GameObject<HeroCreationParams, HeroStatsInfo> {
     currentMana: 0,
     maxMana: 0,
   });
-
-  private readonly signalState = signal(this.heroStats$.getValue());
 
   private readonly destroyed$ = new Subject<void>();
 
@@ -196,7 +197,36 @@ export class Hero extends GameObject<HeroCreationParams, HeroStatsInfo> {
       this.modGroup.addModsRef(ModsRef.fromMods(heroBase.initialState.defaultModifiers));
     }
 
-    this.updateSignalState();
+    this.modGroup.attachNamedParentGroup(UnitModGroups.WeeklyMods, this.weeklyActivitiesModGroup);
+  }
+
+  public addExperience(experience: number, withBonus = false): void {
+    if (experience <= 0) {
+      return;
+    }
+
+    let exp = experience;
+
+    if (withBonus) {
+      exp = CommonUtils.increaseByPercent(
+        experience,
+        this.weeklyActivitiesModGroup.getCalcNumModValueOrZero('experienceGainBonus'),
+      );
+    }
+
+    this.experience += exp;
+
+    const currentXpToNextLevel = HERO_LEVELS_BREAKPOINTS[this.level + 1];
+
+    // handle overstacked level
+    if (currentXpToNextLevel <= this.experience) {
+      this.level++;
+      this.freeSkillpoints++;
+      this.experience = this.experience - currentXpToNextLevel;
+
+      // theoretically, overstacked skillpoints can be sent here
+      this.getApi().events.dispatch(HeroLevelsUp({ newLevel: this.level, hero: this }));
+    }
   }
 
   getState(): HeroStatsInfo {
@@ -234,7 +264,7 @@ export class Hero extends GameObject<HeroCreationParams, HeroStatsInfo> {
   }
 
   getMainFilledUnitSlots(): UnitGroupSlot[] {
-    return this.mainUnitSlots.filter(slot => slot.unitGroup);
+    return this.mainUnitSlots.filter((slot) => slot.unitGroup);
   }
 
   updateUnitGroupPositions(): void {
@@ -248,12 +278,13 @@ export class Hero extends GameObject<HeroCreationParams, HeroStatsInfo> {
   }
 
   getAllUnitsFromSlots(): UnitGroup[] {
-    return this.getAllSlots().map(slot => slot.unitGroup).filter(isNotNullish);
+    return this.getAllSlots()
+      .map((slot) => slot.unitGroup)
+      .filter(isNotNullish);
   }
 
   setUnitGroups(unitGroups: UnitGroup[], updateSlots = true): void {
     this._unitGroups = unitGroups;
-
 
     this._unitGroups.forEach((unitGroup, i) => {
       if (updateSlots) {
@@ -276,7 +307,7 @@ export class Hero extends GameObject<HeroCreationParams, HeroStatsInfo> {
       return;
     }
 
-    const emptySlot = this.mainUnitSlots.find(slot => !slot.unitGroup);
+    const emptySlot = this.mainUnitSlots.find((slot) => !slot.unitGroup);
 
     if (emptySlot) {
       emptySlot.unitGroup = unitGroup;
@@ -284,7 +315,7 @@ export class Hero extends GameObject<HeroCreationParams, HeroStatsInfo> {
       return;
     }
 
-    const emptyReserveSlot = this.reserveUnitSlots.find(slot => !slot.unitGroup);
+    const emptyReserveSlot = this.reserveUnitSlots.find((slot) => !slot.unitGroup);
 
     if (emptyReserveSlot) {
       emptyReserveSlot.unitGroup = unitGroup;
@@ -301,11 +332,10 @@ export class Hero extends GameObject<HeroCreationParams, HeroStatsInfo> {
 
     this.getApi().events.dispatch(UnitGroupRemovedFromHero({ hero: this, unitGroup }));
     this.updateUnitGroupPositions();
-
   }
 
   refreshUnitGroupsOrderBySlots(): void {
-    this._unitGroups = this.mainUnitSlots.map(slot => slot.unitGroup).filter(Boolean) as UnitGroup[];
+    this._unitGroups = this.mainUnitSlots.map((slot) => slot.unitGroup).filter(Boolean) as UnitGroup[];
   }
 
   assignOwnerPlayer(player: Player): void {
@@ -316,7 +346,9 @@ export class Hero extends GameObject<HeroCreationParams, HeroStatsInfo> {
     const heroBase = this.base;
     const heroInitState = heroBase.initialState;
 
-    this.spells = heroInitState.abilities.map(spell => this.getApi().spells.createSpellInstance(spell));
+    this.spells = heroInitState.abilities.map((spell) =>
+      this.getApi().spells.createSpellInstance(resolveEntity(spell)),
+    );
 
     this.initParentModGroups();
     this.setupStatsUpdating(heroBase);
@@ -328,15 +360,15 @@ export class Hero extends GameObject<HeroCreationParams, HeroStatsInfo> {
   }
 
   getStats(): HeroStatsInfo {
-    return this.heroStats$.getValue();
+    return this.state.get();
   }
 
   getStateSignal(): Signal<HeroStatsInfo> {
-    return this.signalState;
+    return this.state.signal;
   }
 
   listenHeroStats(): Observable<HeroStatsInfo> {
-    return this.heroStats$.pipe(takeUntil(this.destroyed$));
+    return this.state.observe().pipe(takeUntil(this.destroyed$));
   }
 
   /** Add item to backback */
@@ -370,10 +402,9 @@ export class Hero extends GameObject<HeroCreationParams, HeroStatsInfo> {
     // add spells given by item
     if (itemBase.bonusAbilities) {
       itemBase.bonusAbilities.forEach((spellConfig) => {
-        const spellInstance = this.getApi().spells.createSpellInstance(
-          spellConfig.spell,
-          { initialLevel: spellConfig.level },
-        );
+        const spellInstance = this.getApi().spells.createSpellInstance(spellConfig.spell, {
+          initialLevel: spellConfig.level,
+        });
 
         spellInstance.setSourceGameObjectId(item.id);
 
@@ -395,7 +426,7 @@ export class Hero extends GameObject<HeroCreationParams, HeroStatsInfo> {
     }
 
     // remove spells given by item
-    this.spells = this.spells.filter(spell => spell.sourceInfo.gameObjectId !== item.id);
+    this.spells = this.spells.filter((spell) => spell.sourceInfo.gameObjectId !== item.id);
   }
 
   addCommonCombatMods(mods: ModsRef): void {
@@ -412,27 +443,24 @@ export class Hero extends GameObject<HeroCreationParams, HeroStatsInfo> {
   }
 
   updateUnitSpecialtyAndConditionalMods(unitGroup: UnitGroup): void {
-
     // todo: seems to work fine, but can be revisited later.
     // clearing old spec & conditional mods
     unitGroup.clearSpecialtyAndConditionalMods();
 
     // attaching conditional mods
-    const conditionalMods = this.modGroup.getAllModValues('__unitConditionalMods')
-      .map(unitConditMod => unitConditMod(unitGroup))
+    const conditionalMods = this.modGroup
+      .getAllModValues('__unitConditionalMods')
+      .map((unitConditMod) => unitConditMod(unitGroup))
       .filter(Boolean) as Modifiers[];
 
     // todo: theoretically, there can be some tool to merge mods.
     conditionalMods.forEach((mods) => unitGroup.attachSpecialtyMods(mods));
 
     // attaching specialty mods
-    const getUnitTypeSpecialtyModifiers = unitGroup.type.getUnitTypeSpecialtyModifiers;
 
-    if (!getUnitTypeSpecialtyModifiers) {
-      return;
-    }
-
-    const specialtyMods = getUnitTypeSpecialtyModifiers?.(this.specialtiesModGroup.getMods() as Specialties);
+    const specialtyMods = unitGroup.type.getUnitTypeSpecialtyModifiers?.(
+      this.specialtiesModGroup.getMods() as Specialties,
+    );
 
     if (specialtyMods) {
       unitGroup.attachSpecialtyMods(specialtyMods);
@@ -451,13 +479,7 @@ export class Hero extends GameObject<HeroCreationParams, HeroStatsInfo> {
       this.stats.currentMana = maxMana;
     }
 
-    const currentState = this.heroStats$.getValue();
-
-    this.heroStats$.next({
-      ...currentState,
-      currentMana: this.stats.currentMana,
-    });
-    this.updateSignalState();
+    this.state.patch({ currentMana: this.stats.currentMana });
   }
 
   private updateUnitGroup(unitGroup: UnitGroup): void {
@@ -477,48 +499,46 @@ export class Hero extends GameObject<HeroCreationParams, HeroStatsInfo> {
   }
 
   private setupStatsUpdating(heroBase: HeroBase): void {
-    this.modGroup.onValueChanges().pipe(takeUntil(this.destroyed$)).subscribe((mods) => {
-      this.specialtiesModGroup.clearOwnModRefs();
-      this.specialtiesModGroup.addModsRef(ModsRef.fromMods(filterSpecialties(mods)));
-      this.updateUnitsSpecialtyAndConditionalMods();
+    this.modGroup
+      .onValueChanges()
+      .pipe(takeUntil(this.destroyed$))
+      .subscribe((mods) => {
+        this.specialtiesModGroup.clearOwnModRefs();
+        this.specialtiesModGroup.addModsRef(ModsRef.fromMods(filterSpecialties(mods)));
+        this.updateUnitsSpecialtyAndConditionalMods();
 
-      const { baseAttack, baseDefence, mana } = heroBase.initialState.stats;
+        const { baseAttack, baseDefence, mana } = heroBase.initialState.stats;
 
-      const bonusAttack = mods.heroBonusAttack || 0;
-      const bonusDefence = mods.heroBonusDefence || 0;
+        const bonusAttack = mods.heroBonusAttack || 0;
+        const bonusDefence = mods.heroBonusDefence || 0;
 
-      const allResist = mods.resistAll || 0;
+        const allResist = mods.resistAll || 0;
 
-      const maxMana = (mods.heroMaxMana || 0) + mana;
+        const maxMana = (mods.heroMaxMana || 0) + mana;
 
-      if (this.stats.currentMana > maxMana) {
-        this.stats.currentMana = maxMana;
-      }
+        if (this.stats.currentMana > maxMana) {
+          this.stats.currentMana = maxMana;
+        }
 
-      const heroStats: HeroStatsInfo = {
-        baseAttack,
-        bonusAttack,
-        finalAttack: baseAttack + bonusAttack,
+        const heroStats: HeroStatsInfo = {
+          baseAttack,
+          bonusAttack,
+          finalAttack: baseAttack + bonusAttack,
 
-        baseDefence,
-        bonusDefence,
-        finalDefence: baseDefence + bonusDefence,
+          baseDefence,
+          bonusDefence,
+          finalDefence: baseDefence + bonusDefence,
 
-        fireResist: (mods.resistFire || 0) + allResist,
-        coldResist: (mods.resistCold || 0) + allResist,
-        lightningResist: (mods.resistLightning || 0) + allResist,
-        poisonResist: (mods.resistPoison || 0) + allResist,
+          fireResist: (mods.resistFire || 0) + allResist,
+          coldResist: (mods.resistCold || 0) + allResist,
+          lightningResist: (mods.resistLightning || 0) + allResist,
+          poisonResist: (mods.resistPoison || 0) + allResist,
 
-        currentMana: this.stats.currentMana,
-        maxMana: maxMana,
-      };
+          currentMana: this.stats.currentMana,
+          maxMana: maxMana,
+        };
 
-      this.heroStats$.next(heroStats);
-      this.updateSignalState();
-    });
-  }
-
-  private updateSignalState(): void {
-    this.signalState.set(this.heroStats$.getValue());
+        this.state.set(heroStats);
+      });
   }
 }

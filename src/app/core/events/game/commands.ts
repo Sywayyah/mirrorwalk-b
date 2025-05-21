@@ -1,9 +1,17 @@
 import { createEventType } from 'src/app/store';
 import { ActionCardStack } from '../../action-cards';
 import { Player } from '../../players';
-import { DescHtmlElement } from '../../ui';
-import { DisplayPlayerRewardAction, InitBuildingAction, InitGameObjectApiParams, InitItemAction, InitMapStructureAction, InitSpellAction, PanMapCameraCenterAction, ViewsEnum } from './types';
-
+import { DescriptionVariants } from '../../ui';
+import {
+  DisplayPlayerRewardAction,
+  InitBuildingAction,
+  InitGameObjectApiParams,
+  InitItemAction,
+  InitMapStructureAction,
+  InitSpellAction,
+  PanMapCameraCenterAction,
+  ViewsEnum,
+} from './types';
 
 const commands = createEventType;
 
@@ -26,7 +34,13 @@ export const GameOpenMainScreen = commands('Open Main Screen');
 
 export const OpenNewGameScreen = commands('Open New Game Screen');
 
+export const OpenSandboxMode = commands('Open Sandbox Mode');
+
+export const OpenScenarioMode = commands('Open Scenario Mode');
+
 export const OpenSettings = commands('Open Game settings');
+
+export const OpenGlossary = commands('Open Glossary');
 
 export const OpenMainMenu = commands('Open Main menu');
 
@@ -46,13 +60,25 @@ export const InitBuilding = commands<InitBuildingAction>();
 
 export const InitStructure = commands<InitMapStructureAction>();
 
-export const PushEventFeedMessage = commands<{ message: DescHtmlElement[], delay?: number; }>();
+export const PushEventFeedMessage = commands<{
+  message: DescriptionVariants['variants'][];
+  delay?: number;
+}>();
 
 // supports html
-export const PushPlainEventFeedMessage = commands<{ message: string, delay?: number; }>();
+export const PushPlainEventFeedMessage = commands<{
+  message: string;
+  delay?: number;
+}>();
 
 export const RemoveActionPoints = commands<{ points: number }>();
 
-export const ActivateActionCard = commands<{ player: Player; cardStack: ActionCardStack }>();
+export const ActivateActionCard = commands<{
+  player: Player;
+  cardStack: ActionCardStack;
+}>();
 
-export const AddActionCardsToPlayer = commands<{ player: Player, actionCardStacks: ActionCardStack[] }>();
+export const AddActionCardsToPlayer = commands<{
+  player: Player;
+  actionCardStacks: ActionCardStack[];
+}>();

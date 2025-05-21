@@ -1,6 +1,6 @@
-import { SafeHtml } from '@angular/platform-browser';
 import { Spell } from 'src/app/core/spells';
 import { UnitGroup } from 'src/app/core/unit-types';
+import { Variantable } from '../utils';
 
 export enum ActionHintTypeEnum {
   OnHoverEnemyCard = 'on-hover-enemy-card',
@@ -8,27 +8,26 @@ export enum ActionHintTypeEnum {
   CustomHtml = 'custom-html',
 }
 
-export interface ActionHintModel<T extends ActionHintTypeEnum = ActionHintTypeEnum> {
-  type: T;
-}
-
-export interface CustomHtmlActionHint extends ActionHintModel<ActionHintTypeEnum.CustomHtml> {
-  html: string;
-}
-
-export interface AttackActionHintInfo extends ActionHintModel<ActionHintTypeEnum.OnHoverEnemyCard> {
-  attackedGroup: UnitGroup;
-  minDamage: number;
-  maxDamage: number;
-  minCountLoss: number;
-  maxCountLoss: number;
-  noDamageSpread: boolean;
-  noLossSpread: boolean;
-  attackSuperiority: number;
-}
-
-export interface SpellTargetActionHint extends ActionHintModel<ActionHintTypeEnum.OnTargetSpell> {
-  spell: Spell;
-  target: UnitGroup;
-}
-
+export type ActionHintVariants = Variantable<
+  ActionHintTypeEnum,
+  {
+    [ActionHintTypeEnum.CustomHtml]: {
+      html: string;
+    };
+    [ActionHintTypeEnum.OnHoverEnemyCard]: {
+      attackedGroup: UnitGroup;
+      minDamage: number;
+      maxDamage: number;
+      minCountLoss: number;
+      maxCountLoss: number;
+      noDamageSpread: boolean;
+      noLossSpread: boolean;
+      attackSuperiority: number;
+    };
+    [ActionHintTypeEnum.OnTargetSpell]: {
+      spell: Spell;
+      target: UnitGroup;
+      addedContent?: string;
+    };
+  }
+>;

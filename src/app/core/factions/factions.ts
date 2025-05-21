@@ -1,4 +1,3 @@
-
 import { AssetsImages } from '../assets';
 import { CONFIG } from '../config';
 import { FactionId, registerEntity } from '../entities';
@@ -14,7 +13,7 @@ export const Factions = {
     return [...this.factionsMap.values()];
   },
 
-  createFaction({ id, icon, title }: { id: FactionId, icon: string, title: string; }): Faction {
+  createFaction({ id, icon, title }: { id: FactionId; icon: string; title: string }): Faction {
     if (this.factionsMap.has(id)) {
       throw new Error(`Faction ${id} was already created.`);
     }
@@ -47,23 +46,13 @@ export const Factions = {
       },
       findBaseUnitType(upgradedType) {
         /* todo: fix this place later, remove any */
-        return Object.values<any>(this.unitTypes).find((unitType: UnitBaseType) => unitType.upgradeDetails?.target === upgradedType.id) as UnitBaseType;
+        return Object.values<any>(this.unitTypes).find(
+          (unitType: UnitBaseType) => unitType.upgradeDetails?.target === upgradedType.id,
+        ) as UnitBaseType;
       },
-      createHero(
-        heroConfig,
-      ): HeroBase {
-        const {
-          id,
-          abilities,
-          army,
-          items,
-          name,
-          resources,
-          stats,
-          generalDescription,
-          defaultModifiers,
-          image
-        } = heroConfig;
+      createHero(heroConfig): HeroBase {
+        const { id, abilities, army, items, name, resources, stats, generalDescription, defaultModifiers, image } =
+          heroConfig;
 
         const newHero = {
           id,
@@ -81,7 +70,6 @@ export const Factions = {
         };
 
         registerEntity(newHero);
-
 
         if (CONFIG.enableHeroUnits) {
           registerEntity({
@@ -104,7 +92,7 @@ export const Factions = {
             name: name,
             neutralReward: {
               experience: 10,
-              gold: 1
+              gold: 1,
             },
             defaultModifiers: {},
             defaultSpells: [],
@@ -115,14 +103,13 @@ export const Factions = {
           } as UnitBaseType);
         }
 
-
         this.heroes.push(newHero);
 
         return newHero;
       },
       getAllHeroes(): HeroBase[] {
         return this.heroes;
-      }
+      },
     };
 
     registerEntity(faction);
@@ -133,5 +120,5 @@ export const Factions = {
   },
   getFaction(name: string): Faction {
     return this.factionsMap.get(name)!;
-  }
+  },
 } as const;

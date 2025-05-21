@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { UnitTypeId } from 'src/app/core/entities';
-import { ResourceType, Resources, ResourcesModel } from 'src/app/core/resources';
+import { ResourceType, Resources, ResourcesModel, getCountOfResourcesInMaxResources } from 'src/app/core/resources';
 import { BuidlingBase, Building, HiringActivity, HiringDetails, Town } from 'src/app/core/towns';
 import { UnitBaseType, resolveUnitType } from 'src/app/core/unit-types';
 import { MwPlayersService, MwUnitGroupsService } from 'src/app/features/services';
@@ -32,9 +32,14 @@ type HireMode = 'hire' | 'upgrade';
 @Component({
   selector: 'mw-hiring-popup',
   templateUrl: './hiring-popup.component.html',
-  styleUrls: ['./hiring-popup.component.scss']
+  styleUrls: ['./hiring-popup.component.scss'],
+  standalone: false,
 })
 export class HiringPopupComponent extends BasicPopup<HiringPopupData> implements OnInit {
+  private readonly playersService = inject(MwPlayersService);
+  private readonly unitsService = inject(MwUnitGroupsService);
+  private readonly popupService = inject(PopupService);
+  private readonly gameObjectsManager = inject(GameObjectsManager);
 
   public hirableGroups: UnitGroupHireModel[] = [];
 
@@ -57,12 +62,10 @@ export class HiringPopupComponent extends BasicPopup<HiringPopupData> implements
 
   public canBeUpgraded: boolean;
 
-  constructor(
-    private playersService: MwPlayersService,
-    private unitsService: MwUnitGroupsService,
-    private popupService: PopupService,
-    private gameObjectsManager: GameObjectsManager,
-  ) {
+  // improve the logic, hire might be possible if hiring a present unit-type
+  readonly playerHasFreeSlots = this.playersService.getCurrentPlayer().hero.hasFreeUnitSlots();
+
+  constructor() {
     super();
     this.unitType = resolveUnitType(this.data.hiringActivity.hiring.unitTypeId);
     this.activity = this.data.hiringActivity;
@@ -85,7 +88,7 @@ export class HiringPopupComponent extends BasicPopup<HiringPopupData> implements
       );
     }
 
-    this.hirableGroups = this.getGroupsToHire().map(unit => {
+    this.hirableGroups = this.getGroupsToHire().map((unit) => {
       const baseCost: Partial<ResourcesModel> = {};
       const currentCost: Partial<ResourcesModel> = {};
 
@@ -98,12 +101,12 @@ export class HiringPopupComponent extends BasicPopup<HiringPopupData> implements
         ResourceType.Wood,
       ];
 
-      resourceTypes.forEach(resType => {
+      resourceTypes.forEach((resType) => {
         if (unitReqs[resType]) {
           baseCost[resType] = unitReqs[resType];
           currentCost[resType] = 0;
         }
-      })
+      });
 
       return {
         hire: {
@@ -114,7 +117,17 @@ export class HiringPopupComponent extends BasicPopup<HiringPopupData> implements
         baseCost: baseCost,
         currentCost: currentCost,
       } as UnitGroupHireModel;
-    })
+    });
+  }
+
+  setMaxHire(hirableUnit: UnitGroupHireModel): void {
+    const maxCountAllowed = getCountOfResourcesInMaxResources(
+      this.playersService.getCurrentPlayer().resources,
+      hirableUnit.baseCost,
+      hirableUnit.hire.maxCount,
+    );
+
+    this.updateCountForGroup(hirableUnit, maxCountAllowed);
   }
 
   public setMode(mode: HireMode): void {
@@ -132,15 +145,16 @@ export class HiringPopupComponent extends BasicPopup<HiringPopupData> implements
 
     const activity = this.data.building.currentBuilding.activity as HiringActivity;
 
-    this.hirableGroups = this.getGroupsToHire().map(unit => {
+    this.hirableGroups = this.getGroupsToHire().map((unit) => {
       const baseCost: Resources = {};
       const currentCost: Resources = {};
 
-
       const baseUnitType = resolveUnitType(this.activity.hiring.unitTypeId);
 
-      const unitReqs = this.currentMode === 'hire'
-        ? resolveUnitType(unit.unitTypeId).baseRequirements : baseUnitType.upgradeDetails!.upgradeCost!;
+      const unitReqs =
+        this.currentMode === 'hire'
+          ? resolveUnitType(unit.unitTypeId).baseRequirements
+          : baseUnitType.upgradeDetails!.upgradeCost;
 
       const resourceTypes: ResourceType[] = [
         ResourceType.Gems,
@@ -149,25 +163,26 @@ export class HiringPopupComponent extends BasicPopup<HiringPopupData> implements
         ResourceType.Wood,
       ];
 
-      resourceTypes.forEach(resType => {
+      resourceTypes.forEach((resType) => {
         if (unitReqs[resType]) {
           baseCost[resType] = unitReqs[resType];
           currentCost[resType] = 0;
         }
-      })
+      });
 
       return {
         hire: {
-          maxCount: this.currentMode === 'hire'
-            ? this.data.town.unitsAvailableMap[activity.unitGrowthGroup]
-            : this.countToUpgrade,
+          maxCount:
+            this.currentMode === 'hire'
+              ? this.data.town.unitsAvailableMap[activity.unitGrowthGroup]
+              : this.countToUpgrade,
           unitType: resolveUnitType(unit.unitTypeId),
         },
         count: 0,
         baseCost: baseCost,
         currentCost: currentCost,
       } as UnitGroupHireModel;
-    })
+    });
   }
 
   private getGroupsToHire(): HiringDetails[] {
@@ -177,27 +192,37 @@ export class HiringPopupComponent extends BasicPopup<HiringPopupData> implements
     if (this.currentMode === 'hire') {
       return !activity.upgrade
         ? [activity.hiring]
-        : [activity.hiring, ...
-          (unitType.upgradeDetails?.target
-            ? [{
-              growth: 0,
-              unitTypeId: resolveUnitType(activity.hiring?.unitTypeId).upgradeDetails?.target as UnitTypeId,
-            }]
-            : [])
-        ];
+        : [
+            activity.hiring,
+            ...(unitType.upgradeDetails?.target
+              ? [
+                  {
+                    growth: 0,
+                    unitTypeId: resolveUnitType(activity.hiring?.unitTypeId).upgradeDetails?.target as UnitTypeId,
+                  },
+                ]
+              : []),
+          ];
     } else {
-      return [...(unitType.upgradeDetails?.target
-        ? [{
-          growth: 0,
-          unitTypeId: unitType.upgradeDetails.target as UnitTypeId,
-        }]
-        : [])];
+      return [
+        ...(unitType.upgradeDetails?.target
+          ? [
+              {
+                growth: 0,
+                unitTypeId: unitType.upgradeDetails.target as UnitTypeId,
+              },
+            ]
+          : []),
+      ];
     }
-
   }
 
-  public updateCountForGroup(unit: UnitGroupHireModel, event: Event): void {
-    unit.count = Number((event.target as HTMLInputElement).value);
+  public updateCountForGroupFromEvent(unit: UnitGroupHireModel, event: Event): void {
+    this.updateCountForGroup(unit, Number((event.target as HTMLInputElement).value));
+  }
+
+  public updateCountForGroup(unit: UnitGroupHireModel, count: number): void {
+    unit.count = count;
 
     this.canConfirm = true;
 
@@ -221,7 +246,7 @@ export class HiringPopupComponent extends BasicPopup<HiringPopupData> implements
     this.playersService.removeResourcesFromPlayer(currentPlayer, totalCosts);
 
     if (this.currentMode === 'hire') {
-      this.hirableGroups.forEach(group => {
+      this.hirableGroups.forEach((group) => {
         if (group.count) {
           const unitGroup = this.unitsService.createUnitGroup(
             group.hire.unitType.id,
@@ -237,21 +262,24 @@ export class HiringPopupComponent extends BasicPopup<HiringPopupData> implements
         }
       });
     } else {
-      this.hirableGroups.forEach(group => {
+      this.hirableGroups.forEach((group) => {
         if (group.count) {
-          this.playersService.removeUnitTypeCountFromPlayer(currentPlayer, this.activity.hiring.unitTypeId, group.count);
+          this.playersService.removeUnitTypeCountFromPlayer(
+            currentPlayer,
+            this.activity.hiring.unitTypeId,
+            group.count,
+          );
 
           const unitGroup = this.unitsService.createUnitGroup(
             group.hire.unitType.id,
             { count: group.count },
-            currentPlayer.hero
+            currentPlayer.hero,
           );
 
           this.playersService.addUnitGroupToTypeStack(currentPlayer, unitGroup);
         }
       });
     }
-
 
     this.close();
   }
@@ -270,18 +298,16 @@ export class HiringPopupComponent extends BasicPopup<HiringPopupData> implements
 
   private calcTotalCosts(): Resources {
     return this.hirableGroups.reduce((totalCosts, unit) => {
-
       Object.entries(unit.currentCost).forEach(([resource, baseCost]: [string, number]) => {
         const resourceType = resource as keyof ResourcesModel;
         if (totalCosts[resourceType]) {
           /* todo: recheck it */
-          (totalCosts[resourceType] as number) += unit.currentCost[resourceType] as number;
+          totalCosts[resourceType] += unit.currentCost[resourceType] as number;
         } else {
           totalCosts[resourceType] = unit.currentCost[resourceType];
         }
       });
       return totalCosts;
-
     }, {} as Partial<ResourcesModel>);
   }
 

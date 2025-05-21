@@ -15,16 +15,16 @@ $color-back: rgb(11, 11, 11);
 }
 
 mw-gradient-img {
-  width: 1200px;
+  width: 78vw;
   left: 5%
 }
 
 .block {
   position: fixed;
   right: 0;
-  bottom: 0;
+  bottom: 40px;
   width: 250px;
-  height: 200px;
+  min-height: 200px;
   padding: 20px;
 }
 

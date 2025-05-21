@@ -1,41 +1,51 @@
-import { Directive, ElementRef, Input, OnChanges, OnDestroy, Renderer2 } from '@angular/core';
+import { Directive, inject, input, OnChanges, OnDestroy, Renderer2 } from '@angular/core';
+import { injectHostElem } from 'src/app/core/utils';
 
 @Directive({
-  selector: '[mwNumberModifier]'
+  selector: '[mwNumberModifier]',
+  standalone: false,
 })
 export class NumberModifierDirective implements OnDestroy, OnChanges {
+  private readonly hostElem = injectHostElem();
+  private readonly renderer = inject(Renderer2);
 
-  @Input('mwNumberModifier')
-  public value!: number;
+  readonly value = input.required<number>({ alias: 'mwNumberModifier' });
+  readonly format = input<'shortPercent' | 'normal'>('normal', { alias: 'mwNumberModifierFormat' });
 
-  @Input()
-  public hideEmpty: boolean = true;
+  public hideEmpty = input(true);
 
-  constructor(
-    private hostElem: ElementRef,
-    private renderer: Renderer2,
-  ) {
-    this.renderer.addClass(this.hostElem.nativeElement, 'mod-text');
+  constructor() {
+    this.renderer.addClass(this.hostElem, 'mod-text');
   }
 
   public ngOnDestroy(): void {
-    this.renderer.removeClass(this.hostElem.nativeElement, 'mod-text');
+    this.renderer.removeClass(this.hostElem, 'mod-text');
   }
 
   public ngOnChanges(): void {
-    const elem = this.hostElem.nativeElement as HTMLElement;
-    if (this.hideEmpty && !this.value) {
+    const elem = this.hostElem;
+    const value = this.value();
+
+    if (this.hideEmpty() && !value) {
       elem.innerHTML = '';
       return;
     }
 
-    if (typeof this.value !== 'number') {
+    if (typeof value !== 'number') {
       elem.innerHTML = '';
       return;
     }
 
-    elem.innerHTML = String((this.value > 0 ? '+' : '') + this.value);
+    let strValue = String(value);
 
-    this.renderer.setStyle(elem, 'color', this.value < 0 ? 'red' : 'lime');
+    if (this.format() === 'shortPercent') {
+      strValue = (value * 100).toFixed(0) + '%';
+    }
+
+    strValue = (value > 0 ? '+' : '') + strValue;
+
+    elem.innerHTML = String(strValue);
+
+    this.renderer.setStyle(elem, 'color', value < 0 ? 'red' : 'lime');
   }
 }

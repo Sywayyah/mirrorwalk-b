@@ -1,0 +1,39 @@
+:host {
+  display: block;
+  background: white;
+  padding: 10px;
+}
+
+.dialog-header {
+  text-align: center;
+}
+
+.categories {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+
+  .category-title {
+    text-align: center;
+    padding-bottom: 3px;
+  }
+
+  .activities {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+
+    >mw-week-activity-card {
+      width: 175px;
+      cursor: pointer;
+      // text-align: center;
+
+    }
+  }
+
+}
+
+.footer {
+  display: flex;
+  justify-content: center;
+}

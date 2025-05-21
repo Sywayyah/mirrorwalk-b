@@ -20,7 +20,7 @@ describe('test units healing', () => {
   it(`shouldn't heal undamaged unit`, () => {
     const unitGroup = createTestUnitGroup(10);
 
-    expect(unitGroup.fightInfo.initialCount).toBe(10);
+    expect(unitGroup.getState().groupState.initialCount).toBe(10);
     expect(unitGroup.count).toBe(10);
 
     const healData = unitsService.healUnit(unitGroup, 10);
@@ -33,7 +33,7 @@ describe('test units healing', () => {
   it(`shouldn't heal if no heal value`, () => {
     const unitGroup = createTestUnitGroup(10);
 
-    expect(unitGroup.fightInfo.initialCount).toBe(10);
+    expect(unitGroup.getState().groupState.initialCount).toBe(10);
     expect(unitGroup.count).toBe(10);
 
     const healData = unitsService.healUnit(unitGroup, 0);
@@ -46,7 +46,7 @@ describe('test units healing', () => {
   it(`shouldn't heal if heal value is negative`, () => {
     const unitGroup = createTestUnitGroup(10);
 
-    expect(unitGroup.fightInfo.initialCount).toBe(10);
+    expect(unitGroup.getState().groupState.initialCount).toBe(10);
     expect(unitGroup.count).toBe(10);
 
     const healData = unitsService.healUnit(unitGroup, -100);

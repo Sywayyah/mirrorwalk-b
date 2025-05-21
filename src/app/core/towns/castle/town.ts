@@ -62,6 +62,9 @@ const market = createBuildingType({
   id: '#build-castle-market',
 
   name: 'Market',
+  activity: {
+    type: ActivityTypes.ResourceTrading,
+  },
 });
 
 const highTower = createBuildingType({
@@ -222,7 +225,7 @@ const itemMarket = createBuildingType({
       localEvents.on({
         Built() {
           thisBuilding.addCustomData<SellingBuildingData>({
-            items: ['#item-iron-pike', '#item-irton-plate', '#item-kite-shield', '#item-storm-pike', '#item-battlemage-sword'],
+            items: ['#item-iron-pike', '#item-magic-cape', '#item-irton-plate', '#item-kite-shield', '#item-storm-pike', '#item-battlemage-sword'],
             selling: true,
           });
         },
@@ -292,7 +295,7 @@ export const castleTownBase: TownBase<CastleTownBuildings> = {
     market: {
       baseName: 'Market',
       description: 'Allows to trade resources',
-      levels: [{ building: market, cost: { gold: 1500, wood: 2 } }],
+      levels: [{ building: market, cost: { gold: 650, wood: 2 } }],
       icon: 'gavel',
       tier: 2,
     },

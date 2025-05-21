@@ -1,10 +1,10 @@
 import { itemStatsDescr, spellDescrElem } from '../../ui';
-import { ItemBaseModel, ItemSlotType } from '../types';
+import { ItemBaseType, ItemSlotType } from '../types';
 import { createItem } from '../utils';
 
 const lifestealValue = 18;
 
-export const BlackLichSwordItem: ItemBaseModel = createItem({
+export const BlackLichSwordItem: ItemBaseType = createItem({
   id: '#item-blacklich-swords',
 
   name: 'Black Lich Sword',

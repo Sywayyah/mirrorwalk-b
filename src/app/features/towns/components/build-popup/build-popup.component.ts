@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { InitBuilding } from 'src/app/core/events';
-import { FormattedResource, Resources, formattedResources } from 'src/app/core/resources';
+import { FormattedResource, Resources, formattedResources, getFactoredResources } from 'src/app/core/resources';
 import { Building, BuildingLevel, TownEvents } from 'src/app/core/towns';
 import { MwPlayersService } from 'src/app/features/services';
 import { State } from 'src/app/features/services/state.service';
@@ -10,9 +10,13 @@ import { EventsService } from 'src/app/store';
 @Component({
   selector: 'mw-build-popup',
   templateUrl: './build-popup.component.html',
-  styleUrls: ['./build-popup.component.scss']
+  styleUrls: ['./build-popup.component.scss'],
+  standalone: false
 })
 export class BuildPopupComponent extends BasicPopup<{ building: Building, targetLevel: number }> {
+  private players = inject(MwPlayersService);
+  private events = inject(EventsService);
+  private state = inject(State);
 
   public cost: FormattedResource[];
   // public missingCost: FormattedResource[];
@@ -22,11 +26,9 @@ export class BuildPopupComponent extends BasicPopup<{ building: Building, target
   public buildingLevel: BuildingLevel;
   public missingCostMap: Resources;
 
-  constructor(
-    private players: MwPlayersService,
-    private events: EventsService,
-    private state: State,
-  ) {
+  private readonly costFactor = this.players.getCurrentPlayer().hero.modGroup.getCalcNumModValueOrZero('townBuildingCostFactor');
+
+  constructor() {
     super();
 
     const building = this.data.building;
@@ -71,6 +73,6 @@ export class BuildPopupComponent extends BasicPopup<{ building: Building, target
   private getBuildingCost(): Resources {
     // const building = this.data.building;
 
-    return this.buildingLevel.cost;
+    return getFactoredResources(this.buildingLevel.cost, this.costFactor);
   }
 }

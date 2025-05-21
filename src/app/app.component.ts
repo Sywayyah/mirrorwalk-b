@@ -1,4 +1,7 @@
 import { AfterViewInit, Component, OnInit, ViewChild, inject } from '@angular/core';
+import { RaidersActionCard, RainbowActionCard, SnowfallActionCard, ThunderActionCard } from './core/action-cards/event-actions';
+import { AttackActionCard, InitiativeAttackCard, VisitActionCard } from './core/action-cards/location-actions';
+import { MeditateActionCard, SkipDayActionCard } from './core/action-cards/player-actions';
 import { GameStarted } from './core/events';
 import './core/scripts';
 import { MwTriggersService } from './features/services';
@@ -8,9 +11,6 @@ import { PopupsController } from './features/services/controllers/popups.service
 import { HintsService } from './features/services/hints.service';
 import { HintsContainerComponent } from './features/shared/components';
 import { EventsService } from './store';
-import { AttackActionCard, InitiativeAttackCard, VisitActionCard } from './core/action-cards/location-actions';
-import { RaidersActionCard, RainbowActionCard, SnowfallActionCard, ThunderActionCard } from './core/action-cards/event-actions';
-import { MeditateActionCard, SkipDayActionCard } from './core/action-cards/player-actions';
 
 const GlobalServices = [
   // logic controllers
@@ -33,6 +33,7 @@ const GlobalServices = [
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
   providers: GlobalServices,
+  standalone: false
 })
 export class AppComponent implements OnInit, AfterViewInit {
   @ViewChild('hintsContainer', { static: true }) public hintsContainer!: HintsContainerComponent;

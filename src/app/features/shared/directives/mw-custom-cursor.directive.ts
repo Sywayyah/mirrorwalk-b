@@ -12,7 +12,8 @@ export interface AnimatedCursor {
 }
 
 @Directive({
-  selector: '[mwCustomCursor]',
+    selector: '[mwCustomCursor]',
+    standalone: false
 })
 export class MwCustomCursorDirective implements OnDestroy {
   protected readonly hostElem = injectHostElem();

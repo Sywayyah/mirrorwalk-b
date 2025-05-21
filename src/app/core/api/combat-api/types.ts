@@ -35,11 +35,21 @@ export interface HealingInfo {
   totalHealedHp: number;
 }
 
+export type PinDetails = {
+  pinFailed: true;
+  unitEscapedPin?: boolean;
+  pinCanceled?: boolean;
+} | {
+  pinFailed: false;
+};
+
 export interface CombatActionsRef extends SpellsApi {
   getUnitsFromFightQueue(): UnitGroup[];
 
   /** If turns aren't specified, removes all turns left */
   removeTurnsFromUnitGroup(target: UnitGroup, turns?: number): void;
+
+  addTurnsToUnitGroup(target: UnitGroup, turns: number): void;
 
   summonUnitsForPlayer(ownerPlayer: Player, unitTypeId: UnitTypeId, unitCount: number): UnitGroup;
 
@@ -86,4 +96,6 @@ export interface CombatActionsRef extends SpellsApi {
   getCurrentUnitGroup: () => UnitGroup;
 
   unitGroupAttack: (attacker: UnitGroup, attacked: UnitGroup) => void;
+  // actions for pinning
+  pinAttempt: (pinning: UnitGroup, pinned: UnitGroup) => PinDetails;
 }

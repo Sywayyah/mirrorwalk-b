@@ -9,6 +9,10 @@ export interface ConditionalModifierParamsModel {
 
 /* to add: critical strike chance & multiplier, retaliation damage percent */
 export interface ModifiersModel extends Specialties {
+  /** Econonmy/Macro attributes */
+  experienceGainBonus: number; // 0-1 format
+  townBuildingCostFactor: number; // 0-1 format
+
   // base damage percent modifier
   baseDamagePercentModifier: number;
 
@@ -52,23 +56,36 @@ export interface ModifiersModel extends Specialties {
   resistLightning: number;
 
   /* markers */
+  // type
   isRanged: boolean;
-  counterattacks: boolean;
+  isCavalry: boolean;
   isGhost: boolean;
   isForest: boolean;
+  isMagical: boolean;
+  isBigCreature: boolean;
+  isGiant: boolean;
+  isColossal: boolean;
+
+  // percentage, combat
+  counterattacks: boolean;
+  isPinner: boolean;
+  // penalty damage from unpinned unit groups, default is 1.25
+  pinningIncomingDamagePercent: number;
+  isUnpinnable: boolean;
+
   isSummon: boolean;
   isBoss: boolean;
-  isMagical: boolean;
-  isCavalry: boolean;
 
   /* states */
-  defending: true,
+  defending: true;
 
   __sourceObjectId: string;
   __description: () => object;
 
   /* Modifiers can be returned on condition */
-  __attackConditionalModifiers?: (params: ConditionalModifierParamsModel) => Modifiers;
+  __attackConditionalModifiers?: (
+    params: ConditionalModifierParamsModel,
+  ) => Modifiers;
 
   // mods from specialties can be added to hero, then
   // by this condition, applied/not applied somehow to units.
@@ -77,7 +94,12 @@ export interface ModifiersModel extends Specialties {
   // might get obsolete.
   // same as above, but for auras.
   // todo: remoteness is also a question, because remoteness is different in different views
-  __auraModifiers: (params: { target: UnitGroup, thisUnit?: UnitGroup, remoteness?: number, currentGroupPosition?: number }) => Modifiers | null;
+  __auraModifiers: (params: {
+    target: UnitGroup;
+    thisUnit?: UnitGroup;
+    remoteness?: number;
+    currentGroupPosition?: number;
+  }) => Modifiers | null;
 }
 
 export type Modifiers = Partial<ModifiersModel>;

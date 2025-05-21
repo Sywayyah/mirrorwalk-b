@@ -1,34 +1,40 @@
-import { Component, ElementRef, EventEmitter, Input, OnInit, Output, Renderer2 } from '@angular/core';
+import { Component, OnInit, input, output } from '@angular/core';
 import { DescriptionElementType, EventFeedMessage } from 'src/app/core/ui';
+import { injectHostElem, injectRenderer } from 'src/app/core/utils';
 
 const defaultMsgDelay = 2000;
 @Component({
   selector: 'mw-event-feed-message',
   templateUrl: './event-feed-message.component.html',
   styleUrls: ['./event-feed-message.component.scss'],
+  standalone: false,
 })
 export class EventFeedMessageComponent implements OnInit {
-  @Input()
-  public message!: EventFeedMessage;
+  private readonly elementRef = injectHostElem();
+  private readonly renderer = injectRenderer();
 
-  @Output()
-  public messageExpired = new EventEmitter<void>();
+  public readonly message = input.required<EventFeedMessage>();
 
-  public type = DescriptionElementType;
+  public readonly messageExpired = output();
 
-  constructor(private elementRef: ElementRef, private renderer: Renderer2) { }
+  public readonly DescriptionType = DescriptionElementType;
 
   ngOnInit(): void {
     setTimeout(() => {
-      this.renderer.addClass(this.elementRef.nativeElement, 'visible');
+      this.renderer.addClass(this.elementRef, 'visible');
     }, 0);
 
-    setTimeout(() => {
-      this.renderer.addClass(this.elementRef.nativeElement, 'hidden');
-    }, (this.message.delay || defaultMsgDelay) - 400);
+    const message = this.message();
+
+    setTimeout(
+      () => {
+        this.renderer.addClass(this.elementRef, 'hidden');
+      },
+      (message.delay || defaultMsgDelay) - 400,
+    );
 
     setTimeout(() => {
       this.messageExpired.emit();
-    }, this.message.delay || defaultMsgDelay);
+    }, message.delay || defaultMsgDelay);
   }
 }

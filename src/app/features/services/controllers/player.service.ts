@@ -1,5 +1,14 @@
-import { Injectable } from '@angular/core';
-import { FightNextRoundStarts, FightStarts, PlayerEquipsItem, PlayerEquipsItemAction, PlayerLosesItem, PlayerReceivesItem, PlayerUnequipsItem, PlayerUnequipsItemAction } from 'src/app/core/events';
+import { inject, Injectable } from '@angular/core';
+import {
+  FightNextRoundStarts,
+  FightStarts,
+  PlayerEquipsItem,
+  PlayerEquipsItemAction,
+  PlayerLosesItem,
+  PlayerReceivesItem,
+  PlayerUnequipsItem,
+  PlayerUnequipsItemAction,
+} from 'src/app/core/events';
 import { Notify, StoreClient, WireMethod } from 'src/app/store';
 import { MwCurrentPlayerStateService } from '../mw-current-player-state.service';
 import { MwItemsService } from '../mw-items.service';
@@ -7,14 +16,9 @@ import { State } from '../state.service';
 
 @Injectable()
 export class PlayerController extends StoreClient() {
-
-  constructor(
-    private curPlayerState: MwCurrentPlayerStateService,
-    private itemsService: MwItemsService,
-    private state: State,
-  ) {
-    super();
-  }
+  private readonly curPlayerState = inject(MwCurrentPlayerStateService);
+  private readonly itemsService = inject(MwItemsService);
+  private readonly state = inject(State);
 
   @Notify(FightNextRoundStarts)
   @Notify(FightStarts)
@@ -52,7 +56,6 @@ export class PlayerController extends StoreClient() {
 
   @WireMethod(PlayerUnequipsItem)
   public unequipItem({ player, item }: PlayerUnequipsItemAction): void {
-
     player.hero.unequipItem(item);
 
     this.state.eventHandlers.items.removeAllHandlersForRef(item);

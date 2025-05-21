@@ -1,8 +1,11 @@
-import { DescHtmlElement, DescriptionElement, DescriptionElementType } from './descriptions';
+import { DescriptionElementType, DescriptionVariants } from './descriptions';
 
 export interface EventFeedMessage {
-  message: DescHtmlElement[];
+  message: DescriptionVariants['variants'][];
   delay?: number;
 }
 
-export const createEventFeedMsg = (html: string, delay: number = 5000): EventFeedMessage => ({ message: [{ htmlContent: html, type: DescriptionElementType.FreeHtml }], delay });
+export const createEventFeedMsg = (html: string, delay: number = 5000): EventFeedMessage => ({
+  message: [{ htmlContent: html, type: DescriptionElementType.FreeHtml }],
+  delay,
+});

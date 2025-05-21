@@ -1,0 +1,31 @@
+.title {
+  text-align: center;
+}
+
+.earnings,
+.res {
+  display: flex;
+
+  div {
+    flex: 1;
+    text-align: center;
+  }
+}
+
+.trading {
+  display: flex;
+
+  .trader {
+    flex: 1;
+    text-align: center;
+  }
+}
+
+.buttons {
+  display: flex;
+  justify-content: center;
+}
+
+.deal-info {
+  text-align: center;
+}

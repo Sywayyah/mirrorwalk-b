@@ -1,19 +1,38 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { DamageType, PostDamageInfo } from 'src/app/core/api/combat-api/types';
-import { CombatAttackInteraction, CombatInteractionEnum, CombatInteractionStateEvent, GroupCounterAttacked, GroupDamagedByGroup, GroupDies, GroupSpellsChanged, GroupTakesDamage, InitSpell, PlayerHoversCardEvent, UnitHealed } from 'src/app/core/events';
+import {
+  CombatAttackInteraction,
+  CombatInteractionEnum,
+  CombatInteractionStateEvent,
+  GroupCounterAttacked,
+  GroupDamagedByGroup,
+  GroupDies,
+  GroupSpellsChanged,
+  GroupTakesDamage,
+  InitSpell,
+  PlayerHoversCardEvent,
+  UnitHealed,
+} from 'src/app/core/events';
 import { RegisterUnitLoss } from 'src/app/core/events/battle/commands';
 import { ModsRef, ModsRefsGroup } from 'src/app/core/modifiers';
 import { defaultResistCap, resistsMapping } from 'src/app/core/modifiers/resists';
 import { Player } from 'src/app/core/players';
 import { Spell, SpellActivationType, SpellEventNames, SpellEventTypeByName, SpellEvents } from 'src/app/core/spells';
-import { ActionHintTypeEnum, AttackActionHintInfo } from 'src/app/core/ui';
-import { UnitGroup, UnitStatsInfo } from 'src/app/core/unit-types';
+import { ActionHintTypeEnum, ActionHintVariants } from 'src/app/core/ui';
+import { CombatStateEnum, UnitGroup } from 'src/app/core/unit-types';
 import { CommonUtils } from 'src/app/core/utils';
 import { nonNullish } from 'src/app/core/utils/common';
 import { getHtmlRaIcon, getRetaliationMessage, messageWrapper } from 'src/app/core/vfx';
 import { EventData, StoreClient } from 'src/app/store';
 import { VfxService } from '../shared/components';
-import { BattleStateService, FinalDamageInfo, MwBattleLogService, MwPlayersService, MwUnitGroupStateService, MwUnitGroupsService } from './';
+import {
+  BattleStateService,
+  FinalDamageInfo,
+  MwBattleLogService,
+  MwPlayersService,
+  MwUnitGroupStateService,
+  MwUnitGroupsService,
+} from './';
 import { ActionHintService } from './mw-action-hint.service';
 import { State } from './state.service';
 
@@ -25,21 +44,17 @@ interface ExtendedFinalDamageInfo extends FinalDamageInfo {
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class CombatInteractorService extends StoreClient() {
-  constructor(
-    private readonly battleState: BattleStateService,
-    private readonly actionHint: ActionHintService,
-    private readonly players: MwPlayersService,
-    private readonly unitState: MwUnitGroupStateService,
-    private readonly units: MwUnitGroupsService,
-    private readonly history: MwBattleLogService,
-    private readonly state: State,
-    private readonly vfx: VfxService,
-  ) {
-    super();
-  }
+  private readonly battleState = inject(BattleStateService);
+  private readonly actionHint = inject(ActionHintService);
+  private readonly players = inject(MwPlayersService);
+  private readonly unitState = inject(MwUnitGroupStateService);
+  private readonly units = inject(MwUnitGroupsService);
+  private readonly history = inject(MwBattleLogService);
+  private readonly state = inject(State);
+  private readonly vfx = inject(VfxService);
 
   public onBattleBegins(): void {
     this.initPlayersSpells();
@@ -51,7 +66,7 @@ export class CombatInteractorService extends StoreClient() {
     damageType: DamageType = DamageType.PhysicalAttack,
     postActionFn?: (actionInfo: PostDamageInfo) => void,
     /* options object, contains values depending on situation */
-    options: { attackerUnit?: UnitGroup, isCounterattack?: boolean } = {},
+    options: { attackerUnit?: UnitGroup; isCounterattack?: boolean } = {},
   ): ExtendedFinalDamageInfo {
     let finalDamage = damage;
     let blockedDamage = 0;
@@ -62,9 +77,10 @@ export class CombatInteractorService extends StoreClient() {
     switch (damageType) {
       /* Normal Unit Group attack */
       case DamageType.PhysicalAttack:
-
         if (options.attackerUnit) {
           console.log('attacker?', options.attackerUnit);
+
+          const attackerCombatState = options.attackerUnit.getState().combatState;
 
           const conditionalAttackData = { attacked: target, attacker: options.attackerUnit };
 
@@ -75,7 +91,7 @@ export class CombatInteractorService extends StoreClient() {
 
           const attackerUnitConditionalModifiers = attackerModGroup
             .getAllModValues('__unitConditionalMods')
-            .map((mod) => mod!(options.attackerUnit!));
+            .map((mod) => mod(options.attackerUnit!));
 
           const targetConditionalModifiers = target.modGroup
             .getAllModValues('__attackConditionalModifiers')
@@ -95,7 +111,7 @@ export class CombatInteractorService extends StoreClient() {
 
             if (criticalChanceWorked) {
               isCritical = true;
-              finalDamage = finalDamage + (finalDamage * (attackerFinalMods.getModValue('criticalDamageMul') || 0));
+              finalDamage = finalDamage + finalDamage * (attackerFinalMods.getModValue('criticalDamageMul') || 0);
             }
           }
 
@@ -111,9 +127,11 @@ export class CombatInteractorService extends StoreClient() {
 
             if (blockChanceWorked) {
               const damageBlockValue = CommonUtils.randIntInRange(damageBlockMin!, damageBlockMax!);
-              const blockPiercingPercent = CommonUtils.maxPercent(attackerModGroup.getModValue('blockPiercingPercent') || 0);
+              const blockPiercingPercent = CommonUtils.maxPercent(
+                attackerModGroup.getModValue('blockPiercingPercent') || 0,
+              );
 
-              blockedDamage = Math.round(damageBlockValue - (damageBlockValue * blockPiercingPercent));
+              blockedDamage = Math.round(damageBlockValue - damageBlockValue * blockPiercingPercent);
             }
           }
 
@@ -122,7 +140,13 @@ export class CombatInteractorService extends StoreClient() {
 
           console.log(`damage reduced by ${damagePercentMod}%`);
 
-          finalDamage = CommonUtils.nonNegative(Math.round(finalDamage + finalDamage * damagePercentMod) - blockedDamage);
+          if (attackerCombatState.type === CombatStateEnum.Pinned && target !== attackerCombatState.pinnedBy) {
+            finalDamage = CommonUtils.increaseByPercent(finalDamage, -0.25);
+          }
+
+          finalDamage = CommonUtils.nonNegative(
+            Math.round(finalDamage + finalDamage * damagePercentMod) - blockedDamage,
+          );
 
           // retaliation percent
           const retaliationPercent = attackerFinalMods.getModValue('retaliationDamagePercent');
@@ -152,7 +176,7 @@ export class CombatInteractorService extends StoreClient() {
           finalDamage = Math.round(finalDamage);
 
           // damage resists
-          let finalResistValue = target.getState().groupStats[resistsMapping[damageType] as keyof UnitStatsInfo] as number;
+          let finalResistValue = target.getState().groupStats[resistsMapping[damageType]] as number;
 
           if (finalResistValue > defaultResistCap) {
             finalResistValue = defaultResistCap;
@@ -161,7 +185,7 @@ export class CombatInteractorService extends StoreClient() {
           console.log(damage, damageType, 'resist:', finalResistValue);
 
           // reduce damage basing on resist
-          finalDamage = finalDamage - (finalDamage * (finalResistValue / 100));
+          finalDamage = finalDamage - finalDamage * (finalResistValue / 100);
         }
     }
 
@@ -176,10 +200,12 @@ export class CombatInteractorService extends StoreClient() {
 
       stolenLifeUnitsRestored = healDetails.revivedUnitsCount;
 
-      this.events.dispatch(UnitHealed({
-        healedUnitsCount: healDetails.revivedUnitsCount,
-        target: options.attackerUnit,
-      }));
+      this.events.dispatch(
+        UnitHealed({
+          healedUnitsCount: healDetails.revivedUnitsCount,
+          target: options.attackerUnit,
+        }),
+      );
     }
 
     // this could become event at some point
@@ -210,18 +236,22 @@ export class CombatInteractorService extends StoreClient() {
 
     if (finalDamageInfo.isDamageFatal) {
       this.battleState.handleDefeatedUnitGroup(target);
-      this.events.dispatch(GroupDies({
-        target: target,
-        targetPlayer: target.ownerPlayer,
-        loss: finalDamageInfo.finalUnitLoss,
-      }));
+      this.events.dispatch(
+        GroupDies({
+          target: target,
+          targetPlayer: target.ownerPlayer,
+          loss: finalDamageInfo.finalUnitLoss,
+        }),
+      );
     }
 
     if (finalDamageInfo.finalUnitLoss) {
-      this.events.dispatch(GroupTakesDamage({
-        unitLoss: finalDamageInfo.finalUnitLoss,
-        group: target,
-      }));
+      this.events.dispatch(
+        GroupTakesDamage({
+          unitLoss: finalDamageInfo.finalUnitLoss,
+          group: target,
+        }),
+      );
     }
 
     return {
@@ -235,11 +265,7 @@ export class CombatInteractorService extends StoreClient() {
 
   /* when group counterattacks and defeats enemy group, both are gone from queue */
   public handleAttackInteraction(attackActionState: CombatInteractionStateEvent): void {
-    const {
-      attackingGroup,
-      attackedGroup,
-      action,
-    } = attackActionState;
+    const { attackingGroup, attackedGroup, action } = attackActionState;
 
     // todo: history log for counterattack action
     const isCounterattack = action === CombatInteractionEnum.GroupCounterattacks;
@@ -247,75 +273,86 @@ export class CombatInteractorService extends StoreClient() {
     const attacker = !isCounterattack ? attackingGroup : attackedGroup;
     const attacked = !isCounterattack ? attackedGroup : attackingGroup;
 
-    this.triggerEventForAllSpellsHandler(SpellEvents.UnitGroupAttacks({
-      attacked,
-      attacker,
-    }));
-
-    const attackDetails = this.unitState.getDetailedAttackInfo(
-      attacker,
-      attacked,
+    this.triggerEventForAllSpellsHandler(
+      SpellEvents.UnitGroupAttacks({
+        attacked,
+        attacker,
+      }),
     );
+
+    const attackDetails = this.unitState.getDetailedAttackInfo(attacker, attacked);
 
     const damageInfo = this.unitState.getFinalDamageInfoFromDamageDetailedInfo(attackDetails);
 
-    const finalDamageInfo = this.dealDamageTo(
-      attacked,
-      damageInfo.finalDamage,
-      DamageType.PhysicalAttack,
-      undefined,
-      { attackerUnit: attacker, isCounterattack },
-    );
+    const finalDamageInfo = this.dealDamageTo(attacked, damageInfo.finalDamage, DamageType.PhysicalAttack, undefined, {
+      attackerUnit: attacker,
+      isCounterattack,
+    });
 
     if (isCounterattack) {
-      this.vfx.createDroppingMessageForContainer(attacked.id, {
-        html: messageWrapper(`
+      this.vfx.createDroppingMessageForContainer(
+        attacked.id,
+        {
+          html: messageWrapper(
+            `
           <div style="font-size: 14px">Retaliated! ${getHtmlRaIcon({ icon: 'skull' })} ${finalDamageInfo.finalUnitLoss}</div>
-        `, { width: 130 }),
-      }, { duration: 1500 });
+        `,
+            { width: 130 },
+          ),
+        },
+        { duration: 1500 },
+      );
 
-      this.history.logHtmlMessage(getRetaliationMessage({
-        attacked,
-        attacker,
-        damage: finalDamageInfo.finalDamage,
-        originalNumber: attackDetails.originalAttackersCount,
-        unitLoss: finalDamageInfo.finalUnitLoss,
-      }));
+      this.history.logHtmlMessage(
+        getRetaliationMessage({
+          attacked,
+          attacker,
+          damage: finalDamageInfo.finalDamage,
+          originalNumber: attackDetails.originalAttackersCount,
+          unitLoss: finalDamageInfo.finalUnitLoss,
+        }),
+      );
     }
 
     if (!isCounterattack) {
-      this.battleState.currentGroupTurnsLeft--;
-      attacker.turnsLeft = this.battleState.currentGroupTurnsLeft;
+      this.battleState.state.updateWithCopy((state) => state.currentGroupTurnsLeft--);
+      attacker.patchUnitGroupState({ turnsLeft: this.battleState.state.get().currentGroupTurnsLeft });
 
-      this.events.dispatch(GroupDamagedByGroup({
-        attackingGroup: attacker,
-        attackedGroup: attacked,
-        attackedCount: attackDetails.originalAttackedCount,
-        attackersCount: attackDetails.originalAttackersCount,
+      this.events.dispatch(
+        GroupDamagedByGroup({
+          attackingGroup: attacker,
+          attackedGroup: attacked,
+          attackedCount: attackDetails.originalAttackedCount,
+          attackersCount: attackDetails.originalAttackersCount,
 
-        loss: finalDamageInfo.finalUnitLoss,
-        damage: finalDamageInfo.finalDamage,
-        damageBlocked: finalDamageInfo.blockedDamage,
-        lifeStolen: finalDamageInfo.stolenLife,
-        lifeStolenUnitsRestored: finalDamageInfo.stolenLifeUnitsRestored,
-        isCritical: finalDamageInfo.isCritical,
-      }));
+          loss: finalDamageInfo.finalUnitLoss,
+          damage: finalDamageInfo.finalDamage,
+          damageBlocked: finalDamageInfo.blockedDamage,
+          lifeStolen: finalDamageInfo.stolenLife,
+          lifeStolenUnitsRestored: finalDamageInfo.stolenLifeUnitsRestored,
+          isCritical: finalDamageInfo.isCritical,
+        }),
+      );
     } else {
-      this.events.dispatch(GroupCounterAttacked({
-        attackingGroup: attacker,
-        attackedGroup: attacked,
-        loss: finalDamageInfo.finalUnitLoss,
-        damage: finalDamageInfo.finalDamage,
-      }));
+      this.events.dispatch(
+        GroupCounterAttacked({
+          attackingGroup: attacker,
+          attackedGroup: attacked,
+          loss: finalDamageInfo.finalUnitLoss,
+          damage: finalDamageInfo.finalDamage,
+        }),
+      );
     }
 
     if (finalDamageInfo.isDamageFatal) {
       this.battleState.handleDefeatedUnitGroup(attacked);
-      this.events.dispatch(GroupDies({
-        target: attacked,
-        targetPlayer: attacked.ownerPlayer,
-        loss: finalDamageInfo.finalUnitLoss,
-      }));
+      this.events.dispatch(
+        GroupDies({
+          target: attacked,
+          targetPlayer: attacked.ownerPlayer,
+          loss: finalDamageInfo.finalUnitLoss,
+        }),
+      );
       attackActionState.action = CombatInteractionEnum.AttackInteractionCompleted;
 
       // todo: redispatching object
@@ -340,19 +377,18 @@ export class CombatInteractorService extends StoreClient() {
   }
 
   public setDamageHintMessageOnCardHover(event: PlayerHoversCardEvent): void {
-    const actionHint: AttackActionHintInfo = this.getTargetAttackActionInfo(event.hoveredCard as UnitGroup);
+    const actionHint = this.getTargetAttackActionInfo(event.hoveredCard as UnitGroup);
 
     this.actionHint.hintMessage$.next(actionHint);
   }
 
-  public getTargetAttackActionInfo(target: UnitGroup): AttackActionHintInfo {
-    const currentUnitGroup = this.battleState.currentUnitGroup;
-    const attackDetails = this.unitState.getDetailedAttackInfo(
-      currentUnitGroup,
-      target,
-    );
+  public getTargetAttackActionInfo(
+    target: UnitGroup,
+  ): ActionHintVariants['byKey'][ActionHintTypeEnum.OnHoverEnemyCard] {
+    const currentUnitGroup = this.battleState.state.get().currentUnitGroup!;
+    const attackDetails = this.unitState.getDetailedAttackInfo(currentUnitGroup, target);
 
-    const attackActionInfo: AttackActionHintInfo = {
+    const attackActionInfo: ActionHintVariants['byKey'][ActionHintTypeEnum.OnHoverEnemyCard] = {
       type: ActionHintTypeEnum.OnHoverEnemyCard,
       attackedGroup: attackDetails.attacked,
       minDamage: attackDetails.multipliedMinDamage,
@@ -378,10 +414,7 @@ export class CombatInteractorService extends StoreClient() {
   }
 
   public applyDispellToUnitGroup(target: UnitGroup): void {
-    const dispellableTypes: SpellActivationType[] = [
-      SpellActivationType.Buff,
-      SpellActivationType.Debuff,
-    ];
+    const dispellableTypes: SpellActivationType[] = [SpellActivationType.Buff, SpellActivationType.Debuff];
 
     target.spells.forEach((spell) => {
       if (dispellableTypes.includes(spell.baseType.activationType)) {
@@ -395,42 +428,41 @@ export class CombatInteractorService extends StoreClient() {
   }
 
   public triggerEventForAllSpellsHandler(event: EventData): void {
-    this.state.eventHandlers.spells.triggerAllHandlersByEvent(event);
+    this.state.initializedSpells.get().spells.forEach((spell) => {
+      spell.combatEventHandlers.triggerEvent(event);
+    });
   }
 
   public triggerEventForSpellHandler<T extends SpellEventNames>(spell: Spell, event: SpellEventTypeByName<T>): void {
-    this.state.eventHandlers.spells.triggerRefEventHandlers(spell, event);
+    spell.combatEventHandlers.triggerEvent(event);
   }
 
   public initAllUnitGroupSpells(): void {
     this.forEachUnitGroup((unitGroup, player) => {
       if (unitGroup.spells) {
-        unitGroup.spells.forEach(spell => this.initSpell(
-          spell,
-          player as Player,
-          unitGroup,
-        ));
+        unitGroup.spells.forEach((spell) => this.initSpell(spell, player, unitGroup));
       }
-    })
+    });
   }
 
   public resetAllUnitGroupsCooldowns(): void {
-    this.forEachUnitGroup(unitGroup => unitGroup.fightInfo.spellsOnCooldown = false);
+    this.forEachUnitGroup((unitGroup) => unitGroup.patchUnitGroupState({ spellsOnCooldown: false }));
   }
 
   public getRandomEnemyUnitGroup(): UnitGroup {
-    const enemyPlayer = this.players.getEnemyPlayer()
+    const enemyPlayer = this.players.getEnemyPlayer();
     const enemyUnitGroups = this.battleState.heroesUnitGroupsMap.get(enemyPlayer) as UnitGroup[];
-    return CommonUtils.randItem(enemyUnitGroups.filter(group => group.fightInfo.isAlive));
+    return CommonUtils.randItem(enemyUnitGroups.filter((group) => group.isAlive));
   }
 
   public addSpellToUnitGroup(target: UnitGroup, spell: Spell, ownerPlayer: Player): void {
     target.addSpell(spell);
 
-
-    this.events.dispatch(GroupSpellsChanged({
-      unitGroup: target,
-    }));
+    this.events.dispatch(
+      GroupSpellsChanged({
+        unitGroup: target,
+      }),
+    );
 
     this.initSpell(spell, ownerPlayer);
 
@@ -440,27 +472,28 @@ export class CombatInteractorService extends StoreClient() {
   public removeSpellFromUnitGroup(target: UnitGroup, spell: Spell): void {
     target.removeSpell(spell);
 
-    this.state.eventHandlers.spells.removeAllHandlersForRef(spell);
+    spell.combatEventHandlers.removeAllHandlers();
 
-    this.events.dispatch(GroupSpellsChanged({
-      unitGroup: target,
-    }));
+    this.events.dispatch(
+      GroupSpellsChanged({
+        unitGroup: target,
+      }),
+    );
   }
 
   private initSpell(spell: Spell, player: Player, ownerUnitGroup?: UnitGroup): void {
-    this.events.dispatch(InitSpell({
-      spell,
-      player,
-      ownerUnit: ownerUnitGroup,
-    }));
+    this.events.dispatch(
+      InitSpell({
+        spell,
+        player,
+        ownerUnit: ownerUnitGroup,
+      }),
+    );
   }
 
   private initPlayersSpells(): void {
-    [
-      this.players.getCurrentPlayer(),
-      this.players.getEnemyPlayer(),
-    ].forEach(player => {
-      player.hero.spells.forEach(spell => {
+    [this.players.getCurrentPlayer(), this.players.getEnemyPlayer()].forEach((player) => {
+      player.hero.spells.forEach((spell) => {
         this.initSpell(spell, player);
       });
     });

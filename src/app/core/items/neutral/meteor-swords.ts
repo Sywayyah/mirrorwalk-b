@@ -1,9 +1,9 @@
-import { ItemBaseModel, ItemSlotType } from '..';
+import { ItemBaseType, ItemSlotType } from '..';
 import { MeteorSpell } from '../../spells/common';
 import { itemStatsDescr, spellDescrElem } from '../../ui';
 import { createItem } from '../utils';
 
-export const ItemMeteorSwords: ItemBaseModel<{}> = createItem({
+export const ItemMeteorSwords: ItemBaseType<{}> = createItem({
   id: '#item-meteor-sword',
 
   name: 'Meteor Swords',

@@ -1,19 +1,12 @@
 import { TestBed } from '@angular/core/testing';
-import { TaltirHero } from 'src/app/core/heroes/humans';
-import { InventoryItems } from 'src/app/core/items';
-import { Player, PlayerTypeEnum } from 'src/app/core/players';
-import { UnitBaseType, UnitGroup } from 'src/app/core/unit-types';
-import { CombatInteractorService } from '../mw-combat-interactor.service';
 import { MwPlayersService } from '../mw-players.service';
 import { MwUnitGroupStateService } from '../mw-unit-group-state.service';
 import { MwUnitGroupsService } from '../mw-unit-groups.service';
-import { testUnitTypeNoArmorNoRating, player, getCommonFunctions } from './common';
+import { getCommonFunctions } from './common';
 
 /*
   Unit type with no armor, attack rating and no damage range.
 */
-
-
 
 /*
   todo:
@@ -23,9 +16,7 @@ import { testUnitTypeNoArmorNoRating, player, getCommonFunctions } from './commo
 */
 describe('Test unit hp/damage interactions', () => {
   TestBed.configureTestingModule({
-    providers: [
-      { provide: MwPlayersService, useValue: {} }
-    ],
+    providers: [{ provide: MwPlayersService, useValue: {} }],
   });
 
   let unitsService: MwUnitGroupsService;

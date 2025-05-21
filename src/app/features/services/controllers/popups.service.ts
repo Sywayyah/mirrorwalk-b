@@ -1,32 +1,80 @@
-import { Injectable, Type } from '@angular/core';
-import { DisplayPlayerRewardAction, DisplayPlayerRewardPopup, DisplayPopup, DisplayReward, FightEnds, FightEndsEvent, GameEventsTypes, NeutralStructParams, OpenGarrisonPopup, OpenMainMenu, OpenSettings, OpenSplitUnitGroupPopup, OpenUnitSlotsActionPopup, PlayerOpensActionCards, PlayerOpensHeroInfo, ShowGameOverPopup, StructSelected, StructSelectedEvent } from 'src/app/core/events';
+import { Dialog } from '@angular/cdk/dialog';
+import { inject, Injectable, Type } from '@angular/core';
+import {
+  DisplayCdkPopup,
+  DisplayPlayerRewardAction,
+  DisplayPlayerRewardPopup,
+  DisplayPopup,
+  DisplayReward,
+  FightEnds,
+  FightEndsEvent,
+  GameEventsTypes,
+  NeutralStructParams,
+  OpenActiviesAndSpecialtiesDialog,
+  OpenGarrisonPopup,
+  OpenGlossary,
+  OpenMainMenu,
+  OpenSettings,
+  OpenSplitUnitGroupPopup,
+  OpenUnitSlotsActionPopup,
+  PlayerOpensActionCards,
+  PlayerOpensHeroInfo,
+  ShowGameOverPopup,
+  StructSelected,
+  StructSelectedEvent,
+} from 'src/app/core/events';
 import { NeutralRewardTypesEnum, StructureType } from 'src/app/core/structures';
 import { FightEndsPopup, LossModel, StructPopupData } from 'src/app/core/ui';
 import { Notify, StoreClient, WireMethod } from 'src/app/store';
-import { HiringRewardPopupComponent, ItemRewardPopupComponent, PostFightRewardPopupComponent, PreFightPopupComponent, PreviewPopupComponent, ResourcesRewardPopupComponent, ScriptedRewardPopupComponent, UpgradeRewardPopupComponent } from '../../map-structures/components';
 import { HeroPopupComponent } from '../../battleground/components/hero-popup/hero-popup.component';
 import { SettingsPopupComponent } from '../../main-screen/components';
-import { GameOverPopupComponent, MainMenuPopupComponent, PopupData, PopupService, RewardPopupComponent, SplitUnitsPopupComponent, UnitSlotsActionPopupComponent } from '../../shared/components';
+import {
+  HiringRewardPopupComponent,
+  ItemRewardPopupComponent,
+  PostFightRewardPopupComponent,
+  PreFightPopupComponent,
+  PreviewPopupComponent,
+  ResourcesRewardPopupComponent,
+  ScriptedRewardPopupComponent,
+  UpgradeRewardPopupComponent,
+} from '../../map-structures/components';
+import {
+  GameOverPopupComponent,
+  MainMenuPopupComponent,
+  PopupData,
+  PopupService,
+  RewardPopupComponent,
+  SplitUnitsPopupComponent,
+  UnitSlotsActionPopupComponent,
+} from '../../shared/components';
 import { ActionCardsPopupComponent } from '../../shared/components/action-cards-popup/action-cards-popup.component';
+import { GlossaryComponent } from '../../shared/components/glossary/glossary.component';
+import { WeekActivitiesDialogComponent } from '../../shared/components/week-activities-popup/week-activities-popup.component';
 import { GarrisonPopupComponent } from '../../towns/components';
 import { BattleStateService } from '../mw-battle-state.service';
 import { MwPlayersService } from '../mw-players.service';
 
-
 @Injectable()
 export class PopupsController extends StoreClient() {
+  private readonly dialog = inject(Dialog);
+  private readonly popupService = inject(PopupService);
+  private readonly battleState = inject(BattleStateService);
+  private readonly playersService = inject(MwPlayersService);
 
-  constructor(
-    private readonly popupService: PopupService,
-    private readonly battleState: BattleStateService,
-    private readonly playersService: MwPlayersService,
-  ) {
-    super();
+  @WireMethod(DisplayCdkPopup)
+  public displayCdkPopup(event: PopupData): void {
+    this.dialog.open(event.component);
   }
 
   @WireMethod(DisplayPopup)
   public displayPopup(event: PopupData): void {
     this.popupService.createPopup(event);
+  }
+
+  @Notify(OpenActiviesAndSpecialtiesDialog)
+  public openDialog(): void {
+    // refactor cdk dialogs
+    this.dialog.open(WeekActivitiesDialogComponent, {});
   }
 
   @Notify(PlayerOpensHeroInfo)
@@ -44,6 +92,16 @@ export class PopupsController extends StoreClient() {
       component: SettingsPopupComponent,
       data: {},
       escape: true,
+    });
+  }
+
+  @Notify(OpenGlossary)
+  openGlossary(): void {
+    this.popupService.createBasicPopup({
+      component: GlossaryComponent,
+      data: {},
+      escape: true,
+      isCloseable: true,
     });
   }
 
@@ -112,25 +170,28 @@ export class PopupsController extends StoreClient() {
         struct: event.struct,
       };
 
-      this.events.dispatch(DisplayPopup({
-        component: PreFightPopupComponent,
-        data: prefightPopup
-      }));
+      this.events.dispatch(
+        DisplayPopup({
+          component: PreFightPopupComponent,
+          data: prefightPopup,
+        }),
+      );
 
       return;
     }
 
     if (!event.struct.guard?.length) {
-
       if (event.struct.generator?.onVisited || event.struct.generator?.type === StructureType.Scripted) {
         const previewPopup: StructPopupData = {
           struct: event.struct,
         };
 
-        this.events.dispatch(DisplayPopup({
-          component: PreviewPopupComponent,
-          data: previewPopup
-        }));
+        this.events.dispatch(
+          DisplayPopup({
+            component: PreviewPopupComponent,
+            data: previewPopup,
+          }),
+        );
 
         return;
       }
@@ -139,11 +200,12 @@ export class PopupsController extends StoreClient() {
         struct: event.struct,
       };
 
-      this.events.dispatch(DisplayPopup({
-        component: UpgradeRewardPopupComponent,
-        data: upgradingPopup,
-      }));
-
+      this.events.dispatch(
+        DisplayPopup({
+          component: UpgradeRewardPopupComponent,
+          data: upgradingPopup,
+        }),
+      );
     }
   }
 
@@ -185,6 +247,7 @@ export class PopupsController extends StoreClient() {
 
         this.popupService.createBasicPopup({
           data,
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
           component,
         });
       }
@@ -194,6 +257,6 @@ export class PopupsController extends StoreClient() {
   private getPlayerLosses(playerId: string): LossModel[] {
     const playerLossesMap = this.battleState.playerLosses[playerId];
 
-    return [...playerLossesMap].map(loss => ({ type: loss[0], count: loss[1] }));
+    return [...playerLossesMap].map((loss) => ({ type: loss[0], count: loss[1] }));
   }
 }

@@ -1,8 +1,9 @@
-import { ChangeDetectorRef, Component, OnInit, Renderer2, TemplateRef, ViewChild, ViewContainerRef } from '@angular/core';
+import { Component, inject, OnInit, TemplateRef, ViewChild, ViewContainerRef } from '@angular/core';
 import { combineLatest, fromEvent } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { CustomAnimationData, Effect, EffectInstRef, EffectOptions, EffectPosition, EffectType, VfxElemEffect } from 'src/app/core/api/vfx-api';
 import { UnitGroup } from 'src/app/core/unit-types';
+import { injectCdr, injectRenderer } from 'src/app/core/utils';
 import { FloatingMessageAnimation } from 'src/app/core/vfx';
 import { MwCardsMappingService } from 'src/app/features/services';
 import { VfxElementComponent } from '../vfx-element/vfx-element.component';
@@ -16,9 +17,14 @@ import { VfxService } from './vfx.service';
 @Component({
   selector: 'mw-vfx-layer',
   templateUrl: './vfx-layer.component.html',
-  styleUrls: ['./vfx-layer.component.scss']
+  styleUrls: ['./vfx-layer.component.scss'],
+  standalone: false
 })
 export class VfxLayerComponent implements OnInit {
+  private vfxService = inject(VfxService);
+  private renderer = injectRenderer();
+  private unitsCardsMapping = inject(MwCardsMappingService);
+  public cdr = injectCdr();
 
   public activeEffects: Map<number, EffectInstRef> = new Map();
   public EffectTypes: typeof EffectType = EffectType;
@@ -30,14 +36,6 @@ export class VfxLayerComponent implements OnInit {
   public vfxElementRef!: TemplateRef<VfxElementComponent>;
 
   public effectsWithOverlay: number = 0;
-
-
-  constructor(
-    private vfxService: VfxService,
-    private renderer: Renderer2,
-    private unitsCardsMapping: MwCardsMappingService,
-    public cdr: ChangeDetectorRef,
-  ) { }
 
   public ngOnInit(): void {
     this.vfxService.registerLayerComponent(this);
@@ -63,7 +61,7 @@ export class VfxLayerComponent implements OnInit {
     options: EffectOptions
   ): void {
     const cardComponent = this.unitsCardsMapping.get(unitGroup);
-    const cardElement = cardComponent.hostElem.nativeElement as HTMLElement;
+    const cardElement = cardComponent.hostElem;
 
     const { left, top } = cardElement.getBoundingClientRect();
 
@@ -87,7 +85,7 @@ export class VfxLayerComponent implements OnInit {
     options: EffectOptions = {},
   ): void {
     const cardComponent = this.unitsCardsMapping.get(unitGroup);
-    const cardElement = cardComponent.hostElem.nativeElement as HTMLElement;
+    const cardElement = cardComponent.hostElem;
 
     const { left, top } = cardElement.getBoundingClientRect();
 

@@ -1,16 +1,11 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { FightEnds, FightEndsEvent, FightNextRoundStarts, FightStarts, GroupDamagedByGroup, GroupDamagedByGroupEvent, NextRoundStarts, PlayerTurnStartEvent, RoundPlayerTurnStarts } from 'src/app/core/events';
 import { Notify, StoreClient, WireMethod } from 'src/app/store';
 import { MwBattleLogService } from '../mw-battle-log.service';
 
 @Injectable()
 export class BattleLogController extends StoreClient() {
-
-  constructor(
-    private battleLog: MwBattleLogService,
-  ) {
-    super();
-  }
+  private battleLog = inject(MwBattleLogService);
 
   @Notify(FightStarts)
   public clearLogOnFightStart(): void {

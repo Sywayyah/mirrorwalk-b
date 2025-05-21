@@ -4,9 +4,10 @@ import { UnitGroup } from 'src/app/core/unit-types';
 import { EventsService } from 'src/app/store';
 
 @Component({
-  selector: 'mw-unit-groups-list',
-  templateUrl: './mw-unit-groups-list.component.html',
-  styleUrls: ['./mw-unit-groups-list.component.scss']
+    selector: 'mw-unit-groups-list',
+    templateUrl: './mw-unit-groups-list.component.html',
+    styleUrls: ['./mw-unit-groups-list.component.scss'],
+    standalone: false
 })
 export class MwUnitGroupsListComponent {
   @Input() public unitGroups!: UnitGroup[];

@@ -6,10 +6,7 @@ import { filter } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class InputsService {
-
   readonly keyPress$ = fromEvent<KeyboardEvent>(document, 'keyup');
 
   readonly escape$ = this.keyPress$.pipe(filter((event) => event.key === 'Escape'));
-
-  constructor() { }
 }

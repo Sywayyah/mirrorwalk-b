@@ -4,9 +4,10 @@ import { Player } from 'src/app/core/players';
 import { MwPlayersService } from 'src/app/features/services';
 
 @Component({
-  selector: 'mw-experience-bar',
-  templateUrl: './mw-experience-bar.component.html',
-  styleUrls: ['./mw-experience-bar.component.scss']
+    selector: 'mw-experience-bar',
+    templateUrl: './mw-experience-bar.component.html',
+    styleUrls: ['./mw-experience-bar.component.scss'],
+    standalone: false
 })
 export class MwExperienceBarComponent {
 

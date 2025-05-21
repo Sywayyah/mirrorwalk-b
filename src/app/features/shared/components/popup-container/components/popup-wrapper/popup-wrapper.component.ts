@@ -3,9 +3,10 @@ import { POPUP_REF } from '../../injection-tokens';
 import { PopupData, PopupService } from '../../popup.service';
 
 @Component({
-  selector: 'mw-popup-wrapper',
-  templateUrl: './popup-wrapper.component.html',
-  styleUrls: ['./popup-wrapper.component.scss']
+    selector: 'mw-popup-wrapper',
+    templateUrl: './popup-wrapper.component.html',
+    styleUrls: ['./popup-wrapper.component.scss'],
+    standalone: false
 })
 export class PopupWrapperComponent implements OnInit {
 

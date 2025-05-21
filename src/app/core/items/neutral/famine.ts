@@ -1,11 +1,11 @@
 import { itemStatsDescr, spellDescrElem } from '../../ui';
-import { ItemBaseModel, ItemSlotType } from '../types';
+import { ItemBaseType, ItemSlotType } from '../types';
 import { createItem } from '../utils';
 
 
 // might be a percentage penalty to armor and attack.
 // and some ability.
-export const FamineScytheItem: ItemBaseModel = createItem({
+export const FamineScytheItem: ItemBaseType = createItem({
   id: '#item-famine',
 
   name: 'Famine',

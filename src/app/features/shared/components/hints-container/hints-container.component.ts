@@ -13,9 +13,10 @@ export interface ElementHint {
 }
 
 @Component({
-  selector: 'mw-hints-container',
-  templateUrl: './hints-container.component.html',
-  styleUrls: ['./hints-container.component.scss']
+    selector: 'mw-hints-container',
+    templateUrl: './hints-container.component.html',
+    styleUrls: ['./hints-container.component.scss'],
+    standalone: false
 })
 export class HintsContainerComponent {
   public hints: ElementHint[] = [];

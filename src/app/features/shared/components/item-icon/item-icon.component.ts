@@ -1,11 +1,12 @@
 import { Component, Input } from '@angular/core';
-import { Item, ItemBaseModel } from 'src/app/core/items';
+import { Item, ItemBaseType } from 'src/app/core/items';
 import { HintAttachment } from 'src/app/features/shared/components';
 
 @Component({
-  selector: 'mw-item-icon',
-  templateUrl: './item-icon.component.html',
-  styleUrls: ['./item-icon.component.scss'],
+    selector: 'mw-item-icon',
+    templateUrl: './item-icon.component.html',
+    styleUrls: ['./item-icon.component.scss'],
+    standalone: false
 })
 export class ItemIconComponent {
   // todo: getters?
@@ -14,12 +15,12 @@ export class ItemIconComponent {
     this._item = item;
   };
 
-  @Input() public set itemBase(itemBase: ItemBaseModel) {
+  @Input() public set itemBase(itemBase: ItemBaseType) {
     this._itemBase = itemBase;
   };
 
   @Input() public hintPos: HintAttachment = 'above';
 
   _item?: Item;
-  _itemBase!: ItemBaseModel;
+  _itemBase!: ItemBaseType;
 }

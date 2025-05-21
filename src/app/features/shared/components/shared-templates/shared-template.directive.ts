@@ -2,7 +2,8 @@ import { Directive, ElementRef, Input, OnInit, TemplateRef } from '@angular/core
 
 /* Maybe gonna need this some day */
 @Directive({
-  selector: '[mwSharedTemplate]'
+    selector: '[mwSharedTemplate]',
+    standalone: false
 })
 export class SharedTemplateDirective implements OnInit {
 

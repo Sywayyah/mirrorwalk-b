@@ -5,8 +5,9 @@ import { GameObjectsManager } from 'src/app/features/services/game-objects-manag
 import { BasicPopup } from '../popup-container';
 
 @Component({
-  selector: 'mw-unit-slots-action-popup',
-  templateUrl: './unit-slots-action-popup.component.html',
+    selector: 'mw-unit-slots-action-popup',
+    templateUrl: './unit-slots-action-popup.component.html',
+    standalone: false
 })
 export class UnitSlotsActionPopupComponent extends BasicPopup<{
   sourceSlot: UnitGroupSlot;

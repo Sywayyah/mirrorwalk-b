@@ -1,0 +1,25 @@
+<div class="dialog-header">
+  Select your activities and specialties for this week
+</div>
+
+<div class="categories">
+  @for (category of categories(); track $index) {
+  <div class="category">
+    <div class="category-title">{{ category.name }}</div>
+
+    <div class="activities">
+      @for (activity of category.activityBases; track $index) {
+      <mw-week-activity-card [activity]="activity"
+                             [class.active]="activity === category.choice()"
+                             (click)="category.choice.set(activity)" />
+
+      }
+    </div>
+  </div>
+  }
+</div>
+
+<div class="footer">
+  <button mw-main-button
+          (click)="confirm()">Confirm</button>
+</div>

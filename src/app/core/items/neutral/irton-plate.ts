@@ -1,9 +1,9 @@
 import { itemStatsDescr } from '../../ui';
-import { ItemBaseModel, ItemSlotType } from '../types';
+import { ItemBaseType, ItemSlotType } from '../types';
 import { createItem } from '../utils';
 
 
-export const IrtonPlateItem: ItemBaseModel = createItem({
+export const IrtonPlateItem: ItemBaseType = createItem({
   id: '#item-irton-plate',
 
   name: 'Irton Plate',

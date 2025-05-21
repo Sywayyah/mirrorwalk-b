@@ -1,24 +1,31 @@
 {
   "root": true,
-  "ignorePatterns": [
-    "projects/**/*"
-  ],
+  "ignorePatterns": ["projects/**/*"],
+  "plugins": ["@typescript-eslint"],
   "overrides": [
     {
-      "files": [
-        "*.ts"
-      ],
+      "files": ["*.ts"],
       "parserOptions": {
-        "project": [
-          "tsconfig.json"
-        ],
+        "project": ["tsconfig.json"],
         "createDefaultProgram": true
       },
       "extends": [
         "plugin:@angular-eslint/recommended",
-        "plugin:@angular-eslint/template/process-inline-templates"
+        "plugin:@typescript-eslint/recommended-requiring-type-checking",
+        "plugin:@angular-eslint/template/process-inline-templates",
+        "prettier"
       ],
       "rules": {
+        "@angular-eslint/prefer-standalone": "off",
+        "max-len": ["warn", { "code": 120, "ignoreComments": true }],
+        // "@typescript-eslint/prefer-readonly-parameter-types": "warn",
+
+        "@typescript-eslint/no-unused-vars": [
+          "warn", // Or "error" if you want to enforce it
+          { "args": "none", "vars": "local", "varsIgnorePattern": "^_" }
+        ],
+        "@typescript-eslint/no-explicit-any": "warn",
+        "@typescript-eslint/prefer-readonly": "warn", // Or "error" to enforce
         "@angular-eslint/directive-selector": [
           "error",
           {
@@ -30,26 +37,16 @@
         "@angular-eslint/component-selector": [
           "error",
           {
-            "type": [
-              "element",
-              "attribute"
-            ],
-            "prefix": [
-              "mw",
-              "app"
-            ],
+            "type": ["element", "attribute"],
+            "prefix": ["mw", "app"],
             "style": "kebab-case"
           }
         ]
       }
     },
     {
-      "files": [
-        "*.html"
-      ],
-      "extends": [
-        "plugin:@angular-eslint/template/recommended"
-      ],
+      "files": ["*.html"],
+      "extends": ["plugin:@angular-eslint/template/recommended"],
       "rules": {}
     }
   ]

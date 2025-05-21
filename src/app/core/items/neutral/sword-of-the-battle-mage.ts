@@ -1,9 +1,9 @@
 import { itemStatsDescr } from '../../ui';
-import { ItemBaseModel, ItemSlotType } from '../types';
+import { ItemBaseType, ItemSlotType } from '../types';
 import { createItem } from '../utils';
 
 // + max mana
-export const SwordOfTheBattleMageItem: ItemBaseModel = createItem({
+export const SwordOfTheBattleMageItem: ItemBaseType = createItem({
   id: '#item-battlemage-sword',
 
   name: 'Sword of the Battle Mage',
@@ -21,7 +21,7 @@ export const SwordOfTheBattleMageItem: ItemBaseModel = createItem({
   },
   cost: {
     gold: 1000,
-    redCrystals: 1,
+    gems: 6,
   },
   sellingCost: {
     gold: 600,

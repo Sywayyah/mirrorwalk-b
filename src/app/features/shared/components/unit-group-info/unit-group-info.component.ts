@@ -1,7 +1,7 @@
-import { Component, Input, OnChanges } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnChanges, input } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Spell } from 'src/app/core/spells';
-import { DescriptionElement } from 'src/app/core/ui';
+import { DescriptionVariants } from 'src/app/core/ui';
 import { UnitGroup, UnitGroupState, UnitTypeBaseStatsModel } from 'src/app/core/unit-types';
 import { TypedChanges } from 'src/app/core/utils';
 
@@ -13,32 +13,35 @@ import { TypedChanges } from 'src/app/core/utils';
 @Component({
   selector: 'mw-unit-group-info',
   templateUrl: './unit-group-info.component.html',
-  styleUrls: ['./unit-group-info.component.scss']
+  styleUrls: ['./unit-group-info.component.scss'],
+  standalone: false,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UnitGroupInfoComponent implements OnChanges {
-  @Input()
-  public unitGroup!: UnitGroup;
+  public readonly unitGroup = input.required<UnitGroup>();
 
   public unitStats$!: Observable<UnitGroupState>;
 
   public baseStats!: UnitTypeBaseStatsModel;
 
-  public description!: { descriptions: DescriptionElement[] };
+  public description!: { descriptions: DescriptionVariants['variants'][] };
 
   public spells!: Spell[];
 
   public effects!: Spell[];
 
+  // todo: refactor later
   ngOnChanges(changes: TypedChanges<this>): void {
-    this.unitStats$ = this.unitGroup.listenStats();
-    this.baseStats = this.unitGroup.type.baseStats;
-    const unitSpells = this.unitGroup.spells;
-    this.effects = unitSpells.filter(spell => spell.isEffect());
-    this.spells = unitSpells.filter(spell => !spell.isEffect());
+    this.unitStats$ = this.unitGroup().listenStats();
+    this.baseStats = this.unitGroup().type.baseStats;
+    const unitSpells = this.unitGroup().spells;
+    this.effects = unitSpells.filter((spell) => spell.isEffect());
+    this.spells = unitSpells.filter((spell) => !spell.isEffect());
 
-    this.description = this.unitGroup.type.getDescription?.({
-      unit: this.unitGroup,
-      unitBase: this.unitGroup.type,
+    const unitGroup = this.unitGroup();
+    this.description = unitGroup.type.getDescription?.({
+      unit: unitGroup,
+      unitBase: unitGroup.type,
     }) || { descriptions: [] };
   }
 }

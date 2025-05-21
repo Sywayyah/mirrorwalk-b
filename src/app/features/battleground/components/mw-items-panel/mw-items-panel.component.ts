@@ -4,9 +4,10 @@ import { Player } from 'src/app/core/players';
 import { MwPlayersService } from 'src/app/features/services';
 
 @Component({
-  selector: 'mw-items-panel',
-  templateUrl: './mw-items-panel.component.html',
-  styleUrls: ['./mw-items-panel.component.scss']
+    selector: 'mw-items-panel',
+    templateUrl: './mw-items-panel.component.html',
+    styleUrls: ['./mw-items-panel.component.scss'],
+    standalone: false
 })
 export class MwItemsPanelComponent implements OnInit {
 

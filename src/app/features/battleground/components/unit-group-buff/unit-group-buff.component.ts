@@ -4,10 +4,11 @@ import { UnitGroup } from 'src/app/core/unit-types';
 import { HintAttachment } from 'src/app/features/shared/components';
 
 @Component({
-  selector: 'mw-unit-group-buff',
-  templateUrl: './unit-group-buff.component.html',
-  styleUrls: ['./unit-group-buff.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'mw-unit-group-buff',
+    templateUrl: './unit-group-buff.component.html',
+    styleUrls: ['./unit-group-buff.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class UnitGroupBuffComponent {
   public buff = input.required<Spell>();

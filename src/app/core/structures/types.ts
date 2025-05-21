@@ -1,12 +1,12 @@
 import { PlayersApi, SpellsApi } from '../api/game-api';
 import { Entity, StructId, UnitTypeId } from '../entities';
 import { EventFeedApi } from '../game-objects';
-import { ItemBaseModel } from '../items';
+import { ItemBaseType } from '../items';
 import { Player } from '../players';
 import { ResourceType } from '../resources';
 import { LocalEvents } from '../triggers';
-import { DescriptionElement } from '../ui';
-import { GenerationModel, UnitGroup } from '../unit-types';
+import { DescriptionVariants } from '../ui';
+import { ArmyGenerationModel, UnitGroup } from '../unit-types';
 import { SturctEventsGroup } from './events';
 import { MapStructure } from './map-structures';
 
@@ -17,7 +17,7 @@ export enum StuctureControl {
 
 interface OnVisitedParams {
   playersApi: PlayersApi;
-  spellsApi: SpellsApi,
+  spellsApi: SpellsApi;
   visitingPlayer: Player;
 }
 export type ControlsState = Record<'accept', boolean>;
@@ -43,7 +43,7 @@ export enum StructureType {
 interface StructureDescriptions {
   // will override name defind on generator level
   name?: string;
-  descriptions: (string | DescriptionElement)[];
+  descriptions: (string | DescriptionVariants['variants'])[];
 }
 
 /* This base type for structures will be expanded and, most likely, will have an access to events and API. */
@@ -53,14 +53,14 @@ export interface StructureGeneratorModel extends Entity {
   icon?: string;
   control: StuctureControl;
 
-  description?: (params: { thisStruct: MapStructure }) => StructureDescriptions;
+  description?: (params: { thisStruct: MapStructure; visitingPlayer?: Player }) => StructureDescriptions;
 
   actionPoints?: number;
   disableWeeklyGuardRise?: boolean;
 
   type?: StructureType;
 
-  generateGuard?: (params: { thisStruct: MapStructure }) => GenerationModel;
+  generateGuard?: (params: { thisStruct: MapStructure }) => ArmyGenerationModel;
 
   /* todo: Array of rewards? */
   generateReward?: () => NeutralRewardModel;
@@ -106,7 +106,6 @@ export interface ResourcesReward extends NeutralRewardModel<NeutralRewardTypesEn
   resourceGroups: ResourceRewardModel[][];
 }
 
-
 /* Hiring Reward */
 export interface HiringReward extends NeutralRewardModel<NeutralRewardTypesEnum.UnitsHire> {
   units: HiringRewardModel[];
@@ -114,7 +113,7 @@ export interface HiringReward extends NeutralRewardModel<NeutralRewardTypesEnum.
 
 /* Item Reward */
 export interface ItemReward extends NeutralRewardModel<NeutralRewardTypesEnum.Item> {
-  itemGroups: ItemBaseModel[][];
+  itemGroups: ItemBaseType[][];
 }
 
 /* Unit ungrade reward */
@@ -125,8 +124,7 @@ export interface UnitUpgradeReward extends NeutralRewardModel<NeutralRewardTypes
 /* Reward defined by script */
 export interface ScriptedReward extends NeutralRewardModel<NeutralRewardTypesEnum.Scripted> {
   description: string;
-  onAccept: (apiRefs: OnVisitedParams) => void,
+  onAccept: (apiRefs: OnVisitedParams) => void;
 }
 
-export interface NoReward extends NeutralRewardModel<NeutralRewardTypesEnum.NoReward> {
-}
+export interface NoReward extends NeutralRewardModel<NeutralRewardTypesEnum.NoReward> {}

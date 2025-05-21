@@ -12,6 +12,7 @@ import { injectHostElem, injectRenderer } from 'src/app/core/utils';
   templateUrl: './value-bar.component.html',
   styleUrls: ['./value-bar.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class ValueBarComponent {
   private readonly hostElem = injectHostElem();
@@ -31,7 +32,7 @@ export class ValueBarComponent {
 
   public side = input<'left' | 'right'>('left');
 
-  public uiBarWidth = computed(() => this.currentValue() / this.maxValue() * 100);
+  public uiBarWidth = computed(() => (this.currentValue() / this.maxValue()) * 100);
 
   constructor() {
     effect(() => {

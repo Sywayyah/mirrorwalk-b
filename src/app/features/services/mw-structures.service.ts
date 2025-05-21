@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { GamePreparedEvent, InitStructure } from 'src/app/core/events';
 import { Player } from 'src/app/core/players';
 import { MapStructure, StructureDescription } from 'src/app/core/structures';
@@ -7,9 +7,14 @@ import { MwPlayersService, MwUnitGroupsService } from './';
 import { GameObjectsManager } from './game-objects-manager.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class MwStructuresService {
+  private readonly playersService = inject(MwPlayersService);
+  private readonly unitGroups = inject(MwUnitGroupsService);
+  private readonly gameObjectsManager = inject(GameObjectsManager);
+  private readonly events = inject(EventsService);
+
   public neutralPlayer!: Player;
 
   public initialStructs: StructureDescription[] = [];
@@ -24,13 +29,6 @@ export class MwStructuresService {
 
   private startingLocationId!: string;
 
-  constructor(
-    private playersService: MwPlayersService,
-    private unitGroups: MwUnitGroupsService,
-    private gameObjectsManager: GameObjectsManager,
-    private events: EventsService,
-  ) { }
-
   public initStructures(event: GamePreparedEvent): void {
     this.neutralPlayer = this.playersService.getNeutralPlayer();
 
@@ -44,40 +42,45 @@ export class MwStructuresService {
 
   public updateParentLinks(): void {
     this.viewStructures.forEach((struct) => {
-      const parentLocs = this.viewStructures.filter(structItem => struct.pathTo === structItem.id);
-      parentLocs.forEach(parent => struct.parentStructs.add(parent.id));
+      const parentLocs = this.viewStructures.filter((structItem) => struct.pathTo === structItem.id);
+      parentLocs.forEach((parent) => struct.parentStructs.add(parent.id));
     });
   }
 
   public updateAvailableStructures(): void {
-    Object.keys(this.availableStructuresMap).forEach(structId => {
-      const childStructures = this.viewStructures
-        .filter(struct => [...struct.parentStructs]
-          .find(parentId => this.gameObjectsManager.getObjectByFullId<MapStructure>(
-            this.gameObjectsManager.getObjectId(MapStructure, parentId))?.visited)
-          && struct.parentStructs.has(structId)
-        );
+    Object.keys(this.availableStructuresMap).forEach((structId) => {
+      const childStructures = this.viewStructures.filter(
+        (struct) =>
+          [...struct.parentStructs].find(
+            (parentId) =>
+              this.gameObjectsManager.getObjectByFullId<MapStructure>(
+                this.gameObjectsManager.getObjectId(MapStructure, parentId),
+              )?.visited,
+          ) && struct.parentStructs.has(structId),
+      );
 
-      childStructures.forEach(struct => this.availableStructuresMap[struct.id] = true);
+      childStructures.forEach((struct) => (this.availableStructuresMap[struct.id] = true));
     });
   }
 
   private createViewStructures(initialStructures: StructureDescription[]): MapStructure[] {
-    const createdStructures = initialStructures.map(struct => this.gameObjectsManager.createNewGameObject(
-      MapStructure,
-      {
-        iconName: struct.icon,
-        x: struct.x,
-        y: struct.y,
-        generator: struct.struct,
-        guardingPlayer: undefined,
-        isRoot: struct.id === this.startingLocationId,
-        pathTo: struct.pathTo ? this.gameObjectsManager.getObjectId(MapStructure, struct.pathTo) : undefined,
-        actionPoints: struct.actionPoints,
-        structParams: struct.structParams,
-      },
-      struct.id,
-    ));
+    const createdStructures = initialStructures.map((struct) =>
+      this.gameObjectsManager.createNewGameObject(
+        MapStructure,
+        {
+          iconName: struct.icon,
+          x: struct.x,
+          y: struct.y,
+          generator: struct.struct,
+          guardingPlayer: undefined,
+          isRoot: struct.id === this.startingLocationId,
+          pathTo: struct.pathTo ? this.gameObjectsManager.getObjectId(MapStructure, struct.pathTo) : undefined,
+          actionPoints: struct.actionPoints,
+          structParams: struct.structParams,
+        },
+        struct.id,
+      ),
+    );
 
     return createdStructures.map((viewStrcuture) => {
       this.events.dispatch(InitStructure({ structure: viewStrcuture }));
@@ -91,7 +94,7 @@ export class MwStructuresService {
       }
 
       if (pathTo) {
-        const linkedLoc = createdStructures.find(struct2 => struct2.id === viewStrcuture.pathTo)!;
+        const linkedLoc = createdStructures.find((struct2) => struct2.id === viewStrcuture.pathTo)!;
         viewStrcuture.pathTo = pathTo;
 
         const { x, y } = viewStrcuture;
@@ -120,8 +123,10 @@ export class MwStructuresService {
         const generator = viewStrcuture.generator;
 
         if (generator?.generateGuard) {
-          viewStrcuture.guard = this.unitGroups.createUnitGroupFromGenModel(generator.generateGuard({ thisStruct: viewStrcuture }));
-          viewStrcuture.guard.forEach(guard => guard.assignOwnerPlayer(this.playersService.getNeutralPlayer()));
+          viewStrcuture.guard = this.unitGroups.createUnitGroupFromGenModel(
+            generator.generateGuard({ thisStruct: viewStrcuture }),
+          );
+          viewStrcuture.guard.forEach((guard) => guard.assignOwnerPlayer(this.playersService.getNeutralPlayer()));
           viewStrcuture.guardingPlayer = this.playersService.getNeutralPlayer();
         }
 

@@ -1,69 +1,49 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { HealingInfo } from 'src/app/core/api/combat-api';
 import { UnitTypeId } from 'src/app/core/entities';
 import { AddCombatModifiersToUnit, RemoveCombatModifiersFromUnit } from 'src/app/core/events/battle/commands';
 import { Hero } from 'src/app/core/heroes';
 import { Modifiers } from 'src/app/core/modifiers';
-import { GenerationModel, UnitGroup, UnitsUtils, resolveUnitType } from 'src/app/core/unit-types';
+import { ArmyGenerationModel, resolveUnitType, UnitGroup, UnitsUtils } from 'src/app/core/unit-types';
 import { EventsService } from 'src/app/store';
 import { GameObjectsManager } from './game-objects-manager.service';
-import { MwSpellsService } from './mw-spells.service';
-
 
 export type KeysMatching<T extends object, V> = {
-  [K in keyof T]-?: T[K] extends V ? K : never
+  [K in keyof T]-?: T[K] extends V ? K : never;
 }[keyof T];
 
 export interface UIModsModel {
-  speed: number,
+  speed: number;
   attack: number;
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class MwUnitGroupsService {
+  private readonly gameObjectsManager = inject(GameObjectsManager);
+  private readonly events = inject(EventsService);
 
-  constructor(
-    private spells: MwSpellsService,
-    private gameObjectsManager: GameObjectsManager,
-    private events: EventsService,
-  ) { }
-  /* todo: unify it */
-  /*  todo: figure out diff between UnitGroupModel and Inst */
-
-  public createUnitGroup(
-    unitTypeId: UnitTypeId,
-    options: { count: number },
-    ownerHero?: Hero,
-  ): UnitGroup {
-    const unitGroup: UnitGroup = this.gameObjectsManager.createNewGameObject(
-      UnitGroup,
-      {
-        count: options.count,
-        ownerHero: ownerHero,
-        unitBase: resolveUnitType(unitTypeId),
-      },
-    );
+  public createUnitGroup(unitTypeId: UnitTypeId, options: { count: number }, ownerHero?: Hero): UnitGroup {
+    const unitGroup: UnitGroup = this.gameObjectsManager.createNewGameObject(UnitGroup, {
+      count: options.count,
+      ownerHero: ownerHero,
+      unitBase: resolveUnitType(unitTypeId),
+    });
 
     return unitGroup;
   }
 
-  public createUnitGroupFromGenModel(
-    genModel: GenerationModel,
-  ): UnitGroup[] {
-    return UnitsUtils
-      .createRandomArmy(genModel)
-      .map(unitGenModel => this.createUnitGroup(unitGenModel.unitType, { count: unitGenModel.count }));
+  public createUnitGroupFromGenModel(genModel: ArmyGenerationModel): UnitGroup[] {
+    return UnitsUtils.createRandomArmy(genModel).map((unitGenModel) =>
+      this.createUnitGroup(unitGenModel.unitType, { count: unitGenModel.count }),
+    );
   }
 
-  public createUnitGroupFromGenModelForPlayer(
-    genModel: GenerationModel,
-    ownerHero?: Hero,
-  ): UnitGroup[] {
-    return UnitsUtils
-      .createRandomArmy(genModel)
-      .map(unitGenModel => this.createUnitGroup(unitGenModel.unitType, { count: unitGenModel.count }, ownerHero));
+  public createUnitGroupFromGenModelForPlayer(genModel: ArmyGenerationModel, ownerHero?: Hero): UnitGroup[] {
+    return UnitsUtils.createRandomArmy(genModel).map((unitGenModel) =>
+      this.createUnitGroup(unitGenModel.unitType, { count: unitGenModel.count }, ownerHero),
+    );
   }
 
   // these methods might become obsolete
@@ -91,13 +71,13 @@ export class MwUnitGroupsService {
   public healUnit(unit: UnitGroup, healValue: number): HealingInfo {
     const singleUnitHealth = unit.type.baseStats.health;
 
-    let fullyRevivedUnitsCount = Math.floor(healValue / singleUnitHealth);
+    const fullyRevivedUnitsCount = Math.floor(healValue / singleUnitHealth);
 
-    let fullHealValueWithoutTail = fullyRevivedUnitsCount * singleUnitHealth;
+    const fullHealValueWithoutTail = fullyRevivedUnitsCount * singleUnitHealth;
 
-    let healValueTail = healValue - fullHealValueWithoutTail;
+    const healValueTail = healValue - fullHealValueWithoutTail;
 
-    const initialUnitsCount = unit.fightInfo.initialCount;
+    const initialUnitsCount = unit.getState().groupState.initialCount;
 
     const currentUnitsCount = unit.count;
 
@@ -108,7 +88,7 @@ export class MwUnitGroupsService {
 
     const lossTailHp = singleUnitHealth - currentTailHp;
 
-    const totalHpLoss = (totalUnitsLoss * singleUnitHealth) + lossTailHp;
+    const totalHpLoss = totalUnitsLoss * singleUnitHealth + lossTailHp;
 
     // if no losses or no heal value, do nothing and return 0
     if (totalHpLoss === 0 || healValue <= 0) {
@@ -118,7 +98,7 @@ export class MwUnitGroupsService {
       };
     }
 
-    unit.fightInfo.isAlive = true;
+    unit.patchUnitGroupState({ isAlive: true });
 
     // if heal is greater than overall loss, heal out to max
     if (healValue > totalHpLoss) {
@@ -136,7 +116,7 @@ export class MwUnitGroupsService {
     // if heal of tail exceeds tail loss
     if (healValueTail > lossTailHp) {
       unitsToRevive += 1;
-      unit.setTailUnitHp((currentTailHp + healValueTail) - singleUnitHealth);
+      unit.setTailUnitHp(currentTailHp + healValueTail - singleUnitHealth);
     } else {
       if (unit.tailUnitHp === 0 && healValueTail === 0 && unitsToRevive > 0) {
         unit.setTailUnitHp(singleUnitHealth);

@@ -10,8 +10,11 @@
     </div>
 
     <div>
-      <input type="range" min="0" [max]="popup.data.unitGroup.count - 1" [value]="toSplit"
-        (input)="upgadeValue($event)">
+      <input type="range"
+             min="0"
+             [max]="popup.data.unitGroup.count - 1"
+             [value]="toSplit"
+             (input)="upgadeValue($event)">
       <div>
         To split: {{ toSplit}}
       </div>
@@ -19,10 +22,16 @@
   </div>
 
   <div popupButtons>
-    <button mw-main-button (click)="split()">
+    <button mw-main-button
+            (click)="split()">
       Split
     </button>
-    <button mw-main-button (click)="closePopup()">
+    <button mw-main-button
+            (click)="displayUnitGroupInfo()">
+      Show Unit Info
+    </button>
+    <button mw-main-button
+            (click)="closePopup()">
       Close
     </button>
   </div>

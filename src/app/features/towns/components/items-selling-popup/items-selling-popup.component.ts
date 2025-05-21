@@ -1,7 +1,7 @@
 import { Component, computed, inject, signal } from '@angular/core';
 import { resolveEntities } from 'src/app/core/entities';
 import { PlayerLosesItem, PlayerReceivesItem } from 'src/app/core/events';
-import { Item, ItemBaseModel } from 'src/app/core/items';
+import { Item, ItemBaseType } from 'src/app/core/items';
 import { Building, SellingBuildingData } from 'src/app/core/towns';
 import { CommonUtils } from 'src/app/core/utils';
 import { MwItemsService, MwPlayersService } from 'src/app/features/services';
@@ -12,6 +12,7 @@ import { EventsService } from 'src/app/store';
   selector: 'mw-items-selling-popup',
   templateUrl: './items-selling-popup.component.html',
   styleUrl: './items-selling-popup.component.scss',
+  standalone: false,
 })
 export class ItemsSellingPopupComponent extends BasicPopup<{ building: Building }> {
   readonly players = inject(MwPlayersService);
@@ -23,13 +24,13 @@ export class ItemsSellingPopupComponent extends BasicPopup<{ building: Building 
 
   private readonly sellingData = this.data.building.getCustomData<SellingBuildingData>();
 
-  items = resolveEntities<ItemBaseModel>(this.sellingData?.items!);
-  allowsSelling = this.sellingData?.selling;
+  readonly items = resolveEntities<ItemBaseType>(this.sellingData?.items ?? []);
+  readonly allowsSelling = this.sellingData?.selling;
 
-  itemToBuy = signal<ItemBaseModel | null>(null);
-  itemToSell = signal<Item | null>(null);
+  readonly itemToBuy = signal<ItemBaseType | null>(null);
+  readonly itemToSell = signal<Item | null>(null);
 
-  canBuy = computed(() => {
+  readonly canBuy = computed(() => {
     const itemToBuy = this.itemToBuy();
     // todo: quick workaround, to recalculate when itemToSell changes
     this.itemToSell();
@@ -37,7 +38,7 @@ export class ItemsSellingPopupComponent extends BasicPopup<{ building: Building 
     return !!itemToBuy && this.players.playerHasResources(this.currentPlayer, itemToBuy.cost!);
   });
 
-  canSell = computed(() => {
+  readonly canSell = computed(() => {
     const itemToSell = this.itemToSell();
     return !!itemToSell;
   });

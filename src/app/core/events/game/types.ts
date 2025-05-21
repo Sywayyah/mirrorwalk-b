@@ -10,6 +10,8 @@ import { Building } from '../../towns';
 export enum ViewsEnum {
   MainScreen = 'main-screen',
   NewGame = 'new-game',
+  SandboxMode = 'sandbox',
+  ScenarioMode = 'scenario-editor',
 
   Structures = 'structures',
   Battleground = 'battleground',

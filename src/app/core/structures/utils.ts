@@ -1,14 +1,30 @@
 import { StructId, registerEntity } from '../entities';
-import { GenerationModel } from '../unit-types';
+import { ArmyGenerationModel } from '../unit-types';
 import { StructureDescription } from './map-structures';
-import { HiringReward, HiringRewardModel, NeutralRewardTypesEnum, StructureGeneratorModel, StuctureControl } from './types';
+import {
+  HiringReward,
+  HiringRewardModel,
+  NeutralRewardTypesEnum,
+  StructureGeneratorModel,
+  StuctureControl,
+} from './types';
 
 export function createStructure(base: StructureGeneratorModel): StructureGeneratorModel {
   registerEntity(base);
   return base;
 }
 
-export function createHireStructure({ id, name, guard, unitsForHire }: { id: StructId, name: string; guard: GenerationModel; unitsForHire: HiringRewardModel[]; }): StructureGeneratorModel {
+export function createHireStructure({
+  id,
+  name,
+  guard,
+  unitsForHire,
+}: {
+  id: StructId;
+  name: string;
+  guard: ArmyGenerationModel;
+  unitsForHire: HiringRewardModel[];
+}): StructureGeneratorModel {
   return {
     id,
     name: name,
@@ -30,6 +46,13 @@ export function createHireStructure({ id, name, guard, unitsForHire }: { id: Str
   };
 }
 
-export function createLocationsBranch(idsPrefix: string, structs: (StructureDescription & { toOuterBranch?: boolean })[]): StructureDescription[] {
-  return structs.map(struct => ({ ...struct, id: `${idsPrefix}.${struct.id}`, pathTo: !struct.pathTo ? undefined : struct.toOuterBranch ? struct.pathTo : `${idsPrefix}.${struct.pathTo}` }));
+export function createLocationsBranch(
+  idsPrefix: string,
+  structs: (StructureDescription & { toOuterBranch?: boolean })[],
+): StructureDescription[] {
+  return structs.map((struct) => ({
+    ...struct,
+    id: `${idsPrefix}.${struct.id}`,
+    pathTo: !struct.pathTo ? undefined : struct.toOuterBranch ? struct.pathTo : `${idsPrefix}.${struct.pathTo}`,
+  }));
 }
