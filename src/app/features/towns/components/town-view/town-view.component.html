@@ -5,7 +5,7 @@
   (click)="leaveTown()"
 />
 
-<mw-action-hint class="contrast"  />
+<mw-action-hint class="contrast" />
 
 <div class="tiers">
   <div
@@ -44,26 +44,28 @@
       <!-- <mw-ra-icon icon="hammer"></mw-ra-icon> -->
     </div>
 
-    <button
-      mw-main-button
-      [cdkMenuTriggerFor]="buildingMenu"
-      [cdkMenuPosition]="menuPosition"
-    >
-      Build
-    </button>
-
-    <ng-template #buildingMenu>
-      <div
-        class="content"
-        cdkMenu
+    @if (newTownSystemEnabled) {
+      <button
+        mw-main-button
+        [cdkMenuTriggerFor]="buildingMenu"
+        [cdkMenuPosition]="menuPosition"
       >
-        @for (building of tier.value; track $index) {
-          <div [mwActionHint]="'Inspect ' + building.base.baseName">
-            {{ building.base.baseName }}
-          </div>
-        }
-      </div>
-    </ng-template>
+        Build
+      </button>
+
+      <ng-template #buildingMenu>
+        <div
+          class="content"
+          cdkMenu
+        >
+          @for (building of tier.value; track $index) {
+            <div [mwActionHint]="'Inspect ' + building.base.baseName">
+              {{ building.base.baseName }}
+            </div>
+          }
+        </div>
+      </ng-template>
+    }
   </div>
 </div>
 

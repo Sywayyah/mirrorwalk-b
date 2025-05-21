@@ -1,4 +1,4 @@
-import { ConfigModel } from './types';
+import { ConfigModel, Feature } from './types';
 
 // config for release
 export const CONFIG: ConfigModel = {
@@ -7,11 +7,10 @@ export const CONFIG: ConfigModel = {
   logObjectsOnRightClick: true,
 
   showLocationsIds: false,
-  sandboxMode: false,
-  scenarioEditorMode: false,
 
   enableHeroUnits: true,
 
-  gameSettings: true,
   allowNeutralAIControl: false,
+
+  features: [Feature.TECHBanditCampVariety, Feature.NewGameSettings],
 } as const;

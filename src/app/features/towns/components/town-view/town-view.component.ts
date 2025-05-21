@@ -11,6 +11,8 @@ import { BuildPopupComponent } from '../build-popup/build-popup.component';
 import { HiringPopupComponent } from '../hiring-popup/hiring-popup.component';
 import { ItemsSellingPopupComponent } from '../items-selling-popup/items-selling-popup.component';
 import { MarketDialogComponent } from '../market-dialog/market-dialog.component';
+import { isFeatureEnabled } from 'src/app/core/config';
+import { Feature } from 'src/app/core/config/types';
 
 @Component({
   selector: 'mw-town-view',
@@ -23,6 +25,8 @@ export class TownViewComponent {
   private readonly state = inject(State);
   private readonly events = inject(EventsService);
   private readonly popupService = inject(PopupService);
+
+  readonly newTownSystemEnabled = isFeatureEnabled(Feature.NewTownSystem);
 
   public readonly menuPosition = [
     new ConnectionPositionPair({ originX: 'center', originY: 'top' }, { overlayX: 'center', overlayY: 'bottom' }),

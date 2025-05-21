@@ -1,6 +1,7 @@
 import { Component, inject, signal } from '@angular/core';
 import { PLAYER_COLORS } from 'src/app/core/assets';
-import { CONFIG } from 'src/app/core/config';
+import { isFeatureEnabled } from 'src/app/core/config';
+import { Feature } from 'src/app/core/config/types';
 import { DisplayCdkPopup, GameCreated, GameOpenMainScreen, ViewsEnum } from 'src/app/core/events';
 import { Faction, Factions, humansFaction } from 'src/app/core/factions';
 import { neutralsFaction } from 'src/app/core/factions/neutrals/faction';
@@ -38,7 +39,7 @@ export class NewGameScreenComponent {
   private readonly state = inject(State);
   private readonly gameObjectsManager = inject(GameObjectsManager);
 
-  readonly gameSettingsEnabled = CONFIG.gameSettings;
+  readonly gameSettingsEnabled = isFeatureEnabled(Feature.NewGameSettings);
 
   readonly players = signal<PlayerRow[]>([
     {

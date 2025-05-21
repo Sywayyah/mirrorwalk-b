@@ -6,11 +6,18 @@ export interface ConfigModel {
   showLocationsIds: boolean;
 
   enableHeroUnits: boolean;
-  sandboxMode: boolean;
-  scenarioEditorMode: boolean;
-
-  gameSettings: boolean;
 
   // allows to control neutral AI
   allowNeutralAIControl: boolean;
+  // control features availability for deployments
+  features: Feature[];
+}
+
+export enum Feature {
+  SandboxMode,
+  ScenarioEditor,
+  NewGameSettings,
+  NewTownSystem,
+
+  TECHBanditCampVariety,
 }

@@ -1,4 +1,4 @@
-import { ConfigModel } from './types';
+import { ConfigModel, Feature } from './types';
 
 // config for local development
 export const CONFIG: ConfigModel = {
@@ -7,12 +7,16 @@ export const CONFIG: ConfigModel = {
   logObjectsOnRightClick: true,
 
   showLocationsIds: false,
-  sandboxMode: true,
-  scenarioEditorMode: true,
 
   // can become a game-setting
   enableHeroUnits: true,
 
-  gameSettings: true,
   allowNeutralAIControl: false,
+  features: [
+    Feature.NewGameSettings,
+    Feature.SandboxMode,
+    Feature.ScenarioEditor,
+    Feature.NewTownSystem,
+    Feature.TECHBanditCampVariety,
+  ],
 } as const;

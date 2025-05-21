@@ -1,11 +1,18 @@
+import { isFeatureEnabled } from '../../config';
+import { Feature } from '../../config/types';
 import { ItemEclipseWand, ItemIceBow, ItemMeteorSwords, ItemWindCrest } from '../../items/neutral';
 import { LightBootsItem } from '../../items/neutral/light-boots';
 import { ResourceType } from '../../resources';
 import { GenerationModel } from '../../unit-types';
 import { CommonUtils } from '../../utils';
-import { ItemReward, NeutralRewardTypesEnum, ResourcesReward, StructureGeneratorModel, StuctureControl } from '../types';
+import {
+  ItemReward,
+  NeutralRewardTypesEnum,
+  ResourcesReward,
+  StructureGeneratorModel,
+  StuctureControl,
+} from '../types';
 import { createStructure } from '../utils';
-
 
 export const BanditCamp: StructureGeneratorModel = createStructure({
   id: '#struct-bandit-camp',
@@ -32,13 +39,12 @@ export const BanditCamp: StructureGeneratorModel = createStructure({
     const fireBirds: GenerationModel = {
       maxUnitGroups: 1,
       minUnitGroups: 1,
-      units: [
-        ['#unit-h40', 2, 2, 1],
-      ],
+      units: [['#unit-h40', 2, 2, 1]],
     };
 
-    // ;
-    return CommonUtils.randItem([windElementals, banditGuards, fireBirds]);
+    return isFeatureEnabled(Feature.TECHBanditCampVariety)
+      ? CommonUtils.randItem([windElementals, banditGuards, fireBirds])
+      : banditGuards;
   },
 
   generateReward: () => {
@@ -47,12 +53,12 @@ export const BanditCamp: StructureGeneratorModel = createStructure({
         type: NeutralRewardTypesEnum.Resources,
         resourceGroups: [
           [
-            { type: ResourceType.Gold, count: 450, },
-            { type: ResourceType.Gems, count: 1, },
+            { type: ResourceType.Gold, count: 450 },
+            { type: ResourceType.Gems, count: 1 },
           ],
           [
-            { type: ResourceType.Gold, count: 800, },
-            { type: ResourceType.Wood, count: 2, },
+            { type: ResourceType.Gold, count: 800 },
+            { type: ResourceType.Wood, count: 2 },
           ],
         ],
       };
@@ -66,12 +72,10 @@ export const BanditCamp: StructureGeneratorModel = createStructure({
           [ItemEclipseWand],
           [ItemMeteorSwords],
           [ItemIceBow],
-        ]
+        ],
       };
 
       return itemReward;
     }
   },
 });
-
-
