@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { CONFIG } from 'src/app/core/config';
 import { Faction } from 'src/app/core/factions';
 import { GameSettings, LossMode } from 'src/app/core/game-settings';
 import { HeroBase } from 'src/app/core/heroes';
@@ -35,7 +36,8 @@ export class State {
   readonly gameSettings = new FeatureState<GameSettings>({
     lossToNeutralPlayers: LossMode.Permanent,
     lossToPlayers: LossMode.Permanent,
-    lossToNeutrals: LossMode.None,
+    lossToNeutrals: LossMode.Permanent,
+    allowNeutralControl: CONFIG.allowNeutralAIControlByDefault,
   });
 
   public createdGame!: {

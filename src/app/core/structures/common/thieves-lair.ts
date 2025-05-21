@@ -1,7 +1,7 @@
 import { BlackLichSwordItem } from '../../items/neutral/black-lich-sword';
 import { IrtonPlateItem } from '../../items/neutral/irton-plate';
 import { PhoenixShieldItem } from '../../items/neutral/phoenix-shield';
-import { GenerationModel } from '../../unit-types';
+import { ArmyGenerationModel } from '../../unit-types';
 import { ItemReward, NeutralRewardTypesEnum, StructureGeneratorModel, StuctureControl } from '../types';
 import { createStructure } from '../utils';
 
@@ -20,7 +20,7 @@ export const ThievesLair: StructureGeneratorModel = createStructure({
         ['#unit-neut-thief-0', 12, 14, 2],
         ['#unit-neut-gnoll-0', 14, 24, 3],
       ],
-    } as GenerationModel;
+    } as ArmyGenerationModel;
 
     return guard;
   },

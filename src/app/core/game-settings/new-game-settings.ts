@@ -15,4 +15,6 @@ export type GameSettings = {
   lossToNeutrals: LossMode;
   lossToPlayers: LossMode;
   lossToNeutralPlayers: LossMode;
+
+  allowNeutralControl: boolean;
 };

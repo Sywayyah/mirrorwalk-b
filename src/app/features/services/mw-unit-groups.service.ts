@@ -4,7 +4,7 @@ import { UnitTypeId } from 'src/app/core/entities';
 import { AddCombatModifiersToUnit, RemoveCombatModifiersFromUnit } from 'src/app/core/events/battle/commands';
 import { Hero } from 'src/app/core/heroes';
 import { Modifiers } from 'src/app/core/modifiers';
-import { GenerationModel, resolveUnitType, UnitGroup, UnitsUtils } from 'src/app/core/unit-types';
+import { ArmyGenerationModel, resolveUnitType, UnitGroup, UnitsUtils } from 'src/app/core/unit-types';
 import { EventsService } from 'src/app/store';
 import { GameObjectsManager } from './game-objects-manager.service';
 
@@ -34,13 +34,13 @@ export class MwUnitGroupsService {
     return unitGroup;
   }
 
-  public createUnitGroupFromGenModel(genModel: GenerationModel): UnitGroup[] {
+  public createUnitGroupFromGenModel(genModel: ArmyGenerationModel): UnitGroup[] {
     return UnitsUtils.createRandomArmy(genModel).map((unitGenModel) =>
       this.createUnitGroup(unitGenModel.unitType, { count: unitGenModel.count }),
     );
   }
 
-  public createUnitGroupFromGenModelForPlayer(genModel: GenerationModel, ownerHero?: Hero): UnitGroup[] {
+  public createUnitGroupFromGenModelForPlayer(genModel: ArmyGenerationModel, ownerHero?: Hero): UnitGroup[] {
     return UnitsUtils.createRandomArmy(genModel).map((unitGenModel) =>
       this.createUnitGroup(unitGenModel.unitType, { count: unitGenModel.count }, ownerHero),
     );

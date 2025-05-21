@@ -7,8 +7,7 @@ export interface ConfigModel {
 
   enableHeroUnits: boolean;
 
-  // allows to control neutral AI
-  allowNeutralAIControl: boolean;
+  allowNeutralAIControlByDefault: boolean;
   // control features availability for deployments
   features: Feature[];
 }

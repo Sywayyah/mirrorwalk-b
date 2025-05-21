@@ -6,7 +6,7 @@ import { UnitBaseType, UnitDescriptions, UnitTypeBaseStatsModel } from './types'
 /* unit type, minCount, maxCount, maxGroupsOfThisType */
 type UnitModel = [unitType: UnitTypeId, min: number, max: number, maxOfThisType: number | void];
 
-export interface GenerationModel {
+export interface ArmyGenerationModel {
   minUnitGroups: number;
   maxUnitGroups: number;
   units: UnitModel[];
@@ -49,7 +49,7 @@ export function resolveUnitType(unitTypeId: UnitTypeId): UnitBaseType {
 }
 
 export const UnitsUtils = {
-  createRandomArmy(options: GenerationModel): UnitGenerationModel[] {
+  createRandomArmy(options: ArmyGenerationModel): UnitGenerationModel[] {
     const groupsToGenerateCount = CommonUtils.randIntInRange(options.minUnitGroups, options.maxUnitGroups);
     const generatedGroups = [];
     const unitsToGenerate = [...options.units];

@@ -11,7 +11,7 @@ export const CONFIG: ConfigModel = {
   // can become a game-setting
   enableHeroUnits: true,
 
-  allowNeutralAIControl: false,
+  allowNeutralAIControlByDefault: true,
   features: [
     Feature.NewGameSettings,
     Feature.SandboxMode,

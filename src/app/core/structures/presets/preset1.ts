@@ -1,5 +1,17 @@
-import { GenerationModel } from '../../unit-types';
-import { ArchersOutpostStructure, BanditCamp, BeaconOfTheUndead, BigCampStructure, CalavryStalls, GraveyardStructure, MagicRiverStructure, MountainNestStructure, RockyPassageStructure, ThievesLair, WitchHutStructure } from '../common';
+import { ArmyGenerationModel } from '../../unit-types';
+import {
+  ArchersOutpostStructure,
+  BanditCamp,
+  BeaconOfTheUndead,
+  BigCampStructure,
+  CalavryStalls,
+  GraveyardStructure,
+  MagicRiverStructure,
+  MountainNestStructure,
+  RockyPassageStructure,
+  ThievesLair,
+  WitchHutStructure,
+} from '../common';
 import { DarkArtsSchool } from '../common/dark-arts-school';
 import { FireRingStructure, GenericGuardStructure } from '../common/guard-location';
 import { Mausoleum } from '../common/mausoleum';
@@ -30,7 +42,6 @@ export const START_LOC_ID = 'start';
 function loc(location: number): number {
   return location + shift;
 }
-
 
 const brBranch: StructureDescription[] = createLocationsBranch('start-bottom-right', [
   {
@@ -63,7 +74,7 @@ const brBranch: StructureDescription[] = createLocationsBranch('start-bottom-rig
     actionPoints: 1,
 
     struct: ResourcesPileStructure,
-    structParams: getResPileParams({ wood: 4 })
+    structParams: getResPileParams({ wood: 4 }),
   },
   {
     id: 'witch',
@@ -80,7 +91,6 @@ const brBranch: StructureDescription[] = createLocationsBranch('start-bottom-rig
     y: loc(90),
     icon: 'sword',
     pathTo: '1',
-
 
     struct: BanditCamp,
   },
@@ -132,7 +142,6 @@ const brBranch: StructureDescription[] = createLocationsBranch('start-bottom-rig
     struct: BigCampStructure,
   },
 ]);
-
 
 const fifthBranch: StructureDescription[] = createLocationsBranch('five', [
   {
@@ -237,7 +246,7 @@ const blBranch: StructureDescription[] = createLocationsBranch('start-bottom-lef
     pathTo: '2',
 
     struct: ResourcesPileStructure,
-    structParams: getResPileParams({ gold: 450, redCrystals: 1, gems: 1 })
+    structParams: getResPileParams({ gold: 450, redCrystals: 1, gems: 1 }),
   },
 ]);
 
@@ -283,7 +292,6 @@ const tlBranch: StructureDescription[] = createLocationsBranch('start-top-left',
     struct: ResourcesPileStructure,
     structParams: getResPileParams({ gems: 3 }),
   },
-
 ]);
 
 const postBossBranch = createLocationsBranch('post-boss-1', [
@@ -297,7 +305,14 @@ const postBossBranch = createLocationsBranch('post-boss-1', [
     pathTo: 'start-bottom-left.post-boss',
     toOuterBranch: true,
     struct: GenericGuardStructure,
-    structParams: { name: 'Swamp', guards: { units: [['#unit-neut-poison-ivy-0', 20, 20, 3]], maxUnitGroups: 3, minUnitGroups: 3 } as GenerationModel }
+    structParams: {
+      name: 'Swamp',
+      guards: {
+        units: [['#unit-neut-poison-ivy-0', 20, 20, 3]],
+        maxUnitGroups: 3,
+        minUnitGroups: 3,
+      } as ArmyGenerationModel,
+    },
   },
 ]);
 

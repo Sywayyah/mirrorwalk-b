@@ -1,10 +1,10 @@
 import { Directive, InjectionToken, OnInit, inject } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
-import { CONFIG } from 'src/app/core/config';
 import { PlayerState } from 'src/app/core/players';
 import { UnitGroup } from 'src/app/core/unit-types';
 import { CenteredStaticCursorAnimation, SpellCastCursorAnimation, StaticCursorAnimation } from 'src/app/core/vfx';
 import { BattleStateService, MwCurrentPlayerStateService, MwSpellsService } from '../../services';
+import { State } from '../../services/state.service';
 import { AnimatedCursor, MwCustomCursorDirective } from './mw-custom-cursor.directive';
 
 export interface UIUnitProvider {
@@ -24,6 +24,7 @@ export class MwUnitEventsCursorDirective extends MwCustomCursorDirective impleme
   private readonly spells = inject(MwSpellsService);
   private readonly battleState = inject(BattleStateService);
   private readonly unitGroupProvider = inject(PROVIDE_UI_UNIT_GROUP);
+  private readonly state = inject(State);
 
   private unitGroup!: UnitGroup;
 
@@ -47,7 +48,9 @@ export class MwUnitEventsCursorDirective extends MwCustomCursorDirective impleme
     // keep thinking of current player as enemy if it is uncontrollable AI and opponent isn't AI
     const isEnemyUnitGroup = !targetingData.isCurrentPlayerAI
       ? !targetingData.doesUnitBelongToActivePlayer
-      : !targetingData.isOpponentAI && targetingData.doesUnitBelongToActivePlayer && !CONFIG.allowNeutralAIControl;
+      : !targetingData.isOpponentAI &&
+        targetingData.doesUnitBelongToActivePlayer &&
+        !this.state.gameSettings.get().allowNeutralControl;
 
     const playerState = this.curPlayerState.state.get().playerCurrentState;
 

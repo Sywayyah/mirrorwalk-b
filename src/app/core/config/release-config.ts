@@ -10,7 +10,7 @@ export const CONFIG: ConfigModel = {
 
   enableHeroUnits: true,
 
-  allowNeutralAIControl: false,
+  allowNeutralAIControlByDefault: false,
 
   features: [Feature.TECHBanditCampVariety, Feature.NewGameSettings],
 } as const;

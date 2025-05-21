@@ -1,4 +1,4 @@
-import { GenerationModel } from '../../unit-types';
+import { ArmyGenerationModel } from '../../unit-types';
 import { NeutralRewardTypesEnum, StructureGeneratorModel, StuctureControl } from '../types';
 import { createStructure } from '../utils';
 
@@ -40,7 +40,7 @@ export const GenericGuardStructure: StructureGeneratorModel = createStructure({
   },
 
   generateGuard({ thisStruct }) {
-    const { guards } = thisStruct.getStructParams<{ guards: GenerationModel }>();
+    const { guards } = thisStruct.getStructParams<{ guards: ArmyGenerationModel }>();
 
     return guards;
   },

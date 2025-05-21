@@ -1,7 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { ActionCardTypes } from 'src/app/core/action-cards';
 import { PLAYER_COLORS } from 'src/app/core/assets';
-import { CONFIG } from 'src/app/core/config';
 import {
   ActivateActionCard,
   AddActionCardsToPlayer,
@@ -92,7 +91,7 @@ export class GameController extends StoreClient() {
 
     const neutralPlayer = this.players.createPlayer(PLAYER_IDS.Neutral, {
       color: PLAYER_COLORS.GRAY,
-      type: CONFIG.allowNeutralAIControl ? PlayerTypeEnum.Player : PlayerTypeEnum.AI,
+      type: this.state.gameSettings.get().allowNeutralControl ? PlayerTypeEnum.Player : PlayerTypeEnum.AI,
       hero: this.heroesService.createNeutralHero(),
       resources: {
         ...heroesDefaultResources,

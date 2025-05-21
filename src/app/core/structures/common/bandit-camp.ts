@@ -3,7 +3,7 @@ import { Feature } from '../../config/types';
 import { ItemEclipseWand, ItemIceBow, ItemMeteorSwords, ItemWindCrest } from '../../items/neutral';
 import { LightBootsItem } from '../../items/neutral/light-boots';
 import { ResourceType } from '../../resources';
-import { GenerationModel } from '../../unit-types';
+import { ArmyGenerationModel } from '../../unit-types';
 import { CommonUtils } from '../../utils';
 import {
   ItemReward,
@@ -28,18 +28,18 @@ export const BanditCamp: StructureGeneratorModel = createStructure({
         ['#unit-neut-thief-0', 14, 24, 1],
         ['#unit-neut-gnoll-0', 14, 24, 3],
       ],
-    } as GenerationModel;
+    } as ArmyGenerationModel;
 
-    const windElementals: GenerationModel = {
+    const windElementals: ArmyGenerationModel = {
       maxUnitGroups: 2,
       minUnitGroups: 2,
       units: [['#unit-neut-wind-spirit-0', 5, 8, 2]],
     };
 
-    const fireBirds: GenerationModel = {
+    const fireBirds: ArmyGenerationModel = {
       maxUnitGroups: 1,
       minUnitGroups: 1,
-      units: [['#unit-h40', 2, 2, 1]],
+      units: [['#unit-h40', 3, 4, 1]],
     };
 
     return isFeatureEnabled(Feature.TECHBanditCampVariety)

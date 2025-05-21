@@ -28,6 +28,7 @@ export class GameSettingsDialogComponent {
 
   readonly lossesFromNeutrals = signal(this.initialSettings.lossToNeutrals);
   readonly lossesFromPlayers = signal(this.initialSettings.lossToPlayers);
+  readonly allowNeutralControl = signal(this.initialSettings.allowNeutralControl);
 
   accept(): void {
     this.state.gameSettings.patch({

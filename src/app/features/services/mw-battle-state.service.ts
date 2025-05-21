@@ -1,5 +1,4 @@
 import { inject, Injectable } from '@angular/core';
-import { CONFIG } from 'src/app/core/config';
 import { UnitTypeId } from 'src/app/core/entities';
 import {
   FightNextRoundStarts,
@@ -14,6 +13,7 @@ import { ReactiveState } from 'src/app/core/state';
 import { UnitBaseType, UnitGroup } from 'src/app/core/unit-types';
 import { EventsService } from 'src/app/store';
 import { MwUnitGroupsService } from './mw-unit-groups.service';
+import { State } from './state.service';
 
 @Injectable({
   providedIn: 'root',
@@ -21,6 +21,7 @@ import { MwUnitGroupsService } from './mw-unit-groups.service';
 export class BattleStateService {
   private readonly units = inject(MwUnitGroupsService);
   private readonly events = inject(EventsService);
+  private readonly stateService = inject(State);
 
   readonly state = new ReactiveState<{
     currentPlayer: Player | null;
@@ -146,7 +147,11 @@ export class BattleStateService {
       return false;
     }
 
-    if (targetingData.isCurrentPlayerAI && !targetingData.isOpponentAI && !CONFIG.allowNeutralAIControl) {
+    if (
+      targetingData.isCurrentPlayerAI &&
+      !targetingData.isOpponentAI &&
+      !this.stateService.gameSettings.get().allowNeutralControl
+    ) {
       return false;
     }
 

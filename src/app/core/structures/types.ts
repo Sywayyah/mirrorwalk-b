@@ -6,7 +6,7 @@ import { Player } from '../players';
 import { ResourceType } from '../resources';
 import { LocalEvents } from '../triggers';
 import { DescriptionVariants } from '../ui';
-import { GenerationModel, UnitGroup } from '../unit-types';
+import { ArmyGenerationModel, UnitGroup } from '../unit-types';
 import { SturctEventsGroup } from './events';
 import { MapStructure } from './map-structures';
 
@@ -60,7 +60,7 @@ export interface StructureGeneratorModel extends Entity {
 
   type?: StructureType;
 
-  generateGuard?: (params: { thisStruct: MapStructure }) => GenerationModel;
+  generateGuard?: (params: { thisStruct: MapStructure }) => ArmyGenerationModel;
 
   /* todo: Array of rewards? */
   generateReward?: () => NeutralRewardModel;
