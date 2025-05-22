@@ -24,9 +24,11 @@ export const CorrosiveFogDebuff: SpellBaseType<undefined | { debuffRoundsLeft: n
   getDescription(data) {
     return {
       descriptions: [
-        spellDescrElem(`Defence is lowered by ${defenceReduction}, damage by ${uiPercent}. Rounds left: ${data.spellInstance.state?.debuffRoundsLeft}.`),
+        spellDescrElem(
+          `Defence is lowered by ${defenceReduction}, damage by ${uiPercent}. Rounds left: ${data.spellInstance.state?.debuffRoundsLeft}.`,
+        ),
       ],
-    }
+    };
   },
   config: {
     spellConfig: {
@@ -58,14 +60,13 @@ export const CorrosiveFogDebuff: SpellBaseType<undefined | { debuffRoundsLeft: n
                   actions.removeSpellFromUnitGroup(target, spellInstance);
                   actions.removeModifiresFromUnitGroup(target, modifiers);
                 }
-              }
+              },
             });
-
-          }
+          },
         });
-      }
-    }
-  }
+      },
+    },
+  },
 });
 
 export const CorrosiveFogSpell: SpellBaseType = createSpell({
@@ -78,9 +79,11 @@ export const CorrosiveFogSpell: SpellBaseType = createSpell({
   getDescription(data) {
     return {
       descriptions: [
-        spellDescrElem(`Surrounds an enemy with corrosive fog, reducing defence by ${defenceReduction} and outgoing damage by ${uiPercent}. Lasts ${roundsDuration} rounds.`),
+        spellDescrElem(
+          `Surrounds an enemy with corrosive fog, reducing defence by ${defenceReduction} and outgoing damage by ${uiPercent}. Lasts ${roundsDuration} rounds.`,
+        ),
       ],
-    }
+    };
   },
   config: {
     spellConfig: {
@@ -106,9 +109,9 @@ export const CorrosiveFogSpell: SpellBaseType = createSpell({
             const poisonDebuffInstance = actions.createSpellInstance(CorrosiveFogDebuff);
 
             actions.addSpellToUnitGroup(event.target, poisonDebuffInstance, ownerPlayer);
-          }
+          },
         });
-      }
-    }
-  }
+      },
+    },
+  },
 });
