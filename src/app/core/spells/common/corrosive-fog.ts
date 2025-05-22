@@ -1,6 +1,6 @@
 import { spellDescrElem, strPercent } from '../../ui';
 import { createCrackedShieldAnimation } from '../../vfx/spells/cracked-shield';
-import { SpellActivationType, SpellBaseType } from '../types';
+import { SpellActivationType } from '../types';
 import { canActivateOnEnemyFn, createSpell, debuffColors } from '../utils';
 
 const damageReduction = 0.14;
@@ -12,7 +12,7 @@ const roundsDuration = 2;
 
 const CorrosiveFogAnimation = createCrackedShieldAnimation();
 
-export const CorrosiveFogDebuff: SpellBaseType<undefined | { debuffRoundsLeft: number }> = createSpell({
+export const CorrosiveFogDebuff = createSpell<undefined | { debuffRoundsLeft: number }>({
   id: '#spell-corrosive-fog-debuff',
 
   name: 'Corrosion',
@@ -69,7 +69,7 @@ export const CorrosiveFogDebuff: SpellBaseType<undefined | { debuffRoundsLeft: n
   },
 });
 
-export const CorrosiveFogSpell: SpellBaseType = createSpell({
+export const CorrosiveFogSpell = createSpell({
   id: '#spell-corrosive-fog',
   name: 'Corrosive Fog',
   activationType: SpellActivationType.Target,
