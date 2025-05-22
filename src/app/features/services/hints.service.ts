@@ -7,15 +7,13 @@ import { HintsContainerComponent, MenuComponent } from '../shared/components';
   providedIn: 'root',
 })
 export class HintsService {
-  public containerRef!: HintsContainerComponent;
+  containerRef!: HintsContainerComponent;
 
-  public activeMenusCount: number = 0;
+  activeMenusCount: number = 0;
 
-  public activeMenus: Set<MenuComponent> = new Set();
+  readonly activeMenus: Set<MenuComponent> = new Set();
 
-  public clickOutsideMenu$ = fromEvent(window, 'click').pipe(
-    filter(() => this.activeMenusCount > 0),
-  );
+  readonly clickOutsideMenu$ = fromEvent(window, 'click').pipe(filter(() => this.activeMenusCount > 0));
 
   constructor() {
     // Some glitch with menu + hover hints inside.. happens sometimes
@@ -31,7 +29,7 @@ export class HintsService {
         this.closeAllActiveMenus();
       }
 
-      if (!(targetedMenuHost)) {
+      if (!targetedMenuHost) {
         this.closeClosableMenus();
       }
     });

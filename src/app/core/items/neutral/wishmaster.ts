@@ -1,8 +1,8 @@
 import { itemStatsDescr, spellDescrElem } from '../../ui';
-import { ItemBaseModel, ItemSlotType } from '../types';
+import { ItemBaseType, ItemSlotType } from '../types';
 import { createItem } from '../utils';
 
-export const WishmasterItem: ItemBaseModel = createItem({
+export const WishmasterItem: ItemBaseType = createItem({
   id: '#item-wishmaster',
 
   name: 'Wishmaster',

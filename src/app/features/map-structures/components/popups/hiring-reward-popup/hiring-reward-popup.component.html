@@ -12,6 +12,7 @@
           [max]="unitType.hire.maxCount"
           (input)="updateCountForGroup(unitType, $event)"
           [value]="0"
+          [disabled]="!playerHasFreeSlots"
         />
 
         <div>Cost:</div>
@@ -37,8 +38,9 @@
   <div popupButtons>
     <button
       class="button"
-      [disabled]="!canConfirm || !playerHasFreeSlots"
+      [disabled]="!canConfirm"
       (click)="confirmHire()"
+      mw-main-button
     >
       Confirm
     </button>

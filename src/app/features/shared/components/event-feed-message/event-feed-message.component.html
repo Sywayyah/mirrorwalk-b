@@ -1,4 +1,1 @@
-<ng-container *ngFor="let message of message.message"
-              [ngSwitch]="message.type">
-  <div [innerHTML]="message.htmlContent | safeHtml"></div>
-</ng-container>
+<mw-description [descriptions]="message().message" />

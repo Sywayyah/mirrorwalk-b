@@ -1,3 +1,4 @@
+import { VariantableDefault } from '../utils';
 import type { UnitGroup } from './types';
 
 export enum CombatStateEnum {
@@ -13,21 +14,13 @@ export enum CombatStateEnum {
   Dead,
 }
 
-export type CombatStateVariant<
-  T extends CombatStateEnum,
-  V extends object = {},
-> = { type: T } & V;
-
-export type CombatState =
-  | CombatStateVariant<CombatStateEnum.Initial>
-  | CombatStateVariant<CombatStateEnum.Normal>
-  | CombatStateVariant<CombatStateEnum.Defending>
-  | CombatStateVariant<CombatStateEnum.Fleeing>
-  | CombatStateVariant<CombatStateEnum.Recharging>
-  | CombatStateVariant<CombatStateEnum.RechargingFailed>
-  | CombatStateVariant<CombatStateEnum.Retreated>
-  | CombatStateVariant<CombatStateEnum.Pinned, { pinnedBy: UnitGroup }>
-  | CombatStateVariant<CombatStateEnum.Pinning, { pinning: UnitGroup }>;
+export type CombatStateVariants = VariantableDefault<
+  CombatStateEnum,
+  {
+    [CombatStateEnum.Pinned]: { pinnedBy: UnitGroup };
+    [CombatStateEnum.Pinning]: { pinning: UnitGroup };
+  }
+>;
 
 export const CombatStateIconMapping: Record<CombatStateEnum, string | null> = {
   [CombatStateEnum.Defending]: 'shield',

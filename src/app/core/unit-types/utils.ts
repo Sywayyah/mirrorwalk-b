@@ -1,34 +1,18 @@
 import { UnitTypeId, resolveEntity } from '../entities';
-import { DescriptionElement, DescriptionElementType } from '../ui';
+import { DescriptionElementType, DescriptionVariants } from '../ui';
 import { CommonUtils } from '../utils';
-import {
-  UnitBaseType,
-  UnitDescriptions,
-  UnitTypeBaseStatsModel,
-} from './types';
+import { UnitBaseType, UnitDescriptions, UnitTypeBaseStatsModel } from './types';
 
 /* unit type, minCount, maxCount, maxGroupsOfThisType */
-type UnitModel = [
-  unitType: UnitTypeId,
-  min: number,
-  max: number,
-  maxOfThisType: number | void,
-];
+type UnitModel = [unitType: UnitTypeId, min: number, max: number, maxOfThisType: number | void];
 
-export interface GenerationModel {
+export interface ArmyGenerationModel {
   minUnitGroups: number;
   maxUnitGroups: number;
   units: UnitModel[];
 }
 
-export const createStats = ([
-  [minDmg, maxDmg],
-  attack,
-  defence,
-  health,
-  speed,
-  mana,
-]: [
+export const createStats = ([[minDmg, maxDmg], attack, defence, health, speed, mana]: [
   damage: [minDmg: number, maxDmg: number],
   attack: number,
   defence: number,
@@ -65,11 +49,8 @@ export function resolveUnitType(unitTypeId: UnitTypeId): UnitBaseType {
 }
 
 export const UnitsUtils = {
-  createRandomArmy(options: GenerationModel): UnitGenerationModel[] {
-    const groupsToGenerateCount = CommonUtils.randIntInRange(
-      options.minUnitGroups,
-      options.maxUnitGroups,
-    );
+  createRandomArmy(options: ArmyGenerationModel): UnitGenerationModel[] {
+    const groupsToGenerateCount = CommonUtils.randIntInRange(options.minUnitGroups, options.maxUnitGroups);
     const generatedGroups = [];
     const unitsToGenerate = [...options.units];
 
@@ -119,13 +100,11 @@ export const UnitsUtils = {
 };
 
 export const simpleDescriptions = (
-  descriptions: (DescriptionElement | string)[],
+  descriptions: (DescriptionVariants['variants'] | string)[],
 ): (() => UnitDescriptions) => {
   return () => ({
     descriptions: descriptions.map((descr) =>
-      typeof descr === 'string'
-        ? { type: DescriptionElementType.FreeHtml, htmlContent: descr }
-        : descr,
+      typeof descr === 'string' ? { type: DescriptionElementType.FreeHtml, htmlContent: descr } : descr,
     ),
   });
 };

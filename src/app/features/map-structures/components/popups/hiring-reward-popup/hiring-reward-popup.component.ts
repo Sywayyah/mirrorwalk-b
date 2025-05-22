@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { ResourceType, Resources, ResourcesModel } from 'src/app/core/resources';
+import { Component, inject, OnInit } from '@angular/core';
+import { Resources, ResourcesModel, ResourceType } from 'src/app/core/resources';
 import { HiringReward, HiringRewardModel } from 'src/app/core/structures';
 import { StructPopupData } from 'src/app/core/ui';
 import { resolveUnitType } from 'src/app/core/unit-types';
@@ -7,7 +7,7 @@ import { MwPlayersService, MwUnitGroupsService } from 'src/app/features/services
 import { BasicPopup } from 'src/app/features/shared/components';
 
 interface HireModel {
-  hire: HiringRewardModel,
+  hire: HiringRewardModel;
   count: number;
 
   baseCost: Resources;
@@ -15,30 +15,24 @@ interface HireModel {
 }
 
 @Component({
-    selector: 'mw-hiring-reward-popup',
-    templateUrl: './hiring-reward-popup.component.html',
-    styleUrls: ['./hiring-reward-popup.component.scss'],
-    standalone: false
+  selector: 'mw-hiring-reward-popup',
+  templateUrl: './hiring-reward-popup.component.html',
+  styleUrls: ['./hiring-reward-popup.component.scss'],
+  standalone: false,
 })
 export class HiringRewardPopupComponent extends BasicPopup<StructPopupData> implements OnInit {
+  private readonly playersService = inject(MwPlayersService);
+  private readonly unitGroups = inject(MwUnitGroupsService);
 
   public hiredGroups!: HireModel[];
 
   public canConfirm: boolean = true;
 
-  playerHasFreeSlots: boolean = true;
-
-  constructor(
-    private readonly playersService: MwPlayersService,
-    private readonly unitGroups: MwUnitGroupsService,
-  ) {
-    super();
-    this.playerHasFreeSlots = this.playersService.getCurrentPlayer().hero.hasFreeUnitSlots();
-  }
+  // todo: improve this logic, if unit groups are present - hiring should be allowed
+  readonly playerHasFreeSlots = this.playersService.getCurrentPlayer().hero.hasFreeUnitSlots();
 
   ngOnInit(): void {
-
-    this.hiredGroups = (this.data.struct.reward as HiringReward).units.map(unit => {
+    this.hiredGroups = (this.data.struct.reward as HiringReward).units.map((unit) => {
       const baseCost: Partial<ResourcesModel> = {};
       const currentCost: Partial<ResourcesModel> = {};
 
@@ -51,12 +45,12 @@ export class HiringRewardPopupComponent extends BasicPopup<StructPopupData> impl
         ResourceType.Wood,
       ];
 
-      resourceTypes.forEach(resType => {
+      resourceTypes.forEach((resType) => {
         if (unitReqs[resType]) {
           baseCost[resType] = unitReqs[resType];
           currentCost[resType] = 0;
         }
-      })
+      });
 
       return {
         hire: unit,
@@ -86,7 +80,7 @@ export class HiringRewardPopupComponent extends BasicPopup<StructPopupData> impl
 
     this.playersService.removeResourcesFromPlayer(currentPlayer, totalCosts);
 
-    this.hiredGroups.forEach(group => {
+    this.hiredGroups.forEach((group) => {
       if (group.count) {
         const unitGroup = this.unitGroups.createUnitGroup(
           group.hire.unitTypeId,
@@ -103,18 +97,16 @@ export class HiringRewardPopupComponent extends BasicPopup<StructPopupData> impl
 
   private calcTotalCosts(): Resources {
     return this.hiredGroups.reduce((totalCosts, unit) => {
-
       Object.entries(unit.currentCost).forEach(([resource, baseCost]: [string, number]) => {
         const resourceType = resource as keyof ResourcesModel;
         if (totalCosts[resourceType]) {
           /* todo: recheck it */
-          (totalCosts[resourceType] as number) += unit.currentCost[resourceType] as number;
+          totalCosts[resourceType] += unit.currentCost[resourceType] as number;
         } else {
           totalCosts[resourceType] = unit.currentCost[resourceType];
         }
       });
       return totalCosts;
-
     }, {} as Resources);
   }
 

@@ -1,10 +1,10 @@
 import { itemStatsDescr, spellDescrElem } from '../../ui';
-import { ItemBaseModel, ItemSlotType } from '../types';
+import { ItemBaseType, ItemSlotType } from '../types';
 import { createItem } from '../utils';
 
 const healValue = 50;
 
-export const LifeformItem: ItemBaseModel = createItem({
+export const LifeformItem: ItemBaseType = createItem({
   id: '#item-lifeform',
 
   name: 'Lifeform',

@@ -1,3 +1,4 @@
-<mw-event-feed-message *ngFor="let message of eventFeed.visibleMessages"
-                       [message]="message"
+@for (message of eventFeed.visibleMessages(); track $index) {
+<mw-event-feed-message [message]="message"
                        (messageExpired)="removeMessage(message)" />
+}

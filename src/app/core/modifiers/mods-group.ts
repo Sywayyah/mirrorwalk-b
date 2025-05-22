@@ -65,6 +65,10 @@ export class ModsRefsGroup {
     return refsWithNumericMod.reduce((acc, next) => acc + (next.getModValue(modName) as number), 0);
   }
 
+  getCalcNumModValueOrZero<K extends NumModNames>(modName: K): number {
+    return this.getCalcNumModValue(modName) ?? 0;
+  }
+
   getCalcBoolNumModValue<K extends BoolModNames>(modName: K): boolean | null {
     const refsWithBoolMod = this.modsRefs.filter(modsRef => modsRef.hasMod(modName));
 
@@ -75,13 +79,15 @@ export class ModsRefsGroup {
     return refsWithBoolMod.some(modsRef => modsRef.getModValue(modName));
   }
 
-  addModsRef(modsRef: ModsRef): void {
+  addModsRef(modsRef: ModsRef): ModsRef {
     this.modsRefs.push(modsRef);
     this.processModsRef(modsRef);
     this.childGroups.forEach((parentGroup) => parentGroup.addModsRef(modsRef));
     this.emitModValueChange();
+    return modsRef;
   }
 
+  /* Consider using removeRefByModInstance over removeModsRef with conditional modifiers, since for now they don't return ModsRef. */
   removeModsRef(modsRef: ModsRef): void {
     CommonUtils.removeItem(this.modsRefs, modsRef);
 
@@ -103,6 +109,7 @@ export class ModsRefsGroup {
     return this.modsRefs;
   }
 
+  /* Recommended over removeModsRef, since conditional modifiers don't give ModsRef. */
   removeRefByModInstance(mods: Modifiers): void {
     const modsRef = this.modsRefs.find(modRef => modRef.getMods() === mods);
 

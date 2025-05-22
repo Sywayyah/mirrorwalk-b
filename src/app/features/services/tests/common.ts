@@ -1,15 +1,15 @@
-
 import { Player, PlayerTypeEnum } from 'src/app/core/players';
 import { UnitBaseType, UnitGroup } from 'src/app/core/unit-types';
 import { MwUnitGroupStateService } from '../mw-unit-group-state.service';
 import { MwUnitGroupsService } from '../mw-unit-groups.service';
 import { Hero, createHeroModelBase } from 'src/app/core/heroes';
 import { DescriptionElementType } from 'src/app/core/ui';
+import { registerEntity } from 'src/app/core/entities';
 
 export const testUnitTypeNoArmorNoRating: UnitBaseType = {
   id: '#unit-test',
   name: 'Test Unit (No Armor/Attack Rating)',
-  type: 'test-plain-stats',
+  // type: 'test-plain-stats',
   baseRequirements: {},
   baseStats: {
     damageInfo: {
@@ -22,6 +22,7 @@ export const testUnitTypeNoArmorNoRating: UnitBaseType = {
     speed: 4,
   },
   defaultTurnsPerRound: 1,
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-explicit-any
   faction: {} as any,
   level: 1,
   minQuantityPerStack: 1,
@@ -68,12 +69,13 @@ player.create({
   type: PlayerTypeEnum.Player,
 });
 
-export const getCommonFunctions = (services: () => { unitsService: MwUnitGroupsService, unitState: MwUnitGroupStateService }) => {
-
-  const createTestUnitGroup = (count: number) => services().unitsService.createUnitGroup(
-    testUnitTypeNoArmorNoRating,
-    { count },
-  ) as UnitGroup;
+export const getCommonFunctions = (
+  services: () => { unitsService: MwUnitGroupsService; unitState: MwUnitGroupStateService },
+) => {
+  const createTestUnitGroup = (count: number) => {
+    registerEntity(testUnitTypeNoArmorNoRating);
+    return services().unitsService.createUnitGroup('#unit-test', { count });
+  };
 
   const getDamageDetails = (attacker: UnitGroup, attacked: UnitGroup) => {
     const damageDetails = services().unitState.getDetailedAttackInfo(attacker, attacked);
@@ -85,7 +87,6 @@ export const getCommonFunctions = (services: () => { unitsService: MwUnitGroupsS
       damageFinalDetails,
     };
   };
-
 
   return {
     createTestUnitGroup,

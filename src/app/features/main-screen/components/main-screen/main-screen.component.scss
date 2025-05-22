@@ -22,9 +22,9 @@ mw-gradient-img {
 .block {
   position: fixed;
   right: 0;
-  bottom: 0;
+  bottom: 40px;
   width: 250px;
-  height: 200px;
+  min-height: 200px;
   padding: 20px;
 }
 

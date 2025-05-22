@@ -1,8 +1,11 @@
+import { signal } from '@angular/core';
 import { ActionCard, ActionCardStack } from '../action-cards';
 import { GameObject } from '../game-objects';
 import { GarrisonsMap } from '../garrisons/types';
 import { Hero } from '../heroes';
 import { ResourcesModel } from '../resources';
+import { WeeklyActivity } from '../specialties';
+import { SignalArrUtils } from '../utils/signals';
 
 export enum PlayerTypeEnum {
   Player = 'Player',
@@ -46,6 +49,9 @@ export class Player extends GameObject<PlayerCreationModel> {
 
   public actionCards: ActionCardStack[] = [];
 
+  // maybe should be on hero level, also probably need category
+  public activities = signal<WeeklyActivity[]>([]);
+
   create({ color, hero, resources, type }: PlayerCreationModel): void {
     this.color = color;
     this.resources = resources;
@@ -54,6 +60,14 @@ export class Player extends GameObject<PlayerCreationModel> {
 
     this.hero.assignOwnerPlayer(this);
     this.hero.updateUnitsSpecialtyAndConditionalMods();
+  }
+
+  addWeeklyActivity(activity: WeeklyActivity): void {
+    this.activities.update(SignalArrUtils.addItem(activity));
+  }
+
+  removeWeeklyActivity(activity: WeeklyActivity): void {
+    this.activities.update(SignalArrUtils.removeItem(activity));
   }
 
   addActionCards(actionCard: ActionCard, count: number): void {

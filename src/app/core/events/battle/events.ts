@@ -1,7 +1,21 @@
 import { createEventType } from 'src/app/store';
-import { props } from "../common";
-import { CombatInteractionStateEvent, FightEndsEvent, GroupAttackedEvent, GroupDamagedByGroupEvent, GroupDiesEvent, GroupTakesDamageEvent, NextRoundStarts, PlayerTargetsInstantSpellEvent, PlayerTargetsSpellEvent, PlayerTurnStartEvent, RoundGroupSpendsTurnEvent, UnitHealedEvent, UnitSummonedEvent } from "./types";
 import { Player } from '../../players';
+import { props } from '../common';
+import {
+  CombatInteractionStateEvent,
+  FightEndsEvent,
+  GroupAttackedEvent,
+  GroupDamagedByGroupEvent,
+  GroupDiesEvent,
+  GroupTakesDamageEvent,
+  NextRoundStarts,
+  PlayerTargetsInstantSpellEvent,
+  PlayerTargetsSpellEvent,
+  PlayerTurnStartEvent,
+  RoundGroupSpendsTurnEvent,
+  UnitHealedEvent,
+  UnitSummonedEvent,
+} from './types';
 
 const battleEvent = createEventType;
 

@@ -1,9 +1,6 @@
+import { ConnectionPositionPair } from '@angular/cdk/overlay';
 import { Component, inject } from '@angular/core';
-import {
-  OpenGarrisonPopup,
-  PlayerLeavesTown,
-  ViewsEnum,
-} from 'src/app/core/events';
+import { OpenGarrisonPopup, PlayerLeavesTown, ViewsEnum } from 'src/app/core/events';
 import { ActivityTypes, Building, HiringActivity } from 'src/app/core/towns';
 import { MwPlayersService } from 'src/app/features/services';
 import { State } from 'src/app/features/services/state.service';
@@ -13,8 +10,9 @@ import { EventsService } from 'src/app/store';
 import { BuildPopupComponent } from '../build-popup/build-popup.component';
 import { HiringPopupComponent } from '../hiring-popup/hiring-popup.component';
 import { ItemsSellingPopupComponent } from '../items-selling-popup/items-selling-popup.component';
-import { ConnectionPositionPair } from '@angular/cdk/overlay';
 import { MarketDialogComponent } from '../market-dialog/market-dialog.component';
+import { isFeatureEnabled } from 'src/app/core/config';
+import { Feature } from 'src/app/core/config/types';
 
 @Component({
   selector: 'mw-town-view',
@@ -24,27 +22,23 @@ import { MarketDialogComponent } from '../market-dialog/market-dialog.component'
 })
 export class TownViewComponent {
   private readonly players = inject(MwPlayersService);
+  private readonly state = inject(State);
+  private readonly events = inject(EventsService);
+  private readonly popupService = inject(PopupService);
 
-  public menuPosition = [
-    new ConnectionPositionPair(
-      { originX: 'center', originY: 'top' },
-      { overlayX: 'center', overlayY: 'bottom' },
-    ),
+  readonly newTownSystemEnabled = isFeatureEnabled(Feature.NewTownSystem);
+
+  public readonly menuPosition = [
+    new ConnectionPositionPair({ originX: 'center', originY: 'top' }, { overlayX: 'center', overlayY: 'bottom' }),
   ];
   public buildingsByTiers: Record<number, Building[]> = {};
-  public town = this.state.createdGame.town;
-  public builtColor: string = this.state.createdGame.selectedColor;
+  public readonly town = this.state.createdGame.town;
+  public readonly builtColor: string = this.state.createdGame.selectedColor;
 
-  constructor(
-    private state: State,
-    private events: EventsService,
-    private popupService: PopupService,
-  ) {
+  constructor() {
     escapeToView(ViewsEnum.Structures);
 
-    this.buildingsByTiers = Object.entries(
-      this.town.base.availableBuildings,
-    ).reduce(
+    this.buildingsByTiers = Object.entries(this.town.base.availableBuildings).reduce(
       (map, [id, building]) => {
         if (!map[building.tier]) {
           map[building.tier] = [this.town.buildings[id]];

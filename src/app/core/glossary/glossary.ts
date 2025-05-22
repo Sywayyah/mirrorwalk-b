@@ -62,11 +62,11 @@ export const glossaryContent: GlossaryTab[] = [
       `Pin is a universal attack-ability, all towns have an early unit type that can pin an opponent. ` +
       `Pinning an opponent will inflict normal attack and force them to do reduced damage against all your groups aside from the pinning group.`,
       `On pin, both groups enter respective states: Pinning and Pinned. ` +
-      `A pinning group also recives increased damage from enemy's unpinned groups (25% reduction).`,
+      `A pinning group also recives increased damage from enemy's unpinned groups and deals less damage to them (by default - 25% ratio).`,
       `Special Interactions:`,
       `- Attacking or pinning another target will release previous target from pin. Attacking other group will make you lose Pinning state.`,
       `- Ranged units have lesser damage penalty when pinned.`,
-      `- Cavalry units have natural 20% chance to escape pinning.`,
+      `- Cavalry and Big Creature units have natural 30% chance to escape pinning. Boss units have 85% chance to escape pin.`,
       `- Tier 1-4 units cannot pin units of 6+ tier (as well as Giant and Colossal creatures).`,
       `- Pinned units have a chance of getting increased damage from ranged units.`,
     ],

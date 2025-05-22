@@ -1,15 +1,18 @@
-
+import { ImgIconSize } from '../../assets';
+import { ResourceType } from '../../resources';
+import { Variantable } from '../../utils';
 
 export enum DescriptionElementType {
   FreeHtml,
+  Resource,
+  Resources,
 }
 
-
-export interface DescriptionElement<T extends DescriptionElementType = DescriptionElementType> {
-  type: T;
-}
-
-type DescElement<T extends DescriptionElementType, Props extends object> = DescriptionElement<T> & Props;
-
-
-export type DescHtmlElement = DescElement<DescriptionElementType.FreeHtml, { htmlContent: string }>;
+export type DescriptionVariants = Variantable<
+  DescriptionElementType,
+  {
+    [DescriptionElementType.FreeHtml]: { htmlContent: string };
+    [DescriptionElementType.Resource]: { resType: ResourceType; count?: number; iconSize?: ImgIconSize };
+    [DescriptionElementType.Resources]: { resources: { resType: ResourceType; count: number }[] };
+  }
+>;

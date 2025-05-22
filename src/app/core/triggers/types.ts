@@ -14,7 +14,7 @@ export interface GameApi {
   actions: {
     getMapStructures(): MapStructure[];
     getActionPointsLeft(): number;
-    scheduleAction(action: () => void, days: number): void;
+    scheduleActionInGameDays(action: () => void, days: number): void;
     getTownOfPlayer(player: Player): Town<any> | undefined;
   };
 }

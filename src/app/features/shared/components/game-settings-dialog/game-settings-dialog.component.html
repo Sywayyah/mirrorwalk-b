@@ -1,0 +1,48 @@
+<mw-popup-base-content>
+  <div popupHeader>New Game Settings</div>
+
+  <div popupContent>
+    <div class="setting">
+      Losses From Neutrals:
+      <mw-base-select [(selectedItem)]="lossesFromNeutrals">
+        @for (option of lossModes; track $index) {
+          <option [value]="option.lossMode">{{ option.label }}</option>
+        }
+      </mw-base-select>
+    </div>
+
+    <div class="setting">
+      Losses From Players:
+      <mw-base-select [(selectedItem)]="lossesFromPlayers">
+        @for (option of lossModes; track $index) {
+          <option [value]="option.lossMode">{{ option.label }}</option>
+        }
+      </mw-base-select>
+    </div>
+
+    <div class="setting">
+      Allow neutral control
+
+      <input
+        type="checkbox"
+        [(ngModel)]="allowNeutralControl"
+      />
+    </div>
+  </div>
+
+  <div popupButtons>
+    <button
+      mw-main-button
+      (click)="accept()"
+    >
+      Accept
+    </button>
+
+    <button
+      mw-main-button
+      (click)="close()"
+    >
+      Cancel
+    </button>
+  </div>
+</mw-popup-base-content>

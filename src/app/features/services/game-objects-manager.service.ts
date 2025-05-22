@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { CONFIG } from 'src/app/core/config';
 import { InitGameObjectApi } from 'src/app/core/events';
 import {
@@ -27,6 +27,8 @@ interface ObjectsRegistry<T extends GameObject = GameObject> {
   providedIn: 'root',
 })
 export class GameObjectsManager {
+  private readonly events = inject(EventsService);
+
   private readonly internalRegistries: Map<string, ObjectsRegistry> = new Map();
 
   private readonly allObjects: Map<string, GameObject> = new Map();
@@ -34,7 +36,7 @@ export class GameObjectsManager {
   // allows to attach custom data to any game object
   private readonly objectsCustomData = new Map<string, object>();
 
-  constructor(private readonly events: EventsService) {
+  constructor() {
     // expose game object into window for debugging
     (window as any).gameObjects = this;
   }

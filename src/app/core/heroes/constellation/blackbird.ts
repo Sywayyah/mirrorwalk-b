@@ -1,8 +1,5 @@
 import { AssetsImages } from '../../assets';
 import { constellationFaction } from '../../factions/constellation/faction';
-import { WishmasterItem } from '../../items/neutral';
-import { KneelingLight, RainOfFireSpell } from '../../spells/common';
-import { SummonSagittarSpell } from '../../spells/common/summon-sagittar';
 import { heroDescrElem } from '../../ui';
 
 // possible constellation skill:
@@ -11,11 +8,7 @@ constellationFaction.createHero({
   id: '#hero-blackbird',
   name: 'Blackbird',
   image: AssetsImages.HeroBlackbird,
-  abilities: [
-    RainOfFireSpell,
-    SummonSagittarSpell,
-    KneelingLight,
-  ],
+  abilities: ['#spell-rain-of-fire', '#spell-summon-sagittar', '#spell-kneeling-light'],
   army: [
     {
       maxUnitGroups: 3,
@@ -40,12 +33,15 @@ constellationFaction.createHero({
         ['#unit-c00', 6, 10, 1],
         ['#unit-c10', 4, 6, 2],
       ],
-    }
+    },
   ],
-  generalDescription: heroDescrElem(`Blackbird is a hero who specializes at Astral and Fire magic, as well as Summoning.`),
+  generalDescription: heroDescrElem(
+    `Blackbird is a hero who specializes at Astral and Fire magic, as well as Summoning.`,
+  ),
   items: [
     // ItemWindCrest,
-    WishmasterItem,
+    // WishmasterItem,
+    '#item-wishmaster',
   ],
   stats: {
     baseAttack: 2,
@@ -58,4 +54,4 @@ constellationFaction.createHero({
     redCrystals: 1,
     wood: 1,
   },
-})
+});

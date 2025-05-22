@@ -1,25 +1,27 @@
+import { ImgIconsPaths } from '../../assets';
+import { resourceDetailsMapping, ResourceType } from '../../resources';
 import type { SpellDescription } from '../../spells';
-import { DescHtmlElement, DescriptionElementType } from './types';
+import { DescriptionElementType, DescriptionVariants } from './types';
 
 export function strPercent(num: number): string {
   return `${Math.floor(num * 100)}%`;
 }
 
-export function heroDescrElem(text: string): DescHtmlElement {
+export function heroDescrElem(text: string): DescriptionVariants['variants'] {
   return {
     type: DescriptionElementType.FreeHtml,
     htmlContent: text,
   };
 }
 
-export function spellDescrElem(text: string): DescHtmlElement {
+export function spellDescrElem(text: string): DescriptionVariants['variants'] {
   return {
     type: DescriptionElementType.FreeHtml,
     htmlContent: `<div class="spell-descr">${text}</div>`,
   };
 }
 
-export function spellStatsElem(stats: string[]): DescHtmlElement {
+export function spellStatsElem(stats: string[]): DescriptionVariants['variants'] {
   return {
     type: DescriptionElementType.FreeHtml,
     htmlContent: `
@@ -28,6 +30,10 @@ export function spellStatsElem(stats: string[]): DescHtmlElement {
       </div>
     `,
   };
+}
+
+export function resourceIcon(res: ResourceType): string {
+  return `<img src="assets/${ImgIconsPaths[resourceDetailsMapping[res].imgIcon]}" />`;
 }
 
 export function spellStatElem(stat: string, value: string | number): string {

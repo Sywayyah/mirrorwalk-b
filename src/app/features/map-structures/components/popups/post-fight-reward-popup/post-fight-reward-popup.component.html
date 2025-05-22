@@ -7,7 +7,8 @@
     <div>
       <div style="text-align: center">Player's Losses</div>
       <div class="losses-container">
-        <div class="loss-card" *ngFor="let playerLoss of data.playerLosses">
+        <div class="loss-card"
+             *ngFor="let playerLoss of data.playerLosses">
           <span>{{ playerLoss.type.name }}</span>
           <span>{{ playerLoss.count }}</span>
         </div>
@@ -17,7 +18,8 @@
     <div>
       <div style="text-align: center">Enemy's Losses</div>
       <div class="losses-container">
-        <div class="loss-card" *ngFor="let playerLoss of data.enemyLosses">
+        <div class="loss-card"
+             *ngFor="let playerLoss of data.enemyLosses">
           <span>{{ playerLoss.type.name }}</span>
           <span>{{ playerLoss.count }}</span>
         </div>
@@ -25,19 +27,24 @@
     </div>
 
     @if (data.isWin) {
+    <div>
+      <!-- <div>Gold: +{{totalGoldReward}}</div> -->
       <div>
-        <!-- <div>Gold: +{{totalGoldReward}}</div> -->
-        <div>Experience: +{{ totalExperienceReward }}</div>
+        Experience: +{{ totalExperienceReward }}
+        @if (experienceGainBonus) {
+        (<span [mwNumberModifier]="experienceGainBonus"
+              mwNumberModifierFormat="shortPercent">
+        </span>)
+        }
       </div>
+    </div>
     }
   </div>
 
   <div popupButtons>
-    <button
-      mw-main-button
-      style="margin: auto; display: block"
-      (click)="onContinue(data)"
-    >
+    <button mw-main-button
+            style="margin: auto; display: block"
+            (click)="onContinue(data)">
       Continue
     </button>
   </div>

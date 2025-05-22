@@ -44,6 +44,9 @@ neutralsFaction.defineUnitType({
     ),
   ]),
 
+  defaultSpells: [
+    '#spell-neut-gnoll-crush',
+  ],
   defaultModifiers: {
     resistFire: 10,
     isForest: true,

@@ -138,7 +138,7 @@ export const RangersHorn = createActionCard({
       players.addUnitGroupToPlayer(currentPlayer, unitType, count);
       events.dispatch(PushPlainEventFeedMessage({ message: `${count} Rangers joined your army.` }));
 
-      actions.scheduleAction(() => {
+      actions.scheduleActionInGameDays(() => {
         players.removeUnitTypeFromPlayer(currentPlayer, unitType, count);
         events.dispatch(PushPlainEventFeedMessage({ message: `Summoned Rangers have left your army.` }));
       }, 2);

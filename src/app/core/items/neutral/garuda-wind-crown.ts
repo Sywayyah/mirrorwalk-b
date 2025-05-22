@@ -1,8 +1,8 @@
 import { itemStatsDescr } from '../../ui';
-import { ItemBaseModel, ItemSlotType } from '../types';
+import { ItemBaseType, ItemSlotType } from '../types';
 import { createItem } from '../utils';
 
-export const GarudaWindCrown: ItemBaseModel = createItem({
+export const GarudaWindCrown: ItemBaseType = createItem({
   id: '#item-garuda-wind-crown',
 
   name: `Garuda's Wind Crown`,

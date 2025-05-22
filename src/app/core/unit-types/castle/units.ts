@@ -1,9 +1,5 @@
 import { AssetsImages } from '../../assets';
 import { humansFaction } from '../../factions/humans/faction';
-import { FirebirdHealSpell } from '../../spells/common';
-import { KnightsDamageBlock } from '../../spells/common/damage-block/knights-damage-block';
-import { ProtectionAura } from '../../spells/common/protection';
-import { UniversalPinSpell } from '../../spells/common/universal/pin';
 import { heroDescrElem } from '../../ui';
 import { createStats, simpleDescriptions } from '../utils';
 
@@ -31,8 +27,7 @@ humansFaction.defineUnitType({
   ]),
 
   defaultSpells: [
-    // ProtectionAura,
-    UniversalPinSpell,
+    `#spell-universal-pin`,
   ],
 
   defaultModifiers: {
@@ -79,7 +74,7 @@ humansFaction.defineUnitType({
   ]),
 
   defaultSpells: [
-    UniversalPinSpell,
+    `#spell-universal-pin`,
   ],
 
   defaultModifiers: {
@@ -294,8 +289,7 @@ humansFaction.defineUnitType({
     gold: 120,
   },
 
-  defaultSpells: [KnightsDamageBlock],
-  // spells: ['#sp-h0'],
+  defaultSpells: ['#spell-knight-block'],
 
   defaultModifiers: {
     resistFire: 12,
@@ -414,8 +408,7 @@ humansFaction.defineUnitType({
 
   baseStats: createStats([[18, 26], 8, 10, 46, 16, 5]),
 
-  defaultSpells: [FirebirdHealSpell],
-  // spells: ['#sp-firebird-heal'],
+  defaultSpells: ['#spell-revitalize'],
 
   defaultModifiers: {
     resistFire: 10,
@@ -459,7 +452,7 @@ humansFaction.defineUnitType({
       `Tier 5 Castle magical creatures of fire, an upgraded version of Mystic Birds.`,
     ),
     heroDescrElem(
-      `<br>Majestic and powerful of fire that can heal and resurrect allied units, has better stats than Mystical Birds and +17% fire resistance.`,
+      `<br>Majestic and powerful creatures of fire that can heal and resurrect allied units, has better stats than Mystical Birds and +17% fire resistance.`,
     ),
     heroDescrElem(`<br>Has base manapool of 8.`),
 
@@ -484,7 +477,7 @@ humansFaction.defineUnitType({
     },
   },
 
-  defaultSpells: [FirebirdHealSpell],
+  defaultSpells: ['#spell-revitalize'],
 
   baseRequirements: {
     gold: 475,

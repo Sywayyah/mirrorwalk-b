@@ -1,10 +1,11 @@
-import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { BaseDialog } from 'src/app/core/dialogs';
 import {
   acitivies,
-  ActivityCategory,
-  WeeklyActivityType,
+  ActivityCategory
 } from 'src/app/core/specialties';
+import { MwPlayersService } from 'src/app/features/services';
+import { ApiProvider } from 'src/app/features/services/api-provider.service';
 
 @Component({
   selector: 'mw-week-activities-popup',
@@ -14,6 +15,9 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class WeekActivitiesDialogComponent extends BaseDialog {
+  private readonly apiProvider = inject(ApiProvider);
+  private readonly playersService = inject(MwPlayersService);
+
   readonly categories = signal<ActivityCategory[]>([
     {
       name: 'Basic',
@@ -27,14 +31,20 @@ export class WeekActivitiesDialogComponent extends BaseDialog {
     },
     {
       name: 'Advanced',
-      activityBases: [acitivies[8], acitivies[9], acitivies[0]],
+      activityBases: [acitivies[8], acitivies[9], acitivies[0], acitivies[13]],
       choice: signal(acitivies[8]),
     },
   ]);
 
-  readonly ActivityType = WeeklyActivityType;
-
   confirm(): void {
+    const chosenActivities = this.categories().map((category) => category.choice());
+    const currentPlayer = this.playersService.getCurrentPlayer();
+
+    chosenActivities.forEach((activity) => {
+      activity.init?.(this.apiProvider.getGameApi());
+      currentPlayer.addWeeklyActivity(activity);
+    });
+
     this.close();
   }
 }

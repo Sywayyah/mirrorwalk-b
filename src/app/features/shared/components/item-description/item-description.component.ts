@@ -4,7 +4,7 @@ import {
   computed,
   input,
 } from '@angular/core';
-import { Item, ItemBaseModel } from 'src/app/core/items';
+import { Item, ItemBaseType } from 'src/app/core/items';
 
 @Component({
   selector: 'mw-item-description',
@@ -16,7 +16,7 @@ import { Item, ItemBaseModel } from 'src/app/core/items';
 export class ItemDescriptionComponent {
   public readonly item = input<Item>();
 
-  public readonly itemBase = input.required<ItemBaseModel>();
+  public readonly itemBase = input.required<ItemBaseType>();
 
   public readonly descriptions = computed(() => {
     const baseType = this.item()?.baseType || this.itemBase();

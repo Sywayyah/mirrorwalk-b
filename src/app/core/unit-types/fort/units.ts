@@ -1,9 +1,7 @@
 import { AssetsImages } from '../../assets';
 import { fortFaction } from '../../factions';
-import { UniversalPinSpell } from '../../spells/common/universal/pin';
 import { heroDescrElem } from '../../ui';
 import { simpleDescriptions } from '../utils';
-import { PoisonArrowsSpell } from './spells/poison-arrows';
 
 const defaultRewards = {
   experience: 0,
@@ -42,7 +40,7 @@ fortFaction.defineUnitType({
     pinningIncomingDamagePercent: 1.5,
   },
 
-  defaultSpells: [UniversalPinSpell],
+  defaultSpells: ['#spell-universal-pin'],
 
   baseRequirements: {
     gold: 35,
@@ -90,7 +88,7 @@ fortFaction.defineUnitType({
     pinningIncomingDamagePercent: 1.5,
   },
 
-  defaultSpells: [UniversalPinSpell],
+  defaultSpells: ['#spell-universal-pin'],
 
   baseRequirements: {
     gold: 55,
@@ -132,7 +130,7 @@ fortFaction.defineUnitType({
   defaultModifiers: {
     isRanged: true,
   },
-  defaultSpells: [PoisonArrowsSpell],
+  defaultSpells: ['#spell-unit-poison-arrows'],
 
   baseRequirements: {
     gold: 60,
@@ -185,7 +183,7 @@ fortFaction.defineUnitType({
 
   defaultTurnsPerRound: 3,
 
-  defaultSpells: [PoisonArrowsSpell],
+  defaultSpells: ['#spell-unit-poison-arrows'],
 
   baseRequirements: {
     gold: 60,

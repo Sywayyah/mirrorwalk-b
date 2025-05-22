@@ -5,57 +5,67 @@
   (click)="leaveTown()"
 />
 
-<mw-action-hint />
+<mw-action-hint class="contrast" />
 
 <div class="tiers">
-  <div class="building" *ngFor="let tier of buildingsByTiers | keyvalue">
+  <div
+    class="building"
+    *ngFor="let tier of buildingsByTiers | keyvalue"
+  >
     <!-- {{building.key}} -->
     <div>Tier {{ tier.key }}</div>
 
     <div class="build">
-      <div
-        *ngFor="let build of tier.value"
-        [mwActionHint]="'Inspect ' + build.base.baseName"
-      >
-        <div
-          class="header"
-          (click)="handleBuildingClicked(build)"
-          [class.not-built]="!build.built"
-          [style.background-color]="builtColor"
-        >
-          <mw-ra-icon style="font-size: 28px" [icon]="build.base.icon" />
-          {{ build.currentBuilding.name }}
+      @for (build of tier.value; track $index) {
+        <div [mwActionHint]="'Inspect ' + build.base.baseName">
+          <div
+            class="header"
+            (click)="handleBuildingClicked(build)"
+            [class.not-built]="!build.built"
+            [style.background-color]="builtColor"
+          >
+            <mw-ra-icon
+              style="font-size: 28px"
+              [icon]="build.base.icon"
+            />
+            {{ build.currentBuilding.name }}
 
-          <div *ngIf="build.built; else notBuilt" style="font-size: 10px">
-            Level {{ build.currentLevel + 1 }}/{{ build.base.levels.length }}
+            @if (build.built) {
+              <div style="font-size: 10px">Level {{ build.currentLevel + 1 }}/{{ build.base.levels.length }}</div>
+            } @else {
+              <div style="font-size: 10px">Not built</div>
+            }
+
+            <hr style="width: 100%; border-top: 0" />
           </div>
-
-          <ng-template #notBuilt>
-            <div style="font-size: 10px">Not built</div>
-          </ng-template>
-          <hr style="width: 100%; border-top: 0" />
         </div>
-      </div>
+      }
+
       <!-- <mw-ra-icon icon="hammer"></mw-ra-icon> -->
     </div>
 
-    <button
-      mw-main-button
-      [cdkMenuTriggerFor]="buildingMenu"
-      [cdkMenuPosition]="menuPosition"
-    >
-      Build
-    </button>
+    @if (newTownSystemEnabled) {
+      <button
+        mw-main-button
+        [cdkMenuTriggerFor]="buildingMenu"
+        [cdkMenuPosition]="menuPosition"
+      >
+        Build
+      </button>
 
-    <ng-template #buildingMenu>
-      <div class="content" cdkMenu>
-        @for (building of tier.value; track $index) {
-          <div [mwActionHint]="'Inspect ' + building.base.baseName">
-            {{ building.base.baseName }}
-          </div>
-        }
-      </div>
-    </ng-template>
+      <ng-template #buildingMenu>
+        <div
+          class="content"
+          cdkMenu
+        >
+          @for (building of tier.value; track $index) {
+            <div [mwActionHint]="'Inspect ' + building.base.baseName">
+              {{ building.base.baseName }}
+            </div>
+          }
+        </div>
+      </ng-template>
+    }
   </div>
 </div>
 

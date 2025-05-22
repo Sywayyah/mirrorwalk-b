@@ -1,9 +1,9 @@
 import { EnchantBuff } from '../../spells/common';
 import { itemStatsDescr, spellDescrElem } from '../../ui';
-import { ItemBaseModel, ItemSlotType } from '../types';
+import { ItemBaseType, ItemSlotType } from '../types';
 import { createItem } from '../utils';
 
-export const ItemEclipseWand: ItemBaseModel<{}> = createItem({
+export const ItemEclipseWand: ItemBaseType<{}> = createItem({
   id: '#item-eclipse-wand',
 
   name: 'Eclipse Wand',

@@ -1,7 +1,5 @@
 import { AssetsImages } from '../../assets';
 import { neutralsFaction } from '../../factions/neutrals/faction';
-import { FrightSpell } from '../../spells/common';
-import { SkeletonsDamageBlock } from '../../spells/common/damage-block/skeletons-damage-block';
 import { heroDescrElem } from '../../ui';
 import { createStats } from '../utils';
 
@@ -36,7 +34,7 @@ neutralsFaction.defineUnitType({
   baseStats: createStats([[2, 3], 1, 2, 6, 8]),
 
   defaultSpells: [
-    FrightSpell,
+    '#spell-fright'
   ],
   neutralReward: {
     experience: 2.3,
@@ -88,7 +86,7 @@ neutralsFaction.defineUnitType({
   },
 
   defaultSpells: [
-    FrightSpell,
+    '#spell-fright'
   ],
 
   defaultModifiers: {
@@ -127,7 +125,7 @@ neutralsFaction.defineUnitType({
 
   },
 
-  defaultSpells: [SkeletonsDamageBlock],
+  defaultSpells: ['#spell-skeleton-block'],
 
   baseRequirements: {
     gold: 55,

@@ -1,17 +1,5 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  computed,
-  inject,
-  signal,
-  WritableSignal,
-} from '@angular/core';
-import {
-  Resources,
-  resourcesCostInGold,
-  ResourcesModel,
-  ResourceType,
-} from 'src/app/core/resources';
+import { ChangeDetectionStrategy, Component, computed, inject, signal, WritableSignal } from '@angular/core';
+import { Resources, resourcesCostInGold, ResourcesModel, ResourceType } from 'src/app/core/resources';
 import { Town } from 'src/app/core/towns';
 import { getEntries } from 'src/app/core/utils/common';
 import { MwPlayersService } from 'src/app/features/services';
@@ -31,8 +19,7 @@ class ResourceTrader {
 
   readonly costInGold = computed(() =>
     this.resourceEntries().reduce(
-      (total, resEntry) =>
-        resourcesCostInGold[resEntry.resType] * resEntry.count() + total,
+      (total, resEntry) => resourcesCostInGold[resEntry.resType] * resEntry.count() + total,
       0,
     ),
   );
@@ -50,9 +37,7 @@ class ResourceTrader {
       })),
     );
 
-    this.goldEntry = this.resourceEntries().find(
-      (entry) => entry.resType === ResourceType.Gold,
-    )!;
+    this.goldEntry = this.resourceEntries().find((entry) => entry.resType === ResourceType.Gold)!;
 
     this.goldEntry.isGold = true;
   }
@@ -65,17 +50,38 @@ class ResourceTrader {
     });
   }
 
+  addToResource(resType: ResourceType, count: number) {
+    this.resources[resType] += count;
+    this.goldEntry.max += count;
+  }
+
   addToResources(resources: Resources): void {
     getEntries(resources).forEach(([resType, count]) => {
       this.resources[resType] += count!;
     });
   }
 
+  removeResources(resources: Resources): void {
+    getEntries(resources).forEach(([resType, count]) => {
+      this.resources[resType] -= count!;
+      const resourceEntry = this.getResourceEntry(resType)!;
+      resourceEntry.max -= count!;
+      resourceEntry.count.set(0);
+    });
+  }
+
+  addResources(resources: Resources): void {
+    getEntries(resources).forEach(([resType, count]) => {
+      this.resources[resType] += count!;
+      const resourceEntry = this.getResourceEntry(resType)!;
+      resourceEntry.max += count!;
+      resourceEntry.count.set(0);
+    });
+  }
+
   addMaxResources(resources: Resources, sold: boolean): void {
     getEntries(resources).forEach(([resType, count]) => {
-      const entry = this.resourceEntries().find(
-        (entry) => entry.resType === resType,
-      )!;
+      const entry = this.getResourceEntry(resType)!;
 
       if (entry.isGold) {
         if (sold) {
@@ -93,11 +99,13 @@ class ResourceTrader {
     });
   }
 
+  private getResourceEntry(resType: ResourceType) {
+    return this.resourceEntries().find((entry) => entry.resType === resType);
+  }
+
   getCountsAsResourcesDiff(selling = false): Resources {
     return this.resourceEntries().reduce((resources, entry) => {
-      resources[entry.resType] = entry.isGold
-        ? this.costInGold()
-        : entry.count();
+      resources[entry.resType] = entry.isGold ? this.costInGold() : entry.count();
 
       if (selling) {
         if (entry.isGold) {
@@ -113,11 +121,10 @@ class ResourceTrader {
     }, {} as Resources);
   }
 
-  getCountsAsResources(): Resources {
+  // revise and simplify
+  getCountsAsResources(skipGold = false): Resources {
     return this.resourceEntries().reduce((resources, entry) => {
-      resources[entry.resType] = entry.isGold
-        ? this.costInGold()
-        : entry.count();
+      resources[entry.resType] = entry.isGold ? (skipGold ? 0 : this.costInGold()) : entry.count();
 
       return resources;
     }, {} as Resources);
@@ -137,74 +144,61 @@ export class MarketDialogComponent extends BasicPopup<{ town: Town<any> }> {
   readonly currentPlayer = this.playersService.getCurrentPlayer();
 
   readonly playerTrader = new ResourceTrader(this.currentPlayer.resources);
-  readonly marketTrader = new ResourceTrader(
-    this.data.town.marketState().resources,
-  );
+  readonly marketTrader = new ResourceTrader(this.data.town.marketState().resources);
 
   readonly traders = [
-    { title: 'Selling', trader: this.playerTrader },
-    { title: 'Buying', trader: this.marketTrader },
+    { title: 'Your Gold', trader: this.playerTrader },
+    { title: 'Market Gold', trader: this.marketTrader },
   ];
 
-  readonly dealCost = computed(
-    () => this.playerTrader.costInGold() - this.marketTrader.costInGold(),
-  );
+  readonly dealCost = computed(() => this.playerTrader.costInGold() - this.marketTrader.costInGold());
 
-  readonly canTrade = computed(() => {
+  readonly canTradeDetails = computed(() => {
     const dealCost = this.dealCost();
 
-    if (
-      dealCost === 0 &&
-      (this.marketTrader.costInGold() === 0 ||
-        this.playerTrader.costInGold() === 0)
-    ) {
-      return false;
+    if (dealCost === 0 && (this.marketTrader.costInGold() === 0 || this.playerTrader.costInGold() === 0)) {
+      return {
+        canTrade: false,
+      };
     }
 
     if (dealCost < 0) {
-      return (
-        this.playerTrader.goldEntry.max + this.marketTrader.goldEntry.count() >=
-        Math.abs(dealCost)
-      );
+      return {
+        canTrade: this.playerTrader.goldEntry.max + this.marketTrader.goldEntry.count() >= Math.abs(dealCost),
+        cantTrade: 'player',
+      };
     }
 
-    return (
-      this.marketTrader.goldEntry.max + this.playerTrader.goldEntry.count() >=
-      Math.abs(dealCost)
-    );
+    return {
+      canTrade: this.marketTrader.goldEntry.max + this.playerTrader.goldEntry.count() >= Math.abs(dealCost),
+      cantTrade: 'market',
+    };
   });
 
-  getResourcesFromEntries(entries: ResourceEntry[]): Resources {
-    return entries.reduce(
-      (acc, next) => ((acc[next.resType] = next.count()), acc),
-      {} as Resources,
-    );
-  }
+  readonly dealResources = computed(() => {
+    const playerCounts = this.playerTrader.getCountsAsResources(true);
+    const marketCounts = this.marketTrader.getCountsAsResources(true);
+
+    return getEntries(marketCounts)
+      .map(([resType, count]) => {
+        return { resType, count: count! - playerCounts[resType]! };
+      })
+      .filter((res) => res.count && res.resType !== ResourceType.Gold);
+  });
 
   trade(): void {
-    const purchasedResourcesDiff =
-      this.marketTrader.getCountsAsResourcesDiff(true);
-    const soldResourcesDiff = this.playerTrader.getCountsAsResourcesDiff();
+    const playerTrader = this.playerTrader;
+    const marketTrader = this.marketTrader;
 
-    this.playersService.addResourcesToPlayer(
-      this.currentPlayer,
-      purchasedResourcesDiff,
-    );
-    this.playersService.addResourcesToPlayer(
-      this.currentPlayer,
-      soldResourcesDiff,
-    );
+    const playerCounts = playerTrader.getCountsAsResources(true);
+    const marketCounts = marketTrader.getCountsAsResources(true);
 
-    console.log(soldResourcesDiff, purchasedResourcesDiff);
-
-    // todo: fix
-    this.marketTrader.addToResources(soldResourcesDiff);
-    this.marketTrader.addToResources(purchasedResourcesDiff);
-
-    this.marketTrader.applyCounts();
-    this.playerTrader.applyCounts();
-
-    this.marketTrader.addMaxResources(soldResourcesDiff, false);
-    this.playerTrader.addMaxResources(purchasedResourcesDiff, true);
+    playerTrader.addToResource(ResourceType.Gold, this.dealCost());
+    marketTrader.addToResource(ResourceType.Gold, this.dealCost() * -1);
+    console.log(playerCounts, marketCounts);
+    playerTrader.removeResources(playerCounts);
+    marketTrader.removeResources(marketCounts);
+    playerTrader.addResources(marketCounts);
+    marketTrader.addResources(playerCounts);
   }
 }

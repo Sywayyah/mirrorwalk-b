@@ -1,4 +1,5 @@
-import { EventData } from 'src/app/store';
+import { Observable } from 'rxjs';
+import { EventData, EventType } from 'src/app/store';
 import { UnitTypeId } from '../../entities';
 import { Player } from '../../players';
 import { Resources, ResourceType } from '../../resources';
@@ -31,4 +32,5 @@ export interface SpellsApi {
 
 export interface GlobalEventsApi {
   dispatch(event: EventData): void;
+  onEvent<T extends object>(events: EventType<T>): Observable<T>;
 }

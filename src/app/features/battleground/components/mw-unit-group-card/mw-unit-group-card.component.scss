@@ -78,7 +78,7 @@ $portrait-offset: 79%;
   }
 }
 
-.health-bar {
+.health-bar, .mana-bar {
   position: relative;
   border-radius: 2px;
   // border: 1px solid whitesmoke;
@@ -88,14 +88,22 @@ $portrait-offset: 79%;
   width: 70px;
 
   border-radius: 7px;
-  border: 1px solid gold;
+  border: 1px solid #395698;
 }
 
-.card-left .health-bar {
+.mana-bar {
+  top: -41px;
+}
+
+.bar-icon {
+  margin: 0 4px;
+}
+
+.card-left :is(.health-bar, .mana-bar) {
   left: 24px;
 }
 
-.card-right .health-bar {
+.card-right :is(.health-bar, .mana-bar) {
   right: -23px;
 }
 
@@ -211,7 +219,7 @@ $inactive-offset: 32px;
     }
 
     &.card-right {
-      right: $active-offset;
+      left: -$active-offset;
     }
   }
 
@@ -221,7 +229,7 @@ $inactive-offset: 32px;
     }
 
     &.card-right {
-      right: -$inactive-offset;
+      left: $inactive-offset;
     }
   }
 

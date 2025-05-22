@@ -1,105 +1,168 @@
+<!-- todo: maybe migrate to signal some day -->
 @let group = unitGroup();
-
+@let unitState = (unitStats$ | async)!;
 <mw-vfx-container [containerId]="group.id">
-
-  <div *ngIf="unitStats$ | async as _unitStats"
-       class="card-top"
-       [class.active]="mwBattleStateService.currentPlayer === playerInfo() && attackingUnitGroup === group"
-       [ngClass]="side() === 'left' ? 'card-left' : 'card-right'"
-       [class.inactive]="!group.turnsLeft && group.fightInfo.isAlive"
-       [class.defeated]="!group.fightInfo.isAlive"
-       (mouseenter)="onCardHover(true)"
-       (mouseleave)="onCardHover(false)">
-
+  <div
+    class="card-top"
+    [class.active]="isCurrentUnitGroupActive()"
+    [ngClass]="side() === 'left' ? 'card-left' : 'card-right'"
+    [class.inactive]="!group.turnsLeft && unitState.groupState.isAlive"
+    [class.defeated]="!unitState.groupState.isAlive"
+    (mouseenter)="onCardHover(true)"
+    (mouseleave)="onCardHover(false)"
+  >
     <div class="card-wrapper">
-      <div [style.background]="playerInfo().color"
-           [class.current-group]="mwBattleStateService.currentPlayer === playerInfo() && attackingUnitGroup === group"
-           [class.hovered-enemy]="isCardHovered && isEnemyCard && canCurrentPlayerAttack"
-           class="card">
-        <div style="padding-bottom: 3px; font-weight: 500; white-space: nowrap;">
+      <div
+        [style.background]="playerInfo().color"
+        [class.current-group]="isCurrentUnitGroupActive()"
+        [class.hovered-enemy]="isCardHovered && isEnemyCard && canCurrentPlayerAttack()"
+        class="card"
+      >
+        <div style="padding-bottom: 3px; font-weight: 500; white-space: nowrap">
           {{ group.type.name }}
           ({{ group.count }})
+
+          <!-- @if (group.lostDuringBattle()) {
+            <mw-ra-icon icon="skull"></mw-ra-icon>
+            {{ group.lostDuringBattle() }}
+          } -->
         </div>
 
-        <div style="font-size: 12px;">
+        <div style="font-size: 12px">
           <div>
             <mw-ra-icon icon="spinning-sword" />
-            ({{group.turnsLeft}}/{{group.type.defaultTurnsPerRound}})
+            ({{ group.turnsLeft }}/{{ group.type.defaultTurnsPerRound }})
           </div>
 
           <div>
-            <mw-ra-icon icon="sword"
-                        *ngIf="isGroupMelee; else rangedIcon" />
+            <mw-ra-icon
+              icon="sword"
+              *ngIf="isGroupMelee; else rangedIcon"
+            />
             <ng-template #rangedIcon>
               <mw-ra-icon icon="crossbow" />
             </ng-template>
-            {{ _unitStats.groupStats.avgTotalDamage }}
+            {{ unitState.groupStats.avgTotalDamage }}
           </div>
 
-          <div [class.defence]="_unitStats.groupStats.defends">
+          <div [class.defence]="unitState.groupStats.defends">
             <mw-ra-icon icon="feather-wing" />
-            {{ _unitStats.groupStats.baseSpeed }}
+            {{ unitState.groupStats.baseSpeed }}
 
-            <span [mwNumberModifier]="_unitStats.groupStats.speedBonus"></span>
+            <span [mwNumberModifier]="unitState.groupStats.speedBonus"></span>
           </div>
 
           <div class="secondary-stats">
-
-            <div *ngIf="_unitStats.groupStats.maxMana">
+            <!-- <div *ngIf="unitState.groupStats.maxMana">
               <mw-ra-icon icon="crystal-ball" />
-              {{_unitStats.groupState.currentMana}}/{{_unitStats.groupStats.maxMana}}
-            </div>
+              {{ unitState.groupState.currentMana }}/{{ unitState.groupStats.maxMana }}
+            </div> -->
           </div>
 
           <!-- this info will have to be updated -->
-          <div *ngIf="!isBoss || group.type.isHero">
+          @if (!isBoss || group.type.isHero) {
             <mw-ra-icon icon="health" />
-            {{ _unitStats.groupStats.totalHealth }}
-          </div>
+            {{ unitState.groupStats.totalHealth }}
+          }
         </div>
       </div>
 
-      <div class="abilities"
-           [ngClass]="side()">
+      <div
+        class="abilities"
+        [ngClass]="side()"
+      >
         <div class="column-data">
-          <mw-unit-group-spell *ngFor="let spell of spells"
-                               [hintPos]="spellsHintsPosition"
-                               [spell]="spell"
-                               [hero]="playerInfo().hero"
-                               [owner]="group"
-                               [onCooldown]="group.fightInfo.spellsOnCooldown || !!spell.cooldown"
-                               [currentUnit]="attackingUnitGroup" />
+          @for (spell of spells(); track $index) {
+            <mw-unit-group-spell
+              [hintPos]="spellsHintsPosition"
+              [spell]="spell"
+              [hero]="playerInfo().hero"
+              [owner]="group"
+              [onCooldown]="unitState.groupState.spellsOnCooldown || !!spell.cooldown"
+              [currentUnit]="attackingUnitGroup()"
+            />
+          }
         </div>
 
         <div class="column-data">
-          <mw-unit-group-buff [hintPos]="spellsHintsPosition"
-                              *ngFor="let ability of effects"
-                              [buff]="ability"
-                              [ownerUnit]="group" />
+          @for (effect of effects(); track $index) {
+            <mw-unit-group-buff
+              [hintPos]="spellsHintsPosition"
+              [buff]="effect"
+              [ownerUnit]="group"
+            />
+          }
         </div>
       </div>
     </div>
 
     <div class="portrait-container">
-
-      <mw-unit-group-portrait [unitGroup]="group"
-                              [toRight]="side() === 'left'"
-                              [isHero]="group.type.isHero" />
+      <mw-unit-group-portrait
+        [unitGroup]="group"
+        [toRight]="side() === 'left'"
+        [isHero]="group.type.isHero"
+      />
 
       <!-- #4f52bd -->
       <!-- "linear-gradient(180deg, rgba(255,77,93,1) 0%, rgba(129,25,25,1) 100%)" -->
       <!-- rgb(201, 45, 45) -->
       <!-- rgb(80 89 165) -->
-      <mw-value-bar class="health-bar"
-                    *ngIf="isBoss || group.type.isHero"
-                    barStyle="normal"
-                    [side]="side()"
-                    color="rgb(201, 45, 45)"
-                    [showMax]="true"
-                    [currentValue]="group.tailUnitHp!"
-                    [maxValue]="group.type.baseStats.health"
-                    [barHeight]="14">
-      </mw-value-bar>
+      @if (isBoss || group.type.isHero) {
+        <mw-value-bar
+          class="health-bar"
+          barStyle="normal"
+          [side]="side()"
+          color="rgb(201, 45, 45)"
+          [showMax]="true"
+          [currentValue]="group.tailUnitHp"
+          [maxValue]="group.type.baseStats.health"
+          [barHeight]="14"
+        >
+          <mw-ra-icon
+            class="bar-icon"
+            icon="health"
+          />
+        </mw-value-bar>
+      }
+
+      @if (!group.type.isHero && unitState.groupStats.maxMana) {
+        <mw-value-bar
+          class="mana-bar"
+          [barHeight]="13"
+          barStyle="normal"
+          color="linear-gradient(0deg, rgb(100 26 95), rgb(92 142 242))"
+          [showMax]="true"
+          [currentValue]="unitState.groupState.currentMana"
+          [side]="side()"
+          [maxValue]="unitState.groupStats.maxMana"
+        >
+          <mw-ra-icon
+            class="bar-icon"
+            icon="crystal-ball"
+          />
+        </mw-value-bar>
+      }
+
+      <!-- recheck in the future -->
+      @if (group.type.isHero && playerInfo().hero) {
+        @let heroState = group.ownerHero.getStateSignal()();
+
+        <mw-value-bar
+          class="mana-bar"
+          [barHeight]="13"
+          barStyle="normal"
+          color="linear-gradient(0deg, rgb(100 26 95), rgb(92 142 242))"
+          [showMax]="true"
+          [currentValue]="heroState.currentMana"
+          [side]="side()"
+          [maxValue]="heroState.maxMana"
+        >
+          <mw-ra-icon
+            class="bar-icon"
+            icon="crystal-ball"
+          />
+        </mw-value-bar>
+      }
     </div>
   </div>
 </mw-vfx-container>

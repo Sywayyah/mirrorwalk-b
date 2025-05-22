@@ -1,46 +1,70 @@
-import { AfterViewInit, ChangeDetectorRef, Component, OnInit, QueryList, ViewChildren } from '@angular/core';
+import { AfterViewInit, Component, OnInit, QueryList, ViewChildren, inject } from '@angular/core';
 import { map, takeUntil } from 'rxjs/operators';
-import { GroupDamagedByGroup, GroupDamagedByGroupEvent, PlayerStartsFight, UnitSummoned, UnitSummonedEvent } from 'src/app/core/events';
+import {
+  GroupDamagedByGroup,
+  GroupDamagedByGroupEvent,
+  PlayerStartsFight,
+  UnitSummoned,
+  UnitSummonedEvent,
+} from 'src/app/core/events';
 import { DefendAction } from 'src/app/core/events/battle/commands';
 import { Player } from 'src/app/core/players';
 import { UnitsOrientation } from 'src/app/core/ui';
 import { UnitGroup } from 'src/app/core/unit-types';
+import { injectCdr } from 'src/app/core/utils';
 import { LifestealAnimtaion, getDamageParts, getLifeStealParts } from 'src/app/core/vfx';
-import { BattleStateService, CombatInteractorService, MwCardsMappingService, MwNeutralPlayerService, MwPlayerStateService, MwPlayersService } from 'src/app/features/services';
+import {
+  BattleStateService,
+  CombatInteractorService,
+  MwCardsMappingService,
+  MwNeutralPlayerService,
+  MwPlayerStateService,
+  MwPlayersService,
+} from 'src/app/features/services';
 import { State } from 'src/app/features/services/state.service';
 import { VfxService } from 'src/app/features/shared/components';
 import { StoreClient, WireMethod } from 'src/app/store';
 import { MwUnitGroupCardComponent } from '../mw-unit-group-card/mw-unit-group-card.component';
 
 @Component({
-    selector: 'mw-gameboard',
-    templateUrl: './mw-gameboard.component.html',
-    styleUrls: ['./mw-gameboard.component.scss'],
-    standalone: false
+  selector: 'mw-gameboard',
+  templateUrl: './mw-gameboard.component.html',
+  styleUrls: ['./mw-gameboard.component.scss'],
+  standalone: false,
 })
 export class MwGameboardComponent extends StoreClient() implements OnInit, AfterViewInit {
-  public mainPlayerUnitGroups!: UnitGroup[];
-  public neutralPlayerGroups!: UnitGroup[];
+  readonly mwPlayerState = inject(MwPlayerStateService);
+  readonly players = inject(MwPlayersService);
+  readonly mwBattleState = inject(BattleStateService);
+  private readonly mwNeutralPlayer = inject(MwNeutralPlayerService);
+  private readonly cardsMapping = inject(MwCardsMappingService);
+  private readonly combatInteractor = inject(CombatInteractorService);
+  private readonly vfx = inject(VfxService);
+  private readonly cd = injectCdr();
+  private readonly state = inject(State);
 
-  public mainPlayerInfo!: Player;
-  public enemyPlayerInfo!: Player;
+  mainPlayerUnitGroups!: UnitGroup[];
+  neutralPlayerGroups!: UnitGroup[];
 
-  public fightQueue!: UnitGroup[];
+  mainPlayerInfo!: Player;
+  enemyPlayerInfo!: Player;
+
+  fightQueue!: UnitGroup[];
 
   @ViewChildren(MwUnitGroupCardComponent)
-  public cards!: QueryList<MwUnitGroupCardComponent>;
+  cards!: QueryList<MwUnitGroupCardComponent>;
 
-  public settings = this.state.settings;
+  readonly settings = this.state.settings;
 
-  public orientation = UnitsOrientation;
+  readonly orientation = UnitsOrientation;
 
-  public currentUnitGroup$ = this.mwBattleState.currentUnitGroup$;
+  private readonly currentUnitGroup$ = this.mwBattleState.state.select((state) => state.currentUnitGroup);
 
-  public canDefend$ = this.mwBattleState.currentUnitGroup$.pipe(
-    map((unit) => Boolean(unit && !unit.getState().groupStats.defends && !this.players.isEnemyUnitGroup(unit)))
+  readonly canDefend$ = this.currentUnitGroup$.pipe(
+    map((unit) => Boolean(unit && !unit.getState().groupStats.defends && !this.players.isEnemyUnitGroup(unit))),
   );
 
-  public defendActionMessage$ = this.mwBattleState.currentUnitGroup$.pipe(
+  readonly defendActionMessage$ = this.currentUnitGroup$.pipe(
     map((unit) => {
       if (!unit || this.players.isEnemyUnitGroup(unit)) {
         return '';
@@ -51,22 +75,8 @@ export class MwGameboardComponent extends StoreClient() implements OnInit, After
       }
 
       return `Defend ${unit.count} ${unit.type.name}`;
-    })
+    }),
   );
-
-  constructor(
-    public readonly mwPlayerState: MwPlayerStateService,
-    public readonly players: MwPlayersService,
-    public readonly mwBattleState: BattleStateService,
-    private readonly mwNeutralPlayer: MwNeutralPlayerService,
-    private readonly cardsMapping: MwCardsMappingService,
-    private readonly combatInteractor: CombatInteractorService,
-    private readonly vfx: VfxService,
-    private readonly cd: ChangeDetectorRef,
-    private readonly state: State,
-  ) {
-    super();
-  }
 
   public ngOnInit(): void {
     /* todo: potentially, a good place for ordering dependencies and logic order */
@@ -84,7 +94,7 @@ export class MwGameboardComponent extends StoreClient() implements OnInit, After
 
   public ngAfterViewInit(): void {
     /* todo: might work poorly if there will be summoned units */
-    this.cards.forEach(card => this.cardsMapping.register(card.unitGroup(), card));
+    this.cards.forEach((card) => this.cardsMapping.register(card.unitGroup(), card));
 
     /* init interactions only after view initialized and cards are available */
     this.initInteractions();
@@ -95,17 +105,17 @@ export class MwGameboardComponent extends StoreClient() implements OnInit, After
   private initInteractions(): void {
     this.combatInteractor.onBattleBegins();
 
-    this.events.dispatch(PlayerStartsFight({
-      players: [this.mainPlayerInfo, this.enemyPlayerInfo],
-      unitGroups: [...this.mainPlayerUnitGroups, ...this.neutralPlayerGroups],
-    }));
+    this.events.dispatch(
+      PlayerStartsFight({
+        players: [this.mainPlayerInfo, this.enemyPlayerInfo],
+        unitGroups: [...this.mainPlayerUnitGroups, ...this.neutralPlayerGroups],
+      }),
+    );
 
     this.updateFightQueue();
 
     // todo: optimize some day
-    this.events.eventStream$.pipe(
-      takeUntil(this.destroyed$),
-    ).subscribe(() => {
+    this.events.eventStream$.pipe(takeUntil(this.destroyed$)).subscribe(() => {
       this.updatePlayersUnitGroupsToShow();
     });
   }
@@ -135,7 +145,7 @@ export class MwGameboardComponent extends StoreClient() implements OnInit, After
     this.vfx.createFloatingMessageForUnitGroup(
       event.attackedGroup,
       getDamageParts(event.damage, event.loss, isRanged, event.damageBlocked, event.isCritical),
-      { duration: event.isCritical ? 1200 : event.damageBlocked ? 1100 : 1000 }
+      { duration: event.isCritical ? 1200 : event.damageBlocked ? 1100 : 1000 },
     );
   }
 
@@ -145,7 +155,11 @@ export class MwGameboardComponent extends StoreClient() implements OnInit, After
 
     this.cd.detectChanges();
 
-    this.cardsMapping.register(event.unitGroup, this.cards.find(cardComponent => cardComponent.unitGroup() === event.unitGroup)!);
+    // todo: not sure if it should work like this, maybe card should self-register (recheck)
+    this.cardsMapping.register(
+      event.unitGroup,
+      this.cards.find((cardComponent) => cardComponent.unitGroup() === event.unitGroup)!,
+    );
   }
 
   private updatePlayersUnitGroupsToShow(): void {
@@ -158,4 +172,3 @@ export class MwGameboardComponent extends StoreClient() implements OnInit, After
     this.fightQueue = this.mwBattleState.getFightQueue();
   }
 }
-

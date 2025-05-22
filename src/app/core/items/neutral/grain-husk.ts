@@ -1,9 +1,7 @@
-import { itemStatsDescr } from '../../ui';
-import { ItemBaseModel, ItemSlotType } from '../types';
+import { ItemBaseType, ItemSlotType } from '../types';
 import { createItem } from '../utils';
 
-
-export const GrainHuskItem: ItemBaseModel = createItem({
+export const GrainHuskItem: ItemBaseType = createItem({
   id: '#item-grain-husk',
 
   name: 'Grain Husk',

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { BattleCommandEvents, CombatAttackInteraction, CombatInteractionEnum, CombatInteractionStateEvent, FightNextRoundStarts, FightStarts, GroupAttacked, GroupAttackedEvent, GroupDies, GroupDiesEvent, NextRoundStarts, RoundGroupSpendsTurn, StructCompleted } from 'src/app/core/events';
 import { AddCombatModifiersToUnit, RemoveCombatModifiersFromUnit } from 'src/app/core/events/battle/commands';
 import { SpellEvents } from 'src/app/core/spells';
@@ -7,12 +7,7 @@ import { CombatInteractorService } from '../mw-combat-interactor.service';
 
 @Injectable()
 export class CombatController extends StoreClient() {
-
-  constructor(
-    private combatInteractor: CombatInteractorService,
-  ) {
-    super();
-  }
+  private combatInteractor = inject(CombatInteractorService);
 
   @Notify(StructCompleted)
   public dispellAllUnitsOnStructCompleted(): void {

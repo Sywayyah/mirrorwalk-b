@@ -1,4 +1,8 @@
 {
+  "printWidth": 120,
+  "bracketSameLine": false,
+  "bracketSpacing": true,
+  "singleAttributePerLine": true,
   "overrides": [
     {
       "files": "*.html",

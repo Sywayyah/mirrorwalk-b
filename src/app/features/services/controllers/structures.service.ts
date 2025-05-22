@@ -1,6 +1,6 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { GameCommandEvents, MapPanCameraCenterTo, NeutralStructParams, NewDayStarted, NewWeekStarted, PanMapCameraCenterAction, RemoveActionPoints, StructCompleted } from 'src/app/core/events';
-import { MapStructure, defaultActionPointsPerDay } from 'src/app/core/structures';
+import { defaultActionPointsPerDay, MapStructure } from 'src/app/core/structures';
 import { StoreClient, WireMethod } from 'src/app/store';
 import { GameObjectsManager } from '../game-objects-manager.service';
 import { MwStructuresService } from '../mw-structures.service';
@@ -8,14 +8,9 @@ import { State } from '../state.service';
 
 @Injectable()
 export class StructuresController extends StoreClient() {
-
-  constructor(
-    private structuresService: MwStructuresService,
-    private state: State,
-    private gameObjectsManager: GameObjectsManager,
-  ) {
-    super();
-  }
+  private structuresService = inject(MwStructuresService);
+  private state = inject(State);
+  private gameObjectsManager = inject(GameObjectsManager);
 
   @WireMethod(RemoveActionPoints)
   public removeActionPoints({ points }: GameCommandEvents['RemoveActionPoints']): void {

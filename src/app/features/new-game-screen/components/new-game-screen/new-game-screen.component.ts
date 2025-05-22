@@ -1,10 +1,8 @@
-import { Component, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { PLAYER_COLORS } from 'src/app/core/assets';
-import {
-  GameCreated,
-  GameOpenMainScreen,
-  ViewsEnum,
-} from 'src/app/core/events';
+import { isFeatureEnabled } from 'src/app/core/config';
+import { Feature } from 'src/app/core/config/types';
+import { DisplayCdkPopup, GameCreated, GameOpenMainScreen, ViewsEnum } from 'src/app/core/events';
 import { Faction, Factions, humansFaction } from 'src/app/core/factions';
 import { neutralsFaction } from 'src/app/core/factions/neutrals/faction';
 import { HeroBase } from 'src/app/core/heroes';
@@ -15,6 +13,7 @@ import { CommonUtils } from 'src/app/core/utils';
 import { GameObjectsManager } from 'src/app/features/services/game-objects-manager.service';
 import { State } from 'src/app/features/services/state.service';
 import { escapeToView } from 'src/app/features/services/utils/view.util';
+import { GameSettingsDialogComponent } from 'src/app/features/shared/components/game-settings-dialog/game-settings-dialog.component';
 import { EventsService } from 'src/app/store';
 
 const nonPlayableFactions: Faction[] = [neutralsFaction];
@@ -36,6 +35,12 @@ interface PlayerRow {
   standalone: false,
 })
 export class NewGameScreenComponent {
+  private readonly events = inject(EventsService);
+  private readonly state = inject(State);
+  private readonly gameObjectsManager = inject(GameObjectsManager);
+
+  readonly gameSettingsEnabled = isFeatureEnabled(Feature.NewGameSettings);
+
   readonly players = signal<PlayerRow[]>([
     {
       id: '1',
@@ -44,9 +49,7 @@ export class NewGameScreenComponent {
       selectedFaction: humansFaction,
       controlType: PlayerTypeEnum.Player,
       pickedColor: PLAYER_COLORS.BLUE,
-      selectedHero: humansFaction
-        .getAllHeroes()
-        .find((hero) => hero.id === `#hero-helvetica`),
+      selectedHero: humansFaction.getAllHeroes().find((hero) => hero.id === `#hero-helvetica`),
     },
     // {
     //   id: '2',
@@ -64,10 +67,9 @@ export class NewGameScreenComponent {
     // },
   ]);
 
-  public readonly playableFactions: Faction[] =
-    Factions.getAllFactions().filter(
-      (faction) => !nonPlayableFactions.includes(faction),
-    );
+  public readonly playableFactions: Faction[] = Factions.getAllFactions().filter(
+    (faction) => !nonPlayableFactions.includes(faction),
+  );
 
   public hoveredHero?: HeroBase | null;
   public hoveredPlayer?: PlayerRow | null;
@@ -75,17 +77,9 @@ export class NewGameScreenComponent {
   readonly controlTypes = PlayerTypeEnum;
   readonly ResourceType = ResourceType;
 
-  public readonly colors: PLAYER_COLORS[] = [
-    PLAYER_COLORS.BLUE,
-    PLAYER_COLORS.RED,
-    PLAYER_COLORS.GREEN,
-  ];
+  public readonly colors: PLAYER_COLORS[] = [PLAYER_COLORS.BLUE, PLAYER_COLORS.RED, PLAYER_COLORS.GREEN];
 
-  constructor(
-    private events: EventsService,
-    private state: State,
-    private gameObjectsManager: GameObjectsManager,
-  ) {
+  constructor() {
     escapeToView(ViewsEnum.MainScreen);
   }
 
@@ -93,16 +87,13 @@ export class NewGameScreenComponent {
     // todo: Multiple players, rework later
     const firstPlayer = this.players()[0];
 
-    const faction =
-      firstPlayer.selectedFaction ||
-      CommonUtils.randItem(this.playableFactions);
-    const townBase = faction.getTownBase() as TownBase<any>;
+    const faction = firstPlayer.selectedFaction || CommonUtils.randItem(this.playableFactions);
+    const townBase = faction.getTownBase() as TownBase<string>;
 
     this.state.createdGame = {
       faction,
       selectedColor: firstPlayer.pickedColor,
-      selectedHero:
-        firstPlayer.selectedHero || CommonUtils.randItem(faction.heroes),
+      selectedHero: firstPlayer.selectedHero || CommonUtils.randItem(faction.heroes),
       town: this.gameObjectsManager.createNewGameObject(Town, {
         townBase,
       }),
@@ -153,7 +144,12 @@ export class NewGameScreenComponent {
     return data as HeroBase;
   }
 
-  public returnToMainScreen(): void {
+  gameSettingsPopup(): void {
+    // extract as separate event
+    this.events.dispatch(DisplayCdkPopup({ component: GameSettingsDialogComponent, data: {} }));
+  }
+
+  returnToMainScreen(): void {
     this.events.dispatch(GameOpenMainScreen());
   }
 
@@ -172,9 +168,6 @@ export class NewGameScreenComponent {
       return;
     }
 
-    player.controlType =
-      player.controlType === PlayerTypeEnum.AI
-        ? PlayerTypeEnum.Player
-        : PlayerTypeEnum.AI;
+    player.controlType = player.controlType === PlayerTypeEnum.AI ? PlayerTypeEnum.Player : PlayerTypeEnum.AI;
   }
 }

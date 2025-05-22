@@ -16,7 +16,14 @@
 
     <div>
       <!-- <div>Gold: {{totalGoldReward}}</div> -->
-      <div>Experience: {{totalExpReward}}</div>
+      <div>
+        Experience: {{totalExpReward}}
+        @if (experienceGainBonus) {
+        (<span [mwNumberModifier]="experienceGainBonus"
+              mwNumberModifierFormat="shortPercent">
+        </span>)
+        }
+      </div>
     </div>
   </div>
 
