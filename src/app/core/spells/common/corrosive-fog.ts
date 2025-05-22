@@ -31,40 +31,38 @@ export const CorrosiveFogDebuff = createSpell<undefined | { debuffRoundsLeft: nu
     };
   },
   config: {
-    spellConfig: {
-      isOncePerBattle: false,
-      init({ events, actions, thisSpell, spellInstance, vfx }) {
-        events.on({
-          SpellPlacedOnUnitGroup({ target }) {
-            const debuffData = {
-              debuffRoundsLeft: roundsDuration,
-            };
-            spellInstance.state = debuffData;
+    isOncePerBattle: false,
+    init({ events, actions, thisSpell, spellInstance, vfx }) {
+      events.on({
+        SpellPlacedOnUnitGroup({ target }) {
+          const debuffData = {
+            debuffRoundsLeft: roundsDuration,
+          };
+          spellInstance.state = debuffData;
 
-            const modifiers = actions.createModifiers({
-              baseDamagePercentModifier: -damageReduction,
-              heroBonusDefence: -defenceReduction,
-            });
+          const modifiers = actions.createModifiers({
+            baseDamagePercentModifier: -damageReduction,
+            heroBonusDefence: -defenceReduction,
+          });
 
-            vfx.createEffectForUnitGroup(target, CorrosiveFogAnimation);
+          vfx.createEffectForUnitGroup(target, CorrosiveFogAnimation);
 
-            actions.addModifiersToUnitGroup(target, modifiers);
+          actions.addModifiersToUnitGroup(target, modifiers);
 
-            actions.historyLog(`${target.type.name} gets negative effect "${thisSpell.name}"`);
+          actions.historyLog(`${target.type.name} gets negative effect "${thisSpell.name}"`);
 
-            events.on({
-              NewRoundBegins(event) {
-                debuffData.debuffRoundsLeft--;
+          events.on({
+            NewRoundBegins(event) {
+              debuffData.debuffRoundsLeft--;
 
-                if (!debuffData.debuffRoundsLeft) {
-                  actions.removeSpellFromUnitGroup(target, spellInstance);
-                  actions.removeModifiresFromUnitGroup(target, modifiers);
-                }
-              },
-            });
-          },
-        });
-      },
+              if (!debuffData.debuffRoundsLeft) {
+                actions.removeSpellFromUnitGroup(target, spellInstance);
+                actions.removeModifiresFromUnitGroup(target, modifiers);
+              }
+            },
+          });
+        },
+      });
     },
   },
 });
@@ -86,32 +84,30 @@ export const CorrosiveFogSpell = createSpell({
     };
   },
   config: {
-    spellConfig: {
-      targetCastConfig: {
-        canActivate: canActivateOnEnemyFn,
-      },
-      getManaCost(spellInst) {
-        const manaCosts: Record<number, number> = {
-          1: 2,
-          2: 2,
-          3: 3,
-          4: 4,
-        };
+    targetCastConfig: {
+      canActivate: canActivateOnEnemyFn,
+    },
+    getManaCost(spellInst) {
+      const manaCosts: Record<number, number> = {
+        1: 2,
+        2: 2,
+        3: 3,
+        4: 4,
+      };
 
-        return manaCosts[spellInst.currentLevel];
-      },
+      return manaCosts[spellInst.currentLevel];
+    },
 
-      init({ events, actions, ownerPlayer, ownerHero, thisSpell }) {
-        events.on({
-          PlayerTargetsSpell(event) {
-            actions.historyLog(`${ownerHero.name} casts "${thisSpell.name}" against ${event.target.type.name}`);
+    init({ events, actions, ownerPlayer, ownerHero, thisSpell }) {
+      events.on({
+        PlayerTargetsSpell(event) {
+          actions.historyLog(`${ownerHero.name} casts "${thisSpell.name}" against ${event.target.type.name}`);
 
-            const poisonDebuffInstance = actions.createSpellInstance(CorrosiveFogDebuff);
+          const poisonDebuffInstance = actions.createSpellInstance(CorrosiveFogDebuff);
 
-            actions.addSpellToUnitGroup(event.target, poisonDebuffInstance, ownerPlayer);
-          },
-        });
-      },
+          actions.addSpellToUnitGroup(event.target, poisonDebuffInstance, ownerPlayer);
+        },
+      });
     },
   },
 });

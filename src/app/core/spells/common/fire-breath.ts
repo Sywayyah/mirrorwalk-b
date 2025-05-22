@@ -23,41 +23,40 @@ export const FireBreath: SpellBaseType = createSpell({
   getDescription({ ownerUnit }) {
     return {
       descriptions: [
-        spellDescrElem(`${ownerUnit?.type.name} covers ground with fire breath at the beginning of each round, dealing ${minDmg}-${maxDmg} fire damage to ${unitsCount} random enemy groups.`),
-      ]
+        spellDescrElem(
+          `${ownerUnit?.type.name} covers ground with fire breath at the beginning of each round, dealing ${minDmg}-${maxDmg} fire damage to ${unitsCount} random enemy groups.`,
+        ),
+      ],
     };
   },
   config: {
-    spellConfig: {
-      init({ actions, vfx, ownerPlayer, ownerUnit, events, thisSpell }) {
-        events.on({
-          NewRoundBegins() {
-            const enemyUntis = actions.getAliveUnitGroupsOfPlayer(actions.getEnemyOfPlayer(ownerPlayer));
-            const randomUnits = CommonUtils.getRandomItems(enemyUntis, unitsCount);
+    init({ actions, vfx, ownerPlayer, ownerUnit, events, thisSpell }) {
+      events.on({
+        NewRoundBegins() {
+          const enemyUntis = actions.getAliveUnitGroupsOfPlayer(actions.getEnemyOfPlayer(ownerPlayer));
+          const randomUnits = CommonUtils.getRandomItems(enemyUntis, unitsCount);
 
-            actions.historyLog(`${ownerUnit?.type.name} casts ${thisSpell.name}.`);
-            randomUnits.forEach((unit) => {
-              const damage = CommonUtils.randIntInRange(minDmg, maxDmg);
+          actions.historyLog(`${ownerUnit?.type.name} casts ${thisSpell.name}.`);
+          randomUnits.forEach((unit) => {
+            const damage = CommonUtils.randIntInRange(minDmg, maxDmg);
 
-              vfx.createEffectForUnitGroup(unit, FireBreathVfx, {
-                duration: 1300,
-              });
+            vfx.createEffectForUnitGroup(unit, FireBreathVfx, {
+              duration: 1300,
+            });
 
-              // can be extracted/reused somehow
-              actions.dealDamageTo(unit, damage, DamageType.Fire, (actionInfo) => {
-                actions.historyLog(`${ownerUnit?.type.name} deals ${actionInfo.finalDamage} damage to ${actionInfo.initialUnitCount} ${unit.type.name} with ${thisSpell.name}, ${actionInfo.unitLoss} units perish`);
+            // can be extracted/reused somehow
+            actions.dealDamageTo(unit, damage, DamageType.Fire, (actionInfo) => {
+              actions.historyLog(
+                `${ownerUnit?.type.name} deals ${actionInfo.finalDamage} damage to ${actionInfo.initialUnitCount} ${unit.type.name} with ${thisSpell.name}, ${actionInfo.unitLoss} units perish`,
+              );
 
-                vfx.createFloatingMessageForUnitGroup(
-                  unit,
-                  getDamageParts(actionInfo.finalDamage, actionInfo.unitLoss),
-                  { duration: 1800 },
-                );
+              vfx.createFloatingMessageForUnitGroup(unit, getDamageParts(actionInfo.finalDamage, actionInfo.unitLoss), {
+                duration: 1800,
               });
             });
-          },
-        });
-      },
+          });
+        },
+      });
     },
   },
 });
-

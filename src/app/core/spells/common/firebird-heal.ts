@@ -1,6 +1,13 @@
 import { EffectAnimation } from '../../api/vfx-api';
 import { spellDescrElem } from '../../ui';
-import { createAnimation, getHealParts, getIconElement, getPlainAppearanceFrames, getPlainBlurFrames, getReversePulseKeyframes } from '../../vfx';
+import {
+  createAnimation,
+  getHealParts,
+  getIconElement,
+  getPlainAppearanceFrames,
+  getPlainBlurFrames,
+  getReversePulseKeyframes,
+} from '../../vfx';
 import { SpellActivationType, SpellBaseType } from '../types';
 import { canActivateOnAllyFn, createSpell } from '../utils';
 
@@ -28,8 +35,8 @@ const HealAnimation: EffectAnimation = createAnimation([
       ...commonStyles,
       filter: 'blur(6px)',
       opacity: '1',
-      mixBlendMode: 'hard-light'
-    }
+      mixBlendMode: 'hard-light',
+    },
   ],
   [
     getIconElement(icon, 'fire-pulse'),
@@ -38,9 +45,9 @@ const HealAnimation: EffectAnimation = createAnimation([
       ...commonStyles,
       opacity: '0.2',
       transform: 'translate(-50%, -50%) scale(1)',
-      mixBlendMode: 'hard-light'
+      mixBlendMode: 'hard-light',
     },
-  ]
+  ],
 ]);
 
 /* Maybe make it ranged */
@@ -66,7 +73,9 @@ export const FirebirdHealSpell: SpellBaseType = createSpell({
     return {
       /* Think about description, maybe units abilities don't need stats descriptions */
       descriptions: [
-        spellDescrElem(`Heals friendly unit group by ${totalHeal}. Heal increases by ${healPerBird} per each Firebird in current group.`),
+        spellDescrElem(
+          `Heals friendly unit group by ${totalHeal}. Heal increases by ${healPerBird} per each Firebird in current group.`,
+        ),
         // spellStatsElem([
         // spellStatElem(`Total Heal:`, `${totalHeal} (${unitsCount} units)`),
         // spellStatElem(`Heal per Firebird:`, `${healPerBird}`),
@@ -74,44 +83,37 @@ export const FirebirdHealSpell: SpellBaseType = createSpell({
         // `Heal per ${unitName}: ${healPerBird}`,
         // ]),
       ],
-    }
+    };
   },
   config: {
-    spellConfig: {
-      isOncePerBattle: false,
-      targetCastConfig: {
-        canActivate: canActivateOnAllyFn,
-      },
-      getManaCost(spellInst) {
-        return 2;
-      },
-      init: ({ events, actions, ownerUnit, vfx }) => {
-        events.on({
-          PlayerTargetsSpell(event) {
-            const casterUnit = ownerUnit!;
+    isOncePerBattle: false,
+    targetCastConfig: {
+      canActivate: canActivateOnAllyFn,
+    },
+    getManaCost(spellInst) {
+      return 2;
+    },
+    init: ({ events, actions, ownerUnit, vfx }) => {
+      events.on({
+        PlayerTargetsSpell(event) {
+          const casterUnit = ownerUnit!;
 
-            const healValue = casterUnit.count * healPerBird;
-            const healedUnit = event.target;
-            const healedUnitName = healedUnit.type.name;
+          const healValue = casterUnit.count * healPerBird;
+          const healedUnit = event.target;
+          const healedUnitName = healedUnit.type.name;
 
-            const healDetails = actions.healUnit(healedUnit, healValue);
+          const healDetails = actions.healUnit(healedUnit, healValue);
 
-            vfx.createEffectForUnitGroup(healedUnit, HealAnimation, { duration: 800 });
+          vfx.createEffectForUnitGroup(healedUnit, HealAnimation, { duration: 800 });
 
+          const healedCount = healDetails.revivedUnitsCount;
 
-            const healedCount = healDetails.revivedUnitsCount;
+          actions.historyLog(`${casterUnit.count} ${casterUnit.type.name} heal ${healedUnitName} by ${healValue}.`);
+          actions.historyLog(`${healedCount} of ${healedUnitName} are brought back to life.`);
 
-            actions.historyLog(`${casterUnit.count} ${casterUnit.type.name} heal ${healedUnitName} by ${healValue}.`);
-            actions.historyLog(`${healedCount} of ${healedUnitName} are brought back to life.`);
-
-            vfx.createFloatingMessageForUnitGroup(
-              event.target,
-              getHealParts(healedCount, healValue),
-              { duration: 1600 },
-            );
-          },
-        });
-      },
+          vfx.createFloatingMessageForUnitGroup(event.target, getHealParts(healedCount, healValue), { duration: 1600 });
+        },
+      });
     },
   },
 });

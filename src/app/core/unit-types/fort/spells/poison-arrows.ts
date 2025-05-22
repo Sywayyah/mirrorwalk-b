@@ -10,21 +10,17 @@ export const PoisonArrowsDebuff = createSpell<{ poisonDamage: number }>({
   icon: { icon: 'chemical-arrow', bgClr: 'green' },
   activationType: SpellActivationType.Passive,
   getDescription: ({ ownerUnit }) => ({
-    descriptions: [
-      spellDescrElem(`This group is poisoned, receiving poison damage.`),
-    ]
+    descriptions: [spellDescrElem(`This group is poisoned, receiving poison damage.`)],
   }),
   config: {
-    spellConfig: {
-      init({ events, actions, vfx, spellInstance }) {
-        events.on({
-          SpellPlacedOnUnitGroup({ target }) {
-            vfx.createDroppingMessageForUnitGroup(target.id, { html: messageWrapper(`Poisoned!`) });
-            // improve logic
-            actions.dealDamageTo(target, spellInstance.state?.poisonDamage || 0, DamageType.Poison);
-          }
-        })
-      },
+    init({ events, actions, vfx, spellInstance }) {
+      events.on({
+        SpellPlacedOnUnitGroup({ target }) {
+          vfx.createDroppingMessageForUnitGroup(target.id, { html: messageWrapper(`Poisoned!`) });
+          // improve logic
+          actions.dealDamageTo(target, spellInstance.state?.poisonDamage || 0, DamageType.Poison);
+        },
+      });
     },
   },
 });
@@ -32,34 +28,32 @@ export const PoisonArrowsDebuff = createSpell<{ poisonDamage: number }>({
 export const PoisonArrowsSpell = createSpell({
   id: '#spell-unit-poison-arrows',
   name: 'Poison Arrows',
-  icon: { icon: 'chemical-arrow', },
+  icon: { icon: 'chemical-arrow' },
   activationType: SpellActivationType.Passive,
   getDescription: ({ ownerUnit }) => ({
     descriptions: [
       spellDescrElem(`Poisons enemy on attack, dealing ${ownerUnit!.count * 2} poison damage (2 damage per unit).`),
-    ]
+    ],
   }),
   config: {
-    spellConfig: {
-      init({ events, actions, vfx, ownerUnit, ownerPlayer }) {
-        events.on({
-          UnitGroupAttacks({ attacker, attacked }) {
-            if (attacker !== ownerUnit) {
-              return;
-            }
-            const poisonDebuff = actions.createSpellInstance(PoisonArrowsDebuff);
+    init({ events, actions, vfx, ownerUnit, ownerPlayer }) {
+      events.on({
+        UnitGroupAttacks({ attacker, attacked }) {
+          if (attacker !== ownerUnit) {
+            return;
+          }
+          const poisonDebuff = actions.createSpellInstance(PoisonArrowsDebuff);
 
-            poisonDebuff.state = { poisonDamage: attacker.count * 2 };
+          poisonDebuff.state = { poisonDamage: attacker.count * 2 };
 
-            // prevent stacking
-            if (attacked.spells.some(spell => spell.baseType === PoisonArrowsDebuff)) {
-              return;
-            }
+          // prevent stacking
+          if (attacked.spells.some((spell) => spell.baseType === PoisonArrowsDebuff)) {
+            return;
+          }
 
-            actions.addSpellToUnitGroup(attacked, poisonDebuff, ownerPlayer);
-          },
-        });
-      },
+          actions.addSpellToUnitGroup(attacked, poisonDebuff, ownerPlayer);
+        },
+      });
     },
   },
 });

@@ -17,22 +17,32 @@ export const SummonSagittarSpell: SpellBaseType = createSpell({
   getDescription(data) {
     return {
       descriptions: [
-        spellDescrElem(`Summons ${unitCount + data.ownerHero.level * unitsPerLevel} Sagittars that fight on your side.`),
+        spellDescrElem(
+          `Summons ${unitCount + data.ownerHero.level * unitsPerLevel} Sagittars that fight on your side.`,
+        ),
       ],
-    }
+    };
   },
   config: {
-    spellConfig: {
-      getManaCost() { return 2; },
-      init({ actions, ownerHero, ownerPlayer, events, vfx, thisSpell }) {
-        events.on({
-          PlayerCastsInstantSpell() {
-            const summonedUnitGroup = actions.summonUnitsForPlayer(ownerPlayer, '#unit-c20', unitCount + ownerHero.level * unitsPerLevel);
-
-            vfx.createEffectForUnitGroup(summonedUnitGroup, simpleConvergentBuffAnimation('arrow-cluster', 'rgb(190, 190, 231)'), { duration: 1000 });
-          },
-        })
-      },
+    getManaCost() {
+      return 2;
     },
-  }
+    init({ actions, ownerHero, ownerPlayer, events, vfx, thisSpell }) {
+      events.on({
+        PlayerCastsInstantSpell() {
+          const summonedUnitGroup = actions.summonUnitsForPlayer(
+            ownerPlayer,
+            '#unit-c20',
+            unitCount + ownerHero.level * unitsPerLevel,
+          );
+
+          vfx.createEffectForUnitGroup(
+            summonedUnitGroup,
+            simpleConvergentBuffAnimation('arrow-cluster', 'rgb(190, 190, 231)'),
+            { duration: 1000 },
+          );
+        },
+      });
+    },
+  },
 });

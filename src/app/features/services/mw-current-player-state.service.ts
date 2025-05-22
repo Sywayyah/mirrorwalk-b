@@ -20,12 +20,10 @@ export const NULL_SPELL: SpellBaseType = createSpell({
     };
   },
   config: {
-    spellConfig: {
-      getManaCost(_spellInst) {
-        return 0;
-      },
-      init: () => {},
+    getManaCost(_spellInst) {
+      return 0;
     },
+    init: () => {},
   },
 });
 
@@ -124,7 +122,7 @@ export class MwCurrentPlayerStateService extends StoreClient() {
     const currentSpell = this.state.get().currentSpell;
     const spellManacost = currentSpell.currentManaCost;
 
-    if (currentSpell.baseType.config.spellConfig.isOncePerBattle) {
+    if (currentSpell.baseType.config.isOncePerBattle) {
       currentSpell.setCooldown(Infinity);
     }
 

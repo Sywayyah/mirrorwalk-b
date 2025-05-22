@@ -16,26 +16,22 @@ export const EnchantBuff: SpellBaseType = createSpell({
   },
   getDescription() {
     return {
-      descriptions: [
-        spellDescrElem(`Incoming damage from spells is increased by ${damageIncreasePercent}%.`),
-      ],
-    }
+      descriptions: [spellDescrElem(`Incoming damage from spells is increased by ${damageIncreasePercent}%.`)],
+    };
   },
   config: {
-    spellConfig: {
-      init: ({ events, actions, vfx }) => {
-        const mods = actions.createModifiers({
-          amplifiedTakenMagicDamagePercent: damageIncreasePercent / 100,
-        });
+    init: ({ events, actions, vfx }) => {
+      const mods = actions.createModifiers({
+        amplifiedTakenMagicDamagePercent: damageIncreasePercent / 100,
+      });
 
-        events.on({
-          SpellPlacedOnUnitGroup(event) {
-            vfx.createEffectForUnitGroup(event.target, EnchantAnimation, { duration: 1000 });
-            actions.addModifiersToUnitGroup(event.target, mods);
-          },
-        })
-      }
-    }
+      events.on({
+        SpellPlacedOnUnitGroup(event) {
+          vfx.createEffectForUnitGroup(event.target, EnchantAnimation, { duration: 1000 });
+          actions.addModifiersToUnitGroup(event.target, mods);
+        },
+      });
+    },
   },
 });
 
@@ -52,34 +48,32 @@ export const EnchantSpell: SpellBaseType = createSpell({
       descriptions: [
         spellDescrElem(`Enchants an enemy to receive increased damage from spells by ${damageIncreasePercent}%`),
       ],
-    }
+    };
   },
   config: {
-    spellConfig: {
-      isOncePerBattle: false,
-      targetCastConfig: {
-        canActivate: canActivateOnEnemyFn,
-      },
-      getManaCost(spellInst) {
-        const manaCosts: Record<number, number> = {
-          1: 2,
-          2: 2,
-          3: 3,
-          4: 3,
-        };
+    isOncePerBattle: false,
+    targetCastConfig: {
+      canActivate: canActivateOnEnemyFn,
+    },
+    getManaCost(spellInst) {
+      const manaCosts: Record<number, number> = {
+        1: 2,
+        2: 2,
+        3: 3,
+        4: 3,
+      };
 
-        return manaCosts[spellInst.currentLevel];
-      },
+      return manaCosts[spellInst.currentLevel];
+    },
 
-      init: ({ events, actions, ownerPlayer }) => {
-        events.on({
-          PlayerTargetsSpell(event) {
-            const enchantDebuff = actions.createSpellInstance(EnchantBuff);
-            actions.addSpellToUnitGroup(event.target, enchantDebuff, ownerPlayer);
-            actions.historyLog('Enemy is enchanted');
-          },
-        });
-      },
+    init: ({ events, actions, ownerPlayer }) => {
+      events.on({
+        PlayerTargetsSpell(event) {
+          const enchantDebuff = actions.createSpellInstance(EnchantBuff);
+          actions.addSpellToUnitGroup(event.target, enchantDebuff, ownerPlayer);
+          actions.historyLog('Enemy is enchanted');
+        },
+      });
     },
   },
 });
