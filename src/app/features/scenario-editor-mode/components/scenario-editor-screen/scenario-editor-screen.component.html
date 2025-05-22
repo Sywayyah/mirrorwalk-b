@@ -15,11 +15,13 @@
 <div class="panel">
   <div class="header">Items inspector</div>
 
-  <mw-base-select>
+  <mw-base-select [(selectedItem)]="selectedItemType">
     @for (itemType of itemTypes; track $index) {
       <option [value]="itemType.id">Item - {{ itemType.name }}</option>
     }
   </mw-base-select>
+
+  {{ selectedItemType() }}
 </div>
 
 <button
