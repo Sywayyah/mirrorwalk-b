@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { DisplayUnitGroupInfo, PlayerOpensHeroInfo } from 'src/app/core/events';
 import { HERO_LEVELS_BREAKPOINTS } from 'src/app/core/heroes';
 import { InventoryItems } from 'src/app/core/items';
@@ -9,19 +9,19 @@ import { State } from 'src/app/features/services/state.service';
 import { EventsService } from 'src/app/store';
 
 @Component({
-    selector: 'mw-player-info-panel',
-    templateUrl: './mw-player-info-panel.component.html',
-    styleUrls: ['./mw-player-info-panel.component.scss'],
-    standalone: false
+  selector: 'mw-player-info-panel',
+  templateUrl: './mw-player-info-panel.component.html',
+  styleUrls: ['./mw-player-info-panel.component.scss'],
+  standalone: false
 })
 export class MwPlayerInfoPanelComponent {
+  public readonly state = inject(State);
   public readonly player: Player = this.players.getCurrentPlayer();
 
   public readonly itemSlots = InventoryItems.getExtendedSlotTypes();
 
   constructor(
     private players: MwPlayersService,
-    public state: State,
     private events: EventsService,
   ) { }
 
