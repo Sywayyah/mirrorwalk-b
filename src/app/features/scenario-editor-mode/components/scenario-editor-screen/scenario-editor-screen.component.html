@@ -1,5 +1,16 @@
 <div>Scenario Editor, here you will be able to create/edit scenarios</div>
 
+<div>
+  Scenarios
+  <mw-base-select [(selectedItem)]="selectedScenario">
+    @for (scenario of scenarios(); track $index) {
+      <option [value]="scenario.name">{{ scenario.name }}</option>
+    }
+  </mw-base-select>
+
+  {{ selectedScenario() }}
+</div>
+
 <!-- panels, dockers? -->
 <div class="panel">
   <div class="header">Units Inspector</div>
@@ -22,6 +33,29 @@
   </mw-base-select>
 
   {{ selectedItemType() }}
+</div>
+
+<div class="panel">
+  <div class="header">Scenario Scripts</div>
+
+  <mw-base-select [(selectedItem)]="selectedScript">
+    @for (script of scripts(); track $index) {
+      <option [value]="script.name()">{{ script.name() }}</option>
+    }
+  </mw-base-select>
+
+  @let script = activeScript();
+  {{ script?.code() ?? false }}
+  @if (script) {
+    <textarea [(ngModel)]="script.code"></textarea>
+  }
+
+  <button
+    mw-main-button
+    (click)="addNewScript()"
+  >
+    Add Script
+  </button>
 </div>
 
 <button
