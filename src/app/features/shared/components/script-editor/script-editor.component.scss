@@ -1,0 +1,31 @@
+// src/app/javascript-editor/javascript-editor.component.scss
+
+.code-editor-wrapper {
+  border: 1px solid #333; // Darker border for dark themes
+  border-radius: 5px;
+  overflow: auto; // Enable scrolling if content exceeds height
+  height: 300px; // Example fixed height
+  background-color: #282c34; // Common background for dark themes
+  color: #abb2bf; // Common text color for dark themes
+  font-family: "Fira Code", "Cascadia Code", "Consolas", monospace; // Use a monospace font
+  font-size: 14px;
+  line-height: 1.5;
+  padding: 10px; // Add some internal padding
+
+  // Styling for the <pre> element which CodeJar uses
+  pre {
+    margin: 0;
+    padding: 0;
+    white-space: pre-wrap; // Ensures text wraps
+    word-break: break-all; // Breaks long words if necessary
+    outline: none; // Remove default outline from editable content
+  }
+
+  // Adjust highlight.js specific styles if needed
+  .hljs {
+    // This class is applied by highlight.js to the content it highlights.
+    // Ensure padding/margin are handled correctly if you applied them to the wrapper
+    // or the <pre> element itself.
+    // Often, themes will reset these, so ensure your component's padding takes precedence.
+  }
+}

@@ -45,9 +45,13 @@
   </mw-base-select>
 
   @let script = activeScript();
-  {{ script?.code() ?? false }}
+  {{ script?.name() }}
   @if (script) {
-    <textarea [(ngModel)]="script.code"></textarea>
+    <!-- <textarea [(ngModel)]="script.code"></textarea> -->
+
+    @defer {
+      <mw-script-editor [(code)]="script.code"></mw-script-editor>
+    }
   }
 
   <button
@@ -56,6 +60,8 @@
   >
     Add Script
   </button>
+
+  <button (click)="runScripts()">Run</button>
 </div>
 
 <button

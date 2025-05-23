@@ -1,9 +1,13 @@
+import { CommonModule } from '@angular/common';
 import { Component, computed, inject, signal } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { EntitiesRegisty } from 'src/app/core/entities';
 import { GameOpenMainScreen } from 'src/app/core/events';
 import { ItemBaseType } from 'src/app/core/items';
 import { UnitBaseType } from 'src/app/core/unit-types';
 import { SignalArrUtils } from 'src/app/core/utils/signals';
+import { ScriptEditorComponent } from 'src/app/features/shared/components/script-editor/script-editor.component';
+import { SharedModule } from 'src/app/features/shared/shared.module';
 import { EventsService } from 'src/app/store';
 
 interface Scenario {
@@ -14,15 +18,22 @@ interface Scenario {
 }
 
 let counter = 0;
-class ScenarioScript {
-  type = signal('SpellScript');
-  name = signal(`New_Script_${counter++}`);
-  code = signal('');
+enum ScriptType {
+  Spell,
+  Trigger,
 }
+class ScenarioScript {
+  readonly type = signal(ScriptType.Spell);
+  readonly name = signal(`New_Script_${counter++}`);
+  readonly code = signal('');
+}
+
+// scenarios persistance, export (entire scenario, individual aspects, like triggers, map generators, etc.)
 
 @Component({
   selector: 'mw-scenario-editor-screen',
-  standalone: false,
+  standalone: true,
+  imports: [CommonModule, SharedModule, FormsModule, ScriptEditorComponent],
 
   templateUrl: './scenario-editor-screen.component.html',
   styleUrl: './scenario-editor-screen.component.scss',
@@ -56,5 +67,13 @@ export class ScenarioEditorScreenComponent {
 
   goToMainScreen() {
     this.events.dispatch(GameOpenMainScreen());
+  }
+
+  runScripts() {
+    this.scripts().forEach((script) => {
+      // eslint-disable-next-line @typescript-eslint/no-implied-eval
+      const fn = new Function(script.code());
+      fn();
+    });
   }
 }
