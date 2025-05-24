@@ -3,12 +3,16 @@
   [cdkMenuTriggerFor]="dropdown"
   [cdkMenuPosition]="menuPosition"
   #menuTrigger="cdkMenuTriggerFor"
+  (cdkMenuOpened)="onOpen()"
 >
   select
 </button>
 
 <ng-template #dropdown>
-  <div class="options" #optionsRef>
+  <div
+    class="options"
+    #optionsRef
+  >
     @for (option of options(); track $index) {
       <ng-container *ngTemplateOutlet="option.templateRef()" />
     }

@@ -1,4 +1,4 @@
-import { Component, computed, inject, input, TemplateRef, viewChild } from '@angular/core';
+import { Component, computed, ElementRef, inject, input, TemplateRef, viewChild } from '@angular/core';
 import { SignalArrUtils } from 'src/app/core/utils/signals';
 import { DropdownComponent } from './dropdown.component';
 
@@ -10,6 +10,7 @@ import { DropdownComponent } from './dropdown.component';
         class="option"
         [class.selected]="isSelected()"
         (click)="selected()"
+        #option
       >
         <ng-content />
       </div>
@@ -25,7 +26,7 @@ import { DropdownComponent } from './dropdown.component';
       }
 
       &.selected {
-        background: rgba(0, 0, 0, 0.3);
+        background: rgba(254, 158, 40, 0.74);
       }
     }
   `,
@@ -34,6 +35,7 @@ export class DropdownOptionComponent<T> {
   readonly dropdownRef = inject(DropdownComponent<unknown>);
 
   readonly templateRef = viewChild.required<TemplateRef<null>>('template');
+  readonly optionRef = viewChild<ElementRef<HTMLElement>>('option');
 
   readonly value = input.required<T>();
 
@@ -46,5 +48,9 @@ export class DropdownOptionComponent<T> {
   selected(): void {
     this.dropdownRef.selectedItem.set(this.value());
     this.dropdownRef.menuTriggerRef().close();
+  }
+
+  focusIntoView(): void {
+    this.optionRef()?.nativeElement.scrollIntoView({ block: 'center' });
   }
 }

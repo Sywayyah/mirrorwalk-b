@@ -25,6 +25,16 @@ export class DropdownComponent<T> {
     new ConnectionPositionPair({ originX: 'center', originY: 'bottom' }, { overlayX: 'center', overlayY: 'top' }),
   ];
 
+  onOpen() {
+    if (this.selectedItem()) {
+      // give a short delay for menu items to appear
+      setTimeout(() => {
+        const selectedOption = this.options().find((option) => option.value() === this.selectedItem());
+        selectedOption?.focusIntoView();
+      }, 0);
+    }
+  }
+
   @HostListener('document:mousedown', ['$event'])
   onClick(event: MouseEvent): void {
     // simple "click-outside" check
