@@ -42,7 +42,10 @@
 
       <mw-dropdown [(selectedItem)]="selectedItemType">
         @for (itemType of itemTypes; track $index) {
-          <mw-dropdown-option [value]="itemType">Item - {{ itemType.name }}</mw-dropdown-option>
+          <mw-dropdown-option [value]="itemType">
+            <mw-ra-icon [icon]="itemType.icon.icon"></mw-ra-icon>
+            Item - {{ itemType.name }}
+          </mw-dropdown-option>
         }
       </mw-dropdown>
 
