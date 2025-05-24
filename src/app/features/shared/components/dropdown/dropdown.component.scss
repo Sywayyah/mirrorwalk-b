@@ -1,0 +1,17 @@
+.options {
+  display: flex;
+  flex-direction: column;
+  background-color: gray;
+  border-radius: 6px;
+  color: white;
+  overflow: auto;
+
+  transition:
+    opacity 0.3s,
+    translate 0.3s;
+
+  @starting-style {
+    translate: 0 -10px;
+    opacity: 0;
+  }
+}

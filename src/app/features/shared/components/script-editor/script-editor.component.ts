@@ -32,23 +32,18 @@ export class ScriptEditorComponent implements OnInit, OnDestroy, OnChanges {
     this.jar = CodeJar(
       editorElement,
       (editor) => {
-        // highlight.js requires the text to be in a <code> tag inside the <pre>
-        // if you want to use highlightElement().
-        // CodeJar manages the content inside the <pre> for you.
-        // So, you usually just highlight the content directly using highlight().
         editor.innerHTML = hljs.highlight(editor.textContent || '', {
           language: 'javascript',
         }).value;
       },
       {
-        tab: '  ', // 2 spaces for tab
+        tab: '  ',
         preserveIdent: true,
         addClosing: false,
         history: true,
       },
     );
 
-    // Listen for updates from CodeJar
     this.jar.onUpdate((newCode) => {
       this.code.set(newCode);
     });
@@ -56,7 +51,6 @@ export class ScriptEditorComponent implements OnInit, OnDestroy, OnChanges {
 
   ngOnChanges(): void {
     if (this.jar) {
-      // this.jar.updateCode(this.code());
       if (this.jar.toString() !== this.code()) {
         this.jar.updateCode(this.code());
       }

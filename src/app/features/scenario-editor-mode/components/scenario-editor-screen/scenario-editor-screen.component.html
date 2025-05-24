@@ -12,57 +12,6 @@
 </div>
 
 <!-- panels, dockers? -->
-<div class="panel">
-  <div class="header">Units Inspector</div>
-
-  <mw-base-select [(selectedItem)]="selectedUnitType">
-    @for (unitType of unitTypes; track $index) {
-      <option value="{{ unitType.id }}">{{ unitType.faction.title }} - {{ unitType.name }}</option>
-    }
-  </mw-base-select>
-  {{ selectedUnitType() }}
-</div>
-
-<div class="panel">
-  <div class="header">Items inspector</div>
-
-  <mw-base-select [(selectedItem)]="selectedItemType">
-    @for (itemType of itemTypes; track $index) {
-      <option [value]="itemType.id">Item - {{ itemType.name }}</option>
-    }
-  </mw-base-select>
-
-  {{ selectedItemType() }}
-</div>
-
-<div class="panel">
-  <div class="header">Scenario Scripts</div>
-
-  <mw-base-select [(selectedItem)]="selectedScript">
-    @for (script of scripts(); track $index) {
-      <option [value]="script.name()">{{ script.name() }}</option>
-    }
-  </mw-base-select>
-
-  @let script = activeScript();
-  {{ script?.name() }}
-  @if (script) {
-    <!-- <textarea [(ngModel)]="script.code"></textarea> -->
-
-    @defer {
-      <mw-script-editor [(code)]="script.code"></mw-script-editor>
-    }
-  }
-
-  <button
-    mw-main-button
-    (click)="addNewScript()"
-  >
-    Add Script
-  </button>
-
-  <button (click)="runScripts()">Run</button>
-</div>
 
 <button
   mw-main-button
@@ -70,3 +19,67 @@
 >
   Back to main screen
 </button>
+
+<mw-panel-container>
+  <mw-panel title="Entities Manager">
+    <div class="panel">Create New Entity</div>
+  </mw-panel>
+
+  <mw-panel title="Entities Inspector">
+    <div class="panel">
+      <div class="header">Units</div>
+
+      <mw-dropdown [(selectedItem)]="selectedUnitType">
+        @for (unitType of unitTypes; track $index) {
+          <mw-dropdown-option [value]="unitType">
+            {{ unitType.faction.title }} - {{ unitType.name }}
+          </mw-dropdown-option>
+        }
+      </mw-dropdown>
+      {{ selectedUnitType()?.id }}
+
+      <div class="header">Items</div>
+
+      <mw-dropdown [(selectedItem)]="selectedItemType">
+        @for (itemType of itemTypes; track $index) {
+          <mw-dropdown-option [value]="itemType">Item - {{ itemType.name }}</mw-dropdown-option>
+        }
+      </mw-dropdown>
+
+      {{ selectedItemType()?.id }}
+    </div>
+  </mw-panel>
+
+  <!-- Later - animations as entities -->
+  <mw-panel title="VFX Editor"> VFX Preview </mw-panel>
+
+  <mw-panel title="Scripts Editor">
+    <div class="panel">
+      <mw-dropdown [(selectedItem)]="selectedScript">
+        @for (script of scripts(); track $index) {
+          <mw-dropdown-option [value]="script">
+            {{ script.name() }}
+          </mw-dropdown-option>
+        }
+      </mw-dropdown>
+
+      @let script = selectedScript();
+
+      @if (script) {
+        {{ script.name() }}
+        @defer {
+          <mw-script-editor [(code)]="script.code" />
+        }
+      }
+
+      <button
+        mw-main-button
+        (click)="addNewScript()"
+      >
+        Add Script
+      </button>
+
+      <button (click)="runScripts()">Run</button>
+    </div>
+  </mw-panel>
+</mw-panel-container>

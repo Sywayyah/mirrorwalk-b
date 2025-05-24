@@ -1,0 +1,16 @@
+<button
+  class="trigger"
+  [cdkMenuTriggerFor]="dropdown"
+  [cdkMenuPosition]="menuPosition"
+  #menuTrigger="cdkMenuTriggerFor"
+>
+  select
+</button>
+
+<ng-template #dropdown>
+  <div class="options" #optionsRef>
+    @for (option of options(); track $index) {
+      <ng-container *ngTemplateOutlet="option.templateRef()" />
+    }
+  </div>
+</ng-template>
