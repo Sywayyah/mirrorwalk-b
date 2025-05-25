@@ -33,8 +33,9 @@ class ScenarioScript {
   readonly code = signal('');
 }
 
+let unitsCounter = 0;
 class CustomUnitDefinition {
-  readonly name = signal('New Unit Type');
+  readonly name = signal(`New_Unit_Type_${unitsCounter++}`);
   readonly level = signal(1);
   readonly health = signal(10);
   readonly damage = signal(5);

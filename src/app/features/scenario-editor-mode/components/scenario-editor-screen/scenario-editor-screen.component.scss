@@ -7,6 +7,10 @@
     padding: 3px;
     font-size: 12px;
     cursor: pointer;
+
+    &:hover {
+      background: #00000052;
+    }
     &.active {
       background: orange;
     }
