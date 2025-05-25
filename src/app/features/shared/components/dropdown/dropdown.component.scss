@@ -21,6 +21,8 @@
   border-radius: 6px;
   color: white;
   overflow: auto;
+  border: 1px solid black;
+  box-shadow: 1px 1px 5px black;
 
   transition:
     opacity 0.3s,
