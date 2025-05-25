@@ -1,3 +1,19 @@
+:host {
+  color: white;
+}
+
+.trigger {
+  border: 1px solid white;
+  padding: 5px;
+  border-radius: 20px;
+  background: #00000074;
+  font-size: 12px;
+  &:hover {
+    background: #0000009e;
+  }
+  cursor: pointer;
+}
+
 .options {
   display: flex;
   flex-direction: column;

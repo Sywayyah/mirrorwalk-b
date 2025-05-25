@@ -30,6 +30,14 @@
       <div class="header">Units</div>
 
       <mw-dropdown [(selectedItem)]="selectedUnitType">
+        <div class="trigger">
+          @if (selectedUnitType()) {
+            {{ selectedUnitType()?.faction?.title }} - {{ selectedUnitType()?.name }}
+          } @else {
+            Select Unit Type...
+          }
+        </div>
+
         @for (unitType of unitTypes; track $index) {
           <mw-dropdown-option [value]="unitType">
             {{ unitType.faction.title }} - {{ unitType.name }}
@@ -40,7 +48,17 @@
 
       <div class="header">Items</div>
 
+      @let itemType = selectedItemType();
       <mw-dropdown [(selectedItem)]="selectedItemType">
+        <div class="trigger">
+          @if (itemType) {
+            <mw-ra-icon [icon]="itemType.icon.icon"></mw-ra-icon>
+            Item - {{ itemType.name }}
+          } @else {
+            Select Item Type...
+          }
+        </div>
+
         @for (itemType of itemTypes; track $index) {
           <mw-dropdown-option [value]="itemType">
             <mw-ra-icon [icon]="itemType.icon.icon"></mw-ra-icon>
@@ -59,6 +77,17 @@
   <mw-panel title="Scripts Editor">
     <div class="panel">
       <mw-dropdown [(selectedItem)]="selectedScript">
+        <div class="trigger">
+          @if (!scripts().length) {
+            No scripts created...
+          } @else {
+            @if (script) {
+              {{ script?.name() }}
+            } @else {
+              Select a script...
+            }
+          }
+        </div>
         @for (script of scripts(); track $index) {
           <mw-dropdown-option [value]="script">
             {{ script.name() }}
@@ -69,7 +98,6 @@
       @let script = selectedScript();
 
       @if (script) {
-        {{ script.name() }}
         @defer {
           <mw-script-editor [(code)]="script.code" />
         }

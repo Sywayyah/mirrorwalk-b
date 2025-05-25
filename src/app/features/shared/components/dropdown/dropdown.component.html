@@ -1,12 +1,12 @@
-<button
-  class="trigger"
+<div
   [cdkMenuTriggerFor]="dropdown"
   [cdkMenuPosition]="menuPosition"
   #menuTrigger="cdkMenuTriggerFor"
   (cdkMenuOpened)="onOpen()"
+  class="trigger"
 >
-  select
-</button>
+  <ng-content select=".trigger"/>
+</div>
 
 <ng-template #dropdown>
   <div
