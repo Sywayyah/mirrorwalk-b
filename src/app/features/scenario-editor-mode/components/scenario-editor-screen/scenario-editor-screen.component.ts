@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { EntitiesRegisty } from 'src/app/core/entities';
 import { GameOpenMainScreen } from 'src/app/core/events';
 import { ItemBaseType } from 'src/app/core/items';
+import { SpellBaseType } from 'src/app/core/spells';
 import { UnitBaseType } from 'src/app/core/unit-types';
 import { SignalArrUtils } from 'src/app/core/utils/signals';
 import { DropdownOptionComponent } from 'src/app/features/shared/components/dropdown/dropdown-option.component';
@@ -62,11 +63,13 @@ export class ScenarioEditorScreenComponent {
 
   readonly unitTypes = this.entitiesRegistries.getRegisteredEntitiesMap().get('#unit') as UnitBaseType[];
   readonly itemTypes = this.entitiesRegistries.getRegisteredEntitiesMap().get('#item') as ItemBaseType[];
+  readonly spellTypes = this.entitiesRegistries.getRegisteredEntitiesMap().get('#spell') as SpellBaseType[];
 
   readonly scripts = signal([] as ScenarioScript[]);
 
   readonly selectedUnitType = signal(null as UnitBaseType | null);
   readonly selectedItemType = signal(null as ItemBaseType | null);
+  readonly selectedSpellType = signal(null as SpellBaseType | null);
   readonly selectedScenario = signal(null as Scenario | null);
   readonly selectedScript = signal(null as ScenarioScript | null);
 

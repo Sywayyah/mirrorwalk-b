@@ -68,6 +68,29 @@
       </mw-dropdown>
 
       {{ selectedItemType()?.id }}
+
+      <div class="header">Spells</div>
+
+      @let spellType = selectedSpellType();
+      <mw-dropdown [(selectedItem)]="selectedSpellType">
+        <div class="trigger">
+          @if (spellType) {
+            <mw-ra-icon [icon]="spellType.icon.icon"></mw-ra-icon>
+            Spell - {{ spellType.activationType }} - {{ spellType.name }}
+          } @else {
+            Select Spell Type...
+          }
+        </div>
+
+        @for (spellType of spellTypes; track $index) {
+          <mw-dropdown-option [value]="spellType">
+            <mw-ra-icon [icon]="spellType.icon.icon"></mw-ra-icon>
+            Spell - {{ spellType.activationType }} - {{ spellType.name }}
+          </mw-dropdown-option>
+        }
+      </mw-dropdown>
+
+      {{ selectedItemType()?.id }}
     </div>
   </mw-panel>
 
