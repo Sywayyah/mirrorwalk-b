@@ -6,21 +6,21 @@ import { SpellActivationType, SpellBaseType } from '../../types';
 import { createSpell } from '../../utils';
 
 interface DamageBlockPerLevelConfig {
-  minDamage: number[],
-  maxDamage: number[],
-  chance: number[],
-  chanceAgainstRange: number[],
+  minDamage: number[];
+  maxDamage: number[];
+  chance: number[];
+  chanceAgainstRange: number[];
 }
 
 export const rangedChanceDescription = (meleeChance: string | number, rangedChance: string | number) =>
   meleeChance !== rangedChance ? ` (${rangedChance}% against ranged units)` : '';
 
 export const createDamageBlockSpell = (config: {
-  name: string,
-  id: SpellId,
-  icon: string,
-  blockConfig: DamageBlockPerLevelConfig,
-  description: (data: { meleeChance: string, rangedChance: string, blockValue: string }) => string,
+  name: string;
+  id: SpellId;
+  icon: string;
+  blockConfig: DamageBlockPerLevelConfig;
+  description: (data: { meleeChance: string; rangedChance: string; blockValue: string }) => string;
 }): SpellBaseType<{ damageBlockMod: Modifiers }> => {
   const { icon, name, blockConfig, description } = config;
 
@@ -42,46 +42,43 @@ export const createDamageBlockSpell = (config: {
       return {
         descriptions: [
           spellDescrElem(description({ meleeChance, rangedChance, blockValue: uiValueRange(minBlock, maxBlock) })),
-        ]
+        ],
       };
     },
     config: {
-      spellConfig: {
-        onAcquired({ ownerUnit, spellInstance }) {
-          console.log('Aquired', spellInstance);
-          if (spellInstance.state?.damageBlockMod) {
-            ownerUnit!.removeSpellMods(spellInstance.state.damageBlockMod);
-          }
+      onAcquired({ ownerUnit, spellInstance }) {
+        console.log('Aquired', spellInstance);
+        if (spellInstance.state?.damageBlockMod) {
+          ownerUnit!.removeSpellMods(spellInstance.state.damageBlockMod);
+        }
 
-          spellInstance.state = {
-            damageBlockMod: ({
-              __attackConditionalModifiers({ attacker }) {
-                const level = spellInstance.currentLevel - 1;
-                const minBlock = blockConfig.minDamage[level];
-                const maxBlock = blockConfig.maxDamage[level];
+        spellInstance.state = {
+          damageBlockMod: {
+            __attackConditionalModifiers({ attacker }) {
+              const level = spellInstance.currentLevel - 1;
+              const minBlock = blockConfig.minDamage[level];
+              const maxBlock = blockConfig.maxDamage[level];
 
-                if (attacker?.modGroup.getModValue('isRanged')) {
-
-                  return {
-                    damageBlockMin: minBlock,
-                    damageBlockMax: maxBlock,
-                    chanceToBlock: blockConfig.chanceAgainstRange[level],
-                  };
-                }
-
+              if (attacker?.modGroup.getModValue('isRanged')) {
                 return {
                   damageBlockMin: minBlock,
                   damageBlockMax: maxBlock,
-                  chanceToBlock: blockConfig.chance[level],
+                  chanceToBlock: blockConfig.chanceAgainstRange[level],
                 };
               }
-            } as Modifiers),
-          };
 
-          ownerUnit!.addSpellMods(spellInstance.state.damageBlockMod);
-        },
-        init() { },
+              return {
+                damageBlockMin: minBlock,
+                damageBlockMax: maxBlock,
+                chanceToBlock: blockConfig.chance[level],
+              };
+            },
+          } as Modifiers,
+        };
+
+        ownerUnit!.addSpellMods(spellInstance.state.damageBlockMod);
       },
+      init() {},
     },
   });
 };

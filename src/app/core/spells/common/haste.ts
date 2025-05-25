@@ -61,27 +61,23 @@ export const HasteBuff: SpellBaseType = createSpell({
   },
   getDescription() {
     return {
-      descriptions: [
-        spellDescrElem(`Unit group is speeded up by ${speedBonus}.`),
-      ],
+      descriptions: [spellDescrElem(`Unit group is speeded up by ${speedBonus}.`)],
     };
   },
   config: {
-    spellConfig: {
-      init: ({ events, actions, vfx, spellInstance }) => {
-        const mods = actions.createModifiers({
-          unitGroupSpeedBonus: speedBonus + spellInstance.currentLevel - 1,
-        });
+    init: ({ events, actions, vfx, spellInstance }) => {
+      const mods = actions.createModifiers({
+        unitGroupSpeedBonus: speedBonus + spellInstance.currentLevel - 1,
+      });
 
-        events.on({
-          SpellPlacedOnUnitGroup(event) {
-            vfx.createEffectForUnitGroup(event.target, HasteAnimation, {
-              duration: 800,
-            });
-            actions.addModifiersToUnitGroup(event.target, mods);
-          },
-        });
-      },
+      events.on({
+        SpellPlacedOnUnitGroup(event) {
+          vfx.createEffectForUnitGroup(event.target, HasteAnimation, {
+            duration: 800,
+          });
+          actions.addModifiersToUnitGroup(event.target, mods);
+        },
+      });
     },
   },
 });
@@ -97,9 +93,7 @@ export const HasteSpell: SpellBaseType = createSpell({
   getDescription({ spellInstance }) {
     return {
       descriptions: [
-        spellDescrElem(
-          `Target unit group is speeding up by ${speedBonus + spellInstance.currentLevel - 1}.`,
-        ),
+        spellDescrElem(`Target unit group is speeding up by ${speedBonus + spellInstance.currentLevel - 1}.`),
         spellDescrElem(
           `When upgraded, increases the speed bonus and starts to grant a chance to gain additional turn to units.`,
         ),
@@ -107,45 +101,43 @@ export const HasteSpell: SpellBaseType = createSpell({
     };
   },
   config: {
-    spellConfig: {
-      targetCastConfig: {
-        canActivate: canActivateOnAllyFn,
-      },
-      getManaCost(spellInst) {
-        const manaCosts: Record<number, number> = {
-          1: 2,
-          2: 2,
-          3: 3,
-          4: 3,
-        };
+    targetCastConfig: {
+      canActivate: canActivateOnAllyFn,
+    },
+    getManaCost(spellInst) {
+      const manaCosts: Record<number, number> = {
+        1: 2,
+        2: 2,
+        3: 3,
+        4: 3,
+      };
 
-        return manaCosts[spellInst.currentLevel];
-      },
-      isOncePerBattle: false,
-      init: ({ events, actions, ownerPlayer, spellInstance, vfx }) => {
-        events.on({
-          PlayerTargetsSpell(event) {
-            const hasteBuff = actions.createSpellInstance(HasteBuff, {
-              initialLevel: spellInstance.currentLevel,
-            });
+      return manaCosts[spellInst.currentLevel];
+    },
+    isOncePerBattle: false,
+    init: ({ events, actions, ownerPlayer, spellInstance, vfx }) => {
+      events.on({
+        PlayerTargetsSpell(event) {
+          const hasteBuff = actions.createSpellInstance(HasteBuff, {
+            initialLevel: spellInstance.currentLevel,
+          });
 
-            // type instead of id
-            if (event.target.type.id === '#unit-neut-wind-spirit-0') {
-              actions.addTurnsToUnitGroup(event.target, 1);
+          // type instead of id
+          if (event.target.type.id === '#unit-neut-wind-spirit-0') {
+            actions.addTurnsToUnitGroup(event.target, 1);
 
-              vfx.createDroppingMessageForUnitGroup(
-                event.target.id,
-                {
-                  html: messageWrapper('+1 Turn'),
-                },
-                { duration: 1200 },
-              );
-            }
+            vfx.createDroppingMessageForUnitGroup(
+              event.target.id,
+              {
+                html: messageWrapper('+1 Turn'),
+              },
+              { duration: 1200 },
+            );
+          }
 
-            actions.addSpellToUnitGroup(event.target, hasteBuff, ownerPlayer);
-          },
-        });
-      },
+          actions.addSpellToUnitGroup(event.target, hasteBuff, ownerPlayer);
+        },
+      });
     },
   },
 });

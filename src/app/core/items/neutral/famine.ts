@@ -2,7 +2,6 @@ import { itemStatsDescr, spellDescrElem } from '../../ui';
 import { ItemBaseType, ItemSlotType } from '../types';
 import { createItem } from '../utils';
 
-
 // might be a percentage penalty to armor and attack.
 // and some ability.
 export const FamineScytheItem: ItemBaseType = createItem({
@@ -14,6 +13,7 @@ export const FamineScytheItem: ItemBaseType = createItem({
   stats: {
     specialtyNecromancy: 2,
     heroBonusAttack: 6,
+    heroManacostPenalty: 4,
     /* Vampirism mod, maybe -1-2 to Defence */
   },
   enemyStats: {
@@ -24,7 +24,7 @@ export const FamineScytheItem: ItemBaseType = createItem({
   },
   cost: {
     gold: 6000,
-    redCrystals: 3
+    redCrystals: 3,
   },
   description({ thisItemBase }) {
     return {

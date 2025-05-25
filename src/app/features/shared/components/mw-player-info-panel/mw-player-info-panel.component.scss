@@ -6,6 +6,23 @@
   display: flex;
 }
 
+.action-points-bar {
+  border-radius: 7px;
+  overflow: hidden;
+  border: 2px solid #6b3c0a;
+  background-color: #6b3c0a;
+  letter-spacing: 2px;
+  width: 100px;
+  position: absolute;
+  bottom: 7px;
+  left: 10px;
+}
+
+.action-points {
+  margin: 4px 0;
+
+}
+
 .hero-info {
   align-self: end;
   margin-bottom: 6px;

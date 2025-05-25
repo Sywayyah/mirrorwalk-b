@@ -9,6 +9,7 @@ export const GrainHuskItem: ItemBaseType = createItem({
   icon: 'scythe',
   stats: {
     heroBonusAttack: 2,
+    heroManacostPenalty: 3,
   },
   enemyStats: {
     heroBonusDefence: -3,
@@ -16,7 +17,8 @@ export const GrainHuskItem: ItemBaseType = createItem({
     unitGroupSpeedBonus: -2,
   },
   cost: {
-    gold: 1000,
+    gold: 1700,
+    gems: 5
   },
   sellingCost: {
     gold: 650,

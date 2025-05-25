@@ -102,7 +102,7 @@ export class UiController extends StoreClient() {
             type: ActionHintTypeEnum.OnTargetSpell,
             spell: currentSpell,
             target: targetGroup,
-            addedContent: currentSpell.baseType.config.spellConfig.getTargetActionHint?.({
+            addedContent: currentSpell.baseType.config.getTargetActionHint?.({
               target: targetGroup,
               ownerHero: event.currentCard?.ownerHero,
               ownerPlayer: event.currentCard?.ownerPlayer,
@@ -120,7 +120,7 @@ export class UiController extends StoreClient() {
             type: ActionHintTypeEnum.OnTargetSpell,
             spell: currentSpell,
             target: targetGroup,
-            addedContent: currentSpell.baseType.config.spellConfig.getTargetActionHint?.({
+            addedContent: currentSpell.baseType.config.getTargetActionHint?.({
               target: targetGroup,
               ownerHero: event.currentCard?.ownerHero,
               ownerPlayer: event.currentCard?.ownerPlayer,

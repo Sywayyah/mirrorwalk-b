@@ -12,5 +12,5 @@ export const CONFIG: ConfigModel = {
 
   allowNeutralAIControlByDefault: false,
 
-  features: [Feature.TECHBanditCampVariety, Feature.NewGameSettings],
+  features: [Feature.TECHBanditCampVariety, Feature.NewGameSettings, Feature.ScenarioEditor],
 } as const;

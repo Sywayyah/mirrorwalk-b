@@ -17,30 +17,30 @@ export const KneelingLightDebuff: SpellBaseType = createSpell({
   },
   getDescription(data) {
     return {
-      descriptions: [
-        spellDescrElem(`Unit group is slowed down by ${slowingPercent}%.`),
-      ],
-    }
+      descriptions: [spellDescrElem(`Unit group is slowed down by ${slowingPercent}%.`)],
+    };
   },
   config: {
-    spellConfig: {
-      init: ({ events, actions, vfx }) => {
-        events.on({
-          SpellPlacedOnUnitGroup(event) {
-            const targetSpeed = event.target.type.baseStats.speed;
+    init: ({ events, actions, vfx }) => {
+      events.on({
+        SpellPlacedOnUnitGroup(event) {
+          const targetSpeed = event.target.type.baseStats.speed;
 
-            const mods: Modifiers = actions.createModifiers({
-              unitGroupSpeedBonus: -(targetSpeed * (slowingPercent / 100)),
-            });
+          const mods: Modifiers = actions.createModifiers({
+            unitGroupSpeedBonus: -(targetSpeed * (slowingPercent / 100)),
+          });
 
-            vfx.createEffectForUnitGroup(event.target, frontStackingBuffAnimation('player-despair', 'rgb(227, 240, 113)'), {
+          vfx.createEffectForUnitGroup(
+            event.target,
+            frontStackingBuffAnimation('player-despair', 'rgb(227, 240, 113)'),
+            {
               duration: 1000,
-            });
-            actions.addModifiersToUnitGroup(event.target, mods);
-          },
-        })
-      }
-    }
+            },
+          );
+          actions.addModifiersToUnitGroup(event.target, mods);
+        },
+      });
+    },
   },
 });
 
@@ -57,33 +57,31 @@ export const KneelingLight: SpellBaseType = createSpell({
       descriptions: [
         spellDescrElem(`Makes light so heavy for the enemy target that it loses ${slowingPercent}% of the speed.`),
       ],
-    }
+    };
   },
   activationType: SpellActivationType.Target,
   config: {
-    spellConfig: {
-      targetCastConfig: {
-        canActivate: canActivateOnEnemyFn,
-      },
-      getManaCost(spellInst) {
-        const manaCosts: Record<number, number> = {
-          1: 2,
-          2: 2,
-          3: 3,
-          4: 3,
-        };
+    targetCastConfig: {
+      canActivate: canActivateOnEnemyFn,
+    },
+    getManaCost(spellInst) {
+      const manaCosts: Record<number, number> = {
+        1: 2,
+        2: 2,
+        3: 3,
+        4: 3,
+      };
 
-        return manaCosts[spellInst.currentLevel];
-      },
+      return manaCosts[spellInst.currentLevel];
+    },
 
-      init: ({ events, actions, ownerPlayer }) => {
-        events.on({
-          PlayerTargetsSpell(event) {
-            const enchantDebuff = actions.createSpellInstance(KneelingLightDebuff);
-            actions.addSpellToUnitGroup(event.target, enchantDebuff, ownerPlayer);
-          },
-        });
-      },
+    init: ({ events, actions, ownerPlayer }) => {
+      events.on({
+        PlayerTargetsSpell(event) {
+          const enchantDebuff = actions.createSpellInstance(KneelingLightDebuff);
+          actions.addSpellToUnitGroup(event.target, enchantDebuff, ownerPlayer);
+        },
+      });
     },
   },
 });

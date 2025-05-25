@@ -1,10 +1,12 @@
 <ng-container [ngSwitch]="barStyle()">
   <ng-container *ngSwitchCase="'normal'">
-    <div
-      class="diff-bar"
-      [style.width.%]="uiBarWidth()"
-      [style.height.px]="barHeight()"
-    ></div>
+    @if (diffBar()) {
+      <div
+        class="diff-bar"
+        [style.width.%]="uiBarWidth()"
+        [style.height.px]="barHeight()"
+      ></div>
+    }
 
     <div
       class="main-bar"

@@ -14,35 +14,33 @@ export const ChargedStrikeSpell = createSpell({
     descriptions: [
       spellDescrElem(`Makes current unit group attack enemy with additional lightning damage.`),
       spellDescrElem(`If current unit group is cavalry type, damage is doubled, as well as critical damage is added`),
-      spellDescrElem(`Consumes Turn.`)
-    ]
+      spellDescrElem(`Consumes Turn.`),
+    ],
   }),
 
   config: {
-    spellConfig: {
-      isOncePerBattle: false,
-      init({ actions, events, vfx }) {
+    isOncePerBattle: false,
+    init({ actions, events, vfx }) {
+      events.on({
+        PlayerTargetsSpell({ target }) {
+          const currentUnitGroup = actions.getCurrentUnitGroup();
 
-        events.on({
-          PlayerTargetsSpell({ target }) {
-            const currentUnitGroup = actions.getCurrentUnitGroup();
+          const isCavalry = currentUnitGroup.modGroup.getModValue('isCavalry') as boolean;
 
-            const isCavalry = currentUnitGroup.modGroup.getModValue('isCavalry') as boolean;
+          const mods = actions.createModifiers({ criticalDamageMul: isCavalry ? 0.2 : 0.35, criticalDamageChance: 1 });
+          actions.addModifiersToUnitGroup(currentUnitGroup, mods);
 
-            const mods = actions.createModifiers({ criticalDamageMul: isCavalry ? 0.2 : 0.35, criticalDamageChance: 1 });
-            actions.addModifiersToUnitGroup(currentUnitGroup, mods);
+          actions.dealDamageTo(target, 40, DamageType.Lightning);
 
-            actions.dealDamageTo(target, 40, DamageType.Lightning);
+          vfx.createEffectForUnitGroup(target, LightningAnimation);
 
-            vfx.createEffectForUnitGroup(target, LightningAnimation);
-
-            actions.unitGroupAttack(currentUnitGroup, target);
-            actions.removeModifiresFromUnitGroup(currentUnitGroup, mods);
-          }
-        });
-
-      },
-      getManaCost() { return 2; }
-    }
+          actions.unitGroupAttack(currentUnitGroup, target);
+          actions.removeModifiresFromUnitGroup(currentUnitGroup, mods);
+        },
+      });
+    },
+    getManaCost() {
+      return 2;
+    },
   },
 });

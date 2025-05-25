@@ -11,8 +11,6 @@ export const DreamAura = createSpell({
   },
   activationType: SpellActivationType.Passive,
   config: {
-    spellConfig: {
-      init() { }
-    },
+    init() { }
   },
 });

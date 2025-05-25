@@ -19,6 +19,7 @@ export class ValueBarComponent {
   private readonly renderer = injectRenderer();
 
   public maxValue = input.required<number>();
+  public diffBar = input(true);
 
   public barStyle = input<'normal' | 'static'>('normal');
 

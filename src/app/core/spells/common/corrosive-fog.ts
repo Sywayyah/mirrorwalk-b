@@ -1,6 +1,6 @@
 import { spellDescrElem, strPercent } from '../../ui';
 import { createCrackedShieldAnimation } from '../../vfx/spells/cracked-shield';
-import { SpellActivationType, SpellBaseType } from '../types';
+import { SpellActivationType } from '../types';
 import { canActivateOnEnemyFn, createSpell, debuffColors } from '../utils';
 
 const damageReduction = 0.14;
@@ -12,7 +12,7 @@ const roundsDuration = 2;
 
 const CorrosiveFogAnimation = createCrackedShieldAnimation();
 
-export const CorrosiveFogDebuff: SpellBaseType<undefined | { debuffRoundsLeft: number }> = createSpell({
+export const CorrosiveFogDebuff = createSpell<undefined | { debuffRoundsLeft: number }>({
   id: '#spell-corrosive-fog-debuff',
 
   name: 'Corrosion',
@@ -24,51 +24,50 @@ export const CorrosiveFogDebuff: SpellBaseType<undefined | { debuffRoundsLeft: n
   getDescription(data) {
     return {
       descriptions: [
-        spellDescrElem(`Defence is lowered by ${defenceReduction}, damage by ${uiPercent}. Rounds left: ${data.spellInstance.state?.debuffRoundsLeft}.`),
+        spellDescrElem(
+          `Defence is lowered by ${defenceReduction}, damage by ${uiPercent}. Rounds left: ${data.spellInstance.state?.debuffRoundsLeft}.`,
+        ),
       ],
-    }
+    };
   },
   config: {
-    spellConfig: {
-      isOncePerBattle: false,
-      init({ events, actions, thisSpell, spellInstance, vfx }) {
-        events.on({
-          SpellPlacedOnUnitGroup({ target }) {
-            const debuffData = {
-              debuffRoundsLeft: roundsDuration,
-            };
-            spellInstance.state = debuffData;
+    isOncePerBattle: false,
+    init({ events, actions, thisSpell, spellInstance, vfx }) {
+      events.on({
+        SpellPlacedOnUnitGroup({ target }) {
+          const debuffData = {
+            debuffRoundsLeft: roundsDuration,
+          };
+          spellInstance.state = debuffData;
 
-            const modifiers = actions.createModifiers({
-              baseDamagePercentModifier: -damageReduction,
-              heroBonusDefence: -defenceReduction,
-            });
+          const modifiers = actions.createModifiers({
+            baseDamagePercentModifier: -damageReduction,
+            heroBonusDefence: -defenceReduction,
+          });
 
-            vfx.createEffectForUnitGroup(target, CorrosiveFogAnimation);
+          vfx.createEffectForUnitGroup(target, CorrosiveFogAnimation);
 
-            actions.addModifiersToUnitGroup(target, modifiers);
+          actions.addModifiersToUnitGroup(target, modifiers);
 
-            actions.historyLog(`${target.type.name} gets negative effect "${thisSpell.name}"`);
+          actions.historyLog(`${target.type.name} gets negative effect "${thisSpell.name}"`);
 
-            events.on({
-              NewRoundBegins(event) {
-                debuffData.debuffRoundsLeft--;
+          events.on({
+            NewRoundBegins(event) {
+              debuffData.debuffRoundsLeft--;
 
-                if (!debuffData.debuffRoundsLeft) {
-                  actions.removeSpellFromUnitGroup(target, spellInstance);
-                  actions.removeModifiresFromUnitGroup(target, modifiers);
-                }
+              if (!debuffData.debuffRoundsLeft) {
+                actions.removeSpellFromUnitGroup(target, spellInstance);
+                actions.removeModifiresFromUnitGroup(target, modifiers);
               }
-            });
-
-          }
-        });
-      }
-    }
-  }
+            },
+          });
+        },
+      });
+    },
+  },
 });
 
-export const CorrosiveFogSpell: SpellBaseType = createSpell({
+export const CorrosiveFogSpell = createSpell({
   id: '#spell-corrosive-fog',
   name: 'Corrosive Fog',
   activationType: SpellActivationType.Target,
@@ -78,37 +77,37 @@ export const CorrosiveFogSpell: SpellBaseType = createSpell({
   getDescription(data) {
     return {
       descriptions: [
-        spellDescrElem(`Surrounds an enemy with corrosive fog, reducing defence by ${defenceReduction} and outgoing damage by ${uiPercent}. Lasts ${roundsDuration} rounds.`),
+        spellDescrElem(
+          `Surrounds an enemy with corrosive fog, reducing defence by ${defenceReduction} and outgoing damage by ${uiPercent}. Lasts ${roundsDuration} rounds.`,
+        ),
       ],
-    }
+    };
   },
   config: {
-    spellConfig: {
-      targetCastConfig: {
-        canActivate: canActivateOnEnemyFn,
-      },
-      getManaCost(spellInst) {
-        const manaCosts: Record<number, number> = {
-          1: 2,
-          2: 2,
-          3: 3,
-          4: 4,
-        };
+    targetCastConfig: {
+      canActivate: canActivateOnEnemyFn,
+    },
+    getManaCost(spellInst) {
+      const manaCosts: Record<number, number> = {
+        1: 2,
+        2: 2,
+        3: 3,
+        4: 4,
+      };
 
-        return manaCosts[spellInst.currentLevel];
-      },
+      return manaCosts[spellInst.currentLevel];
+    },
 
-      init({ events, actions, ownerPlayer, ownerHero, thisSpell }) {
-        events.on({
-          PlayerTargetsSpell(event) {
-            actions.historyLog(`${ownerHero.name} casts "${thisSpell.name}" against ${event.target.type.name}`);
+    init({ events, actions, ownerPlayer, ownerHero, thisSpell }) {
+      events.on({
+        PlayerTargetsSpell(event) {
+          actions.historyLog(`${ownerHero.name} casts "${thisSpell.name}" against ${event.target.type.name}`);
 
-            const poisonDebuffInstance = actions.createSpellInstance(CorrosiveFogDebuff);
+          const poisonDebuffInstance = actions.createSpellInstance(CorrosiveFogDebuff);
 
-            actions.addSpellToUnitGroup(event.target, poisonDebuffInstance, ownerPlayer);
-          }
-        });
-      }
-    }
-  }
+          actions.addSpellToUnitGroup(event.target, poisonDebuffInstance, ownerPlayer);
+        },
+      });
+    },
+  },
 });

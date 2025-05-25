@@ -70,7 +70,28 @@ export enum AISpellTag {
 
 export interface SpellTypeConfig<SpellStateType> {
   aiTags?: AISpellTag[];
-  spellConfig: SpellConfig<SpellStateType>;
+
+  // not applicable to passive spells, true by default - might be expanded later
+  isOncePerBattle?: boolean;
+  // false by default, spell level won't be visible in UI
+  hideLevel?: boolean;
+  init: (combatRefs: SpellCombatRefsModel<SpellStateType>) => void;
+  // if unspecified - always 0
+  getManaCost?: (spellInst: Spell<SpellStateType>) => number;
+
+  getTargetActionHint?: (options: {
+    spellInstance: Spell<SpellStateType>;
+    ownerPlayer?: Player;
+    target: UnitGroup;
+    ownerHero?: Hero;
+    ownerUnit?: UnitGroup;
+  }) => string;
+  /** Called on ability when it's being acquired or it levels up */
+  onAcquired?: (onAquiredConfig: OnSpellAcquiredConfig<SpellStateType>) => void;
+  targetCastConfig?: {
+    canActivate?: (info: CanActivateSpellParams) => boolean;
+  };
+
   flags?: Partial<{
     isAura: boolean;
   }>;
@@ -100,29 +121,6 @@ export interface OnSpellAcquiredConfig<T> {
   spellInstance: Spell<T>;
   ownerUnit?: UnitGroup;
   ownerHero?: Hero;
-}
-
-export interface SpellConfig<SpellStateType> {
-  // not applicable to passive spells, true by default - might be expanded later
-  isOncePerBattle?: boolean;
-  // false by default, spell level won't be visible in UI
-  hideLevel?: boolean;
-  init: (combatRefs: SpellCombatRefsModel<SpellStateType>) => void;
-  // if unspecified - always 0
-  getManaCost?: (spellInst: Spell<SpellStateType>) => number;
-
-  getTargetActionHint?: (options: {
-    spellInstance: Spell<SpellStateType>;
-    ownerPlayer?: Player;
-    target: UnitGroup;
-    ownerHero?: Hero;
-    ownerUnit?: UnitGroup;
-  }) => string;
-  /** Called on ability when it's being acquired or it levels up */
-  onAcquired?: (onAquiredConfig: OnSpellAcquiredConfig<SpellStateType>) => void;
-  targetCastConfig?: {
-    canActivate?: (info: CanActivateSpellParams) => boolean;
-  };
 }
 
 type SourceInfo = {
@@ -171,7 +169,7 @@ export class Spell<T = DefaultSpellStateType> extends GameObject<SpellCreationPa
   }
 
   initCombatHandlers(spellApi: SpellCombatRefsModel<T>): void {
-    this.baseType.config.spellConfig.init(spellApi);
+    this.baseType.config.init(spellApi);
   }
 
   removeCombatHandlers(): void {
@@ -179,7 +177,7 @@ export class Spell<T = DefaultSpellStateType> extends GameObject<SpellCreationPa
   }
 
   private updateCurrentManaCost() {
-    this.currentManaCost = this.baseType.config.spellConfig.getManaCost?.(this) || 0;
+    this.currentManaCost = this.baseType.config.getManaCost?.(this) || 0;
   }
 
   setCooldown(val: number): void {
@@ -205,7 +203,7 @@ export class Spell<T = DefaultSpellStateType> extends GameObject<SpellCreationPa
     // If spell has ownerUnitId in source info - run onAcquired
     const ownerUnitObjectId = this.sourceInfo.ownerUnitObjectId;
     if (ownerUnitObjectId) {
-      this.baseType.config.spellConfig.onAcquired?.({
+      this.baseType.config.onAcquired?.({
         spellInstance: this,
         ownerUnit: this.getApi().gameObjects.getObjectByFullId<UnitGroup>(ownerUnitObjectId),
       });

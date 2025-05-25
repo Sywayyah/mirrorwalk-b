@@ -11,18 +11,14 @@ export const BlindnessSpell: SpellBaseType = createSpell({
   },
   getDescription() {
     return {
-      descriptions: [
-        spellDescrElem(`Decreases damage of target enemy group by ${15}%.`),
-      ],
-    }
+      descriptions: [spellDescrElem(`Decreases damage of target enemy group by ${15}%.`)],
+    };
   },
   config: {
-    spellConfig: {
-      getManaCost(spellInst) {
-        return 0;
-      },
-
-      init: () => { },
+    getManaCost(spellInst) {
+      return 0;
     },
-  }
+
+    init: () => {},
+  },
 });

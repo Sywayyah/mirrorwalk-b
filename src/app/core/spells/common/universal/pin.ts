@@ -25,49 +25,47 @@ export const UniversalPinSpell = createSpell({
   },
   activationType: SpellActivationType.Target,
   config: {
-    spellConfig: {
-      isOncePerBattle: false,
-      hideLevel: true,
-      targetCastConfig: {
-        canActivate: canActivateOnEnemyFn,
-      },
-      getTargetActionHint({ ownerUnit, target }) {
-        let pinChance = 100;
+    isOncePerBattle: false,
+    hideLevel: true,
+    targetCastConfig: {
+      canActivate: canActivateOnEnemyFn,
+    },
+    getTargetActionHint({ ownerUnit, target }) {
+      let pinChance = 100;
 
-        const targetMods = target.modGroup;
-        if (targetMods.getModValue('isCavalry') || targetMods.getModValue('isBigCreature')) {
-          pinChance = 70;
-        }
+      const targetMods = target.modGroup;
+      if (targetMods.getModValue('isCavalry') || targetMods.getModValue('isBigCreature')) {
+        pinChance = 70;
+      }
 
-        if (targetMods.getModValue('isBoss')) {
-          pinChance = 15;
-        }
+      if (targetMods.getModValue('isBoss')) {
+        pinChance = 15;
+      }
 
-        if (targetMods.getModValue('isGiant') || target.type.level >= 6) {
-          pinChance = 0;
-        }
+      if (targetMods.getModValue('isGiant') || target.type.level >= 6) {
+        pinChance = 0;
+      }
 
-        return `Chance to pin: ${pinChance}%`;
-      },
-      init({ actions, events, ownerUnit, vfx }) {
-        events.on({
-          PlayerTargetsSpell({ target }) {
-            actions.unitGroupAttack(ownerUnit!, target);
+      return `Chance to pin: ${pinChance}%`;
+    },
+    init({ actions, events, ownerUnit, vfx }) {
+      events.on({
+        PlayerTargetsSpell({ target }) {
+          actions.unitGroupAttack(ownerUnit!, target);
 
-            const pinInfo = actions.pinAttempt(ownerUnit!, target);
-            if (pinInfo.pinFailed) {
-              actions.historyLog(`Pin attempt has failed`);
-              return;
-            }
-            actions.historyLog(`Pin succeeded`);
+          const pinInfo = actions.pinAttempt(ownerUnit!, target);
+          if (pinInfo.pinFailed) {
+            actions.historyLog(`Pin attempt has failed`);
+            return;
+          }
+          actions.historyLog(`Pin succeeded`);
 
-            vfx.createFloatingMessageForUnitGroup(target, { html: 'pinned' });
-          },
-        });
-      },
-      getManaCost() {
-        return 0;
-      },
+          vfx.createFloatingMessageForUnitGroup(target, { html: 'pinned' });
+        },
+      });
+    },
+    getManaCost() {
+      return 0;
     },
   },
 });

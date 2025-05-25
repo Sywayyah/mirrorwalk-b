@@ -44,6 +44,6 @@ export class UnitGroupSpellIconComponent {
   readonly icon = computed(() => this.spell().baseType.icon);
   readonly isPassive = computed(() => this.spell().isPassive());
   readonly spellConfig = computed(
-    () => this.spell().baseType.config.spellConfig,
+    () => this.spell().baseType.config,
   );
 }

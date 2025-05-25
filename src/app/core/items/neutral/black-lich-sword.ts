@@ -5,7 +5,7 @@ import { createItem } from '../utils';
 const lifestealValue = 18;
 
 export const BlackLichSwordItem: ItemBaseType = createItem({
-  id: '#item-blacklich-swords',
+  id: '#item-blacklich-sword',
 
   name: 'Black Lich Sword',
   icon: 'bat-sword',
@@ -13,6 +13,7 @@ export const BlackLichSwordItem: ItemBaseType = createItem({
   stats: {
     heroBonusAttack: 3,
     specialtyNecromancy: 1,
+    heroManacostPenalty: 1,
 
     __unitConditionalMods(unitGroup) {
       if (unitGroup.type.level <= 4 && !unitGroup.modGroup.getModValue('isRanged')) {

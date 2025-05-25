@@ -1,11 +1,23 @@
 <!-- todo: extract into separate component -->
-<div (click)="openPlayerInfo()"
-     (mwNoContextMenu)="openPlayerInfo()"
-     mwActionHint="Inspect Hero"
-     style="cursor: pointer;"
-     [style.background-image]="'url(\'assets/'+ player.hero.base.image + '\')'"
-     class="hero-image">
-</div>
+<div
+  (click)="openPlayerInfo()"
+  (mwNoContextMenu)="openPlayerInfo()"
+  mwActionHint="Inspect Hero"
+  style="cursor: pointer"
+  [style.background-image]="'url(\'assets/' + player.hero.base.image + '\')'"
+  class="hero-image"
+></div>
+<mw-value-bar
+  class="action-points-bar"
+  [maxValue]="4"
+  color="linear-gradient(0deg, rgb(121 45 0), rgb(226 209 33))"
+  [diffBar]="false"
+  [currentValue]="state.currentGame.actionPoints"
+  [barHeight]="17"
+  [mwActionHint]="'You have ' + state.currentGame.actionPoints + ' action points left <br>before next day arrives.'"
+>
+  <mw-ra-icon icon="feather-wing"></mw-ra-icon>
+</mw-value-bar>
 
 <div class="hero-info">
   <!-- todo: practically, this is how overstacking popups can be solved, via counting & reducing skillpoints -->
@@ -15,49 +27,54 @@
   </div> -->
 
   <div>
-    <div style="display: flex; flex-direction: row;">
-      <mw-item-slot *ngFor="let itemSlot of itemSlots"
-                    class="info-small-icons"
-                    [mwActionHint]="itemSlot.name"
-                    [itemSlot]="itemSlot.slotType"
-                    hintPos="above" />
+    <div style="display: flex; flex-direction: row">
+      <mw-item-slot
+        *ngFor="let itemSlot of itemSlots"
+        class="info-small-icons"
+        [mwActionHint]="itemSlot.name"
+        [itemSlot]="itemSlot.slotType"
+        hintPos="above"
+      />
     </div>
   </div>
   <div [mwActionHint]="getHeroActionHint()">
-    {{player.hero.name}}, Level: {{player.hero.level}}
-    <mw-experience-bar style="width: 270px;"></mw-experience-bar>
+    {{ player.hero.name }}, Level: {{ player.hero.level }}
+    <mw-experience-bar style="width: 270px"></mw-experience-bar>
   </div>
+
+  <div class="action-points"></div>
 
   <div class="groups-container">
     @for (slot of player.hero.mainUnitSlots; track slot) {
+      @if (slot.unitGroup) {
+        <div
+          class="player-group-card"
+          [style.background]="player.color"
+          (click)="displayUnitGroupInfo(slot.unitGroup)"
+          (mwNoContextMenu)="displayUnitGroupInfo(slot.unitGroup)"
+          [mwActionHint]="'Inspect group of ' + slot.unitGroup.count + ' ' + slot.unitGroup.type.name"
+        >
+          <div class="group-name">{{ slot.unitGroup.type.name }}</div>
 
-    @if (slot.unitGroup) {
-    <div class="player-group-card"
-         [style.background]="player.color"
-         (click)="displayUnitGroupInfo(slot.unitGroup)"
-         (mwNoContextMenu)="displayUnitGroupInfo(slot.unitGroup)"
-         [mwActionHint]="'Inspect group of ' + slot.unitGroup.count + ' ' + slot.unitGroup.type.name">
-      <div class="group-name">{{slot.unitGroup.type.name}}</div>
-
-      <div>{{slot.unitGroup.count}}</div>
-    </div>
+          <div>{{ slot.unitGroup.count }}</div>
+        </div>
+      }
     }
-
-    }
-
 
     @for (slot of player.hero.reserveUnitSlots; track slot) {
-    @if (slot.unitGroup) {
-    <div class="player-group-card reserve"
-         [style.background]="player.color"
-         (click)="displayUnitGroupInfo(slot.unitGroup)"
-         (mwNoContextMenu)="displayUnitGroupInfo(slot.unitGroup)"
-         [mwActionHint]="'Inspect group of ' + slot.unitGroup.count + ' ' + slot.unitGroup.type.name">
-      <div class="group-name">{{slot.unitGroup.type.name}}</div>
+      @if (slot.unitGroup) {
+        <div
+          class="player-group-card reserve"
+          [style.background]="player.color"
+          (click)="displayUnitGroupInfo(slot.unitGroup)"
+          (mwNoContextMenu)="displayUnitGroupInfo(slot.unitGroup)"
+          [mwActionHint]="'Inspect group of ' + slot.unitGroup.count + ' ' + slot.unitGroup.type.name"
+        >
+          <div class="group-name">{{ slot.unitGroup.type.name }}</div>
 
-      <div>{{slot.unitGroup.count}}</div>
-    </div>
-    }
+          <div>{{ slot.unitGroup.count }}</div>
+        </div>
+      }
     }
   </div>
 </div>

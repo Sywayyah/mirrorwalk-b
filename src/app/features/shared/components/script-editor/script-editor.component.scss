@@ -1,0 +1,23 @@
+.code-editor-wrapper {
+  border: 1px solid #333;
+  border-radius: 5px;
+  overflow: auto;
+  background-color: #282c34;
+  color: #abb2bf;
+  font-family: "Fira Code", "Cascadia Code", "Consolas", monospace;
+  font-size: 14px;
+  line-height: 1.5;
+  padding: 10px;
+
+  pre {
+    margin: 0;
+    padding: 0;
+    white-space: pre-wrap;
+    word-break: break-all;
+    outline: none;
+  }
+
+  // Adjust highlight.js specific styles if needed
+  .hljs {
+  }
+}
