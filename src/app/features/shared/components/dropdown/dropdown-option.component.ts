@@ -48,6 +48,7 @@ export class DropdownOptionComponent<T> {
   selected(): void {
     this.dropdownRef.selectedItem.set(this.value());
     this.dropdownRef.menuTriggerRef().close();
+    this.dropdownRef.optionChanged.emit(this.value());
   }
 
   focusIntoView(): void {

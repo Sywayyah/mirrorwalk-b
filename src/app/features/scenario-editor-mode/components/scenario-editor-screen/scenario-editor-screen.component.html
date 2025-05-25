@@ -2,13 +2,53 @@
 
 <div>
   Scenarios
-  <mw-base-select [(selectedItem)]="selectedScenario">
-    @for (scenario of scenarios(); track $index) {
-      <option [value]="scenario.name">{{ scenario.name }}</option>
-    }
-  </mw-base-select>
 
-  {{ selectedScenario() }}
+  @let scenario = selectedScenario();
+  <mw-dropdown
+    [(selectedItem)]="selectedScenario"
+    (optionChanged)="onScenarioChanged($event)"
+  >
+    <div class="trigger">
+      @if (scenario) {
+        {{ scenario.name }}
+      } @else {
+        @if (!scenarios().length) {
+          No scenarios created...
+        } @else {
+          No scenario selected...
+        }
+      }
+    </div>
+
+    @for (scenario of scenarios(); track $index) {
+      <mw-dropdown-option [value]="scenario">
+        {{ scenario.name }}
+      </mw-dropdown-option>
+    }
+  </mw-dropdown>
+
+  <button mw-main-button (click)="addNewScenario()">New Scenario</button>
+  @if (scenario) {
+    Selected Scenario Name:
+    <input
+      type="text"
+      [(ngModel)]="currentScenarioName"
+    />
+  }
+
+  <button
+    mw-main-button
+    (click)="testScenario()"
+  >
+    Test Scenario
+  </button>
+
+  <button
+    mw-main-button
+    (click)="saveScenario()"
+  >
+    Save Scenario
+  </button>
 </div>
 
 <!-- panels, dockers? -->
@@ -18,13 +58,6 @@
   (click)="goToMainScreen()"
 >
   Back to main screen
-</button>
-
-<button
-  mw-main-button
-  (click)="testScenario()"
->
-  Test Scenario
 </button>
 
 <mw-panel-container>
@@ -289,6 +322,12 @@
       @let script = selectedScript();
 
       @if (script) {
+        Script Name:
+        <input
+          type="text"
+          [(ngModel)]="script.name"
+        />
+
         @defer {
           <mw-script-editor [(code)]="script.code" />
         }

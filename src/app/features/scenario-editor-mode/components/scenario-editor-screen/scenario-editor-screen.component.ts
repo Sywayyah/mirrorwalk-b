@@ -7,6 +7,7 @@ import { HeroBase } from 'src/app/core/heroes';
 import { ItemBaseType } from 'src/app/core/items';
 import { createSpell, SpellActivationType, SpellBaseType } from 'src/app/core/spells';
 import { UnitBaseType } from 'src/app/core/unit-types';
+import { CommonUtils } from 'src/app/core/utils';
 import { SignalArrUtils } from 'src/app/core/utils/signals';
 import { DropdownOptionComponent } from 'src/app/features/shared/components/dropdown/dropdown-option.component';
 import { DropdownComponent } from 'src/app/features/shared/components/dropdown/dropdown.component';
@@ -16,22 +17,39 @@ import { EventsService } from 'src/app/store';
 import { PanelContainerComponent } from '../../../shared/components/editors-ui/panel-container/panel-container.component';
 import { PanelComponent } from '../../../shared/components/editors-ui/panel/panel.component';
 
-interface Scenario {
-  name: string;
-  locations: object[];
-  customEntites: object;
-  namedScripts: Record<string, ScenarioScript>;
+class Scenario {
+  readonly id = crypto.randomUUID();
+  readonly name = signal('');
+  readonly locations = signal([]);
+  readonly namedScripts = signal([]);
 }
 
-let counter = 0;
 enum ScriptType {
   Spell,
   Trigger,
 }
 class ScenarioScript {
+  static counter = 0;
+  readonly id = `custom_script_${ScenarioScript.counter}`;
+  readonly name = signal(`New_Script_${ScenarioScript.counter}`);
   readonly type = signal(ScriptType.Spell);
-  readonly name = signal(`New_Script_${counter++}`);
   readonly code = signal('');
+
+  constructor(id?: string) {
+    ScenarioScript.counter++;
+    if (id) {
+      this.id = id;
+    }
+  }
+
+  static fromSaved(saved: SavedScriptLocalStorageModel): ScenarioScript {
+    const newScript = new ScenarioScript(saved.id);
+
+    newScript.code.set(saved.code);
+    newScript.name.set(saved.name);
+    newScript.type.set(saved.type);
+    return newScript;
+  }
 }
 
 let unitsCounter = 0;
@@ -42,13 +60,30 @@ class CustomUnitDefinition {
   readonly damage = signal(5);
 }
 
-let spellsCounter = 0;
-
 class CustomSpellDefinition {
-  readonly name = signal(`New_Spell_Type_${spellsCounter++}`);
+  static counter = 0;
+  readonly id = `custom_spell_${CustomSpellDefinition.counter}`;
+  readonly name = signal(`New_Spell_Type_${CustomSpellDefinition.counter}`);
   readonly activationType = signal(SpellActivationType.Target);
   readonly icon = signal('book');
   readonly connectedScript = signal<null | ScenarioScript>(null);
+
+  constructor(id?: string) {
+    CustomSpellDefinition.counter++;
+    if (id) {
+      this.id = id;
+    }
+  }
+
+  static fromSaved(saved: SavedSpellLocalStorageModel, scripts: ScenarioScript[]): CustomSpellDefinition {
+    const newSpell = new CustomSpellDefinition(saved.id);
+    newSpell.name.set(saved.name);
+    newSpell.icon.set(saved.icon);
+    newSpell.connectedScript.set(scripts.find((script) => script.id === saved.linkedScriptId) ?? null);
+    newSpell.activationType.set(saved.activationType);
+
+    return newSpell;
+  }
 }
 
 enum EntityTabs {
@@ -59,7 +94,31 @@ enum EntityTabs {
   Locations = 'Locations',
   Factions = 'Factions',
 }
+interface SavedScriptLocalStorageModel {
+  id: string;
+  name: string;
+  code: string;
+  type: ScriptType;
+}
+
+type SavedSpellLocalStorageModel = {
+  id: string;
+  name: string;
+  icon: string;
+  activationType: SpellActivationType;
+  linkedScriptId?: string;
+};
+
 // scenarios persistance, export (entire scenario, individual aspects, like triggers, map generators, etc.)
+
+interface SavedScenarioLocalStorageModel {
+  id: string;
+  name: string;
+  locations: object[];
+  customSpells: SavedSpellLocalStorageModel[];
+  customEntities: object[];
+  customScripts: SavedScriptLocalStorageModel[];
+}
 
 @Component({
   selector: 'mw-scenario-editor-screen',
@@ -79,9 +138,7 @@ enum EntityTabs {
   styleUrl: './scenario-editor-screen.component.scss',
 })
 export class ScenarioEditorScreenComponent {
-  readonly scenarios = signal<Scenario[]>([
-    { name: 'Default Scenario', locations: [], customEntites: [], namedScripts: {} },
-  ]);
+  readonly scenarios = signal<SavedScenarioLocalStorageModel[]>([]);
 
   private readonly events = inject(EventsService);
 
@@ -108,7 +165,9 @@ export class ScenarioEditorScreenComponent {
   readonly selectedUnitType = signal(null as UnitBaseType | null);
   readonly selectedItemType = signal(null as ItemBaseType | null);
   readonly selectedSpellType = signal(null as SpellBaseType | null);
-  readonly selectedScenario = signal(null as Scenario | null);
+  readonly selectedScenario = signal(null as SavedScenarioLocalStorageModel | null);
+
+  readonly currentScenarioName = signal('');
   readonly selectedScript = signal(null as ScenarioScript | null);
 
   readonly customUnitDefinitions = signal<CustomUnitDefinition[]>([]);
@@ -116,6 +175,40 @@ export class ScenarioEditorScreenComponent {
 
   readonly customSpellsDefinitions = signal<CustomSpellDefinition[]>([]);
   readonly selectedSpellDefinition = signal<CustomSpellDefinition | null>(null);
+
+  constructor() {
+    const savedScenarions = JSON.parse(localStorage.getItem('scenarios') as string) as SavedScenarioLocalStorageModel[];
+    this.scenarios.set(savedScenarions ?? []);
+  }
+
+  addNewScenario() {
+    const newScenario = {
+      customEntities: [] as object[],
+      customScripts: [] as SavedScriptLocalStorageModel[],
+      customSpells: [] as SavedSpellLocalStorageModel[],
+      id: crypto.randomUUID() as string,
+      locations: [] as object[],
+      name: 'New Custom Scenario',
+    };
+    this.scenarios.update(SignalArrUtils.addItem(newScenario));
+    console.log(newScenario);
+
+    this.onScenarioChanged(newScenario);
+  }
+
+  onScenarioChanged(scenario: SavedScenarioLocalStorageModel | null): void {
+    console.log(scenario);
+    if (!scenario) {
+      return;
+    }
+    const scripts = scenario.customScripts.map((script) => ScenarioScript.fromSaved(script));
+    this.scripts.set(scripts);
+    this.customSpellsDefinitions.set(
+      scenario.customSpells.map((spell) => CustomSpellDefinition.fromSaved(spell, scripts)),
+    );
+    this.currentScenarioName.set(scenario.name);
+  }
+
   addNewScript(): void {
     const newScript = new ScenarioScript();
     this.scripts.update(SignalArrUtils.addItem(newScript));
@@ -140,6 +233,52 @@ export class ScenarioEditorScreenComponent {
     this.selectedUnitDefinition.set(newDefinition);
     // if (!this.selectedUnitDefinition()) {
     // }
+  }
+
+  saveScenario() {
+    const scenarios = this.scenarios();
+
+    const selectedScenario = this.selectedScenario();
+    if (!selectedScenario) {
+      return;
+    }
+
+    const scenarioToBeSaved: SavedScenarioLocalStorageModel = {
+      id: selectedScenario.id,
+      name: this.currentScenarioName(),
+      customEntities: [],
+      customScripts: this.scripts().map((script) => ({
+        code: script.code(),
+        id: script.id,
+        name: script.name(),
+        type: script.type(),
+      })),
+      customSpells: this.customSpellsDefinitions().map((spell) => ({
+        id: spell.id,
+        name: spell.name(),
+        icon: spell.icon(),
+        activationType: spell.activationType(),
+        linkedScriptId: spell.connectedScript()?.id,
+      })),
+      locations: [],
+    };
+
+    const wasPresent = CommonUtils.removeItem(scenarios, scenarioToBeSaved);
+
+    if (!wasPresent) {
+      scenarios.push(scenarioToBeSaved);
+    }
+
+    const wasPresentAmongExisting = CommonUtils.removeItemWith(
+      this.scenarios(),
+      (scenario) => scenario.id === scenarioToBeSaved.id,
+    );
+
+    if (!wasPresentAmongExisting) {
+      this.scenarios.update(SignalArrUtils.addItem(scenarioToBeSaved));
+    }
+
+    localStorage.setItem('scenarios', JSON.stringify(scenarios));
   }
 
   addCustomSpellType() {

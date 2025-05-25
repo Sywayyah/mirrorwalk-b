@@ -1,7 +1,7 @@
 import { CdkMenuTrigger } from '@angular/cdk/menu';
 import { ConnectionPositionPair } from '@angular/cdk/overlay';
 import { CommonModule } from '@angular/common';
-import { Component, ElementRef, HostListener, inject, model, signal, viewChild } from '@angular/core';
+import { Component, ElementRef, HostListener, model, output, signal, viewChild } from '@angular/core';
 import { injectHostElem } from 'src/app/core/utils';
 import { isNotNullish } from 'src/app/core/utils/common';
 import type { DropdownOptionComponent } from './dropdown-option.component';
@@ -17,6 +17,8 @@ export class DropdownComponent<T> {
 
   readonly selectedItem = model.required<T>();
   readonly options = signal<DropdownOptionComponent<T>[]>([]);
+
+  readonly optionChanged = output<T>();
 
   readonly menuTriggerRef = viewChild.required<CdkMenuTrigger>('menuTrigger');
   readonly optionsRef = viewChild<ElementRef<HTMLElement>>('optionsRef');
