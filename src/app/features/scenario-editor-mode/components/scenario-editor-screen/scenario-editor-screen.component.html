@@ -205,10 +205,20 @@
 
               <div class="property">
                 Activation Type:
-                <input
+
+                <mw-dropdown [(selectedItem)]="selectedSpellTypeTVar.activationType">
+                  <div class="trigger">
+                    {{ selectedSpellTypeTVar.activationType().label }}
+                  </div>
+
+                  @for (option of ActivationTypes; track $index) {
+                    <mw-dropdown-option [value]="option">{{ option.label }}</mw-dropdown-option>
+                  }
+                </mw-dropdown>
+                <!-- <input
                   type="text"
                   [(ngModel)]="selectedSpellTypeTVar.activationType"
-                />
+                /> -->
               </div>
 
               <div class="property">
@@ -334,7 +344,6 @@
     [height]="300"
     [width]="660"
     [xPosition]="800"
-
   >
     <div class="panel">
       <!-- todo: Templates? Examples of spells, also, cheatsheets with available params and details -->
