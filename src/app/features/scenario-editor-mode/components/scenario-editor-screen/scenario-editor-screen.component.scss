@@ -1,0 +1,14 @@
+.header-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  color: white;
+
+  .tab {
+    padding: 3px;
+    font-size: 12px;
+    cursor: pointer;
+    &.active {
+      background: orange;
+    }
+  }
+}

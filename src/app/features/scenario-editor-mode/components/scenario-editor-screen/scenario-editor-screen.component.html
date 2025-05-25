@@ -23,68 +23,86 @@
 <mw-panel-container>
   <mw-panel title="Entities Manager">
     <div class="panel">
-      <div class="header">Create New Unit Type:</div>
-
-      @let selectedUnitTypeTVar = selectedUnitDefinition();
-      <mw-dropdown [(selectedItem)]="selectedUnitDefinition">
-        <div class="trigger">
-          @if (!customUnitDefinitions().length) {
-            No Custom Unit Types Defined...
-          } @else {
-            {{ selectedUnitTypeTVar ? selectedUnitTypeTVar.name() : "No Unit Type Selected..." }}
-          }
-        </div>
-
-        @for (unit of customUnitDefinitions(); track $index) {
-          <mw-dropdown-option [value]="unit">
-            {{ unit.name() }}
-          </mw-dropdown-option>
+      <div class="header-tabs">
+        @for (tab of EntityTabs; track $index) {
+          <div
+            class="tab"
+            (click)="activeTab.set(tab)"
+            [class.active]="activeTab() === tab"
+          >
+            {{ tab }}
+          </div>
         }
-      </mw-dropdown>
+      </div>
 
-      <button
-        mw-main-button
-        (click)="addCustomUnitGroup()"
-      >
-        Add Unit Group
-      </button>
+      @switch (activeTab()) {
+        @case (EntityTab.UnitTypes) {
+          <div class="header">Create New Unit Type:</div>
 
-      @if (selectedUnitTypeTVar) {
-        <div class="property">
-          Name:
-          <input
-            type="text"
-            [(ngModel)]="selectedUnitTypeTVar.name"
-          />
-        </div>
+          @let selectedUnitTypeTVar = selectedUnitDefinition();
+          <mw-dropdown [(selectedItem)]="selectedUnitDefinition">
+            <div class="trigger">
+              @if (!customUnitDefinitions().length) {
+                No Custom Unit Types Defined...
+              } @else {
+                {{ selectedUnitTypeTVar ? selectedUnitTypeTVar.name() : "No Unit Type Selected..." }}
+              }
+            </div>
 
-        <div class="property">
-          Level:
-          <input
-            type="number"
-            min="1"
-            [(ngModel)]="selectedUnitTypeTVar.level"
-          />
-        </div>
+            @for (unit of customUnitDefinitions(); track $index) {
+              <mw-dropdown-option [value]="unit">
+                {{ unit.name() }}
+              </mw-dropdown-option>
+            }
+          </mw-dropdown>
 
-        <div class="property">
-          Health:
-          <input
-            type="number"
-            min="1"
-            step="1"
-            [(ngModel)]="selectedUnitTypeTVar.health"
-          />
-        </div>
+          <button
+            mw-main-button
+            (click)="addCustomUnitGroup()"
+          >
+            Add Unit Group
+          </button>
 
-        <div class="property">
-          Damage:
-          <input
-            type="number"
-            min="1"
-            [(ngModel)]="selectedUnitTypeTVar.damage"
-          />
-        </div>
+          @if (selectedUnitTypeTVar) {
+            <div class="properties">
+              <div class="property">
+                Name:
+                <input
+                  type="text"
+                  [(ngModel)]="selectedUnitTypeTVar.name"
+                />
+              </div>
+
+              <div class="property">
+                Level:
+                <input
+                  type="number"
+                  min="1"
+                  [(ngModel)]="selectedUnitTypeTVar.level"
+                />
+              </div>
+
+              <div class="property">
+                Health:
+                <input
+                  type="number"
+                  min="1"
+                  step="1"
+                  [(ngModel)]="selectedUnitTypeTVar.health"
+                />
+              </div>
+
+              <div class="property">
+                Damage:
+                <input
+                  type="number"
+                  min="1"
+                  [(ngModel)]="selectedUnitTypeTVar.damage"
+                />
+              </div>
+            </div>
+          }
+        }
       }
     </div>
   </mw-panel>

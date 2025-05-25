@@ -40,6 +40,14 @@ class CustomUnitDefinition {
   readonly damage = signal(5);
 }
 
+enum EntityTabs {
+  UnitTypes = 'Units',
+  Items = 'Items',
+  Spells = 'Spells',
+  Heroes = 'Heroes',
+  Locations = 'Locations',
+  Factions = 'Factions',
+}
 // scenarios persistance, export (entire scenario, individual aspects, like triggers, map generators, etc.)
 
 @Component({
@@ -65,6 +73,18 @@ export class ScenarioEditorScreenComponent {
   ]);
 
   private readonly events = inject(EventsService);
+
+  readonly EntityTabs = [
+    EntityTabs.UnitTypes,
+    EntityTabs.Spells,
+    EntityTabs.Items,
+    EntityTabs.Heroes,
+    EntityTabs.Locations,
+    EntityTabs.Factions,
+  ];
+  readonly EntityTab = EntityTabs;
+
+  readonly activeTab = signal<EntityTabs>(EntityTabs.UnitTypes);
 
   readonly entitiesRegistries = EntitiesRegisty;
 
