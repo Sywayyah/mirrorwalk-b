@@ -16,3 +16,6 @@ export const TriggersRegistry = {
     }
   },
 };
+
+// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+(window as any).triggers = TriggersRegistry;

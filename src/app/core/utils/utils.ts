@@ -13,23 +13,35 @@ export const CommonUtils = {
   randIntInRange(from: number, to: number): number {
     const diff = to - from + 1;
 
-    return Math.floor(from + (diff * Math.random()));
+    return Math.floor(from + diff * Math.random());
   },
 
   randIntTo(to: number): number {
     return Math.floor((to + 1) * Math.random());
   },
 
-  removeItem<T>(arr: T[], item: T): void {
+  // returns false if item wasn't found
+  removeItem<T>(arr: T[], item: T): boolean {
     const itemIndex = arr.indexOf(item);
     if (itemIndex === -1) {
-      return;
+      return false;
     }
     arr.splice(itemIndex, 1);
+    return true;
+  },
+
+  // returns false if item wasn't found
+  removeItemWith<T>(arr: T[], fn: (item: T) => boolean): boolean {
+    const itemIndex = arr.findIndex(fn);
+    if (itemIndex === -1) {
+      return false;
+    }
+    arr.splice(itemIndex, 1);
+    return true;
   },
 
   removeItemCopy<T>(arr: T[], item: T): T[] {
-    let newArr = [...arr];
+    const newArr = [...arr];
     const itemIndex = newArr.indexOf(item);
 
     if (itemIndex === -1) {
@@ -39,8 +51,6 @@ export const CommonUtils = {
 
     return newArr;
   },
-
-
 
   randBoolean(): boolean {
     return Math.random() > 0.5;
@@ -56,7 +66,7 @@ export const CommonUtils = {
   },
 
   increaseByPercent(val: number, percent: number): number {
-    return val + (val * percent);
+    return val + val * percent;
   },
 
   nonNegative(val: number): number {
@@ -80,8 +90,7 @@ export const CommonUtils = {
     }
 
     return result;
-  }
-
+  },
 };
 
 export function getLast<T>(items: T[]): T {
