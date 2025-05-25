@@ -103,6 +103,87 @@
             </div>
           }
         }
+        @case (EntityTab.Spells) {
+          <div class="header">Spells:</div>
+
+          @let selectedSpellTypeTVar = selectedSpellDefinition();
+          <mw-dropdown [(selectedItem)]="selectedSpellDefinition">
+            <div class="trigger">
+              @if (!customSpellsDefinitions().length) {
+                No Custom Spell Types Defined...
+              } @else {
+                {{ selectedSpellTypeTVar ? selectedSpellTypeTVar.name() : "No Spell Type Selected..." }}
+              }
+            </div>
+
+            @for (spell of customSpellsDefinitions(); track $index) {
+              <mw-dropdown-option [value]="spell">
+                {{ spell.name() }}
+              </mw-dropdown-option>
+            }
+          </mw-dropdown>
+
+          <button
+            mw-main-button
+            (click)="addCustomSpellType()"
+          >
+            Add Spell
+          </button>
+
+          @if (selectedSpellTypeTVar) {
+            <div class="properties">
+              <div class="property">
+                Name:
+                <input
+                  type="text"
+                  [(ngModel)]="selectedSpellTypeTVar.name"
+                />
+              </div>
+
+              <div class="property">
+                Icon:
+                <input
+                  type="text"
+                  [(ngModel)]="selectedSpellTypeTVar.icon"
+                />
+              </div>
+
+              <div class="property">
+                Activation Type:
+                <input
+                  type="number"
+                  min="1"
+                  step="1"
+                  [(ngModel)]="selectedSpellTypeTVar.activationType"
+                />
+              </div>
+
+              <div class="property">
+                Connected Script:
+
+                @let connectedScript = selectedSpellTypeTVar.connectedScript();
+                <mw-dropdown [(selectedItem)]="selectedSpellTypeTVar.connectedScript">
+                  <div class="trigger">
+                    @if (!scripts().length) {
+                      No scripts created...
+                    } @else {
+                      @if (connectedScript) {
+                        {{ connectedScript.name() }}
+                      } @else {
+                        Select a script...
+                      }
+                    }
+                  </div>
+                  @for (script of scripts(); track $index) {
+                    <mw-dropdown-option [value]="script">
+                      {{ script.name() }}
+                    </mw-dropdown-option>
+                  }
+                </mw-dropdown>
+              </div>
+            </div>
+          }
+        }
       }
     </div>
   </mw-panel>

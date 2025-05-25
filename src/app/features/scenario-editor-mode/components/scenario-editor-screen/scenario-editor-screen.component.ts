@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { EntitiesRegisty } from 'src/app/core/entities';
 import { GameOpenMainScreen } from 'src/app/core/events';
 import { ItemBaseType } from 'src/app/core/items';
-import { SpellBaseType } from 'src/app/core/spells';
+import { SpellActivationType, SpellBaseType } from 'src/app/core/spells';
 import { UnitBaseType } from 'src/app/core/unit-types';
 import { SignalArrUtils } from 'src/app/core/utils/signals';
 import { DropdownOptionComponent } from 'src/app/features/shared/components/dropdown/dropdown-option.component';
@@ -39,6 +39,15 @@ class CustomUnitDefinition {
   readonly level = signal(1);
   readonly health = signal(10);
   readonly damage = signal(5);
+}
+
+let spellsCounter = 0;
+
+class CustomSpellDefinition {
+  readonly name = signal(`New_Spell_Type_${spellsCounter++}`);
+  readonly activationType = signal(SpellActivationType.Target);
+  readonly icon = signal('book');
+  readonly connectedScript = signal<null | ScenarioScript>(null);
 }
 
 enum EntityTabs {
@@ -104,6 +113,8 @@ export class ScenarioEditorScreenComponent {
   readonly customUnitDefinitions = signal<CustomUnitDefinition[]>([]);
   readonly selectedUnitDefinition = signal<CustomUnitDefinition | null>(null);
 
+  readonly customSpellsDefinitions = signal<CustomSpellDefinition[]>([]);
+  readonly selectedSpellDefinition = signal<CustomSpellDefinition | null>(null);
   addNewScript(): void {
     const newScript = new ScenarioScript();
     this.scripts.update(SignalArrUtils.addItem(newScript));
@@ -128,5 +139,11 @@ export class ScenarioEditorScreenComponent {
     this.selectedUnitDefinition.set(newDefinition);
     // if (!this.selectedUnitDefinition()) {
     // }
+  }
+
+  addCustomSpellType() {
+    const newDefinition = new CustomSpellDefinition();
+    this.customSpellsDefinitions.update(SignalArrUtils.addItem(newDefinition));
+    this.selectedSpellDefinition.set(newDefinition);
   }
 }
