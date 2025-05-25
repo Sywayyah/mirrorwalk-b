@@ -11,7 +11,9 @@
       {{ item.title() }}
     </div>
 
-    <ng-container *ngTemplateOutlet="item.templateRef()" />
+    <div class="content">
+      <ng-container *ngTemplateOutlet="item.templateRef()" />
+    </div>
 
     <div class="resize-handler"></div>
   </div>

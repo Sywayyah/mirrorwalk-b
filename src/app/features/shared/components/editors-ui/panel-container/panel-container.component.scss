@@ -14,13 +14,17 @@
   height: 400px;
   resize: both;
 
+  .content {
+    padding: 4px 4px;
+  }
+
   .resize-handler {
     position: absolute;
     bottom: 0;
     right: 0;
     height: 4px;
     width: 4px;
-    background: red;
+    background: rgb(71, 71, 71);
   }
 }
 
