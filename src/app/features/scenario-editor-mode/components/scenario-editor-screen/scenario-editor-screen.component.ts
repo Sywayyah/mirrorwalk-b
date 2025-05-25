@@ -2,9 +2,10 @@ import { CommonModule } from '@angular/common';
 import { Component, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { EntitiesRegisty } from 'src/app/core/entities';
-import { GameOpenMainScreen } from 'src/app/core/events';
+import { GameOpenMainScreen, OpenNewGameScreen } from 'src/app/core/events';
+import { HeroBase } from 'src/app/core/heroes';
 import { ItemBaseType } from 'src/app/core/items';
-import { SpellActivationType, SpellBaseType } from 'src/app/core/spells';
+import { createSpell, SpellActivationType, SpellBaseType } from 'src/app/core/spells';
 import { UnitBaseType } from 'src/app/core/unit-types';
 import { SignalArrUtils } from 'src/app/core/utils/signals';
 import { DropdownOptionComponent } from 'src/app/features/shared/components/dropdown/dropdown-option.component';
@@ -145,5 +146,47 @@ export class ScenarioEditorScreenComponent {
     const newDefinition = new CustomSpellDefinition();
     this.customSpellsDefinitions.update(SignalArrUtils.addItem(newDefinition));
     this.selectedSpellDefinition.set(newDefinition);
+  }
+
+  testScenario() {
+    const newSpells = this.customSpellsDefinitions().map((spellDefinition, i) => {
+      // eslint-disable-next-line @typescript-eslint/no-implied-eval
+      const fn = new Function(
+        'events',
+        'actions',
+        'spellInstance',
+        'target',
+        spellDefinition.connectedScript()?.code() || '',
+      );
+
+      return createSpell({
+        activationType: spellDefinition.activationType(),
+        name: spellDefinition.name(),
+        icon: {
+          icon: spellDefinition.icon(),
+        },
+        id: `#spell-custom-${i}`,
+        getDescription() {
+          return { descriptions: ['Custom Ability', spellDefinition.name()] };
+        },
+        config: {
+          init({ events, actions, spellInstance }) {
+            events.on({
+              PlayerTargetsSpell({ target }) {
+                fn(events, actions, spellInstance, target);
+              },
+            });
+          },
+        },
+      });
+    });
+
+    this.events.dispatch(OpenNewGameScreen());
+
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
+    const helveticaHero = EntitiesRegisty.resolve('#hero-helvetica') as HeroBase;
+    newSpells.forEach((spell) => {
+      helveticaHero.initialState.abilities.push(spell.id);
+    });
   }
 }
