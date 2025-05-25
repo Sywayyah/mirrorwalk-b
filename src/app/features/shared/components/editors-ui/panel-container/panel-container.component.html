@@ -4,6 +4,7 @@
     [style.width.px]="item.width()"
     [style.height.px]="item.height()"
     cdkDrag
+    [cdkDragFreeDragPosition]="item.position()"
     (mousedown)="focused(item)"
   >
     <div
