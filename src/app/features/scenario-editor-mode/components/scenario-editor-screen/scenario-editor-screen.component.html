@@ -24,10 +24,17 @@
       <mw-dropdown-option [value]="scenario">
         {{ scenario.name }}
       </mw-dropdown-option>
+    } @empty {
+      <div class="empty">No Scenarios Created...</div>
     }
   </mw-dropdown>
 
-  <button mw-main-button (click)="addNewScenario()">New Scenario</button>
+  <button
+    mw-main-button
+    (click)="addNewScenario()"
+  >
+    New Scenario
+  </button>
   @if (scenario) {
     Selected Scenario Name:
     <input
@@ -93,6 +100,8 @@
               <mw-dropdown-option [value]="unit">
                 {{ unit.name() }}
               </mw-dropdown-option>
+            } @empty {
+              <div class="empty">No Unit Types Defined...</div>
             }
           </mw-dropdown>
 
@@ -160,6 +169,8 @@
               <mw-dropdown-option [value]="spell">
                 {{ spell.name() }}
               </mw-dropdown-option>
+            } @empty {
+              <div class="empty">No Custom Spells Defined...</div>
             }
           </mw-dropdown>
 
@@ -216,6 +227,8 @@
                     <mw-dropdown-option [value]="script">
                       {{ script.name() }}
                     </mw-dropdown-option>
+                  } @empty {
+                    <div class="empty">No custom scripts created...</div>
                   }
                 </mw-dropdown>
               </div>
@@ -316,6 +329,8 @@
           <mw-dropdown-option [value]="script">
             {{ script.name() }}
           </mw-dropdown-option>
+        } @empty {
+          <div class="empty">No Custom Scripts Defined...</div>
         }
       </mw-dropdown>
 

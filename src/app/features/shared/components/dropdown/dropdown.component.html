@@ -16,5 +16,7 @@
     @for (option of options(); track $index) {
       <ng-container *ngTemplateOutlet="option.templateRef()" />
     }
+
+    <ng-content select=".empty" />
   </div>
 </ng-template>
