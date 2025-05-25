@@ -1,8 +1,8 @@
 import { CdkDrag, CdkDragHandle } from '@angular/cdk/drag-drop';
 import { CommonModule } from '@angular/common';
-import { Component, inject, Signal, TemplateRef } from '@angular/core';
-import { PanelsService } from '../panels.service';
+import { Component, inject } from '@angular/core';
 import { CommonUtils } from 'src/app/core/utils';
+import { PanelModel, PanelsService } from '../panels.service';
 
 @Component({
   selector: 'mw-panel-container',
@@ -14,7 +14,7 @@ import { CommonUtils } from 'src/app/core/utils';
 export class PanelContainerComponent {
   readonly panels = inject(PanelsService);
 
-  focused(panel: { templateRef: Signal<TemplateRef<object>>; title: Signal<string> }) {
+  focused(panel: PanelModel) {
     CommonUtils.removeItem(this.panels.panels, panel);
     this.panels.panels.push(panel);
   }

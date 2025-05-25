@@ -68,7 +68,11 @@
 </button>
 
 <mw-panel-container>
-  <mw-panel title="Entities Manager">
+  <mw-panel
+    title="Entities Manager"
+    [width]="300"
+    [height]="400"
+  >
     <div class="panel">
       <div class="header-tabs">
         @for (tab of EntityTabs; track $index) {
@@ -229,6 +233,7 @@
                     </mw-dropdown-option>
                   } @empty {
                     <div class="empty">No custom scripts created...</div>
+                    <!-- todo: can create a small button that will create new script and link it -->
                   }
                 </mw-dropdown>
               </div>
@@ -239,7 +244,11 @@
     </div>
   </mw-panel>
 
-  <mw-panel title="Entities Inspector">
+  <mw-panel
+    title="Entities Inspector"
+    [height]="300"
+    [width]="250"
+  >
     <div class="panel">
       <div class="header">Units</div>
 
@@ -309,10 +318,21 @@
   </mw-panel>
 
   <!-- Later - animations as entities -->
-  <mw-panel title="VFX Editor"> VFX Preview </mw-panel>
+  <mw-panel
+    title="VFX Editor"
+    [height]="60"
+    [width]="100"
+  >
+    VFX Preview
+  </mw-panel>
 
-  <mw-panel title="Scripts Editor">
+  <mw-panel
+    title="Scripts Editor"
+    [height]="300"
+    [width]="660"
+  >
     <div class="panel">
+      <!-- todo: Templates? Examples of spells, also, cheatsheets with available params and details -->
       <mw-dropdown [(selectedItem)]="selectedScript">
         <div class="trigger">
           @if (!scripts().length) {

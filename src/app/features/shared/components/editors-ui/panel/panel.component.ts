@@ -1,4 +1,4 @@
-import { Component, inject, input, TemplateRef, viewChild } from '@angular/core';
+import { Component, inject, input, model, TemplateRef, viewChild } from '@angular/core';
 import { PanelsService } from '../panels.service';
 
 @Component({
@@ -9,6 +9,9 @@ import { PanelsService } from '../panels.service';
 })
 export class PanelComponent {
   readonly title = input('panel_title');
+
+  readonly width = model(100);
+  readonly height = model(100);
 
   readonly templateRef = viewChild.required<TemplateRef<object>>('content');
   private readonly panels = inject(PanelsService);
