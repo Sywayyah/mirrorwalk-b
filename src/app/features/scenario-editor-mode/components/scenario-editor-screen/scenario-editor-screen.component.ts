@@ -33,6 +33,13 @@ class ScenarioScript {
   readonly code = signal('');
 }
 
+class CustomUnitDefinition {
+  readonly name = signal('New Unit Type');
+  readonly level = signal(1);
+  readonly health = signal(10);
+  readonly damage = signal(5);
+}
+
 // scenarios persistance, export (entire scenario, individual aspects, like triggers, map generators, etc.)
 
 @Component({
@@ -73,6 +80,9 @@ export class ScenarioEditorScreenComponent {
   readonly selectedScenario = signal(null as Scenario | null);
   readonly selectedScript = signal(null as ScenarioScript | null);
 
+  readonly customUnitDefinitions = signal<CustomUnitDefinition[]>([]);
+  readonly selectedUnitDefinition = signal<CustomUnitDefinition | null>(null);
+
   addNewScript(): void {
     const newScript = new ScenarioScript();
     this.scripts.update(SignalArrUtils.addItem(newScript));
@@ -89,5 +99,13 @@ export class ScenarioEditorScreenComponent {
       const fn = new Function(script.code());
       fn();
     });
+  }
+
+  addCustomUnitGroup() {
+    const newDefinition = new CustomUnitDefinition();
+    this.customUnitDefinitions.update(SignalArrUtils.addItem(newDefinition));
+    this.selectedUnitDefinition.set(newDefinition);
+    // if (!this.selectedUnitDefinition()) {
+    // }
   }
 }
