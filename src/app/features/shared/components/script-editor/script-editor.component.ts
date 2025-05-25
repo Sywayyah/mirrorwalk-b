@@ -26,8 +26,9 @@ export class ScriptEditorComponent implements OnInit, OnDestroy, OnChanges {
 
   ngOnInit() {
     const editorElement = this.editorContainer().nativeElement as HTMLElement;
+    const initialCode = this.code();
 
-    editorElement.textContent = this.code();
+    editorElement.textContent = initialCode;
 
     this.jar = CodeJar(
       editorElement,
@@ -44,6 +45,13 @@ export class ScriptEditorComponent implements OnInit, OnDestroy, OnChanges {
       },
     );
 
+    // highlight first code if provided via input
+    if (initialCode) {
+      editorElement.innerHTML = hljs.highlight(initialCode, {
+        language: 'javascript',
+      }).value;
+    }
+
     this.jar.onUpdate((newCode) => {
       this.code.set(newCode);
     });
@@ -53,6 +61,7 @@ export class ScriptEditorComponent implements OnInit, OnDestroy, OnChanges {
     if (this.jar) {
       if (this.jar.toString() !== this.code()) {
         this.jar.updateCode(this.code());
+        this.jar.save();
       }
     }
   }
