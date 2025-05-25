@@ -371,11 +371,27 @@
       @let script = selectedScript();
 
       @if (script) {
-        Script Name:
-        <input
-          type="text"
-          [(ngModel)]="script.name"
-        />
+        <div class="property">
+          Script Name:
+          <input
+            type="text"
+            [(ngModel)]="script.name"
+          />
+        </div>
+        <div class="property">
+          Script Type:
+          <mw-dropdown [(selectedItem)]="script.type">
+            <div class="trigger">
+              {{ script.type().label }}
+            </div>
+
+            @for (option of ScriptTypes; track $index) {
+              <mw-dropdown-option [value]="option">
+                {{ option.label }}
+              </mw-dropdown-option>
+            }
+          </mw-dropdown>
+        </div>
 
         @defer {
           <mw-script-editor [(code)]="script.code" />

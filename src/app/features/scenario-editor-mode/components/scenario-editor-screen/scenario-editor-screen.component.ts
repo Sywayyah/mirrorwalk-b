@@ -25,14 +25,15 @@ class Scenario {
 }
 
 enum ScriptType {
-  Spell,
+  TargetedSpell,
   Trigger,
+  InstantSpell,
 }
 class ScenarioScript {
   static counter = 0;
   readonly id = `custom_script_${ScenarioScript.counter}`;
   readonly name = signal(`New_Script_${ScenarioScript.counter}`);
-  readonly type = signal(ScriptType.Spell);
+  readonly type = signal(SCRIPT_TYPE_OPTIONS[0]);
   readonly code = signal('');
 
   constructor(id?: string) {
@@ -47,7 +48,7 @@ class ScenarioScript {
 
     newScript.code.set(saved.code);
     newScript.name.set(saved.name);
-    newScript.type.set(saved.type);
+    newScript.type.set(SCRIPT_TYPE_OPTIONS.find((option) => option.value === saved.type)!);
     return newScript;
   }
 }
@@ -80,7 +81,7 @@ class CustomSpellDefinition {
     newSpell.name.set(saved.name);
     newSpell.icon.set(saved.icon);
     newSpell.connectedScript.set(scripts.find((script) => script.id === saved.linkedScriptId) ?? null);
-    newSpell.activationType.set(ACTIVATION_TYPE_OPTIONS.find((option) => option.type === saved.activationType)!);
+    newSpell.activationType.set(ACTIVATION_TYPE_OPTIONS.find((option) => option.value === saved.activationType)!);
 
     return newSpell;
   }
@@ -120,31 +121,42 @@ interface SavedScenarioLocalStorageModel {
   customScripts: SavedScriptLocalStorageModel[];
 }
 
-interface ActivationTypeOption {
-  type: SpellActivationType;
+interface Option<T> {
+  label: string;
+  value: T;
+}
+interface ActivationTypeOption extends Option<SpellActivationType> {
   label: string;
 }
+
+interface ScriptTypeOption extends Option<ScriptType> {}
+
+const SCRIPT_TYPE_OPTIONS: ScriptTypeOption[] = [
+  { label: 'Targeted Spell Script', value: ScriptType.TargetedSpell },
+  { label: 'Instant Spell Script', value: ScriptType.InstantSpell },
+  { label: 'Trigger Spell', value: ScriptType.Trigger },
+];
 
 const ACTIVATION_TYPE_OPTIONS: ActivationTypeOption[] = [
   {
     label: 'Targetable',
-    type: SpellActivationType.Target,
+    value: SpellActivationType.Target,
   },
   {
     label: 'Instant',
-    type: SpellActivationType.Instant,
+    value: SpellActivationType.Instant,
   },
   {
     label: 'Passive',
-    type: SpellActivationType.Passive,
+    value: SpellActivationType.Passive,
   },
   {
     label: 'Buff',
-    type: SpellActivationType.Buff,
+    value: SpellActivationType.Buff,
   },
   {
     label: 'Debuff',
-    type: SpellActivationType.Debuff,
+    value: SpellActivationType.Debuff,
   },
 ];
 @Component({
@@ -195,6 +207,7 @@ export class ScenarioEditorScreenComponent {
   readonly selectedScenario = signal(null as SavedScenarioLocalStorageModel | null);
 
   readonly ActivationTypes: ActivationTypeOption[] = ACTIVATION_TYPE_OPTIONS;
+  readonly ScriptTypes: ScriptTypeOption[] = SCRIPT_TYPE_OPTIONS;
 
   readonly currentScenarioName = signal('');
   readonly selectedScript = signal(null as ScenarioScript | null);
@@ -280,13 +293,13 @@ export class ScenarioEditorScreenComponent {
         code: script.code(),
         id: script.id,
         name: script.name(),
-        type: script.type(),
+        type: script.type().value,
       })),
       customSpells: this.customSpellsDefinitions().map((spell) => ({
         id: spell.id,
         name: spell.name(),
         icon: spell.icon(),
-        activationType: spell.activationType().type,
+        activationType: spell.activationType().value,
         linkedScriptId: spell.connectedScript()?.id,
       })),
       locations: [],
@@ -328,7 +341,7 @@ export class ScenarioEditorScreenComponent {
       );
 
       return createSpell({
-        activationType: spellDefinition.activationType().type,
+        activationType: spellDefinition.activationType().value,
         name: spellDefinition.name(),
         icon: {
           icon: spellDefinition.icon(),
