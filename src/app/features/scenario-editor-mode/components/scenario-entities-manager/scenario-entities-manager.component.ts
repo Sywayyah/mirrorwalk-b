@@ -12,10 +12,11 @@ import { DropdownComponent } from '../../../shared/components/dropdown/dropdown.
 import { DropdownOptionComponent } from '../../../shared/components/dropdown/dropdown-option.component';
 import { SignalArrUtils } from 'src/app/core/utils/signals';
 import { FormsModule } from '@angular/forms';
+import { SharedModule } from "../../../shared/shared.module";
 
 @Component({
   selector: 'mw-scenario-entities-manager',
-  imports: [DropdownComponent, DropdownOptionComponent, FormsModule],
+  imports: [DropdownComponent, DropdownOptionComponent, FormsModule, SharedModule],
   templateUrl: './scenario-entities-manager.component.html',
   styleUrl: './scenario-entities-manager.component.scss',
 })

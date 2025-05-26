@@ -225,6 +225,69 @@
         </div>
 
         <div class="property">
+          Mana:
+
+          <input
+            type="number"
+            step="1"
+            min="1"
+            [(ngModel)]="selectedHeroTypeTVar.maxMana"
+          />
+        </div>
+
+        <div class="property">
+          <mw-img-icon icon="gold" />
+
+          Gold:
+
+          <input
+            type="number"
+            step="1"
+            min="0"
+            [(ngModel)]="selectedHeroTypeTVar.initialGold"
+          />
+        </div>
+
+        <div class="property">
+          <mw-img-icon icon="wood" />
+
+          Wood:
+
+          <input
+            type="number"
+            step="1"
+            min="0"
+            [(ngModel)]="selectedHeroTypeTVar.initialWood"
+          />
+        </div>
+
+        <div class="property">
+          <mw-img-icon icon="gems" />
+
+          Gems:
+
+          <input
+            type="number"
+            step="1"
+            min="0"
+            [(ngModel)]="selectedHeroTypeTVar.initialGems"
+          />
+        </div>
+
+        <div class="property">
+          <mw-img-icon icon="crystals" />
+
+          Crystals:
+
+          <input
+            type="number"
+            step="1"
+            min="0"
+            [(ngModel)]="selectedHeroTypeTVar.initialCrystals"
+          />
+        </div>
+
+        <div class="property">
           Spells:
 
           @for (spell of selectedHeroTypeTVar.spells(); track $index) {
