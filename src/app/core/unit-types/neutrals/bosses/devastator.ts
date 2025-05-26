@@ -18,7 +18,7 @@ neutralsFaction.defineUnitType({
   ]),
 
   baseStats: {
-    damageInfo: { minDamage: 32, maxDamage: 47 },
+    damageInfo: { minDamage: 66, maxDamage: 92 },
     attackRating: 9,
     defence: 9,
     health: 820,
