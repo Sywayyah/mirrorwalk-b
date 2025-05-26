@@ -299,6 +299,16 @@
                   [(ngModel)]="selectedHeroTypeTVar.assetUrl"
                 />
               </div>
+
+              <div class="property">
+                Spells:
+
+                @for (spell of selectedHeroTypeTVar.spells(); track $index) {
+                  Spell - {{ spell.name() }}
+                }
+
+                <button>Add spell</button>
+              </div>
             </div>
           }
         }
