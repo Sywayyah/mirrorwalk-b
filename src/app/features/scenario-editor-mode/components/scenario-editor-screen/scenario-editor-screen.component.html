@@ -250,6 +250,58 @@
             </div>
           }
         }
+        @case (EntityTab.Heroes) {
+          <div class="header">Heroes:</div>
+
+          @let selectedHeroTypeTVar = selectedHeroDefinition();
+
+          <mw-dropdown [(selectedItem)]="selectedHeroDefinition">
+            <div class="trigger">
+              @if (!customHeroDefinitions().length) {
+                No custom heroes defined...
+              } @else {
+                @if (!selectedHeroTypeTVar) {
+                  Click to select custom hero...
+                } @else {
+                  {{ selectedHeroTypeTVar.name() }}
+                }
+              }
+            </div>
+
+            @for (hero of customHeroDefinitions(); track $index) {
+              <mw-dropdown-option [value]="hero">Hero - {{ hero.name() }}</mw-dropdown-option>
+            } @empty {
+              <div class="empty">Define new hero type...</div>
+            }
+          </mw-dropdown>
+
+          <button
+            mw-main-button
+            (click)="addNewHero()"
+          >
+            Add new Hero
+          </button>
+
+          @if (selectedHeroTypeTVar) {
+            <div class="properties">
+              <div class="property">
+                Name:
+                <input
+                  type="text"
+                  [(ngModel)]="selectedHeroTypeTVar.name"
+                />
+              </div>
+
+              <div class="property">
+                Asset:
+                <input
+                  type="text"
+                  [(ngModel)]="selectedHeroTypeTVar.assetUrl"
+                />
+              </div>
+            </div>
+          }
+        }
       }
     </div>
   </mw-panel>

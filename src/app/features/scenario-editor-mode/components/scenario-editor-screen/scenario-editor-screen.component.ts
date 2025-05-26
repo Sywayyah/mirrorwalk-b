@@ -61,6 +61,23 @@ class CustomUnitDefinition {
   readonly damage = signal(5);
 }
 
+class CustomHeroDefinition {
+  static counter = 0;
+  readonly id = `custom_hero_${CustomHeroDefinition.counter}`;
+  readonly assetUrl = signal('heroes/hero-melee.png');
+  readonly name = signal(`New_Hero_Type_${CustomHeroDefinition.counter}`);
+  readonly spells = signal([]);
+  readonly items = signal([]);
+  readonly army = signal([]);
+
+  constructor(id?: string) {
+    CustomHeroDefinition.counter++;
+    if (id) {
+      this.id = id;
+    }
+  }
+}
+
 class CustomSpellDefinition {
   static counter = 0;
   readonly id = `custom_spell_${CustomSpellDefinition.counter}`;
@@ -213,9 +230,11 @@ export class ScenarioEditorScreenComponent {
   readonly selectedScript = signal(null as ScenarioScript | null);
 
   readonly customUnitDefinitions = signal<CustomUnitDefinition[]>([]);
-  readonly selectedUnitDefinition = signal<CustomUnitDefinition | null>(null);
-
   readonly customSpellsDefinitions = signal<CustomSpellDefinition[]>([]);
+  readonly customHeroDefinitions = signal<CustomHeroDefinition[]>([]);
+  readonly selectedUnitDefinition = signal<CustomUnitDefinition | null>(null);
+  readonly selectedHeroDefinition = signal<CustomHeroDefinition | null>(null);
+
   readonly selectedSpellDefinition = signal<CustomSpellDefinition | null>(null);
 
   constructor() {
@@ -327,6 +346,12 @@ export class ScenarioEditorScreenComponent {
     const newDefinition = new CustomSpellDefinition();
     this.customSpellsDefinitions.update(SignalArrUtils.addItem(newDefinition));
     this.selectedSpellDefinition.set(newDefinition);
+  }
+
+  addNewHero() {
+    const newDefinition = new CustomHeroDefinition();
+    this.customHeroDefinitions.update(SignalArrUtils.addItem(newDefinition));
+    this.selectedHeroDefinition.set(newDefinition);
   }
 
   testScenario() {
