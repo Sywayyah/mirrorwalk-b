@@ -1,0 +1,24 @@
+.header-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  color: white;
+
+  .tab {
+    padding: 3px;
+    font-size: 12px;
+    cursor: pointer;
+    user-select: none;
+
+    &:hover {
+      background: #00000052;
+    }
+    &.active {
+      background: orange;
+    }
+  }
+}
+
+.empty {
+  font-size: 10px;
+  padding: 10px;
+}

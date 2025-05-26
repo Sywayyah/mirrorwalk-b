@@ -17,8 +17,6 @@ import { EventsService } from 'src/app/store';
 import { PanelContainerComponent } from '../../../shared/components/editors-ui/panel-container/panel-container.component';
 import { PanelComponent } from '../../../shared/components/editors-ui/panel/panel.component';
 import {
-  ACTIVATION_TYPE_OPTIONS,
-  ActivationTypeOption,
   CustomHeroDefinition,
   CustomSpellDefinition,
   CustomUnitDefinition,
@@ -30,6 +28,7 @@ import {
   SCRIPT_TYPE_OPTIONS,
   ScriptTypeOption,
 } from '../../config/types';
+import { ScenarioEntitiesManagerComponent } from '../scenario-entities-manager/scenario-entities-manager.component';
 
 @Component({
   selector: 'mw-scenario-editor-screen',
@@ -43,6 +42,7 @@ import {
     PanelComponent,
     DropdownComponent,
     DropdownOptionComponent,
+    ScenarioEntitiesManagerComponent,
   ],
 
   templateUrl: './scenario-editor-screen.component.html',
@@ -54,16 +54,6 @@ export class ScenarioEditorScreenComponent {
   readonly scenarios = signal<SavedScenarioLocalStorageModel[]>([]);
 
   private readonly events = inject(EventsService);
-
-  readonly EntityTabs = [
-    EntityTabs.UnitTypes,
-    EntityTabs.Spells,
-    EntityTabs.Items,
-    EntityTabs.Heroes,
-    EntityTabs.Locations,
-    EntityTabs.Factions,
-  ];
-  readonly EntityTab = EntityTabs;
 
   readonly activeTab = signal<EntityTabs>(EntityTabs.UnitTypes);
 
@@ -80,7 +70,6 @@ export class ScenarioEditorScreenComponent {
   readonly selectedSpellType = signal(null as SpellBaseType | null);
   readonly selectedScenario = signal(null as SavedScenarioLocalStorageModel | null);
 
-  readonly ActivationTypes: ActivationTypeOption[] = ACTIVATION_TYPE_OPTIONS;
   readonly ScriptTypes: ScriptTypeOption[] = SCRIPT_TYPE_OPTIONS;
 
   readonly currentScenarioName = signal('');
@@ -89,10 +78,6 @@ export class ScenarioEditorScreenComponent {
   readonly customUnitDefinitions = signal<CustomUnitDefinition[]>([]);
   readonly customSpellsDefinitions = signal<CustomSpellDefinition[]>([]);
   readonly customHeroDefinitions = signal<CustomHeroDefinition[]>([]);
-  readonly selectedUnitDefinition = signal<CustomUnitDefinition | null>(null);
-  readonly selectedHeroDefinition = signal<CustomHeroDefinition | null>(null);
-
-  readonly selectedSpellDefinition = signal<CustomSpellDefinition | null>(null);
 
   constructor() {
     const savedScenarions = JSON.parse(localStorage.getItem('scenarios') as string) as SavedScenarioLocalStorageModel[];
@@ -145,14 +130,6 @@ export class ScenarioEditorScreenComponent {
     });
   }
 
-  addCustomUnitGroup() {
-    const newDefinition = new CustomUnitDefinition();
-    this.customUnitDefinitions.update(SignalArrUtils.addItem(newDefinition));
-    this.selectedUnitDefinition.set(newDefinition);
-    // if (!this.selectedUnitDefinition()) {
-    // }
-  }
-
   saveScenario() {
     const scenarios = this.scenarios();
 
@@ -197,18 +174,6 @@ export class ScenarioEditorScreenComponent {
     }
 
     localStorage.setItem('scenarios', JSON.stringify(scenarios));
-  }
-
-  addCustomSpellType() {
-    const newDefinition = new CustomSpellDefinition();
-    this.customSpellsDefinitions.update(SignalArrUtils.addItem(newDefinition));
-    this.selectedSpellDefinition.set(newDefinition);
-  }
-
-  addNewHero() {
-    const newDefinition = new CustomHeroDefinition();
-    this.customHeroDefinitions.update(SignalArrUtils.addItem(newDefinition));
-    this.selectedHeroDefinition.set(newDefinition);
   }
 
   testScenario() {
