@@ -79,6 +79,7 @@
         [(customHeroDefinitions)]="customHeroDefinitions"
         [(customSpellsDefinitions)]="customSpellsDefinitions"
         [(customUnitDefinitions)]="customUnitDefinitions"
+        [spellSelectedInInspector]="selectedCustomSpellType()"
       />
     </div>
   </mw-panel>
@@ -90,70 +91,102 @@
     [xPosition]="320"
   >
     <div class="panel">
-      <div class="header">Units</div>
+      <div class="section">
+        <div class="header">Units</div>
 
-      <mw-dropdown [(selectedItem)]="selectedUnitType">
-        <div class="trigger">
-          @if (selectedUnitType()) {
-            {{ selectedUnitType()?.faction?.title }} - {{ selectedUnitType()?.name }}
-          } @else {
-            Select Unit Type...
+        <mw-dropdown [(selectedItem)]="selectedUnitType">
+          <div class="trigger">
+            @if (selectedUnitType()) {
+              {{ selectedUnitType()?.faction?.title }} - {{ selectedUnitType()?.name }}
+            } @else {
+              Select Unit Type...
+            }
+          </div>
+
+          @for (unitType of unitTypes; track $index) {
+            <mw-dropdown-option [value]="unitType">
+              {{ unitType.faction.title }} - {{ unitType.name }}
+            </mw-dropdown-option>
           }
-        </div>
+        </mw-dropdown>
+        {{ selectedUnitType()?.id }}
+      </div>
 
-        @for (unitType of unitTypes; track $index) {
-          <mw-dropdown-option [value]="unitType">
-            {{ unitType.faction.title }} - {{ unitType.name }}
-          </mw-dropdown-option>
-        }
-      </mw-dropdown>
-      {{ selectedUnitType()?.id }}
+      <div class="section">
+        <div class="header">Items</div>
 
-      <div class="header">Items</div>
+        @let itemType = selectedItemType();
+        <mw-dropdown [(selectedItem)]="selectedItemType">
+          <div class="trigger">
+            @if (itemType) {
+              <mw-ra-icon [icon]="itemType.icon.icon"></mw-ra-icon>
+              Item - {{ itemType.name }}
+            } @else {
+              Select Item Type...
+            }
+          </div>
 
-      @let itemType = selectedItemType();
-      <mw-dropdown [(selectedItem)]="selectedItemType">
-        <div class="trigger">
-          @if (itemType) {
-            <mw-ra-icon [icon]="itemType.icon.icon"></mw-ra-icon>
-            Item - {{ itemType.name }}
-          } @else {
-            Select Item Type...
+          @for (itemType of itemTypes; track $index) {
+            <mw-dropdown-option [value]="itemType">
+              <mw-ra-icon [icon]="itemType.icon.icon"></mw-ra-icon>
+              Item - {{ itemType.name }}
+            </mw-dropdown-option>
           }
-        </div>
+        </mw-dropdown>
 
-        @for (itemType of itemTypes; track $index) {
-          <mw-dropdown-option [value]="itemType">
-            <mw-ra-icon [icon]="itemType.icon.icon"></mw-ra-icon>
-            Item - {{ itemType.name }}
-          </mw-dropdown-option>
-        }
-      </mw-dropdown>
+        {{ selectedItemType()?.id }}
+      </div>
 
-      {{ selectedItemType()?.id }}
+      <div class="section">
+        <div class="header">Spells</div>
 
-      <div class="header">Spells</div>
+        @let spellType = selectedSpellType();
+        <mw-dropdown [(selectedItem)]="selectedSpellType">
+          <div class="trigger">
+            @if (spellType) {
+              <mw-ra-icon [icon]="spellType.icon.icon"></mw-ra-icon>
+              Spell - {{ spellType.activationType }} - {{ spellType.name }}
+            } @else {
+              Select Spell Type...
+            }
+          </div>
 
-      @let spellType = selectedSpellType();
-      <mw-dropdown [(selectedItem)]="selectedSpellType">
-        <div class="trigger">
-          @if (spellType) {
-            <mw-ra-icon [icon]="spellType.icon.icon"></mw-ra-icon>
-            Spell - {{ spellType.activationType }} - {{ spellType.name }}
-          } @else {
-            Select Spell Type...
+          @for (spellType of spellTypes; track $index) {
+            <mw-dropdown-option [value]="spellType">
+              <mw-ra-icon [icon]="spellType.icon.icon"></mw-ra-icon>
+              Spell - {{ spellType.activationType }} - {{ spellType.name }}
+            </mw-dropdown-option>
           }
-        </div>
+        </mw-dropdown>
 
-        @for (spellType of spellTypes; track $index) {
-          <mw-dropdown-option [value]="spellType">
-            <mw-ra-icon [icon]="spellType.icon.icon"></mw-ra-icon>
-            Spell - {{ spellType.activationType }} - {{ spellType.name }}
-          </mw-dropdown-option>
-        }
-      </mw-dropdown>
+        {{ spellType?.id }}
+      </div>
 
-      {{ spellType?.id }}
+      <!-- todo: will need to unify default/custom spells -->
+      <div class="section">
+        <div class="header">Custom Spells</div>
+
+        @let customSpellType = selectedCustomSpellType();
+        <mw-dropdown [(selectedItem)]="selectedCustomSpellType">
+          <div class="trigger">
+            @if (customSpellType) {
+              <mw-ra-icon [icon]="customSpellType.icon()"></mw-ra-icon>
+              Spell - {{ customSpellType.activationType().label }} - {{ customSpellType.name() }}
+            } @else {
+              Select Spell Type...
+            }
+          </div>
+
+          @for (spellType of customSpellsDefinitions(); track $index) {
+            <mw-dropdown-option [value]="spellType">
+              <mw-ra-icon [icon]="spellType.icon()"></mw-ra-icon>
+              Spell - {{ spellType.activationType().label }} - {{ spellType.name() }}
+            </mw-dropdown-option>
+          }
+        </mw-dropdown>
+
+        {{ customSpellType?.id }}
+      </div>
     </div>
   </mw-panel>
 
@@ -197,6 +230,13 @@
         }
       </mw-dropdown>
 
+      <button
+        mw-main-button
+        (click)="addNewScript()"
+      >
+        Add Script
+      </button>
+
       @let script = selectedScript();
 
       @if (script) {
@@ -227,14 +267,6 @@
         }
       }
 
-      <button
-        mw-main-button
-        (click)="addNewScript()"
-      >
-        Add Script
-      </button>
-
-      <button (click)="runScripts()">Run</button>
     </div>
   </mw-panel>
 </mw-panel-container>

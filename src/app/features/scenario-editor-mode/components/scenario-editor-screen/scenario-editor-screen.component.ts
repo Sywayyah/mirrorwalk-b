@@ -68,6 +68,7 @@ export class ScenarioEditorScreenComponent {
   readonly selectedUnitType = signal(null as UnitBaseType | null);
   readonly selectedItemType = signal(null as ItemBaseType | null);
   readonly selectedSpellType = signal(null as SpellBaseType | null);
+  readonly selectedCustomSpellType = signal(null as CustomSpellDefinition | null);
   readonly selectedScenario = signal(null as SavedScenarioLocalStorageModel | null);
 
   readonly ScriptTypes: ScriptTypeOption[] = SCRIPT_TYPE_OPTIONS;
@@ -120,14 +121,6 @@ export class ScenarioEditorScreenComponent {
 
   goToMainScreen() {
     this.events.dispatch(GameOpenMainScreen());
-  }
-
-  runScripts() {
-    this.scripts().forEach((script) => {
-      // eslint-disable-next-line @typescript-eslint/no-implied-eval
-      const fn = new Function(script.code());
-      fn();
-    });
   }
 
   saveScenario() {

@@ -1,4 +1,9 @@
 import { Component, input, model, signal } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { SignalArrUtils } from 'src/app/core/utils/signals';
+import { DropdownOptionComponent } from '../../../shared/components/dropdown/dropdown-option.component';
+import { DropdownComponent } from '../../../shared/components/dropdown/dropdown.component';
+import { SharedModule } from '../../../shared/shared.module';
 import {
   ACTIVATION_TYPE_OPTIONS,
   ActivationTypeOption,
@@ -8,11 +13,6 @@ import {
   EntityTabs,
   ScenarioScript,
 } from '../../config/types';
-import { DropdownComponent } from '../../../shared/components/dropdown/dropdown.component';
-import { DropdownOptionComponent } from '../../../shared/components/dropdown/dropdown-option.component';
-import { SignalArrUtils } from 'src/app/core/utils/signals';
-import { FormsModule } from '@angular/forms';
-import { SharedModule } from "../../../shared/shared.module";
 
 @Component({
   selector: 'mw-scenario-entities-manager',
@@ -22,6 +22,7 @@ import { SharedModule } from "../../../shared/shared.module";
 })
 export class ScenarioEntitiesManagerComponent {
   readonly scripts = input<ScenarioScript[]>([]);
+  readonly spellSelectedInInspector = input<CustomSpellDefinition | null>(null);
 
   readonly customUnitDefinitions = model<CustomUnitDefinition[]>([]);
   readonly customSpellsDefinitions = model<CustomSpellDefinition[]>([]);
@@ -64,5 +65,18 @@ export class ScenarioEntitiesManagerComponent {
     const newDefinition = new CustomHeroDefinition();
     this.customHeroDefinitions.update(SignalArrUtils.addItem(newDefinition));
     this.selectedHeroDefinition.set(newDefinition);
+  }
+
+  addSpellFromInspector() {
+    const spellFromInspector = this.spellSelectedInInspector();
+    if (!spellFromInspector) {
+      return;
+    }
+
+    this.selectedHeroDefinition()?.spells.update(SignalArrUtils.addItem(spellFromInspector));
+  }
+
+  removeSpellFromHero(spell: CustomSpellDefinition) {
+    this.selectedHeroDefinition()?.spells.update(SignalArrUtils.removeItem(spell));
   }
 }

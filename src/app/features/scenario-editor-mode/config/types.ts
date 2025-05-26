@@ -63,6 +63,14 @@ export class CustomHeroDefinition {
   readonly items = signal([]);
   readonly army = signal([]);
 
+  readonly maxMana = signal(10);
+  readonly defence = signal(1);
+  readonly attack = signal(1);
+  readonly initialGold = signal(1000);
+  readonly initialWood = signal(1);
+  readonly initialGems = signal(0);
+  readonly initialCrystals = signal(0);
+
   constructor(id?: string) {
     CustomHeroDefinition.counter++;
     if (id) {
