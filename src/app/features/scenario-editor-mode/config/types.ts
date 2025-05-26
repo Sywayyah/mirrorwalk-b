@@ -77,6 +77,28 @@ export class CustomHeroDefinition {
       this.id = id;
     }
   }
+
+  static fromSaved(
+    saved: SavedHeroLocalStorageModel,
+    context: { spells: CustomSpellDefinition[] },
+  ): CustomHeroDefinition {
+    const heroDefinition = new CustomHeroDefinition(saved.id);
+
+    heroDefinition.name.set(saved.name);
+    heroDefinition.attack.set(saved.attack);
+    heroDefinition.defence.set(saved.defence);
+
+    heroDefinition.spells.set(
+      saved.spellIds.map((spellId) => context.spells.find((spellDef) => spellDef.id === spellId)!),
+    );
+
+    heroDefinition.initialGold.set(saved.gold);
+    heroDefinition.initialWood.set(saved.wood);
+    heroDefinition.initialGems.set(saved.gems);
+    heroDefinition.initialCrystals.set(saved.crystals);
+
+    return heroDefinition;
+  }
 }
 
 export class CustomSpellDefinition {
@@ -129,6 +151,23 @@ export type SavedSpellLocalStorageModel = {
   linkedScriptId?: string;
 };
 
+interface SavedHeroLocalStorageModel {
+  id: string;
+  name: string;
+  assetUrl: string;
+
+  attack: number;
+  defence: number;
+  maxMana: number;
+  gold: number;
+  wood: number;
+  gems: number;
+  crystals: number;
+
+  spellIds: string[];
+  itemIds: string[];
+}
+
 // scenarios persistance, export (entire scenario, individual aspects, like triggers, map generators, etc.)
 
 export interface SavedScenarioLocalStorageModel {
@@ -137,6 +176,7 @@ export interface SavedScenarioLocalStorageModel {
   locations: object[];
   customSpells: SavedSpellLocalStorageModel[];
   customEntities: object[];
+  customHeroes: SavedHeroLocalStorageModel[];
   customScripts: SavedScriptLocalStorageModel[];
 }
 

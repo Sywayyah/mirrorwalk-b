@@ -1,11 +1,13 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { EntitiesRegisty } from 'src/app/core/entities';
+import { EntitiesRegisty, SpellId } from 'src/app/core/entities';
 import { GameOpenMainScreen, OpenNewGameScreen } from 'src/app/core/events';
+import { humansFaction } from 'src/app/core/factions';
 import { HeroBase } from 'src/app/core/heroes';
 import { ItemBaseType } from 'src/app/core/items';
 import { createSpell, SpellBaseType } from 'src/app/core/spells';
+import { heroDescrElem } from 'src/app/core/ui';
 import { UnitBaseType } from 'src/app/core/unit-types';
 import { CommonUtils } from 'src/app/core/utils';
 import { SignalArrUtils } from 'src/app/core/utils/signals';
@@ -22,8 +24,6 @@ import {
   CustomUnitDefinition,
   EntityTabs,
   SavedScenarioLocalStorageModel,
-  SavedScriptLocalStorageModel,
-  SavedSpellLocalStorageModel,
   ScenarioScript,
   SCRIPT_TYPE_OPTIONS,
   ScriptTypeOption,
@@ -86,14 +86,16 @@ export class ScenarioEditorScreenComponent {
   }
 
   addNewScenario() {
-    const newScenario = {
-      customEntities: [] as object[],
-      customScripts: [] as SavedScriptLocalStorageModel[],
-      customSpells: [] as SavedSpellLocalStorageModel[],
+    const newScenario: SavedScenarioLocalStorageModel = {
+      customEntities: [],
+      customScripts: [],
+      customSpells: [],
+      customHeroes: [],
       id: crypto.randomUUID() as string,
       locations: [] as object[],
       name: 'New Custom Scenario',
     };
+
     this.scenarios.update(SignalArrUtils.addItem(newScenario));
     console.log(newScenario);
 
@@ -109,6 +111,12 @@ export class ScenarioEditorScreenComponent {
     this.scripts.set(scripts);
     this.customSpellsDefinitions.set(
       scenario.customSpells.map((spell) => CustomSpellDefinition.fromSaved(spell, scripts)),
+    );
+
+    this.customHeroDefinitions.set(
+      scenario.customHeroes.map((hero) =>
+        CustomHeroDefinition.fromSaved(hero, { spells: this.customSpellsDefinitions() }),
+      ),
     );
     this.currentScenarioName.set(scenario.name);
   }
@@ -140,6 +148,24 @@ export class ScenarioEditorScreenComponent {
         id: script.id,
         name: script.name(),
         type: script.type().value,
+      })),
+      customHeroes: this.customHeroDefinitions().map((hero) => ({
+        id: hero.id,
+        name: hero.name(),
+        assetUrl: hero.assetUrl(),
+
+        maxMana: hero.maxMana(),
+        attack: hero.attack(),
+        defence: hero.defence(),
+
+        gold: hero.initialGold(),
+        wood: hero.initialWood(),
+        gems: hero.initialGems(),
+        crystals: hero.initialCrystals(),
+
+        spellIds: hero.spells().map((spell) => spell.id),
+        itemIds: [],
+        // itemIds: hero.items.map(item => )
       })),
       customSpells: this.customSpellsDefinitions().map((spell) => ({
         id: spell.id,
@@ -181,12 +207,12 @@ export class ScenarioEditorScreenComponent {
       );
 
       return createSpell({
+        id: `#spell-${spellDefinition.id}`,
         activationType: spellDefinition.activationType().value,
         name: spellDefinition.name(),
         icon: {
           icon: spellDefinition.icon(),
         },
-        id: `#spell-custom-${i}`,
         getDescription() {
           return { descriptions: ['Custom Ability', spellDefinition.name()] };
         },
@@ -202,12 +228,36 @@ export class ScenarioEditorScreenComponent {
       });
     });
 
+    const newHeroes = this.customHeroDefinitions().map((heroDefinition, i) => {
+      const spellIds = heroDefinition.spells().map((spell) => `#spell-${spell.id}`);
+      return humansFaction.createHero({
+        id: `#hero-${heroDefinition.id}`,
+        name: heroDefinition.name(),
+        items: [],
+        abilities: spellIds as SpellId[],
+        army: [{ minUnitGroups: 1, maxUnitGroups: 1, units: [['#unit-h00', 40, 40, 1]] }],
+        generalDescription: heroDescrElem(''),
+        image: heroDefinition.assetUrl(),
+        stats: {
+          baseAttack: heroDefinition.attack(),
+          baseDefence: heroDefinition.defence(),
+          mana: heroDefinition.maxMana(),
+        },
+        resources: {
+          gems: heroDefinition.initialGems(),
+          gold: heroDefinition.initialGold(),
+          redCrystals: heroDefinition.initialCrystals(),
+          wood: heroDefinition.initialWood(),
+        },
+      });
+    });
+
     this.events.dispatch(OpenNewGameScreen());
 
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
-    const helveticaHero = EntitiesRegisty.resolve('#hero-helvetica') as HeroBase;
-    newSpells.forEach((spell) => {
-      helveticaHero.initialState.abilities.push(spell.id);
-    });
+    // const helveticaHero = EntitiesRegisty.resolve('#hero-helvetica') as HeroBase;
+    // newSpells.forEach((spell) => {
+    //   helveticaHero.initialState.abilities.push(spell.id);
+    // });
   }
 }
