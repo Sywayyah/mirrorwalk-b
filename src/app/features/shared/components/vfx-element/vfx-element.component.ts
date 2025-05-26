@@ -1,5 +1,23 @@
-import { Component, ElementRef, EmbeddedViewRef, EventEmitter, OnInit, Output, Renderer2, TemplateRef, ViewChild, ViewContainerRef, ViewRef } from '@angular/core';
-import { AnimationElementType, AnimationIconElement, CustomAnimationData, EffectAnimation, EffectOptions } from 'src/app/core/api/vfx-api';
+import {
+  Component,
+  ElementRef,
+  EmbeddedViewRef,
+  EventEmitter,
+  OnInit,
+  Output,
+  Renderer2,
+  TemplateRef,
+  ViewContainerRef,
+  ViewRef,
+  viewChild,
+} from '@angular/core';
+import {
+  AnimationElementType,
+  AnimationIconElement,
+  CustomAnimationData,
+  EffectAnimation,
+  EffectOptions,
+} from 'src/app/core/api/vfx-api';
 
 export interface AnimationRef {
   elem: VfxElementComponent;
@@ -7,18 +25,17 @@ export interface AnimationRef {
 }
 
 @Component({
-    selector: 'mw-vfx-element',
-    templateUrl: './vfx-element.component.html',
-    styleUrls: ['./vfx-element.component.scss'],
-    standalone: false
+  selector: 'mw-vfx-element',
+  templateUrl: './vfx-element.component.html',
+  styleUrls: ['./vfx-element.component.scss'],
+  standalone: false,
 })
 export class VfxElementComponent implements OnInit {
+  public readonly viewContainerRef = viewChild.required('container', { read: ViewContainerRef });
 
-  @ViewChild('container', { read: ViewContainerRef, static: true }) public viewContainerRef!: ViewContainerRef;
-
-  @ViewChild('iconSfx', { static: true }) public iconSfx!: TemplateRef<unknown>;
-  @ViewChild('customizableVfx', { static: true }) public customizableVfx!: TemplateRef<unknown>;
-  @ViewChild('htmlSfx', { static: true }) public htmlSfx!: TemplateRef<unknown>;
+  public readonly iconSfx = viewChild.required<TemplateRef<unknown>>('iconSfx');
+  public readonly customizableVfx = viewChild.required<TemplateRef<unknown>>('customizableVfx');
+  public readonly htmlSfx = viewChild.required<TemplateRef<unknown>>('htmlSfx');
 
   private createdViews: Record<string, ViewRef> = {};
 
@@ -31,7 +48,7 @@ export class VfxElementComponent implements OnInit {
   constructor(
     public renderer: Renderer2,
     public hostElem: ElementRef,
-  ) { }
+  ) {}
 
   public ngOnInit(): void {
     this.created.emit(this);
@@ -48,30 +65,22 @@ export class VfxElementComponent implements OnInit {
 
     const animationsList: Animation[] = [];
 
-    animation.elements.forEach(animationElemConfig => {
-
+    animation.elements.forEach((animationElemConfig) => {
       let iconSfxView: EmbeddedViewRef<unknown> = null as unknown as EmbeddedViewRef<unknown>;
 
       switch (animationElemConfig.type) {
         case AnimationElementType.Icon:
-          iconSfxView = this.viewContainerRef.createEmbeddedView(
-            this.iconSfx,
-            { icon: (animationElemConfig as AnimationIconElement).icon },
-          );
+          iconSfxView = this.viewContainerRef().createEmbeddedView(this.iconSfx(), {
+            icon: (animationElemConfig as AnimationIconElement).icon,
+          });
 
           break;
         case AnimationElementType.Customizable:
-          iconSfxView = this.viewContainerRef.createEmbeddedView(
-            this.customizableVfx,
-            { data: data.custom },
-          );
+          iconSfxView = this.viewContainerRef().createEmbeddedView(this.customizableVfx(), { data: data.custom });
 
           break;
         case AnimationElementType.Html:
-          iconSfxView = this.viewContainerRef.createEmbeddedView(
-            this.htmlSfx,
-            { html: data.custom?.html },
-          );
+          iconSfxView = this.viewContainerRef().createEmbeddedView(this.htmlSfx(), { html: data.custom?.html });
       }
 
       this.createdViews[animationElemConfig.id] = iconSfxView;
@@ -107,6 +116,6 @@ export class VfxElementComponent implements OnInit {
 
   // Destroys all created VFX elements
   public clearAnimation(): void {
-    this.viewContainerRef.clear();
+    this.viewContainerRef().clear();
   }
 }

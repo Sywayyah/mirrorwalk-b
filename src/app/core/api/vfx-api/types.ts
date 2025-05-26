@@ -1,3 +1,4 @@
+import { Entity, VfxId } from '../../entities';
 import { UnitGroup } from '../../unit-types';
 
 /* Think on better namings and structure for effects and animations */
@@ -22,7 +23,8 @@ export interface AnimationHtmlElement extends AnimationElement<AnimationElementT
 export interface AnimationCustomizableElement extends AnimationElement<AnimationElementType.Customizable> {
 }
 
-export interface EffectAnimation {
+export interface EffectAnimation extends Entity {
+  id: VfxId;
   elements: AnimationElement[];
   elemsKeyframes: Record<string, Keyframe[]>;
   elemsDefaultStyles: Record<string, Record<string, unknown>>;

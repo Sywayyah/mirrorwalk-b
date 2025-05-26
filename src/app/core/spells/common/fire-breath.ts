@@ -10,7 +10,7 @@ const minDmg = 20;
 const maxDmg = 30;
 const unitsCount = 2;
 
-const FireBreathVfx: EffectAnimation = simpleConvergentBuffAnimation('dragon-breath');
+const FireBreathVfx: EffectAnimation = simpleConvergentBuffAnimation('#vfx-dragon-breath', 'dragon-breath');
 
 export const FireBreath: SpellBaseType = createSpell({
   id: '#spell-fire-breath',

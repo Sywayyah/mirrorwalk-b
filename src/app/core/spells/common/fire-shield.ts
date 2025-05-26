@@ -17,7 +17,7 @@ const commonStyles = {
   color: '#ffbc6c',
 };
 
-const HasteAnimation: EffectAnimation = createAnimation([
+const HasteAnimation: EffectAnimation = createAnimation('#vfx-haste', [
   [
     getIconElement(icon, 'fire-main'),
     getPlainAppearanceFrames(),

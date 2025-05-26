@@ -19,7 +19,7 @@ const commonStyles = {
   color: '#a9bee2',
 };
 
-export const FrozenAnimation: EffectAnimation = createAnimation([
+export const FrozenAnimation: EffectAnimation = createAnimation('#vfx-frozen-arrow', [
   [
     getIconElement(icon, 'fire-main'),
     getPlainAppearanceFrames(),

@@ -187,18 +187,48 @@
 
         {{ customSpellType?.id }}
       </div>
+
+      <div class="section">
+        <div class="header">VFX</div>
+
+        @let selectedVfxType = selectedVFX();
+
+        <mw-dropdown [(selectedItem)]="selectedVFX">
+          <div class="trigger">
+            @if (selectedVfxType) {
+              Vfx {{ selectedVfxType.id }}
+            } @else {
+              Select Vfx...
+            }
+          </div>
+
+          @for (vfx of vfxTypes; track $index) {
+            <mw-dropdown-option [value]="vfx">
+              {{ vfx.id }}
+            </mw-dropdown-option>
+          }
+        </mw-dropdown>
+
+        {{ selectedVfxType?.id }}
+      </div>
     </div>
   </mw-panel>
 
   <!-- Later - animations as entities -->
   <mw-panel
     title="VFX Editor"
-    [height]="60"
-    [width]="100"
+    [height]="220"
+    [width]="220"
     [xPosition]="320"
     [yPosition]="320"
   >
     VFX Preview
+
+    <div class="centered">
+      @if (selectedVfxType) {
+        <mw-vfx-element #vfxRef></mw-vfx-element>
+      }
+    </div>
   </mw-panel>
 
   <mw-panel
@@ -266,7 +296,6 @@
           <mw-script-editor [(code)]="script.code" />
         }
       }
-
     </div>
   </mw-panel>
 </mw-panel-container>
