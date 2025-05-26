@@ -1,11 +1,13 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { EntitiesRegisty } from 'src/app/core/entities';
+import { EntitiesRegisty, SpellId } from 'src/app/core/entities';
 import { GameOpenMainScreen, OpenNewGameScreen } from 'src/app/core/events';
+import { humansFaction } from 'src/app/core/factions';
 import { HeroBase } from 'src/app/core/heroes';
 import { ItemBaseType } from 'src/app/core/items';
-import { createSpell, SpellActivationType, SpellBaseType } from 'src/app/core/spells';
+import { createSpell, SpellBaseType } from 'src/app/core/spells';
+import { heroDescrElem } from 'src/app/core/ui';
 import { UnitBaseType } from 'src/app/core/unit-types';
 import { CommonUtils } from 'src/app/core/utils';
 import { SignalArrUtils } from 'src/app/core/utils/signals';
@@ -16,149 +18,18 @@ import { SharedModule } from 'src/app/features/shared/shared.module';
 import { EventsService } from 'src/app/store';
 import { PanelContainerComponent } from '../../../shared/components/editors-ui/panel-container/panel-container.component';
 import { PanelComponent } from '../../../shared/components/editors-ui/panel/panel.component';
+import {
+  CustomHeroDefinition,
+  CustomSpellDefinition,
+  CustomUnitDefinition,
+  EntityTabs,
+  SavedScenarioLocalStorageModel,
+  ScenarioScript,
+  SCRIPT_TYPE_OPTIONS,
+  ScriptTypeOption,
+} from '../../config/types';
+import { ScenarioEntitiesManagerComponent } from '../scenario-entities-manager/scenario-entities-manager.component';
 
-class Scenario {
-  readonly id = crypto.randomUUID();
-  readonly name = signal('');
-  readonly locations = signal([]);
-  readonly namedScripts = signal([]);
-}
-
-enum ScriptType {
-  TargetedSpell,
-  Trigger,
-  InstantSpell,
-}
-class ScenarioScript {
-  static counter = 0;
-  readonly id = `custom_script_${ScenarioScript.counter}`;
-  readonly name = signal(`New_Script_${ScenarioScript.counter}`);
-  readonly type = signal(SCRIPT_TYPE_OPTIONS[0]);
-  readonly code = signal('');
-
-  constructor(id?: string) {
-    ScenarioScript.counter++;
-    if (id) {
-      this.id = id;
-    }
-  }
-
-  static fromSaved(saved: SavedScriptLocalStorageModel): ScenarioScript {
-    const newScript = new ScenarioScript(saved.id);
-
-    newScript.code.set(saved.code);
-    newScript.name.set(saved.name);
-    newScript.type.set(SCRIPT_TYPE_OPTIONS.find((option) => option.value === saved.type)!);
-    return newScript;
-  }
-}
-
-let unitsCounter = 0;
-class CustomUnitDefinition {
-  readonly name = signal(`New_Unit_Type_${unitsCounter++}`);
-  readonly level = signal(1);
-  readonly health = signal(10);
-  readonly damage = signal(5);
-}
-
-class CustomSpellDefinition {
-  static counter = 0;
-  readonly id = `custom_spell_${CustomSpellDefinition.counter}`;
-  readonly name = signal(`New_Spell_Type_${CustomSpellDefinition.counter}`);
-  readonly activationType = signal(ACTIVATION_TYPE_OPTIONS[0]);
-  readonly icon = signal('book');
-  readonly connectedScript = signal<null | ScenarioScript>(null);
-
-  constructor(id?: string) {
-    CustomSpellDefinition.counter++;
-    if (id) {
-      this.id = id;
-    }
-  }
-
-  static fromSaved(saved: SavedSpellLocalStorageModel, scripts: ScenarioScript[]): CustomSpellDefinition {
-    const newSpell = new CustomSpellDefinition(saved.id);
-    newSpell.name.set(saved.name);
-    newSpell.icon.set(saved.icon);
-    newSpell.connectedScript.set(scripts.find((script) => script.id === saved.linkedScriptId) ?? null);
-    newSpell.activationType.set(ACTIVATION_TYPE_OPTIONS.find((option) => option.value === saved.activationType)!);
-
-    return newSpell;
-  }
-}
-
-enum EntityTabs {
-  UnitTypes = 'Units',
-  Items = 'Items',
-  Spells = 'Spells',
-  Heroes = 'Heroes',
-  Locations = 'Locations',
-  Factions = 'Factions',
-}
-interface SavedScriptLocalStorageModel {
-  id: string;
-  name: string;
-  code: string;
-  type: ScriptType;
-}
-
-type SavedSpellLocalStorageModel = {
-  id: string;
-  name: string;
-  icon: string;
-  activationType: SpellActivationType;
-  linkedScriptId?: string;
-};
-
-// scenarios persistance, export (entire scenario, individual aspects, like triggers, map generators, etc.)
-
-interface SavedScenarioLocalStorageModel {
-  id: string;
-  name: string;
-  locations: object[];
-  customSpells: SavedSpellLocalStorageModel[];
-  customEntities: object[];
-  customScripts: SavedScriptLocalStorageModel[];
-}
-
-interface Option<T> {
-  label: string;
-  value: T;
-}
-interface ActivationTypeOption extends Option<SpellActivationType> {
-  label: string;
-}
-
-interface ScriptTypeOption extends Option<ScriptType> {}
-
-const SCRIPT_TYPE_OPTIONS: ScriptTypeOption[] = [
-  { label: 'Targeted Spell Script', value: ScriptType.TargetedSpell },
-  { label: 'Instant Spell Script', value: ScriptType.InstantSpell },
-  { label: 'Trigger Spell', value: ScriptType.Trigger },
-];
-
-const ACTIVATION_TYPE_OPTIONS: ActivationTypeOption[] = [
-  {
-    label: 'Targetable',
-    value: SpellActivationType.Target,
-  },
-  {
-    label: 'Instant',
-    value: SpellActivationType.Instant,
-  },
-  {
-    label: 'Passive',
-    value: SpellActivationType.Passive,
-  },
-  {
-    label: 'Buff',
-    value: SpellActivationType.Buff,
-  },
-  {
-    label: 'Debuff',
-    value: SpellActivationType.Debuff,
-  },
-];
 @Component({
   selector: 'mw-scenario-editor-screen',
   standalone: true,
@@ -171,25 +42,18 @@ const ACTIVATION_TYPE_OPTIONS: ActivationTypeOption[] = [
     PanelComponent,
     DropdownComponent,
     DropdownOptionComponent,
+    ScenarioEntitiesManagerComponent,
   ],
 
   templateUrl: './scenario-editor-screen.component.html',
   styleUrl: './scenario-editor-screen.component.scss',
 })
 export class ScenarioEditorScreenComponent {
+  // adjust scenarios - make them remember counters and store main content inside an object
+  // provide some metadata on root level
   readonly scenarios = signal<SavedScenarioLocalStorageModel[]>([]);
 
   private readonly events = inject(EventsService);
-
-  readonly EntityTabs = [
-    EntityTabs.UnitTypes,
-    EntityTabs.Spells,
-    EntityTabs.Items,
-    EntityTabs.Heroes,
-    EntityTabs.Locations,
-    EntityTabs.Factions,
-  ];
-  readonly EntityTab = EntityTabs;
 
   readonly activeTab = signal<EntityTabs>(EntityTabs.UnitTypes);
 
@@ -204,19 +68,17 @@ export class ScenarioEditorScreenComponent {
   readonly selectedUnitType = signal(null as UnitBaseType | null);
   readonly selectedItemType = signal(null as ItemBaseType | null);
   readonly selectedSpellType = signal(null as SpellBaseType | null);
+  readonly selectedCustomSpellType = signal(null as CustomSpellDefinition | null);
   readonly selectedScenario = signal(null as SavedScenarioLocalStorageModel | null);
 
-  readonly ActivationTypes: ActivationTypeOption[] = ACTIVATION_TYPE_OPTIONS;
   readonly ScriptTypes: ScriptTypeOption[] = SCRIPT_TYPE_OPTIONS;
 
   readonly currentScenarioName = signal('');
   readonly selectedScript = signal(null as ScenarioScript | null);
 
   readonly customUnitDefinitions = signal<CustomUnitDefinition[]>([]);
-  readonly selectedUnitDefinition = signal<CustomUnitDefinition | null>(null);
-
   readonly customSpellsDefinitions = signal<CustomSpellDefinition[]>([]);
-  readonly selectedSpellDefinition = signal<CustomSpellDefinition | null>(null);
+  readonly customHeroDefinitions = signal<CustomHeroDefinition[]>([]);
 
   constructor() {
     const savedScenarions = JSON.parse(localStorage.getItem('scenarios') as string) as SavedScenarioLocalStorageModel[];
@@ -224,14 +86,16 @@ export class ScenarioEditorScreenComponent {
   }
 
   addNewScenario() {
-    const newScenario = {
-      customEntities: [] as object[],
-      customScripts: [] as SavedScriptLocalStorageModel[],
-      customSpells: [] as SavedSpellLocalStorageModel[],
+    const newScenario: SavedScenarioLocalStorageModel = {
+      customEntities: [],
+      customScripts: [],
+      customSpells: [],
+      customHeroes: [],
       id: crypto.randomUUID() as string,
       locations: [] as object[],
       name: 'New Custom Scenario',
     };
+
     this.scenarios.update(SignalArrUtils.addItem(newScenario));
     console.log(newScenario);
 
@@ -248,6 +112,12 @@ export class ScenarioEditorScreenComponent {
     this.customSpellsDefinitions.set(
       scenario.customSpells.map((spell) => CustomSpellDefinition.fromSaved(spell, scripts)),
     );
+
+    this.customHeroDefinitions.set(
+      scenario.customHeroes.map((hero) =>
+        CustomHeroDefinition.fromSaved(hero, { spells: this.customSpellsDefinitions() }),
+      ),
+    );
     this.currentScenarioName.set(scenario.name);
   }
 
@@ -259,22 +129,6 @@ export class ScenarioEditorScreenComponent {
 
   goToMainScreen() {
     this.events.dispatch(GameOpenMainScreen());
-  }
-
-  runScripts() {
-    this.scripts().forEach((script) => {
-      // eslint-disable-next-line @typescript-eslint/no-implied-eval
-      const fn = new Function(script.code());
-      fn();
-    });
-  }
-
-  addCustomUnitGroup() {
-    const newDefinition = new CustomUnitDefinition();
-    this.customUnitDefinitions.update(SignalArrUtils.addItem(newDefinition));
-    this.selectedUnitDefinition.set(newDefinition);
-    // if (!this.selectedUnitDefinition()) {
-    // }
   }
 
   saveScenario() {
@@ -294,6 +148,24 @@ export class ScenarioEditorScreenComponent {
         id: script.id,
         name: script.name(),
         type: script.type().value,
+      })),
+      customHeroes: this.customHeroDefinitions().map((hero) => ({
+        id: hero.id,
+        name: hero.name(),
+        assetUrl: hero.assetUrl(),
+
+        maxMana: hero.maxMana(),
+        attack: hero.attack(),
+        defence: hero.defence(),
+
+        gold: hero.initialGold(),
+        wood: hero.initialWood(),
+        gems: hero.initialGems(),
+        crystals: hero.initialCrystals(),
+
+        spellIds: hero.spells().map((spell) => spell.id),
+        itemIds: [],
+        // itemIds: hero.items.map(item => )
       })),
       customSpells: this.customSpellsDefinitions().map((spell) => ({
         id: spell.id,
@@ -323,12 +195,6 @@ export class ScenarioEditorScreenComponent {
     localStorage.setItem('scenarios', JSON.stringify(scenarios));
   }
 
-  addCustomSpellType() {
-    const newDefinition = new CustomSpellDefinition();
-    this.customSpellsDefinitions.update(SignalArrUtils.addItem(newDefinition));
-    this.selectedSpellDefinition.set(newDefinition);
-  }
-
   testScenario() {
     const newSpells = this.customSpellsDefinitions().map((spellDefinition, i) => {
       // eslint-disable-next-line @typescript-eslint/no-implied-eval
@@ -341,12 +207,12 @@ export class ScenarioEditorScreenComponent {
       );
 
       return createSpell({
+        id: `#spell-${spellDefinition.id}`,
         activationType: spellDefinition.activationType().value,
         name: spellDefinition.name(),
         icon: {
           icon: spellDefinition.icon(),
         },
-        id: `#spell-custom-${i}`,
         getDescription() {
           return { descriptions: ['Custom Ability', spellDefinition.name()] };
         },
@@ -362,12 +228,36 @@ export class ScenarioEditorScreenComponent {
       });
     });
 
+    const newHeroes = this.customHeroDefinitions().map((heroDefinition, i) => {
+      const spellIds = heroDefinition.spells().map((spell) => `#spell-${spell.id}`);
+      return humansFaction.createHero({
+        id: `#hero-${heroDefinition.id}`,
+        name: heroDefinition.name(),
+        items: [],
+        abilities: spellIds as SpellId[],
+        army: [{ minUnitGroups: 1, maxUnitGroups: 1, units: [['#unit-h00', 40, 40, 1]] }],
+        generalDescription: heroDescrElem(''),
+        image: heroDefinition.assetUrl(),
+        stats: {
+          baseAttack: heroDefinition.attack(),
+          baseDefence: heroDefinition.defence(),
+          mana: heroDefinition.maxMana(),
+        },
+        resources: {
+          gems: heroDefinition.initialGems(),
+          gold: heroDefinition.initialGold(),
+          redCrystals: heroDefinition.initialCrystals(),
+          wood: heroDefinition.initialWood(),
+        },
+      });
+    });
+
     this.events.dispatch(OpenNewGameScreen());
 
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
-    const helveticaHero = EntitiesRegisty.resolve('#hero-helvetica') as HeroBase;
-    newSpells.forEach((spell) => {
-      helveticaHero.initialState.abilities.push(spell.id);
-    });
+    // const helveticaHero = EntitiesRegisty.resolve('#hero-helvetica') as HeroBase;
+    // newSpells.forEach((spell) => {
+    //   helveticaHero.initialState.abilities.push(spell.id);
+    // });
   }
 }
