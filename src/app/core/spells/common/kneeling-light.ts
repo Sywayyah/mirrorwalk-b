@@ -7,6 +7,11 @@ import { canActivateOnEnemyFn, createSpell, debuffColors } from '../utils';
 const slowingPercent = 50;
 const spellIcon = 'player-despair';
 
+const KneelingLightAnimation = frontStackingBuffAnimation(
+  '#vfx-kneeling-light',
+  'player-despair',
+  'rgb(227, 240, 113)',
+);
 export const KneelingLightDebuff: SpellBaseType = createSpell({
   id: '#spell-kneeling-light-debuff',
   name: 'Slowed',
@@ -30,13 +35,9 @@ export const KneelingLightDebuff: SpellBaseType = createSpell({
             unitGroupSpeedBonus: -(targetSpeed * (slowingPercent / 100)),
           });
 
-          vfx.createEffectForUnitGroup(
-            event.target,
-            frontStackingBuffAnimation('player-despair', 'rgb(227, 240, 113)'),
-            {
-              duration: 1000,
-            },
-          );
+          vfx.createEffectForUnitGroup(event.target, KneelingLightAnimation, {
+            duration: 1000,
+          });
           actions.addModifiersToUnitGroup(event.target, mods);
         },
       });

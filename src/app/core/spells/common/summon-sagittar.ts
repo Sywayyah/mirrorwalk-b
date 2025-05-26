@@ -6,6 +6,11 @@ import { createSpell } from '../utils';
 const unitCount = 6;
 const unitsPerLevel = 4;
 
+const SummonSaggitarAnimation = simpleConvergentBuffAnimation(
+  '#vfx-summon-saggitar',
+  'arrow-cluster',
+  'rgb(190, 190, 231)',
+);
 export const SummonSagittarSpell: SpellBaseType = createSpell({
   id: '#spell-summon-sagittar',
 
@@ -36,11 +41,7 @@ export const SummonSagittarSpell: SpellBaseType = createSpell({
             unitCount + ownerHero.level * unitsPerLevel,
           );
 
-          vfx.createEffectForUnitGroup(
-            summonedUnitGroup,
-            simpleConvergentBuffAnimation('arrow-cluster', 'rgb(190, 190, 231)'),
-            { duration: 1000 },
-          );
+          vfx.createEffectForUnitGroup(summonedUnitGroup, SummonSaggitarAnimation, { duration: 1000 });
         },
       });
     },

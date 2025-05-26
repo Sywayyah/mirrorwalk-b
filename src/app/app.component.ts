@@ -1,11 +1,25 @@
 import { AfterViewInit, Component, OnInit, ViewChild, inject } from '@angular/core';
-import { RaidersActionCard, RainbowActionCard, SnowfallActionCard, ThunderActionCard } from './core/action-cards/event-actions';
+import {
+  RaidersActionCard,
+  RainbowActionCard,
+  SnowfallActionCard,
+  ThunderActionCard,
+} from './core/action-cards/event-actions';
 import { AttackActionCard, InitiativeAttackCard, VisitActionCard } from './core/action-cards/location-actions';
 import { MeditateActionCard, SkipDayActionCard } from './core/action-cards/player-actions';
 import { GameStarted } from './core/events';
 import './core/scripts';
 import { MwTriggersService } from './features/services';
-import { BattleController, BattleLogController, CombatController, GameController, ItemsController, PlayerController, StructuresController, UiController } from './features/services/controllers';
+import {
+  BattleController,
+  BattleLogController,
+  CombatController,
+  GameController,
+  ItemsController,
+  PlayerController,
+  StructuresController,
+  UiController,
+} from './features/services/controllers';
 import { InGameApiController } from './features/services/controllers/in-game-api.service';
 import { PopupsController } from './features/services/controllers/popups.service';
 import { HintsService } from './features/services/hints.service';
@@ -33,7 +47,7 @@ const GlobalServices = [
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
   providers: GlobalServices,
-  standalone: false
+  standalone: false,
 })
 export class AppComponent implements OnInit, AfterViewInit {
   @ViewChild('hintsContainer', { static: true }) public hintsContainer!: HintsContainerComponent;
@@ -50,12 +64,11 @@ export class AppComponent implements OnInit, AfterViewInit {
     ThunderActionCard,
     MeditateActionCard,
     SnowfallActionCard,
-
   ];
 
   constructor(
     private readonly hintsService: HintsService,
-    private events: EventsService,
+    private readonly events: EventsService,
   ) {
     this.injectGlobalServices();
   }
@@ -69,6 +82,6 @@ export class AppComponent implements OnInit, AfterViewInit {
   }
 
   private injectGlobalServices(): void {
-    GlobalServices.forEach(service => inject(service as any));
+    GlobalServices.forEach((service) => inject(service as any));
   }
 }

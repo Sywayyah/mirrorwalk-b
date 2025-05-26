@@ -1,12 +1,17 @@
 import { EffectAnimation } from '../api/vfx-api';
-import { createAnimation, getCustomizableElement, getIconElement, getPlainPulseFrames, getReversePulseKeyframes } from './utils';
+import {
+  createAnimation,
+  getCustomizableElement,
+  getIconElement,
+  getPlainPulseFrames,
+  getReversePulseKeyframes,
+} from './utils';
 
 const CursorStyles = {
   textShadow: '0px 0px 5px rgba(0, 0, 0, 1)',
 };
 
-
-export const StaticCursorAnimation: EffectAnimation = createAnimation([
+export const StaticCursorAnimation: EffectAnimation = createAnimation('#vfx-static-cursor', [
   [
     getCustomizableElement('elem'),
     [],
@@ -21,7 +26,7 @@ export const StaticCursorAnimation: EffectAnimation = createAnimation([
   ],
 ]);
 
-export const CenteredStaticCursorAnimation: EffectAnimation = createAnimation([
+export const CenteredStaticCursorAnimation: EffectAnimation = createAnimation('#vfx-centered-static-cursor', [
   [
     getCustomizableElement('elem'),
     [],
@@ -33,7 +38,7 @@ export const CenteredStaticCursorAnimation: EffectAnimation = createAnimation([
   ],
 ]);
 
-export const SpellCastCursorAnimation: EffectAnimation = createAnimation([
+export const SpellCastCursorAnimation: EffectAnimation = createAnimation('#vfx-spell-cast-cursor', [
   [
     getIconElement('burning-book', 'bm'),
     [],
@@ -64,7 +69,7 @@ export const SpellCastCursorAnimation: EffectAnimation = createAnimation([
       filter: 'blur(6px)',
       color: '#98abff',
       // mixBlendMode: 'color-dodge',
-      mixBlendMode: 'screen'
+      mixBlendMode: 'screen',
     },
   ],
   [
@@ -77,5 +82,4 @@ export const SpellCastCursorAnimation: EffectAnimation = createAnimation([
       // mixBlendMode: 'color-dodge'
     },
   ],
-
 ]);

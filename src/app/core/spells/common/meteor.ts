@@ -10,6 +10,7 @@ const maxDamage = 50;
 
 const dmgIncrementPerLevel = 30;
 
+const MeteorAnimation = simpleConvergentBuffAnimation('#vfx-meteor', 'burning-meteor');
 /* todo: maybe change the bonus gained with level */
 export const MeteorSpell: SpellBaseType = createSpell({
   id: '#spell-meteor',
@@ -52,7 +53,7 @@ export const MeteorSpell: SpellBaseType = createSpell({
 
           spellInstance.setCooldown(Infinity);
 
-          vfx.createEffectForUnitGroup(randomEnemyGroup, simpleConvergentBuffAnimation('burning-meteor'), {
+          vfx.createEffectForUnitGroup(randomEnemyGroup, MeteorAnimation, {
             duration: 1000,
           });
 

@@ -29,7 +29,7 @@ const commonStyles = {
   color: 'rgb(172 202 120)',
 };
 
-const PoisonCloudAnimation: EffectAnimation = createAnimation([
+const PoisonCloudAnimation: EffectAnimation = createAnimation('#vfx-poison-cloud', [
   [
     getIconElement(icon, 'fire-main'),
     [

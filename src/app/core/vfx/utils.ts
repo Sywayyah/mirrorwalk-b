@@ -1,4 +1,11 @@
-import { AnimationElement, AnimationElementType, AnimationHtmlElement, AnimationIconElement, EffectAnimation } from '../api/vfx-api';
+import {
+  AnimationElement,
+  AnimationElementType,
+  AnimationHtmlElement,
+  AnimationIconElement,
+  EffectAnimation,
+} from '../api/vfx-api';
+import { registerEntity, VfxId } from '../entities';
 
 export const getIconElement = (iconName: string, id: string): AnimationIconElement => ({
   icon: iconName,
@@ -13,13 +20,18 @@ export const getHtmlElem = (id: string): AnimationHtmlElement => ({
 });
 
 export const getCustomizableElement = (id: string): AnimationElement => ({
-  id, type: AnimationElementType.Customizable,
+  id,
+  type: AnimationElementType.Customizable,
 });
 
-export const createAnimation = (configs: [AnimationElement, Keyframe[], Record<string, string | number>][]) => {
+export const createAnimation = (
+  id: VfxId,
+  configs: [AnimationElement, Keyframe[], Record<string, string | number>][],
+): EffectAnimation => {
   const newAnimation: EffectAnimation = {
+    id,
     config: {
-      layout: "default",
+      layout: 'default',
     },
     elements: [],
     elemsKeyframes: {},
@@ -32,9 +44,9 @@ export const createAnimation = (configs: [AnimationElement, Keyframe[], Record<s
     newAnimation.elemsDefaultStyles[elem.id] = defaultStyles;
   });
 
+  registerEntity(newAnimation);
   return newAnimation;
 };
-
 
 export const getPlainAppearanceFrames = () => {
   return [
@@ -71,7 +83,7 @@ export const getPlainBlurFrames = () => {
     {
       filter: 'blur(0px)',
       opacity: 0,
-    }
+    },
   ];
 };
 
@@ -113,7 +125,7 @@ export const getBreathingFrames = () => {
       transform: 'translate(-50%, -50%) scale(1.15)',
     },
     {
-      offset: 0.50,
+      offset: 0.5,
       opacity: '0.25',
       transform: 'translate(-50%, -50%) scale(1.2)',
     },
@@ -154,7 +166,6 @@ export const getReversePulseKeyframes = (offsetDelay: number = 0, baseOpacity: n
     {
       opacity: 0 + baseOpacity,
       transform: transform,
-
-    }
+    },
   ];
 };

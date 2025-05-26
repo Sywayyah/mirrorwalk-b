@@ -1,16 +1,17 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, signal } from '@angular/core';
+import { Component, effect, inject, signal, viewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { EffectAnimation } from 'src/app/core/api/vfx-api';
 import { EntitiesRegisty, SpellId } from 'src/app/core/entities';
 import { GameOpenMainScreen, OpenNewGameScreen } from 'src/app/core/events';
 import { humansFaction } from 'src/app/core/factions';
-import { HeroBase } from 'src/app/core/heroes';
 import { ItemBaseType } from 'src/app/core/items';
 import { createSpell, SpellBaseType } from 'src/app/core/spells';
 import { heroDescrElem } from 'src/app/core/ui';
 import { UnitBaseType } from 'src/app/core/unit-types';
 import { CommonUtils } from 'src/app/core/utils';
 import { SignalArrUtils } from 'src/app/core/utils/signals';
+import { VfxElementComponent } from 'src/app/features/shared/components';
 import { DropdownOptionComponent } from 'src/app/features/shared/components/dropdown/dropdown-option.component';
 import { DropdownComponent } from 'src/app/features/shared/components/dropdown/dropdown.component';
 import { ScriptEditorComponent } from 'src/app/features/shared/components/script-editor/script-editor.component';
@@ -51,23 +52,26 @@ import { ScenarioEntitiesManagerComponent } from '../scenario-entities-manager/s
 export class ScenarioEditorScreenComponent {
   // adjust scenarios - make them remember counters and store main content inside an object
   // provide some metadata on root level
-  readonly scenarios = signal<SavedScenarioLocalStorageModel[]>([]);
-
   private readonly events = inject(EventsService);
 
+  readonly scenarios = signal<SavedScenarioLocalStorageModel[]>([]);
   readonly activeTab = signal<EntityTabs>(EntityTabs.UnitTypes);
+
+  readonly vfxElemRef = viewChild<VfxElementComponent>('vfxRef');
 
   readonly entitiesRegistries = EntitiesRegisty;
 
   readonly unitTypes = this.entitiesRegistries.getRegisteredEntitiesMap().get('#unit') as UnitBaseType[];
   readonly itemTypes = this.entitiesRegistries.getRegisteredEntitiesMap().get('#item') as ItemBaseType[];
   readonly spellTypes = this.entitiesRegistries.getRegisteredEntitiesMap().get('#spell') as SpellBaseType[];
+  readonly vfxTypes = this.entitiesRegistries.getRegisteredEntitiesMap().get('#vfx') as EffectAnimation[];
 
   readonly scripts = signal([] as ScenarioScript[]);
 
   readonly selectedUnitType = signal(null as UnitBaseType | null);
   readonly selectedItemType = signal(null as ItemBaseType | null);
   readonly selectedSpellType = signal(null as SpellBaseType | null);
+  readonly selectedVFX = signal(null as EffectAnimation | null);
   readonly selectedCustomSpellType = signal(null as CustomSpellDefinition | null);
   readonly selectedScenario = signal(null as SavedScenarioLocalStorageModel | null);
 
@@ -83,6 +87,18 @@ export class ScenarioEditorScreenComponent {
   constructor() {
     const savedScenarions = JSON.parse(localStorage.getItem('scenarios') as string) as SavedScenarioLocalStorageModel[];
     this.scenarios.set(savedScenarions ?? []);
+
+    effect(() => {
+      const vfxElem = this.vfxElemRef();
+      const vfx = this.selectedVFX();
+
+      if (!vfxElem || !vfx) {
+        return;
+      }
+
+      vfxElem.clearAnimation();
+      vfxElem.playAnimation(vfx, { iterations: Infinity });
+    });
   }
 
   addNewScenario() {

@@ -1,8 +1,14 @@
 import { EffectAnimation } from '../api/vfx-api';
 import { frontStackingBuffAnimation, simpleConvergentBuffAnimation } from './templates';
-import { createAnimation, getIconElement, getPlainAppearanceFrames, getPlainBlurFrames, getPlainPulseFrames } from './utils';
+import {
+  createAnimation,
+  getIconElement,
+  getPlainAppearanceFrames,
+  getPlainBlurFrames,
+  getPlainPulseFrames,
+} from './utils';
 
-export const LightningAnimation: EffectAnimation = createAnimation([
+export const LightningAnimation: EffectAnimation = createAnimation('#vfx-lightning', [
   [
     getIconElement('focused-lightning', 'l-main'),
     [
@@ -15,7 +21,7 @@ export const LightningAnimation: EffectAnimation = createAnimation([
       },
       {
         opacity: '1',
-        offset: 0.15
+        offset: 0.15,
       },
       {
         opacity: '0',
@@ -23,7 +29,7 @@ export const LightningAnimation: EffectAnimation = createAnimation([
       },
       {
         opacity: '0',
-        offset: 0.20,
+        offset: 0.2,
       },
       {
         opacity: '1',
@@ -37,7 +43,7 @@ export const LightningAnimation: EffectAnimation = createAnimation([
       fontSize: '64px',
       color: '#eaefff',
       opacity: '1',
-    }
+    },
   ],
   [
     getIconElement('focused-lightning', 'l-blur'),
@@ -53,8 +59,7 @@ export const LightningAnimation: EffectAnimation = createAnimation([
         filter: 'blur(0px)',
         opacity: 0,
         transform: 'translate(-50%, -50%) scale(1)',
-
-      }
+      },
     ],
     {
       transform: 'translate(-50%, -50%) scale(1.5)',
@@ -62,19 +67,26 @@ export const LightningAnimation: EffectAnimation = createAnimation([
       color: '#98abff',
       filter: 'blur(6px)',
       opacity: '1',
-      mixBlendMode: 'hard-light'
+      mixBlendMode: 'hard-light',
     },
   ],
 ]);
 
-export const FireAnimation: EffectAnimation = simpleConvergentBuffAnimation('fire');
+export const FireAnimation: EffectAnimation = simpleConvergentBuffAnimation('#vfx-fire', 'fire');
 
-export const FrightAnimation: EffectAnimation = frontStackingBuffAnimation('batwings', 'rgba(218, 137, 204, 0.78)');
+export const FrightAnimation: EffectAnimation = frontStackingBuffAnimation(
+  '#vfx-fright',
+  'batwings',
+  'rgba(218, 137, 204, 0.78)',
+);
 
-export const LifestealAnimtaion: EffectAnimation = frontStackingBuffAnimation('bat-sword', 'rgba(245, 10, 20, 0.8)');
+export const LifestealAnimtaion: EffectAnimation = frontStackingBuffAnimation(
+  '#vfx-lifesteal',
+  'bat-sword',
+  'rgba(245, 10, 20, 0.8)',
+);
 
-
-export const EnchantAnimation: EffectAnimation = createAnimation([
+export const EnchantAnimation: EffectAnimation = createAnimation('#vfx-enchant', [
   [
     getIconElement('fire-ring', 'fr-main'),
     getPlainAppearanceFrames(),
@@ -92,7 +104,7 @@ export const EnchantAnimation: EffectAnimation = createAnimation([
       color: 'violet',
       filter: 'blur(6px)',
       opacity: '1',
-      mixBlendMode: 'hard-light'
+      mixBlendMode: 'hard-light',
     },
   ],
   [
@@ -103,7 +115,7 @@ export const EnchantAnimation: EffectAnimation = createAnimation([
       color: 'pink',
       opacity: '0.2',
       transform: 'translate(-50%, -50%) scale(1)',
-      mixBlendMode: 'hard-light'
+      mixBlendMode: 'hard-light',
     },
-  ]
+  ],
 ]);
