@@ -33,7 +33,7 @@ export class SpellDescriptionComponent {
       ownerUnit: this.ownerUnit(),
     }).descriptions;
 
-    if (spell.baseType.config.spellConfig.isOncePerBattle) {
+    if (spell.baseType.config.isOncePerBattle) {
       descriptions.unshift({
         type: DescriptionElementType.FreeHtml,
         htmlContent: 'Can be cast only once per battle.<br/><hr/>',

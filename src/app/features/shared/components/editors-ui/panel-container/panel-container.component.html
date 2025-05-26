@@ -1,0 +1,23 @@
+@for (item of panels.panels; track item.title()) {
+  <div
+    class="panel"
+    [style.width.px]="item.width()"
+    [style.height.px]="item.height()"
+    cdkDrag
+    [cdkDragFreeDragPosition]="item.position()"
+    (mousedown)="focused(item)"
+  >
+    <div
+      class="header"
+      cdkDragHandle
+    >
+      {{ item.title() }}
+    </div>
+
+    <div class="content">
+      <ng-container *ngTemplateOutlet="item.templateRef()" />
+    </div>
+
+    <!-- <div class="resize-handler"></div> -->
+  </div>
+}

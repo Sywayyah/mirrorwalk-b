@@ -87,7 +87,7 @@ export class MwUnitGroupCombatActionDirective implements OnInit {
   }
 
   private canActivateCurrentSpell(): boolean {
-    const spellConfig = this.curPlayerState.state.get().currentSpell.baseType.config.spellConfig;
+    const spellConfig = this.curPlayerState.state.get().currentSpell.baseType.config;
 
     const canActivateFn = spellConfig.targetCastConfig?.canActivate;
 

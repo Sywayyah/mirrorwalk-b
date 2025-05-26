@@ -20,7 +20,7 @@ export const createSpell = <T>(spell: SpellBaseType<T>): SpellBaseType<T> => {
       spell.activationType,
     )
   ) {
-    spell.config.spellConfig.isOncePerBattle ??= true;
+    spell.config.isOncePerBattle ??= true;
   }
 
   return spell;

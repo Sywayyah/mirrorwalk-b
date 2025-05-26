@@ -100,6 +100,9 @@ export interface ModifiersModel extends Specialties {
     remoteness?: number;
     currentGroupPosition?: number;
   }) => Modifiers | null;
+
+  // to implement, can become common on undead items
+  heroManacostPenalty: number;
 }
 
 export type Modifiers = Partial<ModifiersModel>;

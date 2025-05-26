@@ -8,15 +8,16 @@
   class="hero-image"
 ></div>
 <mw-value-bar
-      class="action-points-bar"
-      [maxValue]="4"
-      color="linear-gradient(0deg, rgb(121 45 0), rgb(226 209 33))"
-      [diffBar]="false"
-      [currentValue]="state.currentGame.actionPoints"
-      [barHeight]="17"
-    >
-      <mw-ra-icon icon="feather-wing"></mw-ra-icon>
-    </mw-value-bar>
+  class="action-points-bar"
+  [maxValue]="4"
+  color="linear-gradient(0deg, rgb(121 45 0), rgb(226 209 33))"
+  [diffBar]="false"
+  [currentValue]="state.currentGame.actionPoints"
+  [barHeight]="17"
+  [mwActionHint]="'You have ' + state.currentGame.actionPoints + ' action points left <br>before next day arrives.'"
+>
+  <mw-ra-icon icon="feather-wing"></mw-ra-icon>
+</mw-value-bar>
 
 <div class="hero-info">
   <!-- todo: practically, this is how overstacking popups can be solved, via counting & reducing skillpoints -->
@@ -41,9 +42,7 @@
     <mw-experience-bar style="width: 270px"></mw-experience-bar>
   </div>
 
-  <div class="action-points">
-
-  </div>
+  <div class="action-points"></div>
 
   <div class="groups-container">
     @for (slot of player.hero.mainUnitSlots; track slot) {

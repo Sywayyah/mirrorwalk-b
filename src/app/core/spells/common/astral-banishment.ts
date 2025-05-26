@@ -2,7 +2,6 @@ import { spellDescrElem } from '../../ui';
 import { SpellActivationType, SpellBaseType } from '../types';
 import { canActivateOnAliveFn, createSpell } from '../utils';
 
-
 export const AstralBanishmentSpell: SpellBaseType = createSpell({
   id: '#spell-astral-banishment',
 
@@ -14,17 +13,19 @@ export const AstralBanishmentSpell: SpellBaseType = createSpell({
   getDescription() {
     return {
       descriptions: [
-        spellDescrElem(`Banishes unit into astral plane, where it cannot attack or be attacked, but receives increased magical damage.`),
-      ]
-    }
+        spellDescrElem(
+          `Banishes unit into astral plane, where it cannot attack or be attacked, but receives increased magical damage.`,
+        ),
+      ],
+    };
   },
   config: {
-    spellConfig: {
-      getManaCost() { return 0; },
-      init() { },
-      targetCastConfig: {
-        canActivate: canActivateOnAliveFn,
-      },
+    getManaCost() {
+      return 0;
     },
-  }
+    init() {},
+    targetCastConfig: {
+      canActivate: canActivateOnAliveFn,
+    },
+  },
 });

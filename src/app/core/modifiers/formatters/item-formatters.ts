@@ -5,7 +5,7 @@ export const numMod = (num: number) => `${num >= 0 ? '+' : '-'}${num}`;
 
 export function plainNumMod(label: string): (num: number) => string {
   return (num) => `${num >= 0 ? '+' : ''}${num} ${label}`;
-};
+}
 
 function percentVal(label: string): (val: number) => string {
   return (val) => `${numMod(val)}% ${label}`;
@@ -43,13 +43,15 @@ export const modsFormatters: { [K in keyof Modifiers]: ModFormatter<K> } = {
   resistCold: percentVal('Cold Resist'),
   resistLightning: percentVal('Lightning Resist'),
   resistPoison: percentVal('Poison Resist'),
-  cannotBeSlowed: () => 'Units Cannot be slowed',
+  cannotBeSlowed: () => 'Cannot be slowed',
+
+  heroManacostPenalty: plainNumMod('to Spells Manacost'),
 };
 
-export function formatMod(modName: keyof Modifiers, modValue: unknown): string {
+export function formatMod(modName: keyof Modifiers, modValue: Modifiers[keyof Modifiers]): string {
   // if mod name is a specialty, use label
   if (modName in specialtyLabels) {
-    return `+${modValue} to ${specialtyLabels[modName as keyof Specialties]}`;
+    return `+${modValue as number | string} to ${specialtyLabels[modName as keyof Specialties]}`;
   }
 
   // otherwise, use formatters, and return empty string if there is no formatter
@@ -57,5 +59,5 @@ export function formatMod(modName: keyof Modifiers, modValue: unknown): string {
     return '';
   }
 
-  return (modsFormatters[modName] as ModFormatter<typeof modName>)(modValue as any);
+  return (modsFormatters[modName] as ModFormatter<typeof modName>)(modValue);
 }

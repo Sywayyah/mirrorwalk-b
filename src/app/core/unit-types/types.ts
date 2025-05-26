@@ -418,7 +418,7 @@ export class UnitGroup extends GameObject<UnitCreationParams, UnitGroupState> {
     this.spells.push(spell);
     this.patchUnitGroupState({ spells: this.spells });
     spell.setOwnerObjectId(this.id);
-    spell.baseType.config.spellConfig.onAcquired?.({
+    spell.baseType.config.onAcquired?.({
       spellInstance: spell,
       ownerUnit: this,
     });
