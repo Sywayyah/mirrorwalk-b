@@ -57,7 +57,7 @@ export class CustomUnitDefinition {
 export class CustomHeroDefinition {
   static counter = 0;
   readonly id = `custom_hero_${CustomHeroDefinition.counter}`;
-  readonly assetUrl = signal('heroes/hero-melee.png');
+  readonly assetUrl = signal('assets/heroes/hero-melee.png');
   readonly name = signal(`New_Hero_Type_${CustomHeroDefinition.counter}`);
   readonly spells = signal<CustomSpellDefinition[]>([]);
   readonly items = signal([]);

@@ -130,7 +130,7 @@ export class ScenarioEditorScreenComponent {
     );
 
     this.customHeroDefinitions.set(
-      scenario.customHeroes.map((hero) =>
+      (scenario.customHeroes ?? []).map((hero) =>
         CustomHeroDefinition.fromSaved(hero, { spells: this.customSpellsDefinitions() }),
       ),
     );

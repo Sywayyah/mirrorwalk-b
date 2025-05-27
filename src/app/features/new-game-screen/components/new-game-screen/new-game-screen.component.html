@@ -82,7 +82,7 @@
             <div *ngIf="player.selectedHero; else randomFaction">
               <!-- todo: introduce component for character icon -->
               <div
-                [style.background-image]="'url(\'assets/' + player.selectedHero.image + '\')'"
+                [style.background-image]="'url(\'' + player.selectedHero.image + '\')'"
                 class="item-icon hero-icon"
               ></div>
 
@@ -127,7 +127,7 @@
                 (click)="onSelectFactionHero(player, hero)"
               >
                 <div
-                  [style.background-image]="'url(\'assets/' + hero.image + '\')'"
+                  [style.background-image]="'url(\'' + hero.image + '\')'"
                   class="item-icon hero-icon"
                 ></div>
                 <span class="icon-subtext">{{ hero.name }}</span>

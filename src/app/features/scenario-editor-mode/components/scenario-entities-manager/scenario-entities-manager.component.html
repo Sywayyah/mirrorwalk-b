@@ -207,6 +207,7 @@
     </button>
 
     @if (selectedHeroTypeTVar) {
+      <img src="{{selectedHeroTypeTVar.assetUrl()}}" alt="No Image Found by given asset url" class="portrait">
       <div class="properties">
         <div class="property">
           Name:
@@ -232,6 +233,28 @@
             step="1"
             min="1"
             [(ngModel)]="selectedHeroTypeTVar.maxMana"
+          />
+        </div>
+
+        <div class="property">
+          Attack:
+
+          <input
+            type="number"
+            step="1"
+            min="1"
+            [(ngModel)]="selectedHeroTypeTVar.attack"
+          />
+        </div>
+
+        <div class="property">
+          Defence:
+
+          <input
+            type="number"
+            step="1"
+            min="1"
+            [(ngModel)]="selectedHeroTypeTVar.defence"
           />
         </div>
 
