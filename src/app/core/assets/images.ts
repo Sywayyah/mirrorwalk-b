@@ -1,7 +1,7 @@
 // todo: functions/constants
 
 function createAssetPathFn(path: string): (img: string) => string {
-  return (img: string, ext = 'png') => `${path}${img}.${ext}`;
+  return (img: string, ext = 'png') => `assets/${path}${img}.${ext}`;
 }
 
 const units = createAssetPathFn('units/');
