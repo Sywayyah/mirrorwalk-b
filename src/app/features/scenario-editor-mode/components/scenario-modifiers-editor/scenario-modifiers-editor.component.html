@@ -1,0 +1,26 @@
+Modifiers:
+<div class="properties">
+  <mw-dropdown (selectedItemChange)="modifiers().addModifierOption($event)">
+    <div class="trigger">
+      Select modifier...
+
+      {{ modifiers().availableModifiers().length }}
+    </div>
+
+    @for (modifier of modifiers().availableModifiers(); track $index) {
+      <mw-dropdown-option [value]="modifier">{{ modifier.label }}</mw-dropdown-option>
+    }
+  </mw-dropdown>
+
+  @for (modifier of modifiers().modifiersForm(); track $index) {
+    <div class="property">
+      {{ modifier.label }}
+
+      <button (click)="modifiers().removeModifierOptionByModName(modifier.modifier)">Remove</button>
+      <input
+        type="{{ modifier.inputType }}"
+        [(ngModel)]="modifier.value"
+      />
+    </div>
+  }
+</div>

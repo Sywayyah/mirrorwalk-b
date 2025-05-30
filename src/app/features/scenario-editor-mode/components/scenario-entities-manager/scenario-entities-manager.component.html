@@ -382,6 +382,9 @@
             [(ngModel)]="selectedItem.icon"
           />
         </div>
+
+        <mw-scenario-resources-editor [resources]="selectedItem.resources" />
+        <mw-scenario-modifiers-editor [modifiers]="selectedItem.modifiers" />
       </div>
     }
   }

@@ -1,0 +1,16 @@
+.properties {
+  display: flex;
+  flex-direction: column;
+
+  .property {
+    display: flex;
+    justify-content: space-between;
+
+    input {
+      width: 100px;
+      min-width: 50px;
+    }
+    .name {}
+    .property {}
+  }
+}

@@ -15,7 +15,7 @@ import type { DropdownOptionComponent } from './dropdown-option.component';
 export class DropdownComponent<T> {
   readonly hostElem = injectHostElem();
 
-  readonly selectedItem = model.required<T>();
+  readonly selectedItem = model<T>();
   readonly options = signal<DropdownOptionComponent<T>[]>([]);
 
   readonly optionChanged = output<T>();
