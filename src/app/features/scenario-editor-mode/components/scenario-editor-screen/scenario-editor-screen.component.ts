@@ -16,6 +16,7 @@ import { SharedModule } from 'src/app/features/shared/shared.module';
 import { EventsService } from 'src/app/store';
 import { PanelContainerComponent } from '../../../shared/components/editors-ui/panel-container/panel-container.component';
 import { PanelComponent } from '../../../shared/components/editors-ui/panel/panel.component';
+import { LocalDialogComponent } from '../../../shared/components/local-dialog/local-dialog.component';
 import {
   CustomHeroDefinition,
   CustomSpellDefinition,
@@ -27,7 +28,6 @@ import {
 } from '../../config/types';
 import { ScenarioEditorContextService } from '../../services/scenario-editor-context.service';
 import { ScenarioEntitiesManagerComponent } from '../scenario-entities-manager/scenario-entities-manager.component';
-import { LocalDialogComponent } from '../../../shared/components/local-dialog/local-dialog.component';
 
 @Component({
   selector: 'mw-scenario-editor-screen',
@@ -229,6 +229,7 @@ export class ScenarioEditorScreenComponent {
         'actions',
         'spellInstance',
         'target',
+        'vfx',
         spellDefinition.connectedScript()?.code() || '',
       );
 
@@ -243,10 +244,10 @@ export class ScenarioEditorScreenComponent {
           return { descriptions: ['Custom Ability', spellDefinition.name()] };
         },
         config: {
-          init({ events, actions, spellInstance }) {
+          init({ events, actions, spellInstance, vfx }) {
             events.on({
               PlayerTargetsSpell({ target }) {
-                fn(events, actions, spellInstance, target);
+                fn(events, actions, spellInstance, target, vfx);
               },
             });
           },
