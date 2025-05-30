@@ -18,5 +18,6 @@ export const CONFIG: ConfigModel = {
     Feature.ScenarioEditor,
     Feature.NewTownSystem,
     Feature.TECHBanditCampVariety,
+    Feature.MultiplayerServer,
   ],
 } as const;

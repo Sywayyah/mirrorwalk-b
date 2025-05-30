@@ -40,6 +40,8 @@ export const OpenScenarioMode = commands('Open Scenario Mode');
 
 export const OpenSettings = commands('Open Game settings');
 
+export const OpenMultiplayer = commands('Open Game settings');
+
 export const OpenGlossary = commands('Open Glossary');
 
 export const OpenMainMenu = commands('Open Main menu');

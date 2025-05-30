@@ -36,6 +36,12 @@
       </button>
     }
 
+    @if (isMultiplayerEnabled) {
+      <button mw-main-button (click)="openMultiplayer()">
+        Multiplayer
+      </button>
+    }
+
     <button
       mw-main-button
       (click)="openGlossary()"
