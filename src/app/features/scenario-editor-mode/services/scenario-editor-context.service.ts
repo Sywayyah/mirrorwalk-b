@@ -6,6 +6,7 @@ import { SpellBaseType } from 'src/app/core/spells';
 import { UnitBaseType } from 'src/app/core/unit-types';
 import {
   CustomHeroDefinition,
+  CustomItemDefinition,
   CustomSpellDefinition,
   CustomUnitDefinition,
   SavedScenarioLocalStorageModel,
@@ -25,6 +26,7 @@ export class ScenarioEditorContextService {
     units: signal<CustomUnitDefinition[]>([]),
     spells: signal<CustomSpellDefinition[]>([]),
     heroes: signal<CustomHeroDefinition[]>([]),
+    items: signal<CustomItemDefinition[]>([]),
   } as const;
 
   readonly scriptsEditor = {
@@ -49,5 +51,6 @@ export class ScenarioEditorContextService {
     selectedUnitDefinition: signal<CustomUnitDefinition | null>(null),
     selectedHeroDefinition: signal<CustomHeroDefinition | null>(null),
     selectedSpellDefinition: signal<CustomSpellDefinition | null>(null),
+    selectedItemDefinition: signal<CustomItemDefinition | null>(null),
   } as const;
 }

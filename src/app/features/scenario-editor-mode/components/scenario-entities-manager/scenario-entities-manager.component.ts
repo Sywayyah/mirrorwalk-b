@@ -8,6 +8,7 @@ import {
   ACTIVATION_TYPE_OPTIONS,
   ActivationTypeOption,
   CustomHeroDefinition,
+  CustomItemDefinition,
   CustomSpellDefinition,
   CustomUnitDefinition,
   EntityTabs,
@@ -29,10 +30,12 @@ export class ScenarioEntitiesManagerComponent {
   readonly customUnitDefinitions = this.scenarioEditorContext.customDefinitions.units;
   readonly customSpellsDefinitions = this.scenarioEditorContext.customDefinitions.spells;
   readonly customHeroDefinitions = this.scenarioEditorContext.customDefinitions.heroes;
+  readonly customItemDefinitions = this.scenarioEditorContext.customDefinitions.items;
 
   readonly selectedUnitDefinition = this.scenarioEditorContext.entitiesManager.selectedUnitDefinition;
   readonly selectedHeroDefinition = this.scenarioEditorContext.entitiesManager.selectedHeroDefinition;
   readonly selectedSpellDefinition = this.scenarioEditorContext.entitiesManager.selectedSpellDefinition;
+  readonly selectedItemDefinition = this.scenarioEditorContext.entitiesManager.selectedItemDefinition;
 
   readonly EntityTab = EntityTabs;
 
@@ -43,6 +46,7 @@ export class ScenarioEntitiesManagerComponent {
     EntityTabs.Heroes,
     EntityTabs.Locations,
     EntityTabs.Factions,
+    EntityTabs.Towns,
   ];
 
   readonly ActivationTypes: ActivationTypeOption[] = ACTIVATION_TYPE_OPTIONS;
@@ -76,6 +80,12 @@ export class ScenarioEntitiesManagerComponent {
     }
 
     this.selectedHeroDefinition()?.spells.update(SignalArrUtils.addItem(spellFromInspector));
+  }
+
+  addItemType() {
+    const newItemDefinition = new CustomItemDefinition();
+    this.customItemDefinitions.update(SignalArrUtils.addItem(newItemDefinition));
+    this.selectedItemDefinition.set(newItemDefinition);
   }
 
   removeSpellFromHero(spell: CustomSpellDefinition) {

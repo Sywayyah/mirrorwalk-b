@@ -1,12 +1,12 @@
 <div class="header-tabs">
   @for (tab of EntityTabs; track $index) {
-    <div
+    <button
       class="tab"
       (click)="activeTab.set(tab)"
       [class.active]="activeTab() === tab"
     >
       {{ tab }}
-    </div>
+    </button>
   }
 </div>
 
@@ -207,7 +207,11 @@
     </button>
 
     @if (selectedHeroTypeTVar) {
-      <img src="{{selectedHeroTypeTVar.assetUrl()}}" alt="No Image Found by given asset url" class="portrait">
+      <img
+        src="{{ selectedHeroTypeTVar.assetUrl() }}"
+        alt="No Image Found by given asset url"
+        class="portrait"
+      />
       <div class="properties">
         <div class="property">
           Name:
@@ -325,6 +329,59 @@
         >
           Take spell from Inspector
         </button>
+      </div>
+    }
+  }
+  @case (EntityTab.Items) {
+    <div class="header">Items:</div>
+
+    <mw-dropdown [(selectedItem)]="selectedItemDefinition">
+      <div class="trigger">
+        @if (!customItemDefinitions().length) {
+          No Custom Items Defined...
+        } @else {
+          @if (selectedItemDefinition()) {
+            {{ selectedItemDefinition()?.name() }}
+          } @else {
+            Select custom item...
+          }
+        }
+      </div>
+
+      @for (item of customItemDefinitions(); track $index) {
+        <mw-dropdown-option [value]="item">{{ item.name() }}</mw-dropdown-option>
+      } @empty {
+        <div class="empty">No Custom Item Definitions</div>
+      }
+    </mw-dropdown>
+
+    <button
+      mw-main-button
+      (click)="addItemType()"
+    >
+      Add Custom Item
+    </button>
+
+    @let selectedItem = selectedItemDefinition();
+    @if (selectedItem) {
+      <div class="section">
+        <div class="property">
+          Name:
+
+          <input
+            type="text"
+            [(ngModel)]="selectedItem.name"
+          />
+        </div>
+
+        <div class="property">
+          Icon:
+
+          <input
+            type="text"
+            [(ngModel)]="selectedItem.icon"
+          />
+        </div>
       </div>
     }
   }

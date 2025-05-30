@@ -54,6 +54,25 @@ export class CustomUnitDefinition {
   }
 }
 
+export class CustomItemDefinition {
+  static counter = 0;
+  readonly id = `custom_item_${CustomUnitDefinition.counter}`;
+  readonly name = signal(`New_Item_Type_${CustomUnitDefinition.counter}`);
+  readonly icon = signal('book');
+
+  readonly goldCost = signal(100);
+  readonly woodCost = signal(0);
+  readonly gemsCost = signal(0);
+  readonly crystalsCost = signal(0);
+
+  constructor(id?: string) {
+    CustomItemDefinition.counter++;
+    if (id) {
+      this.id = id;
+    }
+  }
+}
+
 export class CustomHeroDefinition {
   static counter = 0;
   readonly id = `custom_hero_${CustomHeroDefinition.counter}`;
@@ -135,6 +154,7 @@ export enum EntityTabs {
   Heroes = 'Heroes',
   Locations = 'Locations',
   Factions = 'Factions',
+  Towns = 'Towns',
 }
 
 export interface SavedScriptLocalStorageModel {
