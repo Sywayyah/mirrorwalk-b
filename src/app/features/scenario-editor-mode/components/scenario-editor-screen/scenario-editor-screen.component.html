@@ -47,232 +47,234 @@
 
 <!-- panels, dockers? -->
 
-<mw-panel-container>
-  <mw-panel
-    title="Entities Manager"
-    [width]="300"
-    [height]="400"
-  >
-    <div class="panel">
-      <mw-scenario-entities-manager />
-    </div>
-  </mw-panel>
-
-  <mw-panel
-    title="Entities Inspector"
-    [height]="300"
-    [width]="250"
-    [xPosition]="320"
-  >
-    <div class="panel">
-      <div class="section">
-        <div class="header">Units</div>
-
-        <mw-dropdown [(selectedItem)]="selectedUnitType">
-          <div class="trigger">
-            @if (selectedUnitType()) {
-              {{ selectedUnitType()?.faction?.title }} - {{ selectedUnitType()?.name }}
-            } @else {
-              Select Unit Type...
-            }
-          </div>
-
-          @for (unitType of unitTypes; track $index) {
-            <mw-dropdown-option [value]="unitType">
-              {{ unitType.faction.title }} - {{ unitType.name }}
-            </mw-dropdown-option>
-          }
-        </mw-dropdown>
-        {{ selectedUnitType()?.id }}
+@if (selectedScenario()) {
+  <mw-panel-container>
+    <mw-panel
+      title="Entities Manager"
+      [width]="300"
+      [height]="400"
+    >
+      <div class="panel">
+        <mw-scenario-entities-manager />
       </div>
+    </mw-panel>
 
-      <div class="section">
-        <div class="header">Items</div>
+    <mw-panel
+      title="Entities Inspector"
+      [height]="300"
+      [width]="250"
+      [xPosition]="320"
+    >
+      <div class="panel">
+        <div class="section">
+          <div class="header">Units</div>
 
-        @let itemType = selectedItemType();
-        <mw-dropdown [(selectedItem)]="selectedItemType">
-          <div class="trigger">
-            @if (itemType) {
-              <mw-ra-icon [icon]="itemType.icon.icon"></mw-ra-icon>
-              Item - {{ itemType.name }}
-            } @else {
-              Select Item Type...
-            }
-          </div>
-
-          @for (itemType of itemTypes; track $index) {
-            <mw-dropdown-option [value]="itemType">
-              <mw-ra-icon [icon]="itemType.icon.icon"></mw-ra-icon>
-              Item - {{ itemType.name }}
-            </mw-dropdown-option>
-          }
-        </mw-dropdown>
-
-        {{ selectedItemType()?.id }}
-      </div>
-
-      <div class="section">
-        <div class="header">Spells</div>
-
-        @let spellType = selectedSpellType();
-        <mw-dropdown [(selectedItem)]="selectedSpellType">
-          <div class="trigger">
-            @if (spellType) {
-              <mw-ra-icon [icon]="spellType.icon.icon"></mw-ra-icon>
-              Spell - {{ spellType.activationType }} - {{ spellType.name }}
-            } @else {
-              Select Spell Type...
-            }
-          </div>
-
-          @for (spellType of spellTypes; track $index) {
-            <mw-dropdown-option [value]="spellType">
-              <mw-ra-icon [icon]="spellType.icon.icon"></mw-ra-icon>
-              Spell - {{ spellType.activationType }} - {{ spellType.name }}
-            </mw-dropdown-option>
-          }
-        </mw-dropdown>
-
-        {{ spellType?.id }}
-      </div>
-
-      <!-- todo: will need to unify default/custom spells -->
-      <div class="section">
-        <div class="header">Custom Spells</div>
-
-        @let customSpellType = selectedCustomSpellType();
-        <mw-dropdown [(selectedItem)]="selectedCustomSpellType">
-          <div class="trigger">
-            @if (customSpellType) {
-              <mw-ra-icon [icon]="customSpellType.icon()"></mw-ra-icon>
-              Spell - {{ customSpellType.activationType().label }} - {{ customSpellType.name() }}
-            } @else {
-              Select Spell Type...
-            }
-          </div>
-
-          @for (spellType of customSpellsDefinitions(); track $index) {
-            <mw-dropdown-option [value]="spellType">
-              <mw-ra-icon [icon]="spellType.icon()"></mw-ra-icon>
-              Spell - {{ spellType.activationType().label }} - {{ spellType.name() }}
-            </mw-dropdown-option>
-          }
-        </mw-dropdown>
-
-        {{ customSpellType?.id }}
-      </div>
-
-      <div class="section">
-        <div class="header">VFX</div>
-
-        @let selectedVfxType = selectedVFX();
-
-        <mw-dropdown [(selectedItem)]="selectedVFX">
-          <div class="trigger">
-            @if (selectedVfxType) {
-              Vfx {{ selectedVfxType.id }}
-            } @else {
-              Select Vfx...
-            }
-          </div>
-
-          @for (vfx of vfxTypes; track $index) {
-            <mw-dropdown-option [value]="vfx">
-              {{ vfx.id }}
-            </mw-dropdown-option>
-          }
-        </mw-dropdown>
-
-        {{ selectedVfxType?.id }}
-      </div>
-    </div>
-  </mw-panel>
-
-  <!-- Later - animations as entities -->
-  <mw-panel
-    title="VFX Editor"
-    [height]="220"
-    [width]="220"
-    [xPosition]="320"
-    [yPosition]="320"
-  >
-    VFX Preview
-
-    <div class="centered">
-      @if (selectedVfxType) {
-        <mw-vfx-element #vfxRef></mw-vfx-element>
-      }
-    </div>
-  </mw-panel>
-
-  <mw-panel
-    title="Scripts Editor"
-    [height]="300"
-    [width]="660"
-    [xPosition]="800"
-  >
-    <div class="panel">
-      <!-- todo: Templates? Examples of spells, also, cheatsheets with available params and details -->
-      <mw-dropdown [(selectedItem)]="selectedScript">
-        <div class="trigger">
-          @if (!scripts().length) {
-            No scripts created...
-          } @else {
-            @if (script) {
-              {{ script?.name() }}
-            } @else {
-              Select a script...
-            }
-          }
-        </div>
-        @for (script of scripts(); track $index) {
-          <mw-dropdown-option [value]="script">
-            {{ script.name() }}
-          </mw-dropdown-option>
-        } @empty {
-          <div class="empty">No Custom Scripts Defined...</div>
-        }
-      </mw-dropdown>
-
-      <button
-        mw-main-button
-        (click)="addNewScript()"
-      >
-        Add Script
-      </button>
-
-      @let script = selectedScript();
-
-      @if (script) {
-        <div class="property">
-          Script Name:
-          <input
-            type="text"
-            [(ngModel)]="script.name"
-          />
-        </div>
-        <div class="property">
-          Script Type:
-          <mw-dropdown [(selectedItem)]="script.type">
+          <mw-dropdown [(selectedItem)]="selectedUnitType">
             <div class="trigger">
-              {{ script.type().label }}
+              @if (selectedUnitType()) {
+                {{ selectedUnitType()?.faction?.title }} - {{ selectedUnitType()?.name }}
+              } @else {
+                Select Unit Type...
+              }
             </div>
 
-            @for (option of ScriptTypes; track $index) {
-              <mw-dropdown-option [value]="option">
-                {{ option.label }}
+            @for (unitType of unitTypes; track $index) {
+              <mw-dropdown-option [value]="unitType">
+                {{ unitType.faction.title }} - {{ unitType.name }}
               </mw-dropdown-option>
             }
           </mw-dropdown>
+          {{ selectedUnitType()?.id }}
         </div>
 
-        @defer {
-          <mw-script-editor [(code)]="script.code" />
+        <div class="section">
+          <div class="header">Items</div>
+
+          @let itemType = selectedItemType();
+          <mw-dropdown [(selectedItem)]="selectedItemType">
+            <div class="trigger">
+              @if (itemType) {
+                <mw-ra-icon [icon]="itemType.icon.icon"></mw-ra-icon>
+                Item - {{ itemType.name }}
+              } @else {
+                Select Item Type...
+              }
+            </div>
+
+            @for (itemType of itemTypes; track $index) {
+              <mw-dropdown-option [value]="itemType">
+                <mw-ra-icon [icon]="itemType.icon.icon"></mw-ra-icon>
+                Item - {{ itemType.name }}
+              </mw-dropdown-option>
+            }
+          </mw-dropdown>
+
+          {{ selectedItemType()?.id }}
+        </div>
+
+        <div class="section">
+          <div class="header">Spells</div>
+
+          @let spellType = selectedSpellType();
+          <mw-dropdown [(selectedItem)]="selectedSpellType">
+            <div class="trigger">
+              @if (spellType) {
+                <mw-ra-icon [icon]="spellType.icon.icon"></mw-ra-icon>
+                Spell - {{ spellType.activationType }} - {{ spellType.name }}
+              } @else {
+                Select Spell Type...
+              }
+            </div>
+
+            @for (spellType of spellTypes; track $index) {
+              <mw-dropdown-option [value]="spellType">
+                <mw-ra-icon [icon]="spellType.icon.icon"></mw-ra-icon>
+                Spell - {{ spellType.activationType }} - {{ spellType.name }}
+              </mw-dropdown-option>
+            }
+          </mw-dropdown>
+
+          {{ spellType?.id }}
+        </div>
+
+        <!-- todo: will need to unify default/custom spells -->
+        <div class="section">
+          <div class="header">Custom Spells</div>
+
+          @let customSpellType = selectedCustomSpellType();
+          <mw-dropdown [(selectedItem)]="selectedCustomSpellType">
+            <div class="trigger">
+              @if (customSpellType) {
+                <mw-ra-icon [icon]="customSpellType.icon()"></mw-ra-icon>
+                Spell - {{ customSpellType.activationType().label }} - {{ customSpellType.name() }}
+              } @else {
+                Select Spell Type...
+              }
+            </div>
+
+            @for (spellType of customSpellsDefinitions(); track $index) {
+              <mw-dropdown-option [value]="spellType">
+                <mw-ra-icon [icon]="spellType.icon()"></mw-ra-icon>
+                Spell - {{ spellType.activationType().label }} - {{ spellType.name() }}
+              </mw-dropdown-option>
+            }
+          </mw-dropdown>
+
+          {{ customSpellType?.id }}
+        </div>
+
+        <div class="section">
+          <div class="header">VFX</div>
+
+          @let selectedVfxType = selectedVFX();
+
+          <mw-dropdown [(selectedItem)]="selectedVFX">
+            <div class="trigger">
+              @if (selectedVfxType) {
+                Vfx {{ selectedVfxType.id }}
+              } @else {
+                Select Vfx...
+              }
+            </div>
+
+            @for (vfx of vfxTypes; track $index) {
+              <mw-dropdown-option [value]="vfx">
+                {{ vfx.id }}
+              </mw-dropdown-option>
+            }
+          </mw-dropdown>
+
+          {{ selectedVfxType?.id }}
+        </div>
+      </div>
+    </mw-panel>
+
+    <!-- Later - animations as entities -->
+    <mw-panel
+      title="VFX Editor"
+      [height]="220"
+      [width]="220"
+      [xPosition]="320"
+      [yPosition]="320"
+    >
+      VFX Preview
+
+      <div class="centered">
+        @if (selectedVfxType) {
+          <mw-vfx-element #vfxRef></mw-vfx-element>
         }
-      }
-    </div>
-  </mw-panel>
-</mw-panel-container>
+      </div>
+    </mw-panel>
+
+    <mw-panel
+      title="Scripts Editor"
+      [height]="300"
+      [width]="660"
+      [xPosition]="800"
+    >
+      <div class="panel">
+        <!-- todo: Templates? Examples of spells, also, cheatsheets with available params and details -->
+        <mw-dropdown [(selectedItem)]="selectedScript">
+          <div class="trigger">
+            @if (!scripts().length) {
+              No scripts created...
+            } @else {
+              @if (script) {
+                {{ script?.name() }}
+              } @else {
+                Select a script...
+              }
+            }
+          </div>
+          @for (script of scripts(); track $index) {
+            <mw-dropdown-option [value]="script">
+              {{ script.name() }}
+            </mw-dropdown-option>
+          } @empty {
+            <div class="empty">No Custom Scripts Defined...</div>
+          }
+        </mw-dropdown>
+
+        <button
+          mw-main-button
+          (click)="addNewScript()"
+        >
+          Add Script
+        </button>
+
+        @let script = selectedScript();
+
+        @if (script) {
+          <div class="property">
+            Script Name:
+            <input
+              type="text"
+              [(ngModel)]="script.name"
+            />
+          </div>
+          <div class="property">
+            Script Type:
+            <mw-dropdown [(selectedItem)]="script.type">
+              <div class="trigger">
+                {{ script.type().label }}
+              </div>
+
+              @for (option of ScriptTypes; track $index) {
+                <mw-dropdown-option [value]="option">
+                  {{ option.label }}
+                </mw-dropdown-option>
+              }
+            </mw-dropdown>
+          </div>
+
+          @defer {
+            <mw-script-editor [(code)]="script.code" />
+          }
+        }
+      </div>
+    </mw-panel>
+  </mw-panel-container>
+}
 
 <mw-local-dialog #newScenarioDialog>
   <ng-template>
