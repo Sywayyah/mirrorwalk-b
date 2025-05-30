@@ -27,6 +27,7 @@ import {
 } from '../../config/types';
 import { ScenarioEditorContextService } from '../../services/scenario-editor-context.service';
 import { ScenarioEntitiesManagerComponent } from '../scenario-entities-manager/scenario-entities-manager.component';
+import { LocalDialogComponent } from '../../../shared/components/local-dialog/local-dialog.component';
 
 @Component({
   selector: 'mw-scenario-editor-screen',
@@ -41,6 +42,7 @@ import { ScenarioEntitiesManagerComponent } from '../scenario-entities-manager/s
     DropdownComponent,
     DropdownOptionComponent,
     ScenarioEntitiesManagerComponent,
+    LocalDialogComponent,
   ],
 
   templateUrl: './scenario-editor-screen.component.html',
@@ -76,6 +78,7 @@ export class ScenarioEditorScreenComponent {
   readonly ScriptTypes: ScriptTypeOption[] = SCRIPT_TYPE_OPTIONS;
 
   readonly currentScenarioName = this.scenarioEditorContext.currentScenarioName;
+  readonly newScenarioName = signal('');
   readonly selectedScript = this.scenarioEditorContext.selectedScript;
 
   readonly customUnitDefinitions = this.scenarioEditorContext.customUnitDefinitions;
@@ -107,7 +110,7 @@ export class ScenarioEditorScreenComponent {
       customHeroes: [],
       id: crypto.randomUUID() as string,
       locations: [] as object[],
-      name: 'New Custom Scenario',
+      name: this.newScenarioName(),
     };
 
     this.scenarios.update(SignalArrUtils.addItem(newScenario));

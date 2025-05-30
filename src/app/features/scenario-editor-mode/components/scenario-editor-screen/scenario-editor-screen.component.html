@@ -31,7 +31,7 @@
 
   <button
     mw-main-button
-    (click)="addNewScenario()"
+    (click)="newScenarioDialog.open()"
   >
     New Scenario
   </button>
@@ -299,3 +299,36 @@
     </div>
   </mw-panel>
 </mw-panel-container>
+
+<mw-local-dialog #newScenarioDialog>
+  <ng-template>
+    <mw-popup-base-content>
+      <div popupHeader>New scenario</div>
+
+      <div popupContent>
+        Scenario Name:
+        <input
+          type="text"
+          [(ngModel)]="newScenarioName"
+        />
+      </div>
+
+      <div popupButtons>
+        <button
+          mw-main-button
+          (click)="newScenarioDialog.close(); newScenarioName.set('')"
+        >
+          Dismiss
+        </button>
+
+        <button
+          mw-main-button
+          (click)="addNewScenario(); newScenarioDialog.close(); newScenarioName.set('')"
+          [disabled]="!newScenarioName()"
+        >
+          Create
+        </button>
+      </div>
+    </mw-popup-base-content>
+  </ng-template>
+</mw-local-dialog>
