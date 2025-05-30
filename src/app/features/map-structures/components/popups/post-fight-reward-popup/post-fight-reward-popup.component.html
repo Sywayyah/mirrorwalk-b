@@ -7,45 +7,49 @@
     <div>
       <div style="text-align: center">Player's Losses</div>
       <div class="losses-container">
-        <div class="loss-card"
-             *ngFor="let playerLoss of data.playerLosses">
-          <span>{{ playerLoss.type.name }}</span>
-          <span>{{ playerLoss.count }}</span>
-        </div>
+        @for (playerLoss of data.playerLosses; track playerLoss) {
+          <div class="loss-card"
+            >
+            <span>{{ playerLoss.type.name }}</span>
+            <span>{{ playerLoss.count }}</span>
+          </div>
+        }
       </div>
     </div>
 
     <div>
       <div style="text-align: center">Enemy's Losses</div>
       <div class="losses-container">
-        <div class="loss-card"
-             *ngFor="let playerLoss of data.enemyLosses">
-          <span>{{ playerLoss.type.name }}</span>
-          <span>{{ playerLoss.count }}</span>
-        </div>
+        @for (playerLoss of data.enemyLosses; track playerLoss) {
+          <div class="loss-card"
+            >
+            <span>{{ playerLoss.type.name }}</span>
+            <span>{{ playerLoss.count }}</span>
+          </div>
+        }
       </div>
     </div>
 
     @if (data.isWin) {
-    <div>
-      <!-- <div>Gold: +{{totalGoldReward}}</div> -->
       <div>
-        Experience: +{{ totalExperienceReward }}
-        @if (experienceGainBonus) {
-        (<span [mwNumberModifier]="experienceGainBonus"
-              mwNumberModifierFormat="shortPercent">
-        </span>)
+        <!-- <div>Gold: +{{totalGoldReward}}</div> -->
+        <div>
+          Experience: +{{ totalExperienceReward }}
+          @if (experienceGainBonus) {
+            (<span [mwNumberModifier]="experienceGainBonus"
+            mwNumberModifierFormat="shortPercent">
+          </span>)
         }
       </div>
     </div>
-    }
-  </div>
+  }
+</div>
 
-  <div popupButtons>
-    <button mw-main-button
-            style="margin: auto; display: block"
-            (click)="onContinue(data)">
-      Continue
-    </button>
-  </div>
+<div popupButtons>
+  <button mw-main-button
+    style="margin: auto; display: block"
+    (click)="onContinue(data)">
+    Continue
+  </button>
+</div>
 </mw-popup-base-content>

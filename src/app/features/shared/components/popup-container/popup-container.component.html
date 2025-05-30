@@ -1,14 +1,20 @@
-<div *ngIf="popupsService.popups.length"
-     class="overlay">
-</div>
+@if (popupsService.popups.length) {
+  <div
+    class="overlay">
+  </div>
+}
 
-<div *ngIf="popupsService.popups.length"
-     (click)="handleOverlayClick($event)"
-     mwNoContextMenu
-     class="popups-container">
-  <mw-popup-wrapper *ngFor="let popup of popupsService.popups; let last = last"
-                    [ngClass]="popup.class"
-                    class="popup"
-                    [popupData]="popup"
-                    [isInactive]="!last" />
-</div>
+@if (popupsService.popups.length) {
+  <div
+    (click)="handleOverlayClick($event)"
+    mwNoContextMenu
+    class="popups-container">
+    @for (popup of popupsService.popups; track popup; let last = $last) {
+      <mw-popup-wrapper
+        [ngClass]="popup.class"
+        class="popup"
+        [popupData]="popup"
+        [isInactive]="!last" />
+    }
+  </div>
+}

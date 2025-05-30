@@ -9,14 +9,13 @@
     </div>
 
     <div class="rewards">
-      <div class="reward" *ngFor="let reward of data.rewards" [class.active]="reward === activeReward"
-        (click)="setActiveReward(reward)">
-
-        <mw-ra-icon [icon]="reward.display.icon" />
-
-        <div class="reward-title">{{reward.display.title}}</div>
-
-      </div>
+      @for (reward of data.rewards; track reward) {
+        <div class="reward" [class.active]="reward === activeReward"
+          (click)="setActiveReward(reward)">
+          <mw-ra-icon [icon]="reward.display.icon" />
+          <div class="reward-title">{{reward.display.title}}</div>
+        </div>
+      }
     </div>
   </div>
 

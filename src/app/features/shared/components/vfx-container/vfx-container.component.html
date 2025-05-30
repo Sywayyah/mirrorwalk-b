@@ -1,6 +1,8 @@
 <div style="position: absolute; z-index: 200; left: 50%; top: 20%;">
-  <mw-vfx-element *ngFor="let anim of animations"
-                  (created)="playAnimation($event, anim)" />
+  @for (anim of animations; track anim) {
+    <mw-vfx-element
+      (created)="playAnimation($event, anim)" />
+  }
 </div>
 
 <ng-content></ng-content>

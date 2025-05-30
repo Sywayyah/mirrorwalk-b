@@ -7,10 +7,11 @@
         <div>Your items:</div>
 
         <div style="display: flex; flex-direction: column">
-          <mw-item-slot
-            *ngFor="let itemSlot of itemSlots"
-            [itemSlot]="itemSlot"
-          />
+          @for (itemSlot of itemSlots; track itemSlot) {
+            <mw-item-slot
+              [itemSlot]="itemSlot"
+              />
+          }
         </div>
       </div>
 
@@ -29,7 +30,7 @@
                 (click)="clickOnSlot(slot)"
                 [class.active]="slot === activeGroupSlot"
                 [style.background]="slot.unitGroup.ownerPlayer.color"
-              >
+                >
                 <span>{{ slot.unitGroup.type.name }}</span>
                 <span>{{ slot.unitGroup.count }}</span>
               </div>
@@ -53,7 +54,7 @@
                 (click)="clickOnSlot(slot)"
                 [class.active]="slot === activeGroupSlot"
                 [style.background]="slot.unitGroup.ownerPlayer.color"
-              >
+                >
                 <span>{{ slot.unitGroup.type.name }}</span>
                 <span>{{ slot.unitGroup.count }}</span>
               </div>
@@ -77,7 +78,7 @@
           <span
             [mwNumberModifier]="heroStats.fireResist"
             [hideEmpty]="false"
-          >
+            >
           </span>
         </div>
 
@@ -86,7 +87,7 @@
           <span
             [mwNumberModifier]="heroStats.coldResist"
             [hideEmpty]="false"
-          >
+            >
           </span>
         </div>
 
@@ -95,7 +96,7 @@
           <span
             [mwNumberModifier]="heroStats.lightningResist"
             [hideEmpty]="false"
-          >
+            >
           </span>
         </div>
 
@@ -104,7 +105,7 @@
           <span
             [mwNumberModifier]="heroStats.poisonResist"
             [hideEmpty]="false"
-          >
+            >
           </span>
         </div>
 
@@ -129,47 +130,48 @@
         <div style="margin-bottom: 5px; text-align: center">Spells:</div>
         <div style="display: flex; flex-direction: column; align-items: center">
           <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 4px">
-            <div
-              style="display: flex; flex-direction: column; align-items: center"
-              *ngFor="let spell of currentPlayer.hero.spells"
-            >
-              <mw-spell-button
-                [spell]="spell"
-                [player]="currentPlayer"
-                [hero]="currentPlayer.hero"
-              />
-              <div style="font-size: 10px; text-align: center">
-                {{ spell.baseType.name }}
-              </div>
+            @for (spell of currentPlayer.hero.spells; track spell) {
+              <div
+                style="display: flex; flex-direction: column; align-items: center"
+                >
+                <mw-spell-button
+                  [spell]="spell"
+                  [player]="currentPlayer"
+                  [hero]="currentPlayer.hero"
+                  />
+                  <div style="font-size: 10px; text-align: center">
+                    {{ spell.baseType.name }}
+                  </div>
+                </div>
+              }
+            </div>
+          </div>
+        </div>
+
+        <div class="additional">
+          <div>Activities:</div>
+
+          <div class="specialties">
+            @for (activity of hero.ownerPlayer.activities(); track $index) {
+              <mw-week-activity-card
+                class="active"
+                [activity]="activity"
+                />
+              }
             </div>
           </div>
         </div>
       </div>
 
-      <div class="additional">
-        <div>Activities:</div>
-
-        <div class="specialties">
-          @for (activity of hero.ownerPlayer.activities(); track $index) {
-            <mw-week-activity-card
-              class="active"
-              [activity]="activity"
-            />
-          }
-        </div>
+      <div
+        popupButtons
+        style="justify-content: end"
+        >
+        <button
+          mw-main-button
+          (click)="close()"
+          >
+          Close
+        </button>
       </div>
-    </div>
-  </div>
-
-  <div
-    popupButtons
-    style="justify-content: end"
-  >
-    <button
-      mw-main-button
-      (click)="close()"
-    >
-      Close
-    </button>
-  </div>
-</mw-popup-base-content>
+    </mw-popup-base-content>

@@ -1,5 +1,7 @@
 <ng-container *ngComponentOutlet="popupData.component; injector: injector"></ng-container>
 
-<div *ngIf="isInactive"
-     class="inactive-overlay">
-</div>
+@if (isInactive) {
+  <div
+    class="inactive-overlay">
+  </div>
+}

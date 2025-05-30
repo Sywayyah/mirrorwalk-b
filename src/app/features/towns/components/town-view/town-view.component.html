@@ -3,70 +3,65 @@
   icon="sideswipe"
   style="padding: 0px 10px; position: fixed; top: 50%"
   (click)="leaveTown()"
-/>
+  />
 
-<mw-action-hint class="contrast" />
+  <mw-action-hint class="contrast" />
 
-<div class="tiers">
-  <div
-    class="building"
-    *ngFor="let tier of buildingsByTiers | keyvalue"
-  >
-    <!-- {{building.key}} -->
-    <div>Tier {{ tier.key }}</div>
-
-    <div class="build">
-      @for (build of tier.value; track $index) {
-        <div [mwActionHint]="'Inspect ' + build.base.baseName">
-          <div
-            class="header"
-            (click)="handleBuildingClicked(build)"
-            [class.not-built]="!build.built"
-            [style.background-color]="builtColor"
-          >
-            <mw-ra-icon
-              style="font-size: 28px"
-              [icon]="build.base.icon"
-            />
-            {{ build.currentBuilding.name }}
-
-            @if (build.built) {
-              <div style="font-size: 10px">Level {{ build.currentLevel + 1 }}/{{ build.base.levels.length }}</div>
-            } @else {
-              <div style="font-size: 10px">Not built</div>
-            }
-
-            <hr style="width: 100%; border-top: 0" />
-          </div>
-        </div>
-      }
-
-      <!-- <mw-ra-icon icon="hammer"></mw-ra-icon> -->
-    </div>
-
-    @if (newTownSystemEnabled) {
-      <button
-        mw-main-button
-        [cdkMenuTriggerFor]="buildingMenu"
-        [cdkMenuPosition]="menuPosition"
-      >
-        Build
-      </button>
-
-      <ng-template #buildingMenu>
-        <div
-          class="content"
-          cdkMenu
+  <div class="tiers">
+    @for (tier of buildingsByTiers | keyvalue; track tier) {
+      <div
+        class="building"
         >
-          @for (building of tier.value; track $index) {
-            <div [mwActionHint]="'Inspect ' + building.base.baseName">
-              {{ building.base.baseName }}
-            </div>
+        <!-- {{building.key}} -->
+        <div>Tier {{ tier.key }}</div>
+        <div class="build">
+          @for (build of tier.value; track $index) {
+            <div [mwActionHint]="'Inspect ' + build.base.baseName">
+              <div
+                class="header"
+                (click)="handleBuildingClicked(build)"
+                [class.not-built]="!build.built"
+                [style.background-color]="builtColor"
+                >
+                <mw-ra-icon
+                  style="font-size: 28px"
+                  [icon]="build.base.icon"
+                  />
+                  {{ build.currentBuilding.name }}
+                  @if (build.built) {
+                    <div style="font-size: 10px">Level {{ build.currentLevel + 1 }}/{{ build.base.levels.length }}</div>
+                  } @else {
+                    <div style="font-size: 10px">Not built</div>
+                  }
+                  <hr style="width: 100%; border-top: 0" />
+                </div>
+              </div>
+            }
+            <!-- <mw-ra-icon icon="hammer"></mw-ra-icon> -->
+          </div>
+          @if (newTownSystemEnabled) {
+            <button
+              mw-main-button
+              [cdkMenuTriggerFor]="buildingMenu"
+              [cdkMenuPosition]="menuPosition"
+              >
+              Build
+            </button>
+            <ng-template #buildingMenu>
+              <div
+                class="content"
+                cdkMenu
+                >
+                @for (building of tier.value; track $index) {
+                  <div [mwActionHint]="'Inspect ' + building.base.baseName">
+                    {{ building.base.baseName }}
+                  </div>
+                }
+              </div>
+            </ng-template>
           }
         </div>
-      </ng-template>
-    }
-  </div>
-</div>
+      }
+    </div>
 
-<mw-player-info-panel style="position: absolute; bottom: 0; left: 0" />
+    <mw-player-info-panel style="position: absolute; bottom: 0; left: 0" />

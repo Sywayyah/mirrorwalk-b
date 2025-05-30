@@ -2,7 +2,7 @@
   Battle Log:
 
   <div class="history-log"
-       #historyLog>
+    #historyLog>
     @for (historyEntry of battleLogService.history; track $index) {
       <div class="entry">
         @switch (historyEntry.type) {
@@ -26,34 +26,38 @@
 
 <!-- todo: rework, pass custom html -->
 <ng-template #simple
-             let-log="log">
+  let-log="log">
   {{log.message}}
 </ng-template>
 
 <ng-template #htmlLog
-             let-log="log">
+  let-log="log">
   <div [innerHTML]="log.message | safeHtml"></div>
 </ng-template>
 
 <ng-template #dealtDamageLog
-             let-log="log">
+  let-log="log">
   <div>
     <span [style.color]="log.attackingPlayer.color">{{log.attackersNumber}} {{log.attacker.name}}</span>
     deal {{log.damage}} {{log.isCritical ? 'critical' : ''}} damage to
     <span [style.color]="log.attackedPlayer.color">{{log.attackedNumber}} {{log.attacked.name}}</span>
     , killing {{log.losses}} units
-    <div *ngIf="log.damageBlocked">
-      {{log.damageBlocked}} damage was blocked
-    </div>
-    <div *ngIf="log.stolenLife">
-      <span [style.color]="log.attackingPlayer.color">{{log.attackersNumber}} {{log.attacker.name}}</span>
-      steal {{log.stolenLife}} life, reviving {{log.stolenLifeUnitsRestored}} units.
-    </div>
+    @if (log.damageBlocked) {
+      <div>
+        {{log.damageBlocked}} damage was blocked
+      </div>
+    }
+    @if (log.stolenLife) {
+      <div>
+        <span [style.color]="log.attackingPlayer.color">{{log.attackersNumber}} {{log.attacker.name}}</span>
+        steal {{log.stolenLife}} life, reviving {{log.stolenLifeUnitsRestored}} units.
+      </div>
+    }
   </div>
 </ng-template>
 
 <ng-template #roundInfoMsg
-             let-log="log">
+  let-log="log">
   <div style="padding: 8px; text-align: center;">
     {{log.message}}
   </div>

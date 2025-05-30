@@ -1,3 +1,5 @@
-<i *ngIf="icon" class="ra" [class]="'ra-' + icon"></i>
+@if (icon) {
+  <i class="ra" [class]="'ra-' + icon"></i>
+}
 
 <ng-content></ng-content>

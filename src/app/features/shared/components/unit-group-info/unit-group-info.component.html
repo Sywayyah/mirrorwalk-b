@@ -5,137 +5,139 @@
   size="big"
   [unitGroup]="unitGroup()"
   [isHero]="unitGroup().type.isHero"
-/>
+  />
 
-<div class="main-group">
-  <div class="info-header">
-    <div class="title">
-      <div class="group">
-        {{ unitGroup().count }}
+  <div class="main-group">
+    <div class="info-header">
+      <div class="title">
+        <div class="group">
+          {{ unitGroup().count }}
 
-        {{ unitGroup().type.name }}
+          {{ unitGroup().type.name }}
+        </div>
+
+        <div class="tier">Tier {{ unitGroup().type.level }}</div>
       </div>
 
-      <div class="tier">Tier {{ unitGroup().type.level }}</div>
-    </div>
+      <!-- Total stats can be a separate section on the right -->
+      <div class="stats">
+        <div class="col">
+          <div class="stat">
+            <mw-ra-icon icon="sword" />
 
-    <!-- Total stats can be a separate section on the right -->
+            {{ baseStats.damageInfo.minDamage }}-{{ baseStats.damageInfo.maxDamage }}
+          </div>
+
+          <div class="stat"><mw-ra-icon icon="health" /> {{ baseStats.health }}</div>
+        </div>
+
+        <div class="col">
+          <div class="stat">
+            <mw-ra-icon icon="spinning-sword" />
+            Turns per round:
+            {{ unitGroup().type.defaultTurnsPerRound }}
+          </div>
+        </div>
+      </div>
+
+      <!-- todo: more descriptions, provide abilities here -->
+      <!--  and some modifiers/resists -->
+    </div>
+    <div class="description">
+      <hr />
+      @if (description.descriptions.length) {
+        <mw-description
+          [descriptions]="description.descriptions"
+          />
+      } @else {
+        No Description.
+      }
+
+    </div>
+  </div>
+
+  <div class="secondary-group">
+    <div class="title">Group Stats</div>
+    <hr />
+
     <div class="stats">
       <div class="col">
         <div class="stat">
           <mw-ra-icon icon="sword" />
-
-          {{ baseStats.damageInfo.minDamage }}-{{ baseStats.damageInfo.maxDamage }}
+          {{ unitState.groupStats.totalMinDamage }}-{{ unitState.groupStats.totalMaxDamage }} (avg.
+          {{ unitState.groupStats.avgTotalDamage }})
         </div>
 
-        <div class="stat"><mw-ra-icon icon="health" /> {{ baseStats.health }}</div>
-      </div>
+        <div class="stat"><mw-ra-icon icon="health" /> {{ unitState.groupStats.totalHealth }}</div>
 
-      <div class="col">
-        <div class="stat">
-          <mw-ra-icon icon="spinning-sword" />
-          Turns per round:
-          {{ unitGroup().type.defaultTurnsPerRound }}
-        </div>
-      </div>
-    </div>
-
-    <!-- todo: more descriptions, provide abilities here -->
-    <!--  and some modifiers/resists -->
-  </div>
-  <div class="description">
-    <hr />
-    <mw-description
-      *ngIf="description.descriptions.length; else noDescription"
-      [descriptions]="description.descriptions"
-    />
-
-    <ng-template #noDescription> No Description. </ng-template>
-  </div>
-</div>
-
-<div class="secondary-group">
-  <div class="title">Group Stats</div>
-  <hr />
-
-  <div class="stats">
-    <div class="col">
-      <div class="stat">
-        <mw-ra-icon icon="sword" />
-        {{ unitState.groupStats.totalMinDamage }}-{{ unitState.groupStats.totalMaxDamage }} (avg.
-        {{ unitState.groupStats.avgTotalDamage }})
-      </div>
-
-      <div class="stat"><mw-ra-icon icon="health" /> {{ unitState.groupStats.totalHealth }}</div>
-
-      <hr />
-
-      <div class="hor-stats">
-        <div class="stat">
-          <div>Attack:</div>
-
-          <div>
-            {{ unitState.groupStats.baseAttack }}
-            <span [mwNumberModifier]="unitState.groupStats.bonusAttack"></span>
-          </div>
-        </div>
-
-        <div class="stat">
-          <div>Defence:</div>
-
-          <div>
-            {{ unitState.groupStats.baseDefence }}
-            <span [mwNumberModifier]="unitState.groupStats.bonusDefence"></span>
-          </div>
-        </div>
-
-        <div class="stat">
-          <div>Speed</div>
-
-          <div>
-            {{ unitState.groupStats.baseSpeed }}
-            <span [mwNumberModifier]="unitState.groupStats.speedBonus"></span>
-          </div>
-        </div>
-      </div>
-
-      <div
-        class="abilities"
-        *ngIf="spells.length"
-      >
         <hr />
 
-        <div class="title">Abilities:</div>
+        <div class="hor-stats">
+          <div class="stat">
+            <div>Attack:</div>
 
-        <div class="abilities-list">
-          <mw-unit-group-spell-icon
-            *ngFor="let spell of spells"
-            [hero]="unitGroup().ownerPlayer.hero"
-            [spell]="spell"
-            [hintPos]="'above'"
-            [owner]="unitGroup()"
-          />
+            <div>
+              {{ unitState.groupStats.baseAttack }}
+              <span [mwNumberModifier]="unitState.groupStats.bonusAttack"></span>
+            </div>
+          </div>
+
+          <div class="stat">
+            <div>Defence:</div>
+
+            <div>
+              {{ unitState.groupStats.baseDefence }}
+              <span [mwNumberModifier]="unitState.groupStats.bonusDefence"></span>
+            </div>
+          </div>
+
+          <div class="stat">
+            <div>Speed</div>
+
+            <div>
+              {{ unitState.groupStats.baseSpeed }}
+              <span [mwNumberModifier]="unitState.groupStats.speedBonus"></span>
+            </div>
+          </div>
         </div>
-      </div>
 
-      <div
-        class="abilities"
-        *ngIf="effects.length"
-      >
-        <hr />
+        @if (spells.length) {
+          <div
+            class="abilities"
+            >
+            <hr />
+            <div class="title">Abilities:</div>
+            <div class="abilities-list">
+              @for (spell of spells; track spell) {
+                <mw-unit-group-spell-icon
+                  [hero]="unitGroup().ownerPlayer.hero"
+                  [spell]="spell"
+                  [hintPos]="'above'"
+                  [owner]="unitGroup()"
+                  />
+              }
+            </div>
+          </div>
+        }
 
-        <div class="title">Effects:</div>
-
-        <div class="abilities-list">
-          <mw-unit-group-spell-icon
-            *ngFor="let spell of effects"
-            [hero]="unitGroup().ownerPlayer.hero"
-            [spell]="spell"
-            [hintPos]="'above'"
-            [owner]="unitGroup()"
-          />
-        </div>
+        @if (effects.length) {
+          <div
+            class="abilities"
+            >
+            <hr />
+            <div class="title">Effects:</div>
+            <div class="abilities-list">
+              @for (spell of effects; track spell) {
+                <mw-unit-group-spell-icon
+                  [hero]="unitGroup().ownerPlayer.hero"
+                  [spell]="spell"
+                  [hintPos]="'above'"
+                  [owner]="unitGroup()"
+                  />
+              }
+            </div>
+          </div>
+        }
       </div>
     </div>
   </div>
-</div>

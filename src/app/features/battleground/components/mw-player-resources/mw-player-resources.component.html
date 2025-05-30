@@ -34,10 +34,12 @@
     <div>Attack:</div>
     <div>
       {{ heroStats.baseAttack }}
-      <span *ngIf="heroStats.bonusAttack">
-        <!-- pipe for pos/neg values, or directive with ::before -->
-        (+{{ heroStats.bonusAttack }})
-      </span>
+      @if (heroStats.bonusAttack) {
+        <span>
+          <!-- pipe for pos/neg values, or directive with ::before -->
+          (+{{ heroStats.bonusAttack }})
+        </span>
+      }
     </div>
   </div>
 
@@ -45,7 +47,9 @@
     <div>Defence:</div>
     <div>
       {{ heroStats.baseDefence }}
-      <span *ngIf="heroStats.bonusDefence"> (+{{ heroStats.bonusDefence }}) </span>
+      @if (heroStats.bonusDefence) {
+        <span> (+{{ heroStats.bonusDefence }}) </span>
+      }
     </div>
   </div>
 

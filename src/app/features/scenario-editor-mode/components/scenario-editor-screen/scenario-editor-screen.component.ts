@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, effect, inject, signal, viewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { SpellId } from 'src/app/core/entities';
@@ -33,7 +33,6 @@ import { ScenarioEntitiesManagerComponent } from '../scenario-entities-manager/s
   selector: 'mw-scenario-editor-screen',
   standalone: true,
   imports: [
-    CommonModule,
     SharedModule,
     FormsModule,
     ScriptEditorComponent,
@@ -42,8 +41,8 @@ import { ScenarioEntitiesManagerComponent } from '../scenario-entities-manager/s
     DropdownComponent,
     DropdownOptionComponent,
     ScenarioEntitiesManagerComponent,
-    LocalDialogComponent,
-  ],
+    LocalDialogComponent
+],
 
   templateUrl: './scenario-editor-screen.component.html',
   styleUrl: './scenario-editor-screen.component.scss',
