@@ -27,13 +27,16 @@ export class ScenarioEditorContextService {
 
   readonly selectedScript = signal(null as ScenarioScript | null);
 
-  readonly selectedUnitType = signal(null as UnitBaseType | null);
-  readonly selectedItemType = signal(null as ItemBaseType | null);
-  readonly selectedSpellType = signal(null as SpellBaseType | null);
-  readonly selectedVFX = signal(null as EffectAnimation | null);
-  readonly selectedCustomSpellType = signal(null as CustomSpellDefinition | null);
-  readonly selectedScenario = signal(null as SavedScenarioLocalStorageModel | null);
+  // entity inspector
+  readonly entitiesInspector = {
+    selectedUnitType: signal(null as UnitBaseType | null),
+    selectedItemType: signal(null as ItemBaseType | null),
+    selectedSpellType: signal(null as SpellBaseType | null),
+    selectedVFX: signal(null as EffectAnimation | null),
+    selectedCustomSpellType: signal(null as CustomSpellDefinition | null),
+  };
 
+  readonly selectedScenario = signal(null as SavedScenarioLocalStorageModel | null);
   readonly currentScenarioName = signal('');
 
   // entities manager

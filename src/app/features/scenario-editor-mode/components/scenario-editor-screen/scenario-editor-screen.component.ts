@@ -68,11 +68,11 @@ export class ScenarioEditorScreenComponent {
 
   readonly scripts = signal([] as ScenarioScript[]);
 
-  readonly selectedUnitType = this.scenarioEditorContext.selectedUnitType;
-  readonly selectedItemType = this.scenarioEditorContext.selectedItemType;
-  readonly selectedSpellType = this.scenarioEditorContext.selectedSpellType;
-  readonly selectedVFX = this.scenarioEditorContext.selectedVFX;
-  readonly selectedCustomSpellType = this.scenarioEditorContext.selectedCustomSpellType;
+  readonly selectedUnitType = this.scenarioEditorContext.entitiesInspector.selectedUnitType;
+  readonly selectedItemType = this.scenarioEditorContext.entitiesInspector.selectedItemType;
+  readonly selectedSpellType = this.scenarioEditorContext.entitiesInspector.selectedSpellType;
+  readonly selectedVFX = this.scenarioEditorContext.entitiesInspector.selectedVFX;
+  readonly selectedCustomSpellType = this.scenarioEditorContext.entitiesInspector.selectedCustomSpellType;
   readonly selectedScenario = this.scenarioEditorContext.selectedScenario;
   readonly unconfirmedSelectedScenario = signal<null | SavedScenarioLocalStorageModel>(null);
 
