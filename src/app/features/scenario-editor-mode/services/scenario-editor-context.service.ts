@@ -25,12 +25,12 @@ export class ScenarioEditorContextService {
     units: signal<CustomUnitDefinition[]>([]),
     spells: signal<CustomSpellDefinition[]>([]),
     heroes: signal<CustomHeroDefinition[]>([]),
-  };
+  } as const;
 
   readonly scriptsEditor = {
     scripts: signal([] as ScenarioScript[]),
     selectedScript: signal(null as ScenarioScript | null),
-  };
+  } as const;
 
   // entity inspector
   readonly entitiesInspector = {
@@ -39,7 +39,7 @@ export class ScenarioEditorContextService {
     selectedSpellType: signal(null as SpellBaseType | null),
     selectedVFX: signal(null as EffectAnimation | null),
     selectedCustomSpellType: signal(null as CustomSpellDefinition | null),
-  };
+  } as const;
 
   readonly selectedScenario = signal(null as SavedScenarioLocalStorageModel | null);
   readonly currentScenarioName = signal('');
@@ -49,5 +49,5 @@ export class ScenarioEditorContextService {
     selectedUnitDefinition: signal<CustomUnitDefinition | null>(null),
     selectedHeroDefinition: signal<CustomHeroDefinition | null>(null),
     selectedSpellDefinition: signal<CustomSpellDefinition | null>(null),
-  };
+  } as const;
 }
