@@ -87,6 +87,7 @@ export class CustomHeroDefinition {
     heroDefinition.name.set(saved.name);
     heroDefinition.attack.set(saved.attack);
     heroDefinition.defence.set(saved.defence);
+    heroDefinition.assetUrl.set(saved.assetUrl);
 
     heroDefinition.spells.set(
       saved.spellIds.map((spellId) => context.spells.find((spellDef) => spellDef.id === spellId)!),

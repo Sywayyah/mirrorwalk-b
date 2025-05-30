@@ -1,4 +1,4 @@
-import { Component, inject, input, model, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { SignalArrUtils } from 'src/app/core/utils/signals';
 import { DropdownOptionComponent } from '../../../shared/components/dropdown/dropdown-option.component';
@@ -11,7 +11,6 @@ import {
   CustomSpellDefinition,
   CustomUnitDefinition,
   EntityTabs,
-  ScenarioScript,
 } from '../../config/types';
 import { ScenarioEditorContextService } from '../../services/scenario-editor-context.service';
 
@@ -23,12 +22,13 @@ import { ScenarioEditorContextService } from '../../services/scenario-editor-con
 })
 export class ScenarioEntitiesManagerComponent {
   readonly scenarioEditorContext = inject(ScenarioEditorContextService);
-  readonly scripts = input<ScenarioScript[]>([]);
-  readonly spellSelectedInInspector = input<CustomSpellDefinition | null>(null);
 
-  readonly customUnitDefinitions = model<CustomUnitDefinition[]>([]);
-  readonly customSpellsDefinitions = model<CustomSpellDefinition[]>([]);
-  readonly customHeroDefinitions = model<CustomHeroDefinition[]>([]);
+  readonly scripts = this.scenarioEditorContext.scriptsEditor.scripts;
+  readonly spellSelectedInInspector = this.scenarioEditorContext.entitiesInspector.selectedCustomSpellType;
+
+  readonly customUnitDefinitions = this.scenarioEditorContext.customDefinitions.customUnitDefinitions;
+  readonly customSpellsDefinitions = this.scenarioEditorContext.customDefinitions.customSpellsDefinitions;
+  readonly customHeroDefinitions = this.scenarioEditorContext.customDefinitions.customHeroDefinitions;
 
   readonly selectedUnitDefinition = this.scenarioEditorContext.entitiesManager.selectedUnitDefinition;
   readonly selectedHeroDefinition = this.scenarioEditorContext.entitiesManager.selectedHeroDefinition;

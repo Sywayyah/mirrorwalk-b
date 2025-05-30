@@ -21,11 +21,16 @@ export class ScenarioEditorContextService {
   readonly spellTypes = this.entitiesRegistries.getRegisteredEntitiesMap().get('#spell') as SpellBaseType[];
   readonly vfxTypes = this.entitiesRegistries.getRegisteredEntitiesMap().get('#vfx') as EffectAnimation[];
 
-  readonly customUnitDefinitions = signal<CustomUnitDefinition[]>([]);
-  readonly customSpellsDefinitions = signal<CustomSpellDefinition[]>([]);
-  readonly customHeroDefinitions = signal<CustomHeroDefinition[]>([]);
+  readonly customDefinitions = {
+    customUnitDefinitions: signal<CustomUnitDefinition[]>([]),
+    customSpellsDefinitions: signal<CustomSpellDefinition[]>([]),
+    customHeroDefinitions: signal<CustomHeroDefinition[]>([]),
+  };
 
-  readonly selectedScript = signal(null as ScenarioScript | null);
+  readonly scriptsEditor = {
+    scripts: signal([] as ScenarioScript[]),
+    selectedScript: signal(null as ScenarioScript | null),
+  };
 
   // entity inspector
   readonly entitiesInspector = {
