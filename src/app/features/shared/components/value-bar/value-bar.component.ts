@@ -23,7 +23,7 @@ export class ValueBarComponent {
 
   public barStyle = input<'normal' | 'static'>('normal');
 
-  public showMax = input(false);
+  public showMax = input(true);
 
   public currentValue = input(0);
 
