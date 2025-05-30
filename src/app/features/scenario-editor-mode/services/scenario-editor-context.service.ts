@@ -35,4 +35,11 @@ export class ScenarioEditorContextService {
   readonly selectedScenario = signal(null as SavedScenarioLocalStorageModel | null);
 
   readonly currentScenarioName = signal('');
+
+  // entities manager
+  readonly entitiesManager = {
+    selectedUnitDefinition: signal<CustomUnitDefinition | null>(null),
+    selectedHeroDefinition: signal<CustomHeroDefinition | null>(null),
+    selectedSpellDefinition: signal<CustomSpellDefinition | null>(null),
+  };
 }

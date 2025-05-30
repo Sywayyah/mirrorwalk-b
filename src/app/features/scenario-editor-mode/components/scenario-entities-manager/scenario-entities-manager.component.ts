@@ -1,4 +1,4 @@
-import { Component, input, model, signal } from '@angular/core';
+import { Component, inject, input, model, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { SignalArrUtils } from 'src/app/core/utils/signals';
 import { DropdownOptionComponent } from '../../../shared/components/dropdown/dropdown-option.component';
@@ -13,6 +13,7 @@ import {
   EntityTabs,
   ScenarioScript,
 } from '../../config/types';
+import { ScenarioEditorContextService } from '../../services/scenario-editor-context.service';
 
 @Component({
   selector: 'mw-scenario-entities-manager',
@@ -21,6 +22,7 @@ import {
   styleUrl: './scenario-entities-manager.component.scss',
 })
 export class ScenarioEntitiesManagerComponent {
+  readonly scenarioEditorContext = inject(ScenarioEditorContextService);
   readonly scripts = input<ScenarioScript[]>([]);
   readonly spellSelectedInInspector = input<CustomSpellDefinition | null>(null);
 
@@ -28,9 +30,9 @@ export class ScenarioEntitiesManagerComponent {
   readonly customSpellsDefinitions = model<CustomSpellDefinition[]>([]);
   readonly customHeroDefinitions = model<CustomHeroDefinition[]>([]);
 
-  readonly selectedUnitDefinition = signal<CustomUnitDefinition | null>(null);
-  readonly selectedHeroDefinition = signal<CustomHeroDefinition | null>(null);
-  readonly selectedSpellDefinition = signal<CustomSpellDefinition | null>(null);
+  readonly selectedUnitDefinition = this.scenarioEditorContext.entitiesManager.selectedUnitDefinition;
+  readonly selectedHeroDefinition = this.scenarioEditorContext.entitiesManager.selectedHeroDefinition;
+  readonly selectedSpellDefinition = this.scenarioEditorContext.entitiesManager.selectedSpellDefinition;
 
   readonly EntityTab = EntityTabs;
 

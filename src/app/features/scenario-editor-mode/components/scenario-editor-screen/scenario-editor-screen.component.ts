@@ -74,6 +74,7 @@ export class ScenarioEditorScreenComponent {
   readonly selectedVFX = this.scenarioEditorContext.selectedVFX;
   readonly selectedCustomSpellType = this.scenarioEditorContext.selectedCustomSpellType;
   readonly selectedScenario = this.scenarioEditorContext.selectedScenario;
+  readonly unconfirmedSelectedScenario = signal<null | SavedScenarioLocalStorageModel>(null);
 
   readonly ScriptTypes: ScriptTypeOption[] = SCRIPT_TYPE_OPTIONS;
 
@@ -124,6 +125,14 @@ export class ScenarioEditorScreenComponent {
     if (!scenario) {
       return;
     }
+    this.selectedScenario.set(scenario);
+
+    this.selectedCustomSpellType.set(null);
+    this.scenarioEditorContext.entitiesManager.selectedHeroDefinition.set(null);
+    this.scenarioEditorContext.entitiesManager.selectedSpellDefinition.set(null);
+    this.scenarioEditorContext.entitiesManager.selectedUnitDefinition.set(null);
+    this.selectedScript.set(null);
+
     const scripts = scenario.customScripts.map((script) => ScenarioScript.fromSaved(script));
     this.scripts.set(scripts);
     this.customSpellsDefinitions.set(
