@@ -22,9 +22,9 @@ export class ScenarioEditorContextService {
   readonly vfxTypes = this.entitiesRegistries.getRegisteredEntitiesMap().get('#vfx') as EffectAnimation[];
 
   readonly customDefinitions = {
-    customUnitDefinitions: signal<CustomUnitDefinition[]>([]),
-    customSpellsDefinitions: signal<CustomSpellDefinition[]>([]),
-    customHeroDefinitions: signal<CustomHeroDefinition[]>([]),
+    units: signal<CustomUnitDefinition[]>([]),
+    spells: signal<CustomSpellDefinition[]>([]),
+    heroes: signal<CustomHeroDefinition[]>([]),
   };
 
   readonly scriptsEditor = {

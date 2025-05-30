@@ -26,9 +26,9 @@ export class ScenarioEntitiesManagerComponent {
   readonly scripts = this.scenarioEditorContext.scriptsEditor.scripts;
   readonly spellSelectedInInspector = this.scenarioEditorContext.entitiesInspector.selectedCustomSpellType;
 
-  readonly customUnitDefinitions = this.scenarioEditorContext.customDefinitions.customUnitDefinitions;
-  readonly customSpellsDefinitions = this.scenarioEditorContext.customDefinitions.customSpellsDefinitions;
-  readonly customHeroDefinitions = this.scenarioEditorContext.customDefinitions.customHeroDefinitions;
+  readonly customUnitDefinitions = this.scenarioEditorContext.customDefinitions.units;
+  readonly customSpellsDefinitions = this.scenarioEditorContext.customDefinitions.spells;
+  readonly customHeroDefinitions = this.scenarioEditorContext.customDefinitions.heroes;
 
   readonly selectedUnitDefinition = this.scenarioEditorContext.entitiesManager.selectedUnitDefinition;
   readonly selectedHeroDefinition = this.scenarioEditorContext.entitiesManager.selectedHeroDefinition;

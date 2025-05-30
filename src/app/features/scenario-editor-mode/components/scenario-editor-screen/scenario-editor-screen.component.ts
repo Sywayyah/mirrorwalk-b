@@ -82,9 +82,9 @@ export class ScenarioEditorScreenComponent {
   readonly newScenarioName = signal('');
   readonly selectedScript = this.scenarioEditorContext.scriptsEditor.selectedScript;
 
-  readonly customUnitDefinitions = this.scenarioEditorContext.customDefinitions.customUnitDefinitions;
-  readonly customSpellsDefinitions = this.scenarioEditorContext.customDefinitions.customSpellsDefinitions;
-  readonly customHeroDefinitions = this.scenarioEditorContext.customDefinitions.customHeroDefinitions;
+  readonly customUnitDefinitions = this.scenarioEditorContext.customDefinitions.units;
+  readonly customSpellsDefinitions = this.scenarioEditorContext.customDefinitions.spells;
+  readonly customHeroDefinitions = this.scenarioEditorContext.customDefinitions.heroes;
 
   constructor() {
     const savedScenarions = JSON.parse(localStorage.getItem('scenarios') as string) as SavedScenarioLocalStorageModel[];

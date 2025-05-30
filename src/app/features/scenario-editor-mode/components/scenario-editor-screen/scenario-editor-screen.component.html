@@ -15,7 +15,7 @@
 
   <button
     mw-main-button
-    (click)="saveScenario()"
+    (click)="saveDialog.open()"
     [disabled]="!selectedScenario()"
   >
     Save Scenario
@@ -411,6 +411,31 @@
         <button
           mw-main-button
           (click)="leaveToMainScreenDialog.close()"
+        >
+          Cancel
+        </button>
+      </div>
+    </mw-popup-base-content>
+  </ng-template>
+</mw-local-dialog>
+
+<mw-local-dialog #saveDialog>
+  <ng-template>
+    <mw-popup-base-content>
+      <div popupHeader>Saving scenario</div>
+
+      <div popupContent>Are you sure you want to save changes in this scenario?</div>
+
+      <div popupButtons>
+        <button
+          mw-main-button
+          (click)="saveDialog.close(); saveScenario()"
+        >
+          Confirm
+        </button>
+        <button
+          mw-main-button
+          (click)="saveDialog.close()"
         >
           Cancel
         </button>
