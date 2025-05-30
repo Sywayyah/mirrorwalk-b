@@ -1,7 +1,14 @@
 import { Component, inject } from '@angular/core';
 import { isFeatureEnabled } from 'src/app/core/config';
 import { Feature } from 'src/app/core/config/types';
-import { OpenGlossary, OpenNewGameScreen, OpenSandboxMode, OpenScenarioMode, OpenSettings } from 'src/app/core/events';
+import {
+  OpenGlossary,
+  OpenMultiplayer,
+  OpenNewGameScreen,
+  OpenSandboxMode,
+  OpenScenarioMode,
+  OpenSettings,
+} from 'src/app/core/events';
 import { EventsService } from 'src/app/store';
 
 @Component({
@@ -14,6 +21,7 @@ export class MainScreenComponent {
   private readonly events = inject(EventsService);
 
   readonly isSandboxEnabled = isFeatureEnabled(Feature.SandboxMode);
+  readonly isMultiplayerEnabled = isFeatureEnabled(Feature.MultiplayerServer);
   readonly isScenarioEditorEnabled = isFeatureEnabled(Feature.ScenarioEditor);
 
   public openNewGameScreen(): void {
@@ -34,5 +42,9 @@ export class MainScreenComponent {
 
   public openSettings(): void {
     this.events.dispatch(OpenSettings());
+  }
+
+  public openMultiplayer() {
+    this.events.dispatch(OpenMultiplayer());
   }
 }

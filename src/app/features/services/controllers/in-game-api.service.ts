@@ -106,6 +106,16 @@ export class InGameApiController extends StoreClient() {
             options,
           );
         },
+        createEffectByIdForUnitGroup: (target, id, options) => {
+          this.vfxService.createVfxForUnitGroup(
+            target,
+            {
+              type: EffectType.VfxElement,
+              animation: resolveEntity(id),
+            } as VfxElemEffect,
+            options,
+          );
+        },
         createFloatingMessageForUnitGroup: (target, data, options = {}) => {
           this.vfxService.createFloatingMessageForUnitGroup(target, data, options);
         },

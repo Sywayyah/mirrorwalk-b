@@ -1,0 +1,22 @@
+<button
+  mw-main-button
+  (click)="toMainScreen()"
+>
+  Back to main screen
+</button>
+
+Multiplayer:
+
+<input
+  type="text"
+  [(ngModel)]="serverIPAddress"
+/>
+
+@if (serverIPAddress()) {
+  <button
+    mw-main-button
+    (click)="tryConnect()"
+  >
+    Connect
+  </button>
+}

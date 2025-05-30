@@ -1,5 +1,7 @@
 import { signal } from '@angular/core';
 import { SpellActivationType } from 'src/app/core/spells';
+import { CustomModifiers } from './modifiers';
+import { CustomResources } from './resources';
 
 export class Scenario {
   readonly id = crypto.randomUUID();
@@ -54,6 +56,23 @@ export class CustomUnitDefinition {
   }
 }
 
+export class CustomItemDefinition {
+  static counter = 0;
+  readonly id = `custom_item_${CustomUnitDefinition.counter}`;
+  readonly name = signal(`New_Item_Type_${CustomUnitDefinition.counter}`);
+  readonly icon = signal('book');
+
+  readonly modifiers = new CustomModifiers();
+  readonly resources = new CustomResources({ gold: 100 });
+
+  constructor(id?: string) {
+    CustomItemDefinition.counter++;
+    if (id) {
+      this.id = id;
+    }
+  }
+}
+
 export class CustomHeroDefinition {
   static counter = 0;
   readonly id = `custom_hero_${CustomHeroDefinition.counter}`;
@@ -87,6 +106,7 @@ export class CustomHeroDefinition {
     heroDefinition.name.set(saved.name);
     heroDefinition.attack.set(saved.attack);
     heroDefinition.defence.set(saved.defence);
+    heroDefinition.assetUrl.set(saved.assetUrl);
 
     heroDefinition.spells.set(
       saved.spellIds.map((spellId) => context.spells.find((spellDef) => spellDef.id === spellId)!),
@@ -134,6 +154,7 @@ export enum EntityTabs {
   Heroes = 'Heroes',
   Locations = 'Locations',
   Factions = 'Factions',
+  Towns = 'Towns',
 }
 
 export interface SavedScriptLocalStorageModel {

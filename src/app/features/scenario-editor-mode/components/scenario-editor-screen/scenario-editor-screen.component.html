@@ -1,301 +1,447 @@
-<div>Scenario Editor, here you will be able to create/edit scenarios</div>
-
-<div>
-  Scenarios
-
-  @let scenario = selectedScenario();
-  <mw-dropdown
-    [(selectedItem)]="selectedScenario"
-    (optionChanged)="onScenarioChanged($event)"
-  >
-    <div class="trigger">
-      @if (scenario) {
-        {{ scenario.name }}
-      } @else {
-        @if (!scenarios().length) {
-          No scenarios created...
-        } @else {
-          No scenario selected...
-        }
-      }
-    </div>
-
-    @for (scenario of scenarios(); track $index) {
-      <mw-dropdown-option [value]="scenario">
-        {{ scenario.name }}
-      </mw-dropdown-option>
-    } @empty {
-      <div class="empty">No Scenarios Created...</div>
-    }
-  </mw-dropdown>
-
+<div class="bar">
   <button
     mw-main-button
-    (click)="addNewScenario()"
+    (click)="newScenarioDialog.open()"
   >
     New Scenario
   </button>
-  @if (scenario) {
-    Selected Scenario Name:
-    <input
-      type="text"
-      [(ngModel)]="currentScenarioName"
-    />
-  }
+
+  <button
+    mw-main-button
+    (click)="selectScenarioDialog.open()"
+  >
+    Open Scenario
+  </button>
+
+  <button
+    mw-main-button
+    (click)="saveDialog.open()"
+    [disabled]="!selectedScenario()"
+  >
+    Save Scenario
+  </button>
+
+  <button
+    mw-main-button
+    (click)="editScenarioDialog.open()"
+    [disabled]="!selectedScenario()"
+  >
+    Edit Scenario
+  </button>
 
   <button
     mw-main-button
     (click)="testScenario()"
+    [disabled]="!selectedScenario()"
   >
     Test Scenario
   </button>
 
   <button
     mw-main-button
-    (click)="saveScenario()"
+    (click)="leaveToMainScreenDialog.open()"
   >
-    Save Scenario
+    Back to main screen
   </button>
 </div>
 
 <!-- panels, dockers? -->
 
-<button
-  mw-main-button
-  (click)="goToMainScreen()"
->
-  Back to main screen
-</button>
-
-<mw-panel-container>
-  <mw-panel
-    title="Entities Manager"
-    [width]="300"
-    [height]="400"
-  >
-    <div class="panel">
-      <mw-scenario-entities-manager
-        [scripts]="scripts()"
-        [(customHeroDefinitions)]="customHeroDefinitions"
-        [(customSpellsDefinitions)]="customSpellsDefinitions"
-        [(customUnitDefinitions)]="customUnitDefinitions"
-        [spellSelectedInInspector]="selectedCustomSpellType()"
-      />
-    </div>
-  </mw-panel>
-
-  <mw-panel
-    title="Entities Inspector"
-    [height]="300"
-    [width]="250"
-    [xPosition]="320"
-  >
-    <div class="panel">
-      <div class="section">
-        <div class="header">Units</div>
-
-        <mw-dropdown [(selectedItem)]="selectedUnitType">
-          <div class="trigger">
-            @if (selectedUnitType()) {
-              {{ selectedUnitType()?.faction?.title }} - {{ selectedUnitType()?.name }}
-            } @else {
-              Select Unit Type...
-            }
-          </div>
-
-          @for (unitType of unitTypes; track $index) {
-            <mw-dropdown-option [value]="unitType">
-              {{ unitType.faction.title }} - {{ unitType.name }}
-            </mw-dropdown-option>
-          }
-        </mw-dropdown>
-        {{ selectedUnitType()?.id }}
+@if (selectedScenario()) {
+  <mw-panel-container>
+    <mw-panel
+      title="Entities Manager"
+      [width]="300"
+      [height]="400"
+    >
+      <div class="panel">
+        <mw-scenario-entities-manager />
       </div>
+    </mw-panel>
 
-      <div class="section">
-        <div class="header">Items</div>
+    <mw-panel
+      title="Entities Inspector"
+      [height]="300"
+      [width]="250"
+      [xPosition]="320"
+    >
+      <div class="panel">
+        <div class="section">
+          <div class="header">Units</div>
 
-        @let itemType = selectedItemType();
-        <mw-dropdown [(selectedItem)]="selectedItemType">
-          <div class="trigger">
-            @if (itemType) {
-              <mw-ra-icon [icon]="itemType.icon.icon"></mw-ra-icon>
-              Item - {{ itemType.name }}
-            } @else {
-              Select Item Type...
-            }
-          </div>
-
-          @for (itemType of itemTypes; track $index) {
-            <mw-dropdown-option [value]="itemType">
-              <mw-ra-icon [icon]="itemType.icon.icon"></mw-ra-icon>
-              Item - {{ itemType.name }}
-            </mw-dropdown-option>
-          }
-        </mw-dropdown>
-
-        {{ selectedItemType()?.id }}
-      </div>
-
-      <div class="section">
-        <div class="header">Spells</div>
-
-        @let spellType = selectedSpellType();
-        <mw-dropdown [(selectedItem)]="selectedSpellType">
-          <div class="trigger">
-            @if (spellType) {
-              <mw-ra-icon [icon]="spellType.icon.icon"></mw-ra-icon>
-              Spell - {{ spellType.activationType }} - {{ spellType.name }}
-            } @else {
-              Select Spell Type...
-            }
-          </div>
-
-          @for (spellType of spellTypes; track $index) {
-            <mw-dropdown-option [value]="spellType">
-              <mw-ra-icon [icon]="spellType.icon.icon"></mw-ra-icon>
-              Spell - {{ spellType.activationType }} - {{ spellType.name }}
-            </mw-dropdown-option>
-          }
-        </mw-dropdown>
-
-        {{ spellType?.id }}
-      </div>
-
-      <!-- todo: will need to unify default/custom spells -->
-      <div class="section">
-        <div class="header">Custom Spells</div>
-
-        @let customSpellType = selectedCustomSpellType();
-        <mw-dropdown [(selectedItem)]="selectedCustomSpellType">
-          <div class="trigger">
-            @if (customSpellType) {
-              <mw-ra-icon [icon]="customSpellType.icon()"></mw-ra-icon>
-              Spell - {{ customSpellType.activationType().label }} - {{ customSpellType.name() }}
-            } @else {
-              Select Spell Type...
-            }
-          </div>
-
-          @for (spellType of customSpellsDefinitions(); track $index) {
-            <mw-dropdown-option [value]="spellType">
-              <mw-ra-icon [icon]="spellType.icon()"></mw-ra-icon>
-              Spell - {{ spellType.activationType().label }} - {{ spellType.name() }}
-            </mw-dropdown-option>
-          }
-        </mw-dropdown>
-
-        {{ customSpellType?.id }}
-      </div>
-
-      <div class="section">
-        <div class="header">VFX</div>
-
-        @let selectedVfxType = selectedVFX();
-
-        <mw-dropdown [(selectedItem)]="selectedVFX">
-          <div class="trigger">
-            @if (selectedVfxType) {
-              Vfx {{ selectedVfxType.id }}
-            } @else {
-              Select Vfx...
-            }
-          </div>
-
-          @for (vfx of vfxTypes; track $index) {
-            <mw-dropdown-option [value]="vfx">
-              {{ vfx.id }}
-            </mw-dropdown-option>
-          }
-        </mw-dropdown>
-
-        {{ selectedVfxType?.id }}
-      </div>
-    </div>
-  </mw-panel>
-
-  <!-- Later - animations as entities -->
-  <mw-panel
-    title="VFX Editor"
-    [height]="220"
-    [width]="220"
-    [xPosition]="320"
-    [yPosition]="320"
-  >
-    VFX Preview
-
-    <div class="centered">
-      @if (selectedVfxType) {
-        <mw-vfx-element #vfxRef></mw-vfx-element>
-      }
-    </div>
-  </mw-panel>
-
-  <mw-panel
-    title="Scripts Editor"
-    [height]="300"
-    [width]="660"
-    [xPosition]="800"
-  >
-    <div class="panel">
-      <!-- todo: Templates? Examples of spells, also, cheatsheets with available params and details -->
-      <mw-dropdown [(selectedItem)]="selectedScript">
-        <div class="trigger">
-          @if (!scripts().length) {
-            No scripts created...
-          } @else {
-            @if (script) {
-              {{ script?.name() }}
-            } @else {
-              Select a script...
-            }
-          }
-        </div>
-        @for (script of scripts(); track $index) {
-          <mw-dropdown-option [value]="script">
-            {{ script.name() }}
-          </mw-dropdown-option>
-        } @empty {
-          <div class="empty">No Custom Scripts Defined...</div>
-        }
-      </mw-dropdown>
-
-      <button
-        mw-main-button
-        (click)="addNewScript()"
-      >
-        Add Script
-      </button>
-
-      @let script = selectedScript();
-
-      @if (script) {
-        <div class="property">
-          Script Name:
-          <input
-            type="text"
-            [(ngModel)]="script.name"
-          />
-        </div>
-        <div class="property">
-          Script Type:
-          <mw-dropdown [(selectedItem)]="script.type">
+          <mw-dropdown [(selectedItem)]="selectedUnitType">
             <div class="trigger">
-              {{ script.type().label }}
+              @if (selectedUnitType()) {
+                {{ selectedUnitType()?.faction?.title }} - {{ selectedUnitType()?.name }}
+              } @else {
+                Select Unit Type...
+              }
             </div>
 
-            @for (option of ScriptTypes; track $index) {
-              <mw-dropdown-option [value]="option">
-                {{ option.label }}
+            @for (unitType of unitTypes; track $index) {
+              <mw-dropdown-option [value]="unitType">
+                {{ unitType.faction.title }} - {{ unitType.name }}
               </mw-dropdown-option>
             }
           </mw-dropdown>
+          {{ selectedUnitType()?.id }}
         </div>
 
-        @defer {
-          <mw-script-editor [(code)]="script.code" />
+        <div class="section">
+          <div class="header">Items</div>
+
+          @let itemType = selectedItemType();
+          <mw-dropdown [(selectedItem)]="selectedItemType">
+            <div class="trigger">
+              @if (itemType) {
+                <mw-ra-icon [icon]="itemType.icon.icon"></mw-ra-icon>
+                Item - {{ itemType.name }}
+              } @else {
+                Select Item Type...
+              }
+            </div>
+
+            @for (itemType of itemTypes; track $index) {
+              <mw-dropdown-option [value]="itemType">
+                <mw-ra-icon [icon]="itemType.icon.icon"></mw-ra-icon>
+                Item - {{ itemType.name }}
+              </mw-dropdown-option>
+            }
+          </mw-dropdown>
+
+          {{ selectedItemType()?.id }}
+        </div>
+
+        <div class="section">
+          <div class="header">Spells</div>
+
+          @let spellType = selectedSpellType();
+          <mw-dropdown [(selectedItem)]="selectedSpellType">
+            <div class="trigger">
+              @if (spellType) {
+                <mw-ra-icon [icon]="spellType.icon.icon"></mw-ra-icon>
+                Spell - {{ spellType.activationType }} - {{ spellType.name }}
+              } @else {
+                Select Spell Type...
+              }
+            </div>
+
+            @for (spellType of spellTypes; track $index) {
+              <mw-dropdown-option [value]="spellType">
+                <mw-ra-icon [icon]="spellType.icon.icon"></mw-ra-icon>
+                Spell - {{ spellType.activationType }} - {{ spellType.name }}
+              </mw-dropdown-option>
+            }
+          </mw-dropdown>
+
+          {{ spellType?.id }}
+        </div>
+
+        <!-- todo: will need to unify default/custom spells -->
+        <div class="section">
+          <div class="header">Custom Spells</div>
+
+          @let customSpellType = selectedCustomSpellType();
+          <mw-dropdown [(selectedItem)]="selectedCustomSpellType">
+            <div class="trigger">
+              @if (customSpellType) {
+                <mw-ra-icon [icon]="customSpellType.icon()"></mw-ra-icon>
+                Spell - {{ customSpellType.activationType().label }} - {{ customSpellType.name() }}
+              } @else {
+                Select Spell Type...
+              }
+            </div>
+
+            @for (spellType of customSpellsDefinitions(); track $index) {
+              <mw-dropdown-option [value]="spellType">
+                <mw-ra-icon [icon]="spellType.icon()"></mw-ra-icon>
+                Spell - {{ spellType.activationType().label }} - {{ spellType.name() }}
+              </mw-dropdown-option>
+            }
+          </mw-dropdown>
+
+          {{ customSpellType?.id }}
+        </div>
+
+        <div class="section">
+          <div class="header">VFX</div>
+
+          @let selectedVfxType = selectedVFX();
+
+          <mw-dropdown [(selectedItem)]="selectedVFX">
+            <div class="trigger">
+              @if (selectedVfxType) {
+                Vfx {{ selectedVfxType.id }}
+              } @else {
+                Select Vfx...
+              }
+            </div>
+
+            @for (vfx of vfxTypes; track $index) {
+              <mw-dropdown-option [value]="vfx">
+                {{ vfx.id }}
+              </mw-dropdown-option>
+            }
+          </mw-dropdown>
+
+          {{ selectedVfxType?.id }}
+        </div>
+      </div>
+    </mw-panel>
+
+    <!-- Later - animations as entities -->
+    <mw-panel
+      title="VFX Editor"
+      [height]="220"
+      [width]="220"
+      [xPosition]="320"
+      [yPosition]="320"
+    >
+      VFX Preview
+
+      <div class="centered">
+        @if (selectedVfxType) {
+          <mw-vfx-element #vfxRef></mw-vfx-element>
         }
-      }
-    </div>
-  </mw-panel>
-</mw-panel-container>
+      </div>
+    </mw-panel>
+
+    <mw-panel
+      title="Scripts Editor"
+      [height]="300"
+      [width]="660"
+      [xPosition]="800"
+    >
+      <div class="panel">
+        <!-- todo: Templates? Examples of spells, also, cheatsheets with available params and details -->
+        <mw-dropdown [(selectedItem)]="selectedScript">
+          <div class="trigger">
+            @if (!scripts().length) {
+              No scripts created...
+            } @else {
+              @if (script) {
+                {{ script?.name() }}
+              } @else {
+                Select a script...
+              }
+            }
+          </div>
+          @for (script of scripts(); track $index) {
+            <mw-dropdown-option [value]="script">
+              {{ script.name() }}
+            </mw-dropdown-option>
+          } @empty {
+            <div class="empty">No Custom Scripts Defined...</div>
+          }
+        </mw-dropdown>
+
+        <button
+          mw-main-button
+          (click)="addNewScript()"
+        >
+          Add Script
+        </button>
+
+        @let script = selectedScript();
+
+        @if (script) {
+          <div class="property">
+            Script Name:
+            <input
+              type="text"
+              [(ngModel)]="script.name"
+            />
+          </div>
+          <div class="property">
+            Script Type:
+            <mw-dropdown [(selectedItem)]="script.type">
+              <div class="trigger">
+                {{ script.type().label }}
+              </div>
+
+              @for (option of ScriptTypes; track $index) {
+                <mw-dropdown-option [value]="option">
+                  {{ option.label }}
+                </mw-dropdown-option>
+              }
+            </mw-dropdown>
+          </div>
+
+          @defer {
+            <mw-script-editor [(code)]="script.code" />
+          }
+        }
+      </div>
+    </mw-panel>
+  </mw-panel-container>
+}
+
+<mw-local-dialog #newScenarioDialog>
+  <ng-template>
+    <mw-popup-base-content>
+      <div popupHeader>New scenario</div>
+
+      <div popupContent>
+        Scenario Name:
+        <input
+          type="text"
+          [(ngModel)]="newScenarioName"
+        />
+      </div>
+
+      <div popupButtons>
+        <button
+          mw-main-button
+          (click)="addNewScenario(); newScenarioDialog.close(); newScenarioName.set('')"
+          [disabled]="!newScenarioName()"
+        >
+          Create
+        </button>
+
+        <button
+          mw-main-button
+          (click)="newScenarioDialog.close(); newScenarioName.set('')"
+        >
+          Dismiss
+        </button>
+      </div>
+    </mw-popup-base-content>
+  </ng-template>
+</mw-local-dialog>
+
+<mw-local-dialog #selectScenarioDialog>
+  <ng-template>
+    <mw-popup-base-content>
+      <div popupHeader>Select Scenario</div>
+
+      <div popupContent>
+        Your unsaved changes in current scenario might get lost.
+
+        @let scenario = unconfirmedSelectedScenario();
+        <mw-dropdown [(selectedItem)]="unconfirmedSelectedScenario">
+          <div class="trigger">
+            @if (scenario) {
+              {{ scenario.name }}
+            } @else {
+              @if (!scenarios().length) {
+                No scenarios created...
+              } @else {
+                No scenario selected...
+              }
+            }
+          </div>
+
+          @for (scenario of scenarios(); track $index) {
+            <mw-dropdown-option [value]="scenario">
+              {{ scenario.name }}
+            </mw-dropdown-option>
+          } @empty {
+            <div class="empty">No Scenarios Created...</div>
+          }
+        </mw-dropdown>
+      </div>
+
+      <div popupButtons>
+        <button
+          mw-main-button
+          [disabled]="!unconfirmedSelectedScenario()"
+          (click)="selectScenarioDialog.close(); onScenarioChanged(unconfirmedSelectedScenario())"
+        >
+          Open
+        </button>
+
+        <button
+          mw-main-button
+          (click)="selectScenarioDialog.close(); unconfirmedSelectedScenario.set(null)"
+        >
+          Dismiss
+        </button>
+      </div>
+    </mw-popup-base-content>
+  </ng-template>
+</mw-local-dialog>
+
+<mw-local-dialog #editScenarioDialog>
+  <ng-template>
+    <mw-popup-base-content>
+      <div popupHeader>Edit scenario</div>
+
+      <div popupContent>
+        @if (selectedScenario()) {
+          Selected Scenario Name:
+          <input
+            type="text"
+            [(ngModel)]="currentScenarioName"
+          />
+        }
+      </div>
+
+      <div popupButtons>
+        <button
+          mw-main-button
+          (click)="editScenarioDialog.close(); saveScenario()"
+          [disabled]="!currentScenarioName()"
+        >
+          Apply
+        </button>
+
+        <button
+          mw-main-button
+          (click)="editScenarioDialog.close()"
+        >
+          Dismiss
+        </button>
+      </div>
+    </mw-popup-base-content>
+  </ng-template>
+</mw-local-dialog>
+
+<mw-local-dialog #leaveToMainScreenDialog>
+  <ng-template>
+    <mw-popup-base-content>
+      <div popupHeader>Go to main screen</div>
+
+      <div popupContent>Are you sure you want to leave? Unsaved progress will be lost.</div>
+
+      <div popupButtons>
+        <button
+          mw-main-button
+          (click)="leaveToMainScreenDialog.close(); goToMainScreen()"
+        >
+          Go to main screen
+        </button>
+        <button
+          mw-main-button
+          (click)="leaveToMainScreenDialog.close()"
+        >
+          Cancel
+        </button>
+      </div>
+    </mw-popup-base-content>
+  </ng-template>
+</mw-local-dialog>
+
+<mw-local-dialog #saveDialog>
+  <ng-template>
+    <mw-popup-base-content>
+      <div popupHeader>Saving scenario</div>
+
+      <div popupContent>Are you sure you want to save changes in this scenario?</div>
+
+      <div popupButtons>
+        <button
+          mw-main-button
+          (click)="saveDialog.close(); saveScenario()"
+        >
+          Confirm
+        </button>
+        <button
+          mw-main-button
+          (click)="saveDialog.close()"
+        >
+          Cancel
+        </button>
+      </div>
+    </mw-popup-base-content>
+  </ng-template>
+</mw-local-dialog>

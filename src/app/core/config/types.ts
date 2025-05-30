@@ -17,6 +17,8 @@ export enum Feature {
   ScenarioEditor,
   NewGameSettings,
   NewTownSystem,
+  MultiplayerServer,
 
   TECHBanditCampVariety,
+
 }

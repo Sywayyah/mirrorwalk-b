@@ -12,6 +12,7 @@ export enum ViewsEnum {
   NewGame = 'new-game',
   SandboxMode = 'sandbox',
   ScenarioMode = 'scenario-editor',
+  Multiplayer = 'multiplayer',
 
   Structures = 'structures',
   Battleground = 'battleground',

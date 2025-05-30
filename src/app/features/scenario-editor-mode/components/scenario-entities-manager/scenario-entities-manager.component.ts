@@ -1,4 +1,4 @@
-import { Component, input, model, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { SignalArrUtils } from 'src/app/core/utils/signals';
 import { DropdownOptionComponent } from '../../../shared/components/dropdown/dropdown-option.component';
@@ -8,29 +8,36 @@ import {
   ACTIVATION_TYPE_OPTIONS,
   ActivationTypeOption,
   CustomHeroDefinition,
+  CustomItemDefinition,
   CustomSpellDefinition,
   CustomUnitDefinition,
   EntityTabs,
-  ScenarioScript,
 } from '../../config/types';
+import { ScenarioEditorContextService } from '../../services/scenario-editor-context.service';
+import { ScenarioResourcesEditorComponent } from "../scenario-resources-editor/scenario-resources-editor.component";
+import { ScenarioModifiersEditorComponent } from "../scenario-modifiers-editor/scenario-modifiers-editor.component";
 
 @Component({
   selector: 'mw-scenario-entities-manager',
-  imports: [DropdownComponent, DropdownOptionComponent, FormsModule, SharedModule],
+  imports: [DropdownComponent, DropdownOptionComponent, FormsModule, SharedModule, ScenarioResourcesEditorComponent, ScenarioModifiersEditorComponent],
   templateUrl: './scenario-entities-manager.component.html',
   styleUrl: './scenario-entities-manager.component.scss',
 })
 export class ScenarioEntitiesManagerComponent {
-  readonly scripts = input<ScenarioScript[]>([]);
-  readonly spellSelectedInInspector = input<CustomSpellDefinition | null>(null);
+  readonly scenarioEditorContext = inject(ScenarioEditorContextService);
 
-  readonly customUnitDefinitions = model<CustomUnitDefinition[]>([]);
-  readonly customSpellsDefinitions = model<CustomSpellDefinition[]>([]);
-  readonly customHeroDefinitions = model<CustomHeroDefinition[]>([]);
+  readonly scripts = this.scenarioEditorContext.scriptsEditor.scripts;
+  readonly spellSelectedInInspector = this.scenarioEditorContext.entitiesInspector.selectedCustomSpellType;
 
-  readonly selectedUnitDefinition = signal<CustomUnitDefinition | null>(null);
-  readonly selectedHeroDefinition = signal<CustomHeroDefinition | null>(null);
-  readonly selectedSpellDefinition = signal<CustomSpellDefinition | null>(null);
+  readonly customUnitDefinitions = this.scenarioEditorContext.customDefinitions.units;
+  readonly customSpellsDefinitions = this.scenarioEditorContext.customDefinitions.spells;
+  readonly customHeroDefinitions = this.scenarioEditorContext.customDefinitions.heroes;
+  readonly customItemDefinitions = this.scenarioEditorContext.customDefinitions.items;
+
+  readonly selectedUnitDefinition = this.scenarioEditorContext.entitiesManager.selectedUnitDefinition;
+  readonly selectedHeroDefinition = this.scenarioEditorContext.entitiesManager.selectedHeroDefinition;
+  readonly selectedSpellDefinition = this.scenarioEditorContext.entitiesManager.selectedSpellDefinition;
+  readonly selectedItemDefinition = this.scenarioEditorContext.entitiesManager.selectedItemDefinition;
 
   readonly EntityTab = EntityTabs;
 
@@ -41,6 +48,7 @@ export class ScenarioEntitiesManagerComponent {
     EntityTabs.Heroes,
     EntityTabs.Locations,
     EntityTabs.Factions,
+    EntityTabs.Towns,
   ];
 
   readonly ActivationTypes: ActivationTypeOption[] = ACTIVATION_TYPE_OPTIONS;
@@ -74,6 +82,12 @@ export class ScenarioEntitiesManagerComponent {
     }
 
     this.selectedHeroDefinition()?.spells.update(SignalArrUtils.addItem(spellFromInspector));
+  }
+
+  addItemType() {
+    const newItemDefinition = new CustomItemDefinition();
+    this.customItemDefinitions.update(SignalArrUtils.addItem(newItemDefinition));
+    this.selectedItemDefinition.set(newItemDefinition);
   }
 
   removeSpellFromHero(spell: CustomSpellDefinition) {
