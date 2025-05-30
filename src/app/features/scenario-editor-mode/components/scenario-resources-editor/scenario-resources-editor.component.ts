@@ -1,7 +1,7 @@
 import { Component, input } from '@angular/core';
-import { CustomResources } from '../../config/types';
 import { FormsModule } from '@angular/forms';
 import { SharedModule } from "../../../shared/shared.module";
+import { CustomResources } from '../../config/resources';
 
 @Component({
   selector: 'mw-scenario-resources-editor',

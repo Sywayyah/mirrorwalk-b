@@ -1,8 +1,8 @@
 import { Component, input } from '@angular/core';
-import { CustomModifiers } from '../../config/types';
-import { DropdownComponent } from '../../../shared/components/dropdown/dropdown.component';
-import { DropdownOptionComponent } from '../../../shared/components/dropdown/dropdown-option.component';
 import { FormsModule } from '@angular/forms';
+import { DropdownOptionComponent } from '../../../shared/components/dropdown/dropdown-option.component';
+import { DropdownComponent } from '../../../shared/components/dropdown/dropdown.component';
+import { CustomModifiers } from '../../config/modifiers';
 
 @Component({
   selector: 'mw-scenario-modifiers-editor',
