@@ -16,11 +16,9 @@ Modifiers:
     <div class="property">
       {{ modifier.label }}
 
-      <button (click)="modifiers().removeModifierOptionByModName(modifier.modifier)">Remove</button>
-      <input
-        type="{{ modifier.inputType }}"
-        [(ngModel)]="modifier.value"
-      />
+      <button (click)="modifiers().removeModifierOptionByModName(modifier.modName)">Remove</button>
+
+      <mw-editor-typed-signal-input [typedSignal]="modifier.value" />
     </div>
   }
 </div>

@@ -49,6 +49,7 @@
 
 @if (selectedScenario()) {
   <mw-panel-container>
+    <mw-scenario-area-editor />
     <mw-panel
       title="Entities Manager"
       [width]="300"
@@ -59,6 +60,34 @@
       </div>
     </mw-panel>
 
+    <mw-panel title="Area Editor">
+      <div class="panel">
+        <mw-dropdown [(selectedItem)]="currentArea">
+          <div class="trigger">Select Area</div>
+
+          @for (area of areas(); track $index) {
+            <mw-dropdown-option [value]="area">{{ area.name() }}</mw-dropdown-option>
+          }
+        </mw-dropdown>
+        @let area = currentArea();
+
+        @if (area) {
+          <input
+            type="color"
+            [(ngModel)]="area.color"
+          />
+
+          <input
+            type="number"
+            [(ngModel)]="area.width"
+          />
+          <input
+            type="number"
+            [(ngModel)]="area.height"
+          />
+        }
+      </div>
+    </mw-panel>
     <mw-panel
       title="Entities Inspector"
       [height]="300"

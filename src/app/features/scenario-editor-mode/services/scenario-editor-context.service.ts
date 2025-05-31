@@ -4,6 +4,7 @@ import { EntitiesRegisty } from 'src/app/core/entities';
 import { ItemBaseType } from 'src/app/core/items';
 import { SpellBaseType } from 'src/app/core/spells';
 import { UnitBaseType } from 'src/app/core/unit-types';
+import { GameArea } from '../config/areas';
 import {
   CustomHeroDefinition,
   CustomItemDefinition,
@@ -53,4 +54,10 @@ export class ScenarioEditorContextService {
     selectedSpellDefinition: signal<CustomSpellDefinition | null>(null),
     selectedItemDefinition: signal<CustomItemDefinition | null>(null),
   } as const;
+
+  // area editor
+  readonly areaEditor = {
+    areas: signal<GameArea[]>([new GameArea()]),
+    currentArea: signal<null | GameArea>(null),
+  };
 }

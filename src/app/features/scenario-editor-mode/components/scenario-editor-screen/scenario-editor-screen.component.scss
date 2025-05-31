@@ -1,3 +1,11 @@
+:host {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: block;
+}
 .header-tabs {
   display: flex;
   flex-wrap: wrap;
@@ -28,7 +36,6 @@
   align-items: center;
   justify-content: space-between;
 }
-
 
 .centered {
   width: 100%;

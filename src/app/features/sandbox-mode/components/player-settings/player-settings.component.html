@@ -1,0 +1,63 @@
+Player: {{ playerName() }}
+
+Hero:
+@let selectedHero = settings().hero();
+
+<mw-dropdown [(selectedItem)]="settings().hero">
+  <div class="trigger">
+    @if (selectedHero) {
+      {{ selectedHero.name }}
+    } @else {
+      Select a Hero...
+    }
+  </div>
+
+  @for (hero of heroes; track $index) {
+    <mw-dropdown-option [value]="hero">{{ hero.name }}</mw-dropdown-option>
+  }
+</mw-dropdown>
+
+<button
+  mw-main-button
+  (click)="addUnitType()"
+>
+  Add Unit Type
+</button>
+@let selectedUnitType = activeUnitType();
+
+<mw-dropdown [(selectedItem)]="activeUnitType">
+  <div class="trigger">
+    @if (selectedUnitType) {
+      {{ selectedUnitType.name }}
+    } @else {
+      Select a Unit Type...
+    }
+  </div>
+
+  @for (unitType of unitTypes; track $index) {
+    <mw-dropdown-option [value]="unitType">{{ unitType.name }}</mw-dropdown-option>
+  }
+</mw-dropdown>
+
+<div class="units">
+  @for (unitGroup of settings().units(); track $index) {
+    <div class="unit">
+      {{ unitGroup.unitType().name }}
+      <mw-dropdown [(selectedItem)]="unitGroup.unitType">
+        <div class="trigger">
+          {{ unitGroup.unitType().name }}
+        </div>
+
+        @for (unitType of unitTypes; track $index) {
+          <mw-dropdown-option [value]="unitType">{{ unitType.name }}</mw-dropdown-option>
+        }
+      </mw-dropdown>
+
+      <input
+        type="number"
+        min="1"
+        [(ngModel)]="unitGroup.count"
+      />
+    </div>
+  }
+</div>

@@ -1,0 +1,4 @@
+@let area = rootArea();
+@if (area) {
+  <div class="area" [style.width.px]="area.width()" [style.height.px]="area.height()" [style.background]="area.color()"></div>
+}

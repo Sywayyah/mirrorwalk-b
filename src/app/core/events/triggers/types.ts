@@ -6,4 +6,5 @@ export interface GamePreparedEvent {
 
 export enum DefaultGameModes {
   Normal = 'normal',
+  SandboxScenario = 'sandbox',
 }

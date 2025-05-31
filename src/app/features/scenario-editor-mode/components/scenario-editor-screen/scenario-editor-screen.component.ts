@@ -28,6 +28,7 @@ import {
 } from '../../config/types';
 import { ScenarioEditorContextService } from '../../services/scenario-editor-context.service';
 import { ScenarioEntitiesManagerComponent } from '../scenario-entities-manager/scenario-entities-manager.component';
+import { ScenarioAreaEditorComponent } from "../scenario-area-editor/scenario-area-editor.component";
 
 @Component({
   selector: 'mw-scenario-editor-screen',
@@ -41,7 +42,8 @@ import { ScenarioEntitiesManagerComponent } from '../scenario-entities-manager/s
     DropdownComponent,
     DropdownOptionComponent,
     ScenarioEntitiesManagerComponent,
-    LocalDialogComponent
+    LocalDialogComponent,
+    ScenarioAreaEditorComponent
 ],
 
   templateUrl: './scenario-editor-screen.component.html',
@@ -66,6 +68,8 @@ export class ScenarioEditorScreenComponent {
   readonly vfxTypes = this.scenarioEditorContext.vfxTypes;
 
   readonly scripts = this.scenarioEditorContext.scriptsEditor.scripts;
+  readonly currentArea = this.scenarioEditorContext.areaEditor.currentArea;
+  readonly areas = this.scenarioEditorContext.areaEditor.areas;
 
   readonly selectedUnitType = this.scenarioEditorContext.entitiesInspector.selectedUnitType;
   readonly selectedItemType = this.scenarioEditorContext.entitiesInspector.selectedItemType;
