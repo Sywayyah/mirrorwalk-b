@@ -32,7 +32,4 @@ export function typedColorSignal(initValue: string): TypedSignalInput {
 })
 export class EditorTypedSignalInputComponent {
   readonly typedSignal = input.required<TypedSignalInput>();
-
-  // readonly itemTemplate = contentChild<TemplateRef<{ item: unknown }>>('itemTemplate');
-  // readonly selectedTemplate = contentChild<TemplateRef<{ item: unknown }>>('selectedItemTemplate');
 }

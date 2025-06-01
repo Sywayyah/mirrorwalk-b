@@ -1,3 +1,7 @@
+.header {
+  cursor: pointer;
+}
+
 .properties {
   display: flex;
   flex-direction: column;
@@ -12,4 +16,8 @@
     .value {
     }
   }
+}
+
+.hidden {
+  display: none;
 }

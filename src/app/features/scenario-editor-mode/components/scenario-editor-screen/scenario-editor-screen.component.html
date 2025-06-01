@@ -72,20 +72,11 @@
         @let area = currentArea();
 
         @if (area) {
-          <mw-editor-property [properties]="area.properties" />
-          <!-- <input
-            type="color"
-            [(ngModel)]="area.color"
+          <mw-editor-property
+            [collapsible]="true"
+            sectionName="Area Properties"
+            [properties]="area.properties"
           />
-
-          <input
-            type="number"
-            [(ngModel)]="area.width"
-          />
-          <input
-            type="number"
-            [(ngModel)]="area.height"
-          /> -->
         }
       </div>
     </mw-panel>

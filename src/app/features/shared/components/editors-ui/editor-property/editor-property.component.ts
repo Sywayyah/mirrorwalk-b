@@ -41,4 +41,15 @@ export class PropertyList<T extends Record<string, TypedSignalInput>> {
 })
 export class EditorPropertyComponent<T extends Record<string, TypedSignalInput>> {
   readonly properties = input.required<PropertyList<T>>();
+
+  readonly sectionName = input('');
+  readonly collapsible = input(false);
+  readonly collapsed = signal(false);
+
+  toggleCollapsed(): void {
+    if (!this.collapsible()) {
+      return;
+    }
+    this.collapsed.update((val) => !val);
+  }
 }
