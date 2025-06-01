@@ -29,6 +29,7 @@ import {
 import { ScenarioEditorContextService } from '../../services/scenario-editor-context.service';
 import { ScenarioEntitiesManagerComponent } from '../scenario-entities-manager/scenario-entities-manager.component';
 import { ScenarioAreaEditorComponent } from "../scenario-area-editor/scenario-area-editor.component";
+import { EditorPropertyComponent } from "../../../shared/components/editors-ui/editor-property/editor-property.component";
 
 @Component({
   selector: 'mw-scenario-editor-screen',
@@ -43,7 +44,8 @@ import { ScenarioAreaEditorComponent } from "../scenario-area-editor/scenario-ar
     DropdownOptionComponent,
     ScenarioEntitiesManagerComponent,
     LocalDialogComponent,
-    ScenarioAreaEditorComponent
+    ScenarioAreaEditorComponent,
+    EditorPropertyComponent
 ],
 
   templateUrl: './scenario-editor-screen.component.html',

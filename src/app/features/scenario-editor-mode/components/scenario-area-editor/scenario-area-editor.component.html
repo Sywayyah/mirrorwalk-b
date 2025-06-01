@@ -1,4 +1,9 @@
 @let area = rootArea();
 @if (area) {
-  <div class="area" [style.width.px]="area.width()" [style.height.px]="area.height()" [style.background]="area.color()"></div>
+  <div
+    class="area"
+    [style.width.px]="area.properties.propsMap.Width.value()"
+    [style.height.px]="area.properties.propsMap.Height.value()"
+    [style.background]="area.properties.propsMap.Color.value()"
+  ></div>
 }

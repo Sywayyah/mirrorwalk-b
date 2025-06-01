@@ -1,0 +1,10 @@
+<div class="properties">
+  @for (property of properties().properties; track $index) {
+    <div class="property">
+      <div class="name">{{ property.name }}</div>
+      <div class="value">
+        <mw-editor-typed-signal-input [typedSignal]="property.typedSignal" />
+      </div>
+    </div>
+  }
+</div>

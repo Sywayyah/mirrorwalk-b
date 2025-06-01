@@ -5,28 +5,26 @@ import {
   typedBooleanSignal,
   typedNumberSignal,
   TypedSignalInput,
-} from '../../shared/components/editor-typed-signal-input/editor-typed-signal-input.component';
+} from '../../shared/components/editors-ui/editor-typed-signal-input/editor-typed-signal-input.component';
 
 type ModifierOption = {
   label: string;
   modifier: keyof CustomModifiers['modifiers'];
-  inputType: 'text' | 'number' | 'checkbox';
 };
 
 export class CustomModifiers {
   readonly addedModifiers: (keyof CustomModifiers['modifiers'])[] = [];
   static readonly MODIFIERS_LIST: ModifierOption[] = [
-    { label: 'Attack', modifier: 'heroBonusAttack', inputType: 'number' },
-    { label: 'Defence', modifier: 'heroBonusDefence', inputType: 'number' },
-    { label: 'Speed', modifier: 'unitGroupSpeedBonus', inputType: 'number' },
-    { label: 'Max Mana', modifier: 'heroMaxMana', inputType: 'number' },
-    { label: 'Resist All', modifier: 'resistAll', inputType: 'number' },
+    { label: 'Attack', modifier: 'heroBonusAttack' },
+    { label: 'Defence', modifier: 'heroBonusDefence' },
+    { label: 'Speed', modifier: 'unitGroupSpeedBonus' },
+    { label: 'Max Mana', modifier: 'heroMaxMana' },
+    { label: 'Resist All', modifier: 'resistAll' },
     {
       label: 'Amplified Taken Magic Damage Percent',
       modifier: 'amplifiedTakenMagicDamagePercent',
-      inputType: 'number',
     },
-    { label: 'Cannot Be Slowed', modifier: 'cannotBeSlowed', inputType: 'checkbox' },
+    { label: 'Cannot Be Slowed', modifier: 'cannotBeSlowed' },
   ];
 
   readonly modifiers = {

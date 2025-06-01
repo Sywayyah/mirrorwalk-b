@@ -3,7 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { DropdownOptionComponent } from '../../../shared/components/dropdown/dropdown-option.component';
 import { DropdownComponent } from '../../../shared/components/dropdown/dropdown.component';
 import { CustomModifiers } from '../../config/modifiers';
-import { EditorTypedSignalInputComponent } from "../../../shared/components/editor-typed-signal-input/editor-typed-signal-input.component";
+import { EditorTypedSignalInputComponent } from "../../../shared/components/editors-ui/editor-typed-signal-input/editor-typed-signal-input.component";
 
 @Component({
   selector: 'mw-scenario-modifiers-editor',
