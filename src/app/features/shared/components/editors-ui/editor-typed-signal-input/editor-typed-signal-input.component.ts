@@ -1,8 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { Component, contentChild, input, Signal, signal, TemplateRef, WritableSignal } from '@angular/core';
+import { Component, input, signal, WritableSignal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { DropdownOptionComponent } from '../../dropdown/dropdown-option.component';
-import { DropdownComponent } from '../../dropdown/dropdown.component';
 
 export type TypedSignalInput =
   | { type: 'checkbox'; value: WritableSignal<boolean> }
