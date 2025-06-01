@@ -26,16 +26,4 @@
       [(ngModel)]="signalInput.value"
     />
   }
-  @case ("dropdown") {
-    <mw-dropdown [(selectedItem)]="signalInput.value">
-      <div class="trigger">
-        <ng-container *ngTemplateOutlet="selectedTemplate(); context: { item: signalInput.value() }" />
-      </div>
-      @for (item of signalInput.values(); track $index) {
-        <mw-dropdown-option [value]="item">
-          <ng-container *ngTemplateOutlet="itemTemplate(); context: { item }" />
-        </mw-dropdown-option>
-      }
-    </mw-dropdown>
-  }
 }

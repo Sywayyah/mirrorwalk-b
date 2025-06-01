@@ -4,11 +4,10 @@ import { FormsModule } from '@angular/forms';
 import { DropdownOptionComponent } from '../../dropdown/dropdown-option.component';
 import { DropdownComponent } from '../../dropdown/dropdown.component';
 
-export type TypedSignalInput<T = unknown> =
+export type TypedSignalInput =
   | { type: 'checkbox'; value: WritableSignal<boolean> }
   | { type: 'number'; value: WritableSignal<number>; min?: number }
   | { type: 'text'; value: WritableSignal<string> }
-  | { type: 'dropdown'; value: WritableSignal<T>; values: Signal<T[]> }
   | { type: 'color'; value: WritableSignal<string> };
 
 export function typedNumberSignal(initValue: number): TypedSignalInput {
@@ -23,23 +22,19 @@ export function typedTextSignal(initValue: string): TypedSignalInput {
   return { type: 'text', value: signal(initValue) };
 }
 
-export function typedDropdownSignal<T>(initValue: T, { values }: { values: Signal<T[]>; }): TypedSignalInput<T> {
-  return { type: 'dropdown', value: signal(initValue), values };
-}
-
 export function typedColorSignal(initValue: string): TypedSignalInput {
   return { type: 'color', value: signal(initValue) };
 }
 
 @Component({
   selector: 'mw-editor-typed-signal-input',
-  imports: [FormsModule, DropdownComponent, DropdownOptionComponent, CommonModule],
+  imports: [FormsModule, CommonModule],
   templateUrl: './editor-typed-signal-input.component.html',
   styleUrl: './editor-typed-signal-input.component.scss',
 })
 export class EditorTypedSignalInputComponent {
   readonly typedSignal = input.required<TypedSignalInput>();
 
-  readonly itemTemplate = contentChild<TemplateRef<{ item: unknown }>>('itemTemplate');
-  readonly selectedTemplate = contentChild<TemplateRef<{ item: unknown }>>('selectedItemTemplate');
+  // readonly itemTemplate = contentChild<TemplateRef<{ item: unknown }>>('itemTemplate');
+  // readonly selectedTemplate = contentChild<TemplateRef<{ item: unknown }>>('selectedItemTemplate');
 }
