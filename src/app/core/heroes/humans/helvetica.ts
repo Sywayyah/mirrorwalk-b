@@ -36,7 +36,7 @@ export const HelveticaHero: HeroBase = humansFaction.createHero({
   items: [
     // WishmasterItem,
     '#item-wind-crest',
-    `#item-blacklich-sword`,
+    // `#item-blacklich-sword`,
     // SwordOfTheBattleMageItem,
     // PhoenixShieldItem,
     // FamineScytheItem,
