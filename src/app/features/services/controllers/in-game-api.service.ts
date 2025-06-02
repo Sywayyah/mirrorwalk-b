@@ -3,6 +3,7 @@ import { CombatActionsRef, SpellCreationOptions } from 'src/app/core/api/combat-
 import { EffectType, VfxElemEffect } from 'src/app/core/api/vfx-api';
 import { resolveEntity, UnitTypeId } from 'src/app/core/entities';
 import {
+  BuildBuilding,
   GroupAttacked,
   GroupModifiersChanged,
   GroupSpeedChanged,
@@ -27,7 +28,12 @@ import { Player } from 'src/app/core/players';
 import { Spell, SpellBaseType, SpellEventHandlers, SpellEventNames, SpellEventsGroup } from 'src/app/core/spells';
 import { MapStructure } from 'src/app/core/structures';
 import { StructEventUtilTypes, SturctEventsGroup } from 'src/app/core/structures/events';
-import { BuildingEventNames, BuildingEventsHandlers, BuildingsEventsGroup } from 'src/app/core/towns/events';
+import {
+  BuildingEventNames,
+  BuildingEventsHandlers,
+  BuildingsEventsGroup,
+  TownEvents,
+} from 'src/app/core/towns/events';
 import { CombatStateEnum, UnitGroup } from 'src/app/core/unit-types';
 import { CommonUtils } from 'src/app/core/utils';
 import { Notify, StoreClient, WireMethod } from 'src/app/store';
@@ -150,6 +156,29 @@ export class InGameApiController extends StoreClient() {
       ownerPlayer: ownerPlayer,
       thisInstance: item,
     });
+  }
+
+  @WireMethod(BuildBuilding)
+  buildBuilding({ buildingId, player }: { player: Player; buildingId: string }): void {
+    const town = this.state.townsByPlayers.get(player.id);
+    console.log(this.state.townsByPlayers);
+    if (!town) {
+      throw new Error(`Couldn't find a town by player id ${player.id}`);
+      return;
+    }
+    const building = town.buildings[buildingId];
+
+    console.log(building, town.buildings);
+    building.built = true;
+
+    this.events.dispatch(
+      InitBuilding({
+        building,
+        player: this.players.getCurrentPlayer(),
+      }),
+    );
+
+    this.state.eventHandlers.buildings.triggerRefEventHandlers(building, TownEvents.Built());
   }
 
   @WireMethod(InitBuilding)

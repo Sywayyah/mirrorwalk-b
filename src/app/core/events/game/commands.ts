@@ -59,6 +59,7 @@ export const InitSpell = commands<InitSpellAction>();
 export const InitItem = commands<InitItemAction>();
 
 export const InitBuilding = commands<InitBuildingAction>();
+export const BuildBuilding = commands<{ player: Player; buildingId: string }>();
 
 export const InitStructure = commands<InitMapStructureAction>();
 

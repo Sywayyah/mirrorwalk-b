@@ -15,11 +15,48 @@ export const SetupCampActionCard = createActionCard({
   description: 'You set up camp, skipping this day.',
   config: {
     onUsedInstantly({ events, actions }) {
-      events.dispatch(RemoveActionPoints({
-        points: actions.getActionPointsLeft()
-      }));
-    }
-  }
+      events.dispatch(
+        RemoveActionPoints({
+          points: actions.getActionPointsLeft(),
+        }),
+      );
+    },
+  },
+});
+
+export const TributeActionCard = createActionCard({
+  id: '#acard-tribute',
+  title: 'Tribute',
+  icon: 'hand-saw',
+  type: ActionCardTypes.PlayerAction,
+  bgColor: 'green',
+  iconColor: 'white',
+  description: 'You gain 300 gold and 2 wood for 2 action points.',
+  config: {
+    onUsedInstantly({ events, players, actions }) {
+      const currentPlayer = players.getCurrentPlayer();
+
+      events.dispatch(RemoveActionPoints({ points: 2 }));
+
+      const bonusGold = 300;
+      const bonusWood = 2;
+      players.giveResourcesToPlayer(currentPlayer, {
+        gold: bonusGold,
+        wood: bonusWood,
+      });
+
+      events.dispatch(
+        PushEventFeedMessage({
+          message: [
+            {
+              type: DescriptionElementType.FreeHtml,
+              htmlContent: `${actionCardEvent(TributeActionCard)}:<hr/>+${bonusGold} Gold<br/>+${bonusWood} Wood`,
+            },
+          ],
+        }),
+      );
+    },
+  },
 });
 
 export const SkipDayActionCard = createActionCard({
@@ -42,17 +79,21 @@ export const SkipDayActionCard = createActionCard({
       events.dispatch(RemoveActionPoints({ points: actionPointsLeft }));
 
       players.giveResourcesToPlayer(currentPlayer, {
-        gold: bonusGold
+        gold: bonusGold,
       });
 
-      events.dispatch(PushEventFeedMessage({
-        message: [{
-          type: DescriptionElementType.FreeHtml,
-          htmlContent: `${actionCardEvent(SkipDayActionCard)}:<hr/>+${bonusGold} Gold`
-        }]
-      }));
-    }
-  }
+      events.dispatch(
+        PushEventFeedMessage({
+          message: [
+            {
+              type: DescriptionElementType.FreeHtml,
+              htmlContent: `${actionCardEvent(SkipDayActionCard)}:<hr/>+${bonusGold} Gold`,
+            },
+          ],
+        }),
+      );
+    },
+  },
 });
 
 // could be that it takes full day and recovers more mana per action point left?
@@ -77,7 +118,16 @@ export const MeditateActionCard = createActionCard({
       const restoredMana = 3 + recoveryLevel * 2;
 
       players.addManaToPlayer(currentPlayer, restoredMana);
-      events.dispatch(PushEventFeedMessage({ message: [{ type: DescriptionElementType.FreeHtml, htmlContent: `${actionCardEvent(MeditateActionCard)}: Restored ${manaIcon(restoredMana)} Mana.` }] }));
+      events.dispatch(
+        PushEventFeedMessage({
+          message: [
+            {
+              type: DescriptionElementType.FreeHtml,
+              htmlContent: `${actionCardEvent(MeditateActionCard)}: Restored ${manaIcon(restoredMana)} Mana.`,
+            },
+          ],
+        }),
+      );
     },
   },
 });
@@ -104,7 +154,16 @@ export const RestoreActionCard = createActionCard({
       const restoredMana = 3 + recoveryLevel * 2;
 
       players.addManaToPlayer(currentPlayer, restoredMana);
-      events.dispatch(PushEventFeedMessage({ message: [{ type: DescriptionElementType.FreeHtml, htmlContent: `${actionCardEvent(RestoreActionCard)}: Restored ${manaIcon(restoredMana)} Mana.` }] }));
+      events.dispatch(
+        PushEventFeedMessage({
+          message: [
+            {
+              type: DescriptionElementType.FreeHtml,
+              htmlContent: `${actionCardEvent(RestoreActionCard)}: Restored ${manaIcon(restoredMana)} Mana.`,
+            },
+          ],
+        }),
+      );
     },
   },
 });
@@ -142,12 +201,10 @@ export const RangersHorn = createActionCard({
         players.removeUnitTypeFromPlayer(currentPlayer, unitType, count);
         events.dispatch(PushPlainEventFeedMessage({ message: `Summoned Rangers have left your army.` }));
       }, 2);
-    }
-  }
-})
+    },
+  },
+});
 
 // practically, a Tavern can be implemented via cards.
 // building a Tavern will give you 2 cards for Recruiting.
 //  one more card will be given per each level of Tavern
-
-
