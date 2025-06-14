@@ -1,0 +1,23 @@
+<mw-popup-base-content>
+  <div popupHeader>{{ dialogData.building.base.baseName }}</div>
+
+  <div popupContent>
+    {{ hero.base.name }}
+  </div>
+
+  <div popupButtons>
+    <button
+      mw-main-button
+      (click)="upgradeBuilding()"
+    >
+      Upgrade Building
+    </button>
+
+    <button
+      mw-main-button
+      (click)="close()"
+    >
+      Close
+    </button>
+  </div>
+</mw-popup-base-content>
