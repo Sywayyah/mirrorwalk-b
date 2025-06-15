@@ -228,8 +228,8 @@ const itemMarket = createBuildingType({
               '#item-magic-cape',
               '#item-irton-plate',
               '#item-kite-shield',
-              '#item-storm-pike',
-              '#item-battlemage-sword',
+              // '#item-storm-pike',
+              // '#item-battlemage-sword',
             ],
             selling: true,
           });
@@ -254,7 +254,7 @@ const hallsOfFate = createBuildingType({
             actionCards: [
               { cost: { gold: 300 }, count: 1, item: '#acard-blacksmithing' },
               { cost: { gold: 300 }, count: 2, item: '#acard-armor-forging' },
-              { cost: { gold: 300 }, count: 2, item: '#acard-meditation' },
+              { cost: { gold: 300 }, count: 2, item: '#acard-quiescence' },
             ],
             items: ['#item-storm-pike'],
             spells: [
@@ -285,7 +285,7 @@ const upgradedHallsOfFate = createBuildingType({
             actionCards: [
               { cost: { gold: 300 }, count: 2, item: '#acard-blacksmithing' },
               { cost: { gold: 300 }, count: 3, item: '#acard-armor-forging' },
-              { cost: { gold: 250 }, count: 4, item: '#acard-meditation' },
+              { cost: { gold: 250 }, count: 4, item: '#acard-quiescence' },
             ],
             items: ['#item-battlemage-sword'],
             spells: [

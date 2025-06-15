@@ -10,15 +10,15 @@
     [class.defeated]="!unitState.groupState.isAlive"
     (mouseenter)="onCardHover(true)"
     (mouseleave)="onCardHover(false)"
-    >
+  >
     <div class="card-wrapper">
       <div
         [style.background]="playerInfo().color"
         [class.current-group]="isCurrentUnitGroupActive()"
         [class.hovered-enemy]="isCardHovered && isEnemyCard && canCurrentPlayerAttack()"
         class="card"
-        >
-        <div style="padding-bottom: 3px; font-weight: 500; white-space: nowrap">
+      >
+        <div style="padding-bottom: 3px; font-weight: 500; white-space: nowrap; z-index: 1000; position: relative">
           {{ group.type.name }}
           ({{ group.count }})
 
@@ -36,9 +36,7 @@
 
           <div>
             @if (isGroupMelee) {
-              <mw-ra-icon
-                icon="sword"
-                />
+              <mw-ra-icon icon="sword" />
             } @else {
               <mw-ra-icon icon="crossbow" />
             }
@@ -57,29 +55,29 @@
             <mw-ra-icon icon="crystal-ball" />
             {{ unitState.groupState.currentMana }}/{{ unitState.groupStats.maxMana }}
           </div> -->
+          </div>
+
+          <!-- this info will have to be updated -->
+          @if (!isBoss || group.type.isHero) {
+            <mw-ra-icon icon="health" />
+            {{ unitState.groupStats.totalHealth }}
+          }
         </div>
-
-        <!-- this info will have to be updated -->
-        @if (!isBoss || group.type.isHero) {
-          <mw-ra-icon icon="health" />
-          {{ unitState.groupStats.totalHealth }}
-        }
       </div>
-    </div>
 
-    <div
-      class="abilities"
-      [ngClass]="side()"
+      <div
+        class="abilities"
+        [ngClass]="side()"
       >
-      <div class="column-data">
-        @for (spell of spells(); track $index) {
-          <mw-unit-group-spell
-            [hintPos]="spellsHintsPosition"
-            [spell]="spell"
-            [hero]="playerInfo().hero"
-            [owner]="group"
-            [onCooldown]="unitState.groupState.spellsOnCooldown || !!spell.cooldown"
-            [currentUnit]="attackingUnitGroup()"
+        <div class="column-data">
+          @for (spell of spells(); track $index) {
+            <mw-unit-group-spell
+              [hintPos]="spellsHintsPosition"
+              [spell]="spell"
+              [hero]="playerInfo().hero"
+              [owner]="group"
+              [onCooldown]="unitState.groupState.spellsOnCooldown || !!spell.cooldown"
+              [currentUnit]="attackingUnitGroup()"
             />
           }
         </div>
@@ -90,79 +88,79 @@
               [hintPos]="spellsHintsPosition"
               [buff]="effect"
               [ownerUnit]="group"
-              />
-            }
-          </div>
+            />
+          }
         </div>
       </div>
+    </div>
 
-      <div class="portrait-container">
-        <mw-unit-group-portrait
-          [unitGroup]="group"
-          [toRight]="side() === 'left'"
-          [isHero]="group.type.isHero"
+    <div class="portrait-container">
+      <mw-unit-group-portrait
+        [unitGroup]="group"
+        [toRight]="side() === 'left'"
+        [isHero]="group.type.isHero"
+      />
+
+      <!-- #4f52bd -->
+      <!-- "linear-gradient(180deg, rgba(255,77,93,1) 0%, rgba(129,25,25,1) 100%)" -->
+      <!-- rgb(201, 45, 45) -->
+      <!-- rgb(80 89 165) -->
+      @if (isBoss || group.type.isHero) {
+        <mw-value-bar
+          class="health-bar"
+          barStyle="normal"
+          [side]="side()"
+          color="rgb(201, 45, 45)"
+          [showMax]="true"
+          [currentValue]="group.tailUnitHp"
+          [maxValue]="group.type.baseStats.health"
+          [barHeight]="14"
+        >
+          <mw-ra-icon
+            class="bar-icon"
+            icon="health"
           />
+        </mw-value-bar>
+      }
 
-          <!-- #4f52bd -->
-          <!-- "linear-gradient(180deg, rgba(255,77,93,1) 0%, rgba(129,25,25,1) 100%)" -->
-          <!-- rgb(201, 45, 45) -->
-          <!-- rgb(80 89 165) -->
-          @if (isBoss || group.type.isHero) {
-            <mw-value-bar
-              class="health-bar"
-              barStyle="normal"
-              [side]="side()"
-              color="rgb(201, 45, 45)"
-              [showMax]="true"
-              [currentValue]="group.tailUnitHp"
-              [maxValue]="group.type.baseStats.health"
-              [barHeight]="14"
-              >
-              <mw-ra-icon
-                class="bar-icon"
-                icon="health"
-                />
-              </mw-value-bar>
-            }
+      @if (!group.type.isHero && unitState.groupStats.maxMana) {
+        <mw-value-bar
+          class="mana-bar"
+          [barHeight]="13"
+          barStyle="normal"
+          color="linear-gradient(0deg, rgb(100 26 95), rgb(92 142 242))"
+          [showMax]="true"
+          [currentValue]="unitState.groupState.currentMana"
+          [side]="side()"
+          [maxValue]="unitState.groupStats.maxMana"
+        >
+          <mw-ra-icon
+            class="bar-icon"
+            icon="crystal-ball"
+          />
+        </mw-value-bar>
+      }
 
-            @if (!group.type.isHero && unitState.groupStats.maxMana) {
-              <mw-value-bar
-                class="mana-bar"
-                [barHeight]="13"
-                barStyle="normal"
-                color="linear-gradient(0deg, rgb(100 26 95), rgb(92 142 242))"
-                [showMax]="true"
-                [currentValue]="unitState.groupState.currentMana"
-                [side]="side()"
-                [maxValue]="unitState.groupStats.maxMana"
-                >
-                <mw-ra-icon
-                  class="bar-icon"
-                  icon="crystal-ball"
-                  />
-                </mw-value-bar>
-              }
+      <!-- recheck in the future -->
+      @if (group.type.isHero && playerInfo().hero) {
+        @let heroState = group.ownerHero.getStateSignal()();
 
-              <!-- recheck in the future -->
-              @if (group.type.isHero && playerInfo().hero) {
-                @let heroState = group.ownerHero.getStateSignal()();
-
-                <mw-value-bar
-                  class="mana-bar"
-                  [barHeight]="13"
-                  barStyle="normal"
-                  color="linear-gradient(0deg, rgb(100 26 95), rgb(92 142 242))"
-                  [showMax]="true"
-                  [currentValue]="heroState.currentMana"
-                  [side]="side()"
-                  [maxValue]="heroState.maxMana"
-                  >
-                  <mw-ra-icon
-                    class="bar-icon"
-                    icon="crystal-ball"
-                    />
-                  </mw-value-bar>
-                }
-              </div>
-            </div>
-          </mw-vfx-container>
+        <mw-value-bar
+          class="mana-bar"
+          [barHeight]="13"
+          barStyle="normal"
+          color="linear-gradient(0deg, rgb(100 26 95), rgb(92 142 242))"
+          [showMax]="true"
+          [currentValue]="heroState.currentMana"
+          [side]="side()"
+          [maxValue]="heroState.maxMana"
+        >
+          <mw-ra-icon
+            class="bar-icon"
+            icon="crystal-ball"
+          />
+        </mw-value-bar>
+      }
+    </div>
+  </div>
+</mw-vfx-container>

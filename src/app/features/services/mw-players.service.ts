@@ -10,6 +10,7 @@ import { StoreClient } from 'src/app/store';
 import { MwHeroesService } from './';
 import { GameObjectsManager } from './game-objects-manager.service';
 import { State } from './state.service';
+import { Spell } from 'src/app/core/spells';
 
 export enum PLAYER_IDS {
   Main = 'main',
@@ -178,6 +179,10 @@ export class MwPlayersService extends StoreClient() {
 
   public addItemToPlayer(player: Player, item: Item): void {
     this.events.dispatch(PlayerReceivesItem({ player, item }));
+  }
+
+  addSpellToPlayer(player: Player, spellInstance: Spell<unknown>): void {
+    player.hero.spells.push(spellInstance);
   }
 
   public removeItemFromPlayer(player: Player, item: Item): void {

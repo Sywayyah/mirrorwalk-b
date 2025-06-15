@@ -120,8 +120,8 @@ export const ArmorForgingActionCard = createActionCard({
 });
 
 export const MeditationActionCard = createActionCard({
-  id: '#acard-meditation',
-  title: 'Meditation',
+  id: '#acard-quiescence',
+  title: 'Quiescence',
   icon: 'crystal-ball',
   type: ActionCardTypes.PlayerAction,
   bgColor: 'blue',
@@ -132,7 +132,7 @@ export const MeditationActionCard = createActionCard({
       const currentPlayer = players.getCurrentPlayer();
 
       events.dispatch(RemoveActionPoints({ points: 1 }));
-      const maxMana = 1;
+      const maxMana = 3;
       currentPlayer.hero.addStatsMods({ heroMaxMana: maxMana });
 
       events.dispatch(

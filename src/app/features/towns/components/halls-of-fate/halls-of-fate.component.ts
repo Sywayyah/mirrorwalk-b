@@ -6,13 +6,14 @@ import { HallsOfFateConfig } from 'src/app/core/players';
 import { CostableItem, SignalCostableCountItem } from 'src/app/core/resources';
 import { SpellBaseType } from 'src/app/core/spells';
 import { Building } from 'src/app/core/towns';
-import { MwPlayersService } from 'src/app/features/services';
+import { MwItemsService, MwPlayersService, MwSpellsService } from 'src/app/features/services';
 import { PopupService } from 'src/app/features/shared/components';
 import { EventsService } from 'src/app/store';
 import { LocalDialogComponent } from '../../../shared/components/local-dialog/local-dialog.component';
 import { SharedModule } from '../../../shared/shared.module';
 import { BuildPopupComponent } from '../build-popup/build-popup.component';
 import { CommonUtils } from 'src/app/core/utils';
+import { AddActionCardsToPlayer } from 'src/app/core/events';
 
 @Component({
   selector: 'mw-halls-of-fate',
@@ -23,6 +24,8 @@ import { CommonUtils } from 'src/app/core/utils';
 export class HallsOfFateComponent extends BaseDialog<{ building: Building }> {
   private readonly playersService = inject(MwPlayersService);
   private readonly events = inject(EventsService);
+  private readonly itemsService = inject(MwItemsService);
+  private readonly spellsService = inject(MwSpellsService);
   private readonly popupsService = inject(PopupService);
 
   readonly player = this.playersService.getCurrentPlayer();
@@ -55,6 +58,13 @@ export class HallsOfFateComponent extends BaseDialog<{ building: Building }> {
     if (!actionCardToBuy?.count()) {
       CommonUtils.removeItem(this.activeHallsOfFateConfig()!.actionCards, actionCardToBuy);
     }
+
+    this.events.dispatch(
+      AddActionCardsToPlayer({
+        player: this.player,
+        actionCardStacks: [{ card: actionCardToBuy!.item, count: 1 }],
+      }),
+    );
   }
 
   buyItem(): void {
@@ -62,6 +72,10 @@ export class HallsOfFateComponent extends BaseDialog<{ building: Building }> {
     this.playersService.removeResourcesFromPlayer(this.player, itemToBuy!.cost!);
 
     CommonUtils.removeItem(this.activeHallsOfFateConfig()!.items, itemToBuy);
+    this.playersService.addItemToPlayer(
+      this.playersService.getCurrentPlayer(),
+      this.itemsService.createItem(itemToBuy!),
+    );
   }
 
   buySpell(): void {
@@ -69,6 +83,8 @@ export class HallsOfFateComponent extends BaseDialog<{ building: Building }> {
     this.playersService.removeResourcesFromPlayer(this.player, spellToBuy!.cost);
 
     CommonUtils.removeItem(this.activeHallsOfFateConfig()!.spells, spellToBuy);
+    const spellInstance = this.spellsService.createSpellInstance(spellToBuy!.item);
+    this.playersService.addSpellToPlayer(this.player, spellInstance);
   }
 
   canPurchaseActionCard(): boolean {

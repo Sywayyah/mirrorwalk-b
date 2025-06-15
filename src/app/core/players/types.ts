@@ -36,6 +36,13 @@ export interface PlayerCreationModel {
   hero: Hero;
 }
 
+export interface HallsOfFateConfig {
+  id: string;
+  spells: CostableItem<SpellBaseType>[];
+  actionCards: SignalCostableCountItem<ActionCard>[];
+  items: ItemBaseType[];
+}
+
 export class Player extends GameObject<PlayerCreationModel> {
   public static readonly categoryId: string = 'player';
 
@@ -48,12 +55,7 @@ export class Player extends GameObject<PlayerCreationModel> {
 
   public readonly garrisons: GarrisonsMap = new Map();
 
-  public readonly hallsOfFateConfig: {
-    id: string;
-    spells: CostableItem<SpellBaseType>[];
-    actionCards: SignalCostableCountItem<ActionCard>[];
-    items: ItemBaseType[];
-  }[] = [];
+  public readonly hallsOfFateConfig: HallsOfFateConfig[] = [];
 
   public hero!: Hero;
 
