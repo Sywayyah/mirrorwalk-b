@@ -363,7 +363,7 @@ export const castleTownBase: TownBase<CastleTownBuildings> = {
     'magic-school': {
       baseName: 'Magic School',
       description: 'Allows you to learn spells for your hero',
-      levels: [{ building: highTower, cost: { gold: 1000, gems: 2 } }],
+      levels: [{ building: highTower, cost: { gold: 1000, gems: 1 } }],
       icon: 'burning-book',
       tier: 2,
     },
