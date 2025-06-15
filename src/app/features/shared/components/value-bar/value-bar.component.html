@@ -1,5 +1,5 @@
-<ng-container [ngSwitch]="barStyle()">
-  <ng-container *ngSwitchCase="'normal'">
+@switch (barStyle()) {
+  @case ("normal") {
     @if (diffBar()) {
       <div
         class="diff-bar"
@@ -7,34 +7,35 @@
         [style.height.px]="barHeight()"
       ></div>
     }
-
     <div
       class="main-bar"
       [style.background]="color()"
       [style.width.%]="uiBarWidth()"
       [style.height.px]="barHeight()"
     ></div>
-  </ng-container>
-
-  <ng-container *ngSwitchCase="'static'">
+  }
+  @case ("static") {
     <div
       class="main-bar"
       [style.background]="color()"
       style="width: 100%"
       [style.height.px]="barHeight()"
     ></div>
-  </ng-container>
-</ng-container>
+  }
+}
 
 <span
   class="values"
   [class.left]="side() === 'left'"
 >
   <ng-content />
-  {{ currentValue() }}<ng-container *ngIf="showMax">/{{ maxValue() }}</ng-container>
+  {{ currentValue() }}
+  @if (showMax()) {
+    / {{ maxValue() }}
+  }
   <!--
-        Initially, there was cur/max, but I feel it kinda distracts to have 2 visual representations
-        of some value (both bar and x out of n)
-     -->
+Initially, there was cur/max, but I feel it kinda distracts to have 2 visual representations
+of some value (both bar and x out of n)
+-->
   <!-- {{currentValue}}/{{maxValue}} -->
 </span>

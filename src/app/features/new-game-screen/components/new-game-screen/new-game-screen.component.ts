@@ -43,7 +43,7 @@ export class NewGameScreenComponent {
 
   readonly players = signal<PlayerRow[]>([
     {
-      id: '1',
+      id: 'player:main',
       name: 'Player 1',
       isMainPlayer: true,
       selectedFaction: humansFaction,

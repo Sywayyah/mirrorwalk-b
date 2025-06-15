@@ -1,11 +1,13 @@
 <div class="list">
-  <div *ngFor="let group of unitGroups"
-       class="group"
-       (click)="displayUnitGroupInfo(group)"
-       [mwActionHint]="'Inspect ' + group.count + ' ' + group.type.name"
-       (mwNoContextMenu)="displayUnitGroupInfo(group)"
-       [style.background]="group.ownerPlayer.color">
-    <div>{{group.type.name}}</div>
-    <div>{{group.count}}</div>
-  </div>
+  @for (group of unitGroups; track group) {
+    <div
+      class="group"
+      (click)="displayUnitGroupInfo(group)"
+      [mwActionHint]="'Inspect ' + group.count + ' ' + group.type.name"
+      (mwNoContextMenu)="displayUnitGroupInfo(group)"
+      [style.background]="group.ownerPlayer.color">
+      <div>{{group.type.name}}</div>
+      <div>{{group.count}}</div>
+    </div>
+  }
 </div>

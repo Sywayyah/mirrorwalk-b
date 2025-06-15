@@ -29,12 +29,14 @@ import {
   StructFightConfirmed,
   StructSelected,
   StructSelectedEvent,
+  TestSandboxScenario,
   Triggers,
 } from 'src/app/core/events';
-import { heroesDefaultResources } from 'src/app/core/heroes';
+import { Faction } from 'src/app/core/factions';
+import { HeroBase, heroesDefaultResources } from 'src/app/core/heroes';
 import { PlayerTypeEnum } from 'src/app/core/players';
 import { StructEvents } from 'src/app/core/structures/events';
-import { TownEvents } from 'src/app/core/towns';
+import { Town, TownBase, TownEvents } from 'src/app/core/towns';
 import { DescriptionElementType } from 'src/app/core/ui';
 import { CommonUtils } from 'src/app/core/utils';
 import { infNum } from 'src/app/core/utils/common';
@@ -47,6 +49,7 @@ import { MwPlayersService, PLAYER_IDS } from '../mw-players.service';
 import { MwStructuresService } from '../mw-structures.service';
 import { State } from '../state.service';
 import { UiEventFeedService } from '../ui-event-feed.service';
+import { GameObjectsManager } from '../game-objects-manager.service';
 
 @Injectable()
 export class GameController extends StoreClient() {
@@ -58,6 +61,7 @@ export class GameController extends StoreClient() {
   private readonly eventFeedUiService = inject(UiEventFeedService);
   private readonly gameApiProvider = inject(ApiProvider);
   private readonly eventFeed = inject(UiEventFeedService);
+  private readonly gameObjectsManager = inject(GameObjectsManager);
 
   private scheduledActions: { day: number; action: () => void }[] = [];
 
@@ -76,6 +80,61 @@ export class GameController extends StoreClient() {
 
     // must occur every week
     this.events.dispatch(OpenActiviesAndSpecialtiesDialog());
+  }
+
+  @WireMethod(TestSandboxScenario)
+  // todo: rework, revisit
+  public testSandboxScenario(params: { hero: HeroBase; faction: Faction; townBase: TownBase<any> }): void {
+    this.state.createdGame = {
+      faction: params.faction,
+      selectedColor: PLAYER_COLORS.BLUE,
+      selectedHero: params.hero,
+      town: this.gameObjectsManager.createNewGameObject(Town, {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        townBase: params.townBase,
+      }),
+    };
+    const mainPlayer = this.players.createPlayer(
+      PLAYER_IDS.Main,
+      this.players.createPlayerWithHero(
+        this.state.createdGame.selectedColor,
+        this.state.createdGame.selectedHero,
+        PlayerTypeEnum.Player,
+      ),
+    );
+
+    const neutralPlayer = this.players.createPlayer(PLAYER_IDS.Neutral, {
+      color: PLAYER_COLORS.GRAY,
+      type: this.state.gameSettings.get().allowNeutralControl ? PlayerTypeEnum.Player : PlayerTypeEnum.AI,
+      hero: this.heroesService.createNeutralHero(),
+      resources: {
+        ...heroesDefaultResources,
+      },
+    });
+
+    mainPlayer.hero.assignOwnerPlayer(mainPlayer);
+    neutralPlayer.hero.assignOwnerPlayer(neutralPlayer);
+
+    mainPlayer.hero.unitGroups.forEach((unitGroup) => unitGroup.assignOwnerHero(mainPlayer.hero));
+    neutralPlayer.hero.unitGroups.forEach((unitGroup) => unitGroup.assignOwnerHero(neutralPlayer.hero));
+
+    this.state.gameState = {
+      players: [mainPlayer, neutralPlayer],
+      currentPlayer: mainPlayer,
+      playersMap: new Map([
+        [mainPlayer.id, mainPlayer],
+        [neutralPlayer.id, neutralPlayer],
+      ]),
+    };
+
+    this.events.dispatch(PlayersInitialized({}));
+    this.events.dispatch(
+      Triggers.PrepareGameEvent({
+        gameMode: DefaultGameModes.SandboxScenario,
+        selectedFaction: this.state.createdGame.faction,
+      }),
+    );
+    this.events.dispatch(GameOpenMapStructuresScreen());
   }
 
   @Notify(GameCreated)

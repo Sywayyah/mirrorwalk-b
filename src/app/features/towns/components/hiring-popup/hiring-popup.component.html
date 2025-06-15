@@ -13,19 +13,20 @@
         class="type"
         [class.active]="currentMode === 'hire'"
         (click)="setMode('hire')"
-      >
+        >
         Hire: {{ countToHire - plannedToHire }}
       </div>
 
       @if (activity.upgrade) {
-        <div
-          class="type"
-          *ngIf="activity.upgrade"
-          [class.active]="currentMode === 'upgrade'"
-          (click)="setMode('upgrade')"
-        >
-          Upgrade: {{ countToUpgrade - plannedToUpgrade }}
-        </div>
+        @if (activity.upgrade) {
+          <div
+            class="type"
+            [class.active]="currentMode === 'upgrade'"
+            (click)="setMode('upgrade')"
+            >
+            Upgrade: {{ countToUpgrade - plannedToUpgrade }}
+          </div>
+        }
       }
     </div>
 
@@ -43,65 +44,66 @@
             (input)="updateCountForGroupFromEvent(unitType, $event)"
             [value]="unitType.count"
             [disabled]="!playerHasFreeSlots"
-          />
+            />
 
-          <div>Cost:</div>
+            <div>Cost:</div>
 
-          <div class="cost">
-            <div
-              class="resource"
-              *ngFor="let resource of unitType.currentCost | keyvalue"
-            >
-              <mw-res-label
-                [resType]="resource.key"
-                [amount]="resource.value!"
-                [iconSize]="48"
-                display="vertical"
-              />
+            <div class="cost">
+              @for (resource of unitType.currentCost | keyvalue; track resource) {
+                <div
+                  class="resource"
+                  >
+                  <mw-res-label
+                    [resType]="resource.key"
+                    [amount]="resource.value!"
+                    [iconSize]="48"
+                    display="vertical"
+                    />
+                  </div>
+                }
+              </div>
+
+              <button
+                mw-main-button
+                [disabled]="!playerHasFreeSlots"
+                (click)="setMaxHire(unitType)"
+                mwActionHint="Maximize amount of units you can afford to hire/upgrade"
+                >
+                Max
+              </button>
             </div>
-          </div>
+          }
+        </div>
 
+        @if (!playerHasFreeSlots) {
+          <div>You don't have free unit group slots!</div>
+        }
+      </div>
+
+      <div popupButtons>
+        <button
+          mw-main-button
+          [disabled]="!canConfirm || countToHire - plannedToHire < 0"
+          (click)="confirmHire()"
+          >
+          Hire
+        </button>
+
+        @if (canBeUpgraded) {
           <button
             mw-main-button
-            [disabled]="!playerHasFreeSlots"
-            (click)="setMaxHire(unitType)"
-            mwActionHint="Maximize amount of units you can afford to hire/upgrade"
-          >
-            Max
+            (click)="upgradeBuilding()"
+            style="font-size: 12px"
+            >
+            Upgrade Building
           </button>
-        </div>
-      }
-    </div>
+        }
 
-    @if (!playerHasFreeSlots) {
-      <div>You don't have free unit group slots!</div>
-    }
-  </div>
-
-  <div popupButtons>
-    <button
-      mw-main-button
-      [disabled]="!canConfirm || countToHire - plannedToHire < 0"
-      (click)="confirmHire()"
-    >
-      Hire
-    </button>
-
-    @if (canBeUpgraded) {
-      <button
-        mw-main-button
-        (click)="upgradeBuilding()"
-        style="font-size: 12px"
-      >
-        Upgrade Building
-      </button>
-    }
-
-    <button
-      mw-main-button
-      (click)="close()"
-    >
-      Close
-    </button>
-  </div>
-</mw-popup-base-content>
+        <button
+          mw-main-button
+          (click)="close()"
+          >
+          Close
+        </button>
+      </div>
+    </mw-popup-base-content>

@@ -14,10 +14,10 @@ export const CONFIG: ConfigModel = {
   allowNeutralAIControlByDefault: false,
   features: [
     Feature.NewGameSettings,
-    Feature.SandboxMode,
+    // Feature.SandboxMode,
     Feature.ScenarioEditor,
     Feature.NewTownSystem,
     Feature.TECHBanditCampVariety,
-    Feature.MultiplayerServer,
+    // Feature.MultiplayerServer,
   ],
 } as const;

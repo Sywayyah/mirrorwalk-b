@@ -13,6 +13,8 @@ import { ItemsSellingPopupComponent } from '../items-selling-popup/items-selling
 import { MarketDialogComponent } from '../market-dialog/market-dialog.component';
 import { isFeatureEnabled } from 'src/app/core/config';
 import { Feature } from 'src/app/core/config/types';
+import { Dialog } from '@angular/cdk/dialog';
+import { HallsOfFateComponent } from '../halls-of-fate/halls-of-fate.component';
 
 @Component({
   selector: 'mw-town-view',
@@ -25,6 +27,7 @@ export class TownViewComponent {
   private readonly state = inject(State);
   private readonly events = inject(EventsService);
   private readonly popupService = inject(PopupService);
+  private readonly dialogsService = inject(Dialog);
 
   readonly newTownSystemEnabled = isFeatureEnabled(Feature.NewTownSystem);
 
@@ -103,6 +106,10 @@ export class TownViewComponent {
           component: MarketDialogComponent,
           data: { town: this.town },
         });
+        break;
+
+      case ActivityTypes.HallsOfFate:
+        this.dialogsService.open(HallsOfFateComponent, { data: { town: this.town, building } });
         break;
     }
   }

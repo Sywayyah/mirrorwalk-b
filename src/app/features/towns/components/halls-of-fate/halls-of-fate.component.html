@@ -1,0 +1,189 @@
+<mw-popup-base-content>
+  <div popupHeader>{{ dialogData.building.base.baseName }}</div>
+
+  <div popupContent>
+    {{ hero.base.name }}
+
+    <hr />
+    <div class="header">Action Cards:</div>
+    <div class="action-cards">
+      @for (hallsConfig of player.hallsOfFateConfig; track $index) {
+        @for (item of hallsConfig.actionCards; track $index) {
+          @if (item.count()) {
+            <div
+              class="card"
+              (click)="actionCardToBuy.set(item); activeHallsOfFateConfig.set(hallsConfig); buyActionCardDialog.open()"
+            >
+              <mw-action-card
+                [actionCard]="item.item"
+                appearance="small"
+              ></mw-action-card>
+
+              <mw-resources-cost [cost]="item.cost"></mw-resources-cost>
+
+              <div class="count">Count: {{ item.count() }}</div>
+            </div>
+          }
+        }
+      }
+    </div>
+
+    <hr />
+    <div class="groups">
+      <div class="group">
+        <div class="header">Items:</div>
+        <div class="items">
+          @for (hallsConfig of player.hallsOfFateConfig; track $index) {
+            @for (item of hallsConfig.items; track $index) {
+              <div
+                class="item"
+                (click)="itemToBuy.set(item); activeHallsOfFateConfig.set(hallsConfig); buyItemDialog.open()"
+              >
+                <mw-item-icon [itemBase]="item"></mw-item-icon>
+
+                <mw-resources-cost [cost]="item.cost"></mw-resources-cost>
+              </div>
+            }
+          }
+        </div>
+      </div>
+
+      <div class="group">
+        <div class="header">Spells:</div>
+        <div class="spells">
+          @for (hallsConfig of player.hallsOfFateConfig; track $index) {
+            @for (spell of hallsConfig.spells; track $index) {
+              <div
+                class="spell"
+                (click)="spellToBuy.set(spell); activeHallsOfFateConfig.set(hallsConfig); buySpellDialog.open()"
+              >
+                <mw-ra-icon
+                  class="spell-icon"
+                  [icon]="spell.item.icon.icon"
+                />
+
+                {{ spell.item.name }}
+
+                <mw-resources-cost [cost]="spell.cost"></mw-resources-cost>
+              </div>
+            }
+          }
+        </div>
+      </div>
+    </div>
+
+    <!-- <hr /> -->
+  </div>
+
+  <div popupButtons>
+    <button
+      mw-main-button
+      (click)="upgradeBuilding()"
+    >
+      Upgrade Building
+    </button>
+
+    <button
+      mw-main-button
+      (click)="close()"
+    >
+      Close
+    </button>
+  </div>
+</mw-popup-base-content>
+
+<mw-local-dialog #buyActionCardDialog>
+  <ng-template>
+    <mw-popup-base-content>
+      <div popupHeader>Buy Action Card</div>
+
+      <div popupContent>
+        Are you sure you want to buy an action card?
+
+        @if (!canPurchaseActionCard()) {
+          <div>You don't have enough resources!</div>
+        }
+      </div>
+
+      <div popupButtons>
+        <button
+          mw-main-button
+          [disabled]="!canPurchaseActionCard()"
+          (click)="buyActionCard(); buyActionCardDialog.close()"
+        >
+          Buy
+        </button>
+        <button
+          mw-main-button
+          (click)="buyActionCardDialog.close(); actionCardToBuy.set(null)"
+        >
+          Close
+        </button>
+      </div>
+    </mw-popup-base-content>
+  </ng-template>
+</mw-local-dialog>
+
+<mw-local-dialog #buyItemDialog>
+  <ng-template>
+    <mw-popup-base-content>
+      <div popupHeader>Buy Item</div>
+
+      <div popupContent>
+        Are you sure you want to buy an item?
+
+        @if (!canPurchaseItem()) {
+          <div>You don't have enough resources!</div>
+        }
+      </div>
+
+      <div popupButtons>
+        <button
+          mw-main-button
+          [disabled]="!canPurchaseItem()"
+          (click)="buyItem(); buyItemDialog.close()"
+        >
+          Buy
+        </button>
+        <button
+          mw-main-button
+          (click)="buyItemDialog.close(); itemToBuy.set(null)"
+        >
+          Close
+        </button>
+      </div>
+    </mw-popup-base-content>
+  </ng-template>
+</mw-local-dialog>
+
+<mw-local-dialog #buySpellDialog>
+  <ng-template>
+    <mw-popup-base-content>
+      <div popupHeader>Buy Spell</div>
+
+      <div popupContent>
+        Are you sure you want to buy a spell?
+
+        @if (!canPurchaseSpell()) {
+          <div>You don't have enough resources!</div>
+        }
+      </div>
+
+      <div popupButtons>
+        <button
+          mw-main-button
+          [disabled]="!canPurchaseSpell()"
+          (click)="buySpell(); buySpellDialog.close()"
+        >
+          Buy
+        </button>
+        <button
+          mw-main-button
+          (click)="buySpellDialog.close(); spellToBuy.set(null)"
+        >
+          Close
+        </button>
+      </div>
+    </mw-popup-base-content>
+  </ng-template>
+</mw-local-dialog>

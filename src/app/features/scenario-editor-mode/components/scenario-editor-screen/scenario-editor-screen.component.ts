@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, effect, inject, signal, viewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { SpellId } from 'src/app/core/entities';
@@ -28,12 +28,13 @@ import {
 } from '../../config/types';
 import { ScenarioEditorContextService } from '../../services/scenario-editor-context.service';
 import { ScenarioEntitiesManagerComponent } from '../scenario-entities-manager/scenario-entities-manager.component';
+import { ScenarioAreaEditorComponent } from "../scenario-area-editor/scenario-area-editor.component";
+import { EditorPropertyComponent } from "../../../shared/components/editors-ui/editor-property/editor-property.component";
 
 @Component({
   selector: 'mw-scenario-editor-screen',
   standalone: true,
   imports: [
-    CommonModule,
     SharedModule,
     FormsModule,
     ScriptEditorComponent,
@@ -43,7 +44,9 @@ import { ScenarioEntitiesManagerComponent } from '../scenario-entities-manager/s
     DropdownOptionComponent,
     ScenarioEntitiesManagerComponent,
     LocalDialogComponent,
-  ],
+    ScenarioAreaEditorComponent,
+    EditorPropertyComponent
+],
 
   templateUrl: './scenario-editor-screen.component.html',
   styleUrl: './scenario-editor-screen.component.scss',
@@ -67,6 +70,8 @@ export class ScenarioEditorScreenComponent {
   readonly vfxTypes = this.scenarioEditorContext.vfxTypes;
 
   readonly scripts = this.scenarioEditorContext.scriptsEditor.scripts;
+  readonly currentArea = this.scenarioEditorContext.areaEditor.currentArea;
+  readonly areas = this.scenarioEditorContext.areaEditor.areas;
 
   readonly selectedUnitType = this.scenarioEditorContext.entitiesInspector.selectedUnitType;
   readonly selectedItemType = this.scenarioEditorContext.entitiesInspector.selectedItemType;

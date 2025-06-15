@@ -1,0 +1,23 @@
+.header {
+  cursor: pointer;
+}
+
+.properties {
+  display: flex;
+  flex-direction: column;
+
+  .property {
+    display: flex;
+    justify-content: space-between;
+
+    .name {
+    }
+
+    .value {
+    }
+  }
+}
+
+.hidden {
+  display: none;
+}

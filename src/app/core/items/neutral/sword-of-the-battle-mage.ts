@@ -21,7 +21,7 @@ export const SwordOfTheBattleMageItem: ItemBaseType = createItem({
   },
   cost: {
     gold: 1000,
-    gems: 6,
+    gems: 2,
   },
   sellingCost: {
     gold: 600,

@@ -4,32 +4,35 @@
 
 <!-- Plain icon VFX -->
 <ng-template #iconSfx
-             let-icon="icon">
+  let-icon="icon">
   <mw-ra-icon [icon]="icon" />
 </ng-template>
 
 <ng-template #htmlSfx
-             let-html="html">
+  let-html="html">
   <div style="text-shadow: 1px 1px 2px #202020; color:white"
-       [innerHTML]="html | safeHtml"></div>
+  [innerHTML]="html | safeHtml"></div>
 </ng-template>
 
 <!-- customizable composed VFX -->
 <ng-template #customizableVfx
-             let-data="data">
+  let-data="data">
   <div style="text-shadow: 1px 1px #4e4e4e; z-index: 10000;">
-    <div *ngFor="let part of data.parts"
-         [ngSwitch]="part.type"
-         [style.color]="part.color">
-      <ng-container *ngSwitchCase="'plainPart'">
-        <ng-container *ngTemplateOutlet="plainDamagePart; context: { part: part }" />
-      </ng-container>
-    </div>
+    @for (part of data.parts; track part) {
+      <div
+        [style.color]="part.color">
+        @switch (part.type) {
+          @case ('plainPart') {
+            <ng-container *ngTemplateOutlet="plainDamagePart; context: { part: part }" />
+          }
+        }
+      </div>
+    }
   </div>
 </ng-template>
 
 <ng-template #plainDamagePart
-             let-part="part">
+  let-part="part">
   <mw-ra-icon [icon]="part.icon" />
   <span [innerHTML]="part.text | safeHtml"></span>
 </ng-template>

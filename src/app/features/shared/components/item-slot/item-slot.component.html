@@ -1,41 +1,42 @@
 <mw-menu [menuBody]="itemsMenuBody"
-         pos="below">
-  <div *ngIf="isEquipped; else isUnequipped">
-    <mw-item-icon class="hoverable"
-                  [item]="equippedItem!"
-                  [itemBase]="equippedItem!.baseType"
-                  [hintPos]="hintPos" />
-  </div>
-
-  <ng-template #isUnequipped>
-    <mw-item-icon-base class="hoverable"
-                       bgColor="white"
-                       itemColor="gray"
-                       [icon]="slotInfo.icon" />
-  </ng-template>
-</mw-menu>
-
-<ng-template #itemsMenuBody>
-  <ng-container *ngIf="availableItemsForSlot.length; else noItemsForSlot">
-    <div class="items-menu">
+  pos="below">
+  @if (isEquipped) {
+    <div>
+      <mw-item-icon class="hoverable"
+        [item]="equippedItem!"
+        [itemBase]="equippedItem!.baseType"
+        [hintPos]="hintPos" />
+      </div>
+    } @else {
       <mw-item-icon-base class="hoverable"
-                         bgColor="white"
-                         itemColor="gray"
-                         icon="cancel"
-                         (click)="unequipSlot()" />
+        bgColor="white"
+        itemColor="gray"
+        [icon]="slotInfo.icon" />
+      }
 
-      <mw-item-icon *ngFor="let item of availableItemsForSlot"
-                    class="hoverable"
-                    [item]="item"
-                    [itemBase]="item.baseType"
-                    hintPos="above"
-                    (click)="equipItem(item)" />
-    </div>
-  </ng-container>
-</ng-template>
+    </mw-menu>
 
-<ng-template #noItemsForSlot>
-  <div class="no-items">
-    No items For "{{slotInfo.name}}" slot
-  </div>
-</ng-template>
+    <ng-template #itemsMenuBody>
+      @if (availableItemsForSlot.length) {
+        <div class="items-menu">
+          <mw-item-icon-base class="hoverable"
+            bgColor="white"
+            itemColor="gray"
+            icon="cancel"
+            (click)="unequipSlot()" />
+            @for (item of availableItemsForSlot; track item) {
+              <mw-item-icon
+                class="hoverable"
+                [item]="item"
+                [itemBase]="item.baseType"
+                hintPos="above"
+                (click)="equipItem(item)" />
+            }
+          </div>
+        } @else {
+          <div class="no-items">
+            No items For "{{slotInfo.name}}" slot
+          </div>
+        }
+      </ng-template>
+

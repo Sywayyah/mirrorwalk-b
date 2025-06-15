@@ -1,11 +1,12 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { BaseDialog } from 'src/app/core/dialogs';
-import {
-  acitivies,
-  ActivityCategory
-} from 'src/app/core/specialties';
+import { acitivies, ActivityCategory, WeeklyActivity } from 'src/app/core/specialties';
 import { MwPlayersService } from 'src/app/features/services';
 import { ApiProvider } from 'src/app/features/services/api-provider.service';
+
+function getActivityById(id: string): WeeklyActivity {
+  return acitivies.find((activity) => activity.id === id)!;
+}
 
 @Component({
   selector: 'mw-week-activities-popup',
@@ -21,18 +22,22 @@ export class WeekActivitiesDialogComponent extends BaseDialog {
   readonly categories = signal<ActivityCategory[]>([
     {
       name: 'Basic',
-      activityBases: [acitivies[2], acitivies[3], acitivies[4]],
-      choice: signal(acitivies[2]),
+      activityBases: [getActivityById('war-training'), getActivityById('tribute'), getActivityById('scholar')],
+      choice: signal(getActivityById('war-training')),
     },
     {
       name: 'Medium',
-      activityBases: [acitivies[1], acitivies[6], acitivies[7]],
-      choice: signal(acitivies[1]),
+      activityBases: [getActivityById('gem-cutting'), getActivityById('mysticism'), getActivityById('necromancy')],
+      choice: signal(getActivityById('gem-cutting')),
     },
     {
       name: 'Advanced',
-      activityBases: [acitivies[8], acitivies[9], acitivies[0], acitivies[13]],
-      choice: signal(acitivies[8]),
+      activityBases: [
+        getActivityById('masonry'),
+        getActivityById('architecture'),
+        getActivityById('crystal-illness'),
+      ],
+      choice: signal(getActivityById('masonry')),
     },
   ]);
 

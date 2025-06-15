@@ -1,54 +1,59 @@
-<mw-map-canvas *ngIf="state.settings.mapDebug"
-               (mapDragEvent)="updateLocationsPosition($event)" />
+@if (state.settings.mapDebug) {
+  <mw-map-canvas
+    (mapDragEvent)="updateLocationsPosition($event)" />
+}
 
 <div #locationsContainer
-     class="map-view">
-  <div class="struct"
-       *ngFor="let struct of structsService.viewStructures">
-    <div [style.left.px]="struct.x"
-         [style.top.px]="struct.y"
-         style="position: absolute;">
-      <mw-map-structure [struct]="struct"
-                        [isAvailable]="structsService.availableStructuresMap[struct.id]"
-                        [isCurrentLoc]="structsService.playerCurrentLocId === struct.id"
-                        [activeLocColor]="state.createdGame.selectedColor"
-                        (structSelected)="onStructureSelected($event)" />
-    </div>
-
-    <div *ngIf="isLocIdVisible"
-         style="position: absolute;"
-         [style.left.px]="struct.x"
-         [style.top.px]="struct.y">
-      <span class="loc-name">
-        {{struct.id}}
-      </span>
-    </div>
-
-    <!-- <mw-ra-icon *ngIf="playerCurrentLocId === struct.id" style="position: absolute; z-index: 70" icon="castle-flag"></mw-ra-icon> -->
-
-    <svg *ngIf="struct.svg"
-         class="path-line"
-         [style.left.px]="struct.svg.x"
-         [style.top.px]="struct.svg.y"
-         [attr.width]="struct.svg.width"
-         [attr.height]="struct.svg.height"
-         version="1.1"
-         xmlns="http://www.w3.org/2000/svg">
-      <line class="line"
-            stroke-dasharray="10, 13"
-            [attr.x1]="struct.svg.ox"
-            [attr.y1]="struct.svg.oy"
-            [attr.x2]="struct.svg.tx"
-            [attr.y2]="struct.svg.ty">
-      </line>
-    </svg>
+  class="map-view">
+  @for (struct of structsService.viewStructures; track struct) {
+    <div class="struct"
+      >
+      <div [style.left.px]="struct.x"
+        [style.top.px]="struct.y"
+        style="position: absolute;">
+        <mw-map-structure [struct]="struct"
+          [isAvailable]="structsService.availableStructuresMap[struct.id]"
+          [isCurrentLoc]="structsService.playerCurrentLocId === struct.id"
+          [activeLocColor]="state.createdGame.selectedColor"
+          (structSelected)="onStructureSelected($event)" />
+        </div>
+        @if (isLocIdVisible) {
+          <div
+            style="position: absolute;"
+            [style.left.px]="struct.x"
+            [style.top.px]="struct.y">
+            <span class="loc-name">
+              {{struct.id}}
+            </span>
+          </div>
+        }
+        <!-- <mw-ra-icon *ngIf="playerCurrentLocId === struct.id" style="position: absolute; z-index: 70" icon="castle-flag"></mw-ra-icon> -->
+        @if (struct.svg) {
+          <svg
+            class="path-line"
+            [style.left.px]="struct.svg.x"
+            [style.top.px]="struct.svg.y"
+            [attr.width]="struct.svg.width"
+            [attr.height]="struct.svg.height"
+            version="1.1"
+            xmlns="http://www.w3.org/2000/svg">
+            <line class="line"
+              stroke-dasharray="10, 13"
+              [attr.x1]="struct.svg.ox"
+              [attr.y1]="struct.svg.oy"
+              [attr.x2]="struct.svg.tx"
+              [attr.y2]="struct.svg.ty">
+            </line>
+          </svg>
+        }
+      </div>
+    }
   </div>
-</div>
 
 
-<mw-player-info-panel class="player-info-panel" />
+  <mw-player-info-panel class="player-info-panel" />
 
-<!-- maybe move it to some kind of ui overlay eventually.. -->
-<mw-action-hint />
+  <!-- maybe move it to some kind of ui overlay eventually.. -->
+  <mw-action-hint />
 
-<mw-player-map-actions-panel class="player-actions" />
+  <mw-player-map-actions-panel class="player-actions" />

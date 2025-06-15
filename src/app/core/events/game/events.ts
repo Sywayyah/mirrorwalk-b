@@ -1,6 +1,8 @@
 import { PopupData } from 'src/app/features/shared/components';
 import { createEventType } from 'src/app/store';
-import { Hero, UnitGroupSlot } from '../../heroes';
+import { Faction } from '../../factions';
+import { Hero, HeroBase, UnitGroupSlot } from '../../heroes';
+import { TownBase } from '../../towns';
 import { UnitGroup } from '../../unit-types';
 import {
   FightStartsEvent,
@@ -18,6 +20,7 @@ const gameEvent = createEventType;
 export const GameStarted = gameEvent();
 
 export const GameCreated = gameEvent();
+export const TestSandboxScenario = gameEvent<{ faction: Faction; hero: HeroBase; townBase: TownBase<any> }>();
 
 export const PlayersInitialized = gameEvent();
 

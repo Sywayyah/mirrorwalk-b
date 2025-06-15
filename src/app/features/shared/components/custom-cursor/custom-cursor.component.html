@@ -1,5 +1,7 @@
-<mw-vfx-element *ngIf="showCustomCursor"
-                #customCursorRef
-                [style.top.px]="customCursorPos.y - 5"
-                [style.left.px]="customCursorPos.x - 2"
-                class="custom-cursor" />
+@if (showCustomCursor) {
+  <mw-vfx-element
+    #customCursorRef
+    [style.top.px]="customCursorPos.y - 5"
+    [style.left.px]="customCursorPos.x - 2"
+    class="custom-cursor" />
+}

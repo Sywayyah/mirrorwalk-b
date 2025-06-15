@@ -10,6 +10,8 @@
 <!-- </div> -->
 
 <div class="test" style="display: none;">
-  <mw-action-card [actionCard]="card"
-                  *ngFor="let card of actionCards" />
+  @for (card of actionCards; track card) {
+    <mw-action-card [actionCard]="card"
+      />
+  }
 </div>

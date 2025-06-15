@@ -1,46 +1,51 @@
-import { signal, WritableSignal, computed } from '@angular/core';
+import { computed, signal } from '@angular/core';
 import { Modifiers } from 'src/app/core/modifiers';
 import { SignalArrUtils } from 'src/app/core/utils/signals';
+import {
+  typedBooleanSignal,
+  typedNumberSignal,
+  TypedSignalInput,
+} from '../../shared/components/editors-ui/editor-typed-signal-input/editor-typed-signal-input.component';
 
 type ModifierOption = {
   label: string;
   modifier: keyof CustomModifiers['modifiers'];
-  inputType: 'text' | 'number' | 'checkbox';
 };
 
 export class CustomModifiers {
   readonly addedModifiers: (keyof CustomModifiers['modifiers'])[] = [];
   static readonly MODIFIERS_LIST: ModifierOption[] = [
-    { label: 'Attack', modifier: 'heroBonusAttack', inputType: 'number' },
-    { label: 'Defence', modifier: 'heroBonusDefence', inputType: 'number' },
-    { label: 'Speed', modifier: 'unitGroupSpeedBonus', inputType: 'number' },
-    { label: 'Max Mana', modifier: 'heroMaxMana', inputType: 'number' },
-    { label: 'Resist All', modifier: 'resistAll', inputType: 'number' },
+    { label: 'Attack', modifier: 'heroBonusAttack' },
+    { label: 'Defence', modifier: 'heroBonusDefence' },
+    { label: 'Speed', modifier: 'unitGroupSpeedBonus' },
+    { label: 'Max Mana', modifier: 'heroMaxMana' },
+    { label: 'Resist All', modifier: 'resistAll' },
     {
       label: 'Amplified Taken Magic Damage Percent',
       modifier: 'amplifiedTakenMagicDamagePercent',
-      inputType: 'number',
     },
-    { label: 'Cannot Be Slowed', modifier: 'cannotBeSlowed', inputType: 'checkbox' },
+    { label: 'Cannot Be Slowed', modifier: 'cannotBeSlowed' },
   ];
 
   readonly modifiers = {
-    heroBonusAttack: signal(0),
-    heroBonusDefence: signal(0),
-    unitGroupSpeedBonus: signal(0),
-    heroMaxMana: signal(0),
-    resistAll: signal(0),
-    amplifiedTakenMagicDamagePercent: signal(0),
-    cannotBeSlowed: signal(false),
-    criticalDamageChance: signal(0),
-    criticalDamageMul: signal(0),
-  } satisfies Partial<Record<keyof Modifiers, WritableSignal<unknown>>>;
+    heroBonusAttack: typedNumberSignal(0),
+    heroBonusDefence: typedNumberSignal(0),
+    unitGroupSpeedBonus: typedNumberSignal(0),
+    heroMaxMana: typedNumberSignal(0),
+    resistAll: typedNumberSignal(0),
+    amplifiedTakenMagicDamagePercent: typedNumberSignal(0),
+    cannotBeSlowed: typedBooleanSignal(false),
+    criticalDamageChance: typedNumberSignal(0),
+    criticalDamageMul: typedNumberSignal(0),
+  } satisfies Partial<Record<keyof Modifiers, TypedSignalInput>>;
 
   readonly visibleModifiers = signal<ModifierOption[]>([]);
   readonly modifiersForm = computed(() =>
-    // any to avoid type-checking problem in template
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-    this.visibleModifiers().map((mod) => ({ ...mod, value: this.modifiers[mod.modifier] as any })),
+    this.visibleModifiers().map((mod) => ({
+      modName: mod.modifier,
+      label: mod.label,
+      value: this.modifiers[mod.modifier],
+    })),
   );
 
   readonly availableModifiers = computed(() =>
