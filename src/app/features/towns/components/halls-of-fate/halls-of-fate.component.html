@@ -9,19 +9,21 @@
     <div class="action-cards">
       @for (hallsConfig of player.hallsOfFateConfig; track $index) {
         @for (item of hallsConfig.actionCards; track $index) {
-          <div
-            class="card"
-            (click)="buyActionCardDialog()"
-          >
-            <mw-action-card
-              [actionCard]="item.item"
-              appearance="small"
-            ></mw-action-card>
+          @if (item.count()) {
+            <div
+              class="card"
+              (click)="actionCardToBuy.set(item); buyActionCardDialog.open()"
+            >
+              <mw-action-card
+                [actionCard]="item.item"
+                appearance="small"
+              ></mw-action-card>
 
-            <mw-resources-cost [cost]="item.cost"></mw-resources-cost>
+              <mw-resources-cost [cost]="item.cost"></mw-resources-cost>
 
-            <div class="count">Count: {{ item.count() }}</div>
-          </div>
+              <div class="count">Count: {{ item.count() }}</div>
+            </div>
+          }
         }
       }
     </div>
@@ -35,7 +37,7 @@
             @for (item of hallsConfig.items; track $index) {
               <div
                 class="item"
-                (click)="buyItemDialog()"
+                (click)="itemToBuy.set(item); buyItemDialog.open()"
               >
                 <mw-item-icon [itemBase]="item"></mw-item-icon>
 
@@ -53,7 +55,7 @@
             @for (spell of hallsConfig.spells; track $index) {
               <div
                 class="spell"
-                (click)="buySpellDialog()"
+                (click)="spellToBuy.set(spell); buySpellDialog.open()"
               >
                 <mw-ra-icon
                   class="spell-icon"
@@ -89,3 +91,99 @@
     </button>
   </div>
 </mw-popup-base-content>
+
+<mw-local-dialog #buyActionCardDialog>
+  <ng-template>
+    <mw-popup-base-content>
+      <div popupHeader>Buy Action Card</div>
+
+      <div popupContent>
+        Are you sure you want to buy an action card?
+
+        @if (!canPurchaseActionCard()) {
+          You don't have enough resources!
+        }
+      </div>
+
+      <div popupButtons>
+        <button
+          mw-main-button
+          [disabled]="!canPurchaseActionCard()"
+          (click)="buyActionCard(); buyActionCardDialog.close()"
+        >
+          Buy
+        </button>
+        <button
+          mw-main-button
+          (click)="buyActionCardDialog.close(); actionCardToBuy.set(null)"
+        >
+          Close
+        </button>
+      </div>
+    </mw-popup-base-content>
+  </ng-template>
+</mw-local-dialog>
+
+<mw-local-dialog #buyItemDialog>
+  <ng-template>
+    <mw-popup-base-content>
+      <div popupHeader>Buy Item</div>
+
+      <div popupContent>
+        Are you sure you want to buy an item?
+
+        @if (!canPurchaseItem()) {
+          You don't have enough resources!
+        }
+      </div>
+
+      <div popupButtons>
+        <button
+          mw-main-button
+          [disabled]="!canPurchaseItem()"
+          (click)="buyItem(); buyItemDialog.close()"
+        >
+          Buy
+        </button>
+        <button
+          mw-main-button
+          (click)="buyItemDialog.close(); itemToBuy.set(null)"
+        >
+          Close
+        </button>
+      </div>
+    </mw-popup-base-content>
+  </ng-template>
+</mw-local-dialog>
+
+<mw-local-dialog #buySpellDialog>
+  <ng-template>
+    <mw-popup-base-content>
+      <div popupHeader>Buy Spell</div>
+
+      <div popupContent>
+        Are you sure you want to buy a spell?
+
+        @if (!canPurchaseSpell()) {
+          You don't have enough resources!
+        }
+      </div>
+
+      <div popupButtons>
+        <button
+          mw-main-button
+          [disabled]="!canPurchaseSpell()"
+          (click)="buySpell(); buySpellDialog.close()"
+        >
+          Buy
+        </button>
+        <button
+          mw-main-button
+          (click)="buySpellDialog.close(); spellToBuy.set(null)"
+        >
+          Close
+        </button>
+      </div>
+    </mw-popup-base-content>
+  </ng-template>
+</mw-local-dialog>

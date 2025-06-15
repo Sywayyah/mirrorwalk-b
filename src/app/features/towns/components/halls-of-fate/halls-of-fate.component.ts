@@ -1,34 +1,37 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
+import { ActionCard } from 'src/app/core/action-cards';
 import { BaseDialog } from 'src/app/core/dialogs';
+import { ItemBaseType } from 'src/app/core/items';
+import { CostableItem, SignalCostableCountItem } from 'src/app/core/resources';
+import { SpellBaseType } from 'src/app/core/spells';
 import { Building } from 'src/app/core/towns';
 import { MwPlayersService } from 'src/app/features/services';
 import { PopupService } from 'src/app/features/shared/components';
+import { EventsService } from 'src/app/store';
+import { LocalDialogComponent } from '../../../shared/components/local-dialog/local-dialog.component';
 import { SharedModule } from '../../../shared/shared.module';
 import { BuildPopupComponent } from '../build-popup/build-popup.component';
 
 @Component({
   selector: 'mw-halls-of-fate',
-  imports: [SharedModule],
+  imports: [SharedModule, LocalDialogComponent],
   templateUrl: './halls-of-fate.component.html',
   styleUrl: './halls-of-fate.component.scss',
 })
 export class HallsOfFateComponent extends BaseDialog<{ building: Building }> {
-buySpellDialog() {
-throw new Error('Method not implemented.');
-}
-buyItemDialog() {
-throw new Error('Method not implemented.');
-}
-buyActionCardDialog() {
-throw new Error('Method not implemented.');
-}
   private readonly playersService = inject(MwPlayersService);
+  private readonly events = inject(EventsService);
   private readonly popupsService = inject(PopupService);
 
   readonly player = this.playersService.getCurrentPlayer();
   readonly hero = this.player.hero;
 
-  public upgradeBuilding(): void {
+  readonly actionCardToBuy = signal<null | SignalCostableCountItem<ActionCard>>(null);
+
+  readonly itemToBuy = signal<null | ItemBaseType>(null);
+  readonly spellToBuy = signal<null | CostableItem<SpellBaseType>>(null);
+
+  upgradeBuilding(): void {
     this.close();
     this.popupsService.createBasicPopup({
       component: BuildPopupComponent,
@@ -38,5 +41,40 @@ throw new Error('Method not implemented.');
       },
       class: 'dark',
     });
+  }
+
+  buyItem(): void {}
+
+  buyActionCard(): void {
+    this.actionCardToBuy()?.count.update((count) => --count);
+    this.playersService.removeResourcesFromPlayer(this.player, this.actionCardToBuy()!.cost);
+  }
+
+  buySpell(): void {}
+
+  canPurchaseActionCard(): boolean {
+    const actionCard = this.actionCardToBuy();
+
+    if (!actionCard) {
+      return false;
+    }
+
+    return this.playersService.playerHasResources(this.player, actionCard.cost);
+  }
+
+  canPurchaseItem(): boolean {
+    const itemToBuy = this.itemToBuy();
+    if (!itemToBuy?.cost) {
+      return false;
+    }
+    return this.playersService.playerHasResources(this.player, itemToBuy.cost);
+  }
+
+  canPurchaseSpell(): boolean {
+    const spellToBuy = this.spellToBuy();
+    if (!spellToBuy) {
+      return false;
+    }
+    return this.playersService.playerHasResources(this.player, spellToBuy.cost);
   }
 }
