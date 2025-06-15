@@ -244,6 +244,30 @@ const hallsOfFate = createBuildingType({
   name: 'Halls of Fate',
   activity: { type: ActivityTypes.HallsOfFate },
   // config:
+  config: {
+    init({ localEvents, players }) {
+      localEvents.on({
+        Built() {
+          const currentPlayer = players.getCurrentPlayer();
+          currentPlayer.addHallsOfFateConfig({
+            id: 'Level 1',
+            actionCards: [
+              { cost: { gold: 300 }, count: 1, item: '#acard-blacksmithing' },
+              { cost: { gold: 300 }, count: 2, item: '#acard-armor-forging' },
+              { cost: { gold: 300 }, count: 2, item: '#acard-meditation' },
+            ],
+            items: ['#item-storm-pike'],
+            spells: [
+              {
+                cost: { gold: 1000 },
+                item: '#spell-charged-strike',
+              },
+            ],
+          });
+        },
+      });
+    },
+  },
 });
 
 const upgradedHallsOfFate = createBuildingType({
@@ -251,6 +275,30 @@ const upgradedHallsOfFate = createBuildingType({
   name: 'Halls of Fate Level 2',
   activity: { type: ActivityTypes.HallsOfFate },
   // config:
+  config: {
+    init({ localEvents, players }) {
+      localEvents.on({
+        Built() {
+          const currentPlayer = players.getCurrentPlayer();
+          currentPlayer.addHallsOfFateConfig({
+            id: 'Level 2',
+            actionCards: [
+              { cost: { gold: 300 }, count: 2, item: '#acard-blacksmithing' },
+              { cost: { gold: 300 }, count: 3, item: '#acard-armor-forging' },
+              { cost: { gold: 250 }, count: 4, item: '#acard-meditation' },
+            ],
+            items: ['#item-battlemage-sword'],
+            spells: [
+              {
+                cost: { gold: 1000, gems: 1 },
+                item: '#spell-meteor',
+              },
+            ],
+          });
+        },
+      });
+    },
+  },
 });
 
 const garrison = createBuildingType({

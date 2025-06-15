@@ -59,6 +59,96 @@ export const TributeActionCard = createActionCard({
   },
 });
 
+export const BlacksmithingActionCard = createActionCard({
+  id: '#acard-blacksmithing',
+  title: 'blacksmithing',
+  icon: 'sword',
+  type: ActionCardTypes.PlayerAction,
+  bgColor: '#f8a121',
+  iconColor: 'white',
+  description: 'You gain +1 to Attack permanently for 1 action point.',
+  config: {
+    onUsedInstantly({ events, players, actions }) {
+      const currentPlayer = players.getCurrentPlayer();
+
+      events.dispatch(RemoveActionPoints({ points: 1 }));
+      const attackBonus = 1;
+      currentPlayer.hero.addStatsMods({ heroBonusAttack: attackBonus });
+
+      events.dispatch(
+        PushEventFeedMessage({
+          message: [
+            {
+              type: DescriptionElementType.FreeHtml,
+              htmlContent: `${actionCardEvent(BlacksmithingActionCard)}:<hr/>+${attackBonus} Attack`,
+            },
+          ],
+        }),
+      );
+    },
+  },
+});
+
+export const ArmorForgingActionCard = createActionCard({
+  id: '#acard-armor-forging',
+  title: 'Armor Forging',
+  icon: 'anvil',
+  type: ActionCardTypes.PlayerAction,
+  bgColor: '#f8a121',
+  iconColor: 'white',
+  description: 'You gain +1 to Defence permanently for 1 action point.',
+  config: {
+    onUsedInstantly({ events, players, actions }) {
+      const currentPlayer = players.getCurrentPlayer();
+
+      events.dispatch(RemoveActionPoints({ points: 1 }));
+      const defenceBonus = 1;
+      currentPlayer.hero.addStatsMods({ heroBonusDefence: defenceBonus });
+
+      events.dispatch(
+        PushEventFeedMessage({
+          message: [
+            {
+              type: DescriptionElementType.FreeHtml,
+              htmlContent: `${actionCardEvent(ArmorForgingActionCard)}:<hr/>+${defenceBonus} Defence`,
+            },
+          ],
+        }),
+      );
+    },
+  },
+});
+
+export const MeditationActionCard = createActionCard({
+  id: '#acard-meditation',
+  title: 'Meditation',
+  icon: 'crystal-ball',
+  type: ActionCardTypes.PlayerAction,
+  bgColor: 'blue',
+  iconColor: 'white',
+  description: 'You gain +3 to Max Mana permanently for 1 action point.',
+  config: {
+    onUsedInstantly({ events, players, actions }) {
+      const currentPlayer = players.getCurrentPlayer();
+
+      events.dispatch(RemoveActionPoints({ points: 1 }));
+      const maxMana = 1;
+      currentPlayer.hero.addStatsMods({ heroMaxMana: maxMana });
+
+      events.dispatch(
+        PushEventFeedMessage({
+          message: [
+            {
+              type: DescriptionElementType.FreeHtml,
+              htmlContent: `${actionCardEvent(MeditateActionCard)}:<hr/>+${maxMana} Max Mana`,
+            },
+          ],
+        }),
+      );
+    },
+  },
+});
+
 export const SkipDayActionCard = createActionCard({
   id: '#acard-skip-the-day',
 

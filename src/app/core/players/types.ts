@@ -1,10 +1,13 @@
 import { signal } from '@angular/core';
 import { ActionCard, ActionCardStack } from '../action-cards';
+import { ActionCardId, ItemId, resolveEntity, SpellId } from '../entities';
 import { GameObject } from '../game-objects';
 import { GarrisonsMap } from '../garrisons/types';
 import { Hero } from '../heroes';
-import { ResourcesModel } from '../resources';
+import { ItemBaseType } from '../items';
+import { CostableCountItem, CostableItem, ResourcesModel, SignalCostableCountItem } from '../resources';
 import { WeeklyActivity } from '../specialties';
+import { SpellBaseType } from '../spells';
 import { SignalArrUtils } from '../utils/signals';
 
 export enum PlayerTypeEnum {
@@ -43,7 +46,14 @@ export class Player extends GameObject<PlayerCreationModel> {
 
   public type!: PlayerTypeEnum;
 
-  public garrisons: GarrisonsMap = new Map();
+  public readonly garrisons: GarrisonsMap = new Map();
+
+  public readonly hallsOfFateConfig: {
+    id: string;
+    spells: CostableItem<SpellBaseType>[];
+    actionCards: SignalCostableCountItem<ActionCard>[];
+    items: ItemBaseType[];
+  }[] = [];
 
   public hero!: Hero;
 
@@ -62,6 +72,26 @@ export class Player extends GameObject<PlayerCreationModel> {
     this.hero.updateUnitsSpecialtyAndConditionalMods();
   }
 
+  addHallsOfFateConfig(config: {
+    id: string;
+    items: ItemId[];
+    spells: CostableItem<SpellId>[];
+    actionCards: CostableCountItem<ActionCardId>[];
+  }): void {
+    this.hallsOfFateConfig.push({
+      id: config.id,
+      actionCards: config.actionCards.map((card) => ({
+        cost: card.cost,
+        count: signal(card.count),
+        item: resolveEntity(card.item),
+      })),
+      items: config.items.map((itemId) => resolveEntity(itemId)),
+      spells: config.spells.map((card) => ({
+        cost: card.cost,
+        item: resolveEntity(card.item),
+      })),
+    });
+  }
   addWeeklyActivity(activity: WeeklyActivity): void {
     this.activities.update(SignalArrUtils.addItem(activity));
   }
@@ -71,9 +101,7 @@ export class Player extends GameObject<PlayerCreationModel> {
   }
 
   addActionCards(actionCard: ActionCard, count: number): void {
-    const cardStack = this.actionCards.find(
-      (stack) => stack.card === actionCard,
-    );
+    const cardStack = this.actionCards.find((stack) => stack.card === actionCard);
 
     if (cardStack) {
       cardStack.count += count;

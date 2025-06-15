@@ -3,6 +3,74 @@
 
   <div popupContent>
     {{ hero.base.name }}
+
+    <hr />
+    <div class="header">Action Cards:</div>
+    <div class="action-cards">
+      @for (hallsConfig of player.hallsOfFateConfig; track $index) {
+        @for (item of hallsConfig.actionCards; track $index) {
+          <div
+            class="card"
+            (click)="buyActionCardDialog()"
+          >
+            <mw-action-card
+              [actionCard]="item.item"
+              appearance="small"
+            ></mw-action-card>
+
+            <mw-resources-cost [cost]="item.cost"></mw-resources-cost>
+
+            <div class="count">Count: {{ item.count() }}</div>
+          </div>
+        }
+      }
+    </div>
+
+    <hr />
+    <div class="groups">
+      <div class="group">
+        <div class="header">Items:</div>
+        <div class="items">
+          @for (hallsConfig of player.hallsOfFateConfig; track $index) {
+            @for (item of hallsConfig.items; track $index) {
+              <div
+                class="item"
+                (click)="buyItemDialog()"
+              >
+                <mw-item-icon [itemBase]="item"></mw-item-icon>
+
+                <mw-resources-cost [cost]="item.cost"></mw-resources-cost>
+              </div>
+            }
+          }
+        </div>
+      </div>
+
+      <div class="group">
+        <div class="header">Spells:</div>
+        <div class="spells">
+          @for (hallsConfig of player.hallsOfFateConfig; track $index) {
+            @for (spell of hallsConfig.spells; track $index) {
+              <div
+                class="spell"
+                (click)="buySpellDialog()"
+              >
+                <mw-ra-icon
+                  class="spell-icon"
+                  [icon]="spell.item.icon.icon"
+                />
+
+                {{ spell.item.name }}
+
+                <mw-resources-cost [cost]="spell.cost"></mw-resources-cost>
+              </div>
+            }
+          }
+        </div>
+      </div>
+    </div>
+
+    <!-- <hr /> -->
   </div>
 
   <div popupButtons>

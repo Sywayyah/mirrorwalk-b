@@ -13,10 +13,20 @@ import { BuildPopupComponent } from '../build-popup/build-popup.component';
   styleUrl: './halls-of-fate.component.scss',
 })
 export class HallsOfFateComponent extends BaseDialog<{ building: Building }> {
+buySpellDialog() {
+throw new Error('Method not implemented.');
+}
+buyItemDialog() {
+throw new Error('Method not implemented.');
+}
+buyActionCardDialog() {
+throw new Error('Method not implemented.');
+}
   private readonly playersService = inject(MwPlayersService);
   private readonly popupsService = inject(PopupService);
 
-  readonly hero = this.playersService.getCurrentPlayer().hero;
+  readonly player = this.playersService.getCurrentPlayer();
+  readonly hero = this.player.hero;
 
   public upgradeBuilding(): void {
     this.close();
