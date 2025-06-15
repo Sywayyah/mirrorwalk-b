@@ -12,7 +12,7 @@
           @if (item.count()) {
             <div
               class="card"
-              (click)="actionCardToBuy.set(item); buyActionCardDialog.open()"
+              (click)="actionCardToBuy.set(item); activeHallsOfFateConfig.set(hallsConfig); buyActionCardDialog.open()"
             >
               <mw-action-card
                 [actionCard]="item.item"
@@ -37,7 +37,7 @@
             @for (item of hallsConfig.items; track $index) {
               <div
                 class="item"
-                (click)="itemToBuy.set(item); buyItemDialog.open()"
+                (click)="itemToBuy.set(item); activeHallsOfFateConfig.set(hallsConfig); buyItemDialog.open()"
               >
                 <mw-item-icon [itemBase]="item"></mw-item-icon>
 
@@ -55,7 +55,7 @@
             @for (spell of hallsConfig.spells; track $index) {
               <div
                 class="spell"
-                (click)="spellToBuy.set(spell); buySpellDialog.open()"
+                (click)="spellToBuy.set(spell); activeHallsOfFateConfig.set(hallsConfig); buySpellDialog.open()"
               >
                 <mw-ra-icon
                   class="spell-icon"

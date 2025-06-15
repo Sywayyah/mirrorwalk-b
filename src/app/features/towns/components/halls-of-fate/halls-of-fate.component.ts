@@ -2,6 +2,7 @@ import { Component, inject, signal } from '@angular/core';
 import { ActionCard } from 'src/app/core/action-cards';
 import { BaseDialog } from 'src/app/core/dialogs';
 import { ItemBaseType } from 'src/app/core/items';
+import { HallsOfFateConfig } from 'src/app/core/players';
 import { CostableItem, SignalCostableCountItem } from 'src/app/core/resources';
 import { SpellBaseType } from 'src/app/core/spells';
 import { Building } from 'src/app/core/towns';
@@ -11,6 +12,7 @@ import { EventsService } from 'src/app/store';
 import { LocalDialogComponent } from '../../../shared/components/local-dialog/local-dialog.component';
 import { SharedModule } from '../../../shared/shared.module';
 import { BuildPopupComponent } from '../build-popup/build-popup.component';
+import { CommonUtils } from 'src/app/core/utils';
 
 @Component({
   selector: 'mw-halls-of-fate',
@@ -31,6 +33,8 @@ export class HallsOfFateComponent extends BaseDialog<{ building: Building }> {
   readonly itemToBuy = signal<null | ItemBaseType>(null);
   readonly spellToBuy = signal<null | CostableItem<SpellBaseType>>(null);
 
+  readonly activeHallsOfFateConfig = signal<null | HallsOfFateConfig>(null);
+
   upgradeBuilding(): void {
     this.close();
     this.popupsService.createBasicPopup({
@@ -43,14 +47,29 @@ export class HallsOfFateComponent extends BaseDialog<{ building: Building }> {
     });
   }
 
-  buyItem(): void {}
-
   buyActionCard(): void {
-    this.actionCardToBuy()?.count.update((count) => --count);
-    this.playersService.removeResourcesFromPlayer(this.player, this.actionCardToBuy()!.cost);
+    const actionCardToBuy = this.actionCardToBuy();
+    actionCardToBuy?.count.update((count) => --count);
+    this.playersService.removeResourcesFromPlayer(this.player, actionCardToBuy!.cost);
+
+    if (!actionCardToBuy?.count()) {
+      CommonUtils.removeItem(this.activeHallsOfFateConfig()!.actionCards, actionCardToBuy);
+    }
   }
 
-  buySpell(): void {}
+  buyItem(): void {
+    const itemToBuy = this.itemToBuy();
+    this.playersService.removeResourcesFromPlayer(this.player, itemToBuy!.cost!);
+
+    CommonUtils.removeItem(this.activeHallsOfFateConfig()!.items, itemToBuy);
+  }
+
+  buySpell(): void {
+    const spellToBuy = this.spellToBuy();
+    this.playersService.removeResourcesFromPlayer(this.player, spellToBuy!.cost);
+
+    CommonUtils.removeItem(this.activeHallsOfFateConfig()!.spells, spellToBuy);
+  }
 
   canPurchaseActionCard(): boolean {
     const actionCard = this.actionCardToBuy();
