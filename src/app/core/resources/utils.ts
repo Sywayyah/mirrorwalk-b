@@ -1,3 +1,4 @@
+import { WritableSignal } from '@angular/core';
 import { getEntries, hasProp, isNotNullish } from '../utils/common';
 import { Resources, ResourcesModel, ResourceType } from './types';
 
@@ -61,3 +62,20 @@ export const getCountOfResourcesInMaxResources = (
       return countInMax < maxCount ? countInMax : maxCount;
     }, maxAvailable);
 };
+
+export interface CostableItem<T> {
+  item: T;
+  cost: Resources;
+}
+
+export interface CostableCountItem<T> {
+  item: T;
+  count: number;
+  cost: Resources;
+}
+
+export interface SignalCostableCountItem<T> {
+  item: T;
+  count: WritableSignal<number>;
+  cost: Resources;
+}

@@ -10,7 +10,7 @@ function createHiringActivity(
   unitType: UnitTypeId,
   growth: number,
   unitGrowthGroup: string,
-  upgrade: boolean = false
+  upgrade: boolean = false,
 ): HiringActivity {
   return {
     type: ActivityTypes.Hiring,
@@ -71,15 +71,14 @@ const highTower = createBuildingType({
   id: '#build-castle-high-tower',
 
   name: 'High Tower',
-  description:
-    'Gives 1 Meditation action card instantly and at the beginning of each week.',
+  description: 'Gives 1 Meditation action card instantly and at the beginning of each week.',
   config: {
     init({ localEvents, players, globalEvents }) {
       globalEvents.dispatch(
         AddActionCardsToPlayer({
           actionCardStacks: [{ card: MeditateActionCard, count: 1 }],
           player: players.getCurrentPlayer(),
-        })
+        }),
       );
 
       localEvents.on({
@@ -88,7 +87,7 @@ const highTower = createBuildingType({
             AddActionCardsToPlayer({
               actionCardStacks: [{ card: MeditateActionCard, count: 1 }],
               player: players.getCurrentPlayer(),
-            })
+            }),
           );
         },
       });
@@ -110,7 +109,7 @@ const tavern = createBuildingType({
         AddActionCardsToPlayer({
           actionCardStacks: [{ card: RangersHorn, count: 1 }],
           player: players.getCurrentPlayer(),
-        })
+        }),
       );
       localEvents.on({
         Built() {
@@ -126,11 +125,10 @@ const tavern = createBuildingType({
             groups: [{ cost: { gold: 200 }, count: 8, type: resolveEntity('#unit-neut-ranger-0') }],
             name: 'Castle Tavern',
           });
-        }
+        },
       });
-
-    }
-  }
+    },
+  },
 });
 
 /*
@@ -225,7 +223,14 @@ const itemMarket = createBuildingType({
       localEvents.on({
         Built() {
           thisBuilding.addCustomData<SellingBuildingData>({
-            items: ['#item-iron-pike', '#item-magic-cape', '#item-irton-plate', '#item-kite-shield', '#item-storm-pike', '#item-battlemage-sword'],
+            items: [
+              '#item-iron-pike',
+              '#item-magic-cape',
+              '#item-irton-plate',
+              '#item-kite-shield',
+              // '#item-storm-pike',
+              // '#item-battlemage-sword',
+            ],
             selling: true,
           });
         },
@@ -236,7 +241,64 @@ const itemMarket = createBuildingType({
 
 const hallsOfFate = createBuildingType({
   id: '#build-castle-halls-of-fate',
-  name: 'Halls of Fate'
+  name: 'Halls of Fate',
+  activity: { type: ActivityTypes.HallsOfFate },
+  // config:
+  config: {
+    init({ localEvents, players }) {
+      localEvents.on({
+        Built() {
+          const currentPlayer = players.getCurrentPlayer();
+          currentPlayer.addHallsOfFateConfig({
+            id: 'Level 1',
+            actionCards: [
+              { cost: { gold: 300 }, count: 1, item: '#acard-blacksmithing' },
+              { cost: { gold: 300 }, count: 2, item: '#acard-armor-forging' },
+              { cost: { gold: 300 }, count: 2, item: '#acard-quiescence' },
+            ],
+            items: ['#item-storm-pike'],
+            spells: [
+              {
+                cost: { gold: 1000 },
+                item: '#spell-charged-strike',
+              },
+            ],
+          });
+        },
+      });
+    },
+  },
+});
+
+const upgradedHallsOfFate = createBuildingType({
+  id: '#build-castle-halls-of-fate-2',
+  name: 'Halls of Fate Level 2',
+  activity: { type: ActivityTypes.HallsOfFate },
+  // config:
+  config: {
+    init({ localEvents, players }) {
+      localEvents.on({
+        Built() {
+          const currentPlayer = players.getCurrentPlayer();
+          currentPlayer.addHallsOfFateConfig({
+            id: 'Level 2',
+            actionCards: [
+              { cost: { gold: 300 }, count: 2, item: '#acard-blacksmithing' },
+              { cost: { gold: 300 }, count: 3, item: '#acard-armor-forging' },
+              { cost: { gold: 250 }, count: 4, item: '#acard-quiescence' },
+            ],
+            items: ['#item-battlemage-sword'],
+            spells: [
+              {
+                cost: { gold: 1000, gems: 1 },
+                item: '#spell-meteor',
+              },
+            ],
+          });
+        },
+      });
+    },
+  },
 });
 
 const garrison = createBuildingType({
@@ -248,29 +310,28 @@ const garrison = createBuildingType({
     init({ localEvents, players }) {
       localEvents.on({
         Built() {
-          const currentPlayer = players.getCurrentPlayer()
+          const currentPlayer = players.getCurrentPlayer();
           currentPlayer.garrisons.set('castle-garrison', {
             groups: [
-              { cost: { gold: 200, }, type: resolveEntity('#unit-h00'), count: 16 },
-              { cost: { gold: 340, }, type: resolveEntity('#unit-h20'), count: 6 },
+              { cost: { gold: 200 }, type: resolveEntity('#unit-h00'), count: 16 },
+              { cost: { gold: 340 }, type: resolveEntity('#unit-h20'), count: 6 },
             ],
             name: 'Castle Garrison',
           });
-
         },
         NewWeekStarts() {
-          const currentPlayer = players.getCurrentPlayer()
+          const currentPlayer = players.getCurrentPlayer();
           currentPlayer.garrisons.set('castle-garrison', {
             groups: [
-              { cost: { gold: 200, }, type: resolveEntity('#unit-h00'), count: 16 },
-              { cost: { gold: 340, }, type: resolveEntity('#unit-h20'), count: 6 },
+              { cost: { gold: 200 }, type: resolveEntity('#unit-h00'), count: 16 },
+              { cost: { gold: 340 }, type: resolveEntity('#unit-h20'), count: 6 },
             ],
             name: 'Castle Garrison',
           });
         },
-      })
-    }
-  }
+      });
+    },
+  },
 });
 
 // will be reworked, need somehow to process it in the faction itself
@@ -302,7 +363,7 @@ export const castleTownBase: TownBase<CastleTownBuildings> = {
     'magic-school': {
       baseName: 'Magic School',
       description: 'Allows you to learn spells for your hero',
-      levels: [{ building: highTower, cost: { gold: 1000, gems: 2 } }],
+      levels: [{ building: highTower, cost: { gold: 1000, gems: 1 } }],
       icon: 'burning-book',
       tier: 2,
     },
@@ -323,7 +384,10 @@ export const castleTownBase: TownBase<CastleTownBuildings> = {
     'fate-halls': {
       baseName: 'Halls of Fate',
       description: 'Allows to develop your hero',
-      levels: [{ building: hallsOfFate, cost: { gold: 1000 } }],
+      levels: [
+        { building: hallsOfFate, cost: { gold: 1000 } },
+        { building: upgradedHallsOfFate, cost: { gold: 1000, gems: 1 } },
+      ],
       icon: 'barrier',
       tier: 3,
     },

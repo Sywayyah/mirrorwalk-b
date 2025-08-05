@@ -15,11 +15,11 @@ jobs:
         - name: Configure Node
           uses: actions/setup-node@v1
           with:
-            node-version: '20.9.0'
+            node-version: '20.19.0'
 
         - name: Install and Build
           run: |
-            npm ci
+            npm ci --force
             npm run build
 
         - name: Deploy

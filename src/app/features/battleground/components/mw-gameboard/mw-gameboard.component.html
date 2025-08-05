@@ -1,7 +1,7 @@
 <div
   class="columns-wrapper"
   [ngClass]="settings.orientation === orientation.Horizontal ? 'horizontal' : 'vertical'"
->
+  >
   <div class="columns">
     <div class="column">
       @for (unitGroup of mainPlayerUnitGroups; track unitGroup.id) {
@@ -13,57 +13,58 @@
           [playerInfo]="mainPlayerInfo"
           [unitGroup]="unitGroup"
           (cardDestroyed)="onGroupDies(unitGroup)"
-        />
-      }
+          />
+        }
+      </div>
+
+      <div class="column">
+        @for (unitGroup of neutralPlayerGroups; track unitGroup.id) {
+          <mw-unit-group-card
+            class="card"
+            mwUnitGroupCombatAction
+            mwUnitEventsCursor
+            side="right"
+            [playerInfo]="enemyPlayerInfo"
+            [unitGroup]="unitGroup"
+            (cardDestroyed)="onGroupDies(unitGroup)"
+            />
+          }
+        </div>
+      </div>
     </div>
 
-    <div class="column">
-      @for (unitGroup of neutralPlayerGroups; track unitGroup.id) {
-        <mw-unit-group-card
-          class="card"
-          mwUnitGroupCombatAction
-          mwUnitEventsCursor
-          side="right"
-          [playerInfo]="enemyPlayerInfo"
-          [unitGroup]="unitGroup"
-          (cardDestroyed)="onGroupDies(unitGroup)"
+    <div class="abilities-panel">
+      <mw-icon-btn
+        icon="shield"
+        (click)="defend()"
+        [disabled]="(canDefend$ | async) === false"
+        [mwActionHint]="(defendActionMessage$ | async)!"
+        style="width: 60px; text-align: center; color: #ffe5a0; background: #505263"
         />
-      }
-    </div>
-  </div>
-</div>
 
-<div class="abilities-panel">
-  <mw-icon-btn
-    icon="shield"
-    (click)="defend()"
-    [disabled]="(canDefend$ | async) === false"
-    [mwActionHint]="(defendActionMessage$ | async)!"
-    style="width: 60px; text-align: center; color: #ffe5a0; background: #505263"
-  />
+        <mw-battle-hero-abilities />
+      </div>
 
-  <mw-battle-hero-abilities />
-</div>
+      <div class="queue-panel">
+        @for (group of fightQueue; track group) {
+          <div
+            [style.background]="group.ownerPlayer.color"
+            class="queue-card"
+            >
+            <div>{{ group.type.name }}</div>
+            <div>{{ group.count }}</div>
+            <div>turns: {{ group.turnsLeft }}</div>
+          </div>
+        }
+      </div>
 
-<div class="queue-panel">
-  <div
-    *ngFor="let group of fightQueue"
-    [style.background]="group.ownerPlayer.color"
-    class="queue-card"
-  >
-    <div>{{ group.type.name }}</div>
-    <div>{{ group.count }}</div>
-    <div>turns: {{ group.turnsLeft }}</div>
-  </div>
-</div>
+      <mw-action-hint class="hint-panel" />
 
-<mw-action-hint class="hint-panel" />
+      <div class="history-log-panel">
+        <mw-history-log />
+      </div>
 
-<div class="history-log-panel">
-  <mw-history-log />
-</div>
-
-<div class="items-panel">
-  Items:
-  <mw-items-panel></mw-items-panel>
-</div>
+      <div class="items-panel">
+        Items:
+        <mw-items-panel></mw-items-panel>
+      </div>

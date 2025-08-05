@@ -4,29 +4,28 @@
   </div>
 
   <div popupContent>
-    <ng-container *ngFor="let orientOption of orientationOptions">
+    @for (orientOption of orientationOptions; track orientOption) {
       <div>
         <input [id]="'orient-' + orientOption.value" type="radio" name="orientation" [value]="orientOption.value"
           (click)="setOrientation(orientOption.value)" [checked]="settings.orientation === orientOption.value">
+          <label [for]="'orient-' + orientOption.value">{{orientOption.label}}</label>
+        </div>
+      }
 
-        <label [for]="'orient-' + orientOption.value">{{orientOption.label}}</label>
-      </div>
-    </ng-container>
+      <button mw-main-button (click)="loadScriptByPath()">
+        Load Script By Path
+      </button>
 
-    <button mw-main-button (click)="loadScriptByPath()">
-      Load Script By Path
-    </button>
+      <button mw-main-button (click)="loadScript()">
+        Load Mod
+      </button>
+    </div>
 
-    <button mw-main-button (click)="loadScript()">
-      Load Mod
-    </button>
-  </div>
-
-  <div popupButtons>
+    <div popupButtons>
 
 
-    <button mw-main-button (click)="close()">
-      Close
-    </button>
-  </div>
-</mw-popup-base-content>
+      <button mw-main-button (click)="close()">
+        Close
+      </button>
+    </div>
+  </mw-popup-base-content>

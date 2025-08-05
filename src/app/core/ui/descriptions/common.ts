@@ -33,7 +33,7 @@ export function spellStatsElem(stats: string[]): DescriptionVariants['variants']
 }
 
 export function resourceIcon(res: ResourceType): string {
-  return `<img src="assets/${ImgIconsPaths[resourceDetailsMapping[res].imgIcon]}" />`;
+  return `<img src="${ImgIconsPaths[resourceDetailsMapping[res].imgIcon]}" />`;
 }
 
 export function spellStatElem(stat: string, value: string | number): string {

@@ -27,6 +27,6 @@ export class ImgIconComponent implements OnChanges {
   imagePath!: string;
 
   ngOnChanges(): void {
-    this.imagePath = `url("assets/${ImgIconsPaths[this.icon]}")`;
+    this.imagePath = `url("${ImgIconsPaths[this.icon]}")`;
   }
 }

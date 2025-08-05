@@ -1,8 +1,21 @@
-Welcome to sandbox mode, here you will be able to create custom armies and play fights with them
+<div class="bar">
+  <button
+    mw-main-button
+    (click)="goToMainScreen()"
+  >
+    Main screen
+  </button>
 
-<button
-  mw-main-button
-  (click)="goToMainScreen()"
->
-  Main screen
-</button>
+  <button mw-main-button [disabled]="!canStart()" (click)="runScenario()">Test scenario</button>
+</div>
+
+<div class="settings">
+  <mw-player-settings
+    playerName="Your army"
+    [settings]="playerSettings"
+  />
+  <mw-player-settings
+    playerName="Opponent"
+    [settings]="opponentSettings"
+  />
+</div>

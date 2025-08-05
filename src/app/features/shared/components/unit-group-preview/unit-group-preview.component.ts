@@ -6,7 +6,7 @@ import { UnitBaseType } from "src/app/core/unit-types";
     selector: 'mw-unit-group-preview',
     template: `
     <div style="display: flex; flex-direction: column;">
-      <img src="../assets/{{unitType().mainPortraitUrl}}">
+      <img src="../{{unitType().mainPortraitUrl}}">
 
       <div>
         {{unitType().name}} ({{count()}})

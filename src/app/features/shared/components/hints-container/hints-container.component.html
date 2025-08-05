@@ -1,9 +1,11 @@
-<div *ngFor="let hint of hints"
-     class="hint"
-     [style.top.px]="hint.offsetTop"
-     [style.right.px]="hint.offsetRight"
-     [style.left.px]="hint.offsetLeft"
-     [style.bottom.px]="hint.offsetBottom"
-     [style]="hint.style">
-  <ng-container *ngTemplateOutlet="hint.template" />
-</div>
+@for (hint of hints; track hint) {
+  <div
+    class="hint"
+    [style.top.px]="hint.offsetTop"
+    [style.right.px]="hint.offsetRight"
+    [style.left.px]="hint.offsetLeft"
+    [style.bottom.px]="hint.offsetBottom"
+    [style]="hint.style">
+    <ng-container *ngTemplateOutlet="hint.template" />
+  </div>
+}

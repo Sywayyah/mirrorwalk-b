@@ -3,20 +3,22 @@
   <div class="action-points">
     Remaining action points for this day:
     <br>
-    <span class="points">
-      <mw-ra-icon icon='feather-wing' />
-      {{actionPointsLeft}}
-    </span>
-  </div>
-  <hr>
-</div>
+      <span class="points">
+        <mw-ra-icon icon='feather-wing' />
+        {{actionPointsLeft}}
+      </span>
+    </div>
+    <hr>
+    </div>
 
-<div class="cards">
-  <div *ngFor="let actionCard of cards"
-       class="card-stack">
-    <mw-action-card [actionCard]="actionCard.card"
-                    [mwActionHint]="'Use ' + actionCard.card.title"
-                    (click)="handleCardClick(actionCard)" />
-    <div class="cards-left">Left: {{actionCard.count | infNum}}</div>
-  </div>
-</div>
+    <div class="cards">
+      @for (actionCard of cards; track actionCard) {
+        <div
+          class="card-stack">
+          <mw-action-card [actionCard]="actionCard.card"
+            [mwActionHint]="'Use ' + actionCard.card.title"
+            (click)="handleCardClick(actionCard)" />
+            <div class="cards-left">Left: {{actionCard.count | infNum}}</div>
+          </div>
+        }
+      </div>

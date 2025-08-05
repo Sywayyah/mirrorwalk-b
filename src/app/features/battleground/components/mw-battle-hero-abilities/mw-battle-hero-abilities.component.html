@@ -4,23 +4,25 @@
 
 <div class="abilities-list">
   <div class="cd-icon">
-    <mw-ra-icon
-      icon="hourglass"
-      *ngIf="curPlayerState.state.get().areSpellsOnCooldown"
-    />
+    @if (curPlayerState.state.get().areSpellsOnCooldown) {
+      <mw-ra-icon
+        icon="hourglass"
+        />
+    }
   </div>
 
-  <mw-spell-button
-    *ngFor="let spell of currentPlayer.hero.spells"
-    [spell]="spell"
-    [player]="currentPlayer"
-    [hero]="currentPlayer.hero"
+  @for (spell of currentPlayer.hero.spells; track spell) {
+    <mw-spell-button
+      [spell]="spell"
+      [player]="currentPlayer"
+      [hero]="currentPlayer.hero"
     [disabled]="
       currentPlayer.hero.stats.currentMana < spell.currentManaCost ||
       curPlayerState.state.get().areSpellsOnCooldown ||
       !!spell.cooldown
     "
-    [isActive]="curPlayerState.state.get().currentSpell === spell"
-    (clicked)="onAbilityClick(spell)"
-  />
+      [isActive]="curPlayerState.state.get().currentSpell === spell"
+      (clicked)="onAbilityClick(spell)"
+      />
+  }
 </div>

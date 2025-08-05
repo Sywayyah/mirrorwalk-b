@@ -18,22 +18,15 @@ export class ValueBarComponent {
   private readonly hostElem = injectHostElem();
   private readonly renderer = injectRenderer();
 
-  public maxValue = input.required<number>();
-  public diffBar = input(true);
-
-  public barStyle = input<'normal' | 'static'>('normal');
-
-  public showMax = input(false);
-
-  public currentValue = input(0);
-
-  public color = input('red');
-
-  public barHeight = input(3);
-
-  public side = input<'left' | 'right'>('left');
-
-  public uiBarWidth = computed(() => (this.currentValue() / this.maxValue()) * 100);
+  readonly maxValue = input.required<number>();
+  readonly diffBar = input(true);
+  readonly barStyle = input<'normal' | 'static'>('normal');
+  readonly showMax = input(true);
+  readonly currentValue = input(0);
+  readonly color = input('red');
+  readonly barHeight = input(3);
+  readonly side = input<'left' | 'right'>('left');
+  readonly uiBarWidth = computed(() => (this.currentValue() / this.maxValue()) * 100);
 
   constructor() {
     effect(() => {

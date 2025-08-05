@@ -1,0 +1,49 @@
+mw-popup-base-content {
+  background-color: white;
+}
+
+
+.action-cards {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+.items {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+.spells {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+.card,
+.spell,
+.item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  padding: 5px;
+
+  &:hover {
+    background: rgba(183, 183, 183, 0.379);
+  }
+}
+
+.spell {
+  cursor: pointer;
+}
+
+.item {
+  cursor: pointer;
+}
+.groups {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}

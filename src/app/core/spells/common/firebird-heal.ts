@@ -19,7 +19,7 @@ const commonStyles = {
   color: 'rgb(200 244 124)',
 };
 
-const HealAnimation: EffectAnimation = createAnimation([
+const HealAnimation: EffectAnimation = createAnimation('#vfx-firebird-heal', [
   [
     getIconElement(icon, 'fire-main'),
     getPlainAppearanceFrames(),

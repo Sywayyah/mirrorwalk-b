@@ -9,11 +9,12 @@
   color: white;
   position: absolute;
   display: inline-block;
-  overflow: hidden;
+  overflow: auto;
 
   width: 300px;
   height: 400px;
   resize: both;
+  z-index: 1000;
 
   .content {
     padding: 4px 4px;

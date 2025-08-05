@@ -2,6 +2,8 @@ import { SpellActivationType, canActivateOnEnemyFn, createSpell } from 'src/app/
 import { spellDescrElem } from 'src/app/core/ui';
 import { frontStackingBuffAnimation } from 'src/app/core/vfx';
 
+const EssenceLeakAnimation = frontStackingBuffAnimation('#vfx-essence-leak', 'implosion', 'rgb(223 165 255)');
+
 export const EssenceLeakDebuff = createSpell({
   id: '#spell-essence-leak-debuff',
 
@@ -39,7 +41,7 @@ export const EssenceLeak = createSpell({
           const essenceLeakDebuff = actions.createSpellInstance(EssenceLeakDebuff, { initialLevel: 1 });
 
           target.addSpell(essenceLeakDebuff);
-          vfx.createEffectForUnitGroup(target, frontStackingBuffAnimation('implosion', 'rgb(223 165 255)'), {
+          vfx.createEffectForUnitGroup(target, EssenceLeakAnimation, {
             duration: 1000,
           });
         },

@@ -32,6 +32,8 @@ export const OnslaughtBuffSpell = createSpell<{ mods: ModifiersModel }>({
   },
 });
 
+const SpearHeadAnimation = frontStackingBuffAnimation('#vfx-spear-head', 'spear-head', 'orange');
+
 export const OnslaugtSpell = createSpell({
   id: '#spell-onslaught',
   name: 'Onslaught',
@@ -45,7 +47,7 @@ export const OnslaugtSpell = createSpell({
     init({ events, actions, vfx, ownerPlayer }) {
       events.on({
         PlayerTargetsSpell({ target }) {
-          vfx.createEffectForUnitGroup(target, frontStackingBuffAnimation('spear-head', 'orange'));
+          vfx.createEffectForUnitGroup(target, SpearHeadAnimation);
 
           const onslaughtBuff = actions.createSpellInstance(OnslaughtBuffSpell, { initialLevel: 1 });
 

@@ -1,0 +1,391 @@
+<div class="header-tabs">
+  @for (tab of EntityTabs; track $index) {
+    <button
+      class="tab"
+      (click)="activeTab.set(tab)"
+      [class.active]="activeTab() === tab"
+    >
+      {{ tab }}
+    </button>
+  }
+</div>
+
+@switch (activeTab()) {
+  @case (EntityTab.UnitTypes) {
+    <div class="header">Create New Unit Type:</div>
+
+    @let selectedUnitTypeTVar = selectedUnitDefinition();
+    <mw-dropdown [(selectedItem)]="selectedUnitDefinition">
+      <div class="trigger">
+        @if (!customUnitDefinitions().length) {
+          No Custom Unit Types Defined...
+        } @else {
+          {{ selectedUnitTypeTVar ? selectedUnitTypeTVar.name() : "No Unit Type Selected..." }}
+        }
+      </div>
+
+      @for (unit of customUnitDefinitions(); track $index) {
+        <mw-dropdown-option [value]="unit">
+          {{ unit.name() }}
+        </mw-dropdown-option>
+      } @empty {
+        <div class="empty">No Unit Types Defined...</div>
+      }
+    </mw-dropdown>
+
+    <button
+      mw-main-button
+      (click)="addCustomUnitGroup()"
+    >
+      Add Unit Group
+    </button>
+
+    @if (selectedUnitTypeTVar) {
+      <div class="properties">
+        <div class="property">
+          Name:
+          <input
+            type="text"
+            [(ngModel)]="selectedUnitTypeTVar.name"
+          />
+        </div>
+
+        <div class="property">
+          Level:
+          <input
+            type="number"
+            min="1"
+            [(ngModel)]="selectedUnitTypeTVar.level"
+          />
+        </div>
+
+        <div class="property">
+          Health:
+          <input
+            type="number"
+            min="1"
+            step="1"
+            [(ngModel)]="selectedUnitTypeTVar.health"
+          />
+        </div>
+
+        <div class="property">
+          Damage:
+          <input
+            type="number"
+            min="1"
+            [(ngModel)]="selectedUnitTypeTVar.damage"
+          />
+        </div>
+      </div>
+    }
+  }
+  @case (EntityTab.Spells) {
+    <div class="header">Spells:</div>
+
+    @let selectedSpellTypeTVar = selectedSpellDefinition();
+    <mw-dropdown [(selectedItem)]="selectedSpellDefinition">
+      <div class="trigger">
+        @if (!customSpellsDefinitions().length) {
+          No Custom Spell Types Defined...
+        } @else {
+          {{ selectedSpellTypeTVar ? selectedSpellTypeTVar.name() : "No Spell Type Selected..." }}
+        }
+      </div>
+
+      @for (spell of customSpellsDefinitions(); track $index) {
+        <mw-dropdown-option [value]="spell">
+          {{ spell.name() }}
+        </mw-dropdown-option>
+      } @empty {
+        <div class="empty">No Custom Spells Defined...</div>
+      }
+    </mw-dropdown>
+
+    <button
+      mw-main-button
+      (click)="addCustomSpellType()"
+    >
+      Add Spell
+    </button>
+
+    @if (selectedSpellTypeTVar) {
+      <div class="properties">
+        <div class="property">
+          Name:
+          <input
+            type="text"
+            [(ngModel)]="selectedSpellTypeTVar.name"
+          />
+        </div>
+
+        <div class="property">
+          Icon:
+          <input
+            type="text"
+            [(ngModel)]="selectedSpellTypeTVar.icon"
+          />
+        </div>
+
+        <div class="property">
+          Activation Type:
+
+          <mw-dropdown [(selectedItem)]="selectedSpellTypeTVar.activationType">
+            <div class="trigger">
+              {{ selectedSpellTypeTVar.activationType().label }}
+            </div>
+
+            @for (option of ActivationTypes; track $index) {
+              <mw-dropdown-option [value]="option">{{ option.label }}</mw-dropdown-option>
+            }
+          </mw-dropdown>
+          <!-- <input
+                  type="text"
+                  [(ngModel)]="selectedSpellTypeTVar.activationType"
+                /> -->
+        </div>
+
+        <div class="property">
+          Connected Script:
+
+          @let connectedScript = selectedSpellTypeTVar.connectedScript();
+          <mw-dropdown [(selectedItem)]="selectedSpellTypeTVar.connectedScript">
+            <div class="trigger">
+              @if (!scripts().length) {
+                No scripts created...
+              } @else {
+                @if (connectedScript) {
+                  {{ connectedScript.name() }}
+                } @else {
+                  Select a script...
+                }
+              }
+            </div>
+            @for (script of scripts(); track $index) {
+              <mw-dropdown-option [value]="script">
+                {{ script.name() }}
+              </mw-dropdown-option>
+            } @empty {
+              <div class="empty">No custom scripts created...</div>
+              <!-- todo: can create a small button that will create new script and link it -->
+            }
+          </mw-dropdown>
+        </div>
+      </div>
+    }
+  }
+  @case (EntityTab.Heroes) {
+    <div class="header">Heroes:</div>
+
+    @let selectedHeroTypeTVar = selectedHeroDefinition();
+
+    <mw-dropdown [(selectedItem)]="selectedHeroDefinition">
+      <div class="trigger">
+        @if (!customHeroDefinitions().length) {
+          No custom heroes defined...
+        } @else {
+          @if (!selectedHeroTypeTVar) {
+            Click to select custom hero...
+          } @else {
+            {{ selectedHeroTypeTVar.name() }}
+          }
+        }
+      </div>
+
+      @for (hero of customHeroDefinitions(); track $index) {
+        <mw-dropdown-option [value]="hero">Hero - {{ hero.name() }}</mw-dropdown-option>
+      } @empty {
+        <div class="empty">Define new hero type...</div>
+      }
+    </mw-dropdown>
+
+    <button
+      mw-main-button
+      (click)="addNewHero()"
+    >
+      Add new Hero
+    </button>
+
+    @if (selectedHeroTypeTVar) {
+      <img
+        src="{{ selectedHeroTypeTVar.assetUrl() }}"
+        alt="No Image Found by given asset url"
+        class="portrait"
+      />
+      <div class="properties">
+        <div class="property">
+          Name:
+          <input
+            type="text"
+            [(ngModel)]="selectedHeroTypeTVar.name"
+          />
+        </div>
+
+        <div class="property">
+          Asset:
+          <input
+            type="text"
+            [(ngModel)]="selectedHeroTypeTVar.assetUrl"
+          />
+        </div>
+
+        <div class="property">
+          Mana:
+
+          <input
+            type="number"
+            step="1"
+            min="1"
+            [(ngModel)]="selectedHeroTypeTVar.maxMana"
+          />
+        </div>
+
+        <div class="property">
+          Attack:
+
+          <input
+            type="number"
+            step="1"
+            min="1"
+            [(ngModel)]="selectedHeroTypeTVar.attack"
+          />
+        </div>
+
+        <div class="property">
+          Defence:
+
+          <input
+            type="number"
+            step="1"
+            min="1"
+            [(ngModel)]="selectedHeroTypeTVar.defence"
+          />
+        </div>
+
+        <div class="property">
+          <mw-img-icon icon="gold" />
+
+          Gold:
+
+          <input
+            type="number"
+            step="1"
+            min="0"
+            [(ngModel)]="selectedHeroTypeTVar.initialGold"
+          />
+        </div>
+
+        <div class="property">
+          <mw-img-icon icon="wood" />
+
+          Wood:
+
+          <input
+            type="number"
+            step="1"
+            min="0"
+            [(ngModel)]="selectedHeroTypeTVar.initialWood"
+          />
+        </div>
+
+        <div class="property">
+          <mw-img-icon icon="gems" />
+
+          Gems:
+
+          <input
+            type="number"
+            step="1"
+            min="0"
+            [(ngModel)]="selectedHeroTypeTVar.initialGems"
+          />
+        </div>
+
+        <div class="property">
+          <mw-img-icon icon="crystals" />
+
+          Crystals:
+
+          <input
+            type="number"
+            step="1"
+            min="0"
+            [(ngModel)]="selectedHeroTypeTVar.initialCrystals"
+          />
+        </div>
+
+        <div class="property">Spells:</div>
+        <div class="list">
+          @for (spell of selectedHeroTypeTVar.spells(); track $index) {
+            <div class="item">
+              Spell - {{ spell.name() }}
+              <button (click)="removeSpellFromHero(spell)">remove</button>
+            </div>
+          }
+        </div>
+        <button
+          [disabled]="!spellSelectedInInspector()"
+          (click)="addSpellFromInspector()"
+        >
+          Take spell from Inspector
+        </button>
+      </div>
+    }
+  }
+  @case (EntityTab.Items) {
+    <div class="header">Items:</div>
+
+    <mw-dropdown [(selectedItem)]="selectedItemDefinition">
+      <div class="trigger">
+        @if (!customItemDefinitions().length) {
+          No Custom Items Defined...
+        } @else {
+          @if (selectedItemDefinition()) {
+            {{ selectedItemDefinition()?.name() }}
+          } @else {
+            Select custom item...
+          }
+        }
+      </div>
+
+      @for (item of customItemDefinitions(); track $index) {
+        <mw-dropdown-option [value]="item">{{ item.name() }}</mw-dropdown-option>
+      } @empty {
+        <div class="empty">No Custom Item Definitions</div>
+      }
+    </mw-dropdown>
+
+    <button
+      mw-main-button
+      (click)="addItemType()"
+    >
+      Add Custom Item
+    </button>
+
+    @let selectedItem = selectedItemDefinition();
+    @if (selectedItem) {
+      <div class="section">
+        <div class="property">
+          Name:
+
+          <input
+            type="text"
+            [(ngModel)]="selectedItem.name"
+          />
+        </div>
+
+        <div class="property">
+          Icon:
+
+          <input
+            type="text"
+            [(ngModel)]="selectedItem.icon"
+          />
+        </div>
+
+        <mw-scenario-resources-editor [resources]="selectedItem.resources" />
+        <mw-scenario-modifiers-editor [modifiers]="selectedItem.modifiers" />
+      </div>
+    }
+  }
+}

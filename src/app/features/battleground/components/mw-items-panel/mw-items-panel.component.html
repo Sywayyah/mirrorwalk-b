@@ -1,5 +1,7 @@
 <div class="items-container">
-  <mw-item-icon *ngFor="let item of equippedItems"
-                [item]="item"
-                [hintPos]="'after'" />
+  @for (item of equippedItems; track item) {
+    <mw-item-icon
+      [item]="item"
+      [hintPos]="'after'" />
+  }
 </div>

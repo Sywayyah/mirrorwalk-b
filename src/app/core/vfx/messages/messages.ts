@@ -2,7 +2,7 @@ import { EffectAnimation } from '../../api/vfx-api';
 import { createAnimation, getCustomizableElement, getHtmlElem } from '../utils';
 import { } from './utils';
 
-export const FloatingMessageAnimation: EffectAnimation = createAnimation([
+export const FloatingMessageAnimation: EffectAnimation = createAnimation('#vfx-floating-message', [
   [
     getCustomizableElement('msg'),
     [
@@ -26,7 +26,7 @@ export const FloatingMessageAnimation: EffectAnimation = createAnimation([
   ]
 ]);
 
-export const DroppingMessageAnimation: EffectAnimation = createAnimation([
+export const DroppingMessageAnimation: EffectAnimation = createAnimation('#vfx-dropping-message', [
   [
     getHtmlElem('msg'),
     [

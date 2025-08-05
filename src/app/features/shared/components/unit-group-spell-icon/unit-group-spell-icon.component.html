@@ -4,38 +4,39 @@
       class="spell-icon"
       [icon]="icon().icon"
       [ngStyle]="{ color: icon().iconClr, background: icon().bgClr }"
-    />
-  </div>
-</mw-hover-hint>
-
-<ng-template #buffHint>
-  <div style="display: flex">
-    <mw-ra-icon
-      [icon]="icon().icon"
-      class="hint-icon"
-      [ngStyle]="{ color: icon().iconClr, background: icon().bgClr }"
-    />
-
-    <div style="padding: 4px; font-size: 14px">
-      <div>{{ baseType().name }}</div>
-      @if (!spellConfig().hideLevel) {
-        <div style="font-size: 12px">Level {{ spell().currentLevel }}</div>
-      }
-      <div
-        style="font-size: 12px"
-        *ngIf="!isPassive() && spell().currentManaCost"
-      >
-        Mana Cost: {{ spell().currentManaCost }}
-      </div>
+      />
     </div>
-  </div>
+  </mw-hover-hint>
 
-  <div style="padding: 4px; font-size: 13px; max-width: 240px">
-    <mw-spell-description
-      [spell]="spell()"
-      [player]="owner().ownerPlayer"
-      [ownerUnit]="owner()"
-      [hero]="hero()"
-    />
-  </div>
-</ng-template>
+  <ng-template #buffHint>
+    <div style="display: flex">
+      <mw-ra-icon
+        [icon]="icon().icon"
+        class="hint-icon"
+        [ngStyle]="{ color: icon().iconClr, background: icon().bgClr }"
+        />
+
+        <div style="padding: 4px; font-size: 14px">
+          <div>{{ baseType().name }}</div>
+          @if (!spellConfig().hideLevel) {
+            <div style="font-size: 12px">Level {{ spell().currentLevel }}</div>
+          }
+          @if (!isPassive() && spell().currentManaCost) {
+            <div
+              style="font-size: 12px"
+              >
+              Mana Cost: {{ spell().currentManaCost }}
+            </div>
+          }
+        </div>
+      </div>
+
+      <div style="padding: 4px; font-size: 13px; max-width: 240px">
+        <mw-spell-description
+          [spell]="spell()"
+          [player]="owner().ownerPlayer"
+          [ownerUnit]="owner()"
+          [hero]="hero()"
+          />
+        </div>
+      </ng-template>

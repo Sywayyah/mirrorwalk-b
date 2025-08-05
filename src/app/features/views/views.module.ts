@@ -9,6 +9,7 @@ import { ScenarioEditorScreenComponent } from '../scenario-editor-mode/component
 import { SharedModule } from '../shared/shared.module';
 import { TownsModule } from '../towns/towns.module';
 import { MwViewControlComponent } from './components';
+import { MultiplayerScreenComponent } from "../multiplayer/components/multiplayer-screen/multiplayer-screen.component";
 
 const components = [MwViewControlComponent];
 
@@ -25,6 +26,7 @@ const components = [MwViewControlComponent];
     TownsModule,
     SandboxModeModule,
     ScenarioEditorScreenComponent,
-  ],
+    MultiplayerScreenComponent
+],
 })
 export class ViewsModule {}

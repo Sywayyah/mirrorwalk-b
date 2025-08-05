@@ -3,46 +3,47 @@
 
   <div popupContent>
     <div class="units">
-      <div *ngFor="let unitType of hiredGroups" class="unit-column">
-        <div>{{ (unitType.hire.unitTypeId | entity).name }}</div>
-        <div>{{ unitType.count }}</div>
-        <input
-          type="range"
-          [min]="0"
-          [max]="unitType.hire.maxCount"
-          (input)="updateCountForGroup(unitType, $event)"
-          [value]="0"
-          [disabled]="!playerHasFreeSlots"
-        />
-
-        <div>Cost:</div>
-        <div class="cost">
-          @for (resource of unitType.currentCost | keyvalue; track $index) {
-            <mw-res-label
-              class="resource"
-              [resType]="resource.key"
-              [amount]="resource.value!"
-              display="vertical"
+      @for (unitType of hiredGroups; track unitType) {
+        <div class="unit-column">
+          <div>{{ (unitType.hire.unitTypeId | entity).name }}</div>
+          <div>{{ unitType.count }}</div>
+          <input
+            type="range"
+            [min]="0"
+            [max]="unitType.hire.maxCount"
+            (input)="updateCountForGroup(unitType, $event)"
+            [value]="0"
+            [disabled]="!playerHasFreeSlots"
             />
+            <div>Cost:</div>
+            <div class="cost">
+              @for (resource of unitType.currentCost | keyvalue; track $index) {
+                <mw-res-label
+                  class="resource"
+                  [resType]="resource.key"
+                  [amount]="resource.value!"
+                  display="vertical"
+                  />
+                }
+              </div>
+            </div>
           }
         </div>
+
+        <!-- todo: Let player free slots, also handle let hire if there is a unit of same type -->
+        @if (!playerHasFreeSlots) {
+          <div>You don't have enough free slots in army.</div>
+        }
       </div>
-    </div>
 
-    <!-- todo: Let player free slots, also handle let hire if there is a unit of same type -->
-    @if (!playerHasFreeSlots) {
-      <div>You don't have enough free slots in army.</div>
-    }
-  </div>
-
-  <div popupButtons>
-    <button
-      class="button"
-      [disabled]="!canConfirm"
-      (click)="confirmHire()"
-      mw-main-button
-    >
-      Confirm
-    </button>
-  </div>
-</mw-popup-base-content>
+      <div popupButtons>
+        <button
+          class="button"
+          [disabled]="!canConfirm"
+          (click)="confirmHire()"
+          mw-main-button
+          >
+          Confirm
+        </button>
+      </div>
+    </mw-popup-base-content>

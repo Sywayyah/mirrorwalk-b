@@ -7,15 +7,19 @@
 
   <div popupContent>
     <div class="reward-container">
-      <div class="items-group" *ngFor="let items of itemGroups" [class.selected]="items === selectedGroup"
-        (click)="setSelectedGroup(items)">
-        <div *ngFor="let item of items" style="display: flex; flex-direction: column; align-items: center;">
-          <mw-item-icon [item]="item" [hintPos]="'above'" />
-          <div style="font-size: 11px; text-align: center;">
-            {{item.baseType.name}}
-          </div>
+      @for (items of itemGroups; track items) {
+        <div class="items-group" [class.selected]="items === selectedGroup"
+          (click)="setSelectedGroup(items)">
+          @for (item of items; track item) {
+            <div style="display: flex; flex-direction: column; align-items: center;">
+              <mw-item-icon [item]="item" [hintPos]="'above'" />
+              <div style="font-size: 11px; text-align: center;">
+                {{item.baseType.name}}
+              </div>
+            </div>
+          }
         </div>
-      </div>
+      }
     </div>
   </div>
 

@@ -4,47 +4,51 @@
   </div>
 
   <div popupContent>
-    <div *ngIf="data.struct.generator?.description"
-         class="description">
-      <mw-description [descriptions]="data.struct.generator?.description({thisStruct: data.struct})?.descriptions!" />
-    </div>
+    @if (data.struct.generator?.description) {
+      <div
+        class="description">
+        <mw-description [descriptions]="data.struct.generator?.description({thisStruct: data.struct})?.descriptions!" />
+      </div>
+    }
 
     <div class="units">
-      <div *ngFor="let hiredGroupInfo of hiredGroups"
-           class="unit-column">
-        <div>{{hiredGroupInfo.originalGroup.count}} {{hiredGroupInfo.originalGroup.type.name}}</div>
-        <div>to</div>
-        <div>{{hiredGroupInfo.count}} {{(hiredGroupInfo.hire.unitTypeId | entity).name}}</div>
-
-        <input type="range"
-               [min]="0"
-               [max]="hiredGroupInfo.hire.maxCount"
-               (input)="updateCountForGroup(hiredGroupInfo, $event)"
-               [value]="0">
-
-        <div>Cost:</div>
-        <div class="cost">
-          <div class="resource"
-               *ngFor="let resource of (hiredGroupInfo.currentCost | keyvalue)">
-            <div>{{resource.key}}</div>
-            <div>{{resource.value}}</div>
+      @for (hiredGroupInfo of hiredGroups; track hiredGroupInfo) {
+        <div
+          class="unit-column">
+          <div>{{hiredGroupInfo.originalGroup.count}} {{hiredGroupInfo.originalGroup.type.name}}</div>
+          <div>to</div>
+          <div>{{hiredGroupInfo.count}} {{(hiredGroupInfo.hire.unitTypeId | entity).name}}</div>
+          <input type="range"
+            [min]="0"
+            [max]="hiredGroupInfo.hire.maxCount"
+            (input)="updateCountForGroup(hiredGroupInfo, $event)"
+            [value]="0">
+            <div>Cost:</div>
+            <div class="cost">
+              @for (resource of (hiredGroupInfo.currentCost | keyvalue); track resource) {
+                <div class="resource"
+                  >
+                  <div>{{resource.key}}</div>
+                  <div>{{resource.value}}</div>
+                </div>
+              }
+            </div>
           </div>
-        </div>
+        }
       </div>
+
     </div>
 
-  </div>
+    <div popupButtons>
+      <button mw-main-button
+        [disabled]="!canConfirm"
+        (click)="confirmHire()">
+        Confirm
+      </button>
 
-  <div popupButtons>
-    <button mw-main-button
-            [disabled]="!canConfirm"
-            (click)="confirmHire()">
-      Confirm
-    </button>
-
-    <button mw-main-button
-            (click)="cancel()">
-      Cancel
-    </button>
-  </div>
-</mw-popup-base-content>
+      <button mw-main-button
+        (click)="cancel()">
+        Cancel
+      </button>
+    </div>
+  </mw-popup-base-content>

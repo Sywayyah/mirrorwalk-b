@@ -1,4 +1,4 @@
-import { Component, computed, ElementRef, inject, input, TemplateRef, viewChild } from '@angular/core';
+import { Component, computed, DestroyRef, ElementRef, inject, input, TemplateRef, viewChild } from '@angular/core';
 import { SignalArrUtils } from 'src/app/core/utils/signals';
 import { DropdownComponent } from './dropdown.component';
 
@@ -43,6 +43,7 @@ export class DropdownOptionComponent<T> {
 
   constructor() {
     this.dropdownRef.options.update(SignalArrUtils.addItem(this as any));
+    inject(DestroyRef).onDestroy(() => this.dropdownRef.options.update(SignalArrUtils.removeItem(this as any)));
   }
 
   selected(): void {

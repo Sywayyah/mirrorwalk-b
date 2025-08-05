@@ -18,13 +18,13 @@
         [class.hovered-enemy]="isCardHovered && isEnemyCard && canCurrentPlayerAttack()"
         class="card"
       >
-        <div style="padding-bottom: 3px; font-weight: 500; white-space: nowrap">
+        <div style="padding-bottom: 3px; font-weight: 500; white-space: nowrap; z-index: 1000; position: relative">
           {{ group.type.name }}
           ({{ group.count }})
 
           <!-- @if (group.lostDuringBattle()) {
-            <mw-ra-icon icon="skull"></mw-ra-icon>
-            {{ group.lostDuringBattle() }}
+          <mw-ra-icon icon="skull"></mw-ra-icon>
+          {{ group.lostDuringBattle() }}
           } -->
         </div>
 
@@ -35,13 +35,11 @@
           </div>
 
           <div>
-            <mw-ra-icon
-              icon="sword"
-              *ngIf="isGroupMelee; else rangedIcon"
-            />
-            <ng-template #rangedIcon>
+            @if (isGroupMelee) {
+              <mw-ra-icon icon="sword" />
+            } @else {
               <mw-ra-icon icon="crossbow" />
-            </ng-template>
+            }
             {{ unitState.groupStats.avgTotalDamage }}
           </div>
 
@@ -54,9 +52,9 @@
 
           <div class="secondary-stats">
             <!-- <div *ngIf="unitState.groupStats.maxMana">
-              <mw-ra-icon icon="crystal-ball" />
-              {{ unitState.groupState.currentMana }}/{{ unitState.groupStats.maxMana }}
-            </div> -->
+            <mw-ra-icon icon="crystal-ball" />
+            {{ unitState.groupState.currentMana }}/{{ unitState.groupStats.maxMana }}
+          </div> -->
           </div>
 
           <!-- this info will have to be updated -->

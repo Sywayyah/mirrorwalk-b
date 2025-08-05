@@ -1,3 +1,11 @@
+:host {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: block;
+}
 .header-tabs {
   display: flex;
   flex-wrap: wrap;
@@ -7,6 +15,7 @@
     padding: 3px;
     font-size: 12px;
     cursor: pointer;
+    user-select: none;
 
     &:hover {
       background: #00000052;
@@ -17,8 +26,29 @@
   }
 }
 
-
 .empty {
   font-size: 10px;
   padding: 10px;
+}
+
+.property {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.centered {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 60px;
+}
+
+mw-popup-base-content {
+  background: white;
+}
+
+.bar {
+  display: flex;
 }

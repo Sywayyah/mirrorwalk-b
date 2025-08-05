@@ -15,23 +15,28 @@
     </div>
 
     <div>
-      <div class="resource" *ngFor="let resource of cost">
-        <mw-res-label [resType]="resource.type" [amount]="resource.count" />
+      @for (resource of cost; track resource) {
+        <div class="resource">
+          <mw-res-label [resType]="resource.type" [amount]="resource.count" />
+          @if (missingCostMap[resource.type]) {
+            <span>
+              (<span style="color: red">-{{ missingCostMap[resource.type] }}</span
+              >)
+            </span>
+          }
+        </div>
+      }
+    </div>
 
-        <span *ngIf="missingCostMap[resource.type]">
-          (<span style="color: red">-{{ missingCostMap[resource.type] }}</span
-          >)
-        </span>
+    @if (!canBuild) {
+      <div>
+        You don't have enough resources.
+        <!--
+        <div *ngFor="let missingRes of missingCost">
+          {{missingRes.count}} {{missingRes.resName}}
+        </div> -->
       </div>
-    </div>
-
-    <div *ngIf="!canBuild">
-      You don't have enough resources.
-      <!--
-      <div *ngFor="let missingRes of missingCost">
-        {{missingRes.count}} {{missingRes.resName}}
-      </div> -->
-    </div>
+    }
   </div>
 
   <div popupButtons>
