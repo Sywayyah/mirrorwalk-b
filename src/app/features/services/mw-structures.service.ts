@@ -131,7 +131,7 @@ export class MwStructuresService {
           viewStrcuture.guard.forEach((guard) => guard.assignOwnerPlayer(this.playersService.getNeutralPlayer()));
           viewStrcuture.guardingPlayer = this.playersService.getNeutralPlayer();
           viewStrcuture.guard.forEach((group) =>
-            group.setUnitsCount(Math.round(group.count * this.state.gameSettings.get().neutralInitialCount)),
+            group.setUnitsCount(Math.round(group.count * this.state.gameSettings.get().neutralInitialCount) ?? 1),
           );
         }
 
