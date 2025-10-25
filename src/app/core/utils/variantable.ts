@@ -3,7 +3,7 @@ export type Variantable<KeyType extends string | number, PropsPerKey extends Rec
   variants: { [K in KeyType]: PropsPerKey[K] & { type: K } }[KeyType];
 };
 
-/** automatpically populates empty objects for non-provided keys */
+/** automatically populates empty objects for non-provided keys */
 export type VariantableDefault<
   KeyType extends string | number,
   PropsPerKey extends Partial<Record<KeyType, object>>,

@@ -8,14 +8,14 @@ export const MagicRiverStructure: StructureGeneratorModel = createStructure({
   actionPoints: 1,
   name: 'Magic River',
   description: ({ visitingPlayer }) => {
-    const restoration = visitingPlayer?.hero.modGroup.getModValue('specialtyMagicRecovery') ?? 0;
+    const restorationPoints = visitingPlayer?.hero.modGroup.getModValue('specialtyMagicRecovery') ?? 0;
 
-    return ({
+    return {
       descriptions: [
-        'Walking near magic river, you feel your magical powers restored.\n\n+4 to mana and +2 to max mana.',
-        `+1 Mana per each point of Restoration (${restoration}).`,
-      ]
-    });
+        'Walking near magic river, you feel your magical powers restored.\n\n+4 to Mana and +2 to Max Mana.',
+        `+1 Mana restored per each point of Restoration (${restorationPoints}).`,
+      ],
+    };
   },
 
   type: StructureType.Scripted,
@@ -27,11 +27,11 @@ export const MagicRiverStructure: StructureGeneratorModel = createStructure({
           players.addMaxManaToPlayer(visitingPlayer, 2);
 
           const restorationLevel = visitingPlayer.hero.modGroup.getModValue('specialtyMagicRecovery') ?? 0;
-          console.log(restorationLevel);
+
           players.addManaToPlayer(visitingPlayer, 4 + restorationLevel);
           thisStruct.visited = true;
-        }
+        },
       });
-    }
+    },
   },
 });

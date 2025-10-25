@@ -11,13 +11,25 @@
       </mw-base-select>
     </div>
 
-    <div class="setting">
+    <!-- <div class="setting">
       Losses From Players:
       <mw-base-select [(selectedItem)]="lossesFromPlayers">
         @for (option of lossModes; track $index) {
           <option [value]="option.lossMode">{{ option.label }}</option>
         }
       </mw-base-select>
+    </div> -->
+
+    <div class="setting">
+      Neutrals Weekly Growth
+      <input
+        type="range"
+        min="0"
+        max="4"
+        step="0.1"
+        [(ngModel)]="neutralsWeeklyGrowth"
+      />
+      {{ neutralsWeeklyGrowthPercent() }}
     </div>
 
     <div class="setting">

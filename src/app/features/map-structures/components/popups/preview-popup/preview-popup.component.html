@@ -4,16 +4,31 @@
   </div>
 
   <div popupContent>
-    <div style="white-space: pre; padding: 16px;">
+    <div style="white-space: pre; padding: 16px">
       @if (struct.generator?.description) {
-      <mw-description [descriptions]="struct.generator?.description({thisStruct: struct})?.descriptions!" />
+        <mw-description
+          [descriptions]="
+            struct.generator?.description({ thisStruct: struct, visitingPlayer: currentPlayer })?.descriptions!
+          "
+        />
       }
     </div>
   </div>
 
   <div popupButtons>
-      <button mw-main-button [disabled]="struct.controls?.accept === false" (click)="accept()">Accept</button>
+    <button
+      mw-main-button
+      [disabled]="struct.controls?.accept === false"
+      (click)="accept()"
+    >
+      Accept
+    </button>
 
-      <button mw-main-button (click)="closePopup()">Cancel</button>
+    <button
+      mw-main-button
+      (click)="closePopup()"
+    >
+      Cancel
+    </button>
   </div>
 </mw-popup-base-content>

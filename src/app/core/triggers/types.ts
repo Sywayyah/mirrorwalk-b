@@ -3,6 +3,7 @@ import { GlobalEventsApi, PlayersApi } from '../api/game-api';
 import { Player } from '../players';
 import { MapStructure } from '../structures';
 import { Town } from '../towns';
+import { GameSettings } from '../game-settings';
 
 export interface LocalEvents<T extends EventGroup<any>> {
   on: (handlers: EventHandlersMap<T>) => void;
@@ -17,6 +18,7 @@ export interface GameApi {
     scheduleActionInGameDays(action: () => void, days: number): void;
     getTownOfPlayer(player: Player): Town<any> | undefined;
   };
+  gameSettings: GameSettings;
 }
 
 export type Trigger<T> = {
