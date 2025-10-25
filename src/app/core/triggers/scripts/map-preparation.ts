@@ -14,7 +14,6 @@ import { constellationFaction } from '../../factions/constellation/faction';
 import { LevelMap } from '../../maps';
 import { createLocationsBranch, START_LOC_ID, structsPreset1, StructureDescription } from '../../structures';
 import { GenericGuardStructure } from '../../structures/common/guard-location';
-import { getResPileParams } from '../../structures/common/resource-pile';
 import { ArmyGenerationModel } from '../../unit-types';
 import { TriggersRegistry } from '../registry';
 
@@ -127,13 +126,18 @@ TriggersRegistry.register(NewWeekStarted, {
       .getMapStructures()
       .filter((struct) => !struct.visited && struct.guard?.length && !struct.generator?.disableWeeklyGuardRise);
 
+    const neutralsWeeklyGrowth = api.gameSettings.neutralsWeeklyGrowth;
     guardedStructures.forEach((guardedStruct) => {
       guardedStruct.guard?.forEach((guardUnitGroup) =>
-        guardUnitGroup.addUnitsCount(Math.round(guardUnitGroup.count * 0.4)),
+        guardUnitGroup.addUnitsCount(Math.round(guardUnitGroup.count * neutralsWeeklyGrowth)),
       );
     });
 
-    api.events.dispatch(PushPlainEventFeedMessage({ message: `Guards in locations raised by 40%` }));
+    api.events.dispatch(
+      PushPlainEventFeedMessage({
+        message: `Guards in locations raised by ${(neutralsWeeklyGrowth * 100).toFixed(0)}%`,
+      }),
+    );
   },
 });
 

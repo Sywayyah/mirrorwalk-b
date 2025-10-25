@@ -11,6 +11,7 @@ export type GameSettings = {
   heroUnits?: boolean;
   neutralDamageFactor?: number;
   neutralHealthFactor?: number;
+  neutralsWeeklyGrowth: number;
 
   lossToNeutrals: LossMode;
   lossToPlayers: LossMode;
