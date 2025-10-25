@@ -38,7 +38,9 @@ export class State {
     lossToPlayers: LossMode.Permanent,
     lossToNeutrals: LossMode.Permanent,
     allowNeutralControl: CONFIG.allowNeutralAIControlByDefault,
+    experienceGain: 1,
     neutralsWeeklyGrowth: 0.4,
+    neutralInitialCount: 1,
   });
 
   public createdGame!: {

@@ -7,11 +7,12 @@ export enum LossMode {
 
 export type GameSettings = {
   goldGain?: number;
-  experienceGain?: number;
   heroUnits?: boolean;
   neutralDamageFactor?: number;
   neutralHealthFactor?: number;
+  experienceGain: number;
   neutralsWeeklyGrowth: number;
+  neutralInitialCount: number;
 
   lossToNeutrals: LossMode;
   lossToPlayers: LossMode;

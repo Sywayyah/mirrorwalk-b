@@ -5,6 +5,7 @@ import { MapStructure, StructureDescription } from 'src/app/core/structures';
 import { EventsService } from 'src/app/store';
 import { MwPlayersService, MwUnitGroupsService } from './';
 import { GameObjectsManager } from './game-objects-manager.service';
+import { State } from './state.service';
 
 @Injectable({
   providedIn: 'root',
@@ -14,6 +15,7 @@ export class MwStructuresService {
   private readonly unitGroups = inject(MwUnitGroupsService);
   private readonly gameObjectsManager = inject(GameObjectsManager);
   private readonly events = inject(EventsService);
+  private readonly state = inject(State);
 
   public neutralPlayer!: Player;
 
@@ -128,6 +130,9 @@ export class MwStructuresService {
           );
           viewStrcuture.guard.forEach((guard) => guard.assignOwnerPlayer(this.playersService.getNeutralPlayer()));
           viewStrcuture.guardingPlayer = this.playersService.getNeutralPlayer();
+          viewStrcuture.guard.forEach((group) =>
+            group.setUnitsCount(Math.round(group.count * this.state.gameSettings.get().neutralInitialCount)),
+          );
         }
 
         if (generator?.generateReward) {
