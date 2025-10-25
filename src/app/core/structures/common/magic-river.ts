@@ -12,8 +12,8 @@ export const MagicRiverStructure: StructureGeneratorModel = createStructure({
 
     return ({
       descriptions: [
-        'Walking near magic river, you feel your magical powers restored.\n\n+4 to mana and +2 to max mana.',
-        `+1 Mana per each point of Restoration (${restoration}).`,
+        'Walking near magic river, you feel your magical powers restored.\n\n+4 to Mana and +2 to Max Mana.',
+        `\n+1 Mana restored per each point of Restoration (${restoration}).`,
       ]
     });
   },
