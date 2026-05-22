@@ -1,4 +1,38 @@
 /*
+  Another. How can market be interesting ?
+  Defating locations on the map can add some resources to the market.
+
+*/
+/*
+  Game could feature a list of specialties - a tree of bonuses.
+    - Mysticism
+    - Fire Mastery
+    - Necromancy
+
+  (Leveling/Learning strong abilities might cost max mana)
+
+  Mysticism:
+    Nodes: +Max to Mana - Player could invest putting points into max mana (this node could be stackable)
+           Regen - After battle, character has a chance of regenerating 1 mana
+           Mana field - Creatures in the army gain a chance to regain 1 mana after battle
+           Chromatism - small increase of damage of all magical types
+           Dispersion - small bonus to all resists
+
+    Abilities:
+          Mana Shield - adds damage block for the cost of mana
+
+  Fire Mastery
+    Nodes: +to fire damage abilities based on Fire Creatures in your army (+0.3%/0.45% for leveled creature above >= level 4)
+           +Nation specific bonuses from creatures (Phoenixes, etc.)
+           +to army health based on fire creatures in the army
+           +Improved resists against fire
+           +Strong Fire: small resists agains all types
+           +Firery Attack - chance for added flat fire damage by any unit group
+
+
+*/
+
+/*
   Idea: Items can give tier-based bonuses, like +2 to speed to your tier 1 units.
     Boots can have that role of increasing speed for certain units.
 */
