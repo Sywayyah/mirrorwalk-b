@@ -18,6 +18,7 @@ import {
   UnitHealedEvent,
 } from 'src/app/core/events';
 import { DefendAction, RegisterUnitLoss } from 'src/app/core/events/battle/commands';
+import { LossMode } from 'src/app/core/game-settings';
 import { ModsRef } from 'src/app/core/modifiers';
 import { PlayerState, PlayerTypeEnum } from 'src/app/core/players';
 import { messageWrapper } from 'src/app/core/vfx';
@@ -30,7 +31,6 @@ import { MwCurrentPlayerStateService } from '../mw-current-player-state.service'
 import { MwPlayersService } from '../mw-players.service';
 import { MwStructuresService } from '../mw-structures.service';
 import { State } from '../state.service';
-import { LossMode } from 'src/app/core/game-settings';
 
 @Injectable()
 export class BattleController extends StoreClient() {
@@ -141,29 +141,27 @@ export class BattleController extends StoreClient() {
     // if enemy units doesn't have unit groups left
     // todo: handle the case then only summons left
     if (!aliveUnitsOfEnemyPlayer.length) {
-      const deadUnitsOfCurrentPlayer = this.battleState.getDeadUnitsOfPlayer(currentPlayer);
-      const summonedUnitsOfCurrentPlayer = this.battleState.getSummonsOfPlayer(currentPlayer);
-
       // todo: recheck later, logic for restoring losses
       const restoreLosses = this.state.gameSettings.get().lossToNeutrals === LossMode.None;
 
+      const deadUnitsOfCurrentPlayer = restoreLosses ? [] : this.battleState.getDeadUnitsOfPlayer(currentPlayer);
+      const summonedUnitsOfCurrentPlayer = this.battleState.getSummonsOfPlayer(currentPlayer);
+
       if (restoreLosses) {
         currentPlayer.hero.unitGroups.forEach((unit) => {
-          unit.restoreBattleLosses();});
+          unit.restoreBattleLosses();
+        });
       }
       const deadUnitsOfEnemyPlayer = this.battleState.getDeadUnitsOfPlayer(enemyPlayer);
 
-      [
-        ...(restoreLosses ? [] : deadUnitsOfCurrentPlayer),
-        ...deadUnitsOfEnemyPlayer,
-        ...summonedUnitsOfCurrentPlayer,
-      ].forEach((unitGroup) => {
+      [...deadUnitsOfCurrentPlayer, ...deadUnitsOfEnemyPlayer, ...summonedUnitsOfCurrentPlayer].forEach((unitGroup) => {
         this.gameObjectsManager.destroyObject(unitGroup);
       });
 
-      const finalCurrentUnitsOfPlayer = currentPlayerAliveUnits.filter(
-        (unit) => !unit.modGroup.getModValue('isSummon'),
-      );
+      const finalCurrentUnitsOfPlayer = (
+        restoreLosses ? currentPlayer.hero.unitGroups : currentPlayerAliveUnits
+      ).filter((unit) => !unit.modGroup.getModValue('isSummon'));
+
       const currentHero = this.playersService.getCurrentPlayer().hero;
 
       // reset hero cooldowns if any

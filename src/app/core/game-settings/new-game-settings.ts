@@ -1,16 +1,18 @@
 export enum LossMode {
   // any losses during the fight are restored
-  None,
+  None = 'none',
   // losses during the fight are permanent
-  Permanent,
+  Permanent = 'permanent',
 }
 
 export type GameSettings = {
   goldGain?: number;
-  experienceGain?: number;
   heroUnits?: boolean;
   neutralDamageFactor?: number;
   neutralHealthFactor?: number;
+  experienceGain: number;
+  neutralsWeeklyGrowth: number;
+  neutralInitialCount: number;
 
   lossToNeutrals: LossMode;
   lossToPlayers: LossMode;

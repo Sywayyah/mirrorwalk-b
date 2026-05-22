@@ -1,5 +1,5 @@
 import { DialogRef } from '@angular/cdk/dialog';
-import { Component, inject, signal } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { LossMode } from 'src/app/core/game-settings';
 import { State } from 'src/app/features/services/state.service';
 
@@ -29,11 +29,18 @@ export class GameSettingsDialogComponent {
   readonly lossesFromNeutrals = signal(this.initialSettings.lossToNeutrals);
   readonly lossesFromPlayers = signal(this.initialSettings.lossToPlayers);
   readonly allowNeutralControl = signal(this.initialSettings.allowNeutralControl);
+  readonly neutralsWeeklyGrowth = signal(this.initialSettings.neutralsWeeklyGrowth);
+  readonly neutralsInitalCount = signal(this.initialSettings.neutralInitialCount);
+
+  readonly neutralsWeeklyGrowthPercent = computed(() => (this.neutralsWeeklyGrowth() * 100).toFixed(0) + '%');
+  readonly neutralsInitialCountPercent = computed(() => (this.neutralsInitalCount() * 100).toFixed(0) + '%');
 
   accept(): void {
     this.state.gameSettings.patch({
       lossToNeutrals: this.lossesFromNeutrals(),
       lossToNeutralPlayers: this.lossesFromPlayers(),
+      neutralsWeeklyGrowth: this.neutralsWeeklyGrowth(),
+      neutralInitialCount: this.neutralsInitalCount(),
     });
     this.close();
   }

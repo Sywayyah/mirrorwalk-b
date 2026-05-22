@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RemoveActionPoints } from 'src/app/core/events';
 import { StructEvents } from 'src/app/core/structures/events';
 import { StructPopupData } from 'src/app/core/ui';
@@ -9,20 +9,23 @@ import { BasicPopup } from 'src/app/features/shared/components';
 import { EventsService } from 'src/app/store';
 
 @Component({
-    selector: 'mw-preview-popup',
-    templateUrl: './preview-popup.component.html',
-    styleUrls: ['./preview-popup.component.scss'],
-    standalone: false
+  selector: 'mw-preview-popup',
+  templateUrl: './preview-popup.component.html',
+  styleUrls: ['./preview-popup.component.scss'],
+  standalone: false,
 })
 export class PreviewPopupComponent extends BasicPopup<StructPopupData> {
-  struct = this.data.struct;
-  constructor(
-    private players: MwPlayersService,
-    private apiProvider: ApiProvider,
-    private state: State,
-    private events: EventsService,
-  ) {
+  private readonly players = inject(MwPlayersService);
+  private readonly apiProvider = inject(ApiProvider);
+  private readonly state = inject(State);
+  private readonly events = inject(EventsService);
+
+  readonly struct = this.data.struct;
+  readonly currentPlayer = this.players.getCurrentPlayer();
+
+  constructor() {
     super();
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     this.state.eventHandlers.structures.triggerRefEventHandlers(this.struct, StructEvents.StructInspected());
   }
 

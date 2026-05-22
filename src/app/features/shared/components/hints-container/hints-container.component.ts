@@ -13,26 +13,25 @@ export interface ElementHint {
 }
 
 @Component({
-    selector: 'mw-hints-container',
-    templateUrl: './hints-container.component.html',
-    styleUrls: ['./hints-container.component.scss'],
-    standalone: false
+  selector: 'mw-hints-container',
+  templateUrl: './hints-container.component.html',
+  styleUrls: ['./hints-container.component.scss'],
+  standalone: false,
 })
 export class HintsContainerComponent {
   public hints: ElementHint[] = [];
 
-  constructor() { }
-
+  constructor() {}
 
   public createHint(target: ElementRef, template: TemplateRef<ElementRef>, pos: HintAttachment): ElementHint {
     const elem = target.nativeElement as HTMLElement;
     const { left, top, bottom } = elem.getBoundingClientRect();
 
     let leftOffset = null;
-    let topOffset: number | null = top + (elem.clientHeight / 2);
+    let topOffset: number | null = top + elem.clientHeight / 2;
     let rightOffset = null;
     let style = 'transform: translateY(-50%)';
-    let bottomOffset = null;
+    // let bottomOffset = null;
 
     switch (pos) {
       case 'after':
@@ -43,9 +42,11 @@ export class HintsContainerComponent {
         break;
       case 'above':
         topOffset = null;
-        style = 'transform: translateX(-50%)';
-        bottomOffset = window.innerHeight - bottom + elem.clientHeight;
+        style = 'transform: translate(-50%, -100%)';
+        // previous approach, started to fail for some reason
+        // bottomOffset = window.innerHeight - bottom + elem.clientHeight;
         leftOffset = left + elem.clientWidth / 2;
+        topOffset = bottom - elem.clientHeight;
         break;
       case 'below':
         topOffset = bottom;
@@ -57,7 +58,7 @@ export class HintsContainerComponent {
       targetElement: target,
       template,
       offsetLeft: leftOffset,
-      offsetBottom: bottomOffset,
+      offsetBottom: null,
       offsetTop: topOffset,
       offsetRight: rightOffset,
       style: style,
