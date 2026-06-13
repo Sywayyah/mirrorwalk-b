@@ -1,4 +1,4 @@
-import { Component, OnInit, input, output } from '@angular/core';
+import { Component, OnInit, input, output, ChangeDetectionStrategy } from '@angular/core';
 import { DescriptionElementType, EventFeedMessage } from 'src/app/core/ui';
 import { injectHostElem, injectRenderer } from 'src/app/core/utils';
 
@@ -7,6 +7,7 @@ const defaultMsgDelay = 2000;
   selector: 'mw-event-feed-message',
   templateUrl: './event-feed-message.component.html',
   styleUrls: ['./event-feed-message.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class EventFeedMessageComponent implements OnInit {

@@ -1,10 +1,11 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { ScenarioEditorContextService } from '../../services/scenario-editor-context.service';
 
 @Component({
   selector: 'mw-scenario-area-editor',
   imports: [],
   templateUrl: './scenario-area-editor.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './scenario-area-editor.component.scss',
 })
 export class ScenarioAreaEditorComponent {

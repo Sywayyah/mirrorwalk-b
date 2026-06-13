@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { GameOpenMainScreen, TestSandboxScenario } from 'src/app/core/events';
 import { EventsService } from 'src/app/store';
 import { SandboxModeContext } from '../../services/sandbox-mode-context.service';
@@ -8,6 +8,7 @@ import { humansFaction } from 'src/app/core/factions';
   selector: 'mw-sandbox-mode-screen',
   templateUrl: './sandbox-mode-screen.component.html',
   styleUrl: './sandbox-mode-screen.component.scss',
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class SandboxModeScreenComponent {

@@ -1,22 +1,20 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { ResourceRewardModel, ResourcesReward } from 'src/app/core/structures';
 import { StructRewardPopup } from 'src/app/core/ui';
 import { MwPlayersService } from 'src/app/features/services';
 import { BasicPopup } from 'src/app/features/shared/components';
 
 @Component({
-    selector: 'mw-resources-reward-popup',
-    templateUrl: './resources-reward-popup.component.html',
-    styleUrls: ['./resources-reward-popup.component.scss'],
-    standalone: false
+  selector: 'mw-resources-reward-popup',
+  templateUrl: './resources-reward-popup.component.html',
+  styleUrls: ['./resources-reward-popup.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
+  standalone: false,
 })
 export class ResourcesRewardPopupComponent extends BasicPopup<StructRewardPopup> implements OnInit {
-
   public resourceGroups!: ResourceRewardModel[][];
 
-  constructor(
-    private readonly playersService: MwPlayersService,
-  ) {
+  constructor(private readonly playersService: MwPlayersService) {
     super();
   }
 
@@ -32,9 +30,13 @@ export class ResourcesRewardPopupComponent extends BasicPopup<StructRewardPopup>
     this.close();
 
     if (popup.selectedRewardGroup) {
-      popup.selectedRewardGroup.forEach(selectedReward => {
-        this.playersService.addResourceToPlayer(this.playersService.getCurrentPlayer(), selectedReward.type, selectedReward.count);
-      })
+      popup.selectedRewardGroup.forEach((selectedReward) => {
+        this.playersService.addResourceToPlayer(
+          this.playersService.getCurrentPlayer(),
+          selectedReward.type,
+          selectedReward.count,
+        );
+      });
     }
   }
 }

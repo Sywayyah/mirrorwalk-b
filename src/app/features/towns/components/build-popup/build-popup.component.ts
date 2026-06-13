@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { InitBuilding } from 'src/app/core/events';
 import { FormattedResource, Resources, formattedResources, getFactoredResources } from 'src/app/core/resources';
 import { Building, BuildingLevel, TownEvents } from 'src/app/core/towns';
@@ -11,6 +11,7 @@ import { EventsService } from 'src/app/store';
   selector: 'mw-build-popup',
   templateUrl: './build-popup.component.html',
   styleUrls: ['./build-popup.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class BuildPopupComponent extends BasicPopup<{ building: Building; targetLevel: number }> {

@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { PushPlainEventFeedMessage, ScheduleAction } from 'src/app/core/events';
 import { GarrisonHirableGroup, GarrisonModel } from 'src/app/core/garrisons';
 import { CommonUtils } from 'src/app/core/utils';
@@ -7,10 +7,11 @@ import { BasicPopup } from 'src/app/features/shared/components';
 import { EventsService } from 'src/app/store';
 
 @Component({
-    selector: 'mw-garrison-popup',
-    templateUrl: './garrison-popup.component.html',
-    styleUrl: './garrison-popup.component.scss',
-    standalone: false
+  selector: 'mw-garrison-popup',
+  templateUrl: './garrison-popup.component.html',
+  styleUrl: './garrison-popup.component.scss',
+  changeDetection: ChangeDetectionStrategy.Eager,
+  standalone: false,
 })
 export class GarrisonPopupComponent extends BasicPopup<{}> {
   private readonly players = inject(MwPlayersService);
@@ -47,18 +48,28 @@ export class GarrisonPopupComponent extends BasicPopup<{}> {
     );
 
     this.players.addUnitGroupToTypeStack(this.currentPlayer, newUnitGroup);
-    this.events.dispatch(PushPlainEventFeedMessage({ message: `${group.count} ${group.type.name} joined your army for 3 days.` }));
+    this.events.dispatch(
+      PushPlainEventFeedMessage({ message: `${group.count} ${group.type.name} joined your army for 3 days.` }),
+    );
 
+    this.events.dispatch(
+      ScheduleAction({
+        action: () => {
+          const removedCount = this.players.removeUnitTypeCountFromPlayer(
+            this.currentPlayer,
+            group.type.id,
+            group.count,
+          );
 
-    this.events.dispatch(ScheduleAction({
-      action: () => {
-        const removedCount = this.players.removeUnitTypeCountFromPlayer(this.currentPlayer, group.type.id, group.count);
-
-        if (removedCount) {
-          this.events.dispatch(PushPlainEventFeedMessage({ message: `${removedCount} ${group.type.name} have left your army.` }));
-        }
-      }, dayOffset: 3,
-    }));
+          if (removedCount) {
+            this.events.dispatch(
+              PushPlainEventFeedMessage({ message: `${removedCount} ${group.type.name} have left your army.` }),
+            );
+          }
+        },
+        dayOffset: 3,
+      }),
+    );
 
     this.selectedGarrison = undefined;
     this.selectedGroup = undefined;

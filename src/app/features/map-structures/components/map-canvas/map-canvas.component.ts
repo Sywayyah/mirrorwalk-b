@@ -7,13 +7,11 @@ import {
   isDevMode,
   output,
   viewChild,
+  ChangeDetectionStrategy,
 } from '@angular/core';
 import { fromEvent, merge } from 'rxjs';
 import { map, switchMap, take, takeUntil } from 'rxjs/operators';
-import {
-  MapPanCameraCenterTo,
-  PanMapCameraCenterAction,
-} from 'src/app/core/events';
+import { MapPanCameraCenterTo, PanMapCameraCenterAction } from 'src/app/core/events';
 import { LevelMap } from 'src/app/core/maps';
 import { injectHostElem } from 'src/app/core/utils';
 import { State } from 'src/app/features/services/state.service';
@@ -28,6 +26,7 @@ export interface MapDragEvent {
   selector: 'mw-map-canvas',
   templateUrl: './map-canvas.component.html',
   styleUrls: ['./map-canvas.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class MapCanvasComponent extends StoreClient() implements OnInit {
@@ -124,12 +123,7 @@ export class MapCanvasComponent extends StoreClient() implements OnInit {
                   mapPosY,
                 };
               }),
-              takeUntil(
-                merge(
-                  fromEvent(window, 'mouseup'),
-                  fromEvent(window, 'onfocusout'),
-                ).pipe(take(1)),
-              ),
+              takeUntil(merge(fromEvent(window, 'mouseup'), fromEvent(window, 'onfocusout')).pipe(take(1))),
             );
           }),
           this.untilDestroyed,
@@ -138,10 +132,8 @@ export class MapCanvasComponent extends StoreClient() implements OnInit {
           const screenWidthHalf = this.windowWidthHalf;
           const screenHeightHalf = this.windowHeightHalf;
 
-          const targetPosX =
-            mouseDragEvent.mapPosX + mouseDragEvent.xDragOffset;
-          const targetPosY =
-            mouseDragEvent.mapPosY + mouseDragEvent.yDragOffset;
+          const targetPosX = mouseDragEvent.mapPosX + mouseDragEvent.xDragOffset;
+          const targetPosY = mouseDragEvent.mapPosY + mouseDragEvent.yDragOffset;
 
           let finalPosX = targetPosX;
           let finalPosY = targetPosY;
@@ -246,10 +238,6 @@ export class MapCanvasComponent extends StoreClient() implements OnInit {
 
   private updateUnderlaySize(): void {
     this.renderer.setStyle(this.underlayElem, 'width', `${this.windowWidth}px`);
-    this.renderer.setStyle(
-      this.underlayElem,
-      'height',
-      `${this.windowHeight}px`,
-    );
+    this.renderer.setStyle(this.underlayElem, 'height', `${this.windowHeight}px`);
   }
 }

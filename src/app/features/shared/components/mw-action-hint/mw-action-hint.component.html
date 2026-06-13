@@ -20,7 +20,7 @@
   #customHtml
   let-hint="hint"
   [mwTypedTemplate]="customHtmlHintType"
-  >
+>
   <div [innerHTML]="hint.html | safeHtml"></div>
 </ng-template>
 
@@ -28,25 +28,29 @@
   #simple
   let-hint="hint"
   [mwTypedTemplate]="enemyCardHoverHintType"
-  >
+>
   <span>Attack</span>
   <span [style.color]="hint.attackedGroup.ownerPlayer.color">
     {{ hint.attackedGroup.type.name }}
   </span>
   <span> dealing </span>
   <span>
-    {{ hint.minDamage }}@if (!hint.noDamageSpread) {
-    -{{ hint.maxDamage }}
-  }
-</span>
-<span> damage, killing </span>
-<span>
-  {{ hint.minCountLoss }}@if (!hint.noLossSpread) {
-  -{{ hint.maxCountLoss }}
-}
-</span>
-<span> units </span>
-<!-- <span *ngIf="hint.attackSuperiority">
+    @if (hint.noDamageSpread) {
+      {{ hint.minDamage }}
+    } @else {
+      {{ hint.minDamage }}-{{ hint.maxDamage }}
+    }
+  </span>
+  <span> damage, killing </span>
+  <span>
+    @if (hint.noLossSpread) {
+      {{ hint.minCountLoss }}
+    } @else {
+      {{ hint.minCountLoss }}-{{ hint.maxCountLoss }}
+    }
+  </span>
+  <span> units </span>
+  <!-- <span *ngIf="hint.attackSuperiority">
 (superiority: {{hint.attackSuperiority}})
 </span> -->
 </ng-template>
@@ -55,7 +59,7 @@
   #onTargetSpell
   let-hint="hint"
   [mwTypedTemplate]="spellHintType"
-  >
+>
   <div>
     <span> Cast </span>
     <span>

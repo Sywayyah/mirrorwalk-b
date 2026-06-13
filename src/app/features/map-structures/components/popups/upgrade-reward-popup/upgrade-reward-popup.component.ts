@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { UnitTypeId } from 'src/app/core/entities';
 import { ResourceType, ResourcesModel } from 'src/app/core/resources';
 import { HiringRewardModel, UnitUpgradeReward } from 'src/app/core/structures';
@@ -9,7 +9,7 @@ import { ApiProvider } from 'src/app/features/services/api-provider.service';
 import { BasicPopup } from 'src/app/features/shared/components';
 
 interface UpgradeModel {
-  hire: HiringRewardModel,
+  hire: HiringRewardModel;
   count: number;
 
   baseCost: Partial<ResourcesModel>;
@@ -19,13 +19,13 @@ interface UpgradeModel {
 }
 
 @Component({
-    selector: 'mw-upgrade-reward-popup',
-    templateUrl: './upgrade-reward-popup.component.html',
-    styleUrls: ['./upgrade-reward-popup.component.scss'],
-    standalone: false
+  selector: 'mw-upgrade-reward-popup',
+  templateUrl: './upgrade-reward-popup.component.html',
+  styleUrls: ['./upgrade-reward-popup.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
+  standalone: false,
 })
 export class UpgradeRewardPopupComponent extends BasicPopup<StructPopupData> implements OnInit {
-
   public hiredGroups!: UpgradeModel[];
 
   public canConfirm: boolean = true;
@@ -44,7 +44,7 @@ export class UpgradeRewardPopupComponent extends BasicPopup<StructPopupData> imp
   public ngOnInit(): void {
     this.hiredGroups = (this.data.struct.reward as UnitUpgradeReward)
       .getUnits(this.apiProvider.getPlayerApi())
-      .map(unit => {
+      .map((unit) => {
         const baseCost: Partial<ResourcesModel> = {};
         const currentCost: Partial<ResourcesModel> = {};
 
@@ -57,12 +57,12 @@ export class UpgradeRewardPopupComponent extends BasicPopup<StructPopupData> imp
           ResourceType.Wood,
         ];
 
-        resourceTypes.forEach(resType => {
+        resourceTypes.forEach((resType) => {
           if (unitReqs[resType]) {
             baseCost[resType] = unitReqs[resType];
             currentCost[resType] = 0;
           }
-        })
+        });
 
         return {
           hire: {
@@ -108,14 +108,14 @@ export class UpgradeRewardPopupComponent extends BasicPopup<StructPopupData> imp
       playerResources[res as keyof ResourcesModel] -= amount;
     });
 
-    this.hiredGroups.forEach(group => {
+    this.hiredGroups.forEach((group) => {
       if (group.count) {
         this.playersService.removeNUnitsFromGroup(currentPlayer, group.originalGroup, group.count);
 
         const unitGroup = this.unitGroups.createUnitGroup(
           group.hire.unitTypeId,
           { count: group.count },
-          currentPlayer.hero
+          currentPlayer.hero,
         );
 
         this.playersService.addUnitGroupToTypeStack(currentPlayer, unitGroup);
@@ -127,7 +127,6 @@ export class UpgradeRewardPopupComponent extends BasicPopup<StructPopupData> imp
 
   private calcTotalCosts(): Partial<ResourcesModel> {
     return this.hiredGroups.reduce((totalCosts, unit) => {
-
       Object.entries(unit.currentCost).forEach(([resource, baseCost]: [string, number]) => {
         const resourceType = resource as keyof ResourcesModel;
         if (totalCosts[resourceType]) {
@@ -138,7 +137,6 @@ export class UpgradeRewardPopupComponent extends BasicPopup<StructPopupData> imp
         }
       });
       return totalCosts;
-
     }, {} as Partial<ResourcesModel>);
   }
 

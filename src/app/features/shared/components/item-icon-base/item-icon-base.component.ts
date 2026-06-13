@@ -1,10 +1,11 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
-    selector: 'mw-item-icon-base',
-    templateUrl: './item-icon-base.component.html',
-    styleUrls: ['./item-icon-base.component.scss'],
-    standalone: false
+  selector: 'mw-item-icon-base',
+  templateUrl: './item-icon-base.component.html',
+  styleUrls: ['./item-icon-base.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
+  standalone: false,
 })
 export class ItemIconBaseComponent {
   @Input()
@@ -16,5 +17,5 @@ export class ItemIconBaseComponent {
   @Input()
   public bgColor?: string;
 
-  constructor() { }
+  constructor() {}
 }

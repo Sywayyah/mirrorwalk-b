@@ -1,4 +1,4 @@
-import { Component, ElementRef, TemplateRef } from '@angular/core';
+import { Component, ElementRef, TemplateRef, ChangeDetectionStrategy } from '@angular/core';
 
 export type HintAttachment = 'before' | 'after' | 'above' | 'below';
 
@@ -16,6 +16,7 @@ export interface ElementHint {
   selector: 'mw-hints-container',
   templateUrl: './hints-container.component.html',
   styleUrls: ['./hints-container.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class HintsContainerComponent {

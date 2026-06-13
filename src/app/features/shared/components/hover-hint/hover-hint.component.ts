@@ -1,15 +1,24 @@
-import { Component, ElementRef, Input, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  Input,
+  OnDestroy,
+  OnInit,
+  TemplateRef,
+  ViewChild,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { HintsService } from 'src/app/features/services/hints.service';
 import { ElementHint, HintAttachment } from '../hints-container/hints-container.component';
 
 @Component({
-    selector: 'mw-hover-hint',
-    templateUrl: './hover-hint.component.html',
-    styleUrls: ['./hover-hint.component.scss'],
-    standalone: false
+  selector: 'mw-hover-hint',
+  templateUrl: './hover-hint.component.html',
+  styleUrls: ['./hover-hint.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
+  standalone: false,
 })
 export class HoverHintComponent implements OnDestroy {
-
   @Input() public hintBody!: TemplateRef<ElementRef>;
   /* todo: improve transition and overall logic of this component later */
   @Input() public transition: number = 0.15;
@@ -24,20 +33,14 @@ export class HoverHintComponent implements OnDestroy {
 
   private currentHintRef: ElementHint | null = null;
 
-  constructor(
-    private readonly hintsService: HintsService,
-  ) { }
+  constructor(private readonly hintsService: HintsService) {}
 
   ngOnDestroy(): void {
     this.onMouseLeave();
   }
 
   public onMouseEnter(): void {
-    this.currentHintRef = this.hintsService.containerRef.createHint(
-      this.elem,
-      this.generalHint,
-      this.hintPos,
-    );
+    this.currentHintRef = this.hintsService.containerRef.createHint(this.elem, this.generalHint, this.hintPos);
 
     this.showTimeoutId = window.setTimeout(() => {
       this.clearShowTimeout();
@@ -62,5 +65,4 @@ export class HoverHintComponent implements OnDestroy {
     }
     this.showTimeoutId = null;
   }
-
 }

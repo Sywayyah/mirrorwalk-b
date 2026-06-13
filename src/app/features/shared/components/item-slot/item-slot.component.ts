@@ -1,5 +1,11 @@
-import { Component, Input, OnChanges } from '@angular/core';
-import { GameEventsTypes, PlayerEquipsItem, PlayerLosesItem, PlayerReceivesItem, PlayerUnequipsItem } from 'src/app/core/events';
+import { Component, Input, OnChanges, ChangeDetectionStrategy } from '@angular/core';
+import {
+  GameEventsTypes,
+  PlayerEquipsItem,
+  PlayerLosesItem,
+  PlayerReceivesItem,
+  PlayerUnequipsItem,
+} from 'src/app/core/events';
 import { Hero } from 'src/app/core/heroes';
 import { ExtendedSlotType, InventoryItems, Item, ItemSlotType } from 'src/app/core/items';
 import { TypedChanges } from 'src/app/core/utils';
@@ -8,13 +14,13 @@ import { StoreClient, WireMethod } from 'src/app/store';
 import { HintAttachment } from '../hints-container/hints-container.component';
 
 @Component({
-    selector: 'mw-item-slot',
-    templateUrl: './item-slot.component.html',
-    styleUrls: ['./item-slot.component.scss'],
-    standalone: false
+  selector: 'mw-item-slot',
+  templateUrl: './item-slot.component.html',
+  styleUrls: ['./item-slot.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
+  standalone: false,
 })
 export class ItemSlotComponent extends StoreClient() implements OnChanges {
-
   @Input()
   public itemSlot!: ItemSlotType;
 
@@ -31,9 +37,7 @@ export class ItemSlotComponent extends StoreClient() implements OnChanges {
 
   private hero: Hero = this.playersService.getCurrentPlayer().hero;
 
-  constructor(
-    private playersService: MwPlayersService,
-  ) {
+  constructor(private playersService: MwPlayersService) {
     super();
   }
 
@@ -95,10 +99,12 @@ export class ItemSlotComponent extends StoreClient() implements OnChanges {
       this.unequipSlot();
     }
 
-    this.events.dispatch(PlayerEquipsItem({
-      item: item,
-      player: this.playersService.getCurrentPlayer(),
-    }));
+    this.events.dispatch(
+      PlayerEquipsItem({
+        item: item,
+        player: this.playersService.getCurrentPlayer(),
+      }),
+    );
   }
 
   public unequipSlot(): void {
@@ -107,11 +113,12 @@ export class ItemSlotComponent extends StoreClient() implements OnChanges {
     }
 
     if (this.equippedItem) {
-      this.events.dispatch(PlayerUnequipsItem({
-        item: this.equippedItem,
-        player: this.playersService.getCurrentPlayer(),
-      }));
+      this.events.dispatch(
+        PlayerUnequipsItem({
+          item: this.equippedItem,
+          player: this.playersService.getCurrentPlayer(),
+        }),
+      );
     }
   }
-
 }

@@ -1,13 +1,14 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { UnitsOrientation } from 'src/app/core/ui';
 import { State } from 'src/app/features/services/state.service';
 import { BasicPopup } from 'src/app/features/shared/components';
 
 @Component({
-    selector: 'mw-settings-popup',
-    templateUrl: './settings-popup.component.html',
-    styleUrls: ['./settings-popup.component.scss'],
-    standalone: false
+  selector: 'mw-settings-popup',
+  templateUrl: './settings-popup.component.html',
+  styleUrls: ['./settings-popup.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
+  standalone: false,
 })
 export class SettingsPopupComponent extends BasicPopup<{}> {
   // @ViewChild('scriptPath')
@@ -28,9 +29,7 @@ export class SettingsPopupComponent extends BasicPopup<{}> {
 
   public settings = this.state.settings;
 
-  constructor(
-    private state: State,
-  ) {
+  constructor(private state: State) {
     super();
   }
 
@@ -99,7 +98,7 @@ export class SettingsPopupComponent extends BasicPopup<{}> {
     input.type = 'file';
     input.multiple = true;
 
-    input.onchange = e => {
+    input.onchange = (e) => {
       var file = (e as any).target.files[0];
       console.log(file);
 
@@ -108,7 +107,7 @@ export class SettingsPopupComponent extends BasicPopup<{}> {
       reader.readAsText(file); // this is reading as data url
 
       // here we tell the reader what to do when it's done reading...
-      reader.onload = readerEvent => {
+      reader.onload = (readerEvent) => {
         var content = (readerEvent as any).target.result; // this is the content!
         console.log(content);
         var myScript = document.createElement('script');
@@ -116,13 +115,12 @@ export class SettingsPopupComponent extends BasicPopup<{}> {
         myScript.setAttribute('type', 'module');
         document.head.appendChild(myScript);
         // (document.querySelector('#content')! as any).style.backgroundImage = 'url(' + content + ')';
-      }
-    }
+      };
+    };
 
     input.click();
     // import(this.textElem.nativeElement.value).then((module) => {
     // console.log(module, 'loaded successfully!');
     // });
   }
-
 }

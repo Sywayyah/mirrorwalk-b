@@ -1,4 +1,4 @@
-import { Component, input, signal } from '@angular/core';
+import { Component, input, signal, ChangeDetectionStrategy } from '@angular/core';
 import {
   TypedSignalInput,
   EditorTypedSignalInputComponent,
@@ -37,6 +37,7 @@ export class PropertyList<T extends Record<string, TypedSignalInput>> {
   selector: 'mw-editor-property',
   imports: [EditorTypedSignalInputComponent],
   templateUrl: './editor-property.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './editor-property.component.scss',
 })
 export class EditorPropertyComponent<T extends Record<string, TypedSignalInput>> {

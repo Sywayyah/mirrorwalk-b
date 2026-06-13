@@ -1,10 +1,11 @@
-import { Component, HostBinding, HostListener, Input } from '@angular/core';
+import { Component, HostBinding, HostListener, Input, ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
-    selector: 'mw-icon-btn',
-    templateUrl: './icon-btn.component.html',
-    styleUrls: ['./icon-btn.component.scss'],
-    standalone: false
+  selector: 'mw-icon-btn',
+  templateUrl: './icon-btn.component.html',
+  styleUrls: ['./icon-btn.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
+  standalone: false,
 })
 export class IconBtnComponent {
   @Input()
@@ -14,7 +15,7 @@ export class IconBtnComponent {
   @HostBinding('class.disabled')
   disabled: boolean | null = false;
 
-  constructor() { }
+  constructor() {}
 
   @HostListener('click')
   click(): boolean {

@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnInit, ViewChild, inject } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild, inject, ChangeDetectionStrategy } from '@angular/core';
 import {
   RaidersActionCard,
   RainbowActionCard,
@@ -47,6 +47,7 @@ const GlobalServices = [
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
   providers: GlobalServices,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class AppComponent implements OnInit, AfterViewInit {

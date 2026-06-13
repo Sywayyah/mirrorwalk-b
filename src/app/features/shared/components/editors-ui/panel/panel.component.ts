@@ -1,10 +1,20 @@
-import { Component, computed, inject, input, model, TemplateRef, viewChild } from '@angular/core';
+import {
+  Component,
+  computed,
+  inject,
+  input,
+  model,
+  TemplateRef,
+  viewChild,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { PanelsService } from '../panels.service';
 
 @Component({
   selector: 'mw-panel',
   imports: [],
   templateUrl: './panel.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './panel.component.scss',
 })
 export class PanelComponent {

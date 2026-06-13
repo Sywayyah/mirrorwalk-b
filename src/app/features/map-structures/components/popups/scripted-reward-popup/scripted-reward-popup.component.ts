@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { RemoveActionPoints } from 'src/app/core/events';
 import { ScriptedReward } from 'src/app/core/structures';
 import { StructPopupData } from 'src/app/core/ui';
@@ -8,13 +8,13 @@ import { BasicPopup } from 'src/app/features/shared/components';
 import { EventsService } from 'src/app/store';
 
 @Component({
-    selector: 'mw-scripted-reward-popup',
-    templateUrl: './scripted-reward-popup.component.html',
-    styleUrls: ['./scripted-reward-popup.component.scss'],
-    standalone: false
+  selector: 'mw-scripted-reward-popup',
+  templateUrl: './scripted-reward-popup.component.html',
+  styleUrls: ['./scripted-reward-popup.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
+  standalone: false,
 })
 export class ScriptedRewardPopupComponent extends BasicPopup<StructPopupData> implements OnInit {
-
   public description!: string;
 
   private reward!: ScriptedReward;

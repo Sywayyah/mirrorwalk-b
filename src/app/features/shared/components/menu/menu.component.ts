@@ -1,12 +1,13 @@
-import { Component, ElementRef, Input, TemplateRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, TemplateRef, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { HintsService } from 'src/app/features/services/hints.service';
 import { ElementHint, HintAttachment } from '../hints-container/hints-container.component';
 
 @Component({
-    selector: 'mw-menu',
-    templateUrl: './menu.component.html',
-    styleUrls: ['./menu.component.scss'],
-    standalone: false
+  selector: 'mw-menu',
+  templateUrl: './menu.component.html',
+  styleUrls: ['./menu.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
+  standalone: false,
 })
 export class MenuComponent {
   @Input()
@@ -37,7 +38,7 @@ export class MenuComponent {
   constructor(
     public host: ElementRef,
     private hintsService: HintsService,
-  ) { }
+  ) {}
 
   public onClick(): void {
     if (this.disabled) {

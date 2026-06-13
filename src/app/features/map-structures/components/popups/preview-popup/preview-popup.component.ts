@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { RemoveActionPoints } from 'src/app/core/events';
 import { StructEvents } from 'src/app/core/structures/events';
 import { StructPopupData } from 'src/app/core/ui';
@@ -12,6 +12,7 @@ import { EventsService } from 'src/app/store';
   selector: 'mw-preview-popup',
   templateUrl: './preview-popup.component.html',
   styleUrls: ['./preview-popup.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class PreviewPopupComponent extends BasicPopup<StructPopupData> {

@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, signal, ChangeDetectionStrategy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { SignalArrUtils } from 'src/app/core/utils/signals';
 import { DropdownOptionComponent } from '../../../shared/components/dropdown/dropdown-option.component';
@@ -14,13 +14,21 @@ import {
   EntityTabs,
 } from '../../config/types';
 import { ScenarioEditorContextService } from '../../services/scenario-editor-context.service';
-import { ScenarioResourcesEditorComponent } from "../scenario-resources-editor/scenario-resources-editor.component";
-import { ScenarioModifiersEditorComponent } from "../scenario-modifiers-editor/scenario-modifiers-editor.component";
+import { ScenarioResourcesEditorComponent } from '../scenario-resources-editor/scenario-resources-editor.component';
+import { ScenarioModifiersEditorComponent } from '../scenario-modifiers-editor/scenario-modifiers-editor.component';
 
 @Component({
   selector: 'mw-scenario-entities-manager',
-  imports: [DropdownComponent, DropdownOptionComponent, FormsModule, SharedModule, ScenarioResourcesEditorComponent, ScenarioModifiersEditorComponent],
+  imports: [
+    DropdownComponent,
+    DropdownOptionComponent,
+    FormsModule,
+    SharedModule,
+    ScenarioResourcesEditorComponent,
+    ScenarioModifiersEditorComponent,
+  ],
   templateUrl: './scenario-entities-manager.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './scenario-entities-manager.component.scss',
 })
 export class ScenarioEntitiesManagerComponent {

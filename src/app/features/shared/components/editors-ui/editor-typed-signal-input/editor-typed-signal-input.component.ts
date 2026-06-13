@@ -1,5 +1,4 @@
-import { CommonModule } from '@angular/common';
-import { Component, input, signal, WritableSignal } from '@angular/core';
+import { Component, input, signal, WritableSignal, ChangeDetectionStrategy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 export type TypedSignalInput =
@@ -26,8 +25,9 @@ export function typedColorSignal(initValue: string): TypedSignalInput {
 
 @Component({
   selector: 'mw-editor-typed-signal-input',
-  imports: [FormsModule, CommonModule],
+  imports: [FormsModule],
   templateUrl: './editor-typed-signal-input.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './editor-typed-signal-input.component.scss',
 })
 export class EditorTypedSignalInputComponent {

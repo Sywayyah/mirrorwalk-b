@@ -1,4 +1,4 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, computed, inject, signal, ChangeDetectionStrategy } from '@angular/core';
 import { resolveEntities } from 'src/app/core/entities';
 import { PlayerLosesItem, PlayerReceivesItem } from 'src/app/core/events';
 import { Item, ItemBaseType } from 'src/app/core/items';
@@ -12,6 +12,7 @@ import { EventsService } from 'src/app/store';
   selector: 'mw-items-selling-popup',
   templateUrl: './items-selling-popup.component.html',
   styleUrl: './items-selling-popup.component.scss',
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class ItemsSellingPopupComponent extends BasicPopup<{ building: Building }> {

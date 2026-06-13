@@ -1,5 +1,5 @@
 import { ConnectionPositionPair } from '@angular/cdk/overlay';
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { OpenGarrisonPopup, PlayerLeavesTown, ViewsEnum } from 'src/app/core/events';
 import { ActivityTypes, Building, HiringActivity } from 'src/app/core/towns';
 import { MwPlayersService } from 'src/app/features/services';
@@ -20,6 +20,7 @@ import { HallsOfFateComponent } from '../halls-of-fate/halls-of-fate.component';
   selector: 'mw-town-view',
   templateUrl: './town-view.component.html',
   styleUrls: ['./town-view.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class TownViewComponent {
