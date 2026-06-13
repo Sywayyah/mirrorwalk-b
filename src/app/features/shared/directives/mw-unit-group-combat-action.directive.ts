@@ -55,7 +55,7 @@ export class MwUnitGroupCombatActionDirective implements OnInit {
     }
   }
 
-  @HostListener('click', ['$event'])
+  @HostListener('click')
   public onClick(): void {
     if (!this.canActivateCurrentSpell()) {
       this.curPlayerState.cancelCurrentSpell();
