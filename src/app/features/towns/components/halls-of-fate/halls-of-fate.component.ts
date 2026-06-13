@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, signal, ChangeDetectionStrategy } from '@angular/core';
 import { ActionCard } from 'src/app/core/action-cards';
 import { BaseDialog } from 'src/app/core/dialogs';
 import { ItemBaseType } from 'src/app/core/items';
@@ -19,6 +19,7 @@ import { AddActionCardsToPlayer } from 'src/app/core/events';
   selector: 'mw-halls-of-fate',
   imports: [SharedModule, LocalDialogComponent],
   templateUrl: './halls-of-fate.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './halls-of-fate.component.scss',
 })
 export class HallsOfFateComponent extends BaseDialog<{ building: Building }> {

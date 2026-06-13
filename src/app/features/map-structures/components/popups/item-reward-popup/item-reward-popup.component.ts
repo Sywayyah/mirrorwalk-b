@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Item } from 'src/app/core/items';
 import { ItemReward } from 'src/app/core/structures';
 import { StructPopupData } from 'src/app/core/ui';
@@ -9,6 +9,7 @@ import { BasicPopup } from 'src/app/features/shared/components';
   selector: 'mw-item-reward-popup',
   templateUrl: './item-reward-popup.component.html',
   styleUrls: ['./item-reward-popup.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class ItemRewardPopupComponent extends BasicPopup<StructPopupData> implements OnInit {

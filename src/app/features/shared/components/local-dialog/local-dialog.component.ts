@@ -1,10 +1,11 @@
 import { Dialog, DialogRef } from '@angular/cdk/dialog';
-import { Component, contentChild, inject, input, TemplateRef } from '@angular/core';
+import { Component, contentChild, inject, input, TemplateRef, ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
   selector: 'mw-local-dialog',
   imports: [],
   template: '',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styles: `
     :host {
       display: none;

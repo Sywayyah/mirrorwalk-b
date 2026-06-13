@@ -1,4 +1,4 @@
-import { Component, inject, input, signal } from '@angular/core';
+import { Component, inject, input, signal, ChangeDetectionStrategy } from '@angular/core';
 import { UnitBaseType } from 'src/app/core/unit-types';
 import { SignalArrUtils } from 'src/app/core/utils/signals';
 import { SharedModule } from 'src/app/features/shared/shared.module';
@@ -11,6 +11,7 @@ import { FormsModule } from '@angular/forms';
   selector: 'mw-player-settings',
   imports: [DropdownComponent, DropdownOptionComponent, SharedModule, FormsModule],
   templateUrl: './player-settings.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './player-settings.component.scss',
 })
 export class PlayerSettingsComponent {

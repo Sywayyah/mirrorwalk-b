@@ -1,7 +1,16 @@
 import { CdkMenuTrigger } from '@angular/cdk/menu';
 import { ConnectionPositionPair } from '@angular/cdk/overlay';
 import { CommonModule } from '@angular/common';
-import { Component, ElementRef, HostListener, model, output, signal, viewChild } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  HostListener,
+  model,
+  output,
+  signal,
+  viewChild,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { injectHostElem } from 'src/app/core/utils';
 import { isNotNullish } from 'src/app/core/utils/common';
 import type { DropdownOptionComponent } from './dropdown-option.component';
@@ -10,6 +19,7 @@ import type { DropdownOptionComponent } from './dropdown-option.component';
   selector: 'mw-dropdown',
   imports: [CdkMenuTrigger, CommonModule],
   templateUrl: './dropdown.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './dropdown.component.scss',
 })
 export class DropdownComponent<T> {

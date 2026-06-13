@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { map } from 'rxjs/operators';
 import { OpenSplitUnitGroupPopup, OpenUnitSlotsActionPopup } from 'src/app/core/events';
 import { UnitGroupSlot, swapUnitsInSlots } from 'src/app/core/heroes';
@@ -11,10 +11,11 @@ import { BasicPopup } from 'src/app/features/shared/components';
 import { EventsService } from 'src/app/store';
 
 @Component({
-    selector: 'mw-hero-popup',
-    templateUrl: './hero-popup.component.html',
-    styleUrls: ['./hero-popup.component.scss'],
-    standalone: false
+  selector: 'mw-hero-popup',
+  templateUrl: './hero-popup.component.html',
+  styleUrls: ['./hero-popup.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
+  standalone: false,
 })
 export class HeroPopupComponent extends BasicPopup<{}> {
   public readonly currentPlayer = this.playersService.getCurrentPlayer();
@@ -26,9 +27,11 @@ export class HeroPopupComponent extends BasicPopup<{}> {
   public readonly itemSlots = InventoryItems.getSlotTypes();
 
   public readonly heroSpecialties$ = this.hero.specialtiesModGroup.onValueChanges().pipe(
-    map((specialties) => getEntries(specialties)
-      .filter(([, specValue]) => specValue)
-      .map(([specName, specValue]) => `${specialtyLabels[specName as keyof Specialties]}: ${specValue}`)),
+    map((specialties) =>
+      getEntries(specialties)
+        .filter(([, specValue]) => specValue)
+        .map(([specName, specValue]) => `${specialtyLabels[specName as keyof Specialties]}: ${specValue}`),
+    ),
   );
 
   public activeGroupSlot?: UnitGroupSlot;
@@ -72,14 +75,16 @@ export class HeroPopupComponent extends BasicPopup<{}> {
 
       if (slot.unitGroup) {
         if (slot.unitGroup.type === this.activeGroupSlot.unitGroup?.type) {
-          this.events.dispatch(OpenUnitSlotsActionPopup({
-            sourceSlot: this.activeGroupSlot,
-            targetSlot: slot,
-            postAction: () => {
-              this.activeGroupSlot = undefined;
-              this.hero.refreshUnitGroupsOrderBySlots();
-            },
-          }));
+          this.events.dispatch(
+            OpenUnitSlotsActionPopup({
+              sourceSlot: this.activeGroupSlot,
+              targetSlot: slot,
+              postAction: () => {
+                this.activeGroupSlot = undefined;
+                this.hero.refreshUnitGroupsOrderBySlots();
+              },
+            }),
+          );
 
           return;
         }
@@ -87,7 +92,7 @@ export class HeroPopupComponent extends BasicPopup<{}> {
         this.activeGroupSlot = undefined;
       } else {
         // add as a field to hero that is updated on changes
-        const filledMainSlotsCount = this.hero.mainUnitSlots.filter(slot => slot.unitGroup).length;
+        const filledMainSlotsCount = this.hero.mainUnitSlots.filter((slot) => slot.unitGroup).length;
 
         if (!this.activeGroupSlot.isReserve && slot.isReserve && filledMainSlotsCount === 1) {
           this.activeGroupSlot = undefined;
@@ -101,6 +106,5 @@ export class HeroPopupComponent extends BasicPopup<{}> {
 
       this.hero.refreshUnitGroupsOrderBySlots();
     }
-
   }
 }

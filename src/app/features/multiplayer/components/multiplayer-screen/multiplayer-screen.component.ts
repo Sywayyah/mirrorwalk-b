@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, signal, ChangeDetectionStrategy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { GameOpenMainScreen } from 'src/app/core/events';
 // import { WebSocketService } from 'src/app/features/services/web-socket.service';
@@ -9,6 +9,7 @@ import { EventsService } from 'src/app/store';
   selector: 'mw-multiplayer-screen',
   imports: [SharedModule, FormsModule],
   templateUrl: './multiplayer-screen.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './multiplayer-screen.component.scss',
 })
 export class MultiplayerScreenComponent {

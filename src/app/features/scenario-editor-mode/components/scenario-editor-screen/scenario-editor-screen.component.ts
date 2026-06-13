@@ -1,5 +1,4 @@
-
-import { Component, effect, inject, signal, viewChild } from '@angular/core';
+import { Component, effect, inject, signal, viewChild, ChangeDetectionStrategy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { SpellId } from 'src/app/core/entities';
 import { GameOpenMainScreen, OpenNewGameScreen } from 'src/app/core/events';
@@ -28,8 +27,8 @@ import {
 } from '../../config/types';
 import { ScenarioEditorContextService } from '../../services/scenario-editor-context.service';
 import { ScenarioEntitiesManagerComponent } from '../scenario-entities-manager/scenario-entities-manager.component';
-import { ScenarioAreaEditorComponent } from "../scenario-area-editor/scenario-area-editor.component";
-import { EditorPropertyComponent } from "../../../shared/components/editors-ui/editor-property/editor-property.component";
+import { ScenarioAreaEditorComponent } from '../scenario-area-editor/scenario-area-editor.component';
+import { EditorPropertyComponent } from '../../../shared/components/editors-ui/editor-property/editor-property.component';
 
 @Component({
   selector: 'mw-scenario-editor-screen',
@@ -45,12 +44,13 @@ import { EditorPropertyComponent } from "../../../shared/components/editors-ui/e
     ScenarioEntitiesManagerComponent,
     LocalDialogComponent,
     ScenarioAreaEditorComponent,
-    EditorPropertyComponent
-],
+    EditorPropertyComponent,
+  ],
 
   templateUrl: './scenario-editor-screen.component.html',
   styleUrl: './scenario-editor-screen.component.scss',
 
+  changeDetection: ChangeDetectionStrategy.Eager,
   providers: [ScenarioEditorContextService],
 })
 export class ScenarioEditorScreenComponent {

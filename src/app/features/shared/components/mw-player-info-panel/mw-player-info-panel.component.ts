@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { DisplayUnitGroupInfo, PlayerOpensHeroInfo } from 'src/app/core/events';
 import { HERO_LEVELS_BREAKPOINTS } from 'src/app/core/heroes';
 import { InventoryItems } from 'src/app/core/items';
@@ -12,7 +12,8 @@ import { EventsService } from 'src/app/store';
   selector: 'mw-player-info-panel',
   templateUrl: './mw-player-info-panel.component.html',
   styleUrls: ['./mw-player-info-panel.component.scss'],
-  standalone: false
+  changeDetection: ChangeDetectionStrategy.Eager,
+  standalone: false,
 })
 export class MwPlayerInfoPanelComponent {
   public readonly state = inject(State);
@@ -23,7 +24,7 @@ export class MwPlayerInfoPanelComponent {
   constructor(
     private players: MwPlayersService,
     private events: EventsService,
-  ) { }
+  ) {}
 
   public openPlayerInfo(): void {
     this.events.dispatch(PlayerOpensHeroInfo());
@@ -44,5 +45,4 @@ export class MwPlayerInfoPanelComponent {
   displayUnitGroupInfo(unitGroup: UnitGroup): void {
     this.events.dispatch(DisplayUnitGroupInfo({ unitGroup }));
   }
-
 }

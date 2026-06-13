@@ -1,16 +1,24 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { ActionCardStack } from 'src/app/core/action-cards';
 import { SetupCampActionCard } from 'src/app/core/action-cards/player-actions';
-import { ActivateActionCard, DisplayPopup, OpenGarrisonPopup, PlayerEntersTown, PlayerOpensActionCards, PlayerOpensHeroInfo } from 'src/app/core/events';
+import {
+  ActivateActionCard,
+  DisplayPopup,
+  OpenGarrisonPopup,
+  PlayerEntersTown,
+  PlayerOpensActionCards,
+  PlayerOpensHeroInfo,
+} from 'src/app/core/events';
 import { MwPlayersService } from 'src/app/features/services';
 import { State } from 'src/app/features/services/state.service';
 import { EventsService } from 'src/app/store';
 
 @Component({
-    selector: 'mw-player-map-actions-panel',
-    templateUrl: './player-map-actions-panel.component.html',
-    styleUrls: ['./player-map-actions-panel.component.scss'],
-    standalone: false
+  selector: 'mw-player-map-actions-panel',
+  templateUrl: './player-map-actions-panel.component.html',
+  styleUrls: ['./player-map-actions-panel.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
+  standalone: false,
 })
 export class PlayerMapActionsPanelComponent {
   readonly state = inject(State);
@@ -37,9 +45,11 @@ export class PlayerMapActionsPanelComponent {
 
   setupCampAction(): void {
     const currentPlayer = this.players.getCurrentPlayer();
-    this.events.dispatch(ActivateActionCard({
-      player: currentPlayer,
-      cardStack: currentPlayer.actionCards.find(card => card.card === SetupCampActionCard) as ActionCardStack
-    }));
+    this.events.dispatch(
+      ActivateActionCard({
+        player: currentPlayer,
+        cardStack: currentPlayer.actionCards.find((card) => card.card === SetupCampActionCard) as ActionCardStack,
+      }),
+    );
   }
 }

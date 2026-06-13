@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { isFeatureEnabled } from 'src/app/core/config';
 import { Feature } from 'src/app/core/config/types';
 import {
@@ -15,6 +15,7 @@ import { EventsService } from 'src/app/store';
   selector: 'mw-main-screen',
   templateUrl: './main-screen.component.html',
   styleUrls: ['./main-screen.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class MainScreenComponent {

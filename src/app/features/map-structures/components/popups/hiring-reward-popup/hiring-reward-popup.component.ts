@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Resources, ResourcesModel, ResourceType } from 'src/app/core/resources';
 import { HiringReward, HiringRewardModel } from 'src/app/core/structures';
 import { StructPopupData } from 'src/app/core/ui';
@@ -18,6 +18,7 @@ interface HireModel {
   selector: 'mw-hiring-reward-popup',
   templateUrl: './hiring-reward-popup.component.html',
   styleUrls: ['./hiring-reward-popup.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class HiringRewardPopupComponent extends BasicPopup<StructPopupData> implements OnInit {

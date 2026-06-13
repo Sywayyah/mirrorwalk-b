@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { DisplayUnitGroupInfo } from 'src/app/core/events';
 import { UnitGroup } from 'src/app/core/unit-types';
 import { MwPlayersService } from 'src/app/features/services';
@@ -9,7 +9,8 @@ import { BasicPopup } from '../popup-container';
 @Component({
   selector: 'mw-split-units-popup',
   templateUrl: './split-units-popup.component.html',
-  standalone: false
+  changeDetection: ChangeDetectionStrategy.Eager,
+  standalone: false,
 })
 export class SplitUnitsPopupComponent extends BasicPopup<{ unitGroup: UnitGroup }> {
   private readonly players = inject(MwPlayersService);
@@ -41,7 +42,12 @@ export class SplitUnitsPopupComponent extends BasicPopup<{ unitGroup: UnitGroup 
 
     const currentHero = this.players.getCurrentPlayer().hero;
 
-    const newUnitGroup = this.gameObjects.createNewGameObject(UnitGroup, { count: this.toSplit, unitBase: unitGroup.type, ownerHero: currentHero, isSplitted: true });
+    const newUnitGroup = this.gameObjects.createNewGameObject(UnitGroup, {
+      count: this.toSplit,
+      unitBase: unitGroup.type,
+      ownerHero: currentHero,
+      isSplitted: true,
+    });
 
     currentHero.addUnitGroup(newUnitGroup);
 

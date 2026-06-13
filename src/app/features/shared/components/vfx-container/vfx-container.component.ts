@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit, inject } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, inject, ChangeDetectionStrategy } from '@angular/core';
 import { combineLatest, fromEvent } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { CustomAnimationData, EffectAnimation, EffectOptions } from 'src/app/core/api/vfx-api';
@@ -13,10 +13,11 @@ interface Animation {
 }
 
 @Component({
-    selector: 'mw-vfx-container',
-    templateUrl: './vfx-container.component.html',
-    styleUrls: ['./vfx-container.component.scss'],
-    standalone: false
+  selector: 'mw-vfx-container',
+  templateUrl: './vfx-container.component.html',
+  styleUrls: ['./vfx-container.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
+  standalone: false,
 })
 export class VfxContainerComponent implements OnInit, OnDestroy {
   private readonly vfxService = inject(VfxService);
@@ -26,8 +27,7 @@ export class VfxContainerComponent implements OnInit, OnDestroy {
 
   animations: Animation[] = [];
 
-  constructor() {
-  }
+  constructor() {}
 
   ngOnInit(): void {
     this.vfxService.registerVfxContainer(this.containerId, this);
@@ -40,15 +40,14 @@ export class VfxContainerComponent implements OnInit, OnDestroy {
   playAnimation(animationComponent: VfxElementComponent, animation: Animation) {
     const animRef = animationComponent.playAnimation(animation.anim, animation.options, animation.data);
 
-    combineLatest(
-      animRef.animationsList.map(animation => fromEvent(animation, 'finish'))
-    ).pipe(take(1)).subscribe(() => {
-      CommonUtils.removeItem(this.animations, animation);
-    });
+    combineLatest(animRef.animationsList.map((animation) => fromEvent(animation, 'finish')))
+      .pipe(take(1))
+      .subscribe(() => {
+        CommonUtils.removeItem(this.animations, animation);
+      });
   }
 
   addAnimation(animation: EffectAnimation, options?: EffectOptions, data?: CustomAnimationData): void {
     this.animations.push({ anim: animation, options, data });
   }
-
 }

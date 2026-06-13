@@ -1,4 +1,14 @@
-import { Component, computed, DestroyRef, ElementRef, inject, input, TemplateRef, viewChild } from '@angular/core';
+import {
+  Component,
+  computed,
+  DestroyRef,
+  ElementRef,
+  inject,
+  input,
+  TemplateRef,
+  viewChild,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { SignalArrUtils } from 'src/app/core/utils/signals';
 import { DropdownComponent } from './dropdown.component';
 
@@ -16,6 +26,7 @@ import { DropdownComponent } from './dropdown.component';
       </div>
     </ng-template>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   styles: `
     .option {
       cursor: pointer;

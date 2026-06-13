@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, signal, ChangeDetectionStrategy } from '@angular/core';
 import { PLAYER_COLORS } from 'src/app/core/assets';
 import { isFeatureEnabled } from 'src/app/core/config';
 import { Feature } from 'src/app/core/config/types';
@@ -32,6 +32,7 @@ interface PlayerRow {
   selector: 'mw-new-game-screen',
   templateUrl: './new-game-screen.component.html',
   styleUrls: ['./new-game-screen.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class NewGameScreenComponent {

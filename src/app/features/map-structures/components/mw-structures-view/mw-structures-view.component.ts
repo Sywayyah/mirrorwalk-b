@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, Renderer2, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Renderer2, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { CONFIG } from 'src/app/core/config';
 import { MapPanCameraCenterTo, OpenMainMenu, StructSelected } from 'src/app/core/events';
 import { MapStructure } from 'src/app/core/structures';
@@ -17,6 +17,7 @@ import { MapDragEvent } from '../map-canvas/map-canvas.component';
   selector: 'mw-structures-view',
   templateUrl: './mw-structures-view.component.html',
   styleUrls: ['./mw-structures-view.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class MwStructuresViewComponent extends StoreClient() implements AfterViewInit {

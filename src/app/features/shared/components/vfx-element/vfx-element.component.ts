@@ -10,6 +10,7 @@ import {
   ViewContainerRef,
   ViewRef,
   viewChild,
+  ChangeDetectionStrategy,
 } from '@angular/core';
 import {
   AnimationElementType,
@@ -28,6 +29,7 @@ export interface AnimationRef {
   selector: 'mw-vfx-element',
   templateUrl: './vfx-element.component.html',
   styleUrls: ['./vfx-element.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class VfxElementComponent implements OnInit {

@@ -1,5 +1,5 @@
 import { DialogRef } from '@angular/cdk/dialog';
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, computed, inject, signal, ChangeDetectionStrategy } from '@angular/core';
 import { LossMode } from 'src/app/core/game-settings';
 import { State } from 'src/app/features/services/state.service';
 
@@ -12,6 +12,7 @@ type LossModeOption = {
   selector: 'mw-game-settings-dialog',
   templateUrl: './game-settings-dialog.component.html',
   styleUrl: './game-settings-dialog.component.scss',
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class GameSettingsDialogComponent {

@@ -1,4 +1,13 @@
-import { Component, ElementRef, model, OnChanges, OnDestroy, OnInit, viewChild } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  model,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  viewChild,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { CodeJar } from 'codejar';
 
 import hljs from 'highlight.js/lib/core';
@@ -16,6 +25,7 @@ hljs.registerLanguage('javascript', javascript);
       ></pre>
     </div>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./script-editor.component.scss'],
 })
 export class ScriptEditorComponent implements OnInit, OnDestroy, OnChanges {

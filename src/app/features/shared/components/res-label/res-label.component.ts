@@ -1,4 +1,4 @@
-import { Component, computed, HostBinding, Input, input } from '@angular/core';
+import { Component, computed, HostBinding, Input, input, ChangeDetectionStrategy } from '@angular/core';
 import { ImgIconSize } from 'src/app/core/assets';
 import { resourceDetailsMapping, ResourceType } from 'src/app/core/resources';
 
@@ -6,6 +6,7 @@ import { resourceDetailsMapping, ResourceType } from 'src/app/core/resources';
   selector: 'mw-res-label',
   templateUrl: './res-label.component.html',
   styleUrl: './res-label.component.scss',
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class ResLabelComponent {

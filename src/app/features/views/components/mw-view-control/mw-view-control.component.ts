@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import {
   DisplayReward,
   GameCommandEvents,
@@ -23,6 +23,7 @@ import { Notify, StoreClient, WireMethod } from 'src/app/store';
   selector: 'mw-view-control',
   templateUrl: './mw-view-control.component.html',
   styleUrls: ['./mw-view-control.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class MwViewControlComponent extends StoreClient() {

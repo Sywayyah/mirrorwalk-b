@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectionStrategy } from '@angular/core';
 import { UnitTypeId } from 'src/app/core/entities';
 import { ResourceType, Resources, ResourcesModel, getCountOfResourcesInMaxResources } from 'src/app/core/resources';
 import { BuidlingBase, Building, HiringActivity, HiringDetails, Town } from 'src/app/core/towns';
@@ -33,6 +33,7 @@ type HireMode = 'hire' | 'upgrade';
   selector: 'mw-hiring-popup',
   templateUrl: './hiring-popup.component.html',
   styleUrls: ['./hiring-popup.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class HiringPopupComponent extends BasicPopup<HiringPopupData> implements OnInit {

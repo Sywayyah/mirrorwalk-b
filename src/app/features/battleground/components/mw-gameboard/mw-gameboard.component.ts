@@ -1,4 +1,12 @@
-import { AfterViewInit, Component, OnInit, QueryList, ViewChildren, inject } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  OnInit,
+  QueryList,
+  ViewChildren,
+  inject,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { map, takeUntil } from 'rxjs/operators';
 import {
   GroupDamagedByGroup,
@@ -30,6 +38,7 @@ import { MwUnitGroupCardComponent } from '../mw-unit-group-card/mw-unit-group-ca
   selector: 'mw-gameboard',
   templateUrl: './mw-gameboard.component.html',
   styleUrls: ['./mw-gameboard.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class MwGameboardComponent extends StoreClient() implements OnInit, AfterViewInit {

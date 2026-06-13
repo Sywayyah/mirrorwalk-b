@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { BehaviorSubject, combineLatest } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
@@ -12,6 +12,7 @@ type HintTemplateType<T extends ActionHintVariants['variants']> = { hint: T };
   selector: 'mw-action-hint',
   templateUrl: './mw-action-hint.component.html',
   styleUrls: ['./mw-action-hint.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class MwActionHintComponent {

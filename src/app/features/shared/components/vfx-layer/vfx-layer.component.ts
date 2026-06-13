@@ -1,7 +1,23 @@
-import { Component, inject, OnInit, TemplateRef, ViewChild, ViewContainerRef } from '@angular/core';
+import {
+  Component,
+  inject,
+  OnInit,
+  TemplateRef,
+  ViewChild,
+  ViewContainerRef,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { combineLatest, fromEvent } from 'rxjs';
 import { take } from 'rxjs/operators';
-import { CustomAnimationData, Effect, EffectInstRef, EffectOptions, EffectPosition, EffectType, VfxElemEffect } from 'src/app/core/api/vfx-api';
+import {
+  CustomAnimationData,
+  Effect,
+  EffectInstRef,
+  EffectOptions,
+  EffectPosition,
+  EffectType,
+  VfxElemEffect,
+} from 'src/app/core/api/vfx-api';
 import { UnitGroup } from 'src/app/core/unit-types';
 import { injectCdr, injectRenderer } from 'src/app/core/utils';
 import { FloatingMessageAnimation } from 'src/app/core/vfx';
@@ -18,7 +34,8 @@ import { VfxService } from './vfx.service';
   selector: 'mw-vfx-layer',
   templateUrl: './vfx-layer.component.html',
   styleUrls: ['./vfx-layer.component.scss'],
-  standalone: false
+  changeDetection: ChangeDetectionStrategy.Eager,
+  standalone: false,
 })
 export class VfxLayerComponent implements OnInit {
   private vfxService = inject(VfxService);
@@ -55,11 +72,7 @@ export class VfxLayerComponent implements OnInit {
     this.instantiateEffect(effect, options, newEffect);
   }
 
-  public createVfxForUnitGroup(
-    unitGroup: UnitGroup,
-    effect: Effect<EffectType>,
-    options: EffectOptions
-  ): void {
+  public createVfxForUnitGroup(unitGroup: UnitGroup, effect: Effect<EffectType>, options: EffectOptions): void {
     const cardComponent = this.unitsCardsMapping.get(unitGroup);
     const cardElement = cardComponent.hostElem;
 
@@ -68,9 +81,9 @@ export class VfxLayerComponent implements OnInit {
     const newEffect = this.createNewEffect(
       {
         bottom: 0,
-        left: left + (cardElement.clientWidth / 2),
+        left: left + cardElement.clientWidth / 2,
         right: 0,
-        top: top + (cardElement.clientHeight / 2),
+        top: top + cardElement.clientHeight / 2,
       },
       effect,
     );
@@ -94,26 +107,17 @@ export class VfxLayerComponent implements OnInit {
     const newEffect = this.createNewEffect(
       {
         bottom: 0,
-        left: left + (cardElement.clientWidth / 2),
+        left: left + cardElement.clientWidth / 2,
         right: 0,
-        top: top + (cardElement.clientHeight / 2),
+        top: top + cardElement.clientHeight / 2,
       },
       effect,
     );
 
-
-    this.instantiateEffect(
-      effect,
-      { darkOverlay: false, duration: 1000, ...options },
-      newEffect,
-      data,
-    );
+    this.instantiateEffect(effect, { darkOverlay: false, duration: 1000, ...options }, newEffect, data);
   }
 
-  private createNewEffect(
-    position: EffectPosition,
-    effect: Effect,
-  ): EffectInstRef {
+  private createNewEffect(position: EffectPosition, effect: Effect): EffectInstRef {
     const newEffectId = this.vfxService.getNewId();
 
     const newEffect: EffectInstRef = {
@@ -146,13 +150,14 @@ export class VfxLayerComponent implements OnInit {
         const vfxComponentInstance = vfxComponentRef.instance;
 
         const animationRef = vfxComponentInstance.playAnimation(
-          vfxEffect.animation, {
-          duration: options.duration,
-        }, data);
+          vfxEffect.animation,
+          {
+            duration: options.duration,
+          },
+          data,
+        );
 
-        combineLatest(
-          animationRef.animationsList.map(animation => fromEvent(animation, 'finish'))
-        )
+        combineLatest(animationRef.animationsList.map((animation) => fromEvent(animation, 'finish')))
           .pipe(take(1))
           .subscribe(() => {
             this.activeEffects.delete(newEffect.id);
@@ -173,5 +178,4 @@ export class VfxLayerComponent implements OnInit {
     this.renderer.setStyle(element, 'left', `${effect.offset.left}px`);
     this.renderer.setStyle(element, 'top', `${effect.offset.top}px`);
   }
-
 }

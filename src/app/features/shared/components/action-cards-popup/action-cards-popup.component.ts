@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { ActionCardStack } from 'src/app/core/action-cards';
 import { ActivateActionCard } from 'src/app/core/events';
 import { MwPlayersService } from 'src/app/features/services';
@@ -7,10 +7,11 @@ import { EventsService } from 'src/app/store';
 import { BasicPopup } from '../popup-container';
 
 @Component({
-    selector: 'mw-action-cards-popup',
-    templateUrl: './action-cards-popup.component.html',
-    styleUrls: ['./action-cards-popup.component.scss'],
-    standalone: false
+  selector: 'mw-action-cards-popup',
+  templateUrl: './action-cards-popup.component.html',
+  styleUrls: ['./action-cards-popup.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
+  standalone: false,
 })
 export class ActionCardsPopupComponent extends BasicPopup<{}> {
   private readonly state = inject(State);

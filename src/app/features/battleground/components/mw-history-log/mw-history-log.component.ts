@@ -1,4 +1,4 @@
-import { Component, ElementRef, viewChild } from '@angular/core';
+import { Component, ElementRef, viewChild, ChangeDetectionStrategy } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { HistoryLogTypesEnum } from 'src/app/core/ui';
 import { MwBattleLogService } from 'src/app/features/services';
@@ -7,6 +7,7 @@ import { MwBattleLogService } from 'src/app/features/services';
   selector: 'mw-history-log',
   templateUrl: './mw-history-log.component.html',
   styleUrls: ['./mw-history-log.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class MwHistoryLogComponent {
@@ -15,16 +16,14 @@ export class MwHistoryLogComponent {
   public types: typeof HistoryLogTypesEnum = HistoryLogTypesEnum;
 
   constructor(public readonly battleLogService: MwBattleLogService) {
-    this.battleLogService.historyEvent$
-      .pipe(takeUntilDestroyed())
-      .subscribe(() => {
-        const historyElem = this.historyLogElem().nativeElement;
-        setTimeout(() => {
-          historyElem.scrollTo({
-            top: historyElem.scrollHeight,
-            behavior: 'smooth',
-          });
-        }, 0);
-      });
+    this.battleLogService.historyEvent$.pipe(takeUntilDestroyed()).subscribe(() => {
+      const historyElem = this.historyLogElem().nativeElement;
+      setTimeout(() => {
+        historyElem.scrollTo({
+          top: historyElem.scrollHeight,
+          behavior: 'smooth',
+        });
+      }, 0);
+    });
   }
 }

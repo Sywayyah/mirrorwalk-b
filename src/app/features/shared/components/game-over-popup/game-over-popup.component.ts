@@ -1,16 +1,15 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { BasicPopup } from '../popup-container';
 
 @Component({
-    selector: 'mw-game-over-popup',
-    templateUrl: './game-over-popup.component.html',
-    styleUrls: ['./game-over-popup.component.scss'],
-    standalone: false
+  selector: 'mw-game-over-popup',
+  templateUrl: './game-over-popup.component.html',
+  styleUrls: ['./game-over-popup.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
+  standalone: false,
 })
 export class GameOverPopupComponent extends BasicPopup {
-
-  constructor(
-  ) {
+  constructor() {
     super();
   }
 
