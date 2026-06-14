@@ -4,25 +4,18 @@ import { PlayerReceivesItem, PlayerUnequipsItem } from 'src/app/core/events';
 import { HeroBase } from 'src/app/core/heroes';
 import { Item } from 'src/app/core/items';
 import { Player, PlayerCreationModel, PlayerTypeEnum } from 'src/app/core/players';
-import { Resources, ResourcesModel, ResourceType } from 'src/app/core/resources';
+import { Resources, ResourceType } from 'src/app/core/resources';
+import { Spell } from 'src/app/core/spells';
 import { UnitGroup } from 'src/app/core/unit-types';
 import { StoreClient } from 'src/app/store';
 import { MwHeroesService } from './';
 import { GameObjectsManager } from './game-objects-manager.service';
 import { State } from './state.service';
-import { Spell } from 'src/app/core/spells';
 
 export enum PLAYER_IDS {
   Main = 'main',
   Neutral = 'neutral',
 }
-
-const defaultResources: ResourcesModel = {
-  gems: 0,
-  gold: 0,
-  redCrystals: 0,
-  wood: 0,
-};
 
 @Injectable({
   providedIn: 'root',

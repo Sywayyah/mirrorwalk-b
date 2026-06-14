@@ -43,13 +43,19 @@ export interface HallsOfFateConfig {
   items: ItemBaseType[];
 }
 
+const defaultResources: ResourcesModel = {
+  gold: 1000,
+  wood: 1,
+  gems: 0,
+  redCrystals: 0,
+};
+
 export class Player extends GameObject<PlayerCreationModel> {
   public static readonly categoryId: string = 'player';
 
   public color!: string;
 
-  /* resources can be stored separately in theory. */
-  public resources!: ResourcesModel;
+  public resources: ResourcesModel = { ...defaultResources };
 
   public type!: PlayerTypeEnum;
 
