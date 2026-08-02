@@ -3,7 +3,6 @@ import { isFeatureEnabled } from 'src/app/core/config';
 import { Feature } from 'src/app/core/config/types';
 import {
   OpenGlossary,
-  OpenMultiplayer,
   OpenNewGameScreen,
   OpenSandboxMode,
   OpenScenarioMode,
@@ -22,7 +21,6 @@ export class MainScreenComponent {
   private readonly events = inject(EventsService);
 
   readonly isSandboxEnabled = isFeatureEnabled(Feature.SandboxMode);
-  readonly isMultiplayerEnabled = isFeatureEnabled(Feature.MultiplayerServer);
   readonly isScenarioEditorEnabled = isFeatureEnabled(Feature.ScenarioEditor);
 
   public openNewGameScreen(): void {
@@ -43,9 +41,5 @@ export class MainScreenComponent {
 
   public openSettings(): void {
     this.events.dispatch(OpenSettings());
-  }
-
-  public openMultiplayer() {
-    this.events.dispatch(OpenMultiplayer());
   }
 }

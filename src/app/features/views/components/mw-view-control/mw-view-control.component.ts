@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import {
   DisplayReward,
   GameCommandEvents,
@@ -7,7 +7,6 @@ import {
   NavigateToView,
   NeutralStructParams,
   OpenMainMenu,
-  OpenMultiplayer,
   OpenNewGameScreen,
   OpenSandboxMode,
   OpenScenarioMode,
@@ -45,11 +44,6 @@ export class MwViewControlComponent extends StoreClient() {
   @Notify(GameOpenMainScreen)
   public initScreen(): void {
     this.events.dispatch(NavigateToView({ view: ViewsEnum.MainScreen }));
-  }
-
-  @Notify(OpenMultiplayer)
-  public openMultiplayer(): void {
-    this.events.dispatch(NavigateToView({ view: ViewsEnum.Multiplayer }));
   }
 
   @Notify(OpenNewGameScreen)
